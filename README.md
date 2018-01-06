@@ -61,4 +61,6 @@ TODO:
   * `PlanPhase` large currency enums cause 'Maximum call stack size exceeded' when ref is being resolved
   * `StaticCatalog` -> `Listing` is too large
   
-  
+  # Additional Work
+
+Our current swagger version is `1.5.11` which maps to swagger `2.0`, which itself is compatible with OAI `2.0`. We will need (at some point) to upgrade to OAI `3.0` to leverage new functionalities and move with the industry.
