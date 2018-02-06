@@ -1,0 +1,642 @@
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>Kill Bill</title>
+
+    <style>
+      .highlight table td { padding: 5px; }
+.highlight table pre { margin: 0; }
+.highlight .gh {
+  color: #999999;
+}
+.highlight .sr {
+  color: #f6aa11;
+}
+.highlight .go {
+  color: #888888;
+}
+.highlight .gp {
+  color: #555555;
+}
+.highlight .gs {
+}
+.highlight .gu {
+  color: #aaaaaa;
+}
+.highlight .nb {
+  color: #f6aa11;
+}
+.highlight .cm {
+  color: #75715e;
+}
+.highlight .cp {
+  color: #75715e;
+}
+.highlight .c1 {
+  color: #75715e;
+}
+.highlight .cs {
+  color: #75715e;
+}
+.highlight .c, .highlight .cd {
+  color: #75715e;
+}
+.highlight .err {
+  color: #960050;
+}
+.highlight .gr {
+  color: #960050;
+}
+.highlight .gt {
+  color: #960050;
+}
+.highlight .gd {
+  color: #49483e;
+}
+.highlight .gi {
+  color: #49483e;
+}
+.highlight .ge {
+  color: #49483e;
+}
+.highlight .kc {
+  color: #66d9ef;
+}
+.highlight .kd {
+  color: #66d9ef;
+}
+.highlight .kr {
+  color: #66d9ef;
+}
+.highlight .no {
+  color: #66d9ef;
+}
+.highlight .kt {
+  color: #66d9ef;
+}
+.highlight .mf {
+  color: #ae81ff;
+}
+.highlight .mh {
+  color: #ae81ff;
+}
+.highlight .il {
+  color: #ae81ff;
+}
+.highlight .mi {
+  color: #ae81ff;
+}
+.highlight .mo {
+  color: #ae81ff;
+}
+.highlight .m, .highlight .mb, .highlight .mx {
+  color: #ae81ff;
+}
+.highlight .sc {
+  color: #ae81ff;
+}
+.highlight .se {
+  color: #ae81ff;
+}
+.highlight .ss {
+  color: #ae81ff;
+}
+.highlight .sd {
+  color: #e6db74;
+}
+.highlight .s2 {
+  color: #e6db74;
+}
+.highlight .sb {
+  color: #e6db74;
+}
+.highlight .sh {
+  color: #e6db74;
+}
+.highlight .si {
+  color: #e6db74;
+}
+.highlight .sx {
+  color: #e6db74;
+}
+.highlight .s1 {
+  color: #e6db74;
+}
+.highlight .s {
+  color: #e6db74;
+}
+.highlight .na {
+  color: #a6e22e;
+}
+.highlight .nc {
+  color: #a6e22e;
+}
+.highlight .nd {
+  color: #a6e22e;
+}
+.highlight .ne {
+  color: #a6e22e;
+}
+.highlight .nf {
+  color: #a6e22e;
+}
+.highlight .vc {
+  color: #ffffff;
+}
+.highlight .nn {
+  color: #ffffff;
+}
+.highlight .nl {
+  color: #ffffff;
+}
+.highlight .ni {
+  color: #ffffff;
+}
+.highlight .bp {
+  color: #ffffff;
+}
+.highlight .vg {
+  color: #ffffff;
+}
+.highlight .vi {
+  color: #ffffff;
+}
+.highlight .nv {
+  color: #ffffff;
+}
+.highlight .w {
+  color: #ffffff;
+}
+.highlight {
+  color: #ffffff;
+}
+.highlight .n, .highlight .py, .highlight .nx {
+  color: #ffffff;
+}
+.highlight .ow {
+  color: #f92672;
+}
+.highlight .nt {
+  color: #f92672;
+}
+.highlight .k, .highlight .kv {
+  color: #f92672;
+}
+.highlight .kn {
+  color: #f92672;
+}
+.highlight .kp {
+  color: #f92672;
+}
+.highlight .o {
+  color: #f92672;
+}
+    </style>
+    <link href="stylesheets/screen.css" rel="stylesheet" media="screen" />
+    <link href="stylesheets/print.css" rel="stylesheet" media="print" />
+      <script src="javascripts/all.js"></script>
+  </head>
+
+  <body class="index" data-languages="[&quot;shell&quot;,&quot;java&quot;,&quot;ruby&quot;]">
+    <a href="#" id="nav-button">
+      <span>
+        NAV
+        <img src="images/navbar.png" alt="Navbar" />
+      </span>
+    </a>
+    <div class="toc-wrapper">
+      <img src="images/logo.png" class="logo" alt="Logo" />
+        <div class="lang-selector">
+              <a href="#" data-language-name="shell">shell</a>
+              <a href="#" data-language-name="java">java</a>
+              <a href="#" data-language-name="ruby">ruby</a>
+        </div>
+        <div class="search">
+          <input type="text" class="search" id="input-search" placeholder="Search">
+        </div>
+        <ul class="search-results"></ul>
+      <div id="toc" class="toc-list-h1">
+          <li>
+            <a href="#using-kill-bill-apis" class="toc-h1 toc-link" data-title="Using Kill Bill APIs">Using Kill Bill APIs</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#introduction" class="toc-h2 toc-link" data-title="Introduction">Introduction</a>
+                  </li>
+                  <li>
+                    <a href="#authentication-and-rbac" class="toc-h2 toc-link" data-title="Authentication and RBAC">Authentication and RBAC</a>
+                  </li>
+                  <li>
+                    <a href="#multi-tenancy" class="toc-h2 toc-link" data-title="Multi-Tenancy">Multi-Tenancy</a>
+                  </li>
+                  <li>
+                    <a href="#resource-ids-and-external-keys" class="toc-h2 toc-link" data-title="Resource IDs and External Keys">Resource IDs and External Keys</a>
+                  </li>
+                  <li>
+                    <a href="#pagination" class="toc-h2 toc-link" data-title="Pagination">Pagination</a>
+                  </li>
+                  <li>
+                    <a href="#audit-and-history" class="toc-h2 toc-link" data-title="Audit and History">Audit and History</a>
+                  </li>
+                  <li>
+                    <a href="#versioning" class="toc-h2 toc-link" data-title="Versioning">Versioning</a>
+                  </li>
+                  <li>
+                    <a href="#errors" class="toc-h2 toc-link" data-title="Errors">Errors</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#account" class="toc-h1 toc-link" data-title="Account">Account</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#account-resource" class="toc-h2 toc-link" data-title="Account Resource">Account Resource</a>
+                  </li>
+                  <li>
+                    <a href="#retrieve-an-account-by-its-id" class="toc-h2 toc-link" data-title="Retrieve an Account by its ID">Retrieve an Account by its ID</a>
+                  </li>
+                  <li>
+                    <a href="#create-an-account" class="toc-h2 toc-link" data-title="Create an Account">Create an Account</a>
+                  </li>
+              </ul>
+          </li>
+      </div>
+    </div>
+    <div class="page-wrapper">
+      <div class="dark-box"></div>
+      <div class="content">
+        <h1 id='using-kill-bill-apis'>Using Kill Bill APIs</h1><h2 id='introduction'>Introduction</h2>
+<p>Kill Bill offers a set of HTTP apis, commonly called REST apis, that rely on HTTP verbs <code>POST</code>, <code>GET</code>, <code>PUT</code>, <code>DELETE</code> to match CRUD operations, and that use HTTP response codes to indicate errors. These apis allow to manage Kill Bill resources -- e.g <code>Account</code> -- through the use of JSON input and output.</p>
+
+<p>Kill Bill also offers a set of <a href="https://github.com/killbill/killbill-api/tree/master/src/main/java/org/killbill/billing">java apis</a> that can be used by plugins to make requests, and a set of <a href="https://github.com/killbill/killbill-plugin-api">java plugin api</a> for Kill Bill core to interact with the plugins. Such apis are beyond the scope of this documentation.</p>
+
+<blockquote>
+<p>API client libraries</p>
+</blockquote>
+<pre class="highlight plaintext"><code>Official libraries for the Kill Bill API are available in several languages,
+including java, php, python, ruby, Node, and go. Community-supported libraries
+such as .NET are also available. In the following documentation, we assume 
+you have a Kill Bill server instance running on `127.0.0.1` on port `8080`.
+While Kill Bill supports `https` protocol, all example rely on standard http scheme.
+</code></pre><pre class="highlight java tab-java"><code><span class="c1">//</span>
+<span class="c1">// You can find the java client on github: https://github.com/killbill/killbill-client-java</span>
+<span class="c1">//</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="c1">#</span>
+<span class="c1"># You can find the ruby client on github: https://github.com/killbill/killbill-client-ruby</span>
+<span class="c1">#</span>
+</code></pre>
+<p>The description of the api in this documentation is limited to the most common use cases and does not include advanced features that we have crafted over the years from all the use cases we have seen from our users.</p>
+
+<p>For questions about api use, or to report bugs, you can subscribe to the <a href="https://groups.google.com/forum/#!forum/killbilling-users">Kill Bill user mailing list</a>.</p>
+<h2 id='authentication-and-rbac'>Authentication and RBAC</h2>
+<p>In order to make apis calls, one needs to authenticate each request by passing an HTTP <code>Authorization</code> header and respect the HTTP Basic authentication scheme.</p>
+
+<p>Depending on how the system has been configured, the authentication mechanism can happen using different options -- some or all at the same time:</p>
+
+<ul>
+<li>Flat file configuration</li>
+<li>Database configuration</li>
+<li>LDAP configuration</li>
+<li>OKTA configuration</li>
+</ul>
+
+<p>The system also supports configuring roles and permissions, to restrict user access to certain resources and operations. The permissions are quite granular and are defined <a href="https://github.com/killbill/killbill-api/blob/master/src/main/java/org/killbill/billing/security/Permission.java#L19">here</a></p>
+<h2 id='multi-tenancy'>Multi-Tenancy</h2>
+<blockquote>
+<p>Specifying the basic authentication headers and multi-tenancy headers:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl <span class="se">\</span>
+-u admin:password <span class="se">\</span>
+-H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+-H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+...
+</code></pre><pre class="highlight java tab-java"><code><span class="c1">// Initialization of the KillBillClient instance</span>
+<span class="n">KillBillHttpClient</span> <span class="n">killBillHttpClient</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KillBillHttpClient</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"http://%s:%d"</span><span class="o">,</span> <span class="s">"127.0.0.1"</span><span class="o">,</span> <span class="mi">8080</span><span class="o">),</span>
+                                            <span class="n">username</span><span class="o">,</span>
+                                            <span class="n">password</span><span class="o">,</span>
+                                            <span class="n">apiKey</span><span class="o">,</span>
+                                            <span class="n">apiSecret</span><span class="o">,</span>
+                                            <span class="kc">null</span><span class="o">,</span>
+                                            <span class="kc">null</span><span class="o">,</span>
+                                            <span class="n">DEFAULT_CONNECT_TIMEOUT_SEC</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">,</span>
+                                            <span class="n">DEFAULT_READ_TIMEOUT_SEC</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">,</span>
+                                            <span class="n">DEFAULT_REQUEST_TIMEOUT_SEC</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">);</span>
+
+<span class="n">KillBillClient</span> <span class="n">killBillClient</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KillBillClient</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'killbill_client'</span>
+
+<span class="no">KillBillClient</span><span class="p">.</span><span class="nf">url</span> <span class="o">=</span> <span class="s1">'http://127.0.0.1:8080'</span>
+
+<span class="c1"># Multi-tenancy and RBAC credentials</span>
+<span class="n">options</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="ss">:username</span> <span class="o">=&gt;</span> <span class="s1">'admin'</span><span class="p">,</span>
+  <span class="ss">:password</span> <span class="o">=&gt;</span> <span class="s1">'password'</span><span class="p">,</span>
+  <span class="ss">:api_key</span> <span class="o">=&gt;</span> <span class="s1">'bob'</span><span class="p">,</span>
+  <span class="ss">:api_secret</span> <span class="o">=&gt;</span> <span class="s1">'lazar'</span>
+<span class="p">}</span>
+
+<span class="c1"># Audit log data</span>
+<span class="n">user</span> <span class="o">=</span> <span class="s1">'me'</span>
+<span class="n">reason</span> <span class="o">=</span> <span class="s1">'Going through my first tutorial'</span>
+<span class="n">comment</span> <span class="o">=</span> <span class="s1">'I like it!'</span>
+
+<span class="c1"># Start using....</span>
+
+</code></pre>
+<p>Kill Bill has been designed from the ground up to run multiple logical instances on the same set of servers and database. This allows for instance to cleanly separate different customer data sets. Another common use case is to configure both a production tenant and a test tenant, the later being used for test requests during deployment and for sanity after deployment.</p>
+
+<p>Each api call requires to identify the tenant being used, through the use of 2 http headers:</p>
+
+<ul>
+<li><strong><code>X-Killbill-ApiKey</code></strong>: The api key associated with the tenant. This info is stored in clear in the database.</li>
+<li><strong><code>X-Killbill-ApiSecret</code></strong>: The api secret associated with the tenant. This info is hashed and stored along with the <code>salt</code> in the database</li>
+</ul>
+
+<aside class="notice">Note: You can control the number of hash iterations through the system property `org.killbill.security.shiroNbHashIterations` whose default value is set to `200000`. If your security requirements are met through other means, you can set this value to `1` to avoid wasting CPU cycles and greatly improve latency. Changing the value on an existing system requires re-hashing the keys.</aside>
+<h2 id='resource-ids-and-external-keys'>Resource IDs and External Keys</h2>
+<p>When creating a new resource, there are 2 IDS associated with it: Kill Bill will allocate a unique ID, and the user of the api will also be able to associated its own unique key, also called <code>external key</code>. The external key is used for 2 scenarios:</p>
+
+<ul>
+<li>ID Mapping: Typically one can pass an external key to create a mapping between the ID generated by Kill Bill and a known key for this resource</li>
+<li>Idempotency of the request: Kill Bill ensures that such external key is unique, and so in the eventuality of an api call that times out, one can safely retry with the same external key and the second request would only succeed if the first one did not complete. This ensures idempotency of the call. Such external key must be unique per tenant and across all resources.</li>
+</ul>
+<h2 id='pagination'>Pagination</h2>
+<p>Besides the traditional CRUD apis associated with each resource, we also offer pagination apis to allow listing per-tenant resources -- e.g all <code>Account</code> in a given tenant. Such apis will allow to pass an <code>offset</code> and a <code>limit</code>, provided as query parameters, to allow the listing of all resources of a given type, on a page by page basis. In addition to the json list, each response will also include the following http headers:</p>
+
+<ul>
+<li><strong><code>X-Killbill-Pagination-CurrentOffset</code></strong> : The offest of the first record in the returned list</li>
+<li><strong><code>X-Killbill-Pagination-NextOffset</code></strong> : The header will only be present if there are additional entries to return and would include the next offset</li>
+<li><strong><code>X-Killbill-Pagination-TotalNbRecords</code></strong> : The total number of records</li>
+<li><strong><code>X-Killbill-Pagination-MaxNbRecords</code></strong> : TODO</li>
+<li><strong><code>X-Killbill-Pagination-NextPageUri</code></strong> : The uri that can be used to retrieve the next page.</li>
+</ul>
+<pre class="highlight plaintext"><code>TODO coding example
+</code></pre><h2 id='audit-and-history'>Audit and History</h2>
+<p>Every api in Kill Bill that creates, or modifies state will create an audit log record to track <em>who</em> made the change. In addition, we also allow to specify <em>why</em> this change was made. Such information is passed for every <code>POST</code>, <code>PUT</code>, <code>DELETE</code> request and relies on special HTTP headers:</p>
+
+<ul>
+<li><strong><code>X-Killbill-CreatedBy</code></strong> : Mandatory header to track who made the change.</li>
+<li><strong><code>X-Killbill-Reason</code></strong> : Optional header to track the reason; typically one would use a special reason code -- e.g <em>COURTESY_REFUND</em>.</li>
+<li><strong><code>X-Killbill-Comment</code></strong> : Optional header to track the metadata; typically one would add more information -- e.g &#39;Good old faithful customer&#39;.</li>
+</ul>
+
+<p>In addition to the audit log, Kill Bill also records the history of the changes. For instance updating the billing addess of a customer would create an additonal row to track the change and link it to the audit log. The <code>audit</code> query parameter can take the following values:</p>
+
+<ul>
+<li><strong><code>NONE</code></strong> <span style="color:#32A9C7"><em>[Default]</em></span>: No audit log is beeing returned. </li>
+<li><strong><code>MINIMAL</code></strong> : Only rows associated to <em>inserts</em> are being returned, but no <code>updates</code>.</li>
+<li><strong><code>FULL</code></strong> : Everything is being returned.<br></li>
+</ul>
+
+<blockquote>
+<p>Request: Fetching an account specifying <code>audit=MINIMAL</code></p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl <span class="se">\</span>
+-u admin:password <span class="se">\</span>
+-H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+-H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+-H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+-H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
+<span class="s2">"http://127.0.0.1:8080/1.0/kb/accounts/e8877928-0226-488d-9272-07a5e66d897f?audit=MINIMAL"</span> 
+</code></pre><pre class="highlight java tab-java"><code><span class="n">TODO</span>  <span class="n">Api</span> <span class="n">does</span> <span class="n">not</span> <span class="n">exist</span> <span class="o">;-(</span> <span class="n">but</span> <span class="n">would</span> <span class="n">look</span> <span class="nl">like:</span>
+<span class="n">Account</span> <span class="n">result</span> <span class="o">=</span> <span class="n">killBillClient</span><span class="o">.</span><span class="na">getAccount</span><span class="o">(</span><span class="n">accountId</span><span class="o">,</span> <span class="n">AuditLevel</span><span class="o">.</span><span class="na">MINIMAL</span><span class="o">,</span> <span class="n">inputOptions</span><span class="o">);</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="no">TODO</span>  <span class="no">Api</span> <span class="n">does</span> <span class="n">not</span> <span class="n">exist</span> <span class="p">;</span><span class="o">-</span><span class="p">(</span>
+</code></pre>
+<blockquote>
+<p>Response: </p>
+</blockquote>
+<pre class="highlight plaintext"><code>{
+  ...
+  "auditLogs": [
+    {
+      "changeType": "INSERT",
+      "changeDate": "2018-02-05T22:39:53.000Z",
+      "changedBy": "demo",
+      "reasonCode": null,
+      "comments": null,
+      "userToken": "4858a67e-03b0-4d94-8a8c-bcd6e8599452"
+    }
+  ]
+}  
+</code></pre>
+<p>Every api that retrieves information, whether associated to a specific resource, or for a list of resources -- pagination -- will allow to return audit logs. </p>
+
+<p>Audit and history information associated to a given resource is always stored atomically to ensure that if state was changed, such audit and history information exists and is acurate.</p>
+<h2 id='versioning'>Versioning</h2>
+<p>TODO</p>
+<h2 id='errors'>Errors</h2>
+<p>Kill Bill relies on HTTP response codes to indicate the success or failure of an API request:</p>
+
+<ul>
+<li><strong><code>2xx</code></strong> status indicate success</li>
+<li><strong><code>4xx</code></strong> status often indicate a client side error -- e.g missing madatory API field</li>
+<li><strong><code>5xx</code></strong> status indicate an error with Kill Bill&#39;s servers or third party system -- e.g payment gateway returns 5xx.</li>
+</ul>
+<pre class="highlight plaintext"><code>HTTP status code summary
+200 - OK
+201 - Created: Success in creating a new resource. A Location header is returned to indicate the uri that can be used to fetch the resource
+204 - No Content: No change were made in the system, for example in a scenario to attempt to pay an already paid invoice
+400 - Bad Request: Invalid/missing parameter from client
+401 - Unauthorized: Authorization failed
+402 - Request Failed: Request parameter were valid but request failed -- insufficient fund on a payment request
+404 - Not Found: The requested resource does not exist
+409 - Conflict: The request conflicts with another request 
+422 - Unprocessable Entity: Payment control plugin aborted the call 
+500 - Unexpected system error
+502 - Bad Gateway : Unknow failure from payment plugin (PLUGIN_FAILURE)
+503 - Service Unavailable: Kill Bill or a third party system -- e.g payment gateway -- is unavailable
+504 - Gateway Timeout: Payment gateway timed out
+</code></pre>
+<p>In addition to these error codes, the system will often return some json to provide more details about the error:</p>
+
+<ul>
+<li><strong><code>code</code></strong> : Each error in Kill Bill is associated with a an <a href="https://github.com/killbill/killbill-api/blob/master/src/main/java/org/killbill/billing/ErrorCode.java#L21">ErrorCode</a>.</li>
+<li><strong><code>formattedMsg</code></strong> : A description of the error for the specific resource(s).</li>
+<li><strong><code>cause</code></strong> : An optional stack trace.</li>
+</ul>
+<h1 id='account'>Account</h1><h2 id='account-resource'>Account Resource</h2>
+<p>The <code>Account</code> resource represents the customer, and tracks typical information such as name, address, email, ... This is the top level per-customer resource, and all other per-customer data will be linked to this resource -- e.g invoices, payments, ...</p>
+
+<p>The attributes are the following:</p>
+
+<ul>
+<li><strong><code>accountId</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: The <code>ID</code> allocated by Kill Bill upon creation.</li>
+<li><strong><code>externalKey</code></strong> <span style="color:#32A9C7"><em>[User generated, default null, immutable]</em></span>: The external key provided from client.</li>
+<li><strong><code>accountCBA</code></strong> <span style="color:#32A9C7"><em>[System generated]</em></span>: The account credit.</li>
+<li><strong><code>accountBalance</code></strong> <span style="color:#32A9C7"><em>[System generated]</em></span>: The account balance.</li>
+<li><strong><code>name</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: The full name of the account -- e.g <code>john smith</code></li>
+<li><strong><code>firstNameLength</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: The length of the first name -- e.g <code>4</code> in the case of <code>john</code></li>
+<li><strong><code>email</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: The contact email to reach the customer.</li>
+<li><strong><code>billCycleDayLocal</code></strong> <span style="color:#32A9C7"><em>[User or system generated, immutable]</em></span>: The default day of the month to bill customers for subscriptions with a billing period a multiple of the month.</li>
+<li><strong><code>currency</code></strong> <span style="color:#32A9C7"><em>[User generated, immutable, default null]</em></span>: The default currency for the customer.</li>
+<li><strong><code>parentAccountId</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: A reference for the parent account for the <a href="http://docs.killbill.io/latest/ha.html">hierarchical model</a>. </li>
+<li><strong><code>isPaymentDelegatedToParent</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: In the hierarchical model, whether or not the parent account is handling payments for this child account.</li>
+<li><strong><code>paymentMethodId</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: The default payment method used by the system to make recuring payments</li>
+<li><strong><code>timeZone</code></strong> <span style="color:#32A9C7"><em>[User generated, immutable, default null, immutable]</em></span>: The time zone for the customer.</li>
+<li><strong><code>address1</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: Address info.</li>
+<li><strong><code>address2</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: Address info.</li>
+<li><strong><code>postalCode</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: Address info.</li>
+<li><strong><code>company</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>:  Address info.</li>
+<li><strong><code>city</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: Address info.</li>
+<li><strong><code>state</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: Address info.</li>
+<li><strong><code>country</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: Address info.</li>
+<li><strong><code>locale</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: Address info.</li>
+<li><strong><code>phone</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: The phone contact to reach the customer.</li>
+<li><strong><code>notes</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: Additonal notes about the customer, usually set by customer service department.</li>
+<li><strong><code>isMigrated</code></strong> <span style="color:#32A9C7"><em>[User generated, default null]</em></span>: Whether this account was migrated from another system.</li>
+<li><strong><code>isNotifiedForInvoices</code></strong> : TODO deprecated ?</li>
+</ul>
+<h2 id='retrieve-an-account-by-its-id'>Retrieve an Account by its ID</h2>
+<p>Retrieves the details information for the <code>Account</code> using its <code>accountId</code>.</p>
+
+<p><strong>HTTP Request</strong> </p>
+
+<p><code>GET /1.0/kb/accounts/{accountId}</code></p>
+
+<blockquote>
+<p>Example Request:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl <span class="se">\</span>
+  -u admin:password <span class="se">\</span>
+  -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
+  <span class="s2">"http://127.0.0.1:8080/1.0/kb/accounts/e8877928-0226-488d-9272-07a5e66d897f"</span>  
+</code></pre><pre class="highlight java tab-java"><code><span class="n">Account</span> <span class="n">result</span> <span class="o">=</span> <span class="n">killBillClient</span><span class="o">.</span><span class="na">getAccount</span><span class="o">(</span><span class="n">accountId</span><span class="o">,</span> <span class="n">inputOptions</span><span class="o">);</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">account</span> <span class="o">=</span> <span class="n">get_account</span><span class="p">()</span>
+</code></pre>
+<blockquote>
+<p>Example Response:</p>
+</blockquote>
+<pre class="highlight plaintext"><code>{
+  "accountId": "e8877928-0226-488d-9272-07a5e66d897f",
+  "name": "John Doe",
+  "firstNameLength": null,
+  "externalKey": "e8877928-0226-488d-9272-07a5e66d897f",
+  "email": "john@example.com",
+  "billCycleDayLocal": 0,
+  "currency": "USD",
+  "parentAccountId": null,
+  "isPaymentDelegatedToParent": false,
+  "paymentMethodId": null,
+  "referenceTime": "2018-02-05T22:39:53.000Z",
+  "timeZone": "UTC",
+  "address1": null,
+  "address2": null,
+  "postalCode": null,
+  "company": null,
+  "city": null,
+  "state": null,
+  "country": null,
+  "locale": null,
+  "phone": null,
+  "notes": null,
+  "isMigrated": null,
+  "isNotifiedForInvoices": false,
+  "accountBalance": null,
+  "accountCBA": null,
+  "auditLogs": []
+}
+</code></pre>
+<p><strong>Query Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>accountWithBalance</strong></td>
+<td>boolean</td>
+<td>false</td>
+<td>if true, returns <code>accountBalance</code> info</td>
+</tr>
+<tr>
+<td><strong>accountWithBalanceAndCBA</strong></td>
+<td>boolean</td>
+<td>false</td>
+<td>if true, returns <code>accountBalance</code> and <code>accountCBA</code> info</td>
+</tr>
+<tr>
+<td><strong>audit</strong></td>
+<td>enum</td>
+<td>false</td>
+<td>level of audit logs returned</td>
+</tr>
+</tbody></table>
+
+<p><strong>Returns</strong></p>
+
+<p>Returns an account object if a valid identifier was provided.</p>
+<h2 id='create-an-account'>Create an Account</h2>
+<p>Create a new customer <code>Account</code>.</p>
+
+<p><strong>HTTP Request</strong> 
+<code>POST /1.0/kb/accounts</code> </p>
+
+<blockquote>
+<p>Example Request:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -v <span class="se">\</span>
+  -u admin:password <span class="se">\</span>
+  -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+  -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+  -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
+  -X POST <span class="se">\</span>
+  --data-binary <span class="s1">'{"name":"John Doe","email":"john@example.com","currency":"USD"}'</span> <span class="se">\</span>
+  <span class="s2">"http://127.0.0.1:8080/1.0/kb/accounts"</span>
+</code></pre><pre class="highlight java tab-java"><code>
+<span class="n">Account</span> <span class="n">body</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Account</span><span class="o">();</span>
+<span class="n">body</span><span class="o">.</span><span class="na">setName</span><span class="o">(</span><span class="s">"John Doe"</span><span class="o">);</span>
+<span class="n">body</span><span class="o">.</span><span class="na">setEmail</span><span class="o">(</span><span class="s">"john@example.com"</span><span class="o">);</span>
+<span class="n">body</span><span class="o">.</span><span class="na">setCurrency</span><span class="o">(</span><span class="s">"USD"</span><span class="o">);</span>
+
+<span class="n">TODO</span> <span class="n">user</span> <span class="n">requestOptions</span>
+
+
+<span class="kd">final</span> <span class="n">Account</span> <span class="n">result</span> <span class="o">=</span> <span class="n">killBillClient</span><span class="o">.</span><span class="na">createAccount</span><span class="o">(</span><span class="n">body</span><span class="o">,</span> <span class="n">requestOptions</span><span class="o">);</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">account_data</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">Account</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">account</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s2">"John Doe"</span>
+<span class="n">account</span><span class="p">.</span><span class="nf">email</span> <span class="o">=</span> <span class="s2">"john@example.com"</span>
+<span class="n">account</span><span class="p">.</span><span class="nf">currency</span> <span class="o">=</span> <span class="s2">"USD"</span>
+
+<span class="no">TODO</span> <span class="n">user</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">account</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+
+</code></pre>
+<blockquote>
+<p>Example Response:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="c"># Subset of headers returned when specifying -v curl option</span>
+&lt; HTTP/1.1 201 Created
+&lt; Location: http://127.0.0.1:8080/1.0/kb/accounts/e8877928-0226-488d-9272-07a5e66d897f
+&lt; Content-Type: application/json
+&lt; Content-Length: 0
+</code></pre>
+<p><strong>Query Parameters</strong></p>
+
+<p>None.</p>
+
+<p><strong>Responses</strong></p>
+
+<p>A <code>201</code> http status if this was successful and a <code>Location</code> header to indicatate how to fetch the resource.</p>
+
+      </div>
+      <div class="dark-box">
+          <div class="lang-selector">
+                <a href="#" data-language-name="shell">shell</a>
+                <a href="#" data-language-name="java">java</a>
+                <a href="#" data-language-name="ruby">ruby</a>
+          </div>
+      </div>
+    </div>
+  </body>
+</html>
