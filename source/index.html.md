@@ -279,7 +279,7 @@ Retrieves the details information for the `Account` using its `externalKey`.
 
 **HTTP Request** 
 
-`GET /1.0/kb/accounts`
+`GET http://example.com/1.0/kb/accounts`
 
 > Example Request:
 
@@ -292,12 +292,26 @@ TODO
 ```
 
 ```ruby
-account = KillBillClient::Model::Account.find_by_external_key(external_key, with_balance, with_balance_and_cba, options)
+external_key = 'example_external_key'
+with_balance = false
+with_balance_and_cba = false
+
+account = KillBillClient::Model::Account.new
+account.find_by_external_key(external_key,
+                             with_balance,
+                             with_balance_and_cba, 
+                             options)
 ```
 
 > Example Response:
 
-```shell,java
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
 {
   "accountId": "e8877928-0226-488d-9272-07a5e66d897f",
   "name": "John Doe",
@@ -340,7 +354,7 @@ account = KillBillClient::Model::Account.find_by_external_key(external_key, with
 
 **Returns**
 
-Returns an account object if a valid identifier was provided.
+Returns an account object if a valid external key was provided.
 
 ## Create an Account 
 
@@ -348,7 +362,7 @@ Create a new customer `Account`.
 
 **HTTP Request** 
 
-`POST /1.0/kb/accounts` 
+`POST http://example.com/1.0/kb/accounts` 
 
 > Example Request:
 
@@ -378,14 +392,12 @@ final Account result = killBillClient.createAccount(body, requestOptions);
 ```
 
 ```ruby
-account_data = KillBillClient::Model::Account.new
+account = KillBillClient::Model::Account.new
 account.name = "John Doe"
 account.email = "john@example.com"
 account.currency = "USD"
 
-user = 'example_acount'
-
-result = account.create(user, nil, nil, options)
+account.create(user, reason, comment, options)
 
 ```
 
@@ -397,6 +409,9 @@ result = account.create(user, nil, nil, options)
 < Location: http://127.0.0.1:8080/1.0/kb/accounts/e8877928-0226-488d-9272-07a5e66d897f
 < Content-Type: application/json
 < Content-Length: 0
+```
+```java
+**TODO**
 ```
 
 ```ruby
@@ -437,7 +452,7 @@ Retrieves the details information for the `Account` using its `accountId`.
 
 **HTTP Request** 
 
-`GET /1.0/kb/accounts/{accountId}`
+`GET http://example.com/1.0/kb/accounts/{accountId}`
 
 > Example Request:
 
@@ -456,12 +471,25 @@ Account result = killBillClient.getAccount(accountId, inputOptions);
 ```
 
 ```ruby
-account = KillBillClient::Model::Account.find_by_id(account_id, with_balance, with_balance_and_cba, options)
+account_id = "e8877928-0226-488d-9272-07a5e66d897f"
+with_balance = false
+with_balance_and_cba = false
+account = KillBillClient::Model::Account.new
+account.find_by_id(account_id,
+                   with_balance, 
+                   with_balance_and_cba,
+                   options)
 ```
 
 > Example Response:
 
-```shell,java
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
 {
   "accountId": "e8877928-0226-488d-9272-07a5e66d897f",
   "name": "John Doe",
@@ -510,7 +538,7 @@ Returns an account object if a valid identifier was provided.
 
 **HTTP Request** 
 
-`PUT /1.0/kb/accounts/{accountId}`
+`PUT http://example.com/1.0/kb/accounts/{accountId}`
 
 > Example Request:
 
@@ -523,40 +551,45 @@ TODO
 ```
 
 ```ruby
-account = KillBillClient::Model::Account.find_by_id(account_id, with_balance, with_balance_and_cba, options)
+account.name = 'Another Name'
+treat_null_as_reset = true
+
+account.update(treat_null_as_reset,
+               user,
+               reason,
+               comment, 
+               options)
 ```
 
 > Example Response:
 
-```shell,java,ruby
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
 {
-  "accountId": "e8877928-0226-488d-9272-07a5e66d897f",
-  "name": "John Doe",
-  "firstNameLength": null,
-  "externalKey": "e8877928-0226-488d-9272-07a5e66d897f",
-  "email": "john@example.com",
-  "billCycleDayLocal": 0,
-  "currency": "USD",
-  "parentAccountId": null,
-  "isPaymentDelegatedToParent": false,
-  "paymentMethodId": null,
-  "referenceTime": "2018-02-05T22:39:53.000Z",
-  "timeZone": "UTC",
-  "address1": null,
-  "address2": null,
-  "postalCode": null,
-  "company": null,
-  "city": null,
-  "state": null,
-  "country": null,
-  "locale": null,
-  "phone": null,
-  "notes": null,
-  "isMigrated": null,
-  "isNotifiedForInvoices": false,
-  "accountBalance": null,
-  "accountCBA": null,
-  "auditLogs": []
+   "accountId":"37e759ed-e769-4e81-9e39-afb75a33056d",
+   "name":"Another Name",
+   "externalKey":"1521656367-130272",
+   "email":"kill@bill.com",
+   "billCycleDayLocal":0,
+   "currency":"USD",
+   "isPaymentDelegatedToParent":false,
+   "timeZone":"UTC",
+   "address1":"7, yoyo road",
+   "address2":"Apt 5",
+   "postalCode":"94105",
+   "company":"Unemployed",
+   "city":"San Francisco",
+   "state":"California",
+   "country":"US",
+   "locale":"fr_FR",
+   "notes":"My notes",
+   "isNotifiedForInvoices":false,
+   "auditLogs":[]
 }
 ```
 
@@ -565,17 +598,17 @@ account = KillBillClient::Model::Account.find_by_id(account_id, with_balance, wi
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **treatNullAsReset** | boolean | false | TODO |
+| **treatNullAsReset** | boolean | false | **TODO** |
 
 **Returns**
 
-Returns an account object if a valid identifier was provided.
+Returns an account object.
 
 ## Retrieve account tags
 
 **HTTP Request** 
 
-`GET /1.0/kb/accounts/{accountId}/allTags`
+`GET http://example.com/1.0/kb/accounts/{accountId}/allTags`
 
 > Example Request:
 
@@ -588,43 +621,55 @@ TODO
 ```
 
 ```ruby
-account = KillBillClient::Model::Account.all_tags(object_type, included_deleted, audit, options)
+object_type = 'ACCOUNT'
+included_deleted = false
+audit = 'NONE'
+
+account.all_tags(object_type, 
+                 included_deleted, 
+                 audit, 
+                 options)
 ```
 
 > Example Response:
 
-```shell,java,ruby
-
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
+[
+   {
+      "tagId":"ce1715f6-35e8-4d86-9063-65a54625992d",
+      "objectType":"ACCOUNT",
+      "objectId":"0f55a05d-9946-41d7-be75-ee71f49829b1",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[]
+   }
+]
 ```
 
 
 **Query Parameters**
 
 | Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **objectType** | string | false | TODO |
-| **audit** | string | true | TODO |
-| **includedDeleted** | boolean | true | TODO |
+| ---- | -----| -------- | ----------- | 
+| **objectType** | string | false | **TODO** |
+| **includedDeleted** | boolean | true | **TODO** |
+| **audit** | string | true | **TODO** |
 
 **Returns**
-
-
-
-
-
-
-
-
-
-
-
-TODO
+    
+Returns a list of tag objects
 
 ## Block an account
 
 **HTTP Request** 
 
-`PUT /1.0/kb/accounts/{accountId}/block`
+`PUT http://example.com/1.0/kb/accounts/{accountId}/block`
 
 > Example Request:
 
@@ -637,31 +682,70 @@ TODO
 ```
 
 ```ruby
-account = KillBillClient::Model::Account.set_blocking_state(state_name, service, block_change, block_entitlement, block_billing, requested_date, user, reason, comment, options)
+state_name = "STATE1"
+service = "ServiceStateService"
+block_change = false
+block_entitlement = false
+block_billing = false
+requested_date = "2013-08-01"
+
+account.set_blocking_state(state_name,
+                           service,
+                           block_change, 
+                           block_entitlement,
+                           block_billing, 
+                           requested_date,
+                           user, 
+                           reason, 
+                           comment,
+                           options)
 ```
 
 > Example Response:
 
-```shell,java,ruby
-
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
+[
+   {
+      "blockedId":"2f1cccd9-5cea-4695-8b6c-ad0b8a040f88",
+      "stateName":"STATE1",
+      "service":"ServiceStateService",
+      "blockChange":false,
+      "blockEntitlement":false,
+      "blockBilling":false,
+      "effectiveDate":"2013-08-01T06:00:00.000Z",
+      "type":"ACCOUNT",
+      "auditLogs":[]
+   }
+]
 ```
 
 
 **Query Parameters**
 
 | Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **TODO** | TODO | TODO | TODO |
+| ---- | -----| -------- | ----------- | 
+| **stateName** | string | true | **TODO** |
+| **service** | string | true | **TODO** |
+| **blockChange** | boolean | true | **TODO** |
+| **blockEntitlement** | boolean | true | **TODO** |
+| **blockBilling** | boolean | true | **TODO** |
+| **effectiveDate** | date | false | **TODO** |
 
 **Returns**
 
-TODO
+Returns a blocking stage object
 
 ## Retrieve blocking states for account
 
 **HTTP Request** 
 
-`GET /1.0/kb/accounts/{accountId}/block`
+`GET http://example.com/1.0/kb/accounts/{accountId}/block`
 
 > Example Request:
 
@@ -674,41 +758,58 @@ TODO
 ```
 
 ```ruby
-account = KillBillClient::Model::Account.blocking_states(blocking_state_types, blocking_state_svcs, audit, options)
+blocking_state_types = 'ACCOUNT'
+blocking_state_svcs = nil
+audit = 'NONE'
+
+account.blocking_states(blocking_state_types,
+                        blocking_state_svcs, 
+                        audit,
+                        options)
 ```
 
 > Example Response:
 
-```shell,java,ruby
-
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
+[
+   {
+      "blockedId":"d13b2272-d182-499c-a393-8efed203ae7d",
+      "stateName":"STATE1",
+      "service":"ServiceStateService",
+      "blockChange":false,
+      "blockEntitlement":false,
+      "blockBilling":false,
+      "effectiveDate":"2013-08-01T06:00:00.000Z",
+      "type":"ACCOUNT",
+      "auditLogs":[]
+   }
+]
 ```
 
 
 **Query Parameters**
 
 | Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **TODO** | TODO | TODO | TODO |
+| ---- | -----| -------- | ----------- | 
+| **blockingStateTypes** | string | true | **TODO** |
+| **blockingStateSvcs** | string | false | **TODO** |
+| **audit** | string | true | **TODO** |
 
 **Returns**
 
-
-
-
-
-
-
-
-
-
-
-TODO
+Returns a blocking stage object
 
 ## Retrieve bundles for account
 
 **HTTP Request** 
 
-`GET /1.0/kb/accounts/{accountId}/bundles`
+`GET http://example.com/1.0/kb/accounts/{accountId}/bundles`
 
 > Example Request:
 
@@ -721,13 +822,182 @@ TODO
 ```
 
 ```ruby
-account = KillBillClient::Model::Account.bundles(options)
+account.bundles(options)
+```
+
+> Example Response:
+
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
+[
+  {
+    "accountId": "string",
+    "bundleId": "string",
+    "externalKey": "string",
+    "subscriptions": [
+      {
+        "accountId": "string",
+        "bundleId": "string",
+        "subscriptionId": "string",
+        "externalKey": "string",
+        "startDate": "2018-03-20",
+        "productName": "string",
+        "productCategory": "BASE",
+        "billingPeriod": "DAILY",
+        "phaseType": "TRIAL",
+        "priceList": "string",
+        "planName": "string",
+        "state": "PENDING",
+        "sourceType": "NATIVE",
+        "cancelledDate": "2018-03-20",
+        "chargedThroughDate": "2018-03-20",
+        "billingStartDate": "2018-03-20",
+        "billingEndDate": "2018-03-20",
+        "billCycleDayLocal": 0,
+        "events": [
+          {
+            "eventId": "string",
+            "billingPeriod": "string",
+            "plan": "string",
+            "product": "string",
+            "priceList": "string",
+            "eventType": "START_ENTITLEMENT",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "string",
+            "serviceStateName": "string",
+            "phase": "string",
+            "auditLogs": [
+              {
+                "changeType": "string",
+                "changeDate": "2018-03-20T17:16:30.893Z",
+                "changedBy": "string",
+                "reasonCode": "string",
+                "comments": "string",
+                "userToken": "string"
+              }
+            ],
+            "effectiveDate": "2018-03-20"
+          }
+        ],
+        "priceOverrides": [
+          {
+            "planName": "string",
+            "phaseName": "string",
+            "phaseType": "string",
+            "fixedPrice": 0,
+            "recurringPrice": 0
+          }
+        ],
+        "auditLogs": [
+          {
+            "changeType": "string",
+            "changeDate": "2018-03-20T17:16:30.893Z",
+            "changedBy": "string",
+            "reasonCode": "string",
+            "comments": "string",
+            "userToken": "string"
+          }
+        ]
+      }
+    ],
+    "timeline": {
+      "accountId": "string",
+      "bundleId": "string",
+      "externalKey": "string",
+      "events": [
+        {
+          "eventId": "string",
+          "billingPeriod": "string",
+          "plan": "string",
+          "product": "string",
+          "priceList": "string",
+          "eventType": "START_ENTITLEMENT",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "string",
+          "serviceStateName": "string",
+          "phase": "string",
+          "auditLogs": [
+            {
+              "changeType": "string",
+              "changeDate": "2018-03-20T17:16:30.893Z",
+              "changedBy": "string",
+              "reasonCode": "string",
+              "comments": "string",
+              "userToken": "string"
+            }
+          ],
+          "effectiveDate": "2018-03-20"
+        }
+      ],
+      "auditLogs": [
+        {
+          "changeType": "string",
+          "changeDate": "2018-03-20T17:16:30.893Z",
+          "changedBy": "string",
+          "reasonCode": "string",
+          "comments": "string",
+          "userToken": "string"
+        }
+      ]
+    },
+    "auditLogs": [
+      {
+        "changeType": "string",
+        "changeDate": "2018-03-20T17:16:30.893Z",
+        "changedBy": "string",
+        "reasonCode": "string",
+        "comments": "string",
+        "userToken": "string"
+      }
+    ]
+  }
+]
+]
+```
+
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+**TODO**
+
+## Rebalance account CBA
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/accounts/{accountId}/cbaRebalancing`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account.cba_rebalancing(user, 
+                        reason,
+                        comment,
+                        options)
 ```
 
 > Example Response:
 
 ```shell,java,ruby
-
+**TODO**
 ```
 
 
@@ -751,11 +1021,11 @@ account = KillBillClient::Model::Account.bundles(options)
 
 TODO
 
-## Rebalance account CBA
+## List children accounts
 
 **HTTP Request** 
 
-`POST /1.0/kb/accounts/{accountId}/cbaRebalancing`
+`GET http://example.com/1.0/kb/accounts/{accountId}/children`
 
 > Example Request:
 
@@ -768,13 +1038,959 @@ TODO
 ```
 
 ```ruby
-account = KillBillClient::Model::Account.bundles(options)
+account_id = account.account_id
+with_balance = false
+with_balance_and_cba = false
+audit = 'NONE'
+
+childrens_account = KillBillClient::Model::Account.children(account_id,
+                                                            with_balance, 
+                                                            with_balance_and_cba, 
+                                                            audit, 
+                                                            options)
+```
+
+> Example Response:
+
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
+[
+  {
+    "accountId": "string",
+    "name": "string",
+    "firstNameLength": 0,
+    "externalKey": "string",
+    "email": "string",
+    "billCycleDayLocal": 0,
+    "currency": "string",
+    "parentAccountId": "string",
+    "isPaymentDelegatedToParent": false,
+    "paymentMethodId": "string",
+    "timeZone": "string",
+    "address1": "string",
+    "address2": "string",
+    "postalCode": "string",
+    "company": "string",
+    "city": "string",
+    "state": "string",
+    "country": "string",
+    "locale": "string",
+    "phone": "string",
+    "notes": "string",
+    "isMigrated": false,
+    "isNotifiedForInvoices": false,
+    "accountBalance": 0,
+    "accountCBA": 0,
+    "auditLogs": [
+      {
+        "changeType": "string",
+        "changeDate": "2018-03-20T17:16:30.906Z",
+        "changedBy": "string",
+        "reasonCode": "string",
+        "comments": "string",
+        "userToken": "string"
+      }
+    ]
+  }
+]
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **accountWithBalance** | boolean | true | **TODO** |
+| **accountWithBalanceAndCBA** | boolean | true | **TODO** |
+| **audit** | string | true | **TODO** |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Remove custom fields from account
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/accounts/{accountId}/customField`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.remove_custom_field(custom_fields, 
+                                                             user, 
+                                                             reason,
+                                                             comment, 
+                                                             options)
 ```
 
 > Example Response:
 
 ```shell,java,ruby
+**TODO**
+```
 
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Retrieve account custom fields
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/customFields`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.custom_fields(audit, options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Add custom fields to account
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/accounts/{accountId}/customFields`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.add_custom_field(custom_fields, 
+                                                          user,
+                                                          reason,
+                                                          comment,
+                                                          options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Set account email notification
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/accounts/{accountId}/emailNotifications`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.update_email_notifications(user,
+                                                                    reason,
+                                                                    comment,
+                                                                    options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Retrieve account email notification
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/emailNotifications`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.email_notifications(options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Retrieve an account emails
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/emails`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.emails(audit, options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Add account email
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/accounts/{accountId}/emails`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.add_email(email,
+                                                   user,
+                                                   reason,
+                                                   comment,
+                                                   options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Delete email from account
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/accounts/{accountId}/emails/{email}`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.remove_email(email,
+                                                      user,
+                                                      reason,
+                                                      comment,
+                                                      options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Retrieve account invoice payments
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/invoicePayments`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.invoice_payments(audit,
+                                                          with_plugin_info,
+                                                          with_attempts,
+                                                          options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Retrieve account invoices
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/invoices`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.invoices(with_items,
+                                                  options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Retrieve overdue state for account
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/overdue`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.overdue(options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Retrieve account payments
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/payments`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.payments(options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Add tags to account
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/accounts/{accountId}/tags`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.add_tag(tag_name,
+                                                 user,
+                                                 reason,
+                                                 comment,
+                                                 options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Remove tags from account
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/accounts/{accountId}/tags`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.remove_tag(tag_name,
+                                                 user,
+                                                 reason,
+                                                 comment,
+                                                 options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Retrieve account tags
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/tags`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.tags(included_deleted,
+                                              audit,
+                                              options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Move a given child credit to the parent level
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/accounts/{childAccountId}/transferCredit`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.transfer_child_credit(user,
+                                                               reason,
+                                                               comment,
+                                                               options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## List accounts
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/pagination`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.find_in_batches(offset,
+                                                         limit,
+                                                         with_balance,
+                                                         with_balance_and_cba,
+                                                         options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **TODO** | TODO | TODO | TODO |
+
+**Returns**
+
+
+
+
+
+
+
+
+
+
+
+TODO
+
+## Search accounts
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/pagination`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account = KillBillClient::Model::Account.find_in_batches_by_search_key(search_key,
+                                                                       offset,
+                                                                       limit,
+                                                                       with_balance,
+                                                                       with_balance_and_cba,
+                                                                       options)
+```
+
+> Example Response:
+
+```shell,java,ruby
+**TODO**
 ```
 
 
