@@ -2544,30 +2544,18 @@ account.transfer_child_credit(user,
 
 > Example Response:
 
-```shell,java,ruby
-**TODO**
+```ruby
+no content
 ```
 
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **TODO** | TODO | TODO | TODO |
+None.
 
 **Returns**
 
-
-
-
-
-
-
-
-
-
-
-TODO
+A `200` http status without content.
 
 ## List accounts
 
