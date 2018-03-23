@@ -486,7 +486,7 @@ account.set_blocking_state(state_name,
 
 **Returns**
 
-Returns a blocking stage object.
+Returns a blocking state object.
 
 ## Retrieve blocking states for account
 
@@ -550,7 +550,7 @@ account.blocking_states(blocking_state_types,
 
 **Returns**
 
-Returns a blocking stage object
+Returns a blocking state object
 
 ## Retrieve bundles for account
 
@@ -2408,7 +2408,7 @@ Returns a list with all accounts.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/pagination`
+`GET http://example.com/1.0/kb/accounts/search/{searchKey}`
 
 > Example Request:
 
