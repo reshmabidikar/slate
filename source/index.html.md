@@ -786,7 +786,7 @@ account.blocking_states(blocking_state_types,
 | ---- | -----| -------- | ----------- | 
 | **blockingStateTypes** | string | true | blocking state types |
 | **blockingStateSvcs** | string | false | blocking state svcs |
-| **audit** | string | true | **TODO** |
+| **audit** | enum | false | level of audit logs returned |
 
 **Returns**
 
@@ -983,8 +983,8 @@ account.cba_rebalancing(user,
 
 > Example Response:
 
-```shell,java,ruby
-**TODO**
+```ruby
+no content
 ```
 
 
@@ -992,19 +992,9 @@ account.cba_rebalancing(user,
 
 None.
 
-**Returns**
+**Response**
 
-
-
-
-
-
-
-
-
-
-
-TODO
+A `200` http status without content.
 
 ## List children accounts
 
@@ -1096,17 +1086,7 @@ childrens_account = KillBillClient::Model::Account.children(account_id,
 
 **Returns**
 
-
-
-
-
-
-
-
-
-
-
-TODO
+Returns a list of account objects.
 
 ## Remove custom fields from account
 
@@ -1147,9 +1127,9 @@ no content
 | ---- | -----| -------- | ----------- | 
 | **customFieldList** | string | true | a list of custom field objects that you want to remove it |
 
-**Returns**
+**Response**
 
-no content
+A `200` http status without content.
 
 ## Retrieve account custom fields
 
@@ -1288,9 +1268,9 @@ no content
 
 None.
 
-**Returns**
+**Response**
 
-no content
+A `200` http status without content.
 
 ## Retrieve account email notification
 
@@ -1328,17 +1308,7 @@ None.
 
 **Returns**
 
-Returns invoice email object
-
-
-
-
-
-
-
-
-
-TODO
+Returns invoice email object.
 
 ## Retrieve an account emails
 
@@ -1379,6 +1349,8 @@ None.
 
 **Returns**
 
+Returns a list of objects with account id's and their emails.
+
 ## Add account email
 
 **HTTP Request** 
@@ -1416,9 +1388,9 @@ no content
 
 None.
 
-**Returns**
+**Response**
 
-no content
+A `200` http status without content.
 
 ## Delete email from account
 
@@ -1457,9 +1429,9 @@ no content
 
 None.
 
-**Returns**
+**Response**
 
-no content
+A `200` http status without content.
 
 ## Retrieve account invoice payments
 
@@ -1582,9 +1554,9 @@ no content
 | **externalPayment** | boolean | true | Choose true if you use a external payment method. |
 | **paymentAmount** | string | true | Total payment amount. |
 
-**Returns**
+**Response**
 
-no content
+A `200` http status without content.
 
 ## Retrieve account invoices
 
@@ -1849,9 +1821,9 @@ no content
 | ---- | -----| -------- | ----------- |
 | **payAllUnpaidInvoices** | boolean | true | Choose true if you want to pay all unpaid invoices. |
 
-**Returns**
+**Response**
 
-no content
+A `200` http status without content.
 
 ## Retrieve account payments
 
@@ -2025,17 +1997,30 @@ TODO
 ```
 
 ```ruby
-account = KillBillClient::Model::Account.add_tag(tag_name,
-                                                 user,
-                                                 reason,
-                                                 comment,
-                                                 options)
+tag_name = 'TEST'
+
+account.add_tag(tag_name,
+                user,
+                reason,
+                comment,
+                options)
 ```
 
 > Example Response:
 
-```shell,java,ruby
-**TODO**
+```ruby
+[
+   {
+      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
+      "objectType":"ACCOUNT",
+      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[
+
+      ]
+   }
+]
 ```
 
 
@@ -2047,17 +2032,7 @@ account = KillBillClient::Model::Account.add_tag(tag_name,
 
 **Returns**
 
-
-
-
-
-
-
-
-
-
-
-TODO
+Returns a account tag object.
 
 ## Remove tags from account
 
@@ -2076,6 +2051,8 @@ TODO
 ```
 
 ```ruby
+tag_name = 'TEST'
+
 account.remove_tag(tag_name,
                    user,
                    reason,
@@ -2085,8 +2062,8 @@ account.remove_tag(tag_name,
 
 > Example Response:
 
-```shell,java,ruby
-**TODO**
+```ruby
+no content
 ```
 
 
@@ -2096,19 +2073,9 @@ account.remove_tag(tag_name,
 | ---- | -----| -------- | ---- | ------------
 | **tagList** | string | true |  list of tags that you want to remove it |
 
-**Returns**
+**Response**
 
-
-
-
-
-
-
-
-
-
-
-TODO
+A `200` http status without content.
 
 ## Retrieve account tags
 
