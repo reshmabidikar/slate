@@ -3,6 +3,7 @@ includes:
   - account
   - bundle
   - catalog
+  - credit
   
 title: Kill Bill 
 
