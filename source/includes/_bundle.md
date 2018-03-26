@@ -345,6 +345,8 @@ Returns a bundle object if a valid identifier was provided.
 
 ## Transfer a bundle to another account
 
+The new account_id should be set in this object
+
 
 **HTTP Request** 
 
@@ -357,6 +359,9 @@ requested_date = "2013-08-01"
 billing_policy = "END_OF_TERM"
 
 budnle = KillBillClient::Model::Bundle.new
+bundle.account_id = new_account_id
+bundle.bundle_id = bundle_id
+
 budnle.transfer(requested_date, 
                 billing_policy, 
                 user, 
@@ -374,7 +379,110 @@ budnle.transfer(requested_date,
 **TODO**
 ```
 ```ruby
-TODO
+{
+   "accountId":"71499886-296d-4b0f-8b76-0eed352d8801",
+   "bundleId":"cff04ff5-19ba-4bdc-8aca-ed486d4b845c",
+   "externalKey":"25f2de6b-2443-4d7c-8487-22bf6df5a5ec-73709",
+   "subscriptions":[
+      {
+         "accountId":"71499886-296d-4b0f-8b76-0eed352d8801",
+         "bundleId":"cff04ff5-19ba-4bdc-8aca-ed486d4b845c",
+         "subscriptionId":"46e6fcdc-9f63-4ffc-a091-0cde70f964f0",
+         "externalKey":"25f2de6b-2443-4d7c-8487-22bf6df5a5ec-73709",
+         "startDate":"2013-09-01",
+         "productName":"Sports",
+         "productCategory":"BASE",
+         "billingPeriod":"MONTHLY",
+         "phaseType":"EVERGREEN",
+         "priceList":"DEFAULT",
+         "planName":"sports-monthly",
+         "state":"ACTIVE",
+         "sourceType":"TRANSFERRED",
+         "billingStartDate":"2013-09-01",
+         "billCycleDayLocal":1,
+         "events":[
+            {
+               "eventId":"605c5696-4046-4597-8a67-7e50d26856cd",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-09-01",
+               "plan":"sports-monthly",
+               "product":"Sports",
+               "priceList":"DEFAULT",
+               "eventType":"START_ENTITLEMENT",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement-service",
+               "serviceStateName":"ENT_STARTED",
+               "phase":"sports-monthly-evergreen",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"fbc53e69-0683-4904-bc77-5d244b9ad1c9",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-09-01",
+               "plan":"sports-monthly",
+               "product":"Sports",
+               "priceList":"DEFAULT",
+               "eventType":"START_BILLING",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"billing-service",
+               "serviceStateName":"START_BILLING",
+               "phase":"sports-monthly-evergreen",
+               "auditLogs":[]
+            }
+         ],
+         "priceOverrides":[
+            {
+               "planName":"sports-monthly",
+               "phaseName":"sports-monthly-evergreen",
+               "phaseType":"EVERGREEN",
+               "recurringPrice":500.0
+            }
+         ],
+         "auditLogs":[]
+      }
+   ],
+   "timeline":{
+      "accountId":"71499886-296d-4b0f-8b76-0eed352d8801",
+      "bundleId":"cff04ff5-19ba-4bdc-8aca-ed486d4b845c",
+      "externalKey":"25f2de6b-2443-4d7c-8487-22bf6df5a5ec-73709",
+      "events":[
+         {
+            "eventId":"605c5696-4046-4597-8a67-7e50d26856cd",
+            "billingPeriod":"MONTHLY",
+            "effectiveDate":"2013-09-01",
+            "plan":"sports-monthly",
+            "product":"Sports",
+            "priceList":"DEFAULT",
+            "eventType":"START_ENTITLEMENT",
+            "isBlockedBilling":false,
+            "isBlockedEntitlement":false,
+            "serviceName":"entitlement-service",
+            "serviceStateName":"ENT_STARTED",
+            "phase":"sports-monthly-evergreen",
+            "auditLogs":[]
+         },
+         {
+            "eventId":"fbc53e69-0683-4904-bc77-5d244b9ad1c9",
+            "billingPeriod":"MONTHLY",
+            "effectiveDate":"2013-09-01",
+            "plan":"sports-monthly",
+            "product":"Sports",
+            "priceList":"DEFAULT",
+            "eventType":"START_BILLING",
+            "isBlockedBilling":false,
+            "isBlockedEntitlement":false,
+            "serviceName":"billing-service",
+            "serviceStateName":"START_BILLING",
+            "phase":"sports-monthly-evergreen",
+            "auditLogs":[]
+         }
+      ],
+      "auditLogs":[]
+   },
+   "auditLogs":[]
+}
 ```
 
 
@@ -386,7 +494,7 @@ TODO
 
 **Returns**
 
-TODO
+Returns a bundle object if a valid account and bundle id's was provided.
 
 ## Block a bundle
 
@@ -426,7 +534,7 @@ bundle.set_blocking_state(state_name,
 **TODO**
 ```
 ```ruby
-TODO
+no content
 ```
 
 
@@ -438,7 +546,7 @@ TODO
 
 **Returns**
 
-Returns a blocking state object.
+A `200` http status without content.
 
 ## Add custom fields to bundle
 
@@ -559,10 +667,10 @@ TODO
 custom_field_id = custom_field.id
 
 bundle.remove_custom_field(custom_field_id                                                                                           eld_id, 
-                            user, 
-                            reason,
-                            comment, 
-                            options)
+                           user, 
+                           reason,
+                           comment, 
+                           options)
 ```
 
 > Example Response:
@@ -592,6 +700,8 @@ A `200` http status without content.
 > Example Request:
 
 ```ruby
+bundle = KillBillClient::Model::Bundle.new
+bundle.bundle_id = bundle_id
 requested_date = "2013-08-01"
 
 bundle.pause(requested_date, 
@@ -610,7 +720,7 @@ bundle.pause(requested_date,
 **TODO**
 ```
 ```ruby
-TODO
+no content
 ```
 
 
@@ -622,7 +732,7 @@ TODO
 
 **Returns**
 
-TODO
+A `200` http status without content.
 
 ## Resume a bundle
 
@@ -634,13 +744,15 @@ TODO
 > Example Request:
 
 ```ruby
+bundle = KillBillClient::Model::Bundle.new
+bundle.bundle_id = bundle_id
 requested_date = "2013-08-01"
 
 bundle.resume(requested_date, 
-             user, 
-             reason, 
-             comment, 
-             options)
+              user, 
+              reason, 
+              comment, 
+              options)
 ```
 
 > Example Response:
@@ -652,7 +764,7 @@ bundle.resume(requested_date,
 **TODO**
 ```
 ```ruby
-TODO
+no content
 ```
 
 
@@ -664,7 +776,7 @@ TODO
 
 **Returns**
 
-TODO
+A `200` http status without content.
 
 ## Remove tags from bundle
 
@@ -730,8 +842,8 @@ included_deleted = false
 audit = 'NONE'
 
 bundle.tags(included_deleted,
-             audit,
-             options)
+            audit,
+            options)
 ```
 
 > Example Response:
@@ -845,8 +957,8 @@ offset = 0
 limit = 100
 
 bundle.find_in_batches(offset,
-                        limit,
-                        options)
+                       limit,
+                       options)
 ```
 
 > Example Response:
@@ -1013,9 +1125,9 @@ offset = 0
 limit = 100
 
 bundle.find_in_batches_by_search_key(search_key,
-                                      offset,
-                                      limit,
-                                      options)
+                                     offset,
+                                     limit,
+                                     options)
 ```
 
 > Example Response:
@@ -1024,34 +1136,120 @@ bundle.find_in_batches_by_search_key(search_key,
 [
   {
     "accountId": "string",
-    "name": "string",
-    "firstNameLength": 0,
+    "bundleId": "string",
     "externalKey": "string",
-    "email": "string",
-    "billCycleDayLocal": 0,
-    "currency": "string",
-    "parentAccountId": "string",
-    "isPaymentDelegatedToParent": false,
-    "paymentMethodId": "string",
-    "timeZone": "string",
-    "address1": "string",
-    "address2": "string",
-    "postalCode": "string",
-    "company": "string",
-    "city": "string",
-    "state": "string",
-    "country": "string",
-    "locale": "string",
-    "phone": "string",
-    "notes": "string",
-    "isMigrated": false,
-    "isNotifiedForInvoices": false,
-    "accountBalance": 0,
-    "accountCBA": 0,
+    "subscriptions": [
+      {
+        "accountId": "string",
+        "bundleId": "string",
+        "subscriptionId": "string",
+        "externalKey": "string",
+        "startDate": "2018-03-23",
+        "productName": "string",
+        "productCategory": "BASE",
+        "billingPeriod": "DAILY",
+        "phaseType": "TRIAL",
+        "priceList": "string",
+        "planName": "string",
+        "state": "PENDING",
+        "sourceType": "NATIVE",
+        "cancelledDate": "2018-03-23",
+        "chargedThroughDate": "2018-03-23",
+        "billingStartDate": "2018-03-23",
+        "billingEndDate": "2018-03-23",
+        "billCycleDayLocal": 0,
+        "events": [
+          {
+            "eventId": "string",
+            "billingPeriod": "string",
+            "plan": "string",
+            "product": "string",
+            "priceList": "string",
+            "eventType": "START_ENTITLEMENT",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "string",
+            "serviceStateName": "string",
+            "phase": "string",
+            "auditLogs": [
+              {
+                "changeType": "string",
+                "changeDate": "2018-03-23T20:44:26.850Z",
+                "changedBy": "string",
+                "reasonCode": "string",
+                "comments": "string",
+                "userToken": "string"
+              }
+            ],
+            "effectiveDate": "2018-03-23"
+          }
+        ],
+        "priceOverrides": [
+          {
+            "planName": "string",
+            "phaseName": "string",
+            "phaseType": "string",
+            "fixedPrice": 0,
+            "recurringPrice": 0
+          }
+        ],
+        "auditLogs": [
+          {
+            "changeType": "string",
+            "changeDate": "2018-03-23T20:44:26.850Z",
+            "changedBy": "string",
+            "reasonCode": "string",
+            "comments": "string",
+            "userToken": "string"
+          }
+        ]
+      }
+    ],
+    "timeline": {
+      "accountId": "string",
+      "bundleId": "string",
+      "externalKey": "string",
+      "events": [
+        {
+          "eventId": "string",
+          "billingPeriod": "string",
+          "plan": "string",
+          "product": "string",
+          "priceList": "string",
+          "eventType": "START_ENTITLEMENT",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "string",
+          "serviceStateName": "string",
+          "phase": "string",
+          "auditLogs": [
+            {
+              "changeType": "string",
+              "changeDate": "2018-03-23T20:44:26.850Z",
+              "changedBy": "string",
+              "reasonCode": "string",
+              "comments": "string",
+              "userToken": "string"
+            }
+          ],
+          "effectiveDate": "2018-03-23"
+        }
+      ],
+      "auditLogs": [
+        {
+          "changeType": "string",
+          "changeDate": "2018-03-23T20:44:26.850Z",
+          "changedBy": "string",
+          "reasonCode": "string",
+          "comments": "string",
+          "userToken": "string"
+        }
+      ]
+    },
     "auditLogs": [
       {
         "changeType": "string",
-        "changeDate": "2018-03-20T17:16:31.109Z",
+        "changeDate": "2018-03-23T20:44:26.850Z",
         "changedBy": "string",
         "reasonCode": "string",
         "comments": "string",
