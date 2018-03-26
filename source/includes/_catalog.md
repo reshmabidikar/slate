@@ -9,7 +9,7 @@ The `Catalog` is at the heart of the billing system. It is a data model that cap
 
 **HTTP Request** 
 
-`GET /1.0/kb/catalog`
+`GET http://example.com/1.0/kb/catalog`
 
 > Example Request:
 
@@ -234,7 +234,7 @@ Returns a catalog in the selected format.
 
 **HTTP Request** 
 
-`POST /1.0/kb/catalog`
+`POST http://example.com/1.0/kb/catalog`
 
 > Example Request:
 
@@ -458,7 +458,7 @@ A `200` http status without content.
 
 **HTTP Request** 
 
-`GET /1.0/kb/catalog/availableAddons`
+`GET http://example.com/1.0/kb/catalog/availableAddons`
 
 > Example Request:
 
@@ -511,7 +511,7 @@ Returns a list with add-ons for a product.
 
 **HTTP Request** 
 
-`GET /1.0/kb/catalog/availableBasePlans`
+`GET http://example.com/1.0/kb/catalog/availableBasePlans`
 
 > Example Request:
 
@@ -559,7 +559,7 @@ Returns a list with the available base plans.
 
 **HTTP Request** 
 
-`POST /1.0/kb/catalog/simplePlan`
+`POST http://example.com/1.0/kb/catalog/simplePlan`
 
 > Example Request:
 
