@@ -2,6 +2,7 @@
 includes:
   - account
   - bundle
+  - catalog
   
 title: Kill Bill 
 
