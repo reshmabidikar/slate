@@ -34,7 +34,7 @@ TODO
 external_key = 'example_key'
 included_deleted = false
 
-budnle = KillBillClient::Model::Bundle.new
+bundle = KillBillClient::Model::Bundle.new
 bundle.find_by_external_key(external_key, 
                             included_deleted, 
                             options)
@@ -194,8 +194,8 @@ Retrieves the details information for the `Bundle` using its `bundleId`.
 ```ruby
 bundle_id = "e8877928-0226-488d-9272-07a5e66d897f"
 
-budnle = KillBillClient::Model::Bundle.new
-budnle.find_by_id(bundle_id, options)
+bundle = KillBillClient::Model::Bundle.new
+bundle.find_by_id(bundle_id, options)
 ```
 
 > Example Response:
@@ -358,11 +358,11 @@ The new account_id should be set in this object
 requested_date = "2013-08-01"
 billing_policy = "END_OF_TERM"
 
-budnle = KillBillClient::Model::Bundle.new
+bundle = KillBillClient::Model::Bundle.new
 bundle.account_id = new_account_id
 bundle.bundle_id = bundle_id
 
-budnle.transfer(requested_date, 
+bundle.transfer(requested_date, 
                 billing_policy, 
                 user, 
                 reason, 
