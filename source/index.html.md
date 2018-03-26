@@ -4,6 +4,7 @@ includes:
   - bundle
   - catalog
   - credit
+  - invoice-payment
   
 title: Kill Bill 
 
