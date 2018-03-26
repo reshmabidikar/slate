@@ -1683,15 +1683,31 @@ payment_method_id = payment_method.payment_method_id
 refresh_options = nil
 
 # Authorization
-transaction.auth(account.account_id, payment_method_id, @user, reason, comment, @options, refresh_options)
+transaction.auth(account.account_id,
+                 payment_method_id, 
+                 user, 
+                 reason, 
+                 comment, 
+                 options, 
+                 refresh_options)
 
 # Purchase
-transaction.purchase(account.account_id, payment_method_id, @user, reason, comment, @options, refresh_options)
+transaction.purchase(account.account_id,
+                     payment_method_id, 
+                     user, 
+                     reason, 
+                     comment, 
+                     options, 
+                     refresh_options)
 
 # Credit
-transaction.credit(account.account_id, payment_method_id, @user, reason, comment, @options, refresh_options)
-
-
+transaction.credit(account.account_id,
+                   payment_method_id, 
+                   user, 
+                   reason, 
+                   comment, 
+                   options, 
+                   refresh_options)
 ```
 
 > Example Response:
