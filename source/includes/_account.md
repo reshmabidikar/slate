@@ -349,8 +349,8 @@ account.update(treat_null_as_reset,
 **Query Parameters**
 
 | Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **treatNullAsReset** | boolean | false | account treat null as reset |
+| ---- | -----| -------- | ----------- | 
+| **treatNullAsReset** | boolean | false | If set to true, any null value will be set to `null`. If set to false, any null value will be ignored.|
 
 **Returns**
 
@@ -409,7 +409,7 @@ account.all_tags(object_type,
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- | 
-| **objectType** | string | false | choose type of object (e.g. `ACCOUNT`, `BUNDLE`, etc) |
+| **objectType** | string | false | choose type of object (e.g. `ACCOUNT`, `BUNDLE`, `SUBSCRIPTION` ) |
 | **includedDeleted** | boolean | true | choose true to include deleted tags |
 | **audit** | enum | false | level of audit logs returned |
 
@@ -2295,7 +2295,7 @@ KillBillClient::Model::AccountTimeline.timeline(account_id,
 
 Returns a list of account tag objects.
 
-## Move a given child credit to the parent level
+## Transfer a given child credit to the parent level
 
 **HTTP Request** 
 
