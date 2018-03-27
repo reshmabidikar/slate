@@ -26,7 +26,7 @@ The attributes are the following:
 
 **HTTP Request** 
 
-`GET /1.0/kb/invoicePayments/{paymentId}`
+`GET http://example.com/1.0/kb/invoicePayments/{paymentId}`
 
 > Example Request:
 
@@ -101,7 +101,7 @@ Returns a invoice payment object.
 
 **HTTP Request** 
 
-`POST /1.0/kb/invoicePayments/{paymentId}/chargebacks`
+`POST http://example.com/1.0/kb/invoicePayments/{paymentId}/chargebacks`
 
 > Example Request:
 
@@ -192,7 +192,7 @@ Returns a invoice payment object.
 
 **HTTP Request** 
 
-`POST /1.0/kb/invoicePayments/{paymentId}/chargebackReversals`
+`POST http://example.com/1.0/kb/invoicePayments/{paymentId}/chargebackReversals`
 
 > Example Request:
 
@@ -287,3 +287,385 @@ None.
 **Returns**
 
 Returns a invoice payment object.
+
+## Remove custom fields from payment
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/invoicePayments/{paymentId}/customFields`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+custom_field_id = custom_field.id
+
+invoice_payment.remove_custom_field(custom_field_id,                                                                                            
+                                    user, 
+                                    reason,
+                                    comment, 
+                                    options)
+```
+
+> Example Response:
+
+```ruby
+no content
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
+
+**Returns**
+
+A `200` http status without content.
+
+## Retrieve payment custom fields
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/invoicePayments/{paymentId}/customFields`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+audit = 'NONE'
+
+invoice_payment.custom_fields(audit, options)
+```
+
+> Example Response:
+
+```ruby
+[
+   {
+      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
+      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
+      "objectType":"INVOICE_PAYMENT",
+      "name":"Test Custom Field",
+      "value":"test_value",
+      "auditLogs":[]
+   }
+]
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Returns a list of custom field objects.
+
+## Add custom fields to payment
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/invoicePayments/{paymentId}/customFields`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+custom_field = KillBillClient::Model::CustomFieldAttributes.new
+custom_field.object_type = 'INVOICE_PAYMENT'
+custom_field.name = 'Test Custom Field'
+custom_field.value = 'test_value'
+
+invoice_payment.add_custom_field(custom_field, 
+                         user,
+                         reason,
+                         comment,
+                         options)
+```
+
+> Example Response:
+
+```ruby
+[
+   {
+      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
+      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
+      "objectType":"INVOICE_PAYMENT",
+      "name":"Test Custom Field",
+      "value":"test_value",
+      "auditLogs":[]
+   }
+]
+```
+
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+Returns a custom field object.
+
+## Refund a payment, and adjust the invoice if needed
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/invoicePayments/{paymentId}/refunds`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+payment_id = '8d85a8e8-c94b-438f-aac1-e8cb436b2c05'
+amount ='50.0'
+adjustments = nil
+KillBillClient::Model::InvoicePayment.refund(payment_id, 
+                                             amount, 
+                                             adjustments, 
+                                             user, 
+                                             reason, 
+                                             comment, 
+                                             options)
+```
+
+> Example Response:
+
+```ruby
+{
+   "targetInvoiceId":"045900ff-5b2a-4709-b7bd-d70501998dd5",
+   "accountId":"dc7d2b03-d989-4cfa-96db-f02b6475950e",
+   "paymentId":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
+   "paymentNumber":"347",
+   "paymentExternalKey":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
+   "authAmount":0,
+   "capturedAmount":0,
+   "purchasedAmount":50.0,
+   "refundedAmount":20.0,
+   "creditedAmount":0,
+   "currency":"USD",
+   "paymentMethodId":"4103cf10-08b4-4685-b3c2-1c2c88b0f32f",
+   "transactions":[
+      {
+         "transactionId":"1cd767ed-b3c1-4369-a447-09308f3bebf4",
+         "transactionExternalKey":"1cd767ed-b3c1-4369-a447-09308f3bebf4",
+         "paymentId":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
+         "paymentExternalKey":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
+         "transactionType":"PURCHASE",
+         "amount":50.0,
+         "currency":"USD",
+         "effectiveDate":"2013-08-01T06:00:02.000Z",
+         "processedAmount":50.0,
+         "processedCurrency":"USD",
+         "status":"SUCCESS",
+         "auditLogs":[]
+      },
+      {
+         "transactionId":"69f72535-dd5d-4784-b0a6-05d6f64359cf",
+         "transactionExternalKey":"d7118799-0268-45c9-a0e0-455fa2731a8b",
+         "paymentId":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
+         "paymentExternalKey":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
+         "transactionType":"REFUND",
+         "amount":20.0,
+         "currency":"USD",
+         "effectiveDate":"2013-08-01T06:00:03.000Z",
+         "processedAmount":20.0,
+         "processedCurrency":"USD",
+         "status":"SUCCESS",
+         "auditLogs":[]
+      }
+   ],
+   "auditLogs":[]
+}
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **externalPayment** | boolean | false | choose true if the payment method is external |
+| **paymentMethodId** | string | false | payment method id |
+
+**Returns**
+
+Returns a invoice payment object.
+
+## Remove tags from payment
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/invoicePayments/{paymentId}/tags`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+tag_name = 'TEST'
+
+invoice_payment.remove_tag(tag_name,
+                           user,
+                           reason,
+                           comment,
+                           options)
+```
+
+> Example Response:
+
+```ruby
+no content
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **tagList** | string | true |  list of tags that you want to remove it |
+
+**Returns**
+
+A `200` http status without content.
+
+## Retrieve payment tags
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/invoicePayments/{paymentId}/tags`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+included_deleted = false
+audit = 'NONE'
+
+invoice_payment.tags(included_deleted,
+                     audit,
+                     options)
+```
+
+> Example Response:
+
+```ruby
+[
+   {
+      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
+      "objectType":"INVOICE_PAYMENT",
+      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[]
+   }
+]
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **audit** | enum | false | level of audit logs returned |
+| **includedDeleted** | boolean | false | choose true if you want to include deleted tags |
+
+**Returns**
+
+Returns a list of invoice payment tag objects.
+
+## Add tags to payment
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/invoicePayments/{paymentId}/tags`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+tag_name = 'TEST'
+
+invoice_payment.add_tag(tag_name,
+                        user,
+                        reason,
+                        comment,
+                        options)
+```
+
+> Example Response:
+
+```ruby
+[
+   {
+      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
+      "objectType":"INVOICE_PAYMENT",
+      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[]
+   }
+]
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **tagList** | string | true | tag list to add |
+
+**Returns**
+
+Returns a invoice payment tag object.
