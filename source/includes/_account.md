@@ -409,7 +409,7 @@ account.all_tags(object_type,
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- | 
-| **objectType** | string | false | choose type of object (e.g. `ACCOUNT`, `BUNDLE`, `SUBSCRIPTION` ) |
+| **objectType** | string | false | choose type of object (e.g. `ACCOUNT`, `BUNDLE`, `SUBSCRIPTION`) |
 | **includedDeleted** | boolean | true | choose true to include deleted tags |
 | **audit** | enum | false | level of audit logs returned |
 
