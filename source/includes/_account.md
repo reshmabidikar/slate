@@ -73,33 +73,33 @@ account.find_by_external_key(external_key,
 ```
 ```ruby
 {
-  "accountId": "e8877928-0226-488d-9272-07a5e66d897f",
-  "name": "John Doe",
-  "firstNameLength": null,
-  "externalKey": "example_external_key",
-  "email": "john@example.com",
-  "billCycleDayLocal": 0,
-  "currency": "USD",
-  "parentAccountId": null,
-  "isPaymentDelegatedToParent": false,
-  "paymentMethodId": null,
-  "referenceTime": "2018-02-05T22:39:53.000Z",
-  "timeZone": "UTC",
-  "address1": null,
-  "address2": null,
-  "postalCode": null,
-  "company": null,
-  "city": null,
-  "state": null,
-  "country": null,
-  "locale": null,
-  "phone": null,
-  "notes": null,
-  "isMigrated": null,
-  "isNotifiedForInvoices": false,
-  "accountBalance": null,
-  "accountCBA": null,
-  "auditLogs": []
+   "accountId":"e8877928-0226-488d-9272-07a5e66d897f",
+   "name":"John Doe",
+   "firstNameLength":null,
+   "externalKey":"example_external_key",
+   "email":"john@example.com",
+   "billCycleDayLocal":0,
+   "currency":"USD",
+   "parentAccountId":null,
+   "isPaymentDelegatedToParent":false,
+   "paymentMethodId":null,
+   "referenceTime":"2018-02-05T22:39:53.000Z",
+   "timeZone":"UTC",
+   "address1":null,
+   "address2":null,
+   "postalCode":null,
+   "company":null,
+   "city":null,
+   "state":null,
+   "country":null,
+   "locale":null,
+   "phone":null,
+   "notes":null,
+   "isMigrated":null,
+   "isNotifiedForInvoices":false,
+   "accountBalance":null,
+   "accountCBA":null,
+   "auditLogs":[]
 }
 ```
 
@@ -243,33 +243,33 @@ account.find_by_id(account_id,
 ```
 ```ruby
 {
-  "accountId": "e8877928-0226-488d-9272-07a5e66d897f",
-  "name": "John Doe",
-  "firstNameLength": null,
-  "externalKey": "e8877928-0226-488d-9272-07a5e66d897f",
-  "email": "john@example.com",
-  "billCycleDayLocal": 0,
-  "currency": "USD",
-  "parentAccountId": null,
-  "isPaymentDelegatedToParent": false,
-  "paymentMethodId": null,
-  "referenceTime": "2018-02-05T22:39:53.000Z",
-  "timeZone": "UTC",
-  "address1": null,
-  "address2": null,
-  "postalCode": null,
-  "company": null,
-  "city": null,
-  "state": null,
-  "country": null,
-  "locale": null,
-  "phone": null,
-  "notes": null,
-  "isMigrated": null,
-  "isNotifiedForInvoices": false,
-  "accountBalance": null,
-  "accountCBA": null,
-  "auditLogs": []
+   "accountId":"e8877928-0226-488d-9272-07a5e66d897f",
+   "name":"John Doe",
+   "firstNameLength":null,
+   "externalKey":"e8877928-0226-488d-9272-07a5e66d897f",
+   "email":"john@example.com",
+   "billCycleDayLocal":0,
+   "currency":"USD",
+   "parentAccountId":null,
+   "isPaymentDelegatedToParent":false,
+   "paymentMethodId":null,
+   "referenceTime":"2018-02-05T22:39:53.000Z",
+   "timeZone":"UTC",
+   "address1":null,
+   "address2":null,
+   "postalCode":null,
+   "company":null,
+   "city":null,
+   "state":null,
+   "country":null,
+   "locale":null,
+   "phone":null,
+   "notes":null,
+   "isMigrated":null,
+   "isNotifiedForInvoices":false,
+   "accountBalance":null,
+   "accountCBA":null,
+   "auditLogs":[]
 }
 ```
 
@@ -582,130 +582,641 @@ account.bundles(options)
 ```
 ```ruby
 [
-  {
-    "accountId": "string",
-    "bundleId": "string",
-    "externalKey": "string",
-    "subscriptions": [
-      {
-        "accountId": "string",
-        "bundleId": "string",
-        "subscriptionId": "string",
-        "externalKey": "string",
-        "startDate": "2018-03-20",
-        "productName": "string",
-        "productCategory": "BASE",
-        "billingPeriod": "DAILY",
-        "phaseType": "TRIAL",
-        "priceList": "string",
-        "planName": "string",
-        "state": "PENDING",
-        "sourceType": "NATIVE",
-        "cancelledDate": "2018-03-20",
-        "chargedThroughDate": "2018-03-20",
-        "billingStartDate": "2018-03-20",
-        "billingEndDate": "2018-03-20",
-        "billCycleDayLocal": 0,
-        "events": [
-          {
-            "eventId": "string",
-            "billingPeriod": "string",
-            "plan": "string",
-            "product": "string",
-            "priceList": "string",
-            "eventType": "START_ENTITLEMENT",
-            "isBlockedBilling": false,
-            "isBlockedEntitlement": false,
-            "serviceName": "string",
-            "serviceStateName": "string",
-            "phase": "string",
-            "auditLogs": [
-              {
-                "changeType": "string",
-                "changeDate": "2018-03-20T17:16:30.893Z",
-                "changedBy": "string",
-                "reasonCode": "string",
-                "comments": "string",
-                "userToken": "string"
-              }
+   {
+      "accountId":"6138e5ee-2763-4729-829b-e7de038b46d0",
+      "bundleId":"a5221798-699a-48ac-a2d1-962839fd8fc9",
+      "externalKey":"3-6138e5ee-2763-4729-829b-e7de038b46d0-889153",
+      "subscriptions":[
+         {
+            "accountId":"6138e5ee-2763-4729-829b-e7de038b46d0",
+            "bundleId":"a5221798-699a-48ac-a2d1-962839fd8fc9",
+            "subscriptionId":"937ff1a8-2290-4bb5-9166-7b7bb99cbccf",
+            "externalKey":"3-6138e5ee-2763-4729-829b-e7de038b46d0-889153",
+            "startDate":"2013-08-01",
+            "productName":"Super",
+            "productCategory":"BASE",
+            "billingPeriod":"MONTHLY",
+            "phaseType":"TRIAL",
+            "priceList":"DEFAULT",
+            "planName":"super-monthly",
+            "state":"ACTIVE",
+            "sourceType":"NATIVE",
+            "chargedThroughDate":"2013-08-01",
+            "billingStartDate":"2013-08-01",
+            "billCycleDayLocal":31,
+            "events":[
+               {
+                  "eventId":"c5ba5861-d4e4-46de-9ac5-d72ddf086ff2",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-01",
+                  "plan":"super-monthly",
+                  "product":"Super",
+                  "priceList":"DEFAULT",
+                  "eventType":"START_ENTITLEMENT",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"entitlement-service",
+                  "serviceStateName":"ENT_STARTED",
+                  "phase":"super-monthly-trial",
+                  "auditLogs":[]
+               },
+               {
+                  "eventId":"2add66b9-cd9f-47c3-906a-899aad32a350",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-01",
+                  "plan":"super-monthly",
+                  "product":"Super",
+                  "priceList":"DEFAULT",
+                  "eventType":"START_BILLING",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"billing-service",
+                  "serviceStateName":"START_BILLING",
+                  "phase":"super-monthly-trial",
+                  "auditLogs":[]
+               },
+               {
+                  "eventId":"86be39b0-0a70-4e15-a891-ed20aed6c12d",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-31",
+                  "plan":"super-monthly",
+                  "product":"Super",
+                  "priceList":"DEFAULT",
+                  "eventType":"PHASE",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"entitlement+billing-service",
+                  "serviceStateName":"PHASE",
+                  "phase":"super-monthly-evergreen",
+                  "auditLogs":[]
+               }
             ],
-            "effectiveDate": "2018-03-20"
-          }
-        ],
-        "priceOverrides": [
-          {
-            "planName": "string",
-            "phaseName": "string",
-            "phaseType": "string",
-            "fixedPrice": 0,
-            "recurringPrice": 0
-          }
-        ],
-        "auditLogs": [
-          {
-            "changeType": "string",
-            "changeDate": "2018-03-20T17:16:30.893Z",
-            "changedBy": "string",
-            "reasonCode": "string",
-            "comments": "string",
-            "userToken": "string"
-          }
-        ]
-      }
-    ],
-    "timeline": {
-      "accountId": "string",
-      "bundleId": "string",
-      "externalKey": "string",
-      "events": [
-        {
-          "eventId": "string",
-          "billingPeriod": "string",
-          "plan": "string",
-          "product": "string",
-          "priceList": "string",
-          "eventType": "START_ENTITLEMENT",
-          "isBlockedBilling": false,
-          "isBlockedEntitlement": false,
-          "serviceName": "string",
-          "serviceStateName": "string",
-          "phase": "string",
-          "auditLogs": [
-            {
-              "changeType": "string",
-              "changeDate": "2018-03-20T17:16:30.893Z",
-              "changedBy": "string",
-              "reasonCode": "string",
-              "comments": "string",
-              "userToken": "string"
-            }
-          ],
-          "effectiveDate": "2018-03-20"
-        }
+            "priceOverrides":[
+               {
+                  "planName":"super-monthly",
+                  "phaseName":"super-monthly-trial",
+                  "phaseType":"TRIAL",
+                  "fixedPrice":0
+               },
+               {
+                  "planName":"super-monthly",
+                  "phaseName":"super-monthly-evergreen",
+                  "phaseType":"EVERGREEN",
+                  "recurringPrice":1000.0
+               }
+            ],
+            "auditLogs":[]
+         },
+         {
+            "accountId":"6138e5ee-2763-4729-829b-e7de038b46d0",
+            "bundleId":"a5221798-699a-48ac-a2d1-962839fd8fc9",
+            "subscriptionId":"cf1c90f9-928c-43c1-9b88-633a0ac6d7f2",
+            "externalKey":"3-6138e5ee-2763-4729-829b-e7de038b46d0-889153",
+            "startDate":"2013-08-01",
+            "productName":"Gas",
+            "productCategory":"ADD_ON",
+            "billingPeriod":"NO_BILLING_PERIOD",
+            "phaseType":"EVERGREEN",
+            "priceList":"DEFAULT",
+            "planName":"gas-monthly",
+            "state":"ACTIVE",
+            "sourceType":"NATIVE",
+            "billingStartDate":"2013-08-01",
+            "billCycleDayLocal":31,
+            "events":[
+               {
+                  "eventId":"08ec39ef-e9f5-4e58-957d-650d174938ab",
+                  "billingPeriod":"NO_BILLING_PERIOD",
+                  "effectiveDate":"2013-08-01",
+                  "plan":"gas-monthly",
+                  "product":"Gas",
+                  "priceList":"DEFAULT",
+                  "eventType":"START_ENTITLEMENT",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"entitlement-service",
+                  "serviceStateName":"ENT_STARTED",
+                  "phase":"gas-monthly-evergreen",
+                  "auditLogs":[]
+               },
+               {
+                  "eventId":"729268e7-583b-49f2-be84-477ae444c363",
+                  "billingPeriod":"NO_BILLING_PERIOD",
+                  "effectiveDate":"2013-08-01",
+                  "plan":"gas-monthly",
+                  "product":"Gas",
+                  "priceList":"DEFAULT",
+                  "eventType":"START_BILLING",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"billing-service",
+                  "serviceStateName":"START_BILLING",
+                  "phase":"gas-monthly-evergreen",
+                  "auditLogs":[]
+               }
+            ],
+            "priceOverrides":[
+               {
+                  "planName":"gas-monthly",
+                  "phaseName":"gas-monthly-evergreen",
+                  "phaseType":"EVERGREEN"
+               }
+            ],
+            "auditLogs":[]
+         }
       ],
-      "auditLogs": [
-        {
-          "changeType": "string",
-          "changeDate": "2018-03-20T17:16:30.893Z",
-          "changedBy": "string",
-          "reasonCode": "string",
-          "comments": "string",
-          "userToken": "string"
-        }
-      ]
-    },
-    "auditLogs": [
-      {
-        "changeType": "string",
-        "changeDate": "2018-03-20T17:16:30.893Z",
-        "changedBy": "string",
-        "reasonCode": "string",
-        "comments": "string",
-        "userToken": "string"
-      }
-    ]
-  }
-]
+      "timeline":{
+         "accountId":"6138e5ee-2763-4729-829b-e7de038b46d0",
+         "bundleId":"a5221798-699a-48ac-a2d1-962839fd8fc9",
+         "externalKey":"3-6138e5ee-2763-4729-829b-e7de038b46d0-889153",
+         "events":[
+            {
+               "eventId":"08ec39ef-e9f5-4e58-957d-650d174938ab",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"super-monthly",
+               "product":"Super",
+               "priceList":"DEFAULT",
+               "eventType":"START_ENTITLEMENT",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement-service",
+               "serviceStateName":"ENT_STARTED",
+               "phase":"super-monthly-trial",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"c5ba5861-d4e4-46de-9ac5-d72ddf086ff2",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"super-monthly",
+               "product":"Super",
+               "priceList":"DEFAULT",
+               "eventType":"START_ENTITLEMENT",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement-service",
+               "serviceStateName":"ENT_STARTED",
+               "phase":"super-monthly-trial",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"2add66b9-cd9f-47c3-906a-899aad32a350",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"super-monthly",
+               "product":"Super",
+               "priceList":"DEFAULT",
+               "eventType":"START_BILLING",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"billing-service",
+               "serviceStateName":"START_BILLING",
+               "phase":"super-monthly-trial",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"729268e7-583b-49f2-be84-477ae444c363",
+               "billingPeriod":"NO_BILLING_PERIOD",
+               "effectiveDate":"2013-08-01",
+               "plan":"gas-monthly",
+               "product":"Gas",
+               "priceList":"DEFAULT",
+               "eventType":"START_BILLING",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"billing-service",
+               "serviceStateName":"START_BILLING",
+               "phase":"gas-monthly-evergreen",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"86be39b0-0a70-4e15-a891-ed20aed6c12d",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-31",
+               "plan":"super-monthly",
+               "product":"Super",
+               "priceList":"DEFAULT",
+               "eventType":"PHASE",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement+billing-service",
+               "serviceStateName":"PHASE",
+               "phase":"super-monthly-evergreen",
+               "auditLogs":[]
+            }
+         ],
+         "auditLogs":[]
+      },
+      "auditLogs":[]
+   },
+   {
+      "accountId":"6138e5ee-2763-4729-829b-e7de038b46d0",
+      "bundleId":"e71f6dc2-ece9-4d31-8cea-81472784ded3",
+      "externalKey":"2-6138e5ee-2763-4729-829b-e7de038b46d0-979751",
+      "subscriptions":[
+         {
+            "accountId":"6138e5ee-2763-4729-829b-e7de038b46d0",
+            "bundleId":"e71f6dc2-ece9-4d31-8cea-81472784ded3",
+            "subscriptionId":"2be86a1f-0516-4fda-a094-7467f2171d7f",
+            "externalKey":"2-6138e5ee-2763-4729-829b-e7de038b46d0-979751",
+            "startDate":"2013-08-01",
+            "productName":"Standard",
+            "productCategory":"BASE",
+            "billingPeriod":"MONTHLY",
+            "phaseType":"TRIAL",
+            "priceList":"DEFAULT",
+            "planName":"standard-monthly",
+            "state":"ACTIVE",
+            "sourceType":"NATIVE",
+            "chargedThroughDate":"2013-08-01",
+            "billingStartDate":"2013-08-01",
+            "billCycleDayLocal":31,
+            "events":[
+               {
+                  "eventId":"4e9cff06-c558-48b0-adad-6dda59ac551c",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-01",
+                  "plan":"standard-monthly",
+                  "product":"Standard",
+                  "priceList":"DEFAULT",
+                  "eventType":"START_ENTITLEMENT",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"entitlement-service",
+                  "serviceStateName":"ENT_STARTED",
+                  "phase":"standard-monthly-trial",
+                  "auditLogs":[]
+               },
+               {
+                  "eventId":"2d32bd25-46d6-448e-a5ca-f07c56dd2feb",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-01",
+                  "plan":"standard-monthly",
+                  "product":"Standard",
+                  "priceList":"DEFAULT",
+                  "eventType":"START_BILLING",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"billing-service",
+                  "serviceStateName":"START_BILLING",
+                  "phase":"standard-monthly-trial",
+                  "auditLogs":[]
+               },
+               {
+                  "eventId":"d7754b8e-cc06-4bb7-afbf-022860261f14",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-31",
+                  "plan":"standard-monthly",
+                  "product":"Standard",
+                  "priceList":"DEFAULT",
+                  "eventType":"PHASE",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"entitlement+billing-service",
+                  "serviceStateName":"PHASE",
+                  "phase":"standard-monthly-evergreen",
+                  "auditLogs":[]
+               }
+            ],
+            "priceOverrides":[
+               {
+                  "planName":"standard-monthly",
+                  "phaseName":"standard-monthly-trial",
+                  "phaseType":"TRIAL",
+                  "fixedPrice":0
+               },
+               {
+                  "planName":"standard-monthly",
+                  "phaseName":"standard-monthly-evergreen",
+                  "phaseType":"EVERGREEN",
+                  "recurringPrice":100.0
+               }
+            ],
+            "auditLogs":[]
+         }
+      ],
+      "timeline":{
+         "accountId":"6138e5ee-2763-4729-829b-e7de038b46d0",
+         "bundleId":"e71f6dc2-ece9-4d31-8cea-81472784ded3",
+         "externalKey":"2-6138e5ee-2763-4729-829b-e7de038b46d0-979751",
+         "events":[
+            {
+               "eventId":"4e9cff06-c558-48b0-adad-6dda59ac551c",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"standard-monthly",
+               "product":"Standard",
+               "priceList":"DEFAULT",
+               "eventType":"START_ENTITLEMENT",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement-service",
+               "serviceStateName":"ENT_STARTED",
+               "phase":"standard-monthly-trial",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"2d32bd25-46d6-448e-a5ca-f07c56dd2feb",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"standard-monthly",
+               "product":"Standard",
+               "priceList":"DEFAULT",
+               "eventType":"START_BILLING",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"billing-service",
+               "serviceStateName":"START_BILLING",
+               "phase":"standard-monthly-trial",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"d7754b8e-cc06-4bb7-afbf-022860261f14",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-31",
+               "plan":"standard-monthly",
+               "product":"Standard",
+               "priceList":"DEFAULT",
+               "eventType":"PHASE",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement+billing-service",
+               "serviceStateName":"PHASE",
+               "phase":"standard-monthly-evergreen",
+               "auditLogs":[]
+            }
+         ],
+         "auditLogs":[]
+      },
+      "auditLogs":[]
+   },
+   {
+      "accountId":"6138e5ee-2763-4729-829b-e7de038b46d0",
+      "bundleId":"3c7d6f02-bd9b-4f23-8a44-d806d3cbe330",
+      "externalKey":"1-6138e5ee-2763-4729-829b-e7de038b46d0-909112",
+      "subscriptions":[
+         {
+            "accountId":"6138e5ee-2763-4729-829b-e7de038b46d0",
+            "bundleId":"3c7d6f02-bd9b-4f23-8a44-d806d3cbe330",
+            "subscriptionId":"d64a410b-49b6-47af-88a3-cbd203289246",
+            "externalKey":"1-6138e5ee-2763-4729-829b-e7de038b46d0-909112",
+            "startDate":"2013-08-01",
+            "productName":"Sports",
+            "productCategory":"BASE",
+            "billingPeriod":"MONTHLY",
+            "phaseType":"TRIAL",
+            "priceList":"DEFAULT",
+            "planName":"sports-monthly",
+            "state":"ACTIVE",
+            "sourceType":"NATIVE",
+            "chargedThroughDate":"2013-08-01",
+            "billingStartDate":"2013-08-01",
+            "billCycleDayLocal":31,
+            "events":[
+               {
+                  "eventId":"ae420517-05d4-4a5d-bbe9-0f81a433efd3",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-01",
+                  "plan":"sports-monthly",
+                  "product":"Sports",
+                  "priceList":"DEFAULT",
+                  "eventType":"START_ENTITLEMENT",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"entitlement-service",
+                  "serviceStateName":"ENT_STARTED",
+                  "phase":"sports-monthly-trial",
+                  "auditLogs":[]
+               },
+               {
+                  "eventId":"d2179af5-1deb-4e2a-a934-9bad8cac04bd",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-01",
+                  "plan":"sports-monthly",
+                  "product":"Sports",
+                  "priceList":"DEFAULT",
+                  "eventType":"START_BILLING",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"billing-service",
+                  "serviceStateName":"START_BILLING",
+                  "phase":"sports-monthly-trial",
+                  "auditLogs":[]
+               },
+               {
+                  "eventId":"d45754a1-eb41-4a87-9714-80e2975a9f9a",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-31",
+                  "plan":"sports-monthly",
+                  "product":"Sports",
+                  "priceList":"DEFAULT",
+                  "eventType":"PHASE",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"entitlement+billing-service",
+                  "serviceStateName":"PHASE",
+                  "phase":"sports-monthly-evergreen",
+                  "auditLogs":[]
+               }
+            ],
+            "priceOverrides":[
+               {
+                  "planName":"sports-monthly",
+                  "phaseName":"sports-monthly-trial",
+                  "phaseType":"TRIAL",
+                  "fixedPrice":0
+               },
+               {
+                  "planName":"sports-monthly",
+                  "phaseName":"sports-monthly-evergreen",
+                  "phaseType":"EVERGREEN",
+                  "recurringPrice":500.0
+               }
+            ],
+            "auditLogs":[]
+         },
+         {
+            "accountId":"6138e5ee-2763-4729-829b-e7de038b46d0",
+            "bundleId":"3c7d6f02-bd9b-4f23-8a44-d806d3cbe330",
+            "subscriptionId":"b313e0f1-0c2e-4be7-bb6a-b4c8aff36341",
+            "externalKey":"1-6138e5ee-2763-4729-829b-e7de038b46d0-909112",
+            "startDate":"2013-08-01",
+            "productName":"OilSlick",
+            "productCategory":"ADD_ON",
+            "billingPeriod":"MONTHLY",
+            "phaseType":"DISCOUNT",
+            "priceList":"DEFAULT",
+            "planName":"oilslick-monthly",
+            "state":"ACTIVE",
+            "sourceType":"NATIVE",
+            "chargedThroughDate":"2013-08-31",
+            "billingStartDate":"2013-08-01",
+            "billCycleDayLocal":31,
+            "events":[
+               {
+                  "eventId":"1f06a132-d7e7-4fb6-ad96-8ef0a55ec38b",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-01",
+                  "plan":"oilslick-monthly",
+                  "product":"OilSlick",
+                  "priceList":"DEFAULT",
+                  "eventType":"START_ENTITLEMENT",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"entitlement-service",
+                  "serviceStateName":"ENT_STARTED",
+                  "phase":"oilslick-monthly-discount",
+                  "auditLogs":[]
+               },
+               {
+                  "eventId":"d783e243-2aa9-4463-a81b-030772d7945c",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-01",
+                  "plan":"oilslick-monthly",
+                  "product":"OilSlick",
+                  "priceList":"DEFAULT",
+                  "eventType":"START_BILLING",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"billing-service",
+                  "serviceStateName":"START_BILLING",
+                  "phase":"oilslick-monthly-discount",
+                  "auditLogs":[]
+               },
+               {
+                  "eventId":"267a056b-85b9-4912-8231-597e9905519c",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-09-01",
+                  "plan":"oilslick-monthly",
+                  "product":"OilSlick",
+                  "priceList":"DEFAULT",
+                  "eventType":"PHASE",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"entitlement+billing-service",
+                  "serviceStateName":"PHASE",
+                  "phase":"oilslick-monthly-evergreen",
+                  "auditLogs":[]
+               }
+            ],
+            "priceOverrides":[
+               {
+                  "planName":"oilslick-monthly",
+                  "phaseName":"oilslick-monthly-discount",
+                  "phaseType":"DISCOUNT",
+                  "recurringPrice":4.0
+               },
+               {
+                  "planName":"oilslick-monthly",
+                  "phaseName":"oilslick-monthly-evergreen",
+                  "phaseType":"EVERGREEN",
+                  "recurringPrice":7.95
+               }
+            ],
+            "auditLogs":[]
+         }
+      ],
+      "timeline":{
+         "accountId":"6138e5ee-2763-4729-829b-e7de038b46d0",
+         "bundleId":"3c7d6f02-bd9b-4f23-8a44-d806d3cbe330",
+         "externalKey":"1-6138e5ee-2763-4729-829b-e7de038b46d0-909112",
+         "events":[
+            {
+               "eventId":"1f06a132-d7e7-4fb6-ad96-8ef0a55ec38b",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"oilslick-monthly",
+               "product":"OilSlick",
+               "priceList":"DEFAULT",
+               "eventType":"START_ENTITLEMENT",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement-service",
+               "serviceStateName":"ENT_STARTED",
+               "phase":"oilslick-monthly-discount",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"ae420517-05d4-4a5d-bbe9-0f81a433efd3",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"oilslick-monthly",
+               "product":"OilSlick",
+               "priceList":"DEFAULT",
+               "eventType":"START_ENTITLEMENT",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement-service",
+               "serviceStateName":"ENT_STARTED",
+               "phase":"oilslick-monthly-discount",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"d783e243-2aa9-4463-a81b-030772d7945c",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"oilslick-monthly",
+               "product":"OilSlick",
+               "priceList":"DEFAULT",
+               "eventType":"START_BILLING",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"billing-service",
+               "serviceStateName":"START_BILLING",
+               "phase":"oilslick-monthly-discount",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"d2179af5-1deb-4e2a-a934-9bad8cac04bd",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"sports-monthly",
+               "product":"Sports",
+               "priceList":"DEFAULT",
+               "eventType":"START_BILLING",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"billing-service",
+               "serviceStateName":"START_BILLING",
+               "phase":"sports-monthly-trial",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"d45754a1-eb41-4a87-9714-80e2975a9f9a",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-31",
+               "plan":"sports-monthly",
+               "product":"Sports",
+               "priceList":"DEFAULT",
+               "eventType":"PHASE",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement+billing-service",
+               "serviceStateName":"PHASE",
+               "phase":"sports-monthly-evergreen",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"267a056b-85b9-4912-8231-597e9905519c",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-09-01",
+               "plan":"oilslick-monthly",
+               "product":"OilSlick",
+               "priceList":"DEFAULT",
+               "eventType":"PHASE",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement+billing-service",
+               "serviceStateName":"PHASE",
+               "phase":"oilslick-monthly-evergreen",
+               "auditLogs":[]
+            }
+         ],
+         "auditLogs":[]
+      },
+      "auditLogs":[]
+   }
 ]
 ```
 
@@ -795,43 +1306,29 @@ childrens_account = KillBillClient::Model::Account.children(account_id,
 ```
 ```ruby
 [
-  {
-    "accountId": "string",
-    "name": "string",
-    "firstNameLength": 0,
-    "externalKey": "string",
-    "email": "string",
-    "billCycleDayLocal": 0,
-    "currency": "string",
-    "parentAccountId": "string",
-    "isPaymentDelegatedToParent": false,
-    "paymentMethodId": "string",
-    "timeZone": "string",
-    "address1": "string",
-    "address2": "string",
-    "postalCode": "string",
-    "company": "string",
-    "city": "string",
-    "state": "string",
-    "country": "string",
-    "locale": "string",
-    "phone": "string",
-    "notes": "string",
-    "isMigrated": false,
-    "isNotifiedForInvoices": false,
-    "accountBalance": 0,
-    "accountCBA": 0,
-    "auditLogs": [
-      {
-        "changeType": "string",
-        "changeDate": "2018-03-20T17:16:30.906Z",
-        "changedBy": "string",
-        "reasonCode": "string",
-        "comments": "string",
-        "userToken": "string"
-      }
-    ]
-  }
+   {
+      "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
+      "name":"John Doe",
+      "externalKey":"1522172592-516014",
+      "email":"John@example.com",
+      "billCycleDayLocal":0,
+      "currency":"USD",
+      "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
+      "isPaymentDelegatedToParent":true,
+      "timeZone":"UTC",
+      "address1":"7, yoyo road",
+      "address2":"Apt 5",
+      "postalCode":"94105",
+      "company":"Unemployed",
+      "city":"San Francisco",
+      "state":"California",
+      "country":"US",
+      "locale":"fr_FR",
+      "isNotifiedForInvoices":false,
+      "auditLogs":[
+
+      ]
+   }
 ]
 ```
 
@@ -1882,23 +2379,16 @@ account.tags(included_deleted,
 
 ```ruby
 [
-  {
-    "tagId": "string",
-    "objectType": "ACCOUNT",
-    "objectId": "string",
-    "tagDefinitionId": "string",
-    "tagDefinitionName": "string",
-    "auditLogs": [
-      {
-        "changeType": "string",
-        "changeDate": "2018-03-20T17:16:31.059Z",
-        "changedBy": "string",
-        "reasonCode": "string",
-        "comments": "string",
-        "userToken": "string"
-      }
-    ]
-  }
+   {
+      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
+      "objectType":"ACCOUNT",
+      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[
+
+      ]
+   }
 ]
 ```
 
@@ -1943,343 +2433,352 @@ KillBillClient::Model::AccountTimeline.timeline(account_id,
 
 ```ruby
 {
-  "account": {
-    "accountId": "string",
-    "name": "string",
-    "firstNameLength": 0,
-    "externalKey": "string",
-    "email": "string",
-    "billCycleDayLocal": 0,
-    "currency": "string",
-    "parentAccountId": "string",
-    "isPaymentDelegatedToParent": false,
-    "paymentMethodId": "string",
-    "timeZone": "string",
-    "address1": "string",
-    "address2": "string",
-    "postalCode": "string",
-    "company": "string",
-    "city": "string",
-    "state": "string",
-    "country": "string",
-    "locale": "string",
-    "phone": "string",
-    "notes": "string",
-    "isMigrated": false,
-    "isNotifiedForInvoices": false,
-    "accountBalance": 0,
-    "accountCBA": 0,
-    "auditLogs": [
+   "account":{
+      "accountId":"f5ac6a12-7e24-4b5b-acf0-3f16436faf69",
+      "name":"KillBillClient",
+      "externalKey":"1522173024-759445",
+      "email":"kill@bill.com",
+      "billCycleDayLocal":31,
+      "currency":"USD",
+      "isPaymentDelegatedToParent":false,
+      "timeZone":"UTC",
+      "address1":"7, yoyo road",
+      "address2":"Apt 5",
+      "postalCode":"94105",
+      "company":"Unemployed",
+      "city":"San Francisco",
+      "state":"California",
+      "country":"US",
+      "locale":"fr_FR",
+      "isNotifiedForInvoices":false,
+      "auditLogs":[
+         {
+            "changeType":"INSERT",
+            "changeDate":"2013-08-01T06:00:01.000Z",
+            "changedBy":"test_change_default",
+            "userToken":"07952a10-4283-456a-830d-0b2a1e353eec"
+         }
+      ]
+   },
+   "bundles":[
       {
-        "changeType": "string",
-        "changeDate": "2018-03-20T17:16:31.069Z",
-        "changedBy": "string",
-        "reasonCode": "string",
-        "comments": "string",
-        "userToken": "string"
-      }
-    ]
-  },
-  "bundles": [
-    {
-      "accountId": "string",
-      "bundleId": "string",
-      "externalKey": "string",
-      "subscriptions": [
-        {
-          "accountId": "string",
-          "bundleId": "string",
-          "subscriptionId": "string",
-          "externalKey": "string",
-          "startDate": "2018-03-20",
-          "productName": "string",
-          "productCategory": "BASE",
-          "billingPeriod": "DAILY",
-          "phaseType": "TRIAL",
-          "priceList": "string",
-          "planName": "string",
-          "state": "PENDING",
-          "sourceType": "NATIVE",
-          "cancelledDate": "2018-03-20",
-          "chargedThroughDate": "2018-03-20",
-          "billingStartDate": "2018-03-20",
-          "billingEndDate": "2018-03-20",
-          "billCycleDayLocal": 0,
-          "events": [
+         "accountId":"f5ac6a12-7e24-4b5b-acf0-3f16436faf69",
+         "bundleId":"043b06e0-7d61-4891-ab58-63b02eaf0fee",
+         "externalKey":"f5ac6a12-7e24-4b5b-acf0-3f16436faf69-478447",
+         "subscriptions":[
             {
-              "eventId": "string",
-              "billingPeriod": "string",
-              "plan": "string",
-              "product": "string",
-              "priceList": "string",
-              "eventType": "START_ENTITLEMENT",
-              "isBlockedBilling": false,
-              "isBlockedEntitlement": false,
-              "serviceName": "string",
-              "serviceStateName": "string",
-              "phase": "string",
-              "auditLogs": [
-                {
-                  "changeType": "string",
-                  "changeDate": "2018-03-20T17:16:31.070Z",
-                  "changedBy": "string",
-                  "reasonCode": "string",
-                  "comments": "string",
-                  "userToken": "string"
-                }
-              ],
-              "effectiveDate": "2018-03-20"
+               "accountId":"f5ac6a12-7e24-4b5b-acf0-3f16436faf69",
+               "bundleId":"043b06e0-7d61-4891-ab58-63b02eaf0fee",
+               "subscriptionId":"c1675495-e899-4e1e-8d81-8ef02b02e0a8",
+               "externalKey":"f5ac6a12-7e24-4b5b-acf0-3f16436faf69-478447",
+               "startDate":"2013-08-01",
+               "productName":"Super",
+               "productCategory":"BASE",
+               "billingPeriod":"MONTHLY",
+               "phaseType":"TRIAL",
+               "priceList":"DEFAULT",
+               "planName":"super-monthly",
+               "state":"ACTIVE",
+               "sourceType":"NATIVE",
+               "chargedThroughDate":"2013-08-02",
+               "billingStartDate":"2013-08-01",
+               "billCycleDayLocal":31,
+               "events":[
+                  {
+                     "eventId":"97a0172a-cb88-467b-bbaf-28cf3a335570",
+                     "billingPeriod":"MONTHLY",
+                     "effectiveDate":"2013-08-01",
+                     "plan":"sports-monthly",
+                     "product":"Sports",
+                     "priceList":"DEFAULT",
+                     "eventType":"START_ENTITLEMENT",
+                     "isBlockedBilling":false,
+                     "isBlockedEntitlement":false,
+                     "serviceName":"entitlement-service",
+                     "serviceStateName":"ENT_STARTED",
+                     "phase":"sports-monthly-trial",
+                     "auditLogs":[
+                        {
+                           "changeType":"INSERT",
+                           "changeDate":"2013-08-01T06:00:01.000Z",
+                           "changedBy":"test_change_default",
+                           "userToken":"cc3b9ec7-d55b-400b-803c-4a7f9413fe33"
+                        }
+                     ]
+                  },
+                  {
+                     "eventId":"b634594b-6680-4456-a083-521301416e31",
+                     "billingPeriod":"MONTHLY",
+                     "effectiveDate":"2013-08-01",
+                     "plan":"sports-monthly",
+                     "product":"Sports",
+                     "priceList":"DEFAULT",
+                     "eventType":"START_BILLING",
+                     "isBlockedBilling":false,
+                     "isBlockedEntitlement":false,
+                     "serviceName":"billing-service",
+                     "serviceStateName":"START_BILLING",
+                     "phase":"sports-monthly-trial",
+                     "auditLogs":[
+                        {
+                           "changeType":"INSERT",
+                           "changeDate":"2013-08-01T06:00:01.000Z",
+                           "changedBy":"test_change_default",
+                           "userToken":"cc3b9ec7-d55b-400b-803c-4a7f9413fe33"
+                        }
+                     ]
+                  },
+                  {
+                     "eventId":"82953028-68c0-4c2e-9596-0248047d2452",
+                     "billingPeriod":"MONTHLY",
+                     "effectiveDate":"2013-08-02",
+                     "plan":"super-monthly",
+                     "product":"Super",
+                     "priceList":"DEFAULT",
+                     "eventType":"CHANGE",
+                     "isBlockedBilling":false,
+                     "isBlockedEntitlement":false,
+                     "serviceName":"entitlement+billing-service",
+                     "serviceStateName":"CHANGE",
+                     "phase":"super-monthly-trial",
+                     "auditLogs":[
+                        {
+                           "changeType":"INSERT",
+                           "changeDate":"2013-08-02T06:00:03.000Z",
+                           "changedBy":"test_change_default",
+                           "userToken":"7e39f68b-c695-4d38-822b-5e4ad230f130"
+                        }
+                     ]
+                  },
+                  {
+                     "eventId":"c2e120b7-af1a-42f4-b16d-2669be94c897",
+                     "billingPeriod":"MONTHLY",
+                     "effectiveDate":"2013-08-31",
+                     "plan":"super-monthly",
+                     "product":"Super",
+                     "priceList":"DEFAULT",
+                     "eventType":"PHASE",
+                     "isBlockedBilling":false,
+                     "isBlockedEntitlement":false,
+                     "serviceName":"entitlement+billing-service",
+                     "serviceStateName":"PHASE",
+                     "phase":"super-monthly-evergreen",
+                     "auditLogs":[
+                        {
+                           "changeType":"INSERT",
+                           "changeDate":"2013-08-02T06:00:03.000Z",
+                           "changedBy":"test_change_default",
+                           "userToken":"7e39f68b-c695-4d38-822b-5e4ad230f130"
+                        }
+                     ]
+                  }
+               ],
+               "priceOverrides":[
+                  {
+                     "planName":"sports-monthly",
+                     "phaseName":"sports-monthly-trial",
+                     "phaseType":"TRIAL",
+                     "fixedPrice":0
+                  },
+                  {
+                     "planName":"super-monthly",
+                     "phaseName":"super-monthly-trial",
+                     "phaseType":"TRIAL",
+                     "fixedPrice":0
+                  },
+                  {
+                     "planName":"super-monthly",
+                     "phaseName":"super-monthly-evergreen",
+                     "phaseType":"EVERGREEN",
+                     "recurringPrice":1000.0
+                  }
+               ],
+               "auditLogs":[
+                  {
+                     "changeType":"INSERT",
+                     "changeDate":"2013-08-01T06:00:01.000Z",
+                     "changedBy":"test_change_default",
+                     "reasonCode":null,
+                     "comments":null,
+                     "userToken":"cc3b9ec7-d55b-400b-803c-4a7f9413fe33"
+                  }
+               ]
             }
-          ],
-          "priceOverrides": [
-            {
-              "planName": "string",
-              "phaseName": "string",
-              "phaseType": "string",
-              "fixedPrice": 0,
-              "recurringPrice": 0
-            }
-          ],
-          "auditLogs": [
-            {
-              "changeType": "string",
-              "changeDate": "2018-03-20T17:16:31.070Z",
-              "changedBy": "string",
-              "reasonCode": "string",
-              "comments": "string",
-              "userToken": "string"
-            }
-          ]
-        }
-      ],
-      "timeline": {
-        "accountId": "string",
-        "bundleId": "string",
-        "externalKey": "string",
-        "events": [
-          {
-            "eventId": "string",
-            "billingPeriod": "string",
-            "plan": "string",
-            "product": "string",
-            "priceList": "string",
-            "eventType": "START_ENTITLEMENT",
-            "isBlockedBilling": false,
-            "isBlockedEntitlement": false,
-            "serviceName": "string",
-            "serviceStateName": "string",
-            "phase": "string",
-            "auditLogs": [
-              {
-                "changeType": "string",
-                "changeDate": "2018-03-20T17:16:31.070Z",
-                "changedBy": "string",
-                "reasonCode": "string",
-                "comments": "string",
-                "userToken": "string"
-              }
+         ],
+         "timeline":{
+            "accountId":"f5ac6a12-7e24-4b5b-acf0-3f16436faf69",
+            "bundleId":"043b06e0-7d61-4891-ab58-63b02eaf0fee",
+            "externalKey":"f5ac6a12-7e24-4b5b-acf0-3f16436faf69-478447",
+            "events":[
+               {
+                  "eventId":"97a0172a-cb88-467b-bbaf-28cf3a335570",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-01",
+                  "plan":"sports-monthly",
+                  "product":"Sports",
+                  "priceList":"DEFAULT",
+                  "eventType":"START_ENTITLEMENT",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"entitlement-service",
+                  "serviceStateName":"ENT_STARTED",
+                  "phase":"sports-monthly-trial",
+                  "auditLogs":[
+                     {
+                        "changeType":"INSERT",
+                        "changeDate":"2013-08-01T06:00:01.000Z",
+                        "changedBy":"test_change_default",
+                        "reasonCode":null,
+                        "comments":null,
+                        "userToken":"cc3b9ec7-d55b-400b-803c-4a7f9413fe33"
+                     }
+                  ]
+               },
+               {
+                  "eventId":"b634594b-6680-4456-a083-521301416e31",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-01",
+                  "plan":"sports-monthly",
+                  "product":"Sports",
+                  "priceList":"DEFAULT",
+                  "eventType":"START_BILLING",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"billing-service",
+                  "serviceStateName":"START_BILLING",
+                  "phase":"sports-monthly-trial",
+                  "auditLogs":[
+                     {
+                        "changeType":"INSERT",
+                        "changeDate":"2013-08-01T06:00:01.000Z",
+                        "changedBy":"test_change_default",
+                        "reasonCode":null,
+                        "comments":null,
+                        "userToken":"cc3b9ec7-d55b-400b-803c-4a7f9413fe33"
+                     }
+                  ]
+               },
+               {
+                  "eventId":"82953028-68c0-4c2e-9596-0248047d2452",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-02",
+                  "plan":"super-monthly",
+                  "product":"Super",
+                  "priceList":"DEFAULT",
+                  "eventType":"CHANGE",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"entitlement+billing-service",
+                  "serviceStateName":"CHANGE",
+                  "phase":"super-monthly-trial",
+                  "auditLogs":[
+                     {
+                        "changeType":"INSERT",
+                        "changeDate":"2013-08-02T06:00:03.000Z",
+                        "changedBy":"test_change_default",
+                        "reasonCode":null,
+                        "comments":null,
+                        "userToken":"7e39f68b-c695-4d38-822b-5e4ad230f130"
+                     }
+                  ]
+               },
+               {
+                  "eventId":"c2e120b7-af1a-42f4-b16d-2669be94c897",
+                  "billingPeriod":"MONTHLY",
+                  "effectiveDate":"2013-08-31",
+                  "plan":"super-monthly",
+                  "product":"Super",
+                  "priceList":"DEFAULT",
+                  "eventType":"PHASE",
+                  "isBlockedBilling":false,
+                  "isBlockedEntitlement":false,
+                  "serviceName":"entitlement+billing-service",
+                  "serviceStateName":"PHASE",
+                  "phase":"super-monthly-evergreen",
+                  "auditLogs":[
+                     {
+                        "changeType":"INSERT",
+                        "changeDate":"2013-08-02T06:00:03.000Z",
+                        "changedBy":"test_change_default",
+                        "reasonCode":null,
+                        "comments":null,
+                        "userToken":"7e39f68b-c695-4d38-822b-5e4ad230f130"
+                     }
+                  ]
+               }
             ],
-            "effectiveDate": "2018-03-20"
-          }
-        ],
-        "auditLogs": [
-          {
-            "changeType": "string",
-            "changeDate": "2018-03-20T17:16:31.070Z",
-            "changedBy": "string",
-            "reasonCode": "string",
-            "comments": "string",
-            "userToken": "string"
-          }
-        ]
+            "auditLogs":[
+               {
+                  "changeType":"INSERT",
+                  "changeDate":"2013-08-01T06:00:01.000Z",
+                  "changedBy":"test_change_default",
+                  "reasonCode":null,
+                  "comments":null,
+                  "userToken":"cc3b9ec7-d55b-400b-803c-4a7f9413fe33"
+               }
+            ]
+         },
+         "auditLogs":[
+            {
+               "changeType":"INSERT",
+               "changeDate":"2013-08-01T06:00:01.000Z",
+               "changedBy":"test_change_default",
+               "userToken":"cc3b9ec7-d55b-400b-803c-4a7f9413fe33"
+            }
+         ]
+      }
+   ],
+   "invoices":[
+      {
+         "amount":0.0,
+         "currency":"USD",
+         "status":"COMMITTED",
+         "creditAdj":0.0,
+         "refundAdj":0.0,
+         "invoiceId":"5f7edbcd-5f38-410b-93e0-d6959c44ca25",
+         "invoiceDate":"2013-08-01",
+         "targetDate":"2013-08-01",
+         "invoiceNumber":"1631",
+         "balance":0.0,
+         "accountId":"f5ac6a12-7e24-4b5b-acf0-3f16436faf69",
+         "bundleKeys":"f5ac6a12-7e24-4b5b-acf0-3f16436faf69-478447",
+         "credits":[],
+         "isParentInvoice":false,
+         "auditLogs":[
+            {
+               "changeType":"INSERT",
+               "changeDate":"2013-08-01T06:00:02.000Z",
+               "changedBy":"SubscriptionBaseTransition",
+               "userToken":"cc3b9ec7-d55b-400b-803c-4a7f9413fe33"
+            }
+         ]
       },
-      "auditLogs": [
-        {
-          "changeType": "string",
-          "changeDate": "2018-03-20T17:16:31.070Z",
-          "changedBy": "string",
-          "reasonCode": "string",
-          "comments": "string",
-          "userToken": "string"
-        }
-      ]
-    }
-  ],
-  "invoices": [
-    {
-      "amount": 0,
-      "currency": "string",
-      "status": "string",
-      "creditAdj": 0,
-      "refundAdj": 0,
-      "invoiceId": "string",
-      "invoiceDate": "2018-03-20",
-      "targetDate": "2018-03-20",
-      "invoiceNumber": "string",
-      "balance": 0,
-      "accountId": "string",
-      "credits": [
-        {
-          "creditAmount": 0,
-          "currency": "string",
-          "invoiceId": "string",
-          "invoiceNumber": "string",
-          "effectiveDate": "2018-03-20",
-          "accountId": "string",
-          "description": "string",
-          "auditLogs": [
+      {
+         "amount":0.0,
+         "currency":"USD",
+         "status":"COMMITTED",
+         "creditAdj":0.0,
+         "refundAdj":0.0,
+         "invoiceId":"c68044ed-7f94-4766-b95b-a04d1484728b",
+         "invoiceDate":"2013-08-02",
+         "targetDate":"2013-08-02",
+         "invoiceNumber":"1632",
+         "balance":0.0,
+         "accountId":"f5ac6a12-7e24-4b5b-acf0-3f16436faf69",
+         "bundleKeys":"f5ac6a12-7e24-4b5b-acf0-3f16436faf69-478447",
+         "credits":[],
+         "isParentInvoice":false,
+         "auditLogs":[
             {
-              "changeType": "string",
-              "changeDate": "2018-03-20T17:16:31.070Z",
-              "changedBy": "string",
-              "reasonCode": "string",
-              "comments": "string",
-              "userToken": "string"
+               "changeType":"INSERT",
+               "changeDate":"2013-08-02T06:00:03.000Z",
+               "changedBy":"SubscriptionBaseTransition",
+               "userToken":"7e39f68b-c695-4d38-822b-5e4ad230f130"
             }
-          ]
-        }
-      ],
-      "items": [
-        {
-          "invoiceItemId": "string",
-          "invoiceId": "string",
-          "linkedInvoiceItemId": "string",
-          "accountId": "string",
-          "childAccountId": "string",
-          "bundleId": "string",
-          "subscriptionId": "string",
-          "planName": "string",
-          "phaseName": "string",
-          "usageName": "string",
-          "itemType": "string",
-          "description": "string",
-          "startDate": "2018-03-20",
-          "endDate": "2018-03-20",
-          "amount": 0,
-          "currency": "string",
-          "childItems": [
-            {}
-          ],
-          "auditLogs": [
-            {
-              "changeType": "string",
-              "changeDate": "2018-03-20T17:16:31.070Z",
-              "changedBy": "string",
-              "reasonCode": "string",
-              "comments": "string",
-              "userToken": "string"
-            }
-          ]
-        }
-      ],
-      "isParentInvoice": false,
-      "auditLogs": [
-        {
-          "changeType": "string",
-          "changeDate": "2018-03-20T17:16:31.070Z",
-          "changedBy": "string",
-          "reasonCode": "string",
-          "comments": "string",
-          "userToken": "string"
-        }
-      ],
-      "bundleKeys": "string"
-    }
-  ],
-  "payments": [
-    {
-      "targetInvoiceId": "string",
-      "accountId": "string",
-      "paymentId": "string",
-      "paymentNumber": "string",
-      "paymentExternalKey": "string",
-      "authAmount": 0,
-      "capturedAmount": 0,
-      "purchasedAmount": 0,
-      "refundedAmount": 0,
-      "creditedAmount": 0,
-      "currency": "string",
-      "paymentMethodId": "string",
-      "transactions": [
-        {
-          "transactionId": "string",
-          "transactionExternalKey": "string",
-          "paymentId": "string",
-          "paymentExternalKey": "string",
-          "transactionType": "AUTHORIZE",
-          "amount": 0,
-          "currency": "AED",
-          "effectiveDate": "2018-03-20T17:16:31.070Z",
-          "processedAmount": 0,
-          "processedCurrency": "string",
-          "status": "SUCCESS",
-          "gatewayErrorCode": "string",
-          "gatewayErrorMsg": "string",
-          "firstPaymentReferenceId": "string",
-          "secondPaymentReferenceId": "string",
-          "properties": [
-            {
-              "key": "string",
-              "value": "string",
-              "isUpdatable": false
-            }
-          ],
-          "auditLogs": [
-            {
-              "changeType": "string",
-              "changeDate": "2018-03-20T17:16:31.070Z",
-              "changedBy": "string",
-              "reasonCode": "string",
-              "comments": "string",
-              "userToken": "string"
-            }
-          ]
-        }
-      ],
-      "paymentAttempts": [
-        {
-          "accountId": "string",
-          "paymentMethodId": "string",
-          "paymentExternalKey": "string",
-          "transactionId": "string",
-          "transactionExternalKey": "string",
-          "transactionType": "AUTHORIZE",
-          "effectiveDate": "2018-03-20T17:16:31.070Z",
-          "stateName": "string",
-          "amount": 0,
-          "currency": "AED",
-          "pluginName": "string",
-          "pluginProperties": [
-            {
-              "key": "string",
-              "value": "string",
-              "isUpdatable": false
-            }
-          ],
-          "auditLogs": [
-            {
-              "changeType": "string",
-              "changeDate": "2018-03-20T17:16:31.070Z",
-              "changedBy": "string",
-              "reasonCode": "string",
-              "comments": "string",
-              "userToken": "string"
-            }
-          ]
-        }
-      ],
-      "auditLogs": [
-        {
-          "changeType": "string",
-          "changeDate": "2018-03-20T17:16:31.070Z",
-          "changedBy": "string",
-          "reasonCode": "string",
-          "comments": "string",
-          "userToken": "string"
-        }
-      ]
-    }
-  ]
+         ]
+      }
+   ],
+   "payments":[]
 }
 ```
 
@@ -2366,43 +2865,27 @@ account.find_in_batches(offset,
 
 ```ruby
 [
-  {
-    "accountId": "string",
-    "name": "string",
-    "firstNameLength": 0,
-    "externalKey": "string",
-    "email": "string",
-    "billCycleDayLocal": 0,
-    "currency": "string",
-    "parentAccountId": "string",
-    "isPaymentDelegatedToParent": false,
-    "paymentMethodId": "string",
-    "timeZone": "string",
-    "address1": "string",
-    "address2": "string",
-    "postalCode": "string",
-    "company": "string",
-    "city": "string",
-    "state": "string",
-    "country": "string",
-    "locale": "string",
-    "phone": "string",
-    "notes": "string",
-    "isMigrated": false,
-    "isNotifiedForInvoices": false,
-    "accountBalance": 0,
-    "accountCBA": 0,
-    "auditLogs": [
-      {
-        "changeType": "string",
-        "changeDate": "2018-03-20T17:16:31.091Z",
-        "changedBy": "string",
-        "reasonCode": "string",
-        "comments": "string",
-        "userToken": "string"
-      }
-    ]
-  }
+   {
+      "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
+      "name":"John Doe",
+      "externalKey":"1522172592-516014",
+      "email":"John@example.com",
+      "billCycleDayLocal":0,
+      "currency":"USD",
+      "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
+      "isPaymentDelegatedToParent":true,
+      "timeZone":"UTC",
+      "address1":"7, yoyo road",
+      "address2":"Apt 5",
+      "postalCode":"94105",
+      "company":"Unemployed",
+      "city":"San Francisco",
+      "state":"California",
+      "country":"US",
+      "locale":"fr_FR",
+      "isNotifiedForInvoices":false,
+      "auditLogs":[]
+   }
 ]
 ```
 
@@ -2455,43 +2938,27 @@ account.find_in_batches_by_search_key(search_key,
 
 ```ruby
 [
-  {
-    "accountId": "string",
-    "name": "string",
-    "firstNameLength": 0,
-    "externalKey": "string",
-    "email": "string",
-    "billCycleDayLocal": 0,
-    "currency": "string",
-    "parentAccountId": "string",
-    "isPaymentDelegatedToParent": false,
-    "paymentMethodId": "string",
-    "timeZone": "string",
-    "address1": "string",
-    "address2": "string",
-    "postalCode": "string",
-    "company": "string",
-    "city": "string",
-    "state": "string",
-    "country": "string",
-    "locale": "string",
-    "phone": "string",
-    "notes": "string",
-    "isMigrated": false,
-    "isNotifiedForInvoices": false,
-    "accountBalance": 0,
-    "accountCBA": 0,
-    "auditLogs": [
-      {
-        "changeType": "string",
-        "changeDate": "2018-03-20T17:16:31.109Z",
-        "changedBy": "string",
-        "reasonCode": "string",
-        "comments": "string",
-        "userToken": "string"
-      }
-    ]
-  }
+   {
+      "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
+      "name":"John Doe",
+      "externalKey":"1522172592-516014",
+      "email":"John@example.com",
+      "billCycleDayLocal":0,
+      "currency":"USD",
+      "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
+      "isPaymentDelegatedToParent":true,
+      "timeZone":"UTC",
+      "address1":"7, yoyo road",
+      "address2":"Apt 5",
+      "postalCode":"94105",
+      "company":"Unemployed",
+      "city":"San Francisco",
+      "state":"California",
+      "country":"US",
+      "locale":"fr_FR",
+      "isNotifiedForInvoices":false,
+      "auditLogs":[]
+   }
 ]
 ```
 
