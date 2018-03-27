@@ -287,7 +287,7 @@ TODO
 ```
 
 ```ruby
-base_product_name = 'base_product_example'
+base_product_name = 'Basic'
 KillBillClient::Model::Catalog.available_addons(base_product_name, 
                                                 options)
 ```
@@ -296,18 +296,18 @@ KillBillClient::Model::Catalog.available_addons(base_product_name,
 
 ```ruby
 [
-  {
-    "product": "string",
-    "plan": "string",
-    "priceList": "string",
-    "finalPhaseBillingPeriod": "DAILY",
-    "finalPhaseRecurringPrice": [
-      {
-        "currency": "string",
-        "value": 0
-      }
-    ]
-  }
+   {
+      "product":"Basic",
+      "plan":"basic-annual",
+      "finalPhaseBillingPeriod":"ANNUAL",
+      "priceList":"DEFAULT",
+      "finalPhaseRecurringPrice":[
+         {
+            "currency":"USD",
+            "value":10000.0
+         }
+      ]
+   }
 ]
 ```
 
@@ -347,18 +347,30 @@ KillBillClient::Model::Catalog.available_base_plans(options)
 
 ```ruby
 [
-  {
-    "product": "string",
-    "plan": "string",
-    "priceList": "string",
-    "finalPhaseBillingPeriod": "DAILY",
-    "finalPhaseRecurringPrice": [
-      {
-        "currency": "string",
-        "value": 0
-      }
-    ]
-  }
+   {
+      "product":"Basic",
+      "plan":"basic-annual",
+      "finalPhaseBillingPeriod":"ANNUAL",
+      "priceList":"DEFAULT",
+      "finalPhaseRecurringPrice":[
+         {
+            "currency":"USD",
+            "value":10000.0
+         }
+      ]
+   },
+   {
+      "product":"Basic",
+      "plan":"basic-monthly",
+      "finalPhaseBillingPeriod":"MONTHLY",
+      "priceList":"DEFAULT",
+      "finalPhaseRecurringPrice":[
+         {
+            "currency":"USD",
+            "value":1000.0
+         }
+      ]
+   }
 ]
 ```
 
