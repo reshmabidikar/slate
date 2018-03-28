@@ -402,10 +402,10 @@ custom_field.name = 'Test Custom Field'
 custom_field.value = 'test_value'
 
 invoice_payment.add_custom_field(custom_field, 
-                         user,
-                         reason,
-                         comment,
-                         options)
+                                 user,
+                                 reason,
+                                 comment,
+                                 options)
 ```
 
 > Example Response:
