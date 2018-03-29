@@ -31,7 +31,7 @@ TODO
 ```
 
 ```ruby
-external_key = 'example_key'
+external_key = '4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135'
 included_deleted = false
 
 bundle = KillBillClient::Model::Bundle.new
@@ -44,127 +44,145 @@ bundle.find_by_external_key(external_key,
 
 ```ruby
 {
-  "accountId": "string",
-  "bundleId": "string",
-  "externalKey": "example_key",
-  "subscriptions": [
-    {
-      "accountId": "string",
-      "bundleId": "string",
-      "subscriptionId": "string",
-      "externalKey": "string",
-      "startDate": "2018-03-20",
-      "productName": "string",
-      "productCategory": "BASE",
-      "billingPeriod": "DAILY",
-      "phaseType": "TRIAL",
-      "priceList": "string",
-      "planName": "string",
-      "state": "PENDING",
-      "sourceType": "NATIVE",
-      "cancelledDate": "2018-03-20",
-      "chargedThroughDate": "2018-03-20",
-      "billingStartDate": "2018-03-20",
-      "billingEndDate": "2018-03-20",
-      "billCycleDayLocal": 0,
-      "events": [
-        {
-          "eventId": "string",
-          "billingPeriod": "string",
-          "plan": "string",
-          "product": "string",
-          "priceList": "string",
-          "eventType": "START_ENTITLEMENT",
-          "isBlockedBilling": false,
-          "isBlockedEntitlement": false,
-          "serviceName": "string",
-          "serviceStateName": "string",
-          "phase": "string",
-          "auditLogs": [
+   "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+   "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+   "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+   "subscriptions":[
+      {
+         "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+         "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+         "subscriptionId":"e29573cc-d0e6-4d26-b97e-1a9c02d520ad",
+         "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+         "startDate":"2013-08-01",
+         "productName":"Sports",
+         "productCategory":"BASE",
+         "billingPeriod":"MONTHLY",
+         "phaseType":"TRIAL",
+         "priceList":"DEFAULT",
+         "planName":"sports-monthly",
+         "state":"ACTIVE",
+         "sourceType":"NATIVE",
+         "chargedThroughDate":"2013-08-01",
+         "billingStartDate":"2013-08-01",
+         "billCycleDayLocal":31,
+         "events":[
             {
-              "changeType": "string",
-              "changeDate": "2018-03-20T17:16:31.150Z",
-              "changedBy": "string",
-              "reasonCode": "string",
-              "comments": "string",
-              "userToken": "string"
+               "eventId":"e0136144-a852-4eaa-b721-c8b585dcb4a6",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"sports-monthly",
+               "product":"Sports",
+               "priceList":"DEFAULT",
+               "eventType":"START_ENTITLEMENT",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement-service",
+               "serviceStateName":"ENT_STARTED",
+               "phase":"sports-monthly-trial",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"72a51773-9e1d-4ad7-beeb-03139f60ea3d",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"sports-monthly",
+               "product":"Sports",
+               "priceList":"DEFAULT",
+               "eventType":"START_BILLING",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"billing-service",
+               "serviceStateName":"START_BILLING",
+               "phase":"sports-monthly-trial",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"341992e2-4565-4457-9d20-d2803d11aa61",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-31",
+               "plan":"sports-monthly",
+               "product":"Sports",
+               "priceList":"DEFAULT",
+               "eventType":"PHASE",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement+billing-service",
+               "serviceStateName":"PHASE",
+               "phase":"sports-monthly-evergreen",
+               "auditLogs":[]
             }
-          ],
-          "effectiveDate": "2018-03-20"
-        }
-      ],
-      "priceOverrides": [
-        {
-          "planName": "string",
-          "phaseName": "string",
-          "phaseType": "string",
-          "fixedPrice": 0,
-          "recurringPrice": 0
-        }
-      ],
-      "auditLogs": [
-        {
-          "changeType": "string",
-          "changeDate": "2018-03-20T17:16:31.151Z",
-          "changedBy": "string",
-          "reasonCode": "string",
-          "comments": "string",
-          "userToken": "string"
-        }
-      ]
-    }
-  ],
-  "timeline": {
-    "accountId": "string",
-    "bundleId": "string",
-    "externalKey": "string",
-    "events": [
-      {
-        "eventId": "string",
-        "billingPeriod": "string",
-        "plan": "string",
-        "product": "string",
-        "priceList": "string",
-        "eventType": "START_ENTITLEMENT",
-        "isBlockedBilling": false,
-        "isBlockedEntitlement": false,
-        "serviceName": "string",
-        "serviceStateName": "string",
-        "phase": "string",
-        "auditLogs": [
-          {
-            "changeType": "string",
-            "changeDate": "2018-03-20T17:16:31.151Z",
-            "changedBy": "string",
-            "reasonCode": "string",
-            "comments": "string",
-            "userToken": "string"
-          }
-        ],
-        "effectiveDate": "2018-03-20"
+         ],
+         "priceOverrides":[
+            {
+               "planName":"sports-monthly",
+               "phaseName":"sports-monthly-trial",
+               "phaseType":"TRIAL",
+               "fixedPrice":0
+            },
+            {
+               "planName":"sports-monthly",
+               "phaseName":"sports-monthly-evergreen",
+               "phaseType":"EVERGREEN",
+               "recurringPrice":500.0
+            }
+         ],
+         "auditLogs":[]
       }
-    ],
-    "auditLogs": [
-      {
-        "changeType": "string",
-        "changeDate": "2018-03-20T17:16:31.151Z",
-        "changedBy": "string",
-        "reasonCode": "string",
-        "comments": "string",
-        "userToken": "string"
-      }
-    ]
-  },
-  "auditLogs": [
-    {
-      "changeType": "string",
-      "changeDate": "2018-03-20T17:16:31.151Z",
-      "changedBy": "string",
-      "reasonCode": "string",
-      "comments": "string",
-      "userToken": "string"
-    }
-  ]
+   ],
+   "timeline":{
+      "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+      "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+      "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+      "events":[
+         {
+            "eventId":"e0136144-a852-4eaa-b721-c8b585dcb4a6",
+            "billingPeriod":"MONTHLY",
+            "effectiveDate":"2013-08-01",
+            "plan":"sports-monthly",
+            "product":"Sports",
+            "priceList":"DEFAULT",
+            "eventType":"START_ENTITLEMENT",
+            "isBlockedBilling":false,
+            "isBlockedEntitlement":false,
+            "serviceName":"entitlement-service",
+            "serviceStateName":"ENT_STARTED",
+            "phase":"sports-monthly-trial",
+            "auditLogs":[]
+         },
+         {
+            "eventId":"72a51773-9e1d-4ad7-beeb-03139f60ea3d",
+            "billingPeriod":"MONTHLY",
+            "effectiveDate":"2013-08-01",
+            "plan":"sports-monthly",
+            "product":"Sports",
+            "priceList":"DEFAULT",
+            "eventType":"START_BILLING",
+            "isBlockedBilling":false,
+            "isBlockedEntitlement":false,
+            "serviceName":"billing-service",
+            "serviceStateName":"START_BILLING",
+            "phase":"sports-monthly-trial",
+            "auditLogs":[]
+         },
+         {
+            "eventId":"341992e2-4565-4457-9d20-d2803d11aa61",
+            "billingPeriod":"MONTHLY",
+            "effectiveDate":"2013-08-31",
+            "plan":"sports-monthly",
+            "product":"Sports",
+            "priceList":"DEFAULT",
+            "eventType":"PHASE",
+            "isBlockedBilling":false,
+            "isBlockedEntitlement":false,
+            "serviceName":"entitlement+billing-service",
+            "serviceStateName":"PHASE",
+            "phase":"sports-monthly-evergreen",
+            "auditLogs":[]
+         }
+      ],
+      "auditLogs":[]
+   },
+   "auditLogs":[]
 }
 ```
 
@@ -192,7 +210,7 @@ Retrieves the details information for the `Bundle` using its `bundleId`.
 > Example Request:
 
 ```ruby
-bundle_id = "e8877928-0226-488d-9272-07a5e66d897f"
+bundle_id = "5b7a5f2d-4054-412f-b354-b722c2cff4ec"
 
 bundle = KillBillClient::Model::Bundle.new
 bundle.find_by_id(bundle_id, options)
@@ -208,127 +226,145 @@ bundle.find_by_id(bundle_id, options)
 ```
 ```ruby
 {
-  "accountId": "string",
-  "bundleId": "e8877928-0226-488d-9272-07a5e66d897f",
-  "externalKey": "string",
-  "subscriptions": [
-    {
-      "accountId": "string",
-      "bundleId": "string",
-      "subscriptionId": "string",
-      "externalKey": "string",
-      "startDate": "2018-03-20",
-      "productName": "string",
-      "productCategory": "BASE",
-      "billingPeriod": "DAILY",
-      "phaseType": "TRIAL",
-      "priceList": "string",
-      "planName": "string",
-      "state": "PENDING",
-      "sourceType": "NATIVE",
-      "cancelledDate": "2018-03-20",
-      "chargedThroughDate": "2018-03-20",
-      "billingStartDate": "2018-03-20",
-      "billingEndDate": "2018-03-20",
-      "billCycleDayLocal": 0,
-      "events": [
-        {
-          "eventId": "string",
-          "billingPeriod": "string",
-          "plan": "string",
-          "product": "string",
-          "priceList": "string",
-          "eventType": "START_ENTITLEMENT",
-          "isBlockedBilling": false,
-          "isBlockedEntitlement": false,
-          "serviceName": "string",
-          "serviceStateName": "string",
-          "phase": "string",
-          "auditLogs": [
+   "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+   "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+   "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+   "subscriptions":[
+      {
+         "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+         "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+         "subscriptionId":"e29573cc-d0e6-4d26-b97e-1a9c02d520ad",
+         "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+         "startDate":"2013-08-01",
+         "productName":"Sports",
+         "productCategory":"BASE",
+         "billingPeriod":"MONTHLY",
+         "phaseType":"TRIAL",
+         "priceList":"DEFAULT",
+         "planName":"sports-monthly",
+         "state":"ACTIVE",
+         "sourceType":"NATIVE",
+         "chargedThroughDate":"2013-08-01",
+         "billingStartDate":"2013-08-01",
+         "billCycleDayLocal":31,
+         "events":[
             {
-              "changeType": "string",
-              "changeDate": "2018-03-20T17:16:31.158Z",
-              "changedBy": "string",
-              "reasonCode": "string",
-              "comments": "string",
-              "userToken": "string"
+               "eventId":"e0136144-a852-4eaa-b721-c8b585dcb4a6",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"sports-monthly",
+               "product":"Sports",
+               "priceList":"DEFAULT",
+               "eventType":"START_ENTITLEMENT",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement-service",
+               "serviceStateName":"ENT_STARTED",
+               "phase":"sports-monthly-trial",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"72a51773-9e1d-4ad7-beeb-03139f60ea3d",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"sports-monthly",
+               "product":"Sports",
+               "priceList":"DEFAULT",
+               "eventType":"START_BILLING",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"billing-service",
+               "serviceStateName":"START_BILLING",
+               "phase":"sports-monthly-trial",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"341992e2-4565-4457-9d20-d2803d11aa61",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-31",
+               "plan":"sports-monthly",
+               "product":"Sports",
+               "priceList":"DEFAULT",
+               "eventType":"PHASE",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement+billing-service",
+               "serviceStateName":"PHASE",
+               "phase":"sports-monthly-evergreen",
+               "auditLogs":[]
             }
-          ],
-          "effectiveDate": "2018-03-20"
-        }
-      ],
-      "priceOverrides": [
-        {
-          "planName": "string",
-          "phaseName": "string",
-          "phaseType": "string",
-          "fixedPrice": 0,
-          "recurringPrice": 0
-        }
-      ],
-      "auditLogs": [
-        {
-          "changeType": "string",
-          "changeDate": "2018-03-20T17:16:31.159Z",
-          "changedBy": "string",
-          "reasonCode": "string",
-          "comments": "string",
-          "userToken": "string"
-        }
-      ]
-    }
-  ],
-  "timeline": {
-    "accountId": "string",
-    "bundleId": "string",
-    "externalKey": "string",
-    "events": [
-      {
-        "eventId": "string",
-        "billingPeriod": "string",
-        "plan": "string",
-        "product": "string",
-        "priceList": "string",
-        "eventType": "START_ENTITLEMENT",
-        "isBlockedBilling": false,
-        "isBlockedEntitlement": false,
-        "serviceName": "string",
-        "serviceStateName": "string",
-        "phase": "string",
-        "auditLogs": [
-          {
-            "changeType": "string",
-            "changeDate": "2018-03-20T17:16:31.159Z",
-            "changedBy": "string",
-            "reasonCode": "string",
-            "comments": "string",
-            "userToken": "string"
-          }
-        ],
-        "effectiveDate": "2018-03-20"
+         ],
+         "priceOverrides":[
+            {
+               "planName":"sports-monthly",
+               "phaseName":"sports-monthly-trial",
+               "phaseType":"TRIAL",
+               "fixedPrice":0
+            },
+            {
+               "planName":"sports-monthly",
+               "phaseName":"sports-monthly-evergreen",
+               "phaseType":"EVERGREEN",
+               "recurringPrice":500.0
+            }
+         ],
+         "auditLogs":[]
       }
-    ],
-    "auditLogs": [
-      {
-        "changeType": "string",
-        "changeDate": "2018-03-20T17:16:31.159Z",
-        "changedBy": "string",
-        "reasonCode": "string",
-        "comments": "string",
-        "userToken": "string"
-      }
-    ]
-  },
-  "auditLogs": [
-    {
-      "changeType": "string",
-      "changeDate": "2018-03-20T17:16:31.159Z",
-      "changedBy": "string",
-      "reasonCode": "string",
-      "comments": "string",
-      "userToken": "string"
-    }
-  ]
+   ],
+   "timeline":{
+      "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+      "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+      "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+      "events":[
+         {
+            "eventId":"e0136144-a852-4eaa-b721-c8b585dcb4a6",
+            "billingPeriod":"MONTHLY",
+            "effectiveDate":"2013-08-01",
+            "plan":"sports-monthly",
+            "product":"Sports",
+            "priceList":"DEFAULT",
+            "eventType":"START_ENTITLEMENT",
+            "isBlockedBilling":false,
+            "isBlockedEntitlement":false,
+            "serviceName":"entitlement-service",
+            "serviceStateName":"ENT_STARTED",
+            "phase":"sports-monthly-trial",
+            "auditLogs":[]
+         },
+         {
+            "eventId":"72a51773-9e1d-4ad7-beeb-03139f60ea3d",
+            "billingPeriod":"MONTHLY",
+            "effectiveDate":"2013-08-01",
+            "plan":"sports-monthly",
+            "product":"Sports",
+            "priceList":"DEFAULT",
+            "eventType":"START_BILLING",
+            "isBlockedBilling":false,
+            "isBlockedEntitlement":false,
+            "serviceName":"billing-service",
+            "serviceStateName":"START_BILLING",
+            "phase":"sports-monthly-trial",
+            "auditLogs":[]
+         },
+         {
+            "eventId":"341992e2-4565-4457-9d20-d2803d11aa61",
+            "billingPeriod":"MONTHLY",
+            "effectiveDate":"2013-08-31",
+            "plan":"sports-monthly",
+            "product":"Sports",
+            "priceList":"DEFAULT",
+            "eventType":"PHASE",
+            "isBlockedBilling":false,
+            "isBlockedEntitlement":false,
+            "serviceName":"entitlement+billing-service",
+            "serviceStateName":"PHASE",
+            "phase":"sports-monthly-evergreen",
+            "auditLogs":[]
+         }
+      ],
+      "auditLogs":[]
+   },
+   "auditLogs":[]
 }
 ```
 
@@ -850,23 +886,16 @@ bundle.tags(included_deleted,
 
 ```ruby
 [
-  {
-    "tagId": "string",
-    "objectType": "BUNDLE",
-    "objectId": "string",
-    "tagDefinitionId": "string",
-    "tagDefinitionName": "string",
-    "auditLogs": [
-      {
-        "changeType": "string",
-        "changeDate": "2018-03-20T17:16:31.059Z",
-        "changedBy": "string",
-        "reasonCode": "string",
-        "comments": "string",
-        "userToken": "string"
-      }
-    ]
-  }
+   {
+      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
+      "objectType":"BUNDLE",
+      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[
+
+      ]
+   }
 ]
 ```
 
@@ -966,127 +995,145 @@ bundle.find_in_batches(offset,
 ```ruby
 [
   {
-    "accountId": "string",
-    "bundleId": "string",
-    "externalKey": "string",
-    "subscriptions": [
-      {
-        "accountId": "string",
-        "bundleId": "string",
-        "subscriptionId": "string",
-        "externalKey": "string",
-        "startDate": "2018-03-20",
-        "productName": "string",
-        "productCategory": "BASE",
-        "billingPeriod": "DAILY",
-        "phaseType": "TRIAL",
-        "priceList": "string",
-        "planName": "string",
-        "state": "PENDING",
-        "sourceType": "NATIVE",
-        "cancelledDate": "2018-03-20",
-        "chargedThroughDate": "2018-03-20",
-        "billingStartDate": "2018-03-20",
-        "billingEndDate": "2018-03-20",
-        "billCycleDayLocal": 0,
-        "events": [
-          {
-            "eventId": "string",
-            "billingPeriod": "string",
-            "plan": "string",
-            "product": "string",
-            "priceList": "string",
-            "eventType": "START_ENTITLEMENT",
-            "isBlockedBilling": false,
-            "isBlockedEntitlement": false,
-            "serviceName": "string",
-            "serviceStateName": "string",
-            "phase": "string",
-            "auditLogs": [
+     "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+     "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+     "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+     "subscriptions":[
+        {
+           "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+           "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+           "subscriptionId":"e29573cc-d0e6-4d26-b97e-1a9c02d520ad",
+           "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+           "startDate":"2013-08-01",
+           "productName":"Sports",
+           "productCategory":"BASE",
+           "billingPeriod":"MONTHLY",
+           "phaseType":"TRIAL",
+           "priceList":"DEFAULT",
+           "planName":"sports-monthly",
+           "state":"ACTIVE",
+           "sourceType":"NATIVE",
+           "chargedThroughDate":"2013-08-01",
+           "billingStartDate":"2013-08-01",
+           "billCycleDayLocal":31,
+           "events":[
               {
-                "changeType": "string",
-                "changeDate": "2018-03-20T17:16:31.236Z",
-                "changedBy": "string",
-                "reasonCode": "string",
-                "comments": "string",
-                "userToken": "string"
+                 "eventId":"e0136144-a852-4eaa-b721-c8b585dcb4a6",
+                 "billingPeriod":"MONTHLY",
+                 "effectiveDate":"2013-08-01",
+                 "plan":"sports-monthly",
+                 "product":"Sports",
+                 "priceList":"DEFAULT",
+                 "eventType":"START_ENTITLEMENT",
+                 "isBlockedBilling":false,
+                 "isBlockedEntitlement":false,
+                 "serviceName":"entitlement-service",
+                 "serviceStateName":"ENT_STARTED",
+                 "phase":"sports-monthly-trial",
+                 "auditLogs":[]
+              },
+              {
+                 "eventId":"72a51773-9e1d-4ad7-beeb-03139f60ea3d",
+                 "billingPeriod":"MONTHLY",
+                 "effectiveDate":"2013-08-01",
+                 "plan":"sports-monthly",
+                 "product":"Sports",
+                 "priceList":"DEFAULT",
+                 "eventType":"START_BILLING",
+                 "isBlockedBilling":false,
+                 "isBlockedEntitlement":false,
+                 "serviceName":"billing-service",
+                 "serviceStateName":"START_BILLING",
+                 "phase":"sports-monthly-trial",
+                 "auditLogs":[]
+              },
+              {
+                 "eventId":"341992e2-4565-4457-9d20-d2803d11aa61",
+                 "billingPeriod":"MONTHLY",
+                 "effectiveDate":"2013-08-31",
+                 "plan":"sports-monthly",
+                 "product":"Sports",
+                 "priceList":"DEFAULT",
+                 "eventType":"PHASE",
+                 "isBlockedBilling":false,
+                 "isBlockedEntitlement":false,
+                 "serviceName":"entitlement+billing-service",
+                 "serviceStateName":"PHASE",
+                 "phase":"sports-monthly-evergreen",
+                 "auditLogs":[]
               }
-            ],
-            "effectiveDate": "2018-03-20"
-          }
-        ],
-        "priceOverrides": [
-          {
-            "planName": "string",
-            "phaseName": "string",
-            "phaseType": "string",
-            "fixedPrice": 0,
-            "recurringPrice": 0
-          }
-        ],
-        "auditLogs": [
-          {
-            "changeType": "string",
-            "changeDate": "2018-03-20T17:16:31.236Z",
-            "changedBy": "string",
-            "reasonCode": "string",
-            "comments": "string",
-            "userToken": "string"
-          }
-        ]
-      }
-    ],
-    "timeline": {
-      "accountId": "string",
-      "bundleId": "string",
-      "externalKey": "string",
-      "events": [
-        {
-          "eventId": "string",
-          "billingPeriod": "string",
-          "plan": "string",
-          "product": "string",
-          "priceList": "string",
-          "eventType": "START_ENTITLEMENT",
-          "isBlockedBilling": false,
-          "isBlockedEntitlement": false,
-          "serviceName": "string",
-          "serviceStateName": "string",
-          "phase": "string",
-          "auditLogs": [
-            {
-              "changeType": "string",
-              "changeDate": "2018-03-20T17:16:31.237Z",
-              "changedBy": "string",
-              "reasonCode": "string",
-              "comments": "string",
-              "userToken": "string"
-            }
-          ],
-          "effectiveDate": "2018-03-20"
+           ],
+           "priceOverrides":[
+              {
+                 "planName":"sports-monthly",
+                 "phaseName":"sports-monthly-trial",
+                 "phaseType":"TRIAL",
+                 "fixedPrice":0
+              },
+              {
+                 "planName":"sports-monthly",
+                 "phaseName":"sports-monthly-evergreen",
+                 "phaseType":"EVERGREEN",
+                 "recurringPrice":500.0
+              }
+           ],
+           "auditLogs":[]
         }
-      ],
-      "auditLogs": [
-        {
-          "changeType": "string",
-          "changeDate": "2018-03-20T17:16:31.237Z",
-          "changedBy": "string",
-          "reasonCode": "string",
-          "comments": "string",
-          "userToken": "string"
-        }
-      ]
-    },
-    "auditLogs": [
-      {
-        "changeType": "string",
-        "changeDate": "2018-03-20T17:16:31.237Z",
-        "changedBy": "string",
-        "reasonCode": "string",
-        "comments": "string",
-        "userToken": "string"
-      }
-    ]
+     ],
+     "timeline":{
+        "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+        "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+        "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+        "events":[
+           {
+              "eventId":"e0136144-a852-4eaa-b721-c8b585dcb4a6",
+              "billingPeriod":"MONTHLY",
+              "effectiveDate":"2013-08-01",
+              "plan":"sports-monthly",
+              "product":"Sports",
+              "priceList":"DEFAULT",
+              "eventType":"START_ENTITLEMENT",
+              "isBlockedBilling":false,
+              "isBlockedEntitlement":false,
+              "serviceName":"entitlement-service",
+              "serviceStateName":"ENT_STARTED",
+              "phase":"sports-monthly-trial",
+              "auditLogs":[]
+           },
+           {
+              "eventId":"72a51773-9e1d-4ad7-beeb-03139f60ea3d",
+              "billingPeriod":"MONTHLY",
+              "effectiveDate":"2013-08-01",
+              "plan":"sports-monthly",
+              "product":"Sports",
+              "priceList":"DEFAULT",
+              "eventType":"START_BILLING",
+              "isBlockedBilling":false,
+              "isBlockedEntitlement":false,
+              "serviceName":"billing-service",
+              "serviceStateName":"START_BILLING",
+              "phase":"sports-monthly-trial",
+              "auditLogs":[]
+           },
+           {
+              "eventId":"341992e2-4565-4457-9d20-d2803d11aa61",
+              "billingPeriod":"MONTHLY",
+              "effectiveDate":"2013-08-31",
+              "plan":"sports-monthly",
+              "product":"Sports",
+              "priceList":"DEFAULT",
+              "eventType":"PHASE",
+              "isBlockedBilling":false,
+              "isBlockedEntitlement":false,
+              "serviceName":"entitlement+billing-service",
+              "serviceStateName":"PHASE",
+              "phase":"sports-monthly-evergreen",
+              "auditLogs":[]
+           }
+        ],
+        "auditLogs":[]
+     },
+     "auditLogs":[]
   }
 ]
 ```
@@ -1135,127 +1182,145 @@ bundle.find_in_batches_by_search_key(search_key,
 ```ruby
 [
   {
-    "accountId": "string",
-    "bundleId": "string",
-    "externalKey": "string",
-    "subscriptions": [
-      {
-        "accountId": "string",
-        "bundleId": "string",
-        "subscriptionId": "string",
-        "externalKey": "string",
-        "startDate": "2018-03-23",
-        "productName": "string",
-        "productCategory": "BASE",
-        "billingPeriod": "DAILY",
-        "phaseType": "TRIAL",
-        "priceList": "string",
-        "planName": "string",
-        "state": "PENDING",
-        "sourceType": "NATIVE",
-        "cancelledDate": "2018-03-23",
-        "chargedThroughDate": "2018-03-23",
-        "billingStartDate": "2018-03-23",
-        "billingEndDate": "2018-03-23",
-        "billCycleDayLocal": 0,
-        "events": [
-          {
-            "eventId": "string",
-            "billingPeriod": "string",
-            "plan": "string",
-            "product": "string",
-            "priceList": "string",
-            "eventType": "START_ENTITLEMENT",
-            "isBlockedBilling": false,
-            "isBlockedEntitlement": false,
-            "serviceName": "string",
-            "serviceStateName": "string",
-            "phase": "string",
-            "auditLogs": [
+     "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+     "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+     "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+     "subscriptions":[
+        {
+           "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+           "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+           "subscriptionId":"e29573cc-d0e6-4d26-b97e-1a9c02d520ad",
+           "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+           "startDate":"2013-08-01",
+           "productName":"Sports",
+           "productCategory":"BASE",
+           "billingPeriod":"MONTHLY",
+           "phaseType":"TRIAL",
+           "priceList":"DEFAULT",
+           "planName":"sports-monthly",
+           "state":"ACTIVE",
+           "sourceType":"NATIVE",
+           "chargedThroughDate":"2013-08-01",
+           "billingStartDate":"2013-08-01",
+           "billCycleDayLocal":31,
+           "events":[
               {
-                "changeType": "string",
-                "changeDate": "2018-03-23T20:44:26.850Z",
-                "changedBy": "string",
-                "reasonCode": "string",
-                "comments": "string",
-                "userToken": "string"
+                 "eventId":"e0136144-a852-4eaa-b721-c8b585dcb4a6",
+                 "billingPeriod":"MONTHLY",
+                 "effectiveDate":"2013-08-01",
+                 "plan":"sports-monthly",
+                 "product":"Sports",
+                 "priceList":"DEFAULT",
+                 "eventType":"START_ENTITLEMENT",
+                 "isBlockedBilling":false,
+                 "isBlockedEntitlement":false,
+                 "serviceName":"entitlement-service",
+                 "serviceStateName":"ENT_STARTED",
+                 "phase":"sports-monthly-trial",
+                 "auditLogs":[]
+              },
+              {
+                 "eventId":"72a51773-9e1d-4ad7-beeb-03139f60ea3d",
+                 "billingPeriod":"MONTHLY",
+                 "effectiveDate":"2013-08-01",
+                 "plan":"sports-monthly",
+                 "product":"Sports",
+                 "priceList":"DEFAULT",
+                 "eventType":"START_BILLING",
+                 "isBlockedBilling":false,
+                 "isBlockedEntitlement":false,
+                 "serviceName":"billing-service",
+                 "serviceStateName":"START_BILLING",
+                 "phase":"sports-monthly-trial",
+                 "auditLogs":[]
+              },
+              {
+                 "eventId":"341992e2-4565-4457-9d20-d2803d11aa61",
+                 "billingPeriod":"MONTHLY",
+                 "effectiveDate":"2013-08-31",
+                 "plan":"sports-monthly",
+                 "product":"Sports",
+                 "priceList":"DEFAULT",
+                 "eventType":"PHASE",
+                 "isBlockedBilling":false,
+                 "isBlockedEntitlement":false,
+                 "serviceName":"entitlement+billing-service",
+                 "serviceStateName":"PHASE",
+                 "phase":"sports-monthly-evergreen",
+                 "auditLogs":[]
               }
-            ],
-            "effectiveDate": "2018-03-23"
-          }
-        ],
-        "priceOverrides": [
-          {
-            "planName": "string",
-            "phaseName": "string",
-            "phaseType": "string",
-            "fixedPrice": 0,
-            "recurringPrice": 0
-          }
-        ],
-        "auditLogs": [
-          {
-            "changeType": "string",
-            "changeDate": "2018-03-23T20:44:26.850Z",
-            "changedBy": "string",
-            "reasonCode": "string",
-            "comments": "string",
-            "userToken": "string"
-          }
-        ]
-      }
-    ],
-    "timeline": {
-      "accountId": "string",
-      "bundleId": "string",
-      "externalKey": "string",
-      "events": [
-        {
-          "eventId": "string",
-          "billingPeriod": "string",
-          "plan": "string",
-          "product": "string",
-          "priceList": "string",
-          "eventType": "START_ENTITLEMENT",
-          "isBlockedBilling": false,
-          "isBlockedEntitlement": false,
-          "serviceName": "string",
-          "serviceStateName": "string",
-          "phase": "string",
-          "auditLogs": [
-            {
-              "changeType": "string",
-              "changeDate": "2018-03-23T20:44:26.850Z",
-              "changedBy": "string",
-              "reasonCode": "string",
-              "comments": "string",
-              "userToken": "string"
-            }
-          ],
-          "effectiveDate": "2018-03-23"
+           ],
+           "priceOverrides":[
+              {
+                 "planName":"sports-monthly",
+                 "phaseName":"sports-monthly-trial",
+                 "phaseType":"TRIAL",
+                 "fixedPrice":0
+              },
+              {
+                 "planName":"sports-monthly",
+                 "phaseName":"sports-monthly-evergreen",
+                 "phaseType":"EVERGREEN",
+                 "recurringPrice":500.0
+              }
+           ],
+           "auditLogs":[]
         }
-      ],
-      "auditLogs": [
-        {
-          "changeType": "string",
-          "changeDate": "2018-03-23T20:44:26.850Z",
-          "changedBy": "string",
-          "reasonCode": "string",
-          "comments": "string",
-          "userToken": "string"
-        }
-      ]
-    },
-    "auditLogs": [
-      {
-        "changeType": "string",
-        "changeDate": "2018-03-23T20:44:26.850Z",
-        "changedBy": "string",
-        "reasonCode": "string",
-        "comments": "string",
-        "userToken": "string"
-      }
-    ]
+     ],
+     "timeline":{
+        "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+        "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+        "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+        "events":[
+           {
+              "eventId":"e0136144-a852-4eaa-b721-c8b585dcb4a6",
+              "billingPeriod":"MONTHLY",
+              "effectiveDate":"2013-08-01",
+              "plan":"sports-monthly",
+              "product":"Sports",
+              "priceList":"DEFAULT",
+              "eventType":"START_ENTITLEMENT",
+              "isBlockedBilling":false,
+              "isBlockedEntitlement":false,
+              "serviceName":"entitlement-service",
+              "serviceStateName":"ENT_STARTED",
+              "phase":"sports-monthly-trial",
+              "auditLogs":[]
+           },
+           {
+              "eventId":"72a51773-9e1d-4ad7-beeb-03139f60ea3d",
+              "billingPeriod":"MONTHLY",
+              "effectiveDate":"2013-08-01",
+              "plan":"sports-monthly",
+              "product":"Sports",
+              "priceList":"DEFAULT",
+              "eventType":"START_BILLING",
+              "isBlockedBilling":false,
+              "isBlockedEntitlement":false,
+              "serviceName":"billing-service",
+              "serviceStateName":"START_BILLING",
+              "phase":"sports-monthly-trial",
+              "auditLogs":[]
+           },
+           {
+              "eventId":"341992e2-4565-4457-9d20-d2803d11aa61",
+              "billingPeriod":"MONTHLY",
+              "effectiveDate":"2013-08-31",
+              "plan":"sports-monthly",
+              "product":"Sports",
+              "priceList":"DEFAULT",
+              "eventType":"PHASE",
+              "isBlockedBilling":false,
+              "isBlockedEntitlement":false,
+              "serviceName":"entitlement+billing-service",
+              "serviceStateName":"PHASE",
+              "phase":"sports-monthly-evergreen",
+              "auditLogs":[]
+           }
+        ],
+        "auditLogs":[]
+     },
+     "auditLogs":[]
   }
 ]
 ```
