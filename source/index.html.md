@@ -6,6 +6,7 @@ includes:
   - credit
   - invoice-payment
   - invoice
+  - payment-method
   
 title: Kill Bill 
 
