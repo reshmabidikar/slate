@@ -50,7 +50,7 @@ credit_item.create(auto_commit,
 
 ```ruby
 {
-   "creditId": "fd5669a8-68c1-8dl0-m4e8-8y535e349324"
+   "creditId":"fd5669a8-68c1-8dl0-m4e8-8y535e349324"
    "creditAmount":50.0,
    "currency":"USD",
    "invoiceId":"c57e1a2b-1a6b-4053-be2c-cc5fad2b5cbf",
@@ -100,7 +100,7 @@ credit.find_by_id(credit_id,
 
 ```ruby
 {
-   "creditId": "fd5669a8-68c1-8dl0-m4e8-8y535e349324"
+   "creditId":"fd5669a8-68c1-8dl0-m4e8-8y535e349324"
    "creditAmount":50.0,
    "currency":"USD",
    "invoiceId":"c57e1a2b-1a6b-4053-be2c-cc5fad2b5cbf",
