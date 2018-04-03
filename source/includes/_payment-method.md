@@ -10,8 +10,8 @@ The attributes are the following:
 * **`externalKey`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
 * **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
 * **`isDefault`** <span style="color:#32A9C7">*[User generated]*</span>
-* **`pluginName`** <span style="color:#32A9C7">*TODO*</span>
-* **`pluginInfo`** <span style="color:#32A9C7">*TODO*</span>
+* **`pluginName`** <span style="color:#32A9C7">*[User generated]*</span>
+* **`pluginInfo`** <span style="color:#32A9C7">*[User generated]*</span>
 * **`auditLogs`** <span style="color:#32A9C7">*[`AuditLog`]*</span>
 
 ## Retrieve a payment method by external key
@@ -31,23 +31,47 @@ TODO
 ```
 
 ```ruby
-TODO
+payment_method_ek = "sample_external_key"
+included_deleted = false
+with_plugin_info = false
+audit = 'NONE'
+
+KillBillClient::Model::PaymentMethod.find_by_external_key(payment_method_ek,
+                                                          included_deleted,
+                                                          with_plugin_info,
+                                                          audit,
+                                                          options)
 ```
 
 > Example Response:
 
 ```ruby
-TODO
+{
+   "paymentMethodId":"4307ac7c-04a7-41e1-9cb0-8a4d4420104c",
+   "externalKey":"sample_external_key",
+   "accountId":"aba041a0-52f3-4d0d-b8e0-dec442dbc51e",
+   "isDefault":true,
+   "pluginName":"__EXTERNAL_PAYMENT__",
+   "pluginInfo":{
+      "properties":[]
+   },
+   "auditLogs":[]
+}
 ```
 
 
 **Query Parameters**
 
-None.
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **externalKey** | string | true | external key from payment method |
+| **includedDeleted** | boolean | true | choose true to include deleted payment methods |
+| **audit** | enum | false | level of audit logs returned |
+| **withPluginInfo** | boolean | false | choose true if you want plugin info |
 
 **Returns**
 
-Returns a invoice payment object.
+Returns a payment method object.
 
 ## Delete a payment method
 
@@ -66,23 +90,35 @@ TODO
 ```
 
 ```ruby
-TODO
+payment_method_id = "4307ac7c-04a7-41e1-9cb0-8a4d4420104c"
+set_auto_pay_off = false
+force_default_deletion = false
+KillBillClient::Model::PaymentMethod.destroy(payment_method_id,
+                                             set_auto_pay_off,
+                                             force_default_deletion,
+                                             user,
+                                             reason,
+                                             comment,
+                                             options)
 ```
 
 > Example Response:
 
 ```ruby
-TODO
+no content
 ```
 
 
 **Query Parameters**
 
-None.
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **deleteDefaultPmWithAutoPayOff** | boolean | true | choose true to delete default payment method with auto pay off|
+| **forceDefaultPmDeletion** | boolean | true | choose true to force default payment method deletion |
 
 **Returns**
 
-Returns a invoice payment object.
+A `200` http status without content.
 
 ##  Retrieve a payment method by id
 
@@ -101,23 +137,42 @@ TODO
 ```
 
 ```ruby
-TODO
+payment_method_id = "6a0bf13e-d57f-4f79-84bd-3690135f1923"
+with_plugin_info = false
+
+KillBillClient::Model::PaymentMethod.find_by_id(payment_method_id, 
+                                                with_plugin_info, 
+                                                options)
 ```
 
 > Example Response:
 
 ```ruby
-TODO
+{
+   "paymentMethodId":"6a0bf13e-d57f-4f79-84bd-3690135f1923",
+   "externalKey":"unknown",
+   "accountId":"f9c4801f-0daa-4c46-bea0-59490d07fc5e",
+   "isDefault":false,
+   "pluginName":"__EXTERNAL_PAYMENT__",
+   "pluginInfo":{
+      "properties":[]
+   },
+   "auditLogs":[]
+}
 ```
 
 
 **Query Parameters**
 
-None.
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **includedDeleted** | boolean | true | choose true to include deleted payment methods |
+| **audit** | enum | false | level of audit logs returned |
+| **withPluginInfo** | boolean | false | choose true if you want plugin info |
 
 **Returns**
 
-Returns a invoice payment object.
+Returns a payment method object.
 
 ##  Remove custom fields from payment method
 
@@ -334,23 +389,43 @@ TODO
 ```
 
 ```ruby
-TODO
+offset = 0
+limit = 100
+
+payment_method.find_in_batches(offset,
+                               limit,
+                               options)
 ```
 
 > Example Response:
 
 ```ruby
-TODO
+[
+  {
+     "paymentMethodId":"6a0bf13e-d57f-4f79-84bd-3690135f1923",
+     "externalKey":"unknown",
+     "accountId":"f9c4801f-0daa-4c46-bea0-59490d07fc5e",
+     "isDefault":false,
+     "pluginName":"__EXTERNAL_PAYMENT__",
+     "pluginInfo":{
+        "properties":[]
+     },
+     "auditLogs":[]
+  }
+]
 ```
 
 
 **Query Parameters**
 
-None.
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **offset** | long | true | offset |
+| **limit** | long | true | limit search items |
 
 **Returns**
 
-Returns a invoice payment object.
+Returns a list with all payment methods.
 
 ##  Search payment methods
 
@@ -369,20 +444,43 @@ TODO
 ```
 
 ```ruby
-TODO
+search_key = 'example'
+offset = 0
+limit = 100
+
+payment_method.find_in_batches_by_search_key(search_key,
+                                             offset,
+                                             limit,
+                                             options)
 ```
 
 > Example Response:
 
 ```ruby
-TODO
+[
+  {
+     "paymentMethodId":"6a0bf13e-d57f-4f79-84bd-3690135f1923",
+     "externalKey":"unknown",
+     "accountId":"f9c4801f-0daa-4c46-bea0-59490d07fc5e",
+     "isDefault":false,
+     "pluginName":"__EXTERNAL_PAYMENT__",
+     "pluginInfo":{
+        "properties":[]
+     },
+     "auditLogs":[]
+  }
+]
 ```
 
 
 **Query Parameters**
 
-None.
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **searchKey** | string | true | What you want to find? |
+| **offset** | long | true | offset |
+| **limit** | long | true | limit search items |
 
 **Returns**
 
-Returns a invoice payment object.
+Return a list with payment methods matched with the search key entered.
