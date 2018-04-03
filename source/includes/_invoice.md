@@ -18,12 +18,51 @@ The attributes are the following:
 * **`balance`** <span style="color:#32A9C7">*[System generated]*</span>
 * **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
 * **`bundleKeys`** <span style="color:#32A9C7">*TODO*</span>
-* **`credits`** <span style="color:#32A9C7">*[CreditJson]*</span>
-* **`items`** <span style="color:#32A9C7">*[InvoiceItemJson]*</span>
+* **`credits`** <span style="color:#32A9C7">*[See `Credit` below]*</span>
+* **`items`** <span style="color:#32A9C7">*[See `InvoiceItem` below]*</span>
 * **`isParentInvoice`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
 * **`parentInvoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
 * **`parentAccountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`auditLogs`** <span style="color:#32A9C7">*[AuditLogJson]*</span>
+* **`auditLogs`** <span style="color:#32A9C7">*[AuditLog]*</span>
+
+### Credit
+
+* **`creditAmount`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`currency`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`invoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`invoiceNumber`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`effectiveDate`** <span style="color:#32A9C7">*[User generated]*</span>
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`description`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`itemDetails`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`auditLogs`** <span style="color:#32A9C7">*[AuditLog]*</span>
+
+### InvoiceItem
+
+* **`invoiceItemId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`invoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`linkedInvoiceItemId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`childAccountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`bundleId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`subscriptionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`planName`** <span style="color:#32A9C7">*TODO*</span>
+* **`phaseName`** <span style="color:#32A9C7">*TODO*</span>
+* **`usageName`** <span style="color:#32A9C7">*TODO*</span>
+* **`prettyPlanName`** <span style="color:#32A9C7">*TODO*</span>
+* **`prettyPhaseName`** <span style="color:#32A9C7">*TODO*</span>
+* **`prettyUsageName`** <span style="color:#32A9C7">*TODO*</span>
+* **`itemType`** <span style="color:#32A9C7">*TODO*</span>
+* **`description`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`startDate`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`endDate`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`amount`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`rate`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`quantity`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`currency`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`itemDetails`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`childItems`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`auditLogs`** <span style="color:#32A9C7">*[AuditLog]*</span>
 
 ## Trigger an invoice generation
 
