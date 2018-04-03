@@ -6,30 +6,30 @@ The `Invoice` resource represent the invoice created by the user.
 
 The attributes are the following:
 
-* **`amount`** <span style="color:#32A9C7">*(number, optional, read only)*</span>
-* **`currency`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`status`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`creditAdj`** <span style="color:#32A9C7">*(number, optional, read only)*</span>
-* **`refundAdj`** <span style="color:#32A9C7">*(number, optional, read only)*</span>
-* **`invoiceId`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`invoiceDate`** <span style="color:#32A9C7">*(string, optional, read only*</span>
-* **`targetDate`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`invoiceNumber`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`balance`** <span style="color:#32A9C7">*(number, optional, read only)*</span>
-* **`accountId`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`bundleKeys`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`credits`** <span style="color:#32A9C7">*(Array[CreditJson], optional, read only)*</span>
-* **`items`** <span style="color:#32A9C7">*(Array[InvoiceItemJson], optional, read only)*</span>
-* **`is_parent_invoice`** <span style="color:#32A9C7">*(boolean, optional, read only)*</span>
-* **`isParentInvoice`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`parent_account_id`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`audit_logs`** <span style="color:#32A9C7">*(Array[AuditLogJson], optional, read only)*</span>
+* **`amount`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`currency`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`status`** <span style="color:#32A9C7">*[System generated]*</span>
+* **`creditAdj`** <span style="color:#32A9C7">*TODO*</span>
+* **`refundAdj`** <span style="color:#32A9C7">*TODO*</span>
+* **`invoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`invoiceDate`** <span style="color:#32A9C7">*[System generated]*<</span>
+* **`targetDate`** <span style="color:#32A9C7">*[User generated]*</span>
+* **`invoiceNumber`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`balance`** <span style="color:#32A9C7">*[System generated]*</span>
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`bundleKeys`** <span style="color:#32A9C7">*TODO*</span>
+* **`credits`** <span style="color:#32A9C7">*[CreditJson]*</span>
+* **`items`** <span style="color:#32A9C7">*[InvoiceItemJson]*</span>
+* **`isParentInvoice`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`parentInvoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`parentAccountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`auditLogs`** <span style="color:#32A9C7">*[AuditLogJson]*</span>
 
 ## Trigger an invoice generation
 
 **HTTP Request** 
 
-`POST /1.0/kb/invoices`
+`POST http://example.com/1.0/kb/invoices`
 
 > Example Request:
 
@@ -76,7 +76,7 @@ A `200` http status without content.
 
 **HTTP Request** 
 
-`POST /1.0/kb/invoices/{invoiceId}`
+`POST http://example.com/1.0/kb/invoices/{invoiceId}`
 
 > Example Request:
 
@@ -139,7 +139,7 @@ Returns a invoice object.
 
 **HTTP Request**
 
-`GET /1.0/kb/invoices/{invoiceId}`
+`GET http://example.com/1.0/kb/invoices/{invoiceId}`
 
 > Example Request:
 
@@ -212,7 +212,7 @@ Returns a invoice object.
 
 **HTTP Request**
 
-`DELETE /1.0/kb/invoices/{invoiceId}/{invoiceItemId}/cba`
+`DELETE http://example.com/1.0/kb/invoices/{invoiceId}/{invoiceItemId}/cba`
 
 > Example Request:
 
@@ -257,7 +257,7 @@ A `200` http status without content.
 
 **HTTP Request** 
 
-`POST /1.0/kb/invoices/{invoiceId}/customFields`
+`POST http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
 
 > Example Request:
 
@@ -310,7 +310,7 @@ Returns a custom field object.
 
 **HTTP Request** 
 
-`DELETE /1.0/kb/invoices/{invoiceId}/customFields`
+`DELETE http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
 
 > Example Request:
 
@@ -353,7 +353,7 @@ A `200` http status without content.
 
 **HTTP Request** 
 
-`GET /1.0/kb/invoices/{invoiceId}/customFields`
+`GET http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
 
 > Example Request:
 
@@ -401,7 +401,7 @@ Returns a list of custom field objects.
 
 **HTTP Request** 
 
-`GET /1.0/kb/invoices/{invoiceId}/html`
+`GET http://example.com/1.0/kb/invoices/{invoiceId}/html`
 
 > Example Request:
 
@@ -531,7 +531,7 @@ Returns a invoice rendered as HTML.
 
 **HTTP Request** 
 
-`POST /1.0/kb/invoices/{invoiceId}/payments`
+`POST http://example.com/1.0/kb/invoices/{invoiceId}/payments`
 
 > Example Request:
 
@@ -578,7 +578,7 @@ A `200` http status without content.
 
 **HTTP Request** 
 
-`PUT /1.0/kb/invoices/{invoiceId}/commitInvoice`
+`PUT http://example.com/1.0/kb/invoices/{invoiceId}/commitInvoice`
 
 > Example Request:
 
@@ -654,7 +654,7 @@ Returns a invoice object.
 
 **HTTP Request** 
 
-`GET /1.0/kb/invoices/{invoiceId}/tags`
+`GET http://example.com/1.0/kb/invoices/{invoiceId}/tags`
 
 > Example Request:
 
@@ -706,7 +706,7 @@ Returns a list of invoice tag objects.
 
 **HTTP Request** 
 
-`POST /1.0/kb/invoices/{invoiceId}/tags`
+`POST http://example.com/1.0/kb/invoices/{invoiceId}/tags`
 
 > Example Request:
 
@@ -760,7 +760,7 @@ Returns a invoice tag object.
 
 **HTTP Request** 
 
-`DELETE /1.0/kb/invoices/{invoiceId}/tags`
+`DELETE http://example.com/1.0/kb/invoices/{invoiceId}/tags`
 
 > Example Request:
 
@@ -803,7 +803,7 @@ A `200` http status without content.
 
 **HTTP Request** 
 
-`POST /1.0/kb/invoices/catalogTranslation/{locale}`
+`POST http://example.com/1.0/kb/invoices/catalogTranslation/{locale}`
 
 > Example Request:
 
@@ -849,7 +849,7 @@ A `200` http status without content.
 
 **HTTP Request** 
 
-`GET /1.0/kb/invoices/catalogTranslation/{locale}`
+`GET http://example.com/1.0/kb/invoices/catalogTranslation/{locale}`
 
 > Example Request:
 
@@ -886,7 +886,7 @@ A `200` http status without content.
 
 **HTTP Request** 
 
-`POST /1.0/kb/invoices/charges/{accountId}`
+`POST http://example.com/1.0/kb/invoices/charges/{accountId}`
 
 > Example Request:
 
@@ -949,7 +949,7 @@ Returns a invoice object.
 
 **HTTP Request** 
 
-`POST /1.0/kb/invoices/dryRun`
+`POST http://example.com/1.0/kb/invoices/dryRun`
 
 > Example Request:
 
@@ -1025,7 +1025,7 @@ Returns a invoice object.
 
 **HTTP Request** 
 
-`POST /1.0/kb/invoices/manualPayTemplate`
+`POST http://example.com/1.0/kb/invoices/manualPayTemplate`
 
 > Example Request:
 
@@ -1227,7 +1227,7 @@ Returns a invoice template.
 
 **HTTP Request** 
 
-`GET /1.0/kb/invoices/manualPayTemplate`
+`GET http://example.com/1.0/kb/invoices/manualPayTemplate`
 
 > Example Request:
 
@@ -1421,7 +1421,7 @@ Returns a invoice template.
 
 **HTTP Request** 
 
-`POST /1.0/kb/invoices/migration/{accountId}`
+`POST http://example.com/1.0/kb/invoices/migration/{accountId}`
 
 > Example Request:
 
@@ -1469,7 +1469,7 @@ A `200` http status without content.
 
 **HTTP Request** 
 
-`GET /1.0/kb/invoices/pagination`
+`GET http://example.com/1.0/kb/invoices/pagination`
 
 > Example Request:
 
@@ -1543,7 +1543,7 @@ Returns a list with all invoices.
 
 **HTTP Request** 
 
-`GET /1.0/kb/invoices/search/{searchKey}`
+`GET http://example.com/1.0/kb/invoices/search/{searchKey}`
 
 > Example Request:
 
@@ -1619,7 +1619,7 @@ Return a list with invoices matched with the search key entered.
 
 **HTTP Request** 
 
-`POST /1.0/kb/invoices/template`
+`POST http://example.com/1.0/kb/invoices/template`
 
 > Example Request:
 
@@ -1821,7 +1821,7 @@ Returns a invoice template.
 
 **HTTP Request** 
 
-`GET /1.0/kb/invoices/template`
+`GET http://example.com/1.0/kb/invoices/template`
 
 > Example Request:
 
@@ -2015,7 +2015,7 @@ Returns a invoice template.
 
 **HTTP Request** 
 
-`POST /1.0/kb/invoices/translation/{locale}`
+`POST http://example.com/1.0/kb/invoices/translation/{locale}`
 
 > Example Request:
 
@@ -2079,7 +2079,7 @@ A `200` http status without content.
 
 **HTTP Request** 
 
-`GET /1.0/kb/invoices/translation/{locale}`
+`GET http://example.com/1.0/kb/invoices/translation/{locale}`
 
 > Example Request:
 
