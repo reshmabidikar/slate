@@ -6,21 +6,40 @@ The `Invoice Payment` resource represent the invoice payments created by the use
 
 The attributes are the following:
 
-* **`targetInvoiceId`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`accountId`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`paymentId`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`paymentNumber`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`paymentExternalKey`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`authAmount`** <span style="color:#32A9C7">*(number, optional, read only)*</span>
-* **`capturedAmount`** <span style="color:#32A9C7">*(number, optional, read only*</span>
-* **`purchasedAmount`** <span style="color:#32A9C7">*(number, optional, read only)*</span>
-* **`refundedAmount`** <span style="color:#32A9C7">*(number, optional, read only)*</span>
-* **`creditedAmount`** <span style="color:#32A9C7">*(number, optional, read only)*</span>
-* **`currency`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`paymentMethodId`** <span style="color:#32A9C7">*(string, optional, read only)*</span>
-* **`transactions`** <span style="color:#32A9C7">*(Array[PaymentTransactionJson], optional, read only)*</span>
-* **`paymentAttempts`** <span style="color:#32A9C7">*(Array[PaymentAttemptJson], optional, read only)*</span>
-* **`auditLogs`** <span style="color:#32A9C7">*(Array[AuditLogJson], optional, read only)*</span>
+* **`targetInvoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`paymentId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`paymentNumber`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span>
+* **`authAmount`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`capturedAmount`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`purchasedAmount`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`refundedAmount`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`creditedAmount`** <span style="color:#32A9C7">"*[User or system generated]*</span>
+* **`currency`** <span style="color:#32A9C7">*[User or system generated]*</span>
+* **`paymentMethodId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`transactions`** <span style="color:#32A9C7">*[See `PaymentTransaction` bellow]*</span>
+* **`paymentAttempts`** <span style="color:#32A9C7">*[`PaymentAttemptJson`]*</span>
+* **`auditLogs`** <span style="color:#32A9C7">*[`AuditLog`]*</span>
+
+### PaymentTransaction
+
+* **`transactionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`transactionExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span> 
+* **`paymentId`** <span style="color:#32A9C7">*[System generated, immutable]*</span> 
+* **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span> 
+* **`amount`** <span style="color:#32A9C7">*TODO*</span> 
+* **`currency`** <span style="color:#32A9C7">*TODO*</span> 
+* **`effectiveDate`** <span style="color:#32A9C7">*TODO*</span> 
+* **`processedAmount`** <span style="color:#32A9C7">*TODO*</span> 
+* **`processedCurrency`** <span style="color:#32A9C7">*TODO*</span> 
+* **`status`** <span style="color:#32A9C7">*TODO*</span> 
+* **`gatewayErrorCode`** <span style="color:#32A9C7">*TODO*</span> 
+* **`gatewayErrorMsg`** <span style="color:#32A9C7">*TODO*</span> 
+* **`firstPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span> 
+* **`secondPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span> 
+* **`properties`** <span style="color:#32A9C7">*[`PluginProperty`]*</span> 
+* **`auditLogs`** <span style="color:#32A9C7">*[`AuditLog`]*</span>
 
 ## Retrieve a payment by id
 
@@ -92,6 +111,41 @@ KillBillClient::Model::InvoicePayment.find_by_id(payment_id,
 | ---- | -----| -------- | ----------- |
 | **withPluginInfo** | boolean | true | choose true if you want plugin info |
 | **withAttempts** | boolean | true | choose true if you want payment attempts |
+
+**Returns**
+
+Returns a invoice payment object.
+
+## Complete an existing transaction
+
+**HTTP Request** 
+
+`PUT /1.0/kb/invoicePayments/{paymentId}`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+TODO
+```
+
+> Example Response:
+
+```ruby
+TODO
+```
+
+
+**Query Parameters**
+
+None.
 
 **Returns**
 
@@ -402,10 +456,10 @@ custom_field.name = 'Test Custom Field'
 custom_field.value = 'test_value'
 
 invoice_payment.add_custom_field(custom_field, 
-                         user,
-                         reason,
-                         comment,
-                         options)
+                                 user,
+                                 reason,
+                                 comment,
+                                 options)
 ```
 
 > Example Response:
@@ -427,6 +481,60 @@ invoice_payment.add_custom_field(custom_field,
 **Query Parameters**
 
 None.
+
+**Returns**
+
+Returns a custom field object.
+
+## Modify custom fields to payment
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/invoicePayments/{paymentId}/customFields`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
+custom_field.name = 'Test Modify'
+custom_field.value = 'test_modify_value'
+
+invoice_payment.modify_custom_field(custom_field,                                                                                            
+                                    user, 
+                                    reason,
+                                    comment, 
+                                    options)
+```
+
+> Example Response:
+
+```ruby
+[
+   {
+      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
+      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
+      "objectType":"INVOICE_PAYMENT",
+      "name":"Test Modify",
+      "value":"test_modify_value",
+      "auditLogs":[]
+   }
+]
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **customFieldList** | string | true | a list of custom field objects that you want to modify |
 
 **Returns**
 
