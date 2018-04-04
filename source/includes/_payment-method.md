@@ -2,7 +2,7 @@
 
 ## Payment Method Resource
 
-The `Payment Method` resource represent the invoice payments created by the user.
+The `Payment Method` resource represent the payment methods associated to a account.
 
 The attributes are the following:
 

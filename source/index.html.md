@@ -7,6 +7,7 @@ includes:
   - invoice-payment
   - invoice
   - payment-method
+  - payment
   
 title: Kill Bill 
 
