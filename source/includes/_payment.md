@@ -198,11 +198,11 @@ transaction                      = KillBillClient::Model::Transaction.new
 transaction.payment_external_key = "example_payment_external_key"
 refresh_options                  = nil
 
-transaction.complete(user, 
-                     reason, 
-                     comment, 
-                     options, 
-                     refresh_options)
+transaction.complete_initial_transaction(user, 
+                                         reason, 
+                                         comment, 
+                                         options, 
+                                         refresh_options)
 ```
 
 > Example Response:
@@ -358,11 +358,11 @@ transaction            = KillBillClient::Model::Transaction.new
 transaction.payment_id = "7dcda896-808b-414c-aad4-74ddc98e3dcb"
 refresh_options        = nil
 
-transaction.complete(user, 
-                     reason, 
-                     comment, 
-                     options, 
-                     refresh_options)
+transaction.complete_initial_transaction(user, 
+                                         reason, 
+                                         comment, 
+                                         options, 
+                                         refresh_options)
 ```
 
 > Example Response:
