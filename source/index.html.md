@@ -5,6 +5,7 @@ includes:
   - catalog
   - credit
   - invoice-payment
+  - invoice
   
 title: Kill Bill 
 
