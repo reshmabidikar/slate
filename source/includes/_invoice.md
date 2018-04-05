@@ -631,63 +631,28 @@ TODO
 
 ```ruby
 invoice = KillBillClient::Model::Invoice.new
-invoice.invoice_id = "bd192838-34b3-4286-9a12-6a6f015bda13"
+invoice.invoice_id = "2c98cfa2-7929-4cc2-9397-1624fb72c6d5"
 
-with_plugin_info = false
-with_attempts = false
-audit = 'NONE'
-
-invoice.payments(with_plugin_info, with_attempts, audit, @options)
+invoice.commit(user, 
+               reason, 
+               comment, 
+               options)
 ```
 
 > Example Response:
 
 ```ruby
-[
-   {
-      "targetInvoiceId":"bd192838-34b3-4286-9a12-6a6f015bda13",
-      "accountId":"d83a7d29-f40e-4462-97f0-55994cadf69b",
-      "paymentId":"5004baeb-9663-4814-acae-4c5936a92188",
-      "paymentNumber":"478",
-      "paymentExternalKey":"5004baeb-9663-4814-acae-4c5936a92188",
-      "authAmount":0,
-      "capturedAmount":0,
-      "purchasedAmount":50.0,
-      "refundedAmount":0,
-      "creditedAmount":0,
-      "currency":"USD",
-      "paymentMethodId":"be18d2e4-9e49-4bc7-861e-fb9eaa711675",
-      "transactions":[
-         {
-            "transactionId":"bd138306-63a7-41e5-8afb-837f922f3697",
-            "transactionExternalKey":"bd138306-63a7-41e5-8afb-837f922f3697",
-            "paymentId":"5004baeb-9663-4814-acae-4c5936a92188",
-            "paymentExternalKey":"5004baeb-9663-4814-acae-4c5936a92188",
-            "transactionType":"PURCHASE",
-            "amount":50.0,
-            "currency":"USD",
-            "effectiveDate":"2013-08-01T06:00:02.000Z",
-            "processedAmount":50.0,
-            "processedCurrency":"USD",
-            "status":"SUCCESS"
-         }
-      ]
-   }
-]
+no content
 ```
 
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **withPluginInfo** | boolean | false | Choose true if you want plugin info. |
-| **withAttempts** | boolean | false | Choose true if you want payment attempts. |
-| **audit** | enum | false | level of audit logs returned |
+None. 
 
 **Returns**
 
-Returns a invoice object.
+A `200` http status without content.
 
 ## Retrieve invoice tags
 
@@ -855,9 +820,10 @@ TODO
 ```
 
 ```ruby
-catalog_translation = 'locale_example'
-locale = "en_GB"
+catalog_translation = 'sports-monthly = Voiture Sport'
+locale = "fr_FR"
 delete_if_exists = false
+
 KillBillClient::Model::Invoice.upload_catalog_translation(catalog_translation, 
                                                           locale, 
                                                           delete_if_exists, 
@@ -870,7 +836,7 @@ KillBillClient::Model::Invoice.upload_catalog_translation(catalog_translation,
 > Example Response:
 
 ```ruby
-"locale_example"
+"sports-monthly = Voiture Sport"
 ```
 
 
@@ -901,7 +867,7 @@ TODO
 ```
 
 ```ruby
-locale = "en_GB"
+locale = "fr_FR"
 KillBillClient::Model::Invoice.get_catalog_translation(locale, 
                                                        options)
 ```
@@ -909,7 +875,7 @@ KillBillClient::Model::Invoice.get_catalog_translation(locale,
 > Example Response:
 
 ```ruby
-"locale_example"
+"sports-monthly = Voiture Sport"
 ```
 
 
@@ -1001,6 +967,10 @@ TODO
 ```
 
 ```ruby
+#
+# This case is when you create a dry-run invoice with UPCOMING_INVOICE, 
+# to see what is the next invoice that the system will generate for this account 
+# 
 account_id = "5527abbc-d83d-447f-bf3d-ab9542ea631e"
 target_date = nil
 upcoming_invoice_target_date = true
@@ -1009,7 +979,6 @@ KillBillClient::Model::Invoice.trigger_invoice_dry_run(account_id,
                                                        target_date, 
                                                        upcoming_invoice_target_date, 
                                                        options)
-
 ```
 
 > Example Response:
@@ -2068,7 +2037,7 @@ TODO
 
 ```ruby
 invoice_translation = get_resource_as_string("InvoiceTranslation_fr_FR.properties")
-locale = "en_GB"
+locale = "fr_FR"
 delete_if_exists = false
 KillBillClient::Model::Invoice.upload_invoice_translation(invoice_translation,
                                                           locale,
@@ -2131,8 +2100,8 @@ TODO
 ```
 
 ```ruby
-locale = "en_GB"
-KillBillClient::Model::Invoice.get_catalog_translation(locale,
+locale = "fr_FR"
+KillBillClient::Model::Invoice.get_invoice_translation(locale,
                                                        options)
 ```
 
