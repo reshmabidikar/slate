@@ -8,6 +8,7 @@ includes:
   - invoice
   - payment-method
   - payment
+  - subscription
   
 title: Kill Bill 
 
