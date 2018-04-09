@@ -28,7 +28,7 @@ The attributes are the following:
 * **`priceOverrides`** <span style="color:#32A9C7">*[`PhasePriceOverride`]*</span>
 * **`auditLogs`** <span style="color:#32A9C7">*[`AuditLog`]*</span>
 
-## Create an entitlement
+## Create an subscription
 
 **HTTP Request** 
 
@@ -142,7 +142,7 @@ subscription.create(user,
 
 Returns a subscription object.
 
-## Cancel an entitlement plan
+## Cancel an subscription plan
 
 **HTTP Request** 
 
@@ -293,7 +293,7 @@ KillBillClient::Model::Subscription.find_by_id(subscription_id, options)
 
 Returns a subscription object.
 
-## Change entitlement plan
+## Change subscription plan
 
 **HTTP Request** 
 
@@ -901,7 +901,7 @@ subscription.add_tag(tag_name,
 
 Returns a bundle tag object.
 
-## Un-cancel an entitlement
+## Un-cancel an subscription
 
 **HTTP Request** 
 
@@ -1086,7 +1086,7 @@ no content
 
 A `200` http status without content.
 
-## Undo a pending change plan on an entitlement
+## Undo a pending change plan on an subscription
 
 **HTTP Request** 
 
