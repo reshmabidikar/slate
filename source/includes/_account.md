@@ -63,6 +63,13 @@ account.find_by_external_key(external_key,
                              options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+external_key = 'example_external_key'
+
+account.get_account(external_key, api_key, api_secret)
+```
+
 > Example Response:
 
 ```shell
@@ -102,7 +109,37 @@ account.find_by_external_key(external_key,
    "auditLogs":[]
 }
 ```
-
+```python
+{
+ 'account_balance': None,
+ 'account_cba': None,
+ 'account_id': '07c0cef4-41c5-4606-b2cd-661332cdd41c',
+ 'address1': None,
+ 'address2': None,
+ 'audit_logs': [],
+ 'bill_cycle_day_local': 0,
+ 'city': None,
+ 'company': None,
+ 'country': 'USA',
+ 'currency': 'USD',
+ 'email': None,
+ 'external_key': 'example_external_key',
+ 'first_name_length': None,
+ 'is_migrated': False,
+ 'is_notified_for_invoices': False,
+ 'is_payment_delegated_to_parent': False,
+ 'locale': None,
+ 'name': 'John',
+ 'notes': None,
+ 'parent_account_id': None,
+ 'payment_method_id': None,
+ 'phone': None,
+ 'postal_code': None,
+ 'reference_time': datetime.datetime(2018, 5, 3, 15, 53, 44, tzinfo=tzutc()),
+ 'state': 'CA',
+ 'time_zone': 'UTC'
+}
+```
 
 **Query Parameters**
 
@@ -158,9 +195,19 @@ account.email = "john@example.com"
 account.currency = "USD"
 
 account.create(user, reason, comment, options)
-
 ```
+```python
+account = killbill.api.AccountApi()
+created_by = 'example'
+body = Account(name='John Doe', 
+               email='john@example.com', 
+               currency='USD')
 
+account.create_account(body, 
+                       created_by, 
+                       api_key, 
+                       api_secret)
+```
 > Example Response:
 
 ```shell
@@ -189,13 +236,17 @@ account.create(user, reason, comment, options)
 }
 ```
 
+```python
+no content
+```
+
 **Query Parameters**
 
 None.
 
 **Responses**
 
-A `201` http status if this was successful and a `Location` header to indicatate how to fetch the resource.
+A `201` http status if this was successful and a `Location` header to indicate how to fetch the resource.
 
 ## Retrieve an Account by its ID
 
@@ -231,6 +282,12 @@ account.find_by_id(account_id,
                    with_balance, 
                    with_balance_and_cba,
                    options)
+```
+```python
+account = killbill.api.AccountApi()
+account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
+account.get_account(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -270,6 +327,37 @@ account.find_by_id(account_id,
    "accountBalance":null,
    "accountCBA":null,
    "auditLogs":[]
+}
+```
+```python
+{
+ 'account_balance': None,
+ 'account_cba': None,
+ 'account_id': '07c0cef4-41c5-4606-b2cd-661332cdd41c',
+ 'address1': None,
+ 'address2': None,
+ 'audit_logs': [],
+ 'bill_cycle_day_local': 0,
+ 'city': None,
+ 'company': None,
+ 'country': 'USA',
+ 'currency': 'USD',
+ 'email': None,
+ 'external_key': 'rpwtgr',
+ 'first_name_length': None,
+ 'is_migrated': False,
+ 'is_notified_for_invoices': False,
+ 'is_payment_delegated_to_parent': False,
+ 'locale': None,
+ 'name': 'John',
+ 'notes': None,
+ 'parent_account_id': None,
+ 'payment_method_id': None,
+ 'phone': None,
+ 'postal_code': None,
+ 'reference_time': datetime.datetime(2018, 5, 3, 15, 53, 44, tzinfo=tzutc()),
+ 'state': 'CA',
+ 'time_zone': 'UTC'
 }
 ```
 
@@ -313,6 +401,19 @@ account.update(treat_null_as_reset,
                options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+created_by = 'example'
+body = Account(name='Another Name')
+
+account.update_account(account_id, 
+                       body, 
+                       created_by, 
+                       api_key, 
+                       api_secret)
+```
+
 > Example Response:
 
 ```shell
@@ -344,6 +445,9 @@ account.update(treat_null_as_reset,
    "auditLogs":[]
 }
 ```
+```python
+no content
+```
 
 
 **Query Parameters**
@@ -370,6 +474,13 @@ TODO
 
 ```java
 TODO
+```
+
+```python
+account = killbill.api.AccountApi()
+account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
+account.get_account_tags(account_id, api_key, api_secret)
 ```
 
 ```ruby
@@ -403,7 +514,18 @@ account.all_tags(object_type,
    }
 ]
 ```
-
+```python
+[
+  {
+    'audit_logs': [],
+    'object_id': '8f2618dc-9e8e-4df6-b835-68c747a48313',
+    'object_type': 'ACCOUNT',
+    'tag_definition_id': '00000000-0000-0000-0000-000000000002',
+    'tag_definition_name': 'AUTO_INVOICING_OFF',
+    'tag_id': '726a64eb-0fc2-4e1b-81c4-ebf879a3b5b6'
+  }
+]
+```
 
 **Query Parameters**
 
@@ -453,6 +575,22 @@ account.set_blocking_state(state_name,
                            options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+body = BlockingState(state_name='STATE1',
+                     service='ServiceStateService',
+                     is_block_change=False,
+                     is_block_entitlement=False,
+                     is_block_billing=False)
+
+account.add_account_blocking_state(account_id, 
+                                   body, 
+                                   created_by, 
+                                   api_key, 
+                                   api_secret)
+```
+
 > Example Response:
 
 ```shell
@@ -475,6 +613,9 @@ account.set_blocking_state(state_name,
       "auditLogs":[]
    }
 ]
+```
+```python
+no content
 ```
 
 
@@ -515,6 +656,12 @@ account.blocking_states(blocking_state_types,
                         options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
+account.get_blocking_states(account_id, api_key, api_secret)
+```
 > Example Response:
 
 ```shell
@@ -538,7 +685,21 @@ account.blocking_states(blocking_state_types,
    }
 ]
 ```
-
+```python
+[
+  {
+    'audit_logs': [],
+    'blocked_id': '7e7dd5a9-6b65-4f40-a14b-1f4f408ef83c',
+    'effective_date': datetime.datetime(2018, 5, 3, 19, 19, 12, tzinfo=tzutc()),
+    'is_block_billing': False,
+    'is_block_change': False,
+    'is_block_entitlement': False,
+    'service': 'ServiceStateService',
+    'state_name': 'STATE1',
+    'type': 'ACCOUNT'
+  }
+]
+```
 
 **Query Parameters**
 
@@ -570,6 +731,13 @@ TODO
 
 ```ruby
 account.bundles(options)
+```
+
+```python
+account = killbill.api.AccountApi()
+account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
+
+account.get_account_bundles(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -1219,6 +1387,125 @@ account.bundles(options)
    }
 ]
 ```
+```python
+[{'account_id': '8992e146-bfa1-4126-a045-98b844a4adcb',
+ 'audit_logs': [],
+ 'bundle_id': 'd636e7e9-e1e3-43ff-94a6-01a868b064cc',
+ 'external_key': 'd636e7e9-e1e3-43ff-94a6-01a868b064cc',
+ 'subscriptions': [{'account_id': '8992e146-bfa1-4126-a045-98b844a4adcb',
+                    'audit_logs': [],
+                    'bill_cycle_day_local': 2,
+                    'billing_end_date': None,
+                    'billing_period': 'MONTHLY',
+                    'billing_start_date': datetime.date(2018, 5, 3),
+                    'bundle_id': 'd636e7e9-e1e3-43ff-94a6-01a868b064cc',
+                    'cancelled_date': None,
+                    'charged_through_date': None,
+                    'events': [{'audit_logs': [],
+                                'billing_period': 'MONTHLY',
+                                'effective_date': datetime.date(2018, 5, 3),
+                                'event_id': 'efa8c4ae-a514-4950-b6f5-58f1e1d17846',
+                                'event_type': 'START_ENTITLEMENT',
+                                'is_blocked_billing': False,
+                                'is_blocked_entitlement': False,
+                                'phase': 'standard-monthly-trial',
+                                'plan': 'standard-monthly',
+                                'price_list': 'DEFAULT',
+                                'product': 'Standard',
+                                'service_name': 'entitlement-service',
+                                'service_state_name': 'ENT_STARTED'},
+                               {'audit_logs': [],
+                                'billing_period': 'MONTHLY',
+                                'effective_date': datetime.date(2018, 5, 3),
+                                'event_id': '94470035-33c0-42bc-a041-58aa13bdae93',
+                                'event_type': 'START_BILLING',
+                                'is_blocked_billing': False,
+                                'is_blocked_entitlement': False,
+                                'phase': 'standard-monthly-trial',
+                                'plan': 'standard-monthly',
+                                'price_list': 'DEFAULT',
+                                'product': 'Standard',
+                                'service_name': 'billing-service',
+                                'service_state_name': 'START_BILLING'},
+                               {'audit_logs': [],
+                                'billing_period': 'MONTHLY',
+                                'effective_date': datetime.date(2018, 6, 2),
+                                'event_id': '9d369364-1a5d-4291-9ecd-4cb0617ef5b3',
+                                'event_type': 'PHASE',
+                                'is_blocked_billing': False,
+                                'is_blocked_entitlement': False,
+                                'phase': 'standard-monthly-evergreen',
+                                'plan': 'standard-monthly',
+                                'price_list': 'DEFAULT',
+                                'product': 'Standard',
+                                'service_name': 'entitlement+billing-service',
+                                'service_state_name': 'PHASE'}],
+                    'external_key': 'd636e7e9-e1e3-43ff-94a6-01a868b064cc',
+                    'phase_type': 'TRIAL',
+                    'plan_name': 'standard-monthly',
+                    'price_list': 'DEFAULT',
+                    'price_overrides': [{'fixed_price': 0.0,
+                                         'phase_name': 'standard-monthly-trial',
+                                         'phase_type': 'TRIAL',
+                                         'plan_name': 'standard-monthly',
+                                         'recurring_price': None,
+                                         'usage_price_overrides': []},
+                                        {'fixed_price': None,
+                                         'phase_name': 'standard-monthly-evergreen',
+                                         'phase_type': 'EVERGREEN',
+                                         'plan_name': 'standard-monthly',
+                                         'recurring_price': 100.0,
+                                         'usage_price_overrides': []}],
+                    'product_category': 'BASE',
+                    'product_name': 'Standard',
+                    'source_type': 'NATIVE',
+                    'start_date': datetime.date(2018, 5, 3),
+                    'state': 'ACTIVE',
+                    'subscription_id': 'a0f6dcd9-4dbc-43d2-876a-9dcc7dfb7d3b'}],
+ 'timeline': {'account_id': '8992e146-bfa1-4126-a045-98b844a4adcb',
+              'audit_logs': [],
+              'bundle_id': 'd636e7e9-e1e3-43ff-94a6-01a868b064cc',
+              'events': [{'audit_logs': [],
+                          'billing_period': 'MONTHLY',
+                          'effective_date': datetime.date(2018, 5, 3),
+                          'event_id': 'efa8c4ae-a514-4950-b6f5-58f1e1d17846',
+                          'event_type': 'START_ENTITLEMENT',
+                          'is_blocked_billing': False,
+                          'is_blocked_entitlement': False,
+                          'phase': 'standard-monthly-trial',
+                          'plan': 'standard-monthly',
+                          'price_list': 'DEFAULT',
+                          'product': 'Standard',
+                          'service_name': 'entitlement-service',
+                          'service_state_name': 'ENT_STARTED'},
+                         {'audit_logs': [],
+                          'billing_period': 'MONTHLY',
+                          'effective_date': datetime.date(2018, 5, 3),
+                          'event_id': '94470035-33c0-42bc-a041-58aa13bdae93',
+                          'event_type': 'START_BILLING',
+                          'is_blocked_billing': False,
+                          'is_blocked_entitlement': False,
+                          'phase': 'standard-monthly-trial',
+                          'plan': 'standard-monthly',
+                          'price_list': 'DEFAULT',
+                          'product': 'Standard',
+                          'service_name': 'billing-service',
+                          'service_state_name': 'START_BILLING'},
+                         {'audit_logs': [],
+                          'billing_period': 'MONTHLY',
+                          'effective_date': datetime.date(2018, 6, 2),
+                          'event_id': '9d369364-1a5d-4291-9ecd-4cb0617ef5b3',
+                          'event_type': 'PHASE',
+                          'is_blocked_billing': False,
+                          'is_blocked_entitlement': False,
+                          'phase': 'standard-monthly-evergreen',
+                          'plan': 'standard-monthly',
+                          'price_list': 'DEFAULT',
+                          'product': 'Standard',
+                          'service_name': 'entitlement+billing-service',
+                          'service_state_name': 'PHASE'}],
+              'external_key': 'd636e7e9-e1e3-43ff-94a6-01a868b064cc'}}]
+```
 
 
 **Query Parameters**
@@ -1252,12 +1539,23 @@ account.cba_rebalancing(user,
                         options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+
+account.rebalance_existing_cba_on_account(account_id, 
+                                          created_by, 
+                                          api_key, 
+                                          api_secret)
+```
+
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -1296,6 +1594,13 @@ childrens_account = KillBillClient::Model::Account.children(account_id,
                                                             options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
+
+account.get_children_accounts(account_id, api_key, api_secret)
+```
+
 > Example Response:
 
 ```shell
@@ -1331,6 +1636,39 @@ childrens_account = KillBillClient::Model::Account.children(account_id,
    }
 ]
 ```
+```python
+[
+    {
+     'account_balance': None,
+     'account_cba': None,
+     'account_id': '07c0cef4-41c5-4606-b2cd-661332cdd41c',
+     'address1': None,
+     'address2': None,
+     'audit_logs': [],
+     'bill_cycle_day_local': 0,
+     'city': None,
+     'company': None,
+     'country': 'USA',
+     'currency': 'USD',
+     'email': None,
+     'external_key': 'rpwtgr',
+     'first_name_length': None,
+     'is_migrated': False,
+     'is_notified_for_invoices': False,
+     'is_payment_delegated_to_parent': False,
+     'locale': None,
+     'name': 'John',
+     'notes': None,
+     'parent_account_id': None,
+     'payment_method_id': None,
+     'phone': None,
+     'postal_code': None,
+     'reference_time': datetime.datetime(2018, 5, 3, 15, 53, 44, tzinfo=tzutc()),
+     'state': 'CA',
+     'time_zone': 'UTC'
+    }
+]
+```
 
 
 **Query Parameters**
@@ -1364,16 +1702,26 @@ TODO
 ```ruby
 custom_field_id = custom_field.id
 
-account.remove_custom_field(custom_field_id                                                                                           eld_id, 
+account.remove_custom_field(custom_field_id, 
                             user, 
                             reason,
                             comment, 
                             options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
+
+account.get_account_custom_fields(account_id, api_key, api_secret)
+```
+
 > Example Response:
 
 ```ruby
+no content
+```
+```python
 no content
 ```
 
@@ -1409,6 +1757,12 @@ audit = 'NONE'
 
 account.custom_fields(audit, options)
 ```
+```python
+account = killbill.api.AccountApi()
+account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
+
+account.get_account_custom_fields(account_id, api_key, api_secret)
+```
 
 > Example Response:
 
@@ -1422,6 +1776,18 @@ account.custom_fields(audit, options)
       "value":"test_value",
       "auditLogs":[]
    }
+]
+```
+```python
+[
+ {
+   'audit_logs': [],
+   'custom_field_id': 'd7bb1afb-df19-4db2-ba7f-9a4f71e9b131',
+   'name': 'Test Custom Field',
+   'object_id': '89c45186-8ab0-44f8-8bc9-e670924830a2',
+   'object_type': 'ACCOUNT',
+   'value': 'test_value'
+ }
 ]
 ```
 
@@ -1464,6 +1830,17 @@ account.add_custom_field(custom_field,
                          comment,
                          options)
 ```
+```python
+account = killbill.api.AccountApi()
+account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
+body = CustomField(name='Test Custom Field', value='test_value')
+
+account.create_account_custom_fields(account_id,
+                                     [body],
+                                     created_by,
+                                     api_key,
+                                     api_secret)
+```
 
 > Example Response:
 
@@ -1478,6 +1855,9 @@ account.add_custom_field(custom_field,
       "auditLogs":[]
    }
 ]
+```
+```python
+no content
 ```
 **Query Parameters**
 
@@ -1506,7 +1886,7 @@ TODO
 ```ruby
 account_email_notifications = KillBillClient::Model::Account.new
 account_email_notifications.account_id = account.account_id
-account_email_notifications.is_notified_for_invoices = 'true'
+account_email_notifications.is_notified_for_invoices = true
       
 account_email_notifications.update_email_notifications(user,
                                                        reason,
@@ -1514,9 +1894,24 @@ account_email_notifications.update_email_notifications(user,
                                                        options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
+body = InvoiceEmail(account_id=account_id, is_notified_for_invoices=True)
+
+account.set_email_notifications_for_account(account_id,
+                                            body,
+                                            created_by,
+                                            api_key,
+                                            api_secret)
+```
+
 > Example Response:
 
 ```ruby
+no content
+```
+```python
 no content
 ```
 
@@ -1549,6 +1944,13 @@ TODO
 account.email_notifications(options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
+
+account.get_email_notifications_for_account(account_id, api_key, api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -1557,7 +1959,13 @@ account.email_notifications(options)
    "isNotifiedForInvoices":true
 }
 ```
-
+```python
+{
+ 'account_id': 'c84de569-b654-4f7f-ab13-17616302d310',
+ 'audit_logs': [],
+ 'is_notified_for_invoices': True
+}
+```
 
 **Query Parameters**
 
@@ -1588,6 +1996,13 @@ audit = 'NONE'
 account.emails(audit, options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = 'c8f51346-562d-429b-8c89-27a0f72009b3'
+
+account.get_emails(account_id, api_key, api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -1596,6 +2011,15 @@ account.emails(audit, options)
       "accountId":"e4ca38b3-934d-42e8-a292-ffb0af5549f2",
       "email":"email@example.com"
    }
+]
+```
+```python
+[
+  {
+    'account_id': 'c8f51346-562d-429b-8c89-27a0f72009b3',
+    'audit_logs': [],
+    'email': 'email@example.com'
+  }
 ]
 ```
 
@@ -1634,9 +2058,24 @@ account.add_email(account.email,
                   options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
+body = AccountEmail(account_id=account_id, email='email@example.com')
+
+account.add_email(account_id,
+                  body,
+                  created_by,
+                  api_key,
+                  api_secret)
+```
+
 > Example Response:
 
 ```ruby
+no content
+```
+```python
 no content
 ```
 
@@ -1675,12 +2114,26 @@ account.remove_email(email,
                      options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
+email = 'email@example.com'
+
+account.remove_email(account_id,
+                     email,
+                     created_by,
+                     api_key,
+                     api_secret)
+```
+
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -1715,6 +2168,13 @@ account.invoice_payments(audit,
                          with_plugin_info,
                          with_attempts,
                          options)
+```
+
+```python
+account = killbill.api.AccountApi()
+account_id = '110952d7-1b7e-482c-b6bb-103e46794927'
+
+account.get_invoice_payments(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -1754,7 +2214,39 @@ account.invoice_payments(audit,
    }
 ]
 ```
-
+```python
+[{'account_id': '110952d7-1b7e-482c-b6bb-103e46794927',
+ 'audit_logs': [],
+ 'auth_amount': 0.0,
+ 'captured_amount': 0.0,
+ 'credited_amount': 0.0,
+ 'currency': 'USD',
+ 'payment_attempts': None,
+ 'payment_external_key': '00ac58a6-7f0e-4149-9682-7d2110a18fb7',
+ 'payment_id': '00ac58a6-7f0e-4149-9682-7d2110a18fb7',
+ 'payment_method_id': '4a2a793a-48b0-41f1-ab7e-eff4efda3747',
+ 'payment_number': '291',
+ 'purchased_amount': 50.0,
+ 'refunded_amount': 0.0,
+ 'target_invoice_id': '9696fb14-6016-484d-b288-f57854d61193',
+ 'transactions': [{'amount': 50.0,
+                   'audit_logs': [],
+                   'currency': 'USD',
+                   'effective_date': datetime.datetime(2018, 5, 4, 16, 51, 1, tzinfo=tzutc()),
+                   'first_payment_reference_id': None,
+                   'gateway_error_code': None,
+                   'gateway_error_msg': None,
+                   'payment_external_key': '00ac58a6-7f0e-4149-9682-7d2110a18fb7',
+                   'payment_id': '00ac58a6-7f0e-4149-9682-7d2110a18fb7',
+                   'processed_amount': 50.0,
+                   'processed_currency': 'USD',
+                   'properties': None,
+                   'second_payment_reference_id': None,
+                   'status': 'SUCCESS',
+                   'transaction_external_key': '1063f716-cf90-42fe-aa2c-888fa21cf4bb',
+                   'transaction_id': '1063f716-cf90-42fe-aa2c-888fa21cf4bb',
+                   'transaction_type': 'PURCHASE'}]}]
+```
 
 **Query Parameters**
 
@@ -1797,9 +2289,23 @@ invoice_payment.bulk_create(external_payment,
                             options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
+
+account.pay_all_invoices(account_id, 
+                         created_by,
+                         api_key, 
+                         api_secret, 
+                         external_payment=True)
+```
+
 > Example Response:
 
 ```ruby
+no content
+```
+```python
 no content
 ```
 
@@ -1836,6 +2342,13 @@ account.invoices(with_items,
                  options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
+
+account.get_invoices_for_account(account_id, api_key, api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -1870,7 +2383,60 @@ account.invoices(with_items,
    }
 ]
 ```
-
+```python
+[{'account_id': '82ecbf80-ddd2-4208-92be-2d3b2b7fc266',
+ 'amount': 0.0,
+ 'audit_logs': [],
+ 'balance': 0.0,
+ 'bundle_keys': None,
+ 'credit_adj': 0.0,
+ 'credits': None,
+ 'currency': 'USD',
+ 'invoice_date': datetime.date(2018, 5, 4),
+ 'invoice_id': 'da4a1c85-c18c-4d88-8005-e3c4039c218b',
+ 'invoice_number': '764',
+ 'is_parent_invoice': False,
+ 'items': [],
+ 'parent_account_id': None,
+ 'parent_invoice_id': None,
+ 'refund_adj': 0.0,
+ 'status': 'COMMITTED',
+ 'target_date': datetime.date(2018, 5, 4)}, {'account_id': '82ecbf80-ddd2-4208-92be-2d3b2b7fc266',
+ 'amount': 0.0,
+ 'audit_logs': [],
+ 'balance': 0.0,
+ 'bundle_keys': None,
+ 'credit_adj': 0.0,
+ 'credits': None,
+ 'currency': 'USD',
+ 'invoice_date': datetime.date(2018, 5, 4),
+ 'invoice_id': '00b24709-160b-4472-8741-e0f271a67fe0',
+ 'invoice_number': '765',
+ 'is_parent_invoice': False,
+ 'items': [],
+ 'parent_account_id': None,
+ 'parent_invoice_id': None,
+ 'refund_adj': 0.0,
+ 'status': 'COMMITTED',
+ 'target_date': datetime.date(2018, 5, 4)}, {'account_id': '82ecbf80-ddd2-4208-92be-2d3b2b7fc266',
+ 'amount': 50.0,
+ 'audit_logs': [],
+ 'balance': 50.0,
+ 'bundle_keys': None,
+ 'credit_adj': 0.0,
+ 'credits': None,
+ 'currency': 'USD',
+ 'invoice_date': datetime.date(2018, 5, 4),
+ 'invoice_id': '6e2be596-f6f0-4453-9551-3638af9088d2',
+ 'invoice_number': '766',
+ 'is_parent_invoice': False,
+ 'items': [],
+ 'parent_account_id': None,
+ 'parent_invoice_id': None,
+ 'refund_adj': 0.0,
+ 'status': 'COMMITTED',
+ 'target_date': datetime.date(2018, 5, 4)}]
+```
 
 **Query Parameters**
 
@@ -1902,6 +2468,13 @@ TODO
 account.overdue(options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
+
+account.get_overdue_account(account_id, api_key, api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -1918,7 +2491,17 @@ account.overdue(options)
    "clearState":true
 }
 ```
-
+```python
+{
+ 'days_between_payment_retries': [8, 8, 8],
+ 'external_message': '',
+ 'is_block_changes': False,
+ 'is_clear_state': True,
+ 'is_disable_entitlement_and_changes_blocked': False,
+ 'name': '__KILLBILL__CLEAR__OVERDUE_STATE__',
+ 'reevaluation_interval_days': None
+}
+```
 
 **Query Parameters**
 
@@ -1952,7 +2535,12 @@ payment_method.find_all_by_account_id(account_id,
                                       with_plugin_info,
                                       options)
 ```
+```python
+account = killbill.api.AccountApi()
+account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 
+account.get_payment_methods_for_account(account_id, api_key, api_secret)
+```
 > Example Response:
 
 ```ruby
@@ -1968,7 +2556,15 @@ payment_method.find_all_by_account_id(account_id,
    "auditLogs":[]
 }
 ```
-
+```python
+[{'account_id': '88a5987a-1e1c-47c5-ba95-34ef14db3d46',
+ 'audit_logs': [],
+ 'external_key': 'unknown',
+ 'is_default': False,
+ 'payment_method_id': 'f49b513b-f045-46d8-9886-7f28df87e2a6',
+ 'plugin_info': None,
+ 'plugin_name': '__EXTERNAL_PAYMENT__'}]
+```
 
 **Query Parameters**
 
@@ -2011,6 +2607,18 @@ pm.create(is_default,
           options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = '059ecfb8-6b4d-4a89-9537-63a687e6cf10'
+body = PaymentMethod(plugin_name='__EXTERNAL_PAYMENT__', plugin_info=None)
+
+account.create_payment_method(account_id, 
+                              body, 
+                              created_by, 
+                              api_key, 
+                              api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -2026,7 +2634,9 @@ pm.create(is_default,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -2065,12 +2675,25 @@ KillBillClient::Model::PaymentMethod.set_default(payment_method_id,
                                                  options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
+payment_method_id = '4f124c0d-cee7-49b1-a181-3b0738c685d7'
+
+account.set_default_payment_method(account_id, 
+                                   payment_method_id, 
+                                   created_by, 
+                                   api_key, 
+                                   api_secret)
+```
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -2102,6 +2725,12 @@ TODO
 account.payments(options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
+
+account.get_payments_for_account(account_id, api_key, api_secret)
+```
 > Example Response:
 
 ```ruby
@@ -2142,7 +2771,38 @@ account.payments(options)
    }
 ]
 ```
-
+```python
+[{'account_id': 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61',
+ 'audit_logs': [],
+ 'auth_amount': 0.0,
+ 'captured_amount': 0.0,
+ 'credited_amount': 0.0,
+ 'currency': 'USD',
+ 'payment_attempts': None,
+ 'payment_external_key': 'cf34a5e5-b933-4efd-8e6d-502e8ae6be81',
+ 'payment_id': 'cf34a5e5-b933-4efd-8e6d-502e8ae6be81',
+ 'payment_method_id': '58065d90-6fb1-40ff-bbcb-aa21b45c76c0',
+ 'payment_number': '294',
+ 'purchased_amount': 50.0,
+ 'refunded_amount': 0.0,
+ 'transactions': [{'amount': 50.0,
+                   'audit_logs': [],
+                   'currency': 'USD',
+                   'effective_date': datetime.datetime(2018, 5, 4, 18, 1, 15, tzinfo=tzutc()),
+                   'first_payment_reference_id': None,
+                   'gateway_error_code': None,
+                   'gateway_error_msg': None,
+                   'payment_external_key': 'cf34a5e5-b933-4efd-8e6d-502e8ae6be81',
+                   'payment_id': 'cf34a5e5-b933-4efd-8e6d-502e8ae6be81',
+                   'processed_amount': 50.0,
+                   'processed_currency': 'USD',
+                   'properties': None,
+                   'second_payment_reference_id': None,
+                   'status': 'SUCCESS',
+                   'transaction_external_key': 'd1d52998-dc41-4f03-93e9-7f9a59445bb7',
+                   'transaction_id': 'd1d52998-dc41-4f03-93e9-7f9a59445bb7',
+                   'transaction_type': 'PURCHASE'}]}]
+```
 
 **Query Parameters**
 
@@ -2207,6 +2867,22 @@ transaction.credit(account.account_id,
                    refresh_options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
+payment_method_id = '80c7b386-97b2-424c-bb4e-0017f92bc6eb'
+
+# transaction_type could be 'AUTHORIZE', 'PURCHASE' or 'CREDIT'
+body = PaymentTransaction(amount=50, transaction_type='AUTHORIZE')
+
+account.process_payment(account_id, 
+                        body, 
+                        created_by, 
+                        api_key, 
+                        api_secret, 
+                        payment_method_id=payment_method_id)
+```
+
 > Example Response:
 
 ```ruby
@@ -2240,6 +2916,9 @@ transaction.credit(account.account_id,
    ],
    "auditLogs":[]
 }
+```
+```python
+no content
 ```
 
 
@@ -2279,6 +2958,17 @@ account.add_tag(tag_name,
                 options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
+tag = ["00000000-0000-0000-0000-000000000002"]
+
+account.create_account_tags(account_id, 
+                            tag, 
+                            created_by, 
+                            api_key, 
+                            api_secret)
+```
 > Example Response:
 
 ```ruby
@@ -2295,7 +2985,9 @@ account.add_tag(tag_name,
    }
 ]
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -2333,12 +3025,25 @@ account.remove_tag(tag_name,
                    options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
+tag = ["00000000-0000-0000-0000-000000000002"]
+
+account.delete_account_tags(account_id, 
+                            created_by, 
+                            api_key, 
+                            api_secret, 
+                            tag_def=tag)
+```
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -2375,6 +3080,13 @@ account.tags(included_deleted,
              options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
+
+account.get_account_tags(account_id, api_key, api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -2389,6 +3101,18 @@ account.tags(included_deleted,
 
       ]
    }
+]
+```
+```python
+[
+  {
+    'audit_logs': [],
+    'object_id': '2501dd10-8244-4b4f-9356-8cf73f18fbf6',
+    'object_type': 'ACCOUNT',
+    'tag_definition_id': '00000000-0000-0000-0000-000000000002',
+    'tag_definition_name': 'AUTO_INVOICING_OFF',
+    'tag_id': '83df059f-7529-43d4-b77b-c91f39a60166'
+  }
 ]
 ```
 
@@ -2427,6 +3151,13 @@ audit = 'MINIMAL'
 KillBillClient::Model::AccountTimeline.timeline(account_id,
                                                 audit,
                                                 options)
+```
+
+```python
+account = killbill.api.AccountApi()
+account_id = '43488882-1777-460c-bc32-e375e67d09cf'
+
+account.get_account_timeline(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -2781,7 +3512,437 @@ KillBillClient::Model::AccountTimeline.timeline(account_id,
    "payments":[]
 }
 ```
-
+```python
+{'account': {'account_balance': None,
+             'account_cba': None,
+             'account_id': '43488882-1777-460c-bc32-e375e67d09cf',
+             'address1': None,
+             'address2': None,
+             'audit_logs': [],
+             'bill_cycle_day_local': 3,
+             'city': None,
+             'company': None,
+             'country': 'USA',
+             'currency': 'USD',
+             'email': None,
+             'external_key': 'hmwgix',
+             'first_name_length': None,
+             'is_migrated': False,
+             'is_notified_for_invoices': True,
+             'is_payment_delegated_to_parent': False,
+             'locale': None,
+             'name': 'John',
+             'notes': None,
+             'parent_account_id': None,
+             'payment_method_id': None,
+             'phone': None,
+             'postal_code': None,
+             'reference_time': datetime.datetime(2018, 5, 4, 19, 28, 56, tzinfo=tzutc()),
+             'state': 'CA',
+             'time_zone': 'UTC'},
+ 'bundles': [{'account_id': '43488882-1777-460c-bc32-e375e67d09cf',
+              'audit_logs': [],
+              'bundle_id': 'b769c9ec-0a13-4a8a-b686-c5bf1e56c158',
+              'external_key': 'b769c9ec-0a13-4a8a-b686-c5bf1e56c158',
+              'subscriptions': [{'account_id': '43488882-1777-460c-bc32-e375e67d09cf',
+                                 'audit_logs': [],
+                                 'bill_cycle_day_local': 3,
+                                 'billing_end_date': datetime.date(2018, 5, 4),
+                                 'billing_period': 'MONTHLY',
+                                 'billing_start_date': datetime.date(2018, 5, 4),
+                                 'bundle_id': 'b769c9ec-0a13-4a8a-b686-c5bf1e56c158',
+                                 'cancelled_date': datetime.date(2018, 5, 4),
+                                 'charged_through_date': datetime.date(2018, 5, 4),
+                                 'events': [{'audit_logs': [],
+                                             'billing_period': 'MONTHLY',
+                                             'effective_date': datetime.date(2018, 5, 4),
+                                             'event_id': 'e2ba3b83-d04a-4128-8dea-b71d0c2a5630',
+                                             'event_type': 'START_ENTITLEMENT',
+                                             'is_blocked_billing': False,
+                                             'is_blocked_entitlement': False,
+                                             'phase': 'standard-monthly-trial',
+                                             'plan': 'standard-monthly',
+                                             'price_list': 'DEFAULT',
+                                             'product': 'Standard',
+                                             'service_name': 'entitlement-service',
+                                             'service_state_name': 'ENT_STARTED'},
+                                            {'audit_logs': [],
+                                             'billing_period': 'MONTHLY',
+                                             'effective_date': datetime.date(2018, 5, 4),
+                                             'event_id': 'b6f9c977-a34d-4399-bd7b-c53a16aa56b2',
+                                             'event_type': 'START_BILLING',
+                                             'is_blocked_billing': False,
+                                             'is_blocked_entitlement': False,
+                                             'phase': 'standard-monthly-trial',
+                                             'plan': 'standard-monthly',
+                                             'price_list': 'DEFAULT',
+                                             'product': 'Standard',
+                                             'service_name': 'billing-service',
+                                             'service_state_name': 'START_BILLING'},
+                                            {'audit_logs': [],
+                                             'billing_period': 'MONTHLY',
+                                             'effective_date': datetime.date(2018, 5, 4),
+                                             'event_id': 'a870def0-b47f-4513-a8fb-585df3b6b4b8',
+                                             'event_type': 'CHANGE',
+                                             'is_blocked_billing': False,
+                                             'is_blocked_entitlement': False,
+                                             'phase': 'super-monthly-trial',
+                                             'plan': 'super-monthly',
+                                             'price_list': 'DEFAULT',
+                                             'product': 'Super',
+                                             'service_name': 'entitlement+billing-service',
+                                             'service_state_name': 'CHANGE'},
+                                            {'audit_logs': [],
+                                             'billing_period': 'MONTHLY',
+                                             'effective_date': datetime.date(2018, 5, 4),
+                                             'event_id': '96a74b51-7d51-4ec7-9386-63a07d007281',
+                                             'event_type': 'STOP_ENTITLEMENT',
+                                             'is_blocked_billing': False,
+                                             'is_blocked_entitlement': True,
+                                             'phase': 'super-monthly-trial',
+                                             'plan': 'super-monthly',
+                                             'price_list': 'DEFAULT',
+                                             'product': 'Super',
+                                             'service_name': 'entitlement-service',
+                                             'service_state_name': 'ENT_CANCELLED'},
+                                            {'audit_logs': [],
+                                             'billing_period': 'MONTHLY',
+                                             'effective_date': datetime.date(2018, 5, 4),
+                                             'event_id': '068821fe-165c-4f67-95c1-3f14e872a27c',
+                                             'event_type': 'STOP_BILLING',
+                                             'is_blocked_billing': False,
+                                             'is_blocked_entitlement': False,
+                                             'phase': 'super-monthly-trial',
+                                             'plan': 'super-monthly',
+                                             'price_list': 'DEFAULT',
+                                             'product': 'Super',
+                                             'service_name': 'billing-service',
+                                             'service_state_name': 'STOP_BILLING'}],
+                                 'external_key': 'b769c9ec-0a13-4a8a-b686-c5bf1e56c158',
+                                 'phase_type': 'TRIAL',
+                                 'plan_name': 'super-monthly',
+                                 'price_list': 'DEFAULT',
+                                 'price_overrides': [{'fixed_price': 0.0,
+                                                      'phase_name': 'standard-monthly-trial',
+                                                      'phase_type': 'TRIAL',
+                                                      'plan_name': 'standard-monthly',
+                                                      'recurring_price': None,
+                                                      'usage_price_overrides': []},
+                                                     {'fixed_price': 0.0,
+                                                      'phase_name': 'super-monthly-trial',
+                                                      'phase_type': 'TRIAL',
+                                                      'plan_name': 'super-monthly',
+                                                      'recurring_price': None,
+                                                      'usage_price_overrides': []}],
+                                 'product_category': 'BASE',
+                                 'product_name': 'Super',
+                                 'source_type': 'NATIVE',
+                                 'start_date': datetime.date(2018, 5, 4),
+                                 'state': 'CANCELLED',
+                                 'subscription_id': 'dfd4af5d-a72e-420e-9e0a-ce600d108b3f'}],
+              'timeline': {'account_id': '43488882-1777-460c-bc32-e375e67d09cf',
+                           'audit_logs': [],
+                           'bundle_id': 'b769c9ec-0a13-4a8a-b686-c5bf1e56c158',
+                           'events': [{'audit_logs': [],
+                                       'billing_period': 'MONTHLY',
+                                       'effective_date': datetime.date(2018, 5, 4),
+                                       'event_id': 'e2ba3b83-d04a-4128-8dea-b71d0c2a5630',
+                                       'event_type': 'START_ENTITLEMENT',
+                                       'is_blocked_billing': False,
+                                       'is_blocked_entitlement': False,
+                                       'phase': 'standard-monthly-trial',
+                                       'plan': 'standard-monthly',
+                                       'price_list': 'DEFAULT',
+                                       'product': 'Standard',
+                                       'service_name': 'entitlement-service',
+                                       'service_state_name': 'ENT_STARTED'},
+                                      {'audit_logs': [],
+                                       'billing_period': 'MONTHLY',
+                                       'effective_date': datetime.date(2018, 5, 4),
+                                       'event_id': 'b6f9c977-a34d-4399-bd7b-c53a16aa56b2',
+                                       'event_type': 'START_BILLING',
+                                       'is_blocked_billing': False,
+                                       'is_blocked_entitlement': False,
+                                       'phase': 'standard-monthly-trial',
+                                       'plan': 'standard-monthly',
+                                       'price_list': 'DEFAULT',
+                                       'product': 'Standard',
+                                       'service_name': 'billing-service',
+                                       'service_state_name': 'START_BILLING'},
+                                      {'audit_logs': [],
+                                       'billing_period': 'MONTHLY',
+                                       'effective_date': datetime.date(2018, 5, 4),
+                                       'event_id': 'a870def0-b47f-4513-a8fb-585df3b6b4b8',
+                                       'event_type': 'CHANGE',
+                                       'is_blocked_billing': False,
+                                       'is_blocked_entitlement': False,
+                                       'phase': 'super-monthly-trial',
+                                       'plan': 'super-monthly',
+                                       'price_list': 'DEFAULT',
+                                       'product': 'Super',
+                                       'service_name': 'entitlement+billing-service',
+                                       'service_state_name': 'CHANGE'},
+                                      {'audit_logs': [],
+                                       'billing_period': 'MONTHLY',
+                                       'effective_date': datetime.date(2018, 5, 4),
+                                       'event_id': '96a74b51-7d51-4ec7-9386-63a07d007281',
+                                       'event_type': 'STOP_ENTITLEMENT',
+                                       'is_blocked_billing': False,
+                                       'is_blocked_entitlement': True,
+                                       'phase': 'super-monthly-trial',
+                                       'plan': 'super-monthly',
+                                       'price_list': 'DEFAULT',
+                                       'product': 'Super',
+                                       'service_name': 'entitlement-service',
+                                       'service_state_name': 'ENT_CANCELLED'},
+                                      {'audit_logs': [],
+                                       'billing_period': 'MONTHLY',
+                                       'effective_date': datetime.date(2018, 5, 4),
+                                       'event_id': '068821fe-165c-4f67-95c1-3f14e872a27c',
+                                       'event_type': 'STOP_BILLING',
+                                       'is_blocked_billing': False,
+                                       'is_blocked_entitlement': False,
+                                       'phase': 'super-monthly-trial',
+                                       'plan': 'super-monthly',
+                                       'price_list': 'DEFAULT',
+                                       'product': 'Super',
+                                       'service_name': 'billing-service',
+                                       'service_state_name': 'STOP_BILLING'}],
+                           'external_key': 'b769c9ec-0a13-4a8a-b686-c5bf1e56c158'}},
+             {'account_id': '43488882-1777-460c-bc32-e375e67d09cf',
+              'audit_logs': [],
+              'bundle_id': 'c3fbb8a6-f297-41e5-8aa5-8098256b624a',
+              'external_key': 'c3fbb8a6-f297-41e5-8aa5-8098256b624a',
+              'subscriptions': [{'account_id': '43488882-1777-460c-bc32-e375e67d09cf',
+                                 'audit_logs': [],
+                                 'bill_cycle_day_local': 3,
+                                 'billing_end_date': None,
+                                 'billing_period': 'MONTHLY',
+                                 'billing_start_date': datetime.date(2018, 5, 4),
+                                 'bundle_id': 'c3fbb8a6-f297-41e5-8aa5-8098256b624a',
+                                 'cancelled_date': None,
+                                 'charged_through_date': datetime.date(2018, 5, 4),
+                                 'events': [{'audit_logs': [],
+                                             'billing_period': 'MONTHLY',
+                                             'effective_date': datetime.date(2018, 5, 4),
+                                             'event_id': '4d4bde32-7bb9-448d-8066-aa67dea56658',
+                                             'event_type': 'START_ENTITLEMENT',
+                                             'is_blocked_billing': False,
+                                             'is_blocked_entitlement': False,
+                                             'phase': 'standard-monthly-trial',
+                                             'plan': 'standard-monthly',
+                                             'price_list': 'DEFAULT',
+                                             'product': 'Standard',
+                                             'service_name': 'entitlement-service',
+                                             'service_state_name': 'ENT_STARTED'},
+                                            {'audit_logs': [],
+                                             'billing_period': 'MONTHLY',
+                                             'effective_date': datetime.date(2018, 5, 4),
+                                             'event_id': '4d8f7354-f4f7-43c5-bfae-353b6b8c2a0c',
+                                             'event_type': 'START_BILLING',
+                                             'is_blocked_billing': False,
+                                             'is_blocked_entitlement': False,
+                                             'phase': 'standard-monthly-trial',
+                                             'plan': 'standard-monthly',
+                                             'price_list': 'DEFAULT',
+                                             'product': 'Standard',
+                                             'service_name': 'billing-service',
+                                             'service_state_name': 'START_BILLING'},
+                                            {'audit_logs': [],
+                                             'billing_period': 'MONTHLY',
+                                             'effective_date': datetime.date(2018, 6, 3),
+                                             'event_id': '7d22b380-8796-420c-b0c2-3f7b71b7a171',
+                                             'event_type': 'PHASE',
+                                             'is_blocked_billing': False,
+                                             'is_blocked_entitlement': False,
+                                             'phase': 'standard-monthly-evergreen',
+                                             'plan': 'standard-monthly',
+                                             'price_list': 'DEFAULT',
+                                             'product': 'Standard',
+                                             'service_name': 'entitlement+billing-service',
+                                             'service_state_name': 'PHASE'}],
+                                 'external_key': 'c3fbb8a6-f297-41e5-8aa5-8098256b624a',
+                                 'phase_type': 'TRIAL',
+                                 'plan_name': 'standard-monthly',
+                                 'price_list': 'DEFAULT',
+                                 'price_overrides': [{'fixed_price': 0.0,
+                                                      'phase_name': 'standard-monthly-trial',
+                                                      'phase_type': 'TRIAL',
+                                                      'plan_name': 'standard-monthly',
+                                                      'recurring_price': None,
+                                                      'usage_price_overrides': []},
+                                                     {'fixed_price': None,
+                                                      'phase_name': 'standard-monthly-evergreen',
+                                                      'phase_type': 'EVERGREEN',
+                                                      'plan_name': 'standard-monthly',
+                                                      'recurring_price': 100.0,
+                                                      'usage_price_overrides': []}],
+                                 'product_category': 'BASE',
+                                 'product_name': 'Standard',
+                                 'source_type': 'NATIVE',
+                                 'start_date': datetime.date(2018, 5, 4),
+                                 'state': 'ACTIVE',
+                                 'subscription_id': '1a1f9e33-7720-4655-a74e-0ecf0a8f231e'}],
+              'timeline': {'account_id': '43488882-1777-460c-bc32-e375e67d09cf',
+                           'audit_logs': [],
+                           'bundle_id': 'c3fbb8a6-f297-41e5-8aa5-8098256b624a',
+                           'events': [{'audit_logs': [],
+                                       'billing_period': 'MONTHLY',
+                                       'effective_date': datetime.date(2018, 5, 4),
+                                       'event_id': '4d4bde32-7bb9-448d-8066-aa67dea56658',
+                                       'event_type': 'START_ENTITLEMENT',
+                                       'is_blocked_billing': False,
+                                       'is_blocked_entitlement': False,
+                                       'phase': 'standard-monthly-trial',
+                                       'plan': 'standard-monthly',
+                                       'price_list': 'DEFAULT',
+                                       'product': 'Standard',
+                                       'service_name': 'entitlement-service',
+                                       'service_state_name': 'ENT_STARTED'},
+                                      {'audit_logs': [],
+                                       'billing_period': 'MONTHLY',
+                                       'effective_date': datetime.date(2018, 5, 4),
+                                       'event_id': '4d8f7354-f4f7-43c5-bfae-353b6b8c2a0c',
+                                       'event_type': 'START_BILLING',
+                                       'is_blocked_billing': False,
+                                       'is_blocked_entitlement': False,
+                                       'phase': 'standard-monthly-trial',
+                                       'plan': 'standard-monthly',
+                                       'price_list': 'DEFAULT',
+                                       'product': 'Standard',
+                                       'service_name': 'billing-service',
+                                       'service_state_name': 'START_BILLING'},
+                                      {'audit_logs': [],
+                                       'billing_period': 'MONTHLY',
+                                       'effective_date': datetime.date(2018, 6, 3),
+                                       'event_id': '7d22b380-8796-420c-b0c2-3f7b71b7a171',
+                                       'event_type': 'PHASE',
+                                       'is_blocked_billing': False,
+                                       'is_blocked_entitlement': False,
+                                       'phase': 'standard-monthly-evergreen',
+                                       'plan': 'standard-monthly',
+                                       'price_list': 'DEFAULT',
+                                       'product': 'Standard',
+                                       'service_name': 'entitlement+billing-service',
+                                       'service_state_name': 'PHASE'}],
+                           'external_key': 'c3fbb8a6-f297-41e5-8aa5-8098256b624a'}}],
+ 'invoices': [{'account_id': '43488882-1777-460c-bc32-e375e67d09cf',
+               'amount': 0.0,
+               'audit_logs': [],
+               'balance': 0.0,
+               'bundle_keys': 'c3fbb8a6-f297-41e5-8aa5-8098256b624a,b769c9ec-0a13-4a8a-b686-c5bf1e56c158',
+               'credit_adj': 0.0,
+               'credits': [],
+               'currency': 'USD',
+               'invoice_date': datetime.date(2018, 5, 4),
+               'invoice_id': '0c047109-6fba-4910-af8d-a200abbba5fb',
+               'invoice_number': '798',
+               'is_parent_invoice': False,
+               'items': None,
+               'parent_account_id': None,
+               'parent_invoice_id': None,
+               'refund_adj': 0.0,
+               'status': 'COMMITTED',
+               'target_date': datetime.date(2018, 5, 4)},
+              {'account_id': '43488882-1777-460c-bc32-e375e67d09cf',
+               'amount': 0.0,
+               'audit_logs': [],
+               'balance': 0.0,
+               'bundle_keys': 'b769c9ec-0a13-4a8a-b686-c5bf1e56c158',
+               'credit_adj': 0.0,
+               'credits': [],
+               'currency': 'USD',
+               'invoice_date': datetime.date(2018, 5, 4),
+               'invoice_id': 'fa2f6484-530c-4209-884e-d09af0766663',
+               'invoice_number': '799',
+               'is_parent_invoice': False,
+               'items': None,
+               'parent_account_id': None,
+               'parent_invoice_id': None,
+               'refund_adj': 0.0,
+               'status': 'COMMITTED',
+               'target_date': datetime.date(2018, 5, 4)},
+              {'account_id': '43488882-1777-460c-bc32-e375e67d09cf',
+               'amount': 50.0,
+               'audit_logs': [],
+               'balance': 0.0,
+               'bundle_keys': '',
+               'credit_adj': 0.0,
+               'credits': [],
+               'currency': 'USD',
+               'invoice_date': datetime.date(2018, 5, 4),
+               'invoice_id': 'f12c98c1-782b-4d1a-bfb0-2e1233cf8cd7',
+               'invoice_number': '800',
+               'is_parent_invoice': False,
+               'items': None,
+               'parent_account_id': None,
+               'parent_invoice_id': None,
+               'refund_adj': 0.0,
+               'status': 'COMMITTED',
+               'target_date': datetime.date(2018, 5, 4)}],
+ 'payments': [{'account_id': '43488882-1777-460c-bc32-e375e67d09cf',
+               'audit_logs': [],
+               'auth_amount': 0.0,
+               'captured_amount': 0.0,
+               'credited_amount': 0.0,
+               'currency': 'USD',
+               'payment_attempts': None,
+               'payment_external_key': 'e9733c81-5d64-4d61-add2-90cb141ddf9d',
+               'payment_id': 'e9733c81-5d64-4d61-add2-90cb141ddf9d',
+               'payment_method_id': '53b35b7b-e254-4c4b-b526-202c51a6e650',
+               'payment_number': '309',
+               'purchased_amount': 50.0,
+               'refunded_amount': 0.0,
+               'target_invoice_id': 'f12c98c1-782b-4d1a-bfb0-2e1233cf8cd7',
+               'transactions': [{'amount': 50.0,
+                                 'audit_logs': [],
+                                 'currency': 'USD',
+                                 'effective_date': datetime.datetime(2018, 5, 4, 19, 29, 5, tzinfo=tzutc()),
+                                 'first_payment_reference_id': None,
+                                 'gateway_error_code': None,
+                                 'gateway_error_msg': None,
+                                 'payment_external_key': 'e9733c81-5d64-4d61-add2-90cb141ddf9d',
+                                 'payment_id': 'e9733c81-5d64-4d61-add2-90cb141ddf9d',
+                                 'processed_amount': 50.0,
+                                 'processed_currency': 'USD',
+                                 'properties': None,
+                                 'second_payment_reference_id': None,
+                                 'status': 'SUCCESS',
+                                 'transaction_external_key': '74a7f569-8f0f-48c9-a927-a56e5c96f95b',
+                                 'transaction_id': '74a7f569-8f0f-48c9-a927-a56e5c96f95b',
+                                 'transaction_type': 'PURCHASE'}]},
+              {'account_id': '43488882-1777-460c-bc32-e375e67d09cf',
+               'audit_logs': [],
+               'auth_amount': 50.0,
+               'captured_amount': 0.0,
+               'credited_amount': 0.0,
+               'currency': 'USD',
+               'payment_attempts': None,
+               'payment_external_key': 'f2c8e79f-49cc-4893-98a5-38da61564949',
+               'payment_id': 'f2c8e79f-49cc-4893-98a5-38da61564949',
+               'payment_method_id': '53b35b7b-e254-4c4b-b526-202c51a6e650',
+               'payment_number': '310',
+               'purchased_amount': 0.0,
+               'refunded_amount': 0.0,
+               'target_invoice_id': None,
+               'transactions': [{'amount': 50.0,
+                                 'audit_logs': [],
+                                 'currency': 'USD',
+                                 'effective_date': datetime.datetime(2018, 5, 4, 19, 29, 5, tzinfo=tzutc()),
+                                 'first_payment_reference_id': None,
+                                 'gateway_error_code': None,
+                                 'gateway_error_msg': None,
+                                 'payment_external_key': 'f2c8e79f-49cc-4893-98a5-38da61564949',
+                                 'payment_id': 'f2c8e79f-49cc-4893-98a5-38da61564949',
+                                 'processed_amount': 50.0,
+                                 'processed_currency': 'USD',
+                                 'properties': None,
+                                 'second_payment_reference_id': None,
+                                 'status': 'SUCCESS',
+                                 'transaction_external_key': '0b50c1a2-99df-48df-bd6b-38e30261c233',
+                                 'transaction_id': '0b50c1a2-99df-48df-bd6b-38e30261c233',
+                                 'transaction_type': 'AUTHORIZE'}]}]}
+```
 
 **Query Parameters**
 
@@ -2816,13 +3977,23 @@ account.transfer_child_credit(user,
                               comment,
                               options)
 ```
+```python
+account = killbill.api.AccountApi()
+child_account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 
+account.transfer_child_credit_to_parent(child_account_id,
+                                        created_by, 
+                                        api_key, 
+                                        api_secret)
+```
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -2860,7 +4031,11 @@ account.find_in_batches(offset,
                         with_balance_and_cba,
                         options)
 ```
+```python
+account = killbill.api.AccountApi()
 
+account.get_accounts(api_key, api_secret)
+```
 > Example Response:
 
 ```ruby
@@ -2888,7 +4063,61 @@ account.find_in_batches(offset,
    }
 ]
 ```
-
+```python
+[{'account_balance': None,
+ 'account_cba': None,
+ 'account_id': '224a9677-735b-4902-a4a4-bf77469a0846',
+ 'address1': None,
+ 'address2': None,
+ 'audit_logs': [],
+ 'bill_cycle_day_local': 0,
+ 'city': None,
+ 'company': None,
+ 'country': 'USA',
+ 'currency': 'USD',
+ 'email': None,
+ 'external_key': 'fxelpb',
+ 'first_name_length': None,
+ 'is_migrated': False,
+ 'is_notified_for_invoices': False,
+ 'is_payment_delegated_to_parent': False,
+ 'locale': None,
+ 'name': 'John-0',
+ 'notes': None,
+ 'parent_account_id': None,
+ 'payment_method_id': None,
+ 'phone': None,
+ 'postal_code': None,
+ 'reference_time': datetime.datetime(2018, 5, 4, 19, 40, 35, tzinfo=tzutc()),
+ 'state': 'CA',
+ 'time_zone': 'UTC'}, {'account_balance': None,
+ 'account_cba': None,
+ 'account_id': '465f0295-e27e-4341-9eb7-072465e32ee5',
+ 'address1': None,
+ 'address2': None,
+ 'audit_logs': [],
+ 'bill_cycle_day_local': 0,
+ 'city': None,
+ 'company': None,
+ 'country': 'USA',
+ 'currency': 'USD',
+ 'email': None,
+ 'external_key': 'cpkwdl',
+ 'first_name_length': None,
+ 'is_migrated': False,
+ 'is_notified_for_invoices': False,
+ 'is_payment_delegated_to_parent': False,
+ 'locale': None,
+ 'name': 'John-1',
+ 'notes': None,
+ 'parent_account_id': None,
+ 'payment_method_id': None,
+ 'phone': None,
+ 'postal_code': None,
+ 'reference_time': datetime.datetime(2018, 5, 4, 19, 40, 36, tzinfo=tzutc()),
+ 'state': 'CA',
+ 'time_zone': 'UTC'}]
+```
 
 **Query Parameters**
 
@@ -2934,6 +4163,13 @@ account.find_in_batches_by_search_key(search_key,
                                       options)
 ```
 
+```python
+account = killbill.api.AccountApi()
+search_key = 'John-1'
+
+account.search_accounts(search_key, api_key, api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -2961,7 +4197,35 @@ account.find_in_batches_by_search_key(search_key,
    }
 ]
 ```
-
+```python
+[{'account_balance': None,
+ 'account_cba': None,
+ 'account_id': 'c41bf53b-c6a8-48de-8012-b755e51d5d3e',
+ 'address1': None,
+ 'address2': None,
+ 'audit_logs': [],
+ 'bill_cycle_day_local': 0,
+ 'city': None,
+ 'company': None,
+ 'country': 'USA',
+ 'currency': 'USD',
+ 'email': None,
+ 'external_key': 'njisdn',
+ 'first_name_length': None,
+ 'is_migrated': False,
+ 'is_notified_for_invoices': False,
+ 'is_payment_delegated_to_parent': False,
+ 'locale': None,
+ 'name': 'John-1',
+ 'notes': None,
+ 'parent_account_id': None,
+ 'payment_method_id': None,
+ 'phone': None,
+ 'postal_code': None,
+ 'reference_time': datetime.datetime(2018, 5, 4, 19, 44, 24, tzinfo=tzutc()),
+ 'state': 'CA',
+ 'time_zone': 'UTC'}]
+```
 
 **Query Parameters**
 
