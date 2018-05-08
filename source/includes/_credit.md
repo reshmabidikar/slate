@@ -46,6 +46,16 @@ credit_item.create(auto_commit,
                    options)
 ```
 
+```python
+credit = killbill.api.CreditApi()
+body = Credit(account_id=account_id, 
+              credit_amount=50.0, 
+              currency='USD', 
+              description='example')
+
+credit.create_credit(body, created_by, api_key, api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -60,7 +70,9 @@ credit_item.create(auto_commit,
    "description":"description"
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -96,6 +108,11 @@ credit.find_by_id(credit_id,
                   options) 
 ```
 
+```python
+credit = killbill.api.CreditApi()
+        
+credit.get_credit(credit_id, api_key, api_secret)
+```
 > Example Response:
 
 ```ruby
@@ -110,7 +127,17 @@ credit.find_by_id(credit_id,
    "description":"description"
 }
 ```
-
+```python
+{'credit_id' : 'fd5669a8-68c1-8dl0-m4e8-8y535e349328'
+ 'account_id': 'da3769a8-58c4-4dc0-b4e8-7b534e349624',
+ 'credit_amount': 50.0,
+ 'currency': 'USD',
+ 'description': 'example',
+ 'effective_date': datetime.datetime(2018, 5, 3, 15, 53, 44, tzinfo=tzutc()),,
+ 'invoice_id': 'c57e1a2b-1a6b-4053-be2c-cc5fad2b5cbf',
+ 'invoice_number': '1285'
+}
+```
 
 **Query Parameters**
 
