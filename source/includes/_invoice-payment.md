@@ -68,6 +68,13 @@ KillBillClient::Model::InvoicePayment.find_by_id(payment_id,
                                                  @options)
 ```
 
+```python
+invoicePaymentApi = killbill.api.InvoicePaymentApi()
+payment_id = '5e9d8b82-2664-4a36-85a1-37471a0b618a'
+
+invoicePaymentApi.get_invoice_payment(payment_id, api_key, api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -103,14 +110,46 @@ KillBillClient::Model::InvoicePayment.find_by_id(payment_id,
    "auditLogs":[]
 }
 ```
-
+```python
+{'account_id': '8a758318-25fb-46e1-a385-a8f8354ec903',
+ 'audit_logs': [],
+ 'auth_amount': 0.0,
+ 'captured_amount': 0.0,
+ 'credited_amount': 0.0,
+ 'currency': 'USD',
+ 'payment_attempts': None,
+ 'payment_external_key': '5e9d8b82-2664-4a36-85a1-37471a0b618a',
+ 'payment_id': '5e9d8b82-2664-4a36-85a1-37471a0b618a',
+ 'payment_method_id': 'eb737a51-d230-46fe-ad95-8ddf0b8effe3',
+ 'payment_number': '337',
+ 'purchased_amount': 50.0,
+ 'refunded_amount': 0.0,
+ 'target_invoice_id': '8291871e-b16e-45e6-a971-577d44727327',
+ 'transactions': [{'amount': 50.0,
+                   'audit_logs': [],
+                   'currency': 'USD',
+                   'effective_date': datetime.datetime(2018, 5, 9, 14, 27, 9, tzinfo=tzutc()),
+                   'first_payment_reference_id': None,
+                   'gateway_error_code': None,
+                   'gateway_error_msg': None,
+                   'payment_external_key': '5e9d8b82-2664-4a36-85a1-37471a0b618a',
+                   'payment_id': '5e9d8b82-2664-4a36-85a1-37471a0b618a',
+                   'processed_amount': 50.0,
+                   'processed_currency': 'USD',
+                   'properties': None,
+                   'second_payment_reference_id': None,
+                   'status': 'SUCCESS',
+                   'transaction_external_key': '70a36a47-878e-4fd8-8401-1ab2f4403d41',
+                   'transaction_id': '70a36a47-878e-4fd8-8401-1ab2f4403d41',
+                   'transaction_type': 'PURCHASE'}]}
+```
 
 **Query Parameters**
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **withPluginInfo** | boolean | true | choose true if you want plugin info |
-| **withAttempts** | boolean | true | choose true if you want payment attempts |
+| **withPluginInfo** | boolean | true | choose true if you want plugin info  (default: false)|
+| **withAttempts** | boolean | true | choose true if you want payment attempts  (default: false)|
 
 **Returns**
 
@@ -136,12 +175,25 @@ TODO
 TODO
 ```
 
+```python
+invoicePaymentApi = killbill.api.InvoicePaymentApi()
+body = PaymentTransaction(payment_id=payment_id)
+
+invoicePaymentApi.complete_invoice_payment_transaction(payment_id, 
+                                                       body, 
+                                                       created_by, 
+                                                       api_key, 
+                                                       api_secret)
+```
+
 > Example Response:
 
 ```ruby
 TODO
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -181,6 +233,18 @@ KillBillClient::Model::InvoicePayment.chargeback(payment_id,
                                                  reason,
                                                  comment, 
                                                  options)
+```
+
+```python
+invoicePaymentApi = killbill.api.InvoicePaymentApi()
+payment_id = '2276b3c9-4e51-41b2-b5bf-9ddc11582ee4'
+body = PaymentTransaction(amount=50.0, currency='USD')
+
+invoicePaymentApi.create_chargeback(payment_id, 
+                                    body, 
+                                    created_by, 
+                                    api_key, 
+                                    api_secret)
 ```
 
 > Example Response:
@@ -232,7 +296,9 @@ KillBillClient::Model::InvoicePayment.chargeback(payment_id,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -270,6 +336,21 @@ KillBillClient::Model::InvoicePayment.chargeback_reversal(payment_id,
                                                           reason, 
                                                           comment, 
                                                           options)
+```
+
+```python
+invoicePaymentApi = killbill.api.InvoicePaymentApi()
+payment_id = '7a5d4997-5d44-4a82-8371-a410ea5615f4'
+transaction_external_key = '99c45d07-abe4-4bc7-a207-0524548c1b08'
+body = PaymentTransaction(amount=50.0, 
+                          currency='USD', 
+                          transaction_external_key=transaction_external_key)
+
+invoicePaymentApi.create_chargeback_reversal(payment_id, 
+                                             body, 
+                                             created_by, 
+                                             api_key, 
+                                             api_secret)
 ```
 
 > Example Response:
@@ -332,7 +413,9 @@ KillBillClient::Model::InvoicePayment.chargeback_reversal(payment_id,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -341,97 +424,6 @@ None.
 **Returns**
 
 Returns a invoice payment object.
-
-## Remove custom fields from payment
-
-**HTTP Request** 
-
-`DELETE http://example.com/1.0/kb/invoicePayments/{paymentId}/customFields`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-TODO
-```
-
-```ruby
-custom_field_id = custom_field.id
-
-invoice_payment.remove_custom_field(custom_field_id,                                                                                            
-                                    user, 
-                                    reason,
-                                    comment, 
-                                    options)
-```
-
-> Example Response:
-
-```ruby
-no content
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
-
-**Returns**
-
-A `200` http status without content.
-
-## Retrieve payment custom fields
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/invoicePayments/{paymentId}/customFields`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-TODO
-```
-
-```ruby
-audit = 'NONE'
-
-invoice_payment.custom_fields(audit, options)
-```
-
-> Example Response:
-
-```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"INVOICE_PAYMENT",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **audit** | enum | false | level of audit logs returned |
-
-**Returns**
-
-Returns a list of custom field objects.
 
 ## Add custom fields to payment
 
@@ -462,6 +454,17 @@ invoice_payment.add_custom_field(custom_field,
                                  options)
 ```
 
+```python
+invoicePaymentApi = killbill.api.InvoicePaymentApi()
+body = CustomField(name='Test Custom Field', value='test_value')
+
+invoicePaymentApi.create_invoice_payment_custom_fields(payment_id,
+                                                       [body],
+                                                       created_by,
+                                                       api_key,
+                                                       api_secret)
+
+```
 > Example Response:
 
 ```ruby
@@ -476,7 +479,9 @@ invoice_payment.add_custom_field(custom_field,
    }
 ]
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -485,6 +490,68 @@ None.
 **Returns**
 
 Returns a custom field object.
+
+## Retrieve payment custom fields
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/invoicePayments/{paymentId}/customFields`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+audit = 'NONE'
+
+invoice_payment.custom_fields(audit, options)
+```
+
+```python
+invoicePaymentApi = killbill.api.InvoicePaymentApi()
+payment_id = 'f33e0adc-78df-438a-b920-aaacd7f8597a'
+
+invoicePaymentApi.get_invoice_payment_custom_fields(payment_id, api_key, api_secret)
+```
+
+> Example Response:
+
+```ruby
+[
+   {
+      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
+      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
+      "objectType":"INVOICE_PAYMENT",
+      "name":"Test Custom Field",
+      "value":"test_value",
+      "auditLogs":[]
+   }
+]
+```
+```python
+[{'audit_logs': [],
+ 'custom_field_id': '9913e0f6-b5ef-498b-ac47-60e1626eba8f',
+ 'name': 'Test Custom Field',
+ 'object_id': 'f33e0adc-78df-438a-b920-aaacd7f8597a',
+ 'object_type': 'PAYMENT',
+ 'value': 'test_value'}]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Returns a list of custom field objects.
 
 ## Modify custom fields to payment
 
@@ -514,6 +581,19 @@ invoice_payment.modify_custom_field(custom_field,
                                     options)
 ```
 
+```python
+invoicePaymentApi = killbill.api.InvoicePaymentApi()
+payment_id = 'f33e0adc-78df-438a-b920-aaacd7f8597a'
+custom_field_id = '9913e0f6-b5ef-498b-ac47-60e1626eba8f'
+body = CustomField(custom_field_id=custom_field_id, name='Test Modify', value='test_modify_value')
+
+invoicePaymentApi.modify_invoice_payment_custom_fields(payment_id,
+                                                       [body],
+                                                       created_by,
+                                                       api_key,
+                                                       api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -528,6 +608,9 @@ invoice_payment.modify_custom_field(custom_field,
    }
 ]
 ```
+```python
+
+```
 
 
 **Query Parameters**
@@ -539,6 +622,62 @@ invoice_payment.modify_custom_field(custom_field,
 **Returns**
 
 Returns a custom field object.
+
+## Remove custom fields from payment
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/invoicePayments/{paymentId}/customFields`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+custom_field_id = custom_field.id
+
+invoice_payment.remove_custom_field(custom_field_id,                                                                                            
+                                    user, 
+                                    reason,
+                                    comment, 
+                                    options)
+```
+
+```python
+invoicePaymentApi = killbill.api.InvoicePaymentApi()
+payment_id = 'f33e0adc-78df-438a-b920-aaacd7f8597a'
+custom_field_id = '9913e0f6-b5ef-498b-ac47-60e1626eba8f'
+custom_field = [custom_field_id]
+invoicePaymentApi.delete_invoice_payment_custom_fields(payment_id,
+                                                       created_by,
+                                                       api_key,
+                                                       api_secret,
+                                                       custom_field=custom_field)
+```
+> Example Response:
+
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
+
+**Returns**
+
+A `200` http status without content.
 
 ## Refund a payment, and adjust the invoice if needed
 
@@ -569,6 +708,17 @@ KillBillClient::Model::InvoicePayment.refund(payment_id,
                                              options)
 ```
 
+```python
+invoicePaymentApi = killbill.api.InvoicePaymentApi()
+payment_id = '8d85a8e8-c94b-438f-aac1-e8cb436b2c05'
+body = PaymentTransaction(amount=50.0)
+
+invoicePaymentApi.create_refund_with_adjustments(payment_id,
+                                                 body,
+                                                 created_by,
+                                                 api_key,
+                                                 api_secret)
+```
 > Example Response:
 
 ```ruby
@@ -618,7 +768,9 @@ KillBillClient::Model::InvoicePayment.refund(payment_id,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -630,101 +782,6 @@ KillBillClient::Model::InvoicePayment.refund(payment_id,
 **Returns**
 
 Returns a invoice payment object.
-
-## Remove tags from payment
-
-**HTTP Request** 
-
-`DELETE http://example.com/1.0/kb/invoicePayments/{paymentId}/tags`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-TODO
-```
-
-```ruby
-tag_name = 'TEST'
-
-invoice_payment.remove_tag(tag_name,
-                           user,
-                           reason,
-                           comment,
-                           options)
-```
-
-> Example Response:
-
-```ruby
-no content
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true |  list of tags that you want to remove it |
-
-**Returns**
-
-A `200` http status without content.
-
-## Retrieve payment tags
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/invoicePayments/{paymentId}/tags`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-TODO
-```
-
-```ruby
-included_deleted = false
-audit = 'NONE'
-
-invoice_payment.tags(included_deleted,
-                     audit,
-                     options)
-```
-
-> Example Response:
-
-```ruby
-[
-   {
-      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
-      "objectType":"INVOICE_PAYMENT",
-      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
-      "auditLogs":[]
-   }
-]
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **audit** | enum | false | level of audit logs returned |
-| **includedDeleted** | boolean | false | choose true if you want to include deleted tags |
-
-**Returns**
-
-Returns a list of invoice payment tag objects.
 
 ## Add tags to payment
 
@@ -752,6 +809,18 @@ invoice_payment.add_tag(tag_name,
                         options)
 ```
 
+```python
+invoicePaymentApi = killbill.api.InvoicePaymentApi()
+payment_id = '8d85a8e8-c94b-438f-aac1-e8cb436b2c05'
+tag = ["00000000-0000-0000-0000-000000000002"]
+
+invoicePaymentApi.create_invoice_payment_tags(payment_id,
+                                              tag,
+                                              created_by,
+                                              api_key,
+                                              api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -766,7 +835,9 @@ invoice_payment.add_tag(tag_name,
    }
 ]
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -777,3 +848,125 @@ invoice_payment.add_tag(tag_name,
 **Returns**
 
 Returns a invoice payment tag object.
+
+## Retrieve payment tags
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/invoicePayments/{paymentId}/tags`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+included_deleted = false
+audit = 'NONE'
+
+invoice_payment.tags(included_deleted,
+                     audit,
+                     options)
+```
+
+```python
+invoicePaymentApi = killbill.api.InvoicePaymentApi()
+payment_id = '2a1ffd2c-0de1-4f5c-b2a9-27d8deebe596'
+
+invoicePaymentApi.get_invoice_payment_tags(payment_id, api_key, api_secret)
+```
+
+> Example Response:
+
+```ruby
+[
+   {
+      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
+      "objectType":"INVOICE_PAYMENT",
+      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[]
+   }
+]
+```
+```python
+[{'audit_logs': [],
+ 'object_id': '2a1ffd2c-0de1-4f5c-b2a9-27d8deebe596',
+ 'object_type': 'PAYMENT',
+ 'tag_definition_id': '00000000-0000-0000-0000-000000000002',
+ 'tag_definition_name': 'AUTO_INVOICING_OFF',
+ 'tag_id': '864ee6aa-1439-4037-8f65-aa114739f09f'}]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **audit** | enum | false | level of audit logs returned |
+| **includedDeleted** | boolean | false | choose true if you want to include deleted tags |
+
+**Returns**
+
+Returns a list of invoice payment tag objects.
+
+## Remove tags from payment
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/invoicePayments/{paymentId}/tags`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+tag_name = 'TEST'
+
+invoice_payment.remove_tag(tag_name,
+                           user,
+                           reason,
+                           comment,
+                           options)
+```
+
+```python
+invoicePaymentApi = killbill.api.InvoicePaymentApi()
+payment_id = '8d85a8e8-c94b-438f-aac1-e8cb436b2c05'
+tag = ["00000000-0000-0000-0000-000000000002"]
+
+invoicePaymentApi.delete_invoice_payment_tags(payment_id, 
+                                              created_by, 
+                                              api_key, 
+                                              api_secret, 
+                                              tag_def=tag)
+```
+> Example Response:
+
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **tagList** | string | true |  list of tags that you want to remove it |
+
+**Returns**
+
+A `200` http status without content.
