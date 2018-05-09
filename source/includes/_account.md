@@ -1912,8 +1912,14 @@ account.remove_custom_field(custom_field_id,
 ```python
 account = killbill.api.AccountApi()
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
+custom_field_id = '9913e0f6-b5ef-498b-ac47-60e1626eba8f'
+custom_field = [custom_field_id]
 
-account.get_account_custom_fields(account_id, api_key, api_secret)
+account.delete_account_custom_fields(account_id,
+                                     created_by,
+                                     api_key,
+                                     api_secret,
+                                     custom_field=custom_field)
 ```
 
 > Example Response:
