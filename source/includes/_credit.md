@@ -47,13 +47,13 @@ credit_item.create(auto_commit,
 ```
 
 ```python
-credit = killbill.api.CreditApi()
+creditApi = killbill.api.CreditApi()
 body = Credit(account_id=account_id, 
               credit_amount=50.0, 
               currency='USD', 
               description='example')
 
-credit.create_credit(body, created_by, api_key, api_secret)
+creditApi.create_credit(body, created_by, api_key, api_secret)
 ```
 
 > Example Response:
@@ -109,9 +109,9 @@ credit.find_by_id(credit_id,
 ```
 
 ```python
-credit = killbill.api.CreditApi()
+creditApi = killbill.api.CreditApi()
         
-credit.get_credit(credit_id, api_key, api_secret)
+creditApi.get_credit(credit_id, api_key, api_secret)
 ```
 > Example Response:
 
