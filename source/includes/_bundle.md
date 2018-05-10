@@ -41,10 +41,10 @@ bundle.find_by_external_key(external_key,
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 bundle_external_key = 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'
 
-bundle.get_bundle_by_key(bundle_external_key, api_key, api_secret)
+bundleApi.get_bundle_by_key(bundle_external_key, api_key, api_secret)
 ```
 
 > Example Response:
@@ -342,10 +342,10 @@ bundle.find_by_id(bundle_id, options)
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 bundle_id = 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'
 
-bundle.get_bundle(bundle_id, api_key, api_secret)
+bundleApi.get_bundle(bundle_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -657,16 +657,16 @@ bundle.transfer(requested_date,
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 bundle_id = 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'
 new_account_id = '71499886-296d-4b0f-8b76-0eed352d8801'
 body = Bundle(bundle_id=bundle_id, account_id=new_account_id)
 
-bundle.transfer_bundle(bundle_id, 
-                       body, 
-                       created_by, 
-                       api_key, 
-                       api_secret)
+bundleApi.transfer_bundle(bundle_id, 
+                          body, 
+                          created_by, 
+                          api_key, 
+                          api_secret)
 ```
 
 > Example Response:
@@ -827,7 +827,7 @@ bundle.set_blocking_state(state_name,
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 bundle_id = 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'
 body = BlockingState(state_name='STATE1', 
                      service='ServiceStateService', 
@@ -835,11 +835,11 @@ body = BlockingState(state_name='STATE1',
                      is_block_entitlement=False, 
                      is_block_billing=False)
 
-bundle.add_bundle_blocking_state(bundle_id,
-                                 body,
-                                 created_by,
-                                 api_key,
-                                 api_secret)
+bundleApi.add_bundle_blocking_state(bundle_id,
+                                    body,
+                                    created_by,
+                                    api_key,
+                                    api_secret)
 ```
 
 > Example Response:
@@ -897,14 +897,14 @@ bundle.add_custom_field(custom_field,
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 body = CustomField(name='Test Custom Field', value='test_value')
 
-bundle.create_bundle_custom_fields(bundle_id,
-                                   [body],
-                                   created_by,
-                                   api_key,
-                                   api_secret)
+bundleApi.create_bundle_custom_fields(bundle_id,
+                                      [body],
+                                      created_by,
+                                      api_key,
+                                      api_secret)
 ```
 
 > Example Response:
@@ -955,10 +955,10 @@ bundle.custom_fields(audit, options)
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 bundle_id = 'ce967207-851c-4040-bfbd-74a8924f9b8a'
 
-bundle.get_bundle_custom_fields(bundle_id, api_key, api_secret)
+bundleApi.get_bundle_custom_fields(bundle_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -1024,16 +1024,16 @@ bundle.modify_custom_field(custom_field,
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 body = CustomField(custom_field_id=custom_field_id, 
                    name='Test Custom Field', 
                    value='test_value')
 
-bundle.modify_bundle_custom_fields(bundle_id, 
-                                   [body], 
-                                   created_by, 
-                                   api_key, 
-                                   api_secret)
+bundleApi.modify_bundle_custom_fields(bundle_id, 
+                                      [body], 
+                                      created_by, 
+                                      api_key, 
+                                      api_secret)
 ```
 
 > Example Response:
@@ -1090,13 +1090,13 @@ bundle.remove_custom_field(custom_field_id,
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 bundle_id = 'ce967207-851c-4040-bfbd-74a8924f9b8a' 
 
-bundle.delete_bundle_custom_fields(bundle_id, 
-                                   created_by, 
-                                   api_key, 
-                                   api_secret)
+bundleApi.delete_bundle_custom_fields(bundle_id, 
+                                      created_by, 
+                                      api_key, 
+                                      api_secret)
 ```
 
 > Example Response:
@@ -1140,13 +1140,13 @@ bundle.pause(requested_date,
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 bundle_id = 'ce967207-851c-4040-bfbd-74a8924f9b8a'
 
-bundle.pause_bundle(bundle_id, 
-                    created_by, 
-                    api_key, 
-                    api_secret)
+bundleApi.pause_bundle(bundle_id, 
+                       created_by, 
+                       api_key, 
+                       api_secret)
 ```
 
 > Example Response:
@@ -1196,13 +1196,13 @@ bundle.resume(requested_date,
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 bundle_id = 'ce967207-851c-4040-bfbd-74a8924f9b8a'
 
-bundle.resume_bundle(bundle_id, 
-                     created_by, 
-                     api_key, 
-                     api_secret)
+bundleApi.resume_bundle(bundle_id, 
+                        created_by, 
+                        api_key, 
+                        api_secret)
 ```
 > Example Response:
 
@@ -1256,15 +1256,15 @@ bundle.add_tag(tag_name,
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 bundle_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
 tag = ["00000000-0000-0000-0000-000000000002"]
 
-bundle.create_bundle_tags(bundle_id, 
-                          tag, 
-                          created_by, 
-                          api_key, 
-                          api_secret)
+bundleApi.create_bundle_tags(bundle_id, 
+                             tag, 
+                             created_by, 
+                             api_key, 
+                             api_secret)
 ```
 
 > Example Response:
@@ -1323,10 +1323,10 @@ bundle.tags(included_deleted,
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 bundle_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
 
-bundle.get_bundle_tags(bundle_id, api_key, api_secret)
+bundleApi.get_bundle_tags(bundle_id, api_key, api_secret)
 ```
 > Example Response:
 
@@ -1391,13 +1391,13 @@ bundle.remove_tag(tag_name,
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 bundle_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
 
-bundle.delete_bundle_tags(bundle_id, 
-                          created_by, 
-                          api_key, 
-                          api_secret)
+bundleApi.delete_bundle_tags(bundle_id, 
+                             created_by, 
+                             api_key, 
+                             api_secret)
 ```
 
 > Example Response:
@@ -1445,9 +1445,9 @@ bundle.find_in_batches(offset,
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 
-bundle.get_bundles(api_key, api_secret,)
+bundleApi.get_bundles(api_key, api_secret,)
 ```
 > Example Response:
 
@@ -1744,10 +1744,10 @@ bundle.find_in_batches_by_search_key(search_key,
 ```
 
 ```python
-bundle = killbill.api.BundleApi()
+bundleApi = killbill.api.BundleApi()
 search_key = '7b26b0ce-a495-4c0c-9dd5-11a556f03e8c'
 
-bundle.search_bundles(search_key, api_key, api_secret)
+bundleApi.search_bundles(search_key, api_key, api_secret)
 ```
 > Example Response:
 

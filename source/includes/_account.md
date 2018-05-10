@@ -64,10 +64,10 @@ account.find_by_external_key(external_key,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 external_key = 'example_external_key'
 
-account.get_account(external_key, api_key, api_secret)
+accountApi.get_account(external_key, api_key, api_secret)
 ```
 
 > Example Response:
@@ -197,16 +197,16 @@ account.currency = "USD"
 account.create(user, reason, comment, options)
 ```
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 created_by = 'example'
 body = Account(name='John Doe', 
                email='john@example.com', 
                currency='USD')
 
-account.create_account(body, 
-                       created_by, 
-                       api_key, 
-                       api_secret)
+accountApi.create_account(body, 
+                          created_by, 
+                          api_key, 
+                          api_secret)
 ```
 > Example Response:
 
@@ -284,10 +284,10 @@ account.find_by_id(account_id,
                    options)
 ```
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
-account.get_account(account_id, api_key, api_secret)
+accountApi.get_account(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -402,16 +402,16 @@ account.update(treat_null_as_reset,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 created_by = 'example'
 body = Account(name='Another Name')
 
-account.update_account(account_id, 
-                       body, 
-                       created_by, 
-                       api_key, 
-                       api_secret)
+accountApi.update_account(account_id, 
+                          body, 
+                          created_by, 
+                          api_key, 
+                          api_secret)
 ```
 
 > Example Response:
@@ -477,10 +477,10 @@ TODO
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
-account.get_account_tags(account_id, api_key, api_secret)
+accountApi.get_account_tags(account_id, api_key, api_secret)
 ```
 
 ```ruby
@@ -576,7 +576,7 @@ account.set_blocking_state(state_name,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 body = BlockingState(state_name='STATE1',
                      service='ServiceStateService',
@@ -584,11 +584,11 @@ body = BlockingState(state_name='STATE1',
                      is_block_entitlement=False,
                      is_block_billing=False)
 
-account.add_account_blocking_state(account_id, 
-                                   body, 
-                                   created_by, 
-                                   api_key, 
-                                   api_secret)
+accountApi.add_account_blocking_state(account_id, 
+                                      body, 
+                                      created_by, 
+                                      api_key, 
+                                      api_secret)
 ```
 
 > Example Response:
@@ -657,10 +657,10 @@ account.blocking_states(blocking_state_types,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
-account.get_blocking_states(account_id, api_key, api_secret)
+accountApi.get_blocking_states(account_id, api_key, api_secret)
 ```
 > Example Response:
 
@@ -734,10 +734,10 @@ account.bundles(options)
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
-account.get_account_bundles(account_id, api_key, api_secret)
+accountApi.get_account_bundles(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -1540,12 +1540,12 @@ account.cba_rebalancing(user,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 
-account.rebalance_existing_cba_on_account(account_id, 
-                                          created_by, 
-                                          api_key, 
-                                          api_secret)
+accountApi.rebalance_existing_cba_on_account(account_id, 
+                                             created_by, 
+                                             api_key, 
+                                             api_secret)
 ```
 
 > Example Response:
@@ -1595,10 +1595,10 @@ childrens_account = KillBillClient::Model::Account.children(account_id,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
-account.get_children_accounts(account_id, api_key, api_secret)
+accountApi.get_children_accounts(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -1710,10 +1710,10 @@ account.remove_custom_field(custom_field_id,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
-account.get_account_custom_fields(account_id, api_key, api_secret)
+accountApi.get_account_custom_fields(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -1758,10 +1758,10 @@ audit = 'NONE'
 account.custom_fields(audit, options)
 ```
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
-account.get_account_custom_fields(account_id, api_key, api_secret)
+accountApi.get_account_custom_fields(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -1831,15 +1831,15 @@ account.add_custom_field(custom_field,
                          options)
 ```
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 body = CustomField(name='Test Custom Field', value='test_value')
 
-account.create_account_custom_fields(account_id,
-                                     [body],
-                                     created_by,
-                                     api_key,
-                                     api_secret)
+accountApi.create_account_custom_fields(account_id,
+                                        [body],
+                                        created_by,
+                                        api_key,
+                                        api_secret)
 ```
 
 > Example Response:
@@ -1895,15 +1895,15 @@ account_email_notifications.update_email_notifications(user,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 body = InvoiceEmail(account_id=account_id, is_notified_for_invoices=True)
 
-account.set_email_notifications_for_account(account_id,
-                                            body,
-                                            created_by,
-                                            api_key,
-                                            api_secret)
+accountApi.set_email_notifications_for_account(account_id,
+                                               body,
+                                               created_by,
+                                               api_key,
+                                               api_secret)
 ```
 
 > Example Response:
@@ -1945,10 +1945,10 @@ account.email_notifications(options)
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
 
-account.get_email_notifications_for_account(account_id, api_key, api_secret)
+accountApi.get_email_notifications_for_account(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -1997,10 +1997,10 @@ account.emails(audit, options)
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = 'c8f51346-562d-429b-8c89-27a0f72009b3'
 
-account.get_emails(account_id, api_key, api_secret)
+accountApi.get_emails(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -2059,15 +2059,15 @@ account.add_email(account.email,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
 body = AccountEmail(account_id=account_id, email='email@example.com')
 
-account.add_email(account_id,
-                  body,
-                  created_by,
-                  api_key,
-                  api_secret)
+accountApi.add_email(account_id,
+                     body,
+                     created_by,
+                     api_key,
+                     api_secret)
 ```
 
 > Example Response:
@@ -2115,15 +2115,15 @@ account.remove_email(email,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
 email = 'email@example.com'
 
-account.remove_email(account_id,
-                     email,
-                     created_by,
-                     api_key,
-                     api_secret)
+accountApi.remove_email(account_id,
+                        email,
+                        created_by,
+                        api_key,
+                        api_secret)
 ```
 
 > Example Response:
@@ -2171,10 +2171,10 @@ account.invoice_payments(audit,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '110952d7-1b7e-482c-b6bb-103e46794927'
 
-account.get_invoice_payments(account_id, api_key, api_secret)
+accountApi.get_invoice_payments(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -2290,14 +2290,14 @@ invoice_payment.bulk_create(external_payment,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
-account.pay_all_invoices(account_id, 
-                         created_by,
-                         api_key, 
-                         api_secret, 
-                         external_payment=True)
+accountApi.pay_all_invoices(account_id, 
+                            created_by,
+                            api_key, 
+                            api_secret, 
+                            external_payment=True)
 ```
 
 > Example Response:
@@ -2343,10 +2343,10 @@ account.invoices(with_items,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
-account.get_invoices_for_account(account_id, api_key, api_secret)
+accountApi.get_invoices_for_account(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -2469,10 +2469,10 @@ account.overdue(options)
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
-account.get_overdue_account(account_id, api_key, api_secret)
+accountApi.get_overdue_account(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -2536,10 +2536,10 @@ payment_method.find_all_by_account_id(account_id,
                                       options)
 ```
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 
-account.get_payment_methods_for_account(account_id, api_key, api_secret)
+accountApi.get_payment_methods_for_account(account_id, api_key, api_secret)
 ```
 > Example Response:
 
@@ -2608,15 +2608,15 @@ pm.create(is_default,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '059ecfb8-6b4d-4a89-9537-63a687e6cf10'
 body = PaymentMethod(plugin_name='__EXTERNAL_PAYMENT__', plugin_info=None)
 
-account.create_payment_method(account_id, 
-                              body, 
-                              created_by, 
-                              api_key, 
-                              api_secret)
+accountApi.create_payment_method(account_id, 
+                                 body, 
+                                 created_by, 
+                                 api_key, 
+                                 api_secret)
 ```
 
 > Example Response:
@@ -2676,15 +2676,15 @@ KillBillClient::Model::PaymentMethod.set_default(payment_method_id,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 payment_method_id = '4f124c0d-cee7-49b1-a181-3b0738c685d7'
 
-account.set_default_payment_method(account_id, 
-                                   payment_method_id, 
-                                   created_by, 
-                                   api_key, 
-                                   api_secret)
+accountApi.set_default_payment_method(account_id, 
+                                      payment_method_id, 
+                                      created_by, 
+                                      api_key, 
+                                      api_secret)
 ```
 > Example Response:
 
@@ -2726,10 +2726,10 @@ account.payments(options)
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 
-account.get_payments_for_account(account_id, api_key, api_secret)
+accountApi.get_payments_for_account(account_id, api_key, api_secret)
 ```
 > Example Response:
 
@@ -2868,19 +2868,19 @@ transaction.credit(account.account_id,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 payment_method_id = '80c7b386-97b2-424c-bb4e-0017f92bc6eb'
 
 # transaction_type could be 'AUTHORIZE', 'PURCHASE' or 'CREDIT'
 body = PaymentTransaction(amount=50, transaction_type='AUTHORIZE')
 
-account.process_payment(account_id, 
-                        body, 
-                        created_by, 
-                        api_key, 
-                        api_secret, 
-                        payment_method_id=payment_method_id)
+accountApi.process_payment(account_id, 
+                           body, 
+                           created_by, 
+                           api_key, 
+                           api_secret, 
+                           payment_method_id=payment_method_id)
 ```
 
 > Example Response:
@@ -2959,15 +2959,15 @@ account.add_tag(tag_name,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 tag = ["00000000-0000-0000-0000-000000000002"]
 
-account.create_account_tags(account_id, 
-                            tag, 
-                            created_by, 
-                            api_key, 
-                            api_secret)
+accountApi.create_account_tags(account_id, 
+                               tag, 
+                               created_by, 
+                               api_key, 
+                               api_secret)
 ```
 > Example Response:
 
@@ -3026,15 +3026,15 @@ account.remove_tag(tag_name,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 tag = ["00000000-0000-0000-0000-000000000002"]
 
-account.delete_account_tags(account_id, 
-                            created_by, 
-                            api_key, 
-                            api_secret, 
-                            tag_def=tag)
+accountApi.delete_account_tags(account_id, 
+                               created_by, 
+                               api_key, 
+                               api_secret, 
+                               tag_def=tag)
 ```
 > Example Response:
 
@@ -3081,10 +3081,10 @@ account.tags(included_deleted,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 
-account.get_account_tags(account_id, api_key, api_secret)
+accountApi.get_account_tags(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -3154,10 +3154,10 @@ KillBillClient::Model::AccountTimeline.timeline(account_id,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 account_id = '43488882-1777-460c-bc32-e375e67d09cf'
 
-account.get_account_timeline(account_id, api_key, api_secret)
+accountApi.get_account_timeline(account_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -3978,13 +3978,13 @@ account.transfer_child_credit(user,
                               options)
 ```
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 child_account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 
-account.transfer_child_credit_to_parent(child_account_id,
-                                        created_by, 
-                                        api_key, 
-                                        api_secret)
+accountApi.transfer_child_credit_to_parent(child_account_id,
+                                           created_by, 
+                                           api_key, 
+                                           api_secret)
 ```
 > Example Response:
 
@@ -4032,9 +4032,9 @@ account.find_in_batches(offset,
                         options)
 ```
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 
-account.get_accounts(api_key, api_secret)
+accountApi.get_accounts(api_key, api_secret)
 ```
 > Example Response:
 
@@ -4164,10 +4164,10 @@ account.find_in_batches_by_search_key(search_key,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+accountApi = killbill.api.AccountApi()
 search_key = 'John-1'
 
-account.search_accounts(search_key, api_key, api_secret)
+accountApi.search_accounts(search_key, api_key, api_secret)
 ```
 
 > Example Response:
