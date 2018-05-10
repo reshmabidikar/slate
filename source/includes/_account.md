@@ -1683,11 +1683,11 @@ accountApi.get_children_accounts(account_id, api_key, api_secret)
 
 Returns a list of account objects.
 
-## Remove custom fields from account
+## Add custom fields to account
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/accounts/{accountId}/customField`
+`POST http://example.com/1.0/kb/accounts/{accountId}/customFields`
 
 > Example Request:
 
@@ -1700,41 +1700,53 @@ TODO
 ```
 
 ```ruby
-custom_field_id = custom_field.id
+custom_field = KillBillClient::Model::CustomFieldAttributes.new
+custom_field.object_type = 'ACCOUNT'
+custom_field.name = 'Test Custom Field'
+custom_field.value = 'test_value'
 
-account.remove_custom_field(custom_field_id, 
-                            user, 
-                            reason,
-                            comment, 
-                            options)
+account.add_custom_field(custom_field, 
+                         user,
+                         reason,
+                         comment,
+                         options)
 ```
-
 ```python
 accountApi = killbill.api.AccountApi()
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
+body = CustomField(name='Test Custom Field', value='test_value')
 
-accountApi.get_account_custom_fields(account_id, api_key, api_secret)
+account.create_account_custom_fields(account_id,
+                                     [body],
+                                     created_by,
+                                     api_key,
+                                     api_secret)
 ```
 
 > Example Response:
 
 ```ruby
-no content
+[
+   {
+      "customFieldId":"6e571e22-b794-413c-be6f-1b2aa4bf9824",
+      "objectId":"0149ffc6-fdfd-40b1-8cf4-29a66aef51d4",
+      "objectType":"ACCOUNT",
+      "name":"Test Custom Field",
+      "value":"test_value",
+      "auditLogs":[]
+   }
+]
 ```
 ```python
 no content
 ```
-
-
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
+None.
 
-**Response**
+**Returns**
 
-A `200` http status without content.
+Returns a custom field object.
 
 ## Retrieve account custom fields
 
@@ -1802,11 +1814,12 @@ accountApi.get_account_custom_fields(account_id, api_key, api_secret)
 
 Returns a list of custom field objects.
 
-## Add custom fields to account
+## Modify custom fields to account
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts/{accountId}/customFields`
+`PUT http://example.com/1.0/kb/bundles/{accountId}/customFields`
+
 
 > Example Request:
 
@@ -1819,27 +1832,28 @@ TODO
 ```
 
 ```ruby
-custom_field = KillBillClient::Model::CustomFieldAttributes.new
-custom_field.object_type = 'ACCOUNT'
-custom_field.name = 'Test Custom Field'
-custom_field.value = 'test_value'
+custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
+custom_field.name = 'Test Modify'
+custom_field.value = 'test_modify_value'
 
-account.add_custom_field(custom_field, 
-                         user,
-                         reason,
-                         comment,
-                         options)
+account.modify_custom_field(custom_field,                                                                                            
+                            user, 
+                            reason,
+                            comment, 
+                            options)
 ```
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
-body = CustomField(name='Test Custom Field', value='test_value')
 
-accountApi.create_account_custom_fields(account_id,
-                                        [body],
-                                        created_by,
-                                        api_key,
-                                        api_secret)
+```python
+account = killbill.api.AccountApi()
+body = CustomField(custom_field_id=custom_field_id, 
+                   name='Test Custom Field', 
+                   value='test_value')
+
+account.modify_account_custom_fields(account_id, 
+                                     [body], 
+                                     created_by, 
+                                     api_key, 
+                                     api_secret)
 ```
 
 > Example Response:
@@ -1847,11 +1861,11 @@ accountApi.create_account_custom_fields(account_id,
 ```ruby
 [
    {
-      "customFieldId":"6e571e22-b794-413c-be6f-1b2aa4bf9824",
-      "objectId":"0149ffc6-fdfd-40b1-8cf4-29a66aef51d4",
-      "objectType":"ACCOUNT",
-      "name":"Test Custom Field",
-      "value":"test_value",
+      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
+      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
+      "objectType":"BUNDLE",
+      "name":"Test Modify",
+      "value":"test_modify_value",
       "auditLogs":[]
    }
 ]
@@ -1859,6 +1873,8 @@ accountApi.create_account_custom_fields(account_id,
 ```python
 no content
 ```
+
+
 **Query Parameters**
 
 None.
@@ -1866,6 +1882,65 @@ None.
 **Returns**
 
 Returns a custom field object.
+
+## Remove custom fields from account
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/accounts/{accountId}/customField`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+custom_field_id = custom_field.id
+
+account.remove_custom_field(custom_field_id, 
+                            user, 
+                            reason,
+                            comment, 
+                            options)
+```
+
+```python
+account = killbill.api.AccountApi()
+account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
+custom_field_id = '9913e0f6-b5ef-498b-ac47-60e1626eba8f'
+custom_field = [custom_field_id]
+
+account.delete_account_custom_fields(account_id,
+                                     created_by,
+                                     api_key,
+                                     api_secret,
+                                     custom_field=custom_field)
+```
+
+> Example Response:
+
+```ruby
+no content
+```
+```python
+no content
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
+
+**Response**
+
+A `200` http status without content.
 
 ## Set account email notification
 
