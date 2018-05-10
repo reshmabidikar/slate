@@ -25,9 +25,9 @@ TODO
 ```
 
 ```python
-catalog = killbill.api.CatalogApi()
+catalogApi = killbill.api.CatalogApi()
         
-catalog.delete_catalog(created_by, api_key, api_secret)
+catalogApi.delete_catalog(created_by, api_key, api_secret)
 ```
 > Example Response:
 
@@ -67,9 +67,9 @@ TODO
 ```
 
 ```python
-catalog = killbill.api.CatalogApi()
+catalogApi = killbill.api.CatalogApi()
 
-catalog.get_catalog_json(api_key, api_secret)
+catalogApi.get_catalog_json(api_key, api_secret)
 ```
 > Example Response:
 
@@ -189,11 +189,11 @@ KillBillClient::Model::Catalog.available_addons(base_product_name,
 ```
 
 ```python
-catalog = killbill.api.CatalogApi()
+catalogApi = killbill.api.CatalogApi()
         
-catalog.get_available_addons(api_key, 
-                             api_secret, 
-                             base_product_name='Basic')
+catalogApi.get_available_addons(api_key, 
+                                api_secret, 
+                                base_product_name='Basic')
 ```
 > Example Response:
 
@@ -255,9 +255,9 @@ KillBillClient::Model::Catalog.available_base_plans(options)
 ```
 
 ```python
-catalog = killbill.api.CatalogApi()
+catalogApi = killbill.api.CatalogApi()
 
-catalog.get_available_base_plans(api_key, api_secret)
+catalogApi.get_available_base_plans(api_key, api_secret)
 ```
 
 > Example Response:
@@ -338,11 +338,11 @@ TODO
 ```
 
 ```python
-catalog = killbill.api.CatalogApi()
+catalogApi = killbill.api.CatalogApi()
 
-catalog.get_phase_for_subscription_and_date(api_key, 
-                                            api_secret, 
-                                            subscription_id=subscription_id)
+catalogApi.get_phase_for_subscription_and_date(api_key, 
+                                               api_secret, 
+                                               subscription_id=subscription_id)
 ```
 
 > Example Response:
@@ -390,11 +390,11 @@ TODO
 ```
 
 ```python
-catalog = killbill.api.CatalogApi()
+catalogApi = killbill.api.CatalogApi()
 
-catalog.get_plan_for_subscription_and_date(api_key, 
-                                           api_secret, 
-                                           subscription_id=subscription_id)
+catalogApi.get_plan_for_subscription_and_date(api_key, 
+                                              api_secret, 
+                                              subscription_id=subscription_id)
 ```
 
 > Example Response:
@@ -451,11 +451,11 @@ TODO
 ```
 
 ```python
-catalog = killbill.api.CatalogApi()
+catalogApi = killbill.api.CatalogApi()
 
-catalog.get_price_list_for_subscription_and_date(api_key, 
-                                                 api_secret, 
-                                                 subscription_id=subscription_id)
+catalogApi.get_price_list_for_subscription_and_date(api_key, 
+                                                    api_secret, 
+                                                    subscription_id=subscription_id)
 ```
 
 > Example Response:
@@ -500,11 +500,11 @@ TODO
 ```
 
 ```python
-catalog = killbill.api.CatalogApi()
+catalogApi = killbill.api.CatalogApi()
 
-catalog.get_product_for_subscription_and_date(api_key, 
-                                              api_secret, 
-                                              subscription_id=subscription_id)
+catalogApi.get_product_for_subscription_and_date(api_key, 
+                                                 api_secret, 
+                                                 subscription_id=subscription_id)
 ```
 
 > Example Response:
@@ -566,7 +566,7 @@ KillBillClient::Model::Catalog.add_tenant_catalog_simple_plan(simple_plan,
                                                               options)
 ```
 ```python
-catalog = killbill.api.CatalogApi()
+catalogApi = killbill.api.CatalogApi()
 body = SimplePlan(plan_id='basic-annual',
                   product_name='Basic',
                   product_category='BASE',
@@ -576,7 +576,7 @@ body = SimplePlan(plan_id='basic-annual',
                   trial_length=0,
                   trial_time_unit='UNLIMITED')
                   
-catalog.add_simple_plan(body, created_by, api_key, api_secret)
+catalogApi.add_simple_plan(body, created_by, api_key, api_secret)
 ```
 
 > Example Response:
@@ -617,9 +617,9 @@ TODO
 ```
 
 ```python
-catalog = killbill.api.CatalogApi()
+catalogApi = killbill.api.CatalogApi()
 
-catalog.get_catalog_versions(api_key, api_secret)
+catalogApi.get_catalog_versions(api_key, api_secret)
 ```
 
 > Example Response:
@@ -665,9 +665,9 @@ KillBillClient::Model::Catalog.get_tenant_catalog(format,
 ```
 
 ```python
-catalog = killbill.api.CatalogApi()
+catalogApi = killbill.api.CatalogApi()
 
-catalog.get_catalog_xml(api_key, api_secret)
+catalogApi.get_catalog_xml(api_key, api_secret)
 ```
 > Example Response:
 
@@ -1080,13 +1080,13 @@ KillBillClient::Model::Catalog.upload_tenant_catalog(catalog_file_xml,
 ```
 
 ```python
-catalog = killbill.api.CatalogApi()
+catalogApi = killbill.api.CatalogApi()
 xml_catalog = open("../resources/SpyCarBasic.xml", "r+").read()
 
-catalog.upload_catalog_xml(xml_catalog, 
-                           created_by, 
-                           api_key, 
-                           api_secret)
+catalogApi.upload_catalog_xml(xml_catalog, 
+                              created_by, 
+                              api_key, 
+                              api_secret)
 ```
 > Example Response:
 
