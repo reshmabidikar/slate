@@ -68,6 +68,20 @@ transaction.capture(user,
                     options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = 'b2a187b8-0028-4de8-b349-0ebe4e714a5a'
+body = PaymentTransaction(payment_id=payment_id, 
+                          amount=50.0, 
+                          currency='USD')
+
+paymentApi.capture_authorization(payment_id,
+                                 body,
+                                 created_by,
+                                 api_key,
+                                 api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -116,7 +130,9 @@ transaction.capture(user,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -152,6 +168,19 @@ transaction.capture(user,
                     reason, 
                     comment, 
                     options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_external_key = 'sample_external_key'
+body = PaymentTransaction(payment_external_key=payment_external_key,
+                          amount=50.0,
+                          currency='USD')
+
+paymentApi.capture_authorization_by_external_key(body, 
+                                                 created_by, 
+                                                 api_key, 
+                                                 api_secret)
 ```
 
 > Example Response:
@@ -202,7 +231,9 @@ transaction.capture(user,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -237,6 +268,13 @@ KillBillClient::Model::Payment.find_by_id(payment_id,
                                           with_plugin_info, 
                                           with_attempts, 
                                           options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = 'ce88ae5b-7ec0-4e14-9ea1-fffe4411278e'
+
+paymentApi.get_payment(payment_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -287,7 +325,38 @@ KillBillClient::Model::Payment.find_by_id(payment_id,
    "auditLogs":[]
 }
 ```
-
+```python
+{'account_id': '1686f19d-bc3a-4a4b-987f-837b0547df50',
+ 'audit_logs': [],
+ 'auth_amount': 50.0,
+ 'captured_amount': 0.0,
+ 'credited_amount': 0.0,
+ 'currency': 'USD',
+ 'payment_attempts': None,
+ 'payment_external_key': 'ce88ae5b-7ec0-4e14-9ea1-fffe4411278e',
+ 'payment_id': 'ce88ae5b-7ec0-4e14-9ea1-fffe4411278e',
+ 'payment_method_id': '54c9a68e-155d-44ec-b5a0-694f9a4e0962',
+ 'payment_number': '428',
+ 'purchased_amount': 0.0,
+ 'refunded_amount': 0.0,
+ 'transactions': [{'amount': 50.0,
+                   'audit_logs': [],
+                   'currency': 'USD',
+                   'effective_date': datetime.datetime(2018, 5, 11, 15, 58, 4, tzinfo=tzutc()),
+                   'first_payment_reference_id': None,
+                   'gateway_error_code': None,
+                   'gateway_error_msg': None,
+                   'payment_external_key': 'ce88ae5b-7ec0-4e14-9ea1-fffe4411278e',
+                   'payment_id': 'ce88ae5b-7ec0-4e14-9ea1-fffe4411278e',
+                   'processed_amount': 50.0,
+                   'processed_currency': 'USD',
+                   'properties': None,
+                   'second_payment_reference_id': None,
+                   'status': 'SUCCESS',
+                   'transaction_external_key': '0eff43b1-133e-4a8b-ab75-061d72a1879c',
+                   'transaction_id': '0eff43b1-133e-4a8b-ab75-061d72a1879c',
+                   'transaction_type': 'AUTHORIZE'}]}
+```
 
 **Query Parameters**
 
@@ -325,6 +394,15 @@ KillBillClient::Model::Payment.find_by_external_key(external_key,
                                                     with_plugin_info, 
                                                     with_attempts, 
                                                     options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_external_key = 'sample_external_key' 
+
+paymentApi.get_payment_by_external_key(payment_external_key,
+                                       api_key,
+                                       api_secret)
 ```
 
 > Example Response:
@@ -375,7 +453,38 @@ KillBillClient::Model::Payment.find_by_external_key(external_key,
    "auditLogs":[]
 }
 ```
-
+```python
+{'account_id': '35e08817-3fcd-46a2-aa35-148bbe47c2d9',
+ 'audit_logs': [],
+ 'auth_amount': 50.0,
+ 'captured_amount': 0.0,
+ 'credited_amount': 0.0,
+ 'currency': 'USD',
+ 'payment_attempts': None,
+ 'payment_external_key': 'sample_external_key',
+ 'payment_id': '14002a0b-3b78-4c94-9297-6b79fe805d0c',
+ 'payment_method_id': '41cc673a-2030-4ad1-ad91-0a2a22b8732b',
+ 'payment_number': '430',
+ 'purchased_amount': 0.0,
+ 'refunded_amount': 0.0,
+ 'transactions': [{'amount': 50.0,
+                   'audit_logs': [],
+                   'currency': 'USD',
+                   'effective_date': datetime.datetime(2018, 5, 11, 17, 14, 32, tzinfo=tzutc()),
+                   'first_payment_reference_id': None,
+                   'gateway_error_code': None,
+                   'gateway_error_msg': None,
+                   'payment_external_key': '14002a0b-3b78-4c94-9297-6b79fe805d0c',
+                   'payment_id': '14002a0b-3b78-4c94-9297-6b79fe805d0c',
+                   'processed_amount': 50.0,
+                   'processed_currency': 'USD',
+                   'properties': None,
+                   'second_payment_reference_id': None,
+                   'status': 'SUCCESS',
+                   'transaction_external_key': '8c0bfe29-44b2-4aaf-937a-e368c233dccf',
+                   'transaction_id': '8c0bfe29-44b2-4aaf-937a-e368c233dccf',
+                   'transaction_type': 'AUTHORIZE'}]}
+```
 
 **Query Parameters**
 
@@ -416,6 +525,18 @@ transaction.complete_initial_transaction(user,
                                          refresh_options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = '7dcda896-808b-414c-aad4-74ddc98e3dcb'
+body = PaymentTransaction(payment_id=payment_id)
+
+paymentApi.complete_transaction(payment_id,
+                                body,
+                                created_by,
+                                api_key,
+                                api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -450,7 +571,9 @@ transaction.complete_initial_transaction(user,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -488,6 +611,17 @@ transaction.complete_initial_transaction(user,
                                          refresh_options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_external_key = 'sample_external_key'
+body = PaymentTransaction(payment_external_key=payment_external_key)
+
+paymentApi.complete_transaction_by_external_key(body,
+                                                created_by,
+                                                api_key,
+                                                api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -522,7 +656,9 @@ transaction.complete_initial_transaction(user,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -558,6 +694,17 @@ transaction.void(user,
                  options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = '29b34a3d-d301-4e57-8fc2-2c0a201c4fd0'
+body = PaymentTransaction(payment_id=payment_id)
+
+paymentApi.void_payment(payment_id,
+                        body,
+                        created_by,
+                        api_key,
+                        api_secret)
+```
 > Example Response:
 
 ```ruby
@@ -573,7 +720,9 @@ transaction.void(user,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -609,6 +758,16 @@ transaction.void(user,
                  options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_external_key = 'sample_external_key'
+body = PaymentTransaction(payment_external_key=payment_external_key)
+
+paymentApi.void_payment_by_external_key(body,
+                                        created_by,
+                                        api_key,
+                                        api_secret)
+```
 > Example Response:
 
 ```ruby
@@ -624,7 +783,9 @@ transaction.void(user,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -663,6 +824,21 @@ transaction.chargeback(user,
                        comment, 
                        options, 
                        refresh_options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = '42ab1653-051f-416c-8c70-bf5d4061d4fa'
+body = PaymentTransaction(payment_id=payment_id,
+                          amount=50.0,
+                          currency='USD',
+                          effective_date=None)
+
+paymentApi.chargeback_payment(payment_id,
+                              body,
+                              created_by,
+                              api_key,
+                              api_secret)
 ```
 
 > Example Response:
@@ -713,7 +889,9 @@ transaction.chargeback(user,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -752,6 +930,20 @@ transaction.chargeback(user,
                        comment, 
                        options, 
                        refresh_options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_external_key = 'sample_external_key'
+body = PaymentTransaction(payment_external_key=payment_external_key,
+                          amount=50.0,
+                          currency='USD',
+                          effective_date=None)
+
+paymentApi.chargeback_payment_by_external_key(body,
+                                              created_by,
+                                              api_key,
+                                              api_secret)
 ```
 
 > Example Response:
@@ -802,7 +994,9 @@ transaction.chargeback(user,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -837,6 +1031,20 @@ transaction.chargeback_reversals(user,
                                  reason, 
                                  comment, 
                                  options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = '74a82e25-120a-4a39-a7f7-7b5c2b4ac05d'
+transaction_external_key = '9ceb96a2-5407-482b-8847-7b08cc64213f'
+body = PaymentTransaction(payment_id=payment_id,
+                          transaction_external_key=transaction_external_key)
+
+paymentApi.chargeback_reversal_payment(payment_id,
+                                       body,
+                                       created_by,
+                                       api_key,
+                                       api_secret)
 ```
 
 > Example Response:
@@ -898,7 +1106,9 @@ transaction.chargeback_reversals(user,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -932,6 +1142,17 @@ transaction.chargeback_reversals(user,
                                  reason, 
                                  comment, 
                                  options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+body = PaymentTransaction(payment_external_key=payment_external_key,
+                          transaction_external_key=transaction_external_key)
+
+paymentApi.chargeback_reversal_payment_by_external_key(body,
+                                                       created_by,
+                                                       api_key,
+                                                       api_secret)
 ```
 
 > Example Response:
@@ -993,7 +1214,9 @@ transaction.chargeback_reversals(user,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -1032,6 +1255,17 @@ payment.add_custom_field(custom_field,
                          options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+body = CustomField(name='Test Custom Field', value='test_value')
+
+paymentApi.create_payment_custom_fields(payment_id,
+                                        [body],
+                                        created_by,
+                                        api_key,
+                                        api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -1046,7 +1280,9 @@ payment.add_custom_field(custom_field,
    }
 ]
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -1078,6 +1314,12 @@ audit = 'NONE'
 payment.custom_fields(audit, options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+
+paymentApi.get_payment_custom_fields(payment_id, api_key, api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -1092,7 +1334,14 @@ payment.custom_fields(audit, options)
    }
 ]
 ```
-
+```python
+[{'audit_logs': [],
+ 'custom_field_id': '893e0286-2b48-493b-99af-aac9b172dc75',
+ 'name': 'Test Custom Field',
+ 'object_id': '924bebe7-58e7-40e8-a5ed-192efb59d8ee',
+ 'object_type': 'PAYMENT',
+ 'value': 'test_value'}]
+```
 
 **Query Parameters**
 
@@ -1131,7 +1380,18 @@ payment.modify_custom_field(custom_field,
                             comment, 
                             options)
 ```
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = 'f33e0adc-78df-438a-b920-aaacd7f8597a'
+custom_field_id = '9913e0f6-b5ef-498b-ac47-60e1626eba8f'
+body = CustomField(custom_field_id=custom_field_id, name='Test Modify', value='test_modify_value')
 
+paymentApi.modify_payment_custom_fields(payment_id,
+                                        [body],
+                                        created_by,
+                                        api_key,
+                                        api_secret)
+```
 > Example Response:
 
 ```ruby
@@ -1146,7 +1406,9 @@ payment.modify_custom_field(custom_field,
    }
 ]
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -1184,12 +1446,24 @@ payment.remove_custom_field(custom_field_id,
                             options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = 'f33e0adc-78df-438a-b920-aaacd7f8597a'
+
+paymentApi.delete_payment_custom_fields(payment_id,
+                                        created_by,
+                                        api_key,
+                                        api_secret)
+```
+
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -1228,6 +1502,19 @@ transaction.refund(user,
                    comment, 
                    options, 
                    refresh_options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = 'dce5b2a0-0f0f-430b-9427-545ba4be5c7f' 
+body = PaymentTransaction(payment_id=payment_id,
+                          amount=50.0)
+
+paymentApi.refund_payment(payment_id,
+                          body,
+                          created_by,
+                          api_key,
+                          api_secret)
 ```
 
 > Example Response:
@@ -1278,7 +1565,9 @@ transaction.refund(user,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -1317,6 +1606,17 @@ transaction.refund_by_external_key(user,
                                    refresh_options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_external_key = 'example_payment_external_key'
+body = PaymentTransaction(payment_external_key=payment_external_key,
+                          amount=50.0)
+
+paymentApi.refund_payment_by_external_key(body,
+                                          created_by,
+                                          api_key,
+                                          api_secret)
+```
 > Example Response:
 
 ```ruby
@@ -1365,7 +1665,9 @@ transaction.refund_by_external_key(user,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -1401,6 +1703,17 @@ payment.add_tag(tag_name,
                 options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+tag = ["00000000-0000-0000-0000-000000000002"]
+
+paymentApi.create_payment_tags(payment_id,
+                               tag,
+                               created_by,
+                               api_key,
+                               api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -1415,7 +1728,9 @@ payment.add_tag(tag_name,
    }
 ]
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -1452,6 +1767,13 @@ payment.tags(included_deleted,
              options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
+
+paymentApi.get_payment_tags(payment_id, api_key, api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -1466,7 +1788,14 @@ payment.tags(included_deleted,
    }
 ]
 ```
-
+```python
+[{'audit_logs': [],
+ 'object_id': '41b6b214-c3f7-40ea-89cd-6a4ecbd9083b',
+ 'object_type': 'PAYMENT',
+ 'tag_definition_id': '00000000-0000-0000-0000-000000000002',
+ 'tag_definition_name': 'AUTO_INVOICING_OFF',
+ 'tag_id': '865e0c77-def7-4880-ac80-11c21a5e571d'}]
+```
 
 **Query Parameters**
 
@@ -1505,12 +1834,25 @@ payment.remove_tag(tag_name,
                    options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = 'dce5b2a0-0f0f-430b-9427-545ba4be5c7f' 
+
+paymentApi.delete_payment_tags(payment_id,
+                               created_by,
+                               api_key,
+                               api_secret,
+                               tag_def=tag)
+```
+
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -1548,12 +1890,24 @@ transaction.cancel_scheduled_payment(user,
                                      options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_transaction_id = '231d2bbc-7ce3-4946-b6d9-f24f9a25ff6c'
+
+paymentApi.cancel_scheduled_payment_transaction_by_id(payment_transaction_id,
+                                                      created_by,
+                                                      api_key,
+                                                      api_secret)
+```
+
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -1589,12 +1943,23 @@ transaction.cancel_scheduled_payment(user,
                                      options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+transaction_external_key = 'example_payment_external_key'
+
+paymentApi.cancel_scheduled_payment_transaction_by_external_key(transaction_external_key,
+                                                                created_by,
+                                                                api_key,
+                                                                api_secret)
+```
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -1624,9 +1989,9 @@ TODO
 
 ```ruby
 combo_transaction = KillBillClient::Model::ComboTransaction.new
-combo_transaction.account = account
-combo_transaction.payment_method = payment_method
-combo_transaction.transaction = transaction
+combo_transaction.account = account_obj
+combo_transaction.payment_method = payment_method_obj
+combo_transaction.transaction = transaction_obj
 
 refresh_options = nil
 
@@ -1650,6 +2015,16 @@ combo_transaction.credit(user,
                          comment, 
                          options, 
                          refresh_options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+body = ComboPaymentTransaction(account_obj, payment_method_obj, payment_transaction_obj)
+
+paymentApi.create_combo_payment(body,
+                                created_by,
+                                api_key,
+                                api_secret)
 ```
 
 > Example Response:
@@ -1686,7 +2061,9 @@ combo_transaction.credit(user,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -1718,6 +2095,12 @@ limit = 100
 payment.find_in_batches(offset, 
                         limit, 
                         options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+
+paymentApi.get_payments(api_key, api_secret)
 ```
 
 > Example Response:
@@ -1770,7 +2153,67 @@ payment.find_in_batches(offset,
     }
 ]
 ```
-
+```python
+[{'account_id': '5b23cc61-4afc-48bd-9fe8-0fafda02a00f',
+ 'audit_logs': [],
+ 'auth_amount': 0.0,
+ 'captured_amount': 0.0,
+ 'credited_amount': 0.0,
+ 'currency': 'USD',
+ 'payment_attempts': None,
+ 'payment_external_key': '9e283f36-269b-4d51-8341-1ff354b8c631',
+ 'payment_id': '9e283f36-269b-4d51-8341-1ff354b8c631',
+ 'payment_method_id': '4acc1167-22f9-4c89-a8e7-051814ba78f0',
+ 'payment_number': '533',
+ 'purchased_amount': 50.0,
+ 'refunded_amount': 0.0,
+ 'transactions': [{'amount': 50.0,
+                   'audit_logs': [],
+                   'currency': 'USD',
+                   'effective_date': datetime.datetime(2018, 5, 11, 20, 8, 45, tzinfo=tzutc()),
+                   'first_payment_reference_id': None,
+                   'gateway_error_code': None,
+                   'gateway_error_msg': None,
+                   'payment_external_key': '9e283f36-269b-4d51-8341-1ff354b8c631',
+                   'payment_id': '9e283f36-269b-4d51-8341-1ff354b8c631',
+                   'processed_amount': 50.0,
+                   'processed_currency': 'USD',
+                   'properties': None,
+                   'second_payment_reference_id': None,
+                   'status': 'SUCCESS',
+                   'transaction_external_key': 'b144e485-7570-4748-b5d2-7c25d720b264',
+                   'transaction_id': 'b144e485-7570-4748-b5d2-7c25d720b264',
+                   'transaction_type': 'PURCHASE'}]}, {'account_id': '5b23cc61-4afc-48bd-9fe8-0fafda02a00f',
+ 'audit_logs': [],
+ 'auth_amount': 50.0,
+ 'captured_amount': 0.0,
+ 'credited_amount': 0.0,
+ 'currency': 'USD',
+ 'payment_attempts': None,
+ 'payment_external_key': '078b62a4-1197-44b1-801d-3a0c01a53702',
+ 'payment_id': '078b62a4-1197-44b1-801d-3a0c01a53702',
+ 'payment_method_id': '4acc1167-22f9-4c89-a8e7-051814ba78f0',
+ 'payment_number': '534',
+ 'purchased_amount': 0.0,
+ 'refunded_amount': 0.0,
+ 'transactions': [{'amount': 50.0,
+                   'audit_logs': [],
+                   'currency': 'USD',
+                   'effective_date': datetime.datetime(2018, 5, 11, 20, 8, 46, tzinfo=tzutc()),
+                   'first_payment_reference_id': None,
+                   'gateway_error_code': None,
+                   'gateway_error_msg': None,
+                   'payment_external_key': '078b62a4-1197-44b1-801d-3a0c01a53702',
+                   'payment_id': '078b62a4-1197-44b1-801d-3a0c01a53702',
+                   'processed_amount': 50.0,
+                   'processed_currency': 'USD',
+                   'properties': None,
+                   'second_payment_reference_id': None,
+                   'status': 'SUCCESS',
+                   'transaction_external_key': '9c184ba0-723b-4d5b-ad57-be26fb15fd40',
+                   'transaction_id': '9c184ba0-723b-4d5b-ad57-be26fb15fd40',
+                   'transaction_type': 'AUTHORIZE'}]}]
+```
 
 **Query Parameters**
 
@@ -1814,6 +2257,13 @@ payment.find_in_batches_by_search_key(search_key,
                                       options)
 ```
 
+```python
+paymentApi = killbill.api.PaymentApi()
+search_key = 'SUCCESS'
+
+paymentApi.search_payments(search_key, api_key, api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -1864,7 +2314,67 @@ payment.find_in_batches_by_search_key(search_key,
     }
 ]
 ```
-
+```python
+[{'account_id': '494df5a9-d8da-4e56-852a-459fdaca85d1',
+ 'audit_logs': [],
+ 'auth_amount': 0.0,
+ 'captured_amount': 0.0,
+ 'credited_amount': 0.0,
+ 'currency': 'USD',
+ 'payment_attempts': None,
+ 'payment_external_key': '9988364a-3f86-4fcf-8a49-35ba6d1c1a93',
+ 'payment_id': '9988364a-3f86-4fcf-8a49-35ba6d1c1a93',
+ 'payment_method_id': 'b7c26570-3515-4055-a8a8-4d6d4b45dc28',
+ 'payment_number': '537',
+ 'purchased_amount': 50.0,
+ 'refunded_amount': 0.0,
+ 'transactions': [{'amount': 50.0,
+                   'audit_logs': [],
+                   'currency': 'USD',
+                   'effective_date': datetime.datetime(2018, 5, 11, 20, 12, 8, tzinfo=tzutc()),
+                   'first_payment_reference_id': None,
+                   'gateway_error_code': None,
+                   'gateway_error_msg': None,
+                   'payment_external_key': '9988364a-3f86-4fcf-8a49-35ba6d1c1a93',
+                   'payment_id': '9988364a-3f86-4fcf-8a49-35ba6d1c1a93',
+                   'processed_amount': 50.0,
+                   'processed_currency': 'USD',
+                   'properties': None,
+                   'second_payment_reference_id': None,
+                   'status': 'SUCCESS',
+                   'transaction_external_key': '0fa4d97d-086b-43b3-a9f2-085c9cc382c2',
+                   'transaction_id': '0fa4d97d-086b-43b3-a9f2-085c9cc382c2',
+                   'transaction_type': 'PURCHASE'}]}, {'account_id': '494df5a9-d8da-4e56-852a-459fdaca85d1',
+ 'audit_logs': [],
+ 'auth_amount': 50.0,
+ 'captured_amount': 0.0,
+ 'credited_amount': 0.0,
+ 'currency': 'USD',
+ 'payment_attempts': None,
+ 'payment_external_key': 'b937a96e-36b4-46fa-a609-64d568403551',
+ 'payment_id': 'b937a96e-36b4-46fa-a609-64d568403551',
+ 'payment_method_id': 'b7c26570-3515-4055-a8a8-4d6d4b45dc28',
+ 'payment_number': '538',
+ 'purchased_amount': 0.0,
+ 'refunded_amount': 0.0,
+ 'transactions': [{'amount': 50.0,
+                   'audit_logs': [],
+                   'currency': 'USD',
+                   'effective_date': datetime.datetime(2018, 5, 11, 20, 12, 9, tzinfo=tzutc()),
+                   'first_payment_reference_id': None,
+                   'gateway_error_code': None,
+                   'gateway_error_msg': None,
+                   'payment_external_key': 'b937a96e-36b4-46fa-a609-64d568403551',
+                   'payment_id': 'b937a96e-36b4-46fa-a609-64d568403551',
+                   'processed_amount': 50.0,
+                   'processed_currency': 'USD',
+                   'properties': None,
+                   'second_payment_reference_id': None,
+                   'status': 'SUCCESS',
+                   'transaction_external_key': '49884122-aa64-4518-b2de-55fe4fbde856',
+                   'transaction_id': '49884122-aa64-4518-b2de-55fe4fbde856',
+                   'transaction_type': 'AUTHORIZE'}]}]
+```
 
 **Query Parameters**
 
