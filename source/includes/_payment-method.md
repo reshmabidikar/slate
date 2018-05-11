@@ -14,6 +14,77 @@ The attributes are the following:
 * **`pluginInfo`** <span style="color:#32A9C7">*[User generated]*</span>
 * **`auditLogs`** <span style="color:#32A9C7">*[`AuditLog`]*</span>
 
+##  Retrieve a payment method by id
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/paymentMethods/{paymentMethodId}`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+payment_method_id = "6a0bf13e-d57f-4f79-84bd-3690135f1923"
+with_plugin_info = false
+
+KillBillClient::Model::PaymentMethod.find_by_id(payment_method_id, 
+                                                with_plugin_info, 
+                                                options)
+```
+
+```python
+paymentMethodApi = killbill.api.PaymentMethodApi()
+payment_method_id = '0052cddd-0f61-4f68-b653-ca49b5d7f915'
+
+paymentMethodApi.get_payment_method(payment_method_id, api_key, api_secret)
+```
+
+> Example Response:
+
+```ruby
+{
+   "paymentMethodId":"6a0bf13e-d57f-4f79-84bd-3690135f1923",
+   "externalKey":"unknown",
+   "accountId":"f9c4801f-0daa-4c46-bea0-59490d07fc5e",
+   "isDefault":false,
+   "pluginName":"__EXTERNAL_PAYMENT__",
+   "pluginInfo":{
+      "properties":[]
+   },
+   "auditLogs":[]
+}
+```
+
+```python
+{'account_id': '9f2f95b9-7021-4645-9863-30feac25841a',
+ 'audit_logs': [],
+ 'external_key': 'unknown',
+ 'is_default': False,
+ 'payment_method_id': '0052cddd-0f61-4f68-b653-ca49b5d7f915',
+ 'plugin_info': None,
+ 'plugin_name': '__EXTERNAL_PAYMENT__'}
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **includedDeleted** | boolean | true | choose true to include deleted payment methods |
+| **audit** | enum | false | level of audit logs returned |
+| **withPluginInfo** | boolean | false | choose true if you want plugin info |
+
+**Returns**
+
+Returns a payment method object.
+
 ## Retrieve a payment method by external key
 
 **HTTP Request** 
@@ -43,6 +114,13 @@ KillBillClient::Model::PaymentMethod.find_by_external_key(payment_method_ek,
                                                           options)
 ```
 
+```python
+paymentMethodApi = killbill.api.PaymentMethodApi()
+external_key = 'sample_external_key'
+
+paymentMethodApi.get_payment_method_by_key(external_key, api_key, api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -58,7 +136,15 @@ KillBillClient::Model::PaymentMethod.find_by_external_key(payment_method_ek,
    "auditLogs":[]
 }
 ```
-
+```python
+{'account_id': '1d1c63ae-fd71-4e0c-87d4-24a334335c49',
+ 'audit_logs': [],
+ 'external_key': 'sample_external_key',
+ 'is_default': False,
+ 'payment_method_id': '882b2fa0-5946-487a-933c-b2572ea4383c',
+ 'plugin_info': None,
+ 'plugin_name': '__EXTERNAL_PAYMENT__'}
+```
 
 **Query Parameters**
 
@@ -102,12 +188,24 @@ KillBillClient::Model::PaymentMethod.destroy(payment_method_id,
                                              options)
 ```
 
+```python
+paymentMethodApi = killbill.api.PaymentMethodApi()
+payment_method_id = '0052cddd-0f61-4f68-b653-ca49b5d7f915'
+
+paymentMethodApi.delete_payment_method(payment_method_id, 
+                                       created_by, 
+                                       api_key, 
+                                       api_secret)
+```
+
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content  
+```
 
 **Query Parameters**
 
@@ -119,151 +217,6 @@ no content
 **Returns**
 
 A `200` http status without content.
-
-##  Retrieve a payment method by id
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/paymentMethods/{paymentMethodId}`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-TODO
-```
-
-```ruby
-payment_method_id = "6a0bf13e-d57f-4f79-84bd-3690135f1923"
-with_plugin_info = false
-
-KillBillClient::Model::PaymentMethod.find_by_id(payment_method_id, 
-                                                with_plugin_info, 
-                                                options)
-```
-
-> Example Response:
-
-```ruby
-{
-   "paymentMethodId":"6a0bf13e-d57f-4f79-84bd-3690135f1923",
-   "externalKey":"unknown",
-   "accountId":"f9c4801f-0daa-4c46-bea0-59490d07fc5e",
-   "isDefault":false,
-   "pluginName":"__EXTERNAL_PAYMENT__",
-   "pluginInfo":{
-      "properties":[]
-   },
-   "auditLogs":[]
-}
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **includedDeleted** | boolean | true | choose true to include deleted payment methods |
-| **audit** | enum | false | level of audit logs returned |
-| **withPluginInfo** | boolean | false | choose true if you want plugin info |
-
-**Returns**
-
-Returns a payment method object.
-
-##  Remove custom fields from payment method
-
-**HTTP Request** 
-
-`DELETE http://example.com/1.0/kb/paymentMethods/{paymentMethodId}/customFields`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-TODO
-```
-
-```ruby
-custom_field_id = custom_field.id
-
-payment_method.remove_custom_field(custom_field_id,                                                                                            
-                                   user, 
-                                   reason,
-                                   comment, 
-                                   options)
-```
-
-> Example Response:
-
-```ruby
-no content
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
-
-**Returns**
-
-A `200` http status without content.
-
-##  Retrieve payment method custom fields
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/paymentMethods/{paymentMethodId}/customFields`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-TODO
-```
-
-```ruby
-audit = 'NONE'
-
-payment_method.custom_fields(audit, options)
-```
-
-> Example Response:
-
-```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"PAYMENT_METHOD",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **audit** | enum | false | level of audit logs returned |
-
-**Returns**
-
-Returns a list of custom field objects.
 
 ##  Add custom fields to payment method
 
@@ -294,6 +247,18 @@ payment_method.add_custom_field(custom_field,
                                 options)
 ```
 
+```python
+paymentMethodApi = killbill.api.PaymentMethodApi()
+payment_method_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+body = CustomField(name='Test Custom Field', value='test_value')
+
+paymentMethodApi.create_payment_method_custom_fields(payment_method_id,
+                                                     [body],
+                                                     created_by,
+                                                     api_key,
+                                                     api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -308,7 +273,9 @@ payment_method.add_custom_field(custom_field,
    }
 ]
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -317,6 +284,70 @@ None.
 **Returns**
 
 Returns a custom field object.
+
+##  Retrieve payment method custom fields
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/paymentMethods/{paymentMethodId}/customFields`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+audit = 'NONE'
+
+payment_method.custom_fields(audit, options)
+```
+
+```python
+paymentMethodApi = killbill.api.PaymentMethodApi()
+payment_method_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+
+paymentMethodApi.get_payment_method_custom_fields(payment_method_id, 
+                                                  api_key, 
+                                                  api_secret)
+```
+
+> Example Response:
+
+```ruby
+[
+   {
+      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
+      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
+      "objectType":"PAYMENT_METHOD",
+      "name":"Test Custom Field",
+      "value":"test_value",
+      "auditLogs":[]
+   }
+]
+```
+```python
+[{'audit_logs': [],
+ 'custom_field_id': '5670b594-9317-4aeb-bfef-2c2342ec172a',
+ 'name': 'Test Custom Field',
+ 'object_id': '4927c1a2-3959-4f71-98e7-ce3ba19c92ac',
+ 'object_type': 'PAYMENT_METHOD',
+ 'value': 'test_value'}]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Returns a list of custom field objects.
 
 ##  Modify custom fields to payment method
 
@@ -346,6 +377,21 @@ payment_method.modify_custom_field(custom_field,
                                    options)
 ```
 
+```python
+paymentMethodApi = killbill.api.PaymentMethodApi()
+payment_method_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
+body = CustomField(custom_field_id=custom_field_id, 
+                   name='Test Custom Field', 
+                   value='test_value')
+
+paymentMethodApi.modify_payment_method_custom_fields(payment_method_id, 
+                                                     [body], 
+                                                     created_by, 
+                                                     api_key, 
+                                                     api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -360,7 +406,9 @@ payment_method.modify_custom_field(custom_field,
    }
 ]
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -371,6 +419,60 @@ payment_method.modify_custom_field(custom_field,
 **Returns**
 
 Returns a custom field object.
+
+##  Remove custom fields from payment method
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/paymentMethods/{paymentMethodId}/customFields`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+custom_field_id = custom_field.id
+
+payment_method.remove_custom_field(custom_field_id,                                                                                            
+                                   user, 
+                                   reason,
+                                   comment, 
+                                   options)
+```
+
+```python
+paymentMethodApi = killbill.api.PaymentMethodApi()
+payment_method_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+
+paymentMethodApi.delete_payment_method_custom_fields(payment_method_id,
+                                                     created_by,
+                                                     api_key, 
+                                                     api_secret)
+```
+> Example Response:
+
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
+
+**Returns**
+
+A `200` http status without content.
 
 ##  List payment methods
 
@@ -397,6 +499,11 @@ payment_method.find_in_batches(offset,
                                options)
 ```
 
+```python
+paymentMethodApi = killbill.api.PaymentMethodApi()
+
+paymentMethodApi.get_payment_methods(api_key, api_secret)
+```
 > Example Response:
 
 ```ruby
@@ -414,7 +521,15 @@ payment_method.find_in_batches(offset,
   }
 ]
 ```
-
+```python
+[{'account_id': '5d82791d-c47f-4c4b-be11-b68233656b96',
+ 'audit_logs': [],
+ 'external_key': 'unknown',
+ 'is_default': False,
+ 'payment_method_id': '06955087-e191-4da5-99c9-e712b21f6aa6',
+ 'plugin_info': None,
+ 'plugin_name': '__EXTERNAL_PAYMENT__'}]
+```
 
 **Query Parameters**
 
@@ -454,6 +569,13 @@ payment_method.find_in_batches_by_search_key(search_key,
                                              options)
 ```
 
+```python
+paymentMethodApi = killbill.api.PaymentMethodApi()
+search_key = '__EXTERNAL_PAYMENT__'
+
+paymentMethodApi.search_payment_methods(search_key, api_key, api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -471,7 +593,15 @@ payment_method.find_in_batches_by_search_key(search_key,
   }
 ]
 ```
-
+```python
+[{'account_id': '81d8b04d-dee1-49bf-bc73-48219df21af9',
+ 'audit_logs': [],
+ 'external_key': 'unknown',
+ 'is_default': False,
+ 'payment_method_id': 'bcecaf3f-16c7-4d65-aed0-b08cc5e34a6b',
+ 'plugin_info': None,
+ 'plugin_name': '__EXTERNAL_PAYMENT__'}]
+```
 
 **Query Parameters**
 
