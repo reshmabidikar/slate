@@ -60,6 +60,17 @@ subscription.create(user,
                     options)
 ```
 
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+account_id = 'e1826665-4524-4d57-81b5-a5eb11146f3f'
+body = Subscription(account_id=account_id, plan_name='standard-monthly')
+
+subscriptionApi.create_subscription(body,
+                                    created_by,
+                                    api_key,
+                                    api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -123,7 +134,9 @@ subscription.create(user,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -174,12 +187,24 @@ subscription.cancel(user,
                     options)
 ```
 
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = 'ee508b5b-46b8-42a7-8988-16c0470de4ae'
+
+subscriptionApi.cancel_subscription_plan(subscription_id, 
+                                         created_by,
+                                         api_key,
+                                         api_secret)
+```
+
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -216,6 +241,13 @@ TODO
 subscription_id = "161692a4-c293-410c-a92f-939c5e3dcba7"
 
 KillBillClient::Model::Subscription.find_by_id(subscription_id, options)
+```
+
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = '4aab9b96-c2e7-4641-a6d9-db984969201e'
+
+subscriptionApi.get_subscription(subscription_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -282,7 +314,78 @@ KillBillClient::Model::Subscription.find_by_id(subscription_id, options)
 }
 ```
 
-
+```python
+{'account_id': '3b1a5a67-f0ac-475c-9aad-735d309f0c1f',
+ 'audit_logs': [],
+ 'bill_cycle_day_local': 13,
+ 'billing_end_date': None,
+ 'billing_period': 'MONTHLY',
+ 'billing_start_date': datetime.date(2018, 5, 14),
+ 'bundle_id': 'e5590623-ccd4-4a8a-be26-008ce7c02b3b',
+ 'cancelled_date': None,
+ 'charged_through_date': None,
+ 'events': [{'audit_logs': [],
+             'billing_period': 'MONTHLY',
+             'effective_date': datetime.date(2018, 5, 14),
+             'event_id': '46335d3d-8234-49c3-af1a-dcf8cd354ef3',
+             'event_type': 'START_ENTITLEMENT',
+             'is_blocked_billing': False,
+             'is_blocked_entitlement': False,
+             'phase': 'standard-monthly-trial',
+             'plan': 'standard-monthly',
+             'price_list': 'DEFAULT',
+             'product': 'Standard',
+             'service_name': 'entitlement-service',
+             'service_state_name': 'ENT_STARTED'},
+            {'audit_logs': [],
+             'billing_period': 'MONTHLY',
+             'effective_date': datetime.date(2018, 5, 14),
+             'event_id': 'a14d6512-7479-46e0-b72b-81dff575d1d4',
+             'event_type': 'START_BILLING',
+             'is_blocked_billing': False,
+             'is_blocked_entitlement': False,
+             'phase': 'standard-monthly-trial',
+             'plan': 'standard-monthly',
+             'price_list': 'DEFAULT',
+             'product': 'Standard',
+             'service_name': 'billing-service',
+             'service_state_name': 'START_BILLING'},
+            {'audit_logs': [],
+             'billing_period': 'MONTHLY',
+             'effective_date': datetime.date(2018, 6, 13),
+             'event_id': '27408c65-46b8-4bc9-a7ee-c80d6e5fb9b5',
+             'event_type': 'PHASE',
+             'is_blocked_billing': False,
+             'is_blocked_entitlement': False,
+             'phase': 'standard-monthly-evergreen',
+             'plan': 'standard-monthly',
+             'price_list': 'DEFAULT',
+             'product': 'Standard',
+             'service_name': 'entitlement+billing-service',
+             'service_state_name': 'PHASE'}],
+ 'external_key': 'e5590623-ccd4-4a8a-be26-008ce7c02b3b',
+ 'phase_type': 'TRIAL',
+ 'plan_name': 'standard-monthly',
+ 'price_list': 'DEFAULT',
+ 'price_overrides': [{'fixed_price': 0.0,
+                      'phase_name': 'standard-monthly-trial',
+                      'phase_type': 'TRIAL',
+                      'plan_name': 'standard-monthly',
+                      'recurring_price': None,
+                      'usage_price_overrides': []},
+                     {'fixed_price': None,
+                      'phase_name': 'standard-monthly-evergreen',
+                      'phase_type': 'EVERGREEN',
+                      'plan_name': 'standard-monthly',
+                      'recurring_price': 100.0,
+                      'usage_price_overrides': []}],
+ 'product_category': 'BASE',
+ 'product_name': 'Standard',
+ 'source_type': 'NATIVE',
+ 'start_date': datetime.date(2018, 5, 14),
+ 'state': 'ACTIVE',
+ 'subscription_id': '4aab9b96-c2e7-4641-a6d9-db984969201e'}
+```
 **Query Parameters**
 
 | Name | Type | Required | Description |
@@ -328,6 +431,20 @@ subscription.change_plan(input,
                          billing_policy, 
                          call_completion, 
                          options)
+```
+
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = '97278000-72fd-45d7-9b67-e44690bdb074'
+body = Subscription(product_name='Super',
+                    billing_period='MONTHLY',
+                    price_list='DEFAULT')
+
+subscriptionApi.change_subscription_plan(subscription_id,
+                                         body,
+                                         created_by,
+                                         api_key,
+                                         api_secret)
 ```
 
 > Example Response:
@@ -435,7 +552,9 @@ subscription.change_plan(input,
    "auditLogs":[]
 }
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -482,12 +601,27 @@ subscription.update_bcd(user,
                         options)
 ```
 
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = '161692a4-c293-410c-a92f-939c5e3dcba7'
+body = Subscription(subscription_id=subscription_id,
+                    bill_cycle_day_local=26)
+
+subscriptionApi.update_subscription_bcd(subscription_id,
+                                        body,
+                                        created_by,
+                                        api_key,
+                                        api_secret)
+```
+
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -518,7 +652,7 @@ TODO
 
 ```ruby
 subscription = KillBillClient::Model::Subscription.new
-result.subscription_id = "161692a4-c293-410c-a92f-939c5e3dcba7"
+subscription.subscription_id = "161692a4-c293-410c-a92f-939c5e3dcba7"
 
 state_name = 'STATE1'
 service = 'ServiceStateService'
@@ -539,12 +673,29 @@ subscription.set_blocking_state(state_name,
                                 options)
 ```
 
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+body = BlockingState(state_name='STATE1',
+                     service='ServiceStateService',
+                     is_block_change=False,
+                     is_block_entitlement=False,
+                     is_block_billing=False)
+
+subscriptionApi.add_subscription_blocking_state(subscription_id,
+                                                body,
+                                                created_by,
+                                                api_key,
+                                                api_secret)
+```
+
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -555,97 +706,6 @@ no content
 **Returns**
 
 A `200` http status without content.
-
-## Remove custom fields from subscription
-
-**HTTP Request** 
-
-`DELETE http://example.com/1.0/kb/subscriptions/{subscriptionId}/customFields`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-TODO
-```
-
-```ruby
-custom_field_id = custom_field.id
-
-subscription.remove_custom_field(custom_field_id,                                                                                            
-                                 user, 
-                                 reason,
-                                 comment, 
-                                 options)
-```
-
-> Example Response:
-
-```ruby
-no content
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
-
-**Returns**
-
-A `200` http status without content.
-
-## Retrieve subscription custom fields
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/subscriptions/{subscriptionId}/customFields`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-TODO
-```
-
-```ruby
-audit = 'NONE'
-
-subscription.custom_fields(audit, options)
-```
-
-> Example Response:
-
-```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"SUBSCRIPTION",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **audit** | enum | false | level of audit logs returned |
-
-**Returns**
-
-Returns a list of custom field objects.
 
 ## Add custom fields to subscription
 
@@ -676,6 +736,18 @@ subscription.add_custom_field(custom_field,
                               options)
 ```
 
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+body = CustomField(name='Test Custom Field', value='test_value')
+
+subscriptionApi.create_subscription_custom_fields(subscription_id,
+                                                  [body],
+                                                  created_by,
+                                                  api_key,
+                                                  api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -691,6 +763,10 @@ subscription.add_custom_field(custom_field,
 ]
 ```
 
+```python
+no content
+```
+
 
 **Query Parameters**
 
@@ -699,6 +775,72 @@ None.
 **Returns**
 
 Returns a custom field object.
+
+## Retrieve subscription custom fields
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/subscriptions/{subscriptionId}/customFields`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+audit = 'NONE'
+
+subscription.custom_fields(audit, options)
+```
+
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = '642ee0ac-972b-4cdf-b9ae-ab8f9bb9bc05'
+
+subscriptionApi.get_subscription_custom_fields(subscription_id,
+                                               api_key,
+                                               api_secret)
+```
+
+> Example Response:
+
+```ruby
+[
+   {
+      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
+      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
+      "objectType":"SUBSCRIPTION",
+      "name":"Test Custom Field",
+      "value":"test_value",
+      "auditLogs":[]
+   }
+]
+```
+
+```python
+[{'audit_logs': [],
+ 'custom_field_id': '31a21da4-1eae-4f83-b9e4-49c53217d33e',
+ 'name': 'Test Custom Field',
+ 'object_id': '642ee0ac-972b-4cdf-b9ae-ab8f9bb9bc05',
+ 'object_type': 'SUBSCRIPTION',
+ 'value': 'test_value'}]
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Returns a list of custom field objects.
 
 ## Modify custom fields to subscription
 
@@ -728,6 +870,21 @@ subscription.modify_custom_field(custom_field,
                                  options)
 ```
 
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
+body = CustomField(custom_field_id=custom_field_id, 
+                   name='Test Custom Field', 
+                   value='test_value')
+
+subscriptionApi.modify_subscription_custom_fields(subscription_id,
+                                                  [body],
+                                                  created_by,
+                                                  api_key,
+                                                  api_secret)
+```
+
 > Example Response:
 
 ```ruby
@@ -743,6 +900,10 @@ subscription.modify_custom_field(custom_field,
 ]
 ```
 
+```python
+no content
+```
+
 
 **Query Parameters**
 
@@ -754,11 +915,11 @@ subscription.modify_custom_field(custom_field,
 
 Returns a custom field object.
 
-## Remove tags from subscription
+## Remove custom fields from subscription
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/subscriptions/{subscriptionId}/tags`
+`DELETE http://example.com/1.0/kb/subscriptions/{subscriptionId}/customFields`
 
 > Example Request:
 
@@ -771,13 +932,23 @@ TODO
 ```
 
 ```ruby
-tag_name = 'TEST'
+custom_field_id = custom_field.id
 
-subscription.remove_tag(tag_name,
-                        user,
-                        reason,
-                        comment,
-                        options)
+subscription.remove_custom_field(custom_field_id,                                                                                            
+                                 user, 
+                                 reason,
+                                 comment, 
+                                 options)
+```
+
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+
+subscriptionApi.delete_subscription_custom_fields(subscription_id,
+                                                  created_by,
+                                                  api_key,
+                                                  api_secret)
 ```
 
 > Example Response:
@@ -785,69 +956,20 @@ subscription.remove_tag(tag_name,
 ```ruby
 no content
 ```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true |  list of tags that you want to remove it |
-
-**Response**
-
-A `200` http status without content.
-
-## Retrieve subscription tags
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/subscriptions/{subscriptionId}/tags`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-TODO
-```
-
-```ruby
-included_deleted = false
-audit = 'NONE'
-
-subscription.tags(included_deleted,
-             audit,
-             options)
-```
-
-> Example Response:
-
-```ruby
-[
-   {
-      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
-      "objectType":"SUBSCRIPTION",
-      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
-      "auditLogs":[]
-   }
-]
+```python
+no content
 ```
 
 
 **Query Parameters**
 
 | Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **audit** | enum | false | level of audit logs returned |
-| **includedDeleted** | boolean | false | choose true if you want to include deleted tags |
+| ---- | -----| -------- | ----------- | 
+| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
 
 **Returns**
 
-Returns a list of bundle tag objects.
+A `200` http status without content.
 
 ## Add tags to subscription
 
@@ -875,6 +997,17 @@ subscription.add_tag(tag_name,
                      options)
 ```
 
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
+tag = ["00000000-0000-0000-0000-000000000002"]
+
+subscriptionApi.create_subscription_tags(subscription_id,
+                                         tag,
+                                         created_by,
+                                         api_key,
+                                         api_secret)
+```
 > Example Response:
 
 ```ruby
@@ -889,7 +1022,9 @@ subscription.add_tag(tag_name,
    }
 ]
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -900,6 +1035,131 @@ subscription.add_tag(tag_name,
 **Returns**
 
 Returns a bundle tag object.
+
+## Retrieve subscription tags
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/subscriptions/{subscriptionId}/tags`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+included_deleted = false
+audit = 'NONE'
+
+subscription.tags(included_deleted,
+             audit,
+             options)
+```
+
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
+
+subscriptionApi.get_subscription_tags(subscription_id,
+                                      api_key,
+                                      api_secret)
+```
+
+> Example Response:
+
+```ruby
+[
+   {
+      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
+      "objectType":"SUBSCRIPTION",
+      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[]
+   }
+]
+```
+```python
+[{'audit_logs': [],
+ 'object_id': 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa',
+ 'object_type': 'SUBSCRIPTION',
+ 'tag_definition_id': '00000000-0000-0000-0000-000000000002',
+ 'tag_definition_name': 'AUTO_INVOICING_OFF',
+ 'tag_id': 'a1fd0122-1ec8-4bc3-b71e-ab2a76ae5957'}]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **audit** | enum | false | level of audit logs returned |
+| **includedDeleted** | boolean | false | choose true if you want to include deleted tags |
+
+**Returns**
+
+Returns a list of bundle tag objects.
+
+## Remove tags from subscription
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/subscriptions/{subscriptionId}/tags`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+tag_name = 'TEST'
+
+subscription.remove_tag(tag_name,
+                        user,
+                        reason,
+                        comment,
+                        options)
+```
+
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
+tag = ["00000000-0000-0000-0000-000000000002"]
+
+subscriptionApi.delete_subscription_tags(subscription_id,
+                                         created_by,
+                                         api_key,
+                                         api_secret,
+                                         tag_def=tag)
+```
+
+> Example Response:
+
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **tagList** | string | true |  list of tags that you want to remove it |
+
+**Response**
+
+A `200` http status without content.
 
 ## Un-cancel an subscription
 
@@ -924,12 +1184,24 @@ subscription.uncancel(user,
                       options)
 ```
 
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
+
+subscriptionApi.uncancel_subscription_plan(subscription_id,
+                                           created_by,
+                                           api_key,
+                                           api_secret)
+```
+
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -943,7 +1215,7 @@ A `200` http status without content.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/subscriptions/createEntitlementsWithAddOns`
+`POST http://example.com/1.0/kb/subscriptions/createSubscriptionsWithAddOns`
 
 > Example Request:
 
@@ -992,9 +1264,25 @@ KillBillClient::Model::BulkSubscription.create_bulk_subscriptions(bulk_subscript
                                                                   options)
 ```
 
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription = Subscription(account_id=account_id,
+                               product_category='BASE',
+                               plan_name='sports-monthly')
+body = BulkSubscriptionsBundle([subscription])
+
+subscriptionApi.create_subscriptions_with_add_ons([body],
+                                                  created_by,
+                                                  api_key,
+                                                  api_secret)
+```
+
 > Example Response:
 
 ```ruby
+no content
+```
+```python
 no content
 ```
 
@@ -1019,7 +1307,7 @@ A `200` http status without content.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/subscriptions/createEntitlementWithAddOns`
+`POST http://example.com/1.0/kb/subscriptions/createSubscriptionWithAddOns`
 
 > Example Request:
 
@@ -1063,12 +1351,26 @@ subscription.create_entitlement_with_add_on(entitlement,
                                             options)                                         
 ```
 
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+body = Subscription(account_id=account_id,
+                    product_category='BASE',
+                    plan_name='sports-monthly')
+
+subscriptionApi.create_subscription_with_add_ons([body],
+                                                 created_by,
+                                                 api_key,
+                                                 api_secret)
+```
+
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
@@ -1109,12 +1411,24 @@ subscription.undo_change_plan(user,
                               options)
 ```
 
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
+
+subscriptionApi.undo_change_subscription_plan(subscription_id,
+                                              created_by,
+                                              api_key,
+                                              api_secret)
+```
+
 > Example Response:
 
 ```ruby
 no content
 ```
-
+```python
+no content
+```
 
 **Query Parameters**
 
