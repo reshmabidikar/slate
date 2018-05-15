@@ -121,6 +121,39 @@ comment = 'I like it!'
 
 ```
 
+```python
+# Edit file: configuration.py, line:50-62
+
+# Default Base url
+self.host = "http://localhost:8080"
+# Temp file folder for downloading files
+self.temp_folder_path = None
+
+# Authentication Settings
+# dict to store API key(s)
+self.api_key = {}
+# dict to store API prefix (e.g. Bearer)
+self.api_key_prefix = {}
+# Username for HTTP basic authentication
+self.username = "admin"
+# Password for HTTP basic authentication
+self.password = "password"
+
+####################################################
+  
+# Basic example using the client
+exampleApi = killbill.api.ExampleApi()
+body = Example(name='John', last_name = 'Doe')
+created_by = 'me'
+api_key = 'bob'
+api_secret = 'lazar'
+
+exampleApi.create(body, 
+                  created_by, 
+                  api_key, 
+                  api_secret)
+```
+
 
 Kill Bill has been designed from the ground up to run multiple logical instances on the same set of servers and database. This allows for instance to cleanly separate different customer data sets. Another common use case is to configure both a production tenant and a test tenant, the later being used for test requests during deployment and for sanity after deployment.
 
