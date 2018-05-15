@@ -2,15 +2,16 @@
 
 ## Invoice Payment Resource
 
-The `Invoice Payment` resource represent the invoice payments created by the user.
+The `Invoice Payment` resource represents a given payment associated with a given invoice. Kill Bill allows to have multiple partial payments against a given invoice, however in the default recurring mode for instance, the system will always attempt to make a full payment. Partial payments can be made against unpaid - or partially paid - invoices by triggerring a payment against the `Invoice` resource -- see below. Note that, while Kill Bill supports multiple multiple partial payments against a given invoice, the reverse is not true: A payment across multiple invoices is not (yet) supported. The `System` v.s `User` generated fields match those from the associated `Payment` and `Invoice`.
+
 
 The attributes are the following:
 
-* **`targetInvoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
 * **`paymentId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`targetInvoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
 * **`paymentNumber`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span>
+* **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated, default `paymentId`, immutable]*</span>
 * **`authAmount`** <span style="color:#32A9C7">*[User or system generated]*</span>
 * **`capturedAmount`** <span style="color:#32A9C7">*[User or system generated]*</span>
 * **`purchasedAmount`** <span style="color:#32A9C7">*[User or system generated]*</span>
@@ -18,28 +19,9 @@ The attributes are the following:
 * **`creditedAmount`** <span style="color:#32A9C7">"*[User or system generated]*</span>
 * **`currency`** <span style="color:#32A9C7">*[User or system generated]*</span>
 * **`paymentMethodId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`transactions`** <span style="color:#32A9C7">*[See `PaymentTransaction` bellow]*</span>
-* **`paymentAttempts`** <span style="color:#32A9C7">*[`PaymentAttemptJson`]*</span>
-* **`auditLogs`** <span style="color:#32A9C7">*[`AuditLog`]*</span>
+* **`transactions`** <span style="color:#32A9C7">*[See `PaymentTransaction` below]*</span>
+* **`paymentAttempts`** <span style="color:#32A9C7">*[See `PaymentAransaction` below]*</span>
 
-### PaymentTransaction
-
-* **`transactionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`transactionExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span> 
-* **`paymentId`** <span style="color:#32A9C7">*[System generated, immutable]*</span> 
-* **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span> 
-* **`amount`** <span style="color:#32A9C7">*TODO*</span> 
-* **`currency`** <span style="color:#32A9C7">*TODO*</span> 
-* **`effectiveDate`** <span style="color:#32A9C7">*TODO*</span> 
-* **`processedAmount`** <span style="color:#32A9C7">*TODO*</span> 
-* **`processedCurrency`** <span style="color:#32A9C7">*TODO*</span> 
-* **`status`** <span style="color:#32A9C7">*TODO*</span> 
-* **`gatewayErrorCode`** <span style="color:#32A9C7">*TODO*</span> 
-* **`gatewayErrorMsg`** <span style="color:#32A9C7">*TODO*</span> 
-* **`firstPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span> 
-* **`secondPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span> 
-* **`properties`** <span style="color:#32A9C7">*[`PluginProperty`]*</span> 
-* **`auditLogs`** <span style="color:#32A9C7">*[`AuditLog`]*</span>
 
 ## Retrieve a payment by id
 

@@ -38,7 +38,6 @@ The attributes are the following:
 * **`firstPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span> 
 * **`secondPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span> 
 * **`properties`** <span style="color:#32A9C7">*[`PluginProperty`]*</span> 
-* **`auditLogs`** <span style="color:#32A9C7">*[`AuditLog`]*</span>
 
 ## Capture an existing authorization
 

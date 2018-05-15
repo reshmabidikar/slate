@@ -7,18 +7,18 @@ The `Account` resource represents the customer, and tracks typical information s
 The attributes are the following:
 
 * **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
-* **`externalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span>: The external key provided from client.
+* **`externalKey`** <span style="color:#32A9C7">*[User generated, default `accountId`, immutable]*</span>: The external key provided from client.
 * **`accountCBA`** <span style="color:#32A9C7">*[System generated]*</span>: The account credit.
 * **`accountBalance`** <span style="color:#32A9C7">*[System generated]*</span>: The account balance.
 * **`name`** <span style="color:#32A9C7">*[User generated, default null]*</span>: The full name of the account -- e.g `john smith`
 * **`firstNameLength`** <span style="color:#32A9C7">*[User generated, default null]*</span>: The length of the first name -- e.g `4` in the case of `john`
 * **`email`** <span style="color:#32A9C7">*[User generated, default null]*</span>: The contact email to reach the customer.
 * **`billCycleDayLocal`** <span style="color:#32A9C7">*[User or system generated, immutable]*</span>: The default day of the month to bill customers for subscriptions with a billing period a multiple of the month.
-* **`currency`** <span style="color:#32A9C7">*[User generated, immutable, default null]*</span>: The default currency for the customer.
+* **`currency`** <span style="color:#32A9C7">*[User generated, immutable, default null]*</span>: The default currency for the customer. Beware, that any invoice generation with a null `currency` would fail.
 * **`parentAccountId`** <span style="color:#32A9C7">*[User generated, default null]*</span>: A reference for the parent account for the [hierarchical model](http://docs.killbill.io/latest/ha.html). 
 * **`isPaymentDelegatedToParent`** <span style="color:#32A9C7">*[User generated, default null]*</span>: In the hierarchical model, whether or not the parent account is handling payments for this child account.
 * **`paymentMethodId`** <span style="color:#32A9C7">*[User generated, default null]*</span>: The default payment method used by the system to make recuring payments
-* **`timeZone`** <span style="color:#32A9C7">*[User generated, immutable, default null, immutable]*</span>: The time zone for the customer.
+* **`timeZone`** <span style="color:#32A9C7">*[User generated, immutable, default null, immutable]*</span>: The time zone for the customer. This is used by the system to make any transformation from `DateTime` to `LocalDate`.
 * **`address1`** <span style="color:#32A9C7">*[User generated, default null]*</span>: Address info.
 * **`address2`** <span style="color:#32A9C7">*[User generated, default null]*</span>: Address info.
 * **`postalCode`** <span style="color:#32A9C7">*[User generated, default null]*</span>: Address info.

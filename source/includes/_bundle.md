@@ -8,8 +8,8 @@ The attributes are the following:
 
 * **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
 * **`bundleId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
-* **`externalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span>: The external key provided from client.
-* **`subscriptions`** <span style="color:#32A9C7">*(Array[SubscriptionJson], optional, read only)*</span>: Subscriptions list.
+* **`externalKey`** <span style="color:#32A9C7">*[User generated, default `bundleId`, immutable]*</span>: The external key provided from client.
+* **`subscriptions`** <span style="color:#32A9C7">*(Array[SubscriptionJson], optional, read only)*</span>: List of subscriptions included in this bundle.
 * **`timeline`** <span style="color:#32A9C7">*(BundleTimelineJson, optional, read only)*</span>: Event list.
 
 ## Retrieve a bundle by external key
