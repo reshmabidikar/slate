@@ -1244,8 +1244,8 @@ bulk_subscription_list = [
                                   {
                                      "accountId":"16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836",
                                      "externalKey":"2-16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836-717751",
-                                     "productCategory":"BASE",
-                                     "planName":"standard-monthly"
+                                     "productCategory":"ADD_ON",
+                                     "planName":"super-monthly"
                                   }
                                ]
                             }
@@ -1266,10 +1266,16 @@ KillBillClient::Model::BulkSubscription.create_bulk_subscriptions(bulk_subscript
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription = Subscription(account_id=account_id,
-                               product_category='BASE',
-                               plan_name='sports-monthly')
-body = BulkSubscriptionsBundle([subscription])
+account_id = '16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836'
+subscription_a = Subscription(account_id=account_id,
+                              product_category='BASE',
+                              plan_name='sports-monthly')
+
+subscription_b = Subscription(account_id=account_id,
+                              product_category='ADD_ON',
+                              plan_name='super-monthly')
+
+body = BulkSubscriptionsBundle([subscription_a, subscription_b])
 
 subscriptionApi.create_subscriptions_with_add_ons([body],
                                                   created_by,
@@ -1353,11 +1359,18 @@ subscription.create_entitlement_with_add_on(entitlement,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-body = Subscription(account_id=account_id,
-                    product_category='BASE',
-                    plan_name='sports-monthly')
+account_id = '16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836'
+subscription_a = Subscription(account_id=account_id,
+                              product_category='BASE',
+                              plan_name='sports-monthly')
 
-subscriptionApi.create_subscription_with_add_ons([body],
+subscription_b = Subscription(account_id=account_id,
+                              product_category='ADD_ON',
+                              plan_name='super-monthly')
+
+body = [subscription_a, subscription_b]
+
+subscriptionApi.create_subscription_with_add_ons(body,
                                                  created_by,
                                                  api_key,
                                                  api_secret)
