@@ -219,7 +219,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Retrieve a subscription by id
 
@@ -567,7 +567,7 @@ no content
 
 **Returns**
 
-Returns a subscription object.
+A `204` http status without content.
 
 ## Update the BCD associated to a subscription
 
@@ -632,13 +632,13 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Block a subscription
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/subscriptions/{subscriptionId}/block`
+`POST http://example.com/1.0/kb/subscriptions/{subscriptionId}/block`
 
 > Example Request:
 
@@ -888,16 +888,7 @@ subscriptionApi.modify_subscription_custom_fields(subscription_id,
 > Example Response:
 
 ```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"SUBSCRIPTION",
-      "name":"Test Modify",
-      "value":"test_modify_value",
-      "auditLogs":[]
-   }
-]
+no content
 ```
 
 ```python
@@ -913,7 +904,7 @@ no content
 
 **Returns**
 
-Returns a custom field object.
+A `204` http status without content.
 
 ## Remove custom fields from subscription
 
@@ -969,7 +960,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Add tags to subscription
 
@@ -1159,7 +1150,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Un-cancel an subscription
 
@@ -1209,7 +1200,7 @@ None.
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Create multiple entitlements with addOn products
 
@@ -1449,5 +1440,5 @@ None.
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 

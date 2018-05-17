@@ -580,7 +580,7 @@ None.
 
 **Returns**
 
-Returns a payment object.
+A `204` http status without content.
 
 ## Complete an existing transaction [using external key]
 
@@ -665,7 +665,7 @@ None.
 
 **Returns**
 
-Returns a payment object.
+A `204` http status without content.
 
 ## Void an existing payment
 
@@ -792,7 +792,7 @@ None.
 
 **Returns**
 
-Returns a payment transaction object.
+A `204` http status without content.
 
 ## Record a chargeback [payment]
 
@@ -1394,16 +1394,7 @@ paymentApi.modify_payment_custom_fields(payment_id,
 > Example Response:
 
 ```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"PAYMENT",
-      "name":"Test Modify",
-      "value":"test_modify_value",
-      "auditLogs":[]
-   }
-]
+no content
 ```
 ```python
 no content
@@ -1417,7 +1408,7 @@ no content
 
 **Returns**
 
-Returns a custom field object.
+A `204` http status without content.
 
 ## Remove custom fields from payment [payment]
 
@@ -1472,7 +1463,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Refund an existing payment
 
@@ -1861,7 +1852,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Cancels a scheduled payment attempt retry
 
@@ -1914,7 +1905,7 @@ None.
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Cancels a scheduled payment attempt retry [using external key]
 
@@ -1966,7 +1957,7 @@ None.
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Combo api to create a new payment transaction on a existing (or not) account
 

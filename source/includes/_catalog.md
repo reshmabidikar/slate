@@ -31,7 +31,10 @@ TODO
 ```
 
 ```ruby
-**TODO**
+KillBillClient::Model::Catalog.delete_catalog(user,
+                                              reason,
+                                              comment,
+                                              options)
 ```
 
 ```python
@@ -42,7 +45,7 @@ catalogApi.delete_catalog(created_by, api_key, api_secret)
 > Example Response:
 
 ```ruby
-**TODO**
+no content
 ```
 ```python
 no content
@@ -54,7 +57,7 @@ None.
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Retrieve the catalog as JSON
 
@@ -73,7 +76,10 @@ TODO
 ```
 
 ```ruby
-**TODO**
+requested_date = nil
+
+KillBillClient::Model::Catalog.get_tenant_catalog_json.(requested_date, 
+                                                        options)
 ```
 
 ```python
@@ -84,7 +90,67 @@ catalogApi.get_catalog_json(api_key, api_secret)
 > Example Response:
 
 ```ruby
-**TODO**
+[
+   {
+      "name":"Movies",
+      "effectiveDate":"2013-02-08T00:00:00.000+0000",
+      "currencies":[
+         "USD"
+      ],
+      "units":[
+
+      ],
+      "products":[
+         {
+            "type":"BASE",
+            "name":"Basic",
+            "prettyName":"Basic",
+            "plans":[
+               {
+                  "name":"basic-monthly",
+                  "prettyName":"basic-monthly",
+                  "billingPeriod":"MONTHLY",
+                  "phases":[
+                     {
+                        "type":"EVERGREEN",
+                        "prices":[
+                           {
+                              "currency":"USD",
+                              "value":1000.0
+                           }
+                        ],
+                        "fixedPrices":[
+
+                        ],
+                        "duration":{
+                           "unit":"UNLIMITED",
+                           "number":-1
+                        },
+                        "usages":[
+
+                        ]
+                     }
+                  ]
+               }
+            ],
+            "included":[
+
+            ],
+            "available":[
+
+            ]
+         }
+      ],
+      "priceLists":[
+         {
+            "name":"DEFAULT",
+            "plans":[
+               "basic-monthly"
+            ]
+         }
+      ]
+   }
+]
 ```
 ```python
 [{'currencies': ['USD', 'GBP'],
@@ -344,7 +410,10 @@ TODO
 ```
 
 ```ruby
-**TODO**
+requested_date = nil
+KillBillClient::Model::Catalog.get_catalog_phase(subscription_id, 
+                                                 requested_date, 
+                                                 options)
 ```
 
 ```python
@@ -358,7 +427,22 @@ catalogApi.get_phase_for_subscription_and_date(api_key,
 > Example Response:
 
 ```ruby
-**TODO**
+{
+   "duration":{
+      "number":30,
+      "unit":"DAYS"
+   },
+   "fixed_prices":[
+
+   ],
+   "prices":[
+
+   ],
+   "type":"TRIAL",
+   "usages":[
+
+   ]
+}
 ```
 ```python
 {'duration': {'number': 30, 'unit': 'DAYS'},
@@ -396,7 +480,10 @@ TODO
 ```
 
 ```ruby
-**TODO**
+requested_date = nil
+KillBillClient::Model::Catalog.get_catalog_plan(subscription_id, 
+                                                requested_date, 
+                                                options)
 ```
 
 ```python
@@ -410,7 +497,52 @@ catalogApi.get_plan_for_subscription_and_date(api_key,
 > Example Response:
 
 ```ruby
-**TODO**
+{
+   "billing_period":"MONTHLY",
+   "name":"standard-monthly",
+   "phases":[
+      {
+         "duration":{
+            "number":30,
+            "unit":"DAYS"
+         },
+         "fixed_prices":[
+
+         ],
+         "prices":[
+
+         ],
+         "type":"TRIAL",
+         "usages":[
+
+         ]
+      },
+      {
+         "duration":{
+            "number":-1,
+            "unit":"UNLIMITED"
+         },
+         "fixed_prices":[
+
+         ],
+         "prices":[
+            {
+               "currency":"GBP",
+               "value":75.0
+            },
+            {
+               "currency":"USD",
+               "value":100.0
+            }
+         ],
+         "type":"EVERGREEN",
+         "usages":[
+
+         ]
+      }
+   ],
+   "pretty_name":"standard-monthly"
+}
 ```
 ```python
 {'billing_period': 'MONTHLY',
@@ -457,7 +589,10 @@ TODO
 ```
 
 ```ruby
-**TODO**
+requested_date = nil
+KillBillClient::Model::Catalog.get_catalog_price_list(subscription_id, 
+                                                      requested_date, 
+                                                      options)
 ```
 
 ```python
@@ -471,7 +606,14 @@ catalogApi.get_price_list_for_subscription_and_date(api_key,
 > Example Response:
 
 ```ruby
-**TODO**
+{
+   "name":"DEFAULT",
+   "plans":[
+      "sports-monthly",
+      "standard-monthly",
+      "super-monthly"
+   ]
+}
 ```
 ```python
 {'name': 'DEFAULT',
@@ -506,7 +648,10 @@ TODO
 ```
 
 ```ruby
-**TODO**
+requested_date = nil
+KillBillClient::Model::Catalog.get_catalog_product(subscription_id, 
+                                                   requested_date, 
+                                                   options)
 ```
 
 ```python
@@ -520,7 +665,20 @@ catalogApi.get_product_for_subscription_and_date(api_key,
 > Example Response:
 
 ```ruby
-**TODO**
+{
+   "available":[
+
+   ],
+   "included":[
+
+   ],
+   "name":"Standard",
+   "plans":[
+
+   ],
+   "pretty_name":"Standard",
+   "type":"BASE"
+}
 ```
 ```python
 {'available': [],
@@ -623,7 +781,7 @@ TODO
 ```
 
 ```ruby
-**TODO**
+KillBillClient::Model::Catalog.get_tenant_catalog_versions(options)
 ```
 
 ```python
@@ -635,7 +793,7 @@ catalogApi.get_catalog_versions(api_key, api_secret)
 > Example Response:
 
 ```ruby
-**TODO**
+["2013-02-08T00:00:00.000Z"]
 ```
 ```python
 [datetime.datetime(2013, 2, 8, 0, 0, tzinfo=tzutc())]
@@ -666,12 +824,10 @@ TODO
 ```
 
 ```ruby
-format = 'xml'
 requested_date = nil
 
-KillBillClient::Model::Catalog.get_tenant_catalog(format,
-                                                  requested_date,
-                                                  options)
+KillBillClient::Model::Catalog.get_tenant_catalog_xml(requested_date,
+                                                      options)
 ```
 
 ```python
@@ -1101,7 +1257,7 @@ catalogApi.upload_catalog_xml(xml_catalog,
 > Example Response:
 
 ```ruby
-#This is what we get when we do a get_tenant_catalog(format, requested_date, options)
+no content
 ```
 ```python
 no content

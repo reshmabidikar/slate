@@ -458,7 +458,7 @@ no content
 
 **Returns**
 
-Returns an account object.
+A `204` http status without content.
 
 ## Retrieve account tags
 
@@ -543,7 +543,7 @@ Returns a list of tag objects
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/accounts/{accountId}/block`
+`POST http://example.com/1.0/kb/accounts/{accountId}/block`
 
 > Example Request:
 
@@ -1520,7 +1520,7 @@ Returns a list of account bundle objects.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts/{accountId}/cbaRebalancing`
+`PUT http://example.com/1.0/kb/accounts/{accountId}/cbaRebalancing`
 
 > Example Request:
 
@@ -1563,7 +1563,7 @@ None.
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## List children accounts
 
@@ -1859,21 +1859,11 @@ account.modify_account_custom_fields(account_id,
 > Example Response:
 
 ```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"BUNDLE",
-      "name":"Test Modify",
-      "value":"test_modify_value",
-      "auditLogs":[]
-   }
-]
+no content
 ```
 ```python
 no content
 ```
-
 
 **Query Parameters**
 
@@ -1881,7 +1871,7 @@ None.
 
 **Returns**
 
-Returns a custom field object.
+A `204` http status without content.
 
 ## Remove custom fields from account
 
@@ -1940,7 +1930,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Set account email notification
 
@@ -1997,7 +1987,7 @@ None.
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Retrieve account email notification
 
@@ -2216,7 +2206,7 @@ None.
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Retrieve account invoice payments
 
@@ -2778,7 +2768,59 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
+
+## Refresh account payment methods
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/accounts/{accountId}/paymentMethods/refresh`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account_id = account.account_id
+
+KillBillClient::Model::PaymentMethod.refresh(account_id, 
+                                             user, 
+                                             reason, 
+                                             comment, 
+                                             options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
+
+accountApi.refresh_payment_methods(account_id, 
+                                   created_by,
+                                   api_key,
+                                   api_secret)
+```
+> Example Response:
+
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Response**
+
+A `204` http status without content.
 
 ## Retrieve account payments
 
@@ -4034,7 +4076,7 @@ Returns a list of account tag objects.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts/{childAccountId}/transferCredit`
+`PUT http://example.com/1.0/kb/accounts/{childAccountId}/transferCredit`
 
 > Example Request:
 
@@ -4076,7 +4118,7 @@ None.
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## List accounts
 

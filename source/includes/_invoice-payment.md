@@ -141,7 +141,7 @@ Returns a invoice payment object.
 
 **HTTP Request** 
 
-`PUT /1.0/kb/invoicePayments/{paymentId}`
+`PUT http://example.com/1.0/kb/invoicePayments/{paymentId}`
 
 > Example Request:
 
@@ -183,7 +183,7 @@ None.
 
 **Returns**
 
-Returns a invoice payment object.
+A `204` http status without content.
 
 ## Record a chargeback
 
@@ -579,19 +579,10 @@ invoicePaymentApi.modify_invoice_payment_custom_fields(payment_id,
 > Example Response:
 
 ```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"INVOICE_PAYMENT",
-      "name":"Test Modify",
-      "value":"test_modify_value",
-      "auditLogs":[]
-   }
-]
+no content
 ```
 ```python
-
+no content
 ```
 
 
@@ -603,7 +594,7 @@ invoicePaymentApi.modify_invoice_payment_custom_fields(payment_id,
 
 **Returns**
 
-Returns a custom field object.
+A `204` http status without content.
 
 ## Remove custom fields from payment
 
@@ -659,7 +650,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Refund a payment, and adjust the invoice if needed
 
@@ -951,4 +942,4 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.

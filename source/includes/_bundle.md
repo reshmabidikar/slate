@@ -636,7 +636,7 @@ The new account_id should be set in this object
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/bundles/{bundleId}`
+`POST http://example.com/1.0/kb/bundles/{bundleId}`
 
 > Example Request:
 
@@ -802,7 +802,7 @@ Returns a bundle object if a valid account and bundle id's was provided.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/bundles/{bundleId}/block`
+`POST http://example.com/1.0/kb/bundles/{bundleId}/block`
 
 > Example Request:
 
@@ -1039,16 +1039,7 @@ bundleApi.modify_bundle_custom_fields(bundle_id,
 > Example Response:
 
 ```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"BUNDLE",
-      "name":"Test Modify",
-      "value":"test_modify_value",
-      "auditLogs":[]
-   }
-]
+no content
 ```
 ```python
 no content
@@ -1061,7 +1052,7 @@ None.
 
 **Returns**
 
-Returns a custom field object.
+A `204` http status without content.
 
 ## Remove custom fields from bundle
 
@@ -1116,7 +1107,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Pause a bundle
 
@@ -1172,7 +1163,62 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
+
+## Update a bundle externalKey
+
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/bundles/{bundleId}/renameKey`
+
+> Example Request:
+
+```ruby
+bundle = KillBillClient::Model::Bundle.new
+bundle.bundle_id = bundle_id
+bundle.external_key = "new_external_key"
+
+bundle.rename_external_key(user, 
+                           reason, 
+                           comment, 
+                           options)
+```
+
+```python
+bundleApi = killbill.api.BundleApi()
+body = Bundle(bundle_id=bundle_id, 
+              external_key='new_external_key')
+
+bundleApi.rename_external_key(bundle_id,
+                              body,
+                              created_by,
+                              api_key,
+                              api_secret)
+```
+
+> Example Response:
+
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+A `204` http status without content.
 
 ## Resume a bundle
 
@@ -1227,7 +1273,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Add tags to bundle
 
@@ -1417,7 +1463,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## List bundles
 
