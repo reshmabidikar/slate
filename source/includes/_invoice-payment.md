@@ -20,7 +20,7 @@ The attributes are the following:
 * **`currency`** <span style="color:#32A9C7">*[User or system generated]*</span>
 * **`paymentMethodId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
 * **`transactions`** <span style="color:#32A9C7">*[See `PaymentTransaction` below]*</span>
-* **`paymentAttempts`** <span style="color:#32A9C7">*[See `PaymentAransaction` below]*</span>
+* **`paymentAttempts`** <span style="color:#32A9C7">*[See `PaymentAttempt` below]*</span>
 
 
 ## Retrieve a payment by id
