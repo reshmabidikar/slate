@@ -154,7 +154,13 @@ TODO
 ```
 
 ```ruby
-TODO
+payment_id = '2276b3c9-4e51-41b2-b5bf-9ddc11582ee4'
+
+KillBillClient::Model::InvoicePayment.complete_invoice_payment_transaction(payment_id, 
+                                                                           user, 
+                                                                           reason, 
+                                                                           comment, 
+                                                                           options)
 ```
 
 ```python
@@ -816,11 +822,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true | tag list to add |
+| **tagDef** | string | true | list with tag definition id's to add |
 
 **Returns**
 
-Returns a invoice payment tag object.
+A `201` http status without content.
 
 ## Retrieve payment tags
 
@@ -938,7 +944,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true |  list of tags that you want to remove it |
+| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
 
 **Returns**
 

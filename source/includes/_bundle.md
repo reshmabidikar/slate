@@ -865,7 +865,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Add custom fields to bundle
 
@@ -1337,11 +1337,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true | tag list to add |
+| **tagDef** | string | true | list with tag definition id's to add |
 
 **Returns**
 
-Returns a bundle tag object.
+A `201` http status without content.
 
 ## Retrieve bundle tags
 
@@ -1439,11 +1439,13 @@ bundle.remove_tag(tag_name,
 ```python
 bundleApi = killbill.api.BundleApi()
 bundle_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
+tag = ["00000000-0000-0000-0000-000000000002"]
 
 bundleApi.delete_bundle_tags(bundle_id, 
                              created_by, 
                              api_key, 
-                             api_secret)
+                             api_secret,
+                             tag_def=tag)
 ```
 
 > Example Response:
@@ -1459,7 +1461,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true |  list of tags that you want to remove it |
+| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
 
 **Response**
 

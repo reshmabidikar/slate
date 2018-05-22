@@ -600,19 +600,7 @@ accountApi.add_account_blocking_state(account_id,
 **TODO**
 ```
 ```ruby
-[
-   {
-      "blockedId":"2f1cccd9-5cea-4695-8b6c-ad0b8a040f88",
-      "stateName":"STATE1",
-      "service":"ServiceStateService",
-      "blockChange":false,
-      "blockEntitlement":false,
-      "blockBilling":false,
-      "effectiveDate":"2013-08-01T06:00:00.000Z",
-      "type":"ACCOUNT",
-      "auditLogs":[]
-   }
-]
+no content
 ```
 ```python
 no content
@@ -627,7 +615,7 @@ no content
 
 **Returns**
 
-Returns a blocking state object.
+A `201` http status without content.
 
 ## Retrieve blocking states for account
 
@@ -2151,7 +2139,7 @@ None.
 
 **Response**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Delete email from account
 
@@ -2384,7 +2372,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Retrieve account invoices
 
@@ -3110,67 +3098,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true | tag list to add |
+| **tagDef** | string | true | list with tag definition id's to add |
 
 **Returns**
 
-Returns a account tag object.
-
-## Remove tags from account
-
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/accounts/{accountId}/tags`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-TODO
-```
-
-```ruby
-tag_name = 'TEST'
-
-account.remove_tag(tag_name,
-                   user,
-                   reason,
-                   comment,
-                   options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
-tag = ["00000000-0000-0000-0000-000000000002"]
-
-accountApi.delete_account_tags(account_id, 
-                               created_by, 
-                               api_key, 
-                               api_secret, 
-                               tag_def=tag)
-```
-> Example Response:
-
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true |  list of tags that you want to remove it |
-
-**Response**
-
-A `200` http status without content.
+A `201` http status without content.
 
 ## Retrieve account tags
 
@@ -3244,6 +3176,62 @@ accountApi.get_account_tags(account_id, api_key, api_secret)
 **Returns**
 
 Returns a list of account tag objects.
+
+## Remove tags from account
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/accounts/{accountId}/tags`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+tag_name = 'TEST'
+
+account.remove_tag(tag_name,
+                   user,
+                   reason,
+                   comment,
+                   options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
+tag = ["00000000-0000-0000-0000-000000000002"]
+
+accountApi.delete_account_tags(account_id, 
+                               created_by, 
+                               api_key, 
+                               api_secret, 
+                               tag_def=tag)
+```
+> Example Response:
+
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
+
+**Response**
+
+A `204` http status without content.
 
 ## Retrieve account timeline
 

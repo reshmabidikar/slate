@@ -1726,11 +1726,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true | tag list to add |
+| **tagDef** | string | true | list with tag definition id's to add |
 
 **Returns**
 
-Returns a bundle tag object.
+A `201` http status without content.
 
 ## Retrieve payment tags [payment]
 
@@ -1826,7 +1826,8 @@ payment.remove_tag(tag_name,
 
 ```python
 paymentApi = killbill.api.PaymentApi()
-payment_id = 'dce5b2a0-0f0f-430b-9427-545ba4be5c7f' 
+payment_id = 'dce5b2a0-0f0f-430b-9427-545ba4be5c7f'
+tag = ["00000000-0000-0000-0000-000000000002"] 
 
 paymentApi.delete_payment_tags(payment_id,
                                created_by,
@@ -1848,7 +1849,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true |  list of tags that you want to remove it |
+| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
 
 **Response**
 

@@ -762,7 +762,7 @@ None.
 
 **Returns**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ##  Retrieve a list of catalog versions
 
@@ -1269,4 +1269,4 @@ None.
 
 **Returns**
 
-A `200` http status without content.
+A `201` http status without content.

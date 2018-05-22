@@ -705,7 +705,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Add custom fields to subscription
 
@@ -1021,11 +1021,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true | tag list to add |
+| **tagDef** | string | true | list with tag definition id's to add |
 
 **Returns**
 
-Returns a bundle tag object.
+A `201` http status without content.
 
 ## Retrieve subscription tags
 
@@ -1298,7 +1298,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Create an entitlement with addOn products
 
@@ -1390,7 +1390,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Undo a pending change plan on an subscription
 

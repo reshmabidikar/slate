@@ -121,7 +121,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Adjust an invoice item
 
@@ -1002,7 +1002,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Retrieve payments associated with an invoice
 
@@ -1196,11 +1196,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true | tag list to add |
+| **tagDef** | string | true | list with tag definition id's to add |
 
 **Returns**
 
-Returns a invoice tag object.
+A `201` http status without content.
 
 ## Retrieve invoice tags
 
@@ -1301,7 +1301,8 @@ invoice_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
 invoiceApi.delete_invoice_tags(invoice_id, 
                                created_by, 
                                api_key, 
-                               api_secret)
+                               api_secret,
+                               tag_def=tag)
 ```
 
 > Example Response:
@@ -1317,7 +1318,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true |  list of tags that you want to remove it |
+| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
 
 **Response**
 
@@ -1429,7 +1430,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Retrieves the catalog translation for the tenant
 
@@ -2326,7 +2327,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## List invoices
 
@@ -3209,7 +3210,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Retrieves the invoice translation for the tenant
 
