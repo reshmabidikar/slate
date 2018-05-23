@@ -32,127 +32,6 @@ The attributes are the following:
 * **`isMigrated`** <span style="color:#32A9C7">*[User generated, default null]*</span>: Whether this account was migrated from another system.
 * **`isNotifiedForInvoices`** : TODO deprecated ?
 
-## Retrieve an Account by its external key
-
-Retrieves the details information for the `Account` using its `externalKey`.
-
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/accounts`
-
-> Example Request:
-
-```shell
-TODO
-```
-
-```java
-TODO
-```
-
-```ruby
-external_key = 'example_external_key'
-with_balance = false
-with_balance_and_cba = false
-
-account = KillBillClient::Model::Account.new
-account.find_by_external_key(external_key,
-                             with_balance,
-                             with_balance_and_cba, 
-                             options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-external_key = 'example_external_key'
-
-accountApi.get_account(external_key, api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-**TODO**
-```
-```java
-**TODO**
-```
-```ruby
-{
-   "accountId":"e8877928-0226-488d-9272-07a5e66d897f",
-   "name":"John Doe",
-   "firstNameLength":null,
-   "externalKey":"example_external_key",
-   "email":"john@example.com",
-   "billCycleDayLocal":0,
-   "currency":"USD",
-   "parentAccountId":null,
-   "isPaymentDelegatedToParent":false,
-   "paymentMethodId":null,
-   "referenceTime":"2018-02-05T22:39:53.000Z",
-   "timeZone":"UTC",
-   "address1":null,
-   "address2":null,
-   "postalCode":null,
-   "company":null,
-   "city":null,
-   "state":null,
-   "country":null,
-   "locale":null,
-   "phone":null,
-   "notes":null,
-   "isMigrated":null,
-   "isNotifiedForInvoices":false,
-   "accountBalance":null,
-   "accountCBA":null,
-   "auditLogs":[]
-}
-```
-```python
-{
- 'account_balance': None,
- 'account_cba': None,
- 'account_id': '07c0cef4-41c5-4606-b2cd-661332cdd41c',
- 'address1': None,
- 'address2': None,
- 'audit_logs': [],
- 'bill_cycle_day_local': 0,
- 'city': None,
- 'company': None,
- 'country': 'USA',
- 'currency': 'USD',
- 'email': None,
- 'external_key': 'example_external_key',
- 'first_name_length': None,
- 'is_migrated': False,
- 'is_notified_for_invoices': False,
- 'is_payment_delegated_to_parent': False,
- 'locale': None,
- 'name': 'John',
- 'notes': None,
- 'parent_account_id': None,
- 'payment_method_id': None,
- 'phone': None,
- 'postal_code': None,
- 'reference_time': datetime.datetime(2018, 5, 3, 15, 53, 44, tzinfo=tzutc()),
- 'state': 'CA',
- 'time_zone': 'UTC'
-}
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **accountWithBalance** | boolean | false | if true, returns `accountBalance` info |
-| **accountWithBalanceAndCBA** | boolean | false | if true, returns `accountBalance` and `accountCBA` info |
-| **audit** | enum | false | level of audit logs returned |
-
-**Returns**
-
-Returns an account object if a valid external key was provided.
-
 ## Create an Account 
 
 Create a new customer `Account`.
@@ -374,6 +253,127 @@ accountApi.get_account(account_id, api_key, api_secret)
 
 Returns an account object if a valid identifier was provided.
 
+## Retrieve an Account by its external key
+
+Retrieves the details information for the `Account` using its `externalKey`.
+
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts`
+
+> Example Request:
+
+```shell
+TODO
+```
+
+```java
+TODO
+```
+
+```ruby
+external_key = 'example_external_key'
+with_balance = false
+with_balance_and_cba = false
+
+account = KillBillClient::Model::Account.new
+account.find_by_external_key(external_key,
+                             with_balance,
+                             with_balance_and_cba, 
+                             options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+external_key = 'example_external_key'
+
+accountApi.get_account(external_key, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
+{
+   "accountId":"e8877928-0226-488d-9272-07a5e66d897f",
+   "name":"John Doe",
+   "firstNameLength":null,
+   "externalKey":"example_external_key",
+   "email":"john@example.com",
+   "billCycleDayLocal":0,
+   "currency":"USD",
+   "parentAccountId":null,
+   "isPaymentDelegatedToParent":false,
+   "paymentMethodId":null,
+   "referenceTime":"2018-02-05T22:39:53.000Z",
+   "timeZone":"UTC",
+   "address1":null,
+   "address2":null,
+   "postalCode":null,
+   "company":null,
+   "city":null,
+   "state":null,
+   "country":null,
+   "locale":null,
+   "phone":null,
+   "notes":null,
+   "isMigrated":null,
+   "isNotifiedForInvoices":false,
+   "accountBalance":null,
+   "accountCBA":null,
+   "auditLogs":[]
+}
+```
+```python
+{
+ 'account_balance': None,
+ 'account_cba': None,
+ 'account_id': '07c0cef4-41c5-4606-b2cd-661332cdd41c',
+ 'address1': None,
+ 'address2': None,
+ 'audit_logs': [],
+ 'bill_cycle_day_local': 0,
+ 'city': None,
+ 'company': None,
+ 'country': 'USA',
+ 'currency': 'USD',
+ 'email': None,
+ 'external_key': 'example_external_key',
+ 'first_name_length': None,
+ 'is_migrated': False,
+ 'is_notified_for_invoices': False,
+ 'is_payment_delegated_to_parent': False,
+ 'locale': None,
+ 'name': 'John',
+ 'notes': None,
+ 'parent_account_id': None,
+ 'payment_method_id': None,
+ 'phone': None,
+ 'postal_code': None,
+ 'reference_time': datetime.datetime(2018, 5, 3, 15, 53, 44, tzinfo=tzutc()),
+ 'state': 'CA',
+ 'time_zone': 'UTC'
+}
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **accountWithBalance** | boolean | false | if true, returns `accountBalance` info |
+| **accountWithBalanceAndCBA** | boolean | false | if true, returns `accountBalance` and `accountCBA` info |
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Returns an account object if a valid external key was provided.
+
 ## Update an Account
 
 **HTTP Request** 
@@ -460,6 +460,154 @@ no content
 
 A `204` http status without content.
 
+## Close account
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/accounts/{accountId}`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+cancel_subscriptions = false
+writeoff_unpaid_invoices = false
+item_adjust_unpaid_invoices = false
+
+account.close(cancel_subscriptions, 
+              writeoff_unpaid_invoices, 
+              item_adjust_unpaid_invoices,
+              user,
+              reason,
+              comment, 
+              options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
+accountApi.close_account(account_id,
+                         created_by,
+                         api_key,
+                         api_secret)
+```
+
+> Example Response:
+
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **cancelAllSubscriptions** | boolean | false | Choose true if you want to cancel all subscriptions (default: false) |
+| **writeOffUnpaidInvoices** | boolean | false | Choose true if you want to write off unpaid invoices (default: false) |
+| **itemAdjustUnpaidInvoices** | boolean | false | Choose true if you want to adjust unpaid invoices (default: false) |
+| **removeFutureNotifications** | boolean | false | Choose true if you want to remove future notifications (default: true) |
+
+**Returns**
+
+A `204` http status without content.
+
+## Retrieve account customFields
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/allCustomFields`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
+accountApi.get_all_custom_fields(account_id, 
+                                 api_key, 
+                                 api_secret, 
+                                 object_type='ACCOUNT')
+```
+
+```ruby
+object_type = 'ACCOUNT'
+audit = 'NONE'
+
+account.all_custom_fields(object_type,
+                          audit, 
+                          options)
+```
+
+> Example Response:
+
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
+[
+   {
+      "tagId":"ce1715f6-35e8-4d86-9063-65a54625992d",
+      "objectType":"ACCOUNT",
+      "objectId":"0f55a05d-9946-41d7-be75-ee71f49829b1",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[]
+   }
+]
+```
+```python
+[
+  {
+    'audit_logs': [],
+    'object_id': '8f2618dc-9e8e-4df6-b835-68c747a48313',
+    'object_type': 'ACCOUNT',
+    'tag_definition_id': '00000000-0000-0000-0000-000000000002',
+    'tag_definition_name': 'AUTO_INVOICING_OFF',
+    'tag_id': '726a64eb-0fc2-4e1b-81c4-ebf879a3b5b6'
+  }
+]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **objectType** | string | false | choose type of object (e.g. `ACCOUNT`, `BUNDLE`, `SUBSCRIPTION`) |
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+    
+Returns a list of custom fields objects
+
 ## Retrieve account tags
 
 **HTTP Request** 
@@ -538,6 +686,174 @@ account.all_tags(object_type,
 **Returns**
     
 Returns a list of tag objects
+
+## Retrieve audit logs by account id
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/auditLogs`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '4e4d8acd-c97d-447a-814b-28f995a9106c'
+
+accountApi.get_account_audit_logs(account_id, api_key, api_secret)
+```
+
+```ruby
+account.audit(options)
+```
+
+> Example Response:
+
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
+[
+   {
+      "changeType":"INSERT",
+      "changeDate":"2013-08-01T06:00:00.000Z",
+      "objectType":"ACCOUNT",
+      "objectId":"ccaf0822-a58b-4f1d-82d2-907439b68054",
+      "changedBy":"test_account_tags",
+      "userToken":"17d7807c-5c44-4e57-adc5-d0323c779b1f"
+   }
+]
+```
+```python
+[{'change_date': datetime.datetime(2018, 5, 23, 14, 30, 5, tzinfo=tzutc()),
+ 'change_type': 'INSERT',
+ 'changed_by': 'test',
+ 'comments': None,
+ 'object_id': '4e4d8acd-c97d-447a-814b-28f995a9106c',
+ 'object_type': 'ACCOUNT',
+ 'reason_code': None,
+ 'user_token': '89ef6e86-4869-4974-abb9-0d870e8578b2'}]
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of account audit logs.
+
+## Retrieve account audit logs with history by account id
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/auditLogsWithHistory`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+
+accountApi.get_account_audit_logs_with_history(account_id, api_key, api_secret)
+```
+
+```ruby
+account.audit_logs_with_history(options)
+```
+
+> Example Response:
+
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
+[
+   {
+      "changeType":"INSERT",
+      "changeDate":"2013-08-01T06:00:00.000Z",
+      "objectType":"ACCOUNT",
+      "objectId":"08a1c2e4-687f-48ca-9c38-888108a2ce0a",
+      "changedBy":"test_account_tags",
+      "userToken":"5c0632c3-6567-4b0b-8e37-e2a9bb9ab6b2",
+      "history":{
+         "id":null,
+         "createdDate":"2013-08-01T06:00:00.000Z",
+         "updatedDate":"2013-08-01T06:00:00.000Z",
+         "recordId":505,
+         "accountRecordId":505,
+         "tenantRecordId":822,
+         "externalKey":"1527086785-621747",
+         "email":"kill@bill.com",
+         "name":"KillBillClient",
+         "firstNameLength":null,
+         "currency":"USD",
+         "parentAccountId":null,
+         "isPaymentDelegatedToParent":null,
+         "billingCycleDayLocal":0,
+         "paymentMethodId":null,
+         "referenceTime":"2013-08-01T06:00:00.000Z",
+         "timeZone":"UTC",
+         "locale":"fr_FR",
+         "address1":"7, yoyo road",
+         "address2":"Apt 5",
+         "companyName":"Unemployed",
+         "city":"San Francisco",
+         "stateOrProvince":"California",
+         "country":"US",
+         "postalCode":"94105",
+         "phone":null,
+         "notes":null,
+         "migrated":null,
+         "isNotifiedForInvoices":false,
+         "tableName":"ACCOUNT",
+         "historyTableName":"ACCOUNT_HISTORY"
+      }
+   }
+]
+```
+```python
+[{'change_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc()),
+ 'change_type': 'INSERT',
+ 'changed_by': 'test',
+ 'comments': None,
+ 'history': {'created_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc()),
+             'id': None,
+             'updated_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc())},
+ 'object_id': 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda',
+ 'object_type': 'ACCOUNT',
+ 'reason_code': None,
+ 'user_token': '40e771bf-160e-4ff6-82be-463f2d9e634d'}]
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of account audit logs with history.
 
 ## Block an account
 
@@ -1704,11 +2020,11 @@ accountApi = killbill.api.AccountApi()
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 body = CustomField(name='Test Custom Field', value='test_value')
 
-account.create_account_custom_fields(account_id,
-                                     [body],
-                                     created_by,
-                                     api_key,
-                                     api_secret)
+accountApi.create_account_custom_fields(account_id,
+                                        [body],
+                                        created_by,
+                                        api_key,
+                                        api_secret)
 ```
 
 > Example Response:
@@ -2195,6 +2511,94 @@ None.
 **Response**
 
 A `204` http status without content.
+
+## Retrieve account email audit logs with history by id
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/emails/{accountEmailId}/auditLogsWithHistory`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+account_email_id = 'bb390282-6757-4f4f-8dd5-456abd9f30b2'
+
+accountApi.get_account_email_audit_logs_with_history(account_id,
+                                                     account_email_id,
+                                                     api_key,
+                                                     api_secret)
+```
+
+```ruby
+account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
+
+account.email_audit_logs_with_history(account_email_id, options)
+```
+
+> Example Response:
+
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
+[
+   {
+      "changeType":"INSERT",
+      "changeDate":"2013-08-01T06:00:00.000Z",
+      "objectType":"ACCOUNT_EMAIL",
+      "objectId":"a4627e89-a73b-4167-a7ba-92a2881eb3c4",
+      "changedBy":"test_account_tags",
+      "userToken":"79005abf-a8cf-44e1-84fc-945381d35bd5",
+      "history":{
+         "id":null,
+         "createdDate":"2013-08-01T06:00:00.000Z",
+         "updatedDate":"2013-08-01T06:00:00.000Z",
+         "recordId":18,
+         "accountRecordId":525,
+         "tenantRecordId":842,
+         "accountId":"1ced5fc2-b032-4969-a38b-d4db9ab5368f",
+         "email":"email@example.com",
+         "isActive":true,
+         "tableName":"ACCOUNT_EMAIL",
+         "historyTableName":"ACCOUNT_EMAIL_HISTORY"
+      }
+   }
+]
+```
+```python
+[{'change_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc()),
+ 'change_type': 'INSERT',
+ 'changed_by': 'Me',
+ 'comments': None,
+ 'history': {'created_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc()),
+             'id': None,
+             'updated_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc())},
+ 'object_id': 'bb390282-6757-4f4f-8dd5-456abd9f30b2',
+ 'object_type': 'ACCOUNT_EMAIL',
+ 'reason_code': None,
+ 'user_token': '548055b7-2c5e-4315-9293-d76c00bd9737'}]
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of account email audit logs with history.
 
 ## Retrieve account invoice payments
 
@@ -2986,6 +3390,122 @@ accountApi.process_payment(account_id,
                            api_key, 
                            api_secret, 
                            payment_method_id=payment_method_id)
+```
+
+> Example Response:
+
+```ruby
+{
+   "accountId":"2ad4cae9-c44a-43f9-b3f8-2e3e4e097838",
+   "paymentId":"b4c5b34f-cd3e-4269-9f71-55daf8edde60",
+   "paymentNumber":"333",
+   "paymentExternalKey":"b4c5b34f-cd3e-4269-9f71-55daf8edde60",
+   "authAmount":50.0,
+   "capturedAmount":0,
+   "purchasedAmount":0,
+   "refundedAmount":0,
+   "creditedAmount":0,
+   "currency":"USD",
+   "paymentMethodId":"132d59c0-8c28-4115-947d-f57d430bc458",
+   "transactions":[
+      {
+         "transactionId":"e038a04e-5304-4570-ab89-b7f04e8f496c",
+         "transactionExternalKey":"e038a04e-5304-4570-ab89-b7f04e8f496c",
+         "paymentId":"b4c5b34f-cd3e-4269-9f71-55daf8edde60",
+         "paymentExternalKey":"b4c5b34f-cd3e-4269-9f71-55daf8edde60",
+         "transactionType":"AUTHORIZE",
+         "amount":50.0,
+         "currency":"USD",
+         "effectiveDate":"2013-08-01T06:00:01.000Z",
+         "processedAmount":50.0,
+         "processedCurrency":"USD",
+         "status":"SUCCESS",
+         "auditLogs":[]
+      }
+   ],
+   "auditLogs":[]
+}
+```
+```python
+no content
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **paymentMethodId** | string | true | payment method id |
+
+**Returns**
+
+Returns a payment transaction object.
+
+## Trigger a payment using the account external key (authorization, purchase or credit)
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/accounts/payments`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+transaction = KillBillClient::Model::Transaction.new
+transaction.amount = '50.0'
+
+payment_method_id = '132d59c0-8c28-4115-947d-f57d430bc458'
+refresh_options = nil
+
+# Authorization
+transaction.auth_by_external_key(account.external_key,
+                                 payment_method_id, 
+                                 user, 
+                                 reason, 
+                                 comment, 
+                                 options, 
+                                 refresh_options)
+
+# Purchase
+transaction.purchase_by_external_key(account.external_key,
+                                     payment_method_id, 
+                                     user, 
+                                     reason, 
+                                     comment, 
+                                     options, 
+                                     refresh_options)
+
+# Credit
+transaction.credit_by_external_key(account.external_key,
+                                   payment_method_id, 
+                                   user, 
+                                   reason, 
+                                   comment, 
+                                   options, 
+                                   refresh_options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_external_key = 'sample_external_key'
+payment_method_id = '80c7b386-97b2-424c-bb4e-0017f92bc6eb'
+
+# transaction_type could be 'AUTHORIZE', 'PURCHASE' or 'CREDIT'
+body = PaymentTransaction(amount=50, transaction_type='AUTHORIZE')
+
+accountApi.process_payment_by_external_key(body,
+                                           external_key,
+                                           created_by,
+                                           api_key,
+                                           api_secret)
+                                           payment_method_id=payment_method_id)
 ```
 
 > Example Response:
