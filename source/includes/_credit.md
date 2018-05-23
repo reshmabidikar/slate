@@ -32,7 +32,7 @@ TODO
 
 ```ruby
 credit_item                 = KillBillClient::Model::Credit.new()
-credit_item.account_id      = 'account_id'
+credit_item.account_id      = 'da3769a8-58c4-4dc0-b4e8-7b534e349624'
 credit_item.credit_amount   = 50.0
 credit_item.currency        = 'USD'
 credit_item.description     = 'description'
@@ -101,11 +101,9 @@ TODO
 ```
 
 ```ruby
-credit = KillBillClient::Model::Credit.new
 credit_id = 'fd5669a8-68c1-8dl0-m4e8-8y535e349324'
 
-credit.find_by_id(credit_id, 
-                  options) 
+KillBillClient::Model::Credit.find_by_id(credit_id , options)
 ```
 
 ```python

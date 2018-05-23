@@ -122,7 +122,7 @@ comment = 'I like it!'
 ```
 
 ```python
-# Edit file: configuration.py, line:50-62
+# Edit file: configuration.py, lines:50-62
 
 # Default Base url
 self.host = "http://localhost:8080"

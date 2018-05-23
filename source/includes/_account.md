@@ -458,7 +458,7 @@ no content
 
 **Returns**
 
-Returns an account object.
+A `204` http status without content.
 
 ## Retrieve account tags
 
@@ -543,7 +543,7 @@ Returns a list of tag objects
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/accounts/{accountId}/block`
+`POST http://example.com/1.0/kb/accounts/{accountId}/block`
 
 > Example Request:
 
@@ -600,19 +600,7 @@ accountApi.add_account_blocking_state(account_id,
 **TODO**
 ```
 ```ruby
-[
-   {
-      "blockedId":"2f1cccd9-5cea-4695-8b6c-ad0b8a040f88",
-      "stateName":"STATE1",
-      "service":"ServiceStateService",
-      "blockChange":false,
-      "blockEntitlement":false,
-      "blockBilling":false,
-      "effectiveDate":"2013-08-01T06:00:00.000Z",
-      "type":"ACCOUNT",
-      "auditLogs":[]
-   }
-]
+no content
 ```
 ```python
 no content
@@ -627,7 +615,7 @@ no content
 
 **Returns**
 
-Returns a blocking state object.
+A `201` http status without content.
 
 ## Retrieve blocking states for account
 
@@ -1520,7 +1508,7 @@ Returns a list of account bundle objects.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts/{accountId}/cbaRebalancing`
+`PUT http://example.com/1.0/kb/accounts/{accountId}/cbaRebalancing`
 
 > Example Request:
 
@@ -1563,7 +1551,7 @@ None.
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## List children accounts
 
@@ -1859,21 +1847,11 @@ account.modify_account_custom_fields(account_id,
 > Example Response:
 
 ```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"BUNDLE",
-      "name":"Test Modify",
-      "value":"test_modify_value",
-      "auditLogs":[]
-   }
-]
+no content
 ```
 ```python
 no content
 ```
-
 
 **Query Parameters**
 
@@ -1881,7 +1859,7 @@ None.
 
 **Returns**
 
-Returns a custom field object.
+A `204` http status without content.
 
 ## Remove custom fields from account
 
@@ -1940,7 +1918,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Set account email notification
 
@@ -1997,7 +1975,7 @@ None.
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Retrieve account email notification
 
@@ -2161,7 +2139,7 @@ None.
 
 **Response**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Delete email from account
 
@@ -2216,7 +2194,7 @@ None.
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Retrieve account invoice payments
 
@@ -2394,7 +2372,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Retrieve account invoices
 
@@ -2778,7 +2756,59 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
+
+## Refresh account payment methods
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/accounts/{accountId}/paymentMethods/refresh`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+account_id = account.account_id
+
+KillBillClient::Model::PaymentMethod.refresh(account_id, 
+                                             user, 
+                                             reason, 
+                                             comment, 
+                                             options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
+
+accountApi.refresh_payment_methods(account_id, 
+                                   created_by,
+                                   api_key,
+                                   api_secret)
+```
+> Example Response:
+
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Response**
+
+A `204` http status without content.
 
 ## Retrieve account payments
 
@@ -3068,67 +3098,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true | tag list to add |
+| **tagDef** | string | true | list with tag definition id's to add |
 
 **Returns**
 
-Returns a account tag object.
-
-## Remove tags from account
-
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/accounts/{accountId}/tags`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-TODO
-```
-
-```ruby
-tag_name = 'TEST'
-
-account.remove_tag(tag_name,
-                   user,
-                   reason,
-                   comment,
-                   options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
-tag = ["00000000-0000-0000-0000-000000000002"]
-
-accountApi.delete_account_tags(account_id, 
-                               created_by, 
-                               api_key, 
-                               api_secret, 
-                               tag_def=tag)
-```
-> Example Response:
-
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true |  list of tags that you want to remove it |
-
-**Response**
-
-A `200` http status without content.
+A `201` http status without content.
 
 ## Retrieve account tags
 
@@ -3202,6 +3176,62 @@ accountApi.get_account_tags(account_id, api_key, api_secret)
 **Returns**
 
 Returns a list of account tag objects.
+
+## Remove tags from account
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/accounts/{accountId}/tags`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+TODO
+```
+
+```ruby
+tag_name = 'TEST'
+
+account.remove_tag(tag_name,
+                   user,
+                   reason,
+                   comment,
+                   options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
+tag = ["00000000-0000-0000-0000-000000000002"]
+
+accountApi.delete_account_tags(account_id, 
+                               created_by, 
+                               api_key, 
+                               api_secret, 
+                               tag_def=tag)
+```
+> Example Response:
+
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
+
+**Response**
+
+A `204` http status without content.
 
 ## Retrieve account timeline
 
@@ -4034,7 +4064,7 @@ Returns a list of account tag objects.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts/{childAccountId}/transferCredit`
+`PUT http://example.com/1.0/kb/accounts/{childAccountId}/transferCredit`
 
 > Example Request:
 
@@ -4076,7 +4106,7 @@ None.
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## List accounts
 

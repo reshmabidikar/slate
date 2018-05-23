@@ -580,7 +580,7 @@ None.
 
 **Returns**
 
-Returns a payment object.
+A `204` http status without content.
 
 ## Complete an existing transaction [using external key]
 
@@ -665,7 +665,7 @@ None.
 
 **Returns**
 
-Returns a payment object.
+A `204` http status without content.
 
 ## Void an existing payment
 
@@ -792,7 +792,7 @@ None.
 
 **Returns**
 
-Returns a payment transaction object.
+A `204` http status without content.
 
 ## Record a chargeback [payment]
 
@@ -1394,16 +1394,7 @@ paymentApi.modify_payment_custom_fields(payment_id,
 > Example Response:
 
 ```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"PAYMENT",
-      "name":"Test Modify",
-      "value":"test_modify_value",
-      "auditLogs":[]
-   }
-]
+no content
 ```
 ```python
 no content
@@ -1417,7 +1408,7 @@ no content
 
 **Returns**
 
-Returns a custom field object.
+A `204` http status without content.
 
 ## Remove custom fields from payment [payment]
 
@@ -1472,7 +1463,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Refund an existing payment
 
@@ -1735,11 +1726,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true | tag list to add |
+| **tagDef** | string | true | list with tag definition id's to add |
 
 **Returns**
 
-Returns a bundle tag object.
+A `201` http status without content.
 
 ## Retrieve payment tags [payment]
 
@@ -1835,7 +1826,8 @@ payment.remove_tag(tag_name,
 
 ```python
 paymentApi = killbill.api.PaymentApi()
-payment_id = 'dce5b2a0-0f0f-430b-9427-545ba4be5c7f' 
+payment_id = 'dce5b2a0-0f0f-430b-9427-545ba4be5c7f'
+tag = ["00000000-0000-0000-0000-000000000002"] 
 
 paymentApi.delete_payment_tags(payment_id,
                                created_by,
@@ -1857,11 +1849,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true |  list of tags that you want to remove it |
+| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Cancels a scheduled payment attempt retry
 
@@ -1914,7 +1906,7 @@ None.
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Cancels a scheduled payment attempt retry [using external key]
 
@@ -1966,7 +1958,7 @@ None.
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Combo api to create a new payment transaction on a existing (or not) account
 
