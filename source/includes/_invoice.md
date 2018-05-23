@@ -121,7 +121,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Adjust an invoice item
 
@@ -221,14 +221,14 @@ TODO
 ```
 
 ```ruby
-id_or_number = "31db9f9a-91ff-49f4-b5a1-5e4fce59a197"
+invoice_id = "31db9f9a-91ff-49f4-b5a1-5e4fce59a197"
 with_items = true
 audit = 'NONE'
 
-KillBillClient::Model::Invoice.find_by_id_or_number(id_or_number, 
-                                                    with_items, 
-                                                    audit, 
-                                                    options)
+KillBillClient::Model::Invoice.find_by_id(invoice_id, 
+                                          with_items, 
+                                          audit, 
+                                          options)
 ```
 
 ```python
@@ -319,14 +319,14 @@ TODO
 ```
 
 ```ruby
-id_or_number = "31db9f9a-91ff-49f4-b5a1-5e4fce59a197"
+invoice_number = "1913"
 with_items = true
 audit = 'NONE'
 
-KillBillClient::Model::Invoice.find_by_id_or_number(id_or_number, 
-                                                    with_items, 
-                                                    audit, 
-                                                    options)
+KillBillClient::Model::Invoice.find_by_number(invoice_number, 
+                                              with_items, 
+                                              audit, 
+                                              options)
 ```
 
 ```python
@@ -459,7 +459,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Add custom fields to invoice
 
@@ -639,16 +639,7 @@ invoiceApi.modify_invoice_custom_fields(invoice_id,
 > Example Response:
 
 ```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"INVOICE",
-      "name":"Test Modify",
-      "value":"test_modify_value",
-      "auditLogs":[]
-   }
-]
+no content
 ```
 ```python
 no content
@@ -661,7 +652,7 @@ None.
 
 **Returns**
 
-Returns a custom field object.
+A `204` http status without content.
 
 ## Remove custom fields from invoice
 
@@ -716,7 +707,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Render an invoice as HTML
 
@@ -1011,7 +1002,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Retrieve payments associated with an invoice
 
@@ -1140,7 +1131,7 @@ None.
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Add tags to invoice
 
@@ -1205,11 +1196,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true | tag list to add |
+| **tagDef** | string | true | list with tag definition id's to add |
 
 **Returns**
 
-Returns a invoice tag object.
+A `201` http status without content.
 
 ## Retrieve invoice tags
 
@@ -1310,7 +1301,8 @@ invoice_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
 invoiceApi.delete_invoice_tags(invoice_id, 
                                created_by, 
                                api_key, 
-                               api_secret)
+                               api_secret,
+                               tag_def=tag)
 ```
 
 > Example Response:
@@ -1326,11 +1318,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true |  list of tags that you want to remove it |
+| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Perform the action of voiding an invoice
 
@@ -1377,7 +1369,7 @@ None.
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Upload the catalog translation for the tenant
 
@@ -1438,7 +1430,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Retrieves the catalog translation for the tenant
 
@@ -2335,7 +2327,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## List invoices
 
@@ -3218,7 +3210,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Retrieves the invoice translation for the tenant
 

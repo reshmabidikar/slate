@@ -122,7 +122,7 @@ comment = 'I like it!'
 ```
 
 ```python
-# Edit file: configuration.py, line:50-62
+# Edit file: configuration.py, lines:50-62
 
 # Default Base url
 self.host = "http://localhost:8080"
@@ -258,21 +258,24 @@ Kill Bill relies on HTTP response codes to indicate the success or failure of an
 * **`4xx`** status often indicate a client side error -- e.g missing madatory API field
 * **`5xx`** status indicate an error with Kill Bill's servers or third party system -- e.g payment gateway returns 5xx.
 
+200, 201, 202, 204
+
 ```
-HTTP status code summary
-200 - OK
+HTTP status code summary:
+200 - OK: A response body may be returned.
 201 - Created: Success in creating a new resource. A Location header is returned to indicate the uri that can be used to fetch the resource
-204 - No Content: No change were made in the system, for example in a scenario to attempt to pay an already paid invoice
-400 - Bad Request: Invalid/missing parameter from client
-401 - Unauthorized: Authorization failed
-402 - Request Failed: Request parameter were valid but request failed -- insufficient fund on a payment request
-404 - Not Found: The requested resource does not exist
-409 - Conflict:	The request conflicts with another request 
-422 - Unprocessable Entity: Payment control plugin aborted the call 
-500 - Unexpected system error
-502 - Bad Gateway : Unknow failure from payment plugin (PLUGIN_FAILURE)
-503 - Service Unavailable: Kill Bill or a third party system -- e.g payment gateway -- is unavailable
-504 - Gateway Timeout: Payment gateway timed out
+202 - Accepted: The request has been accepted and will be processed asynchronously.
+204 - No Content: The request was processed sucesfully but no response body is returned.
+400 - Bad Request: Invalid/missing parameter from client.
+401 - Unauthorized: Authorization failed.
+402 - Request Failed: Request parameter were valid but request failed -- insufficient fund on a payment request.
+404 - Not Found: The requested resource does not exist.
+409 - Conflict:	The request conflicts with another request.
+422 - Unprocessable Entity: Payment control plugin aborted the call.
+500 - Unexpected system error.
+502 - Bad Gateway : Unknow failure from payment plugin (PLUGIN_FAILURE).
+503 - Service Unavailable: Kill Bill or a third party system -- e.g payment gateway -- is unavailable.
+504 - Gateway Timeout: Payment gateway timed out.
 ```
 
 In addition to these error codes, the system will often return some json to provide more details about the error:
