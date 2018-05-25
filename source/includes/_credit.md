@@ -2,17 +2,21 @@
 
 ## Credit Resource
 
-The `Credit` resource represent credits created by the user.
+The `Credit` resource represent credits created by the user. Credit items are tracked inside `Invoice` Resource and they become reflected
+at the level of the `Account`, i.e account credit. Such credits will then be used on subsequent invoices to bring the balance to zero.
 
 The attributes are the following:
 
 * **`creditId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
-* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
 * **`invoiceId`** <span style="color:#32A9C7">*[System or User generated, immutable]*</span>. If the `ID` is specified during creation, the credit will go against a specific invoice, provided this invoice has not yet been `COMMITTED`.
-* **`creditAmount`** <span style="color:#32A9C7">*[User generated]*</span>
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>. The ID allocated by Kill Bill upon creation.
+* **`creditAmount`** <span style="color:#32A9C7">*[User generated]*</span>. 
 * **`currency`** <span style="color:#32A9C7">*[User generated]*</span>
 * **`invoiceNumber`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`effectiveDate`** <span style="color:#32A9C7">*[User generated]*</span>
 * **`description`** <span style="color:#32A9C7">*[User generated]*</span>
+* **`itemDetails`** <span style="color:#32A9C7">*[User or system generated]*</span>
+
 
 ## Create a credit
 
