@@ -422,13 +422,15 @@ input = {
 requested_date = nil
 billing_policy = nil
 call_completion = false
+target_phase_type = nil
 
 subscription.change_plan(input, 
                          user, 
                          reason, 
                          comment, 
                          requested_date, 
-                         billing_policy, 
+                         billing_policy,
+                         target_phase_type, 
                          call_completion, 
                          options)
 ```
