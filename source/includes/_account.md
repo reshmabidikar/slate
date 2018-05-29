@@ -2759,7 +2759,9 @@ accountApi.pay_all_invoices(account_id,
                             created_by,
                             api_key, 
                             api_secret, 
-                            external_payment=True)
+                            external_payment=True,
+                            payment_method_id=None,
+                            target_date=None)
 ```
 
 > Example Response:
