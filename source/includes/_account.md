@@ -55,16 +55,12 @@ curl -v \
 ```
 
 ```java
-
 Account body = new Account();
 body.setName("John Doe");
 body.setEmail("john@example.com");
-body.setCurrency("USD");
+body.setCurrency(Currency.USD);
 
-TODO user requestOptions
-
-
-final Account result = killBillClient.createAccount(body, requestOptions);
+Account result = accountApi.createAccount(body, requestOptions);
 ```
 
 ```ruby
@@ -97,7 +93,36 @@ accountApi.create_account(body,
 < Content-Length: 0
 ```
 ```java
-**TODO**
+class Account {
+    org.killbill.billing.client.model.gen.Account@3f77a367
+    accountId: e1342e5c-db2a-4439-b52c-8597fde4390f
+    name: John Doe
+    firstNameLength: null
+    externalKey: e1342e5c-db2a-4439-b52c-8597fde4390f
+    email: john@example.com
+    billCycleDayLocal: 0
+    currency: USD
+    parentAccountId: null
+    isPaymentDelegatedToParent: false
+    paymentMethodId: null
+    referenceTime: 2012-08-25T00:02:47.000Z
+    timeZone: UTC
+    address1: null
+    address2: null
+    postalCode: null
+    company: null
+    city: null
+    state: null
+    country: null
+    locale: null
+    phone: null
+    notes: null
+    isMigrated: false
+    isNotifiedForInvoices: false
+    accountBalance: null
+    accountCBA: null
+    auditLogs: []
+}
 ```
 
 ```ruby
@@ -149,7 +174,15 @@ curl \
 ```
 
 ```java
-Account result = killBillClient.getAccount(accountId, inputOptions);
+UUID accountId = account.getAccountId();
+Boolean accountWithBalance = false;
+Boolean accountWithBalanceAndCBA = false;
+
+Account result = accountApi.getAccount(accountId, 
+                                       accountWithBalance, 
+                                       accountWithBalanceAndCBA, 
+                                       AuditLevel.NONE, 
+                                       requestOptions);
 ```
 
 ```ruby
@@ -175,7 +208,36 @@ accountApi.get_account(account_id, api_key, api_secret)
 **TODO**
 ```
 ```java
-**TODO**
+class Account {
+    org.killbill.billing.client.model.gen.Account@4be0cf3a
+    accountId: 864c1418-e768-4cd5-a0db-67537144b685
+    name: John Doe
+    firstNameLength: null
+    externalKey: 864c1418-e768-4cd5-a0db-67537144b685
+    email: john@example.com
+    billCycleDayLocal: 0
+    currency: USD
+    parentAccountId: null
+    isPaymentDelegatedToParent: false
+    paymentMethodId: null
+    referenceTime: 2012-08-25T00:00:25.000Z
+    timeZone: UTC
+    address1: null
+    address2: null
+    postalCode: null
+    company: null
+    city: null
+    state: null
+    country: null
+    locale: null
+    phone: null
+    notes: null
+    isMigrated: false
+    isNotifiedForInvoices: false
+    accountBalance: null
+    accountCBA: null
+    auditLogs: []
+}
 ```
 ```ruby
 {
@@ -269,7 +331,15 @@ TODO
 ```
 
 ```java
-TODO
+String externalKey = "example_external_key";
+Boolean accountWithBalance = false;
+Boolean accountWithBalanceAndCBA = false;
+
+Account result = accountApi.getAccountByKey(externalKey, 
+                                            accountWithBalance, 
+                                            accountWithBalanceAndCBA, 
+                                            AuditLevel.NONE, 
+                                            requestOptions);
 ```
 
 ```ruby
@@ -297,7 +367,36 @@ accountApi.get_account(external_key, api_key, api_secret)
 **TODO**
 ```
 ```java
-**TODO**
+class Account {
+    org.killbill.billing.client.model.gen.Account@4be0cf3a
+    accountId: 864c1418-e768-4cd5-a0db-67537144b685
+    name: John Doe
+    firstNameLength: null
+    externalKey: example_external_key
+    email: john@example.com
+    billCycleDayLocal: 0
+    currency: USD
+    parentAccountId: null
+    isPaymentDelegatedToParent: false
+    paymentMethodId: null
+    referenceTime: 2012-08-25T00:00:25.000Z
+    timeZone: UTC
+    address1: null
+    address2: null
+    postalCode: null
+    company: null
+    city: null
+    state: null
+    country: null
+    locale: null
+    phone: null
+    notes: null
+    isMigrated: false
+    isNotifiedForInvoices: false
+    accountBalance: null
+    accountCBA: null
+    auditLogs: []
+}
 ```
 ```ruby
 {
@@ -387,7 +486,13 @@ TODO
 ```
 
 ```java
-TODO
+Account newInput = new Account(input.getAccountId(),
+                               "zozo", 4, input.getExternalKey(), "rr@google.com", 18,
+                               Currency.USD, null, false, null, null, "UTC",
+                               "bl1", "bh2", "", "", "ca", "San Francisco", "usa", "en", "415-255-2991",
+                               "notes", false, false, null, null, EMPTY_AUDIT_LOGS);
+
+accountApi.updateAccount(input.getAccountId(), newInput, requestOptions);
 ```
 
 ```ruby
@@ -420,7 +525,7 @@ accountApi.update_account(account_id,
 **TODO**
 ```
 ```java
-**TODO**
+no content
 ```
 ```ruby
 {
@@ -473,7 +578,12 @@ TODO
 ```
 
 ```java
-TODO
+accountApi.closeAccount(account.getAccountId(), 
+                        true, 
+                        true, 
+                        false, 
+                        true, 
+                        requestOptions)
 ```
 
 ```ruby
@@ -506,7 +616,7 @@ accountApi.close_account(account_id,
 **TODO**
 ```
 ```java
-**TODO**
+no content
 ```
 ```ruby
 no content
@@ -542,7 +652,10 @@ TODO
 ```
 
 ```java
-TODO
+CustomFields allAccountCustomFields = accountApi.getAllCustomFields(account.getAccountId(), 
+                                                                    null, 
+                                                                    AuditLevel.FULL, 
+                                                                    requestOptions);
 ```
 
 ```python
@@ -570,7 +683,26 @@ account.all_custom_fields(object_type,
 **TODO**
 ```
 ```java
-**TODO**
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@238cc919
+    customFieldId: dba8ec60-ee02-4231-9fa0-6613773b4e9e
+    objectId: b38de59f-7dd0-447a-a508-9b022b808250
+    objectType: ACCOUNT
+    name: 385af
+    value: 8296f
+    auditLogs: [class AuditLog {
+        changeType: INSERT
+        changeDate: 2012-08-25T00:00:01.000Z
+        objectType: CUSTOM_FIELD
+        objectId: dba8ec60-ee02-4231-9fa0-6613773b4e9e
+        changedBy: Toto
+        reasonCode: i am god
+        comments: no comment
+        userToken: 10e278f1-61b8-4885-b1f6-d6f4db19c998
+        history: null
+    }]
+}
 ```
 ```ruby
 [
@@ -621,7 +753,9 @@ TODO
 ```
 
 ```java
-TODO
+Tags allAccountTags = accountApi.getAllTags(account.getAccountId(),
+                                            null, 
+                                            requestOptions);
 ```
 
 ```python
@@ -648,7 +782,16 @@ account.all_tags(object_type,
 **TODO**
 ```
 ```java
-**TODO**
+//First element of the list
+class Tag {
+    org.killbill.billing.client.model.gen.Tag@45e9c8ec
+    tagId: 659b37ed-59d7-4b46-b4e4-37d11cdc0bce
+    objectType: ACCOUNT
+    objectId: ee6835f0-8347-42d3-958c-9a939383ba28
+    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionName: AUTO_PAY_OFF
+    auditLogs: []
+}
 ```
 ```ruby
 [
@@ -700,7 +843,8 @@ TODO
 ```
 
 ```java
-TODO
+AuditLogs auditLogsJson = accountApi.getAccountAuditLogs(account.getAccountId(), 
+                                                         requestOptions);
 ```
 
 ```python
@@ -720,7 +864,18 @@ account.audit(options)
 **TODO**
 ```
 ```java
-**TODO**
+//First element of the list
+class AuditLog {
+    changeType: INSERT
+    changeDate: 2012-08-25T00:00:01.000Z
+    objectType: ACCOUNT
+    objectId: e9432491-6558-4007-85ef-cdae171d240c
+    changedBy: Toto
+    reasonCode: i am god
+    comments: no comment
+    userToken: 6cd7a8ec-0678-436f-a2cb-a58f9ee3668b
+    history: null
+}
 ```
 ```ruby
 [
@@ -766,7 +921,8 @@ TODO
 ```
 
 ```java
-TODO
+List<AuditLog> auditLogWithHistories = accountApi.getAccountAuditLogsWithHistory(account.getAccountId(), 
+                                                                                 requestOptions);
 ```
 
 ```python
@@ -786,7 +942,47 @@ account.audit_logs_with_history(options)
 **TODO**
 ```
 ```java
-**TODO**
+//First element of the list
+class AuditLog {
+    changeType: INSERT
+    changeDate: 2012-08-25T00:00:01.000Z
+    objectType: ACCOUNT
+    objectId: ecbff3be-3cbf-4e1d-ae05-d323d4597877
+    changedBy: Toto
+    reasonCode: i am god
+    comments: no comment
+    userToken: d698ba59-cacd-4739-9e40-68506ec046ca
+    history: {id=null, 
+              createdDate=2012-08-25T00:00:01.000Z, 
+              updatedDate=2012-08-25T00:00:01.000Z, 
+              recordId=1, accountRecordId=1, 
+              tenantRecordId=1, 
+              externalKey=5bb29c30-c83a-4237-b886-6605319baf8f, 
+              email=a946d@6a7f4, 
+              name=40f79b31-64eb-429b-96b5-89c05a21883f, 
+              firstNameLength=4, 
+              currency=USD, 
+              parentAccountId=null, 
+              isPaymentDelegatedToParent=false, 
+              billingCycleDayLocal=0, 
+              paymentMethodId=null, 
+              referenceTime=2012-08-25T00:00:01.000Z, 
+              timeZone=UTC, 
+              locale=fr, 
+              address1=12 rue des ecoles, 
+              address2=Poitier, 
+              companyName=Renault, 
+              city=Quelque part, 
+              stateOrProvince=Poitou, 
+              country=France, 
+              postalCode=44 567, 
+              phone=81 53 26 56, 
+              notes=notes, 
+              migrated=false, 
+              isNotifiedForInvoices=false, 
+              tableName=ACCOUNT, 
+              historyTableName=ACCOUNT_HISTORY}
+}
 ```
 ```ruby
 [
@@ -946,7 +1142,11 @@ TODO
 ```
 
 ```java
-TODO
+BlockingStates blockingStates = accountApi.getBlockingStates(account.getAccountId(), 
+                                                             null, 
+                                                             ImmutableList.<String>of("service"), 
+                                                             AuditLevel.FULL, 
+                                                             requestOptions);
 ```
 
 ```ruby
@@ -972,7 +1172,29 @@ accountApi.get_blocking_states(account_id, api_key, api_secret)
 **TODO**
 ```
 ```java
-**TODO**
+//First element of the list
+class BlockingState {
+    org.killbill.billing.client.model.gen.BlockingState@95047f38
+    blockedId: e3d9aa57-1c1e-4206-a44a-d87e69d5bf2a
+    stateName: block
+    service: service
+    isBlockChange: false
+    isBlockEntitlement: true
+    isBlockBilling: true
+    effectiveDate: 2012-04-25T00:03:42.000Z
+    type: SUBSCRIPTION_BUNDLE
+    auditLogs: [class AuditLog {
+        changeType: INSERT
+        changeDate: 2012-04-25T00:03:45.000Z
+        objectType: BLOCKING_STATES
+        objectId: 8fc09849-bd98-417f-a0ab-943f9ce8e15d
+        changedBy: Toto
+        reasonCode: i am god
+        comments: no comment
+        userToken: 46d56616-1545-424a-882b-b158442534ff
+        history: null
+    }]
+}
 ```
 ```ruby
 [
@@ -1030,7 +1252,10 @@ TODO
 ```
 
 ```java
-TODO
+List<Bundle> accountBundles = accountApi.getAccountBundles(accountJson.getAccountId(), 
+                                                           "123467", 
+                                                           null, 
+                                                           requestOptions);
 ```
 
 ```ruby
@@ -1050,7 +1275,150 @@ accountApi.get_account_bundles(account_id, api_key, api_secret)
 **TODO**
 ```
 ```java
-**TODO**
+//First element of the list
+class Bundle {
+    org.killbill.billing.client.model.gen.Bundle@53060d66
+    accountId: 15434b45-54c1-4a44-851c-b1f2f7a52f03
+    bundleId: e17a7805-42cf-4464-aea7-963cf0078651
+    externalKey: 123467
+    subscriptions: [class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@e1d5debf
+        accountId: 15434b45-54c1-4a44-851c-b1f2f7a52f03
+        bundleId: e17a7805-42cf-4464-aea7-963cf0078651
+        subscriptionId: 7b9de82a-319c-4334-b676-f1644591077e
+        externalKey: 123467
+        startDate: 2012-08-25
+        productName: Shotgun
+        productCategory: BASE
+        billingPeriod: MONTHLY
+        phaseType: TRIAL
+        priceList: DEFAULT
+        planName: shotgun-monthly
+        state: ACTIVE
+        sourceType: NATIVE
+        cancelledDate: null
+        chargedThroughDate: 2012-08-25
+        billingStartDate: 2012-08-25
+        billingEndDate: null
+        billCycleDayLocal: 24
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@6ea5e183
+            eventId: a6e0c854-16b7-4729-bc6c-cb019b3441ce
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-08-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@3635a9d5
+            eventId: 2cb255be-0008-44b0-9161-47760a5e2828
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-08-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@a561e242
+            eventId: a34e0990-80bb-42e1-a593-0a0bc952ef2c
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-09-24
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        priceOverrides: [class PhasePriceOverride {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-trial
+            phaseType: TRIAL
+            fixedPrice: 0
+            recurringPrice: null
+            usagePriceOverrides: []
+        }, class PhasePriceOverride {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: null
+            recurringPrice: 249.95
+            usagePriceOverrides: []
+        }]
+        auditLogs: []
+    }]
+    timeline: class BundleTimeline {
+        org.killbill.billing.client.model.gen.BundleTimeline@e70542
+        accountId: 15434b45-54c1-4a44-851c-b1f2f7a52f03
+        bundleId: e17a7805-42cf-4464-aea7-963cf0078651
+        externalKey: 123467
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@1852601c
+            eventId: a6e0c854-16b7-4729-bc6c-cb019b3441ce
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-08-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@1d0ca762
+            eventId: 2cb255be-0008-44b0-9161-47760a5e2828
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-08-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@a8ba9854
+            eventId: a34e0990-80bb-42e1-a593-0a0bc952ef2c
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-09-24
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        auditLogs: []
+    }
+    auditLogs: []
+}
 ```
 ```ruby
 [
@@ -1882,7 +2250,11 @@ TODO
 ```
 
 ```java
-TODO
+Accounts childrenAccounts = accountApi.getChildrenAccounts(parentAccount.getAccountId(), 
+                                                           true, 
+                                                           true, 
+                                                           AuditLevel.NONE, 
+                                                           requestOptions);
 ```
 
 ```ruby
@@ -1911,7 +2283,37 @@ accountApi.get_children_accounts(account_id, api_key, api_secret)
 **TODO**
 ```
 ```java
-**TODO**
+//First element of the list
+class Account {
+    org.killbill.billing.client.model.gen.Account@cfbf4058
+    accountId: b58e1b76-461c-4681-9ecf-3a3e5e95fc27
+    name: 01f814b3-b4c2-41e9-9d6c-4a010916424c
+    firstNameLength: 4
+    externalKey: 3bf9144f-11a3-4a0b-9923-03a1c667ba93
+    email: 8c0f9@f059d
+    billCycleDayLocal: 0
+    currency: USD
+    parentAccountId: e72357f9-76ff-4533-b846-b61f39973b70
+    isPaymentDelegatedToParent: true
+    paymentMethodId: null
+    referenceTime: 2012-08-25T00:00:02.000Z
+    timeZone: UTC
+    address1: 12 rue des ecoles
+    address2: Poitier
+    postalCode: 44 567
+    company: Renault
+    city: Quelque part
+    state: Poitou
+    country: France
+    locale: fr
+    phone: 81 53 26 56
+    notes: notes
+    isMigrated: false
+    isNotifiedForInvoices: false
+    accountBalance: 0
+    accountCBA: 0E-9
+    auditLogs: []
+}
 ```
 ```ruby
 [
@@ -2065,7 +2467,7 @@ TODO
 ```
 
 ```java
-TODO
+
 ```
 
 ```ruby
@@ -2081,7 +2483,9 @@ accountApi.get_account_custom_fields(account_id, api_key, api_secret)
 ```
 
 > Example Response:
+```java
 
+```
 ```ruby
 [
    {
