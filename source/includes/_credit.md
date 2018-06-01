@@ -27,7 +27,13 @@ TODO
 ```
 
 ```java
-TODO
+Credit credit = new Credit();
+credit.setAccountId(account.getAccountId());
+credit.setCreditAmount(BigDecimal.ONE);
+credit.setDescription("description");
+credit.setItemDetails("itemDetails");
+
+creditApi.createCredit(credit, false, requestOptions);
 ```
 
 ```ruby
@@ -58,6 +64,21 @@ creditApi.create_credit(body, created_by, api_key, api_secret)
 
 > Example Response:
 
+```java
+class Credit {
+    org.killbill.billing.client.model.gen.Credit@a32400a5
+    creditId: d2edf4c0-9929-4e2f-b3a9-feb9bd9d60ba
+    creditAmount: 1.00
+    currency: USD
+    invoiceId: 41c87837-ec1d-4095-8d20-a56e6237cb0c
+    invoiceNumber: 3
+    effectiveDate: 2012-09-26
+    accountId: 7cf30d01-84f1-4d9d-94c2-3a3277374960
+    description: description
+    itemDetails: itemDetails
+    auditLogs: []
+}
+```
 ```ruby
 {
    "creditId":"fd5669a8-68c1-8dl0-m4e8-8y535e349324"
@@ -97,7 +118,7 @@ TODO
 ```
 
 ```java
-TODO
+Credit result = creditApi.getCredit(credit.getCreditId, requestOptions)
 ```
 
 ```ruby
@@ -113,6 +134,21 @@ creditApi.get_credit(credit_id, api_key, api_secret)
 ```
 > Example Response:
 
+```java
+class Credit {
+    org.killbill.billing.client.model.gen.Credit@a32400a5
+    creditId: d2edf4c0-9929-4e2f-b3a9-feb9bd9d60ba
+    creditAmount: 1.00
+    currency: USD
+    invoiceId: 41c87837-ec1d-4095-8d20-a56e6237cb0c
+    invoiceNumber: 3
+    effectiveDate: 2012-09-26
+    accountId: 7cf30d01-84f1-4d9d-94c2-3a3277374960
+    description: description
+    itemDetails: itemDetails
+    auditLogs: []
+}
+```
 ```ruby
 {
    "creditId":"fd5669a8-68c1-8dl0-m4e8-8y535e349324"
