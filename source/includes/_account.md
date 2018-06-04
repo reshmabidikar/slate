@@ -2737,9 +2737,14 @@ TODO
 invoice_payment                  = KillBillClient::Model::InvoicePayment.new
 invoice_payment.account_id       = account.account_id
 invoice_payment.purchased_amount = '50.0'
-external_payment                 = true
+
+external_payment  = true
+payment_method_id = nil
+target_date       = nil
 
 invoice_payment.bulk_create(external_payment,
+                            payment_method_id,
+                            target_date,
                             user,
                             reason,
                             comment,
@@ -2754,7 +2759,9 @@ accountApi.pay_all_invoices(account_id,
                             created_by,
                             api_key, 
                             api_secret, 
-                            external_payment=True)
+                            external_payment=True,
+                            payment_method_id=None,
+                            target_date=None)
 ```
 
 > Example Response:
@@ -2771,8 +2778,10 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- | 
+| **paymentMethodId** | string | false | Payment method id. |
 | **externalPayment** | boolean | true | Choose true if you use a external payment method. |
-| **paymentAmount** | string | true | Total payment amount. |
+| **paymentAmount** | string | false | Total payment amount. |
+| **targetDate** | string | true | Total payment amount. |
 
 **Response**
 
