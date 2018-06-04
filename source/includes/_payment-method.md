@@ -4,7 +4,7 @@
 
 The `Payment Method` resource represents the payment methods associated to a customer `Account`. There are often two parts to this resource:
 
-* The core Kill Bill attributes shown below, which are fairly minimalistic and mostly track the associated payment plugin that is used to interract with the payment gateway (`*`)
+* The core Kill Bill attributes shown below, which are fairly minimalistic and mostly track the associated payment plugin that is used to interract with the payment gateway.
 * The plugin attributes, which are plugin specific and payment method specific -- credit card, ACH, bitcoin, ... In the case of a credit card for instance, the plugin would keep track of things like `name`, `address`, `last4`, `token`, ... Not only such attributes are dependent on the payment method, but they are also dependent on the third party payment gateway, and also on the tokenization model.
 
 

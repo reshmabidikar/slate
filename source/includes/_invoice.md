@@ -33,8 +33,8 @@ The following invoice item types are currently supported:
 
 The attributes are the following:
 
-* **`invoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The ID allocated by Kill Bill upon creation.
-* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The ID allocated by Kill Bill upon creation.
+* **`invoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
 * **`amount`** <span style="color:#32A9C7">*[User or system generated]*</span>: This is the sum of all the item amounts.
 * **`currency`** <span style="color:#32A9C7">*[User or system generated]*</span>: Currency associated with the `Account`.
 * **`status`** <span style="color:#32A9C7">*[System generated]*</span>: `DRAFT`, `COMMITTED` or `VOID`.
@@ -48,18 +48,18 @@ The attributes are the following:
 * **`credits`** <span style="color:#32A9C7">*[See `Credit` below]*</span>: TODO  Why do we return this ?
 * **`items`** <span style="color:#32A9C7">*[See `InvoiceItem` below]*</span>: The list of invoice items on this invoice
 * **`isParentInvoice`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: In the hierarchical model, whether is invoice is the parent invoice.
-* **`parentInvoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: In the hierarchical model, the ID of the parent invoice.
-* **`parentAccountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: In the hierarchical model, the ID of the parent account.
+* **`parentInvoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: In the hierarchical model, the `ID` of the parent invoice.
+* **`parentAccountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: In the hierarchical model, the `ID` of the parent account.
 
 ### InvoiceItem
 
-* **`invoiceItemId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The ID allocated by Kill Bill upon creation.
-* **`invoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `Invoice` ID.
-* **`linkedInvoiceItemId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: This ID is used to linked to another item -- e.g `ITEM_ADJ` item would link to the item being adjusted.
-* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `Account` ID allocated by Kill Bill upon creation.
-* **`childAccountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: In the hierarchical model, the ID of the child account.
-* **`bundleId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `Bundle` ID.
-* **`subscriptionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `Subscription` ID.
+* **`invoiceItemId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
+* **`invoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `Invoice` `ID`.
+* **`linkedInvoiceItemId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: This `ID` is used to linked to another item -- e.g `ITEM_ADJ` item would link to the item being adjusted.
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `Account` `ID` allocated by Kill Bill upon creation.
+* **`childAccountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: In the hierarchical model, the `ID` of the child account.
+* **`bundleId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `Bundle` `ID`.
+* **`subscriptionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `Subscription` `ID`.
 * **`planName`** <span style="color:#32A9C7">*[System generated]*</span>: The name of the `Plan` associated with the subscription.
 * **`phaseName`** <span style="color:#32A9C7">*[System generated]*</span>: The name of the `PlanPhase` associated with the subscription.
 * **`usageName`** <span style="color:#32A9C7">*[System generated]*</span>: The name of the `Usage` section associated with the subscription.

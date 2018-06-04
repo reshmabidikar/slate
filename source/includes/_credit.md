@@ -10,7 +10,7 @@ The attributes are the following:
 
 * **`creditId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
 * **`invoiceId`** <span style="color:#32A9C7">*[System or User generated, immutable]*</span>. If the `ID` is specified during creation, the credit will go against a specific invoice, provided this invoice has not yet been `COMMITTED`.
-* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>. The ID allocated by Kill Bill upon creation.
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>. The `ID` allocated by Kill Bill upon creation.
 * **`creditAmount`** <span style="color:#32A9C7">*[User generated]*</span>. 
 * **`currency`** <span style="color:#32A9C7">*[User generated]*</span>
 * **`invoiceNumber`** <span style="color:#32A9C7">*[System generated, immutable]*</span>

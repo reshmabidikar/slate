@@ -23,9 +23,9 @@ The `Subscription` resource represent the subscription created by the user.
 
 The attributes are the following:
 
-* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The ID allocated by Kill Bill upon creation.
-* **`bundleId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The ID allocated by Kill Bill upon creation.
-* **`subscriptionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The ID allocated by Kill Bill upon creation.
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
+* **`bundleId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
+* **`subscriptionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
 * **`externalKey`** <span style="color:#32A9C7">*[User generated]*</span>: The (`Bundle`) external key provided from client.
 * **`startDate`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The (entitlement) start date -- when the service starts.
 * **`productName`** <span style="color:#32A9C7">*[User generated]*</span>: The name of the active product catalog.
