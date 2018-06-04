@@ -2,8 +2,9 @@
 
 ## Credit Resource
 
-The `Credit` resource represent credits created by the user. Credit items are tracked inside `Invoice` Resource and they become reflected
-at the level of the `Account`, i.e account credit. Such credits will then be used on subsequent invoices to bring the balance to zero.
+The `Credit` resource represents the credits created on behalf of the customer `Account`. Credits are tracked inside invoices, as a specical kind of
+of invoice item. The credits are visible at the level of the `Account`, i.e account credit, and those will automatically be consumed by the system on
+subsequent invoices to bring the balance to zero -- or reduce the balance if there is not enough credit to pay the full amount.
 
 The attributes are the following:
 

@@ -1,32 +1,48 @@
 # Subscription
 
+The `Subscription` resource represents the subscriptions associated with a given customer `Account`. Such subscriptions are created by specifying a well defined `Plan` from the catalog, and an effective date at which to start. Such attributes -- among others -- , are used by the system to drive the invoice
+generation. Aside from the billing aspect -- invoice generation --, Kill Bill also offers a parallel view to track the entitlement, i.e the service associated with the subscription, bascially answering the two following questions:
+
+* Given a date, how much should we invoice ?
+* Given a date, is the service available to the customer? 
+
+For most of the use cases, those 2 views are one and the same, i.e the customer gets invoiced for what she consumes.
+
+Subscriptions can be in one of the following state:
+
+* `PENDING`: The subscription was created in the future
+* `ACTIVE`: The subscription is currently active, its start date is in the past, its cancellation date -- if it exists -- is in the future, and it has not been paused.
+* `BLOCKED`: The subscription is currently paused.
+* `CANCELLED`: The subscription has been cancelled -- end state.
+
+Please refer to our [subscription manual](http://docs.killbill.io/latest/userguide_subscription.html) for more details.
+
 ## Subscription Resource
 
 The `Subscription` resource represent the subscription created by the user.
 
 The attributes are the following:
 
-* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`bundleId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`subscriptionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`externalKey`** <span style="color:#32A9C7">*[User generated]*</span>
-* **`startDate`** <span style="color:#32A9C7">*TODO*</span>
-* **`productName`** <span style="color:#32A9C7">*TODO*</span>
-* **`productCategory`** <span style="color:#32A9C7">*TODO*</span>
-* **`billingPeriod`** <span style="color:#32A9C7">*TODO*</span>
-* **`phaseType`** <span style="color:#32A9C7">*TODO*</span>
-* **`priceList`** <span style="color:#32A9C7">*TODO*</span>
-* **`planName`** <span style="color:#32A9C7">*TODO*</span>
-* **`state`** <span style="color:#32A9C7">*TODO*</span>
-* **`sourceType`** <span style="color:#32A9C7">*TODO*</span>
-* **`cancelledDate`** <span style="color:#32A9C7">*TODO*</span>
-* **`chargedThroughDate`** <span style="color:#32A9C7">*TODO*</span>
-* **`billingStartDate`** <span style="color:#32A9C7">*TODO*</span>
-* **`billingEndDate`** <span style="color:#32A9C7">*TODO*</span>
-* **`billCycleDayLocal`** <span style="color:#32A9C7">*TODO*</span>
-* **`events`** <span style="color:#32A9C7">*[`EventSubscription`]*</span>
-* **`priceOverrides`** <span style="color:#32A9C7">*[`PhasePriceOverride`]*</span>
-* **`auditLogs`** <span style="color:#32A9C7">*[`AuditLog`]*</span>
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The ID allocated by Kill Bill upon creation.
+* **`bundleId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The ID allocated by Kill Bill upon creation.
+* **`subscriptionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The ID allocated by Kill Bill upon creation.
+* **`externalKey`** <span style="color:#32A9C7">*[User generated]*</span>: The (`Bundle`) external key provided from client.
+* **`startDate`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The (entitlement) start date -- when the service starts.
+* **`productName`** <span style="color:#32A9C7">*[User generated]*</span>: The name of the active product catalog.
+* **`productCategory`** <span style="color:#32A9C7">*[User generated]*</span>: The product category, either `BASE`, `ADD_ON` or `STANDALONE`.
+* **`billingPeriod`** <span style="color:#32A9C7">*[User generated]*</span>: The billing period -- e.g `MONTHLY`.
+* **`phaseType`** <span style="color:#32A9C7">*[User generated]*</span>: The type of the plan phase, either `TRIAL`, `DISCOUNT`, `FIXEDTERM`, `EVERGREEN`.   
+* **`priceList`** <span style="color:#32A9C7">*[User generated]*</span>: The name of the active price list from the catalog.
+* **`planName`** <span style="color:#32A9C7">*[User generated]*</span>: The name of the active plan catalog.
+* **`state`** <span style="color:#32A9C7">*[System generated]*</span>: The state of the subscription.
+* **`sourceType`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The kind of subscription -- e.g `NATIVE`
+* **`cancelledDate`** <span style="color:#32A9C7">*[User generated]**</span>: The (entitlement) cancellation date -- when the service stops.
+* **`chargedThroughDate`** <span style="color:#32A9C7">*[System generated]*</span>: The date up to which this subscription was invoiced -- for `IN_ADVANCE` billing mode, this date will often be in the future and for `IN_ARREAR`, this date will often be in the past.
+* **`billingStartDate`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The (billing) start date -- date at which the system starts invoicing.
+* **`billingEndDate`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The (billing) end date -- date at which the system ends invoicing.
+* **`billCycleDayLocal`** <span style="color:#32A9C7">*[User or system generated]*</span>: For billing period that are multiple of months -- e.g `MONHTLY` -- this represents the date during the month at which the system triggers invoicing.
+* **`events`** <span style="color:#32A9C7">*[System generated]*</span>: List of subscription events tracking what happened -- e.g `CHANGE_PLAN`.
+* **`priceOverrides`** <span style="color:#32A9C7">*[User generated]*</span>: Catalog price override section used when creating the subscription to adjust default catalog price.
 
 ## Create an subscription
 

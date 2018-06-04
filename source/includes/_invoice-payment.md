@@ -2,7 +2,9 @@
 
 ## Invoice Payment Resource
 
-The `Invoice Payment` resource represents a given payment associated with a given invoice. Kill Bill allows to have multiple partial payments against a given invoice, however in the default recurring mode for instance, the system will always attempt to make a full payment. Partial payments can be made against unpaid - or partially paid - invoices by triggerring a payment against the `Invoice` resource -- see below. Note that, while Kill Bill supports multiple multiple partial payments against a given invoice, the reverse is not true: A payment across multiple invoices is not (yet) supported. The `System` v.s `User` generated fields match those from the associated `Payment` and `Invoice`.
+The `Invoice Payment` resource represents a given payment associated with a given invoice. Kill Bill allows to have multiple partial payments against a given invoice, however in the default recurring mode for instance, the system will always attempt to make a full payment.
+
+Partial payments can be made against unpaid - or partially paid - invoices by triggerring a payment against the `Invoice` resource -- see below. Note that, while Kill Bill supports multiple partial payments against a given invoice, the reverse is not true: A payment across multiple invoices is not (yet) supported. The description of the `System` v.s `User` generated fields below match those from the associated `Payment` and `Invoice` resources.
 
 
 The attributes are the following:

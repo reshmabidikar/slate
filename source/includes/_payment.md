@@ -2,42 +2,48 @@
 
 ## Payment Resource
 
-The `Payment` resource represent the payments created by the user.
+The `Payment` resource represents the payments associated to a given customer `Account`. Payments can be associated to a specific invoice, or they can be
+standalone, unrelated to any invoice operations. In the former case, the relationship between a given invoice and potentially a series of payments is kept
+through the `InvoicePayment` relashionship.
+
+Each payment operation, such as authorization, refund, ... is represented as a `PaymentTransaction`. A `Payment` can therefore have N `PaymentTransaction`, each of which tracking a different call with the third party gateway. Payment transactions have a status indicating their success or failure. Please refer to the [payment state section of our payment manual](http://docs.killbill.io/latest/userguide_payment.html#_payment_states) for more details.
+
+ 
 
 The attributes are the following:
 
-* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`paymentId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The ID allocated by Kill Bill upon creation.
+* **`paymentId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The ID allocated by Kill Bill upon creation.
 * **`paymentNumber`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated]*</span>
-* **`authAmount`** <span style="color:#32A9C7">*TODO*</span>
-* **`capturedAmount`** <span style="color:#32A9C7">*TODO*</span>
-* **`purchasedAmount`** <span style="color:#32A9C7">*TODO*</span>
-* **`refundedAmount`** <span style="color:#32A9C7">*TODO*</span>
-* **`creditedAmount`** <span style="color:#32A9C7">*TODO*</span>
-* **`currency`** <span style="color:#32A9C7">*TODO*</span>
-* **`paymentMethodId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`transactions`** <span style="color:#32A9C7">*[See `PaymentTransaction` bellow]*</span>
-* **`paymentAttempts`** <span style="color:#32A9C7">*[`PaymentAttempt`]*</span>
-* **`auditLogs`** <span style="color:#32A9C7">*[`AuditLog`]*</span>
+* **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated, default `paymentId`, immutable]*</span>: The external key provided from client.
+* **`authAmount`** <span style="color:#32A9C7">*[User generated, immutable]</span>: The total authorization amount on this payment -- often there is one associated authorization `PaymentTransaction`, and this amount will match the `amount` of that transaction.
+* **`capturedAmount`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The total capture amount on this payment.
+* **`purchasedAmount`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The total purchase amount on this payment -- a `PURCHASE` operation is an auto-capture transaction.
+* **`refundedAmount`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The total refund amount on this payment.
+* **`creditedAmount`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The total credit amount on this payment.
+* **`currency`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The currency associated with this payment.
+* **`paymentMethodId`** <span style="color:#32A9C7">*[User generated, immutable]</span>: The ID of the payment method used for the payment.
+* **`transactions`** <span style="color:#32A9C7">*[See `PaymentTransaction` bellow]*</span>: The list of `PaymentTransaction` associated wtih this payment.
+* **`paymentAttempts`** <span style="color:#32A9C7">*[`PaymentAttempt`]*</span>: The list of payment retries -- only effective when the system has been configured to retry failed transactions.
 
 ### PaymentTransaction
 
-* **`transactionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`transactionExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span> 
-* **`paymentId`** <span style="color:#32A9C7">*[System generated, immutable]*</span> 
-* **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span> 
-* **`amount`** <span style="color:#32A9C7">*TODO*</span> 
-* **`currency`** <span style="color:#32A9C7">*TODO*</span> 
-* **`effectiveDate`** <span style="color:#32A9C7">*TODO*</span> 
-* **`processedAmount`** <span style="color:#32A9C7">*TODO*</span> 
-* **`processedCurrency`** <span style="color:#32A9C7">*TODO*</span> 
-* **`status`** <span style="color:#32A9C7">*TODO*</span> 
-* **`gatewayErrorCode`** <span style="color:#32A9C7">*TODO*</span> 
-* **`gatewayErrorMsg`** <span style="color:#32A9C7">*TODO*</span> 
-* **`firstPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span> 
-* **`secondPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span> 
-* **`properties`** <span style="color:#32A9C7">*[`PluginProperty`]*</span> 
+* **`transactionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The ID allocated by Kill Bill upon creation.
+* **`transactionExternalKey`** <span style="color:#32A9C7">*[User generated, default transactionId, immutable]*</span>: The external key provided from client.
+* **`paymentId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The ID allocated by Kill Bill upon creation.
+* **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span>: The (`Payment`) external key provided from client.
+* **`amount`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: Amount for this transaction.
+* **`currency`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: Currency for this transaction.
+* **`effectiveDate`** <span style="color:#32A9C7">*[User generated, immutable]*</span>  TODO
+* **`processedAmount`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The amount processed by the gateway -- will often match the `amount`, but could be different - e.g currency conversion
+* **`processedCurrency`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The currency processed by the gateway -- will often match the `currency`, but could be different - e.g currency conversion
+* **`status`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Transaction status 
+* **`gatewayErrorCode`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Error code returned by the payment gateway.
+* **`gatewayErrorMsg`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Error message returned by the payment gateway.
+* **`firstPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Payment gateway reference.
+* **`secondPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Additional Payment gateway reference -- two level gateways.
+* **`properties`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: Properties passed during payment operation to be interpreted by the plugin - those are plugin specific.
+
 
 ## Capture an existing authorization
 
