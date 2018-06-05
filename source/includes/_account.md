@@ -53,8 +53,10 @@ curl -v \
   --data-binary '{"name":"John Doe","email":"john@example.com","currency":"USD"}' \
   "http://127.0.0.1:8080/1.0/kb/accounts"
 ```
-
 ```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
 Account body = new Account();
 body.setName("John Doe");
 body.setEmail("john@example.com");
@@ -62,7 +64,6 @@ body.setCurrency(Currency.USD);
 
 Account result = accountApi.createAccount(body, requestOptions);
 ```
-
 ```ruby
 account = KillBillClient::Model::Account.new
 account.name = "John Doe"
@@ -174,9 +175,12 @@ curl \
 ```
 
 ```java
-UUID accountId = account.getAccountId();
-Boolean accountWithBalance = false;
-Boolean accountWithBalanceAndCBA = false;
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("864c1418-e768-4cd5-a0db-67537144b685");
+Boolean accountWithBalance = false; // Will not include account balance
+Boolean accountWithBalanceAndCBA = false; // Will not include account balance and CBA info
 
 Account result = accountApi.getAccount(accountId, 
                                        accountWithBalance, 
@@ -331,9 +335,12 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
 String externalKey = "example_external_key";
-Boolean accountWithBalance = false;
-Boolean accountWithBalanceAndCBA = false;
+Boolean accountWithBalance = false; // Will not include account balance
+Boolean accountWithBalanceAndCBA = false; // Will not include account balance and CBA info
 
 Account result = accountApi.getAccountByKey(externalKey, 
                                             accountWithBalance, 
@@ -486,13 +493,21 @@ TODO
 ```
 
 ```java
-Account newInput = new Account(input.getAccountId(),
-                               "zozo", 4, input.getExternalKey(), "rr@google.com", 18,
-                               Currency.USD, null, false, null, null, "UTC",
-                               "bl1", "bh2", "", "", "ca", "San Francisco", "usa", "en", "415-255-2991",
-                               "notes", false, false, null, null, EMPTY_AUDIT_LOGS);
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
 
-accountApi.updateAccount(input.getAccountId(), newInput, requestOptions);
+UUID accountId = UUID.fromString("864c1418-e768-4cd5-a0db-67537144b685");
+
+Account body = new Account();
+body.setAccountId(accountId);
+body.setName("Another Name");
+
+Boolean treatNullAsReset = true; // Any null value will be set to null
+
+accountApi.updateAccount(accountId, 
+                         body, 
+                         treatNullAsReset,
+                         requestOptions);
 ```
 
 ```ruby
@@ -578,12 +593,21 @@ TODO
 ```
 
 ```java
-accountApi.closeAccount(account.getAccountId(), 
-                        true, 
-                        true, 
-                        false, 
-                        true, 
-                        requestOptions)
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("864c1418-e768-4cd5-a0db-67537144b685");
+Boolean cancelAllSubscriptions = true; // Will cancel all subscriptions
+Boolean writeOffUnpaidInvoices = true; // Will write off unpaid invoices
+Boolean itemAdjustUnpaidInvoices = false // Will not adjust unpaid invoices
+Boolean removeFutureNotifications = true; // Will remove future notifications 
+
+accountApi.closeAccount(accountId, 
+                        cancelAllSubscriptions, 
+                        writeOffUnpaidInvoices, 
+                        itemAdjustUnpaidInvoices, 
+                        removeFutureNotifications, 
+                        requestOptions);
 ```
 
 ```ruby
@@ -652,8 +676,13 @@ TODO
 ```
 
 ```java
-CustomFields allAccountCustomFields = accountApi.getAllCustomFields(account.getAccountId(), 
-                                                                    null, 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("b38de59f-7dd0-447a-a508-9b022b808250");
+
+CustomFields allAccountCustomFields = accountApi.getAllCustomFields(accountId, 
+                                                                    ObjectType.ACCOUNT, 
                                                                     AuditLevel.FULL, 
                                                                     requestOptions);
 ```
@@ -753,8 +782,14 @@ TODO
 ```
 
 ```java
-Tags allAccountTags = accountApi.getAllTags(account.getAccountId(),
-                                            null, 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("ee6835f0-8347-42d3-958c-9a939383ba28");
+
+Tags allAccountTags = accountApi.getAllTags(accountId,
+                                            ObjectType.ACCOUNT,
+                                            AuditLevel.NONE,
                                             requestOptions);
 ```
 
@@ -843,7 +878,12 @@ TODO
 ```
 
 ```java
-AuditLogs auditLogsJson = accountApi.getAccountAuditLogs(account.getAccountId(), 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("e9432491-6558-4007-85ef-cdae171d240c");
+
+AuditLogs auditLogsJson = accountApi.getAccountAuditLogs(accountId, 
                                                          requestOptions);
 ```
 
@@ -921,7 +961,12 @@ TODO
 ```
 
 ```java
-List<AuditLog> auditLogWithHistories = accountApi.getAccountAuditLogsWithHistory(account.getAccountId(), 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("ecbff3be-3cbf-4e1d-ae05-d323d4597877");
+
+List<AuditLog> auditLogWithHistories = accountApi.getAccountAuditLogsWithHistory(accountId, 
                                                                                  requestOptions);
 ```
 
@@ -1142,9 +1187,17 @@ TODO
 ```
 
 ```java
-BlockingStates blockingStates = accountApi.getBlockingStates(account.getAccountId(), 
-                                                             null, 
-                                                             ImmutableList.<String>of("service"), 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("ee6835f0-8347-42d3-958c-9a939383ba28");
+
+List<BlockingStateType> blockingStateTypes = ImmutableList.<BlockingStateType>of(BlockingStateType.SUBSCRIPTION_BUNDLE);
+List<String> blockingStateSvcs = ImmutableList.<String>of("service");
+
+BlockingStates blockingStates = accountApi.getBlockingStates(accountId, 
+                                                             blockingStateTypes, 
+                                                             blockingStateSvcs, 
                                                              AuditLevel.FULL, 
                                                              requestOptions);
 ```
@@ -1252,9 +1305,17 @@ TODO
 ```
 
 ```java
-List<Bundle> accountBundles = accountApi.getAccountBundles(accountJson.getAccountId(), 
-                                                           "123467", 
-                                                           null, 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("15434b45-54c1-4a44-851c-b1f2f7a52f03");
+String externalKey = "123467";
+String bundlesFilter = null;
+
+List<Bundle> accountBundles = accountApi.getAccountBundles(accountId, 
+                                                           externalKey, 
+                                                           bundlesFilter,
+                                                           AuditLevel.NONE,
                                                            requestOptions);
 ```
 
@@ -2182,7 +2243,11 @@ class Bundle {
 
 **Query Parameters**
 
-None.
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **externalKey** | string | false | bundle external key |
+| **bundlesFilter** | string | false | bundles filter |
+| **audit** | enum | false | level of audit logs returned |
 
 **Returns**
 
@@ -2250,9 +2315,16 @@ TODO
 ```
 
 ```java
-Accounts childrenAccounts = accountApi.getChildrenAccounts(parentAccount.getAccountId(), 
-                                                           true, 
-                                                           true, 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID parentAccountId = UUID.fromString("ee6835f0-8347-42d3-958c-9a939383ba28");
+Boolean accountWithBalance = true; // Will include account balance
+Boolean accountWithBalanceAndCBA = true; // Will include account balance and CBA info
+
+Accounts childrenAccounts = accountApi.getChildrenAccounts(parentAccountId, 
+                                                           accountWithBalance, 
+                                                           accountWithBalanceAndCBA, 
                                                            AuditLevel.NONE, 
                                                            requestOptions);
 ```
@@ -2402,15 +2474,20 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("15434b45-54c1-4a44-851c-b1f2f7a52f03");
+final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+
 CustomFields customFields = new CustomFields();
 customFields.add(new CustomField(null, 
-                                 account.getAccountId(), 
-                                 ObjectType.ACCOUNT, 
+                                 accountId,
                                  "Test Custom Field", 
                                  "test_value", 
                                  EMPTY_AUDIT_LOGS));
 
-accountApi.createAccountCustomFields(account.getAccountId(), 
+accountApi.createAccountCustomFields(accountId, 
                                      customFields, 
                                      requestOptions);
 ```
@@ -2489,7 +2566,13 @@ TODO
 ```
 
 ```java
-List<CustomField> accountCustomFields = accountApi.getAccountCustomFields(account.getAccountId(), 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+
+List<CustomField> accountCustomFields = accountApi.getAccountCustomFields(accountId,
+                                                                          AuditLevel.NONE, 
                                                                           requestOptions);
 ```
 
@@ -2569,11 +2652,17 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
 CustomField customFieldModified = new CustomField();
-customFieldModified.setCustomFieldId(customField.getCustomFieldId());
+customFieldModified.setCustomFieldId(customFieldsId);
 customFieldModified.setValue("NewValue");
 
-accountApi.modifyAccountCustomFields(account.getAccountId(), 
+accountApi.modifyAccountCustomFields(accountId, 
                                      customFieldModified, 
                                      requestOptions);
 ```
@@ -2636,8 +2725,14 @@ TODO
 ```
 
 ```java
-accountApi.deleteAccountCustomFields(account.getAccountId(), 
-                                     customFields.getCustomFieldId(), 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+accountApi.deleteAccountCustomFields(accountId, 
+                                     customFieldsId, 
                                      requestOptions);
 ```
 
@@ -2700,7 +2795,15 @@ TODO
 ```
 
 ```java
-InvoiceEmail invoiceEmailJsonWithNotifications = new InvoiceEmail(accountId, true, null);
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+Boolean isNotifiedForInvoices = true;
+
+InvoiceEmail invoiceEmailJsonWithNotifications = new InvoiceEmail(accountId, 
+                                                                  isNotifiedForInvoices, 
+                                                                  AuditLevel.NONE);
 
 accountApi.setEmailNotificationsForAccount(accountId, 
                                            invoiceEmailJsonWithNotifications, 
@@ -2764,6 +2867,11 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
+
 InvoiceEmail invoiceEmailJson = accountApi.getEmailNotificationsForAccount(accountId, 
                                                                            requestOptions);
 ```
@@ -2824,9 +2932,19 @@ TODO
 ```
 
 ```java
-AccountEmail accountEmail = new AccountEmail(accountId, 'email@example.com', null);
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
 
-accountApi.addEmail(accountId, accountEmail, requestOptions);
+UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
+String email = "email@example.com";
+
+AccountEmail accountEmail = new AccountEmail(accountId, 
+                                             email, 
+                                             AuditLevel.NONE);
+
+accountApi.addEmail(accountId, 
+                    accountEmail, 
+                    requestOptions);
 ```
 
 ```ruby
@@ -2885,6 +3003,11 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("cd026587-c93b-471c-a98d-224c21636fbc");
+
 List<AccountEmail> emails = accountApi.getEmails(accountId, requestOptions);
 ```
 
@@ -2951,8 +3074,14 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
+String email = "email@example.com";
+
 accountApi.removeEmail(accountId, 
-                       'email@example.com', 
+                       email, 
                        requestOptions);
 ```
 
@@ -3011,8 +3140,14 @@ TODO
 ```
 
 ```java
-List<AuditLog> result = accountApi.getAccountEmailAuditLogsWithHistory(account.getAccountId(), 
-                                                                       auditLogs.getObjectId(), 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
+UUID accountEmailId = UUID.fromString("f637441d-855e-4bf5-bac1-6426bdb116d6");
+
+List<AuditLog> result = accountApi.getAccountEmailAuditLogsWithHistory(accountId, 
+                                                                       accountEmailId, 
                                                                        requestOptions);
 ```
 
@@ -3122,7 +3257,13 @@ TODO
 ```
 
 ```java
-InvoicePayments result = accountApi.getInvoicePayments(account.getAccountId(), 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("e011caa5-ba35-4ac6-81cb-63b4f08122dc");
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+InvoicePayments result = accountApi.getInvoicePayments(accountId, 
                                                        NULL_PLUGIN_PROPERTIES, 
                                                        requestOptions);
 ```
@@ -3281,11 +3422,21 @@ TODO
 ```
 
 ```java
-accountApi.payAllInvoices(account.getAccountId(), 
-                          null, 
-                          true, 
-                          null, 
-                          null,
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("e011caa5-ba35-4ac6-81cb-63b4f08122dc");
+UUID paymentMethodId = null;
+Boolean externalPayment = true; // Will use a external payment method
+BigDecimal paymentAmount = null;
+LocalDate targetDate = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+accountApi.payAllInvoices(accountId, 
+                          paymentMethodId, 
+                          externalPayment, 
+                          paymentAmount, 
+                          targetDate,
                           NULL_PLUGIN_PROPERTIES, 
                           requestOptions);
 ```
@@ -3341,7 +3492,7 @@ no content
 | **paymentMethodId** | string | false | Payment method id. |
 | **externalPayment** | boolean | true | Choose true if you use a external payment method. |
 | **paymentAmount** | string | false | Total payment amount. |
-| **targetDate** | string | true | Total payment amount. |
+| **targetDate** | string | false | Total payment amount. |
 
 **Response**
 
@@ -3360,11 +3511,20 @@ TODO
 ```
 
 ```java
-Invoices invoices = accountApi.getInvoicesForAccount(account.getAccountId(), 
-                                                     true, 
-                                                     false, 
-                                                     false, 
-                                                     false, 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("d3a82897-ae72-4a2e-9bca-e3c1fe087f84");
+Boolean withItems = true; // Will fetch invoice items as well
+Boolean withMigrationInvoices = false; // Will not fetch migrated invoice - if any
+Boolean unpaidInvoicesOnly = false; // Will not restrict to unpaid invoices
+Boolean includeVoidedInvoices = false; // Will not include void invoices
+
+Invoices invoices = accountApi.getInvoicesForAccount(accountId, 
+                                                     withItems, 
+                                                     withMigrationInvoices, 
+                                                     unpaidInvoicesOnly, 
+                                                     includeVoidedInvoices, 
                                                      AuditLevel.FULL, 
                                                      requestOptions);
 ```
@@ -3547,6 +3707,10 @@ class Invoice {
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
 | **withItems** | boolean | true | Choose true if you want items info. |
+| **withMigrationInvoices** | boolean | true | Choose true if you want migration invoices |
+| **unpaidInvoicesOnly** | boolean | true | Choose true if you want unpaid invoices only |
+| **includeVoidedInvoices** | boolean | true | Choose true if you want to include voided invoices |
+| **audit** | enum | false | level of audit logs returned |
 
 **Returns**
 
@@ -3565,7 +3729,12 @@ TODO
 ```
 
 ```java
-OverdueState result = accountApi.getOverdueAccount(account.getAccountId(), requestOptions);
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("d3a82897-ae72-4a2e-9bca-e3c1fe087f84");
+
+OverdueState result = accountApi.getOverdueAccount(accountId, requestOptions);
 ```
 
 ```ruby
@@ -3639,16 +3808,29 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("d751dd57-7644-469a-9e69-f98d36d86f67");
+
+UUID paymentMethodId = null;
+String externalKey = UUID.randomUUID().toString();
+Boolean isDefault = true; // Will set this new payment method as default
+String pluginName = "__EXTERNAL_PAYMENT__"; 
 PaymentMethodPluginDetail info = new PaymentMethodPluginDetail();
-PaymentMethod paymentMethod = new PaymentMethod(null, 
-                                                UUID.randomUUID().toString(), 
-                                                accountJson.getAccountId(), 
-                                                true, 
-                                                PLUGIN_NAME, 
+ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+
+PaymentMethod paymentMethod = new PaymentMethod(paymentMethodId, 
+                                                externalKey, 
+                                                accountId, 
+                                                isDefault, 
+                                                pluginName, 
                                                 info, 
                                                 EMPTY_AUDIT_LOGS);
+ImmutableList<String> NULL_PLUGIN_NAMES = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
 
-PaymentMethod paymentMethodPP = accountApi.createPaymentMethod(account.getAccountId(), 
+PaymentMethod paymentMethodPP = accountApi.createPaymentMethod(accountId, 
                                                                paymentMethod, 
                                                                NULL_PLUGIN_NAMES, 
                                                                NULL_PLUGIN_PROPERTIES, 
@@ -3691,7 +3873,7 @@ class PaymentMethod {
     externalKey: a85a3fbe-30e8-457d-8a5a-55e16bcd730b
     accountId: d751dd57-7644-469a-9e69-f98d36d86f67
     isDefault: false
-    pluginName: noop
+    pluginName: __EXTERNAL_PAYMENT__
     pluginInfo: null
     auditLogs: []
 }
@@ -3737,7 +3919,13 @@ TODO
 ```
 
 ```java
-List<PaymentMethod> paymentMethods = accountApi.getPaymentMethodsForAccount(account.getAccountId(), 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+List<PaymentMethod> paymentMethods = accountApi.getPaymentMethodsForAccount(accountId, 
                                                                             NULL_PLUGIN_PROPERTIES, 
                                                                             requestOptions);
 ```
@@ -3766,7 +3954,7 @@ class PaymentMethod {
     externalKey: eed36074-d493-4335-839e-2adca4cb4187
     accountId: faf239a5-456a-4eb9-aef9-8d2254ef57dc
     isDefault: true
-    pluginName: noop
+    pluginName: __EXTERNAL_PAYMENT__
     pluginInfo: null
     auditLogs: []
 }
@@ -3817,8 +4005,15 @@ TODO
 ```
 
 ```java
-accountApi.setDefaultPaymentMethod(account.getAccountId(), 
-                                   paymentMethod.getPaymentMethodId(), 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
+UUID paymentMethodId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+accountApi.setDefaultPaymentMethod(accountId, 
+                                   paymentMethodId, 
                                    NULL_PLUGIN_PROPERTIES, 
                                    requestOptions);
 ```
@@ -3879,8 +4074,15 @@ TODO
 ```
 
 ```java
-accountApi.refreshPaymentMethods(account.getAccountId(), 
-                                 PLUGIN_NAME, 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
+String pluginName = "__EXTERNAL_PAYMENT__";
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+accountApi.refreshPaymentMethods(accountId, 
+                                 pluginName, 
                                  NULL_PLUGIN_PROPERTIES, 
                                  requestOptions);
 ```
@@ -3937,8 +4139,19 @@ TODO
 ```
 
 ```java
-Payments payments = accountApi.getPaymentsForAccount(account.getAccountId(), 
-                                                     null, 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("e0fe95af-7d59-4b70-8252-165e1840410c");
+Boolean withAttempts = false; // Will not reflect payment attempts
+Boolean withPluginInfo = false; // Will not reflect payment attempts
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+Payments payments = accountApi.getPaymentsForAccount(accountId,
+                                                     withAttempts,
+                                                     withPluginInfo
+                                                     NULL_PLUGIN_PROPERTIES, 
+                                                     AuditLevel.NONE,
                                                      requestOptions);
 ```
 
@@ -4089,6 +4302,10 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("f4087a76-9f8a-4893-abbf-c5bb69975d1b");
 
 PaymentTransaction authTransaction = new PaymentTransaction();
 authTransaction.setAmount(BigDecimal.ONE);
@@ -4097,9 +4314,13 @@ authTransaction.setCurrency(account.getCurrency());
 // TransactionType could be 'AUTHORIZE', 'PURCHASE' or 'CREDIT'
 authTransaction.setTransactionType(TransactionType.AUTHORIZE);
 
-Payment payment = accountApi.processPayment(account.getAccountId(), 
+UUID paymentMethodId = UUID.fromString("1d55ed5f-deea-4109-98b0-beb13a242f7c");
+ImmutableList<String> NULL_PLUGIN_NAMES = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+Payment payment = accountApi.processPayment(accountId, 
                                             authTransaction, 
-                                            account.getPaymentMethodId(), 
+                                            paymentMethodId, 
                                             NULL_PLUGIN_NAMES,
                                             NULL_PLUGIN_PROPERTIES, 
                                             requestOptions);
@@ -4372,9 +4593,14 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("f4087a76-9f8a-4893-abbf-c5bb69975d1b");
+
 UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
-Tags result = accountApi.createAccountTags(account.getAccountId(), 
+Tags result = accountApi.createAccountTags(accountId, 
                                            ImmutableList.<UUID>of(autoPayOffId), 
                                            requestOptions);
 ```
@@ -4455,8 +4681,14 @@ TODO
 ```
 
 ```java
-List<Tag> tags1 = accountApi.getAccountTags(account.getAccountId(), 
-                                            false, 
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
+Boolean includedDeleted = false; // Will not include deleted tags
+
+List<Tag> tags1 = accountApi.getAccountTags(accountId, 
+                                            includedDeleted, 
                                             AuditLevel.FULL, 
                                             requestOptions);
 ```
@@ -4553,9 +4785,13 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
 UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
-accountApi.deleteAccountTags(account.getAccountId(), 
+accountApi.deleteAccountTags(accountId, 
                              ImmutableList.<UUID>of(autoPayOffId), 
                              requestOptions);
 ```
@@ -4616,7 +4852,16 @@ TODO
 ```
 
 ```java
-AccountTimeline timeline = getAccountTimeline(accountJson.getAccountId(), AuditLevel.NONE);
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("16364ac4-2a77-4444-b2d8-e980c37a8954");
+Boolean parallel = false;
+
+AccountTimeline timeline = getAccountTimeline(accountId,
+                                              parallel,
+                                              AuditLevel.NONE,
+                                              requestOptions);
 ```
 
 ```ruby
@@ -5698,7 +5943,12 @@ TODO
 ```
 
 ```java
-accountApi.transferChildCreditToParent(childAccount.getAccountId(), requestOptions);
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID childAccountId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
+
+accountApi.transferChildCreditToParent(childAccountId, requestOptions);
 ```
 
 ```ruby
@@ -5749,7 +5999,20 @@ TODO
 ```
 
 ```java
-Accounts allAccounts = accountApi.getAccounts(requestOptions);
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+Long offset = 0L;
+Long limit = 1L;
+Boolean accountWithBalance = false; // Will not include account balance
+Boolean accountWithBalanceAndCBA = false; // Will not include account balance and CBA info
+
+Accounts allAccounts = accountApi.getAccounts(offset,
+                                              limit,
+                                              accountWithBalance,
+                                              accountWithBalanceAndCBA,
+                                              AuditLevel.NONE,
+                                              requestOptions);
 ```
 
 ```ruby
@@ -5911,7 +6174,21 @@ TODO
 ```
 
 ```java
-List<Account> accountsByKey = accountApi.searchAccounts("John-1", requestOptions);
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+String searchKey = "John-1"
+Long offset = 0L;
+Long limit = 1L;
+Boolean accountWithBalance = false; // Will not include account balance
+Boolean accountWithBalanceAndCBA = false; // Will not include account balance and CBA info
+
+List<Account> accountsByKey = accountApi.searchAccounts(searchKey, 
+                                                        offset,
+                                                        limit,
+                                                        accountWithBalance,
+                                                        accountWithBalanceAndCBA,
+                                                        requestOptions);
 ```
 
 ```ruby
