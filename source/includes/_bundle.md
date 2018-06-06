@@ -27,7 +27,16 @@ TODO
 ```
 
 ```java
-Bundles bundles = bundleApi.getBundleByKey(bundleExternalKey, requestOptions);
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+String externalKey = "93199";
+Boolean includedDeleted = false; // Will not include deleted bundles
+
+Bundles bundles = bundleApi.getBundleByKey(externalKey, 
+                                           includedDeleted,
+                                           AuditLevel.NONE,
+                                           requestOptions);
 ```
 
 ```ruby
@@ -480,7 +489,14 @@ Retrieves the details information for the `Bundle` using its `bundleId`.
 > Example Request:
 
 ```java
-Bundle result = bundleApi.getBundle(bundle.getBundleId(), requestOptions);
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("90ec582a-5da8-49d5-a656-c63cbc9d30fd");
+
+Bundle result = bundleApi.getBundle(bundleId, 
+                                    AuditLevel.NONE, 
+                                    requestOptions);
 ```
 
 ```ruby
@@ -955,13 +971,24 @@ The new account_id should be set in this object
 > Example Request:
 
 ```java
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("b84a8af9-73d4-4749-8d81-38dbcc2d7fb1");
+UUID accountId = UUID.fromString("d82d3638-fca7-4c16-9e68-8f8db75997cc");
+
 Bundle bundle = new Bundle();
-bundle.setAccountId(account.getAccountId());
-bundle.setBundleId(bundle.getBundleId());
-        
-Bundle result = bundleApi.transferBundle(bundle.getBundleId(), 
+bundle.setAccountId(accountId);
+bundle.setBundleId(bundleId);
+
+LocalDate requestedDate = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+BillingActionPolicy billingPolicy = null;
+
+Bundle result = bundleApi.transferBundle(bundleId, 
                                          bundle, 
-                                         null, 
+                                         requestedDate, 
+                                         billingPolicy,
                                          NULL_PLUGIN_PROPERTIES, 
                                          requestOptions);
 ```
@@ -1275,20 +1302,36 @@ Returns a bundle object if a valid account and bundle id's was provided.
 > Example Request:
 
 ```java
-BlockingState blockingState = new BlockingState(bundle.getBundleId(), 
-                                                "block", 
-                                                "service", 
-                                                false, 
-                                                true, 
-                                                true, 
-                                                null, 
-                                                BlockingStateType.SUBSCRIPTION_BUNDLE, 
-                                                null);
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
 
-bundleApi.addBundleBlockingState(bundle.getBundleId(), 
+UUID bundleId = UUID.fromString("b84a8af9-73d4-4749-8d81-38dbcc2d7fb1");
+
+String stateName = "block";
+String service = "service";
+Boolean isBlockChange = false;
+Boolean isBlockEntitlement = true;
+Boolean isBlockBilling = true;
+DateTime effectiveDate = null;
+List<AuditLog> auditLogs = null;
+
+BlockingState blockingState = new BlockingState(bundleId, 
+                                                stateName, 
+                                                service, 
+                                                isBlockChange, 
+                                                isBlockEntitlement, 
+                                                isBlockBilling, 
+                                                effectiveDate, 
+                                                BlockingStateType.SUBSCRIPTION_BUNDLE, 
+                                                auditLogs);
+
+LocalDate requestedDate = clock.getToday(DateTimeZone.forID(account.getTimeZone()));
+Map<String, String> pluginProperty = ImmutableMap.<String, String>of();
+
+bundleApi.addBundleBlockingState(bundleId, 
                                  blockingState, 
-                                 clock.getToday(DateTimeZone.forID(account.getTimeZone())), 
-                                 ImmutableMap.<String, String>of(), 
+                                 requestedDate, 
+                                 pluginProperty, 
                                  requestOptions);
 ```
 
@@ -1366,15 +1409,21 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("b84a8af9-73d4-4749-8d81-38dbcc2d7fb1");
+final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+
 CustomFields customFields = new CustomFields();
 customFields.add(new CustomField(null, 
-                                 bundle.getBundleId(), 
+                                 bundleId, 
                                  ObjectType.BUNDLE, 
                                  "Test Custom Field", 
                                  "test_value", 
                                  EMPTY_AUDIT_LOGS));
 
-bundleApi.createBundleCustomFields(bundle.getBundleId(), 
+bundleApi.createBundleCustomFields(bundleId, 
                                    customFields, 
                                    requestOptions);
 ```
@@ -1453,7 +1502,13 @@ TODO
 ```
 
 ```java
-List<CustomField> bundleCustomFields = bundleApi.getBundleCustomFields(bundle.getBundleId(), 
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+
+List<CustomField> bundleCustomFields = bundleApi.getBundleCustomFields(bundleId,
+                                                                       AuditLevel.NONE,
                                                                        requestOptions);
 ```
 
@@ -1529,11 +1584,17 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
 CustomField customFieldModified = new CustomField();
-customFieldModified.setCustomFieldId(customField.getCustomFieldId());
+customFieldModified.setCustomFieldId(customFieldsId);
 customFieldModified.setValue("NewValue");
 
-bundleApi.modifyBundleCustomFields(bundle.getBundleId(), 
+bundleApi.modifyBundleCustomFields(bundleId, 
                                    customFieldModified, 
                                    requestOptions);
 ```
@@ -1596,8 +1657,14 @@ TODO
 ```
 
 ```java
-bundleApi.deleteBundleCustomFields(bundle.getBundleId(), 
-                                   customFields.getCustomFieldId(), 
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+bundleApi.deleteBundleCustomFields(bundleId, 
+                                   customFieldsId, 
                                    requestOptions);
 ```
 
@@ -1822,9 +1889,14 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
+
 UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
-Tags result = bundleApi.createBundleTags(bundle.getBundleId(), 
+Tags result = bundleApi.createBundleTags(bundleId, 
                                          ImmutableList.<UUID>of(autoPayOffId), 
                                          requestOptions);
 ```
@@ -1906,8 +1978,14 @@ TODO
 ```
 
 ```java
-List<Tag> tags1 = bundleApi.getBundleTags(bundle.getBundleId(), 
-                                          false, 
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
+Boolean includedDeleted = false; // Will not include deleted tags
+
+List<Tag> tags1 = bundleApi.getBundleTags(bundleId, 
+                                          includedDeleted, 
                                           AuditLevel.FULL, 
                                           requestOptions);
 ```
@@ -1998,9 +2076,14 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
+
 UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
-bundleApi.deleteBundleTags(bundle.getBundleId(), 
+bundleApi.deleteBundleTags(bundleId, 
                            ImmutableList.<UUID>of(autoPayOffId), 
                            requestOptions);
 ```
@@ -2062,7 +2145,16 @@ TODO
 ```
 
 ```java
-Bundles allBundles = bundleApi.getBundles(requestOptions);
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+Long offset = 0L;
+Long limit = 1L;
+
+Bundles allBundles = bundleApi.getBundles(offset, 
+                                          limit, 
+                                          AuditLevel.NONE, 
+                                          requestOptions);
 ```
 
 ```ruby
@@ -2491,7 +2583,18 @@ TODO
 ```
 
 ```java
-Bundles result = bundleApi.searchBundles("93199", requestOptions);
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+String searchKey = "93199";
+Long offset = 0L;
+Long limit = 1L;
+
+Bundles result = bundleApi.searchBundles(searchKey, 
+                                         offset, 
+                                         limit, 
+                                         AuditLevel.NONE, 
+                                         requestOptions);
 ```
 
 ```ruby
