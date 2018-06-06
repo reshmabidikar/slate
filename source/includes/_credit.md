@@ -32,13 +32,22 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.CreditApi;
+protected CreditApi creditApi;
+
+UUID accountId = UUID.fromString("864c1418-e768-4cd5-a0db-67537144b685");
+
 Credit credit = new Credit();
-credit.setAccountId(account.getAccountId());
+credit.setAccountId(accountId);
 credit.setCreditAmount(BigDecimal.ONE);
 credit.setDescription("description");
 credit.setItemDetails("itemDetails");
 
-creditApi.createCredit(credit, false, requestOptions);
+Boolean autoCommit = false;
+
+creditApi.createCredit(credit, 
+                       autoCommit, 
+                       requestOptions);
 ```
 
 ```ruby
@@ -123,7 +132,12 @@ TODO
 ```
 
 ```java
-Credit result = creditApi.getCredit(credit.getCreditId, requestOptions)
+import org.killbill.billing.client.api.gen.CreditApi;
+protected CreditApi creditApi;
+
+UUID creditId = UUID.fromString("d2edf4c0-9929-4e2f-b3a9-feb9bd9d60ba");
+
+Credit result = creditApi.getCredit(creditId, requestOptions)
 ```
 
 ```ruby
