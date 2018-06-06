@@ -27,6 +27,9 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.CatalogApi;
+protected CatalogApi catalogApi;
+
 catalogApi.deleteCatalog(requestOptions);
 ```
 
@@ -75,8 +78,14 @@ TODO
 ```
 
 ```java
-Catalogs catalogsJson = catalogApi.getCatalogJson(null, 
-                                                  null, 
+import org.killbill.billing.client.api.gen.CatalogApi;
+protected CatalogApi catalogApi;
+
+DateTime requestedDate = null;
+UUID accountId = null;
+
+Catalogs catalogsJson = catalogApi.getCatalogJson(requestedDate, 
+                                                  accountId, 
                                                   requestOptions);
 ```
 
@@ -1411,9 +1420,16 @@ TODO
 ```
 
 ```java
-List<PlanDetail> availableAddons = catalogApi.getAvailableAddons(productJson.getName(), 
-                                                                 null, 
-                                                                 null, 
+import org.killbill.billing.client.api.gen.CatalogApi;
+protected CatalogApi catalogApi;
+
+String baseProductName = "Bullets";
+String priceListName = null;
+UUID accountId = null;
+
+List<PlanDetail> availableAddons = catalogApi.getAvailableAddons(baseProductName, 
+                                                                 priceListName, 
+                                                                 accountId, 
                                                                  requestOptions);
 ```
 
@@ -1492,7 +1508,12 @@ TODO
 ```
 
 ```java
-List<PlanDetail> basePlans = catalogApi.getAvailableBasePlans(null, requestOptions);
+import org.killbill.billing.client.api.gen.CatalogApi;
+protected CatalogApi catalogApi;
+
+UUID accountId = null;
+
+List<PlanDetail> basePlans = catalogApi.getAvailableBasePlans(accountId, requestOptions);
 ```
 
 ```ruby
@@ -1901,13 +1922,20 @@ TODO
 ```
 
 ```java
-SimplePlan body = new SimplePlan("foo-monthly", 
-                                 "Foo", 
+import org.killbill.billing.client.api.gen.CatalogApi;
+protected CatalogApi catalogApi;
+
+String planId = "foo-monthly";
+String productName = "Foo";
+Integer trialLength = 0;
+
+SimplePlan body = new SimplePlan(planId, 
+                                 productName, 
                                  ProductCategory.BASE, 
                                  Currency.USD, 
                                  BigDecimal.TEN, 
                                  BillingPeriod.MONTHLY, 
-                                 0, 
+                                 trialLength, 
                                  TimeUnit.UNLIMITED, 
                                  ImmutableList.<String>of())
                                  
@@ -1978,7 +2006,12 @@ TODO
 ```
 
 ```java
-List<DateTime> versions = catalogApi.getCatalogVersions(null, requestOptions);
+import org.killbill.billing.client.api.gen.CatalogApi;
+protected CatalogApi catalogApi;
+
+UUID accountId = null;
+
+List<DateTime> versions = catalogApi.getCatalogVersions(accountId, requestOptions);
 ```
 
 ```ruby
@@ -2024,7 +2057,15 @@ TODO
 ```
 
 ```java
-String catalog = catalogApi.getCatalogXml(null, null, requestOptions);
+import org.killbill.billing.client.api.gen.CatalogApi;
+protected CatalogApi catalogApi;
+
+LocalDate requestedDate = null;
+UUID accountId = null;
+
+String catalog = catalogApi.getCatalogXml(requestedDate, 
+                                          accountId, 
+                                          requestOptions);
 ```
 
 ```ruby
@@ -2629,6 +2670,9 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.CatalogApi;
+protected CatalogApi catalogApi;
+
 String body = getResourceBodyString(catalog);
 
 catalogApi.uploadCatalogXml(body, requestOptions);
