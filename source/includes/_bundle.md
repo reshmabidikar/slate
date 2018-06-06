@@ -8,8 +8,8 @@ The attributes are the following:
 
 * **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
 * **`bundleId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
-* **`externalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span>: The external key provided from client.
-* **`subscriptions`** <span style="color:#32A9C7">*(Array[SubscriptionJson], optional, read only)*</span>: Subscriptions list.
+* **`externalKey`** <span style="color:#32A9C7">*[User generated, default `bundleId`, immutable]*</span>: The external key provided from client.
+* **`subscriptions`** <span style="color:#32A9C7">*(Array[SubscriptionJson], optional, read only)*</span>: List of subscriptions included in this bundle.
 * **`timeline`** <span style="color:#32A9C7">*(BundleTimelineJson, optional, read only)*</span>: Event list.
 
 ## Retrieve a bundle by external key
@@ -636,7 +636,7 @@ The new account_id should be set in this object
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/bundles/{bundleId}`
+`POST http://example.com/1.0/kb/bundles/{bundleId}`
 
 > Example Request:
 
@@ -802,7 +802,7 @@ Returns a bundle object if a valid account and bundle id's was provided.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/bundles/{bundleId}/block`
+`POST http://example.com/1.0/kb/bundles/{bundleId}/block`
 
 > Example Request:
 
@@ -865,7 +865,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `201` http status without content.
 
 ## Add custom fields to bundle
 
@@ -1039,16 +1039,7 @@ bundleApi.modify_bundle_custom_fields(bundle_id,
 > Example Response:
 
 ```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"BUNDLE",
-      "name":"Test Modify",
-      "value":"test_modify_value",
-      "auditLogs":[]
-   }
-]
+no content
 ```
 ```python
 no content
@@ -1061,7 +1052,7 @@ None.
 
 **Returns**
 
-Returns a custom field object.
+A `204` http status without content.
 
 ## Remove custom fields from bundle
 
@@ -1116,7 +1107,7 @@ no content
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Pause a bundle
 
@@ -1172,7 +1163,62 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
+
+## Update a bundle externalKey
+
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/bundles/{bundleId}/renameKey`
+
+> Example Request:
+
+```ruby
+bundle = KillBillClient::Model::Bundle.new
+bundle.bundle_id = bundle_id
+bundle.external_key = "new_external_key"
+
+bundle.rename_external_key(user, 
+                           reason, 
+                           comment, 
+                           options)
+```
+
+```python
+bundleApi = killbill.api.BundleApi()
+body = Bundle(bundle_id=bundle_id, 
+              external_key='new_external_key')
+
+bundleApi.rename_external_key(bundle_id,
+                              body,
+                              created_by,
+                              api_key,
+                              api_secret)
+```
+
+> Example Response:
+
+```shell
+**TODO**
+```
+```java
+**TODO**
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+A `204` http status without content.
 
 ## Resume a bundle
 
@@ -1227,7 +1273,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Add tags to bundle
 
@@ -1291,11 +1337,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true | tag list to add |
+| **tagDef** | string | true | list with tag definition id's to add |
 
 **Returns**
 
-Returns a bundle tag object.
+A `201` http status without content.
 
 ## Retrieve bundle tags
 
@@ -1393,11 +1439,13 @@ bundle.remove_tag(tag_name,
 ```python
 bundleApi = killbill.api.BundleApi()
 bundle_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
+tag = ["00000000-0000-0000-0000-000000000002"]
 
 bundleApi.delete_bundle_tags(bundle_id, 
                              created_by, 
                              api_key, 
-                             api_secret)
+                             api_secret,
+                             tag_def=tag)
 ```
 
 > Example Response:
@@ -1413,11 +1461,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true |  list of tags that you want to remove it |
+| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
 
 **Response**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## List bundles
 

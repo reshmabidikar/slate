@@ -2,15 +2,16 @@
 
 ## Invoice Payment Resource
 
-The `Invoice Payment` resource represent the invoice payments created by the user.
+The `Invoice Payment` resource represents a given payment associated with a given invoice. Kill Bill allows to have multiple partial payments against a given invoice, however in the default recurring mode for instance, the system will always attempt to make a full payment. Partial payments can be made against unpaid - or partially paid - invoices by triggerring a payment against the `Invoice` resource -- see below. Note that, while Kill Bill supports multiple multiple partial payments against a given invoice, the reverse is not true: A payment across multiple invoices is not (yet) supported. The `System` v.s `User` generated fields match those from the associated `Payment` and `Invoice`.
+
 
 The attributes are the following:
 
-* **`targetInvoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
 * **`paymentId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`targetInvoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
 * **`paymentNumber`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span>
+* **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated, default `paymentId`, immutable]*</span>
 * **`authAmount`** <span style="color:#32A9C7">*[User or system generated]*</span>
 * **`capturedAmount`** <span style="color:#32A9C7">*[User or system generated]*</span>
 * **`purchasedAmount`** <span style="color:#32A9C7">*[User or system generated]*</span>
@@ -18,28 +19,9 @@ The attributes are the following:
 * **`creditedAmount`** <span style="color:#32A9C7">"*[User or system generated]*</span>
 * **`currency`** <span style="color:#32A9C7">*[User or system generated]*</span>
 * **`paymentMethodId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`transactions`** <span style="color:#32A9C7">*[See `PaymentTransaction` bellow]*</span>
-* **`paymentAttempts`** <span style="color:#32A9C7">*[`PaymentAttemptJson`]*</span>
-* **`auditLogs`** <span style="color:#32A9C7">*[`AuditLog`]*</span>
+* **`transactions`** <span style="color:#32A9C7">*[See `PaymentTransaction` below]*</span>
+* **`paymentAttempts`** <span style="color:#32A9C7">*[See `PaymentAransaction` below]*</span>
 
-### PaymentTransaction
-
-* **`transactionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`transactionExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span> 
-* **`paymentId`** <span style="color:#32A9C7">*[System generated, immutable]*</span> 
-* **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span> 
-* **`amount`** <span style="color:#32A9C7">*TODO*</span> 
-* **`currency`** <span style="color:#32A9C7">*TODO*</span> 
-* **`effectiveDate`** <span style="color:#32A9C7">*TODO*</span> 
-* **`processedAmount`** <span style="color:#32A9C7">*TODO*</span> 
-* **`processedCurrency`** <span style="color:#32A9C7">*TODO*</span> 
-* **`status`** <span style="color:#32A9C7">*TODO*</span> 
-* **`gatewayErrorCode`** <span style="color:#32A9C7">*TODO*</span> 
-* **`gatewayErrorMsg`** <span style="color:#32A9C7">*TODO*</span> 
-* **`firstPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span> 
-* **`secondPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span> 
-* **`properties`** <span style="color:#32A9C7">*[`PluginProperty`]*</span> 
-* **`auditLogs`** <span style="color:#32A9C7">*[`AuditLog`]*</span>
 
 ## Retrieve a payment by id
 
@@ -159,7 +141,7 @@ Returns a invoice payment object.
 
 **HTTP Request** 
 
-`PUT /1.0/kb/invoicePayments/{paymentId}`
+`PUT http://example.com/1.0/kb/invoicePayments/{paymentId}`
 
 > Example Request:
 
@@ -172,7 +154,13 @@ TODO
 ```
 
 ```ruby
-TODO
+payment_id = '2276b3c9-4e51-41b2-b5bf-9ddc11582ee4'
+
+KillBillClient::Model::InvoicePayment.complete_invoice_payment_transaction(payment_id, 
+                                                                           user, 
+                                                                           reason, 
+                                                                           comment, 
+                                                                           options)
 ```
 
 ```python
@@ -201,7 +189,7 @@ None.
 
 **Returns**
 
-Returns a invoice payment object.
+A `204` http status without content.
 
 ## Record a chargeback
 
@@ -597,19 +585,10 @@ invoicePaymentApi.modify_invoice_payment_custom_fields(payment_id,
 > Example Response:
 
 ```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"INVOICE_PAYMENT",
-      "name":"Test Modify",
-      "value":"test_modify_value",
-      "auditLogs":[]
-   }
-]
+no content
 ```
 ```python
-
+no content
 ```
 
 
@@ -621,7 +600,7 @@ invoicePaymentApi.modify_invoice_payment_custom_fields(payment_id,
 
 **Returns**
 
-Returns a custom field object.
+A `204` http status without content.
 
 ## Remove custom fields from payment
 
@@ -677,7 +656,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ## Refund a payment, and adjust the invoice if needed
 
@@ -843,11 +822,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true | tag list to add |
+| **tagDef** | string | true | list with tag definition id's to add |
 
 **Returns**
 
-Returns a invoice payment tag object.
+A `201` http status without content.
 
 ## Retrieve payment tags
 
@@ -965,8 +944,8 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true |  list of tags that you want to remove it |
+| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.

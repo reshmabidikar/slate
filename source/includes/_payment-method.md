@@ -216,7 +216,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ##  Add custom fields to payment method
 
@@ -395,16 +395,7 @@ paymentMethodApi.modify_payment_method_custom_fields(payment_method_id,
 > Example Response:
 
 ```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"PAYMENT_METHOD",
-      "name":"Test Modify",
-      "value":"test_modify_value",
-      "auditLogs":[]
-   }
-]
+no content
 ```
 ```python
 no content
@@ -418,7 +409,7 @@ no content
 
 **Returns**
 
-Returns a custom field object.
+A `204` http status without content.
 
 ##  Remove custom fields from payment method
 
@@ -472,7 +463,7 @@ no content
 
 **Returns**
 
-A `200` http status without content.
+A `204` http status without content.
 
 ##  List payment methods
 
