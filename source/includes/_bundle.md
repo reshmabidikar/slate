@@ -2,7 +2,11 @@
 
 ## Bundle Resource
 
-The `Bundle` resource represents a collection of subscriptions that are associated with a particular instance of a product. 
+The `Bundle` resource represents a collection of subscriptions. Grouping certain subscriptions into a bundle is mostly useful to ensure
+that certain operations propagate to the group. A common example is upon cancellation, to ensure that when cancelling a `BASE` subscription,
+any `ADD_ON` subscriptions in the same bundle also end up being cancelled automatically. The Bundle is automatically created by the system
+when creating the intial subscription and in order to add additional subscriptions in the same bundle one must specify the `bundleId` previously
+created.
 
 The attributes are the following:
 

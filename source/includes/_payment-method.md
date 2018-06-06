@@ -2,17 +2,24 @@
 
 ## Payment Method Resource
 
-The `Payment Method` resource represent the payment methods associated to a account.
+The `Payment Method` resource represents the payment methods associated to a customer `Account`. There are often two parts to this resource:
+
+* The core Kill Bill attributes shown below, which are fairly minimalistic and mostly track the associated payment plugin that is used to interract with the payment gateway.
+* The plugin attributes, which are plugin specific and payment method specific -- credit card, ACH, bitcoin, ... In the case of a credit card for instance, the plugin would keep track of things like `name`, `address`, `last4`, `token`, ... Not only such attributes are dependent on the payment method, but they are also dependent on the third party payment gateway, and also on the tokenization model.
+
+
+Note that Kill Bill also supports a more advanced used case for payment routing, where the choice of the payment gateway is decided at run time
+based on custom business rules. Additional information can be found in our [Payment Manual](http://docs.killbill.io/latest/userguide_payment.html) for more details.
+
 
 The attributes are the following:
 
-* **`paymentMethodId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`externalKey`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`isDefault`** <span style="color:#32A9C7">*[User generated]*</span>
-* **`pluginName`** <span style="color:#32A9C7">*[User generated]*</span>
-* **`pluginInfo`** <span style="color:#32A9C7">*[User generated]*</span>
-* **`auditLogs`** <span style="color:#32A9C7">*[`AuditLog`]*</span>
+* **`paymentMethodId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
+* **`externalKey`** <span style="color:#32A9C7">*[User generated, default `paymentMethodId`, immutable]*</span>: The external key provided from client.
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
+* **`isDefault`** <span style="color:#32A9C7">*[User generated]*</span>: Whether this payment method is used for automatic payments in the case of recurring billing.
+* **`pluginName`** <span style="color:#32A9C7">*[User generated]*</span>: The plugin identifier. All payments operation associated with this payment method will be delegated to the payment plugin associated with this identifier.
+* **`pluginInfo`** <span style="color:#32A9C7">*[User generated]*</span>:  TODO
 
 ##  Retrieve a payment method by id
 
