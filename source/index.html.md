@@ -284,3 +284,9 @@ In addition to these error codes, the system will often return some json to prov
 * **`formattedMsg`** : A description of the error for the specific resource(s).
 * **`cause`** : An optional stack trace.
 
+
+## Additional Resources
+
+TODO: Provide pointers to documentation manual and explain what they are.
+
+
