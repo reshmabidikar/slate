@@ -2,17 +2,22 @@
 
 ## Credit Resource
 
-The `Credit` resource represent credits created by the user.
+The `Credit` resource represents the credits created on behalf of the customer `Account`. Credits are tracked inside invoices, as a specical kind of
+of invoice item. The credits are visible at the level of the `Account`, i.e account credit, and those will automatically be consumed by the system on
+subsequent invoices to bring the balance to zero -- or reduce the balance if there is not enough credit to pay the full amount.
 
 The attributes are the following:
 
 * **`creditId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
-* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
 * **`invoiceId`** <span style="color:#32A9C7">*[System or User generated, immutable]*</span>. If the `ID` is specified during creation, the credit will go against a specific invoice, provided this invoice has not yet been `COMMITTED`.
-* **`creditAmount`** <span style="color:#32A9C7">*[User generated]*</span>
+* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>. The `ID` allocated by Kill Bill upon creation.
+* **`creditAmount`** <span style="color:#32A9C7">*[User generated]*</span>. 
 * **`currency`** <span style="color:#32A9C7">*[User generated]*</span>
 * **`invoiceNumber`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
+* **`effectiveDate`** <span style="color:#32A9C7">*[User generated]*</span>
 * **`description`** <span style="color:#32A9C7">*[User generated]*</span>
+* **`itemDetails`** <span style="color:#32A9C7">*[User or system generated]*</span>
+
 
 ## Create a credit
 
@@ -27,13 +32,22 @@ TODO
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.CreditApi;
+protected CreditApi creditApi;
+
+UUID accountId = UUID.fromString("864c1418-e768-4cd5-a0db-67537144b685");
+
 Credit credit = new Credit();
-credit.setAccountId(account.getAccountId());
+credit.setAccountId(accountId);
 credit.setCreditAmount(BigDecimal.ONE);
 credit.setDescription("description");
 credit.setItemDetails("itemDetails");
 
-creditApi.createCredit(credit, false, requestOptions);
+Boolean autoCommit = false;
+
+creditApi.createCredit(credit, 
+                       autoCommit, 
+                       requestOptions);
 ```
 
 ```ruby
@@ -118,7 +132,12 @@ TODO
 ```
 
 ```java
-Credit result = creditApi.getCredit(credit.getCreditId, requestOptions)
+import org.killbill.billing.client.api.gen.CreditApi;
+protected CreditApi creditApi;
+
+UUID creditId = UUID.fromString("d2edf4c0-9929-4e2f-b3a9-feb9bd9d60ba");
+
+Credit result = creditApi.getCredit(creditId, requestOptions)
 ```
 
 ```ruby
