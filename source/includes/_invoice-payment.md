@@ -24,7 +24,6 @@ The attributes are the following:
 * **`transactions`** <span style="color:#32A9C7">*[See `PaymentTransaction` below]*</span>. A list of payment transactions, which could be of different types - e.g `PURCHASE`, `REFUND`
 * **`paymentAttempts`** <span style="color:#32A9C7">*[See `PaymentAttempt` below]*</span>. A list of payment attempts when the system is configured to retry failed payments.
 
-
 ## Retrieve a payment by id
 
 **HTTP Request** 
@@ -38,7 +37,20 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.InvoicePaymentApi;
+protected InvoicePaymentApi invoicePaymentApi;
+
+UUID paymentId = UUID.fromString("80f5bfca-e142-4320-b8f2-ae4530ca7172");
+Boolean withPluginInfo = false; // Will not reflect plugin info
+Boolean withAttempts = false; // Will not reflect payment attempts
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+InvoicePayment invoicePayment = invoicePaymentApi.getInvoicePayment(paymentId, 
+                                                                    withPluginInfo,
+                                                                    withAttempts,
+                                                                    NULL_PLUGIN_PROPERTIES,
+                                                                    AuditLevel.NONE,
+                                                                    requestOptions);
 ```
 
 ```ruby
@@ -61,6 +73,64 @@ invoicePaymentApi.get_invoice_payment(payment_id, api_key, api_secret)
 
 > Example Response:
 
+```java
+class InvoicePayment {
+    org.killbill.billing.client.model.gen.InvoicePayment@47ec807
+    targetInvoiceId: 8ff7ded6-e524-4f38-94f7-d9aacef8b88b
+    accountId: ed1029e6-dcc0-4b1e-ae94-e00fb14efd41
+    paymentId: 80f5bfca-e142-4320-b8f2-ae4530ca7172
+    paymentNumber: 1
+    paymentExternalKey: 80f5bfca-e142-4320-b8f2-ae4530ca7172
+    authAmount: 0
+    capturedAmount: 0
+    purchasedAmount: 249.95
+    refundedAmount: 249.95
+    creditedAmount: 0
+    currency: USD
+    paymentMethodId: 083cc55b-65e9-484c-9c33-0d6956540a0e
+    transactions: [class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@a0308e7f
+        transactionId: b9a795f0-c9d0-4e89-a0b2-783d8844bb44
+        transactionExternalKey: b9a795f0-c9d0-4e89-a0b2-783d8844bb44
+        paymentId: 80f5bfca-e142-4320-b8f2-ae4530ca7172
+        paymentExternalKey: 80f5bfca-e142-4320-b8f2-ae4530ca7172
+        transactionType: PURCHASE
+        amount: 249.95
+        currency: USD
+        effectiveDate: 2012-05-27T00:03:46.000Z
+        processedAmount: 249.95
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: 
+        gatewayErrorMsg: 
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }, class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@c4c601f0
+        transactionId: 5c59f93d-7f6d-406b-b499-7a1547c00c9f
+        transactionExternalKey: f4e8c3dc-9e97-4000-b82c-1f0dcd1cf84e
+        paymentId: 80f5bfca-e142-4320-b8f2-ae4530ca7172
+        paymentExternalKey: 80f5bfca-e142-4320-b8f2-ae4530ca7172
+        transactionType: REFUND
+        amount: 249.95
+        currency: USD
+        effectiveDate: 2012-05-27T00:03:47.000Z
+        processedAmount: 249.95
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: 
+        gatewayErrorMsg: 
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }]
+    paymentAttempts: null
+    auditLogs: []
+}
+```
 ```ruby
 {
    "targetInvoiceId":"375f1ade-b4eb-4344-bb64-e44fe7a5dea1",
@@ -152,7 +222,19 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.InvoicePaymentApi;
+protected InvoicePaymentApi invoicePaymentApi;
+
+UUID paymentId = UUID.fromString("80f5bfca-e142-4320-b8f2-ae4530ca7172");
+PaymentTransaction body = new PaymentTransaction();
+ImmutableList<String> NULL_PLUGIN_NAMES = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+invoicePaymentApi.completeInvoicePaymentTransaction(paymentId, 
+                                                    body, 
+                                                    NULL_PLUGIN_NAMES, 
+                                                    NULL_PLUGIN_PROPERTIES, 
+                                                    requestOptions);
 ```
 
 ```ruby
@@ -178,6 +260,9 @@ invoicePaymentApi.complete_invoice_payment_transaction(payment_id,
 
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 TODO
 ```
@@ -206,7 +291,18 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.InvoicePaymentApi;
+protected InvoicePaymentApi invoicePaymentApi;
+
+UUID paymentId = UUID.fromString("96930ff3-82e1-4556-888a-0cb07ec120d6");
+
+InvoicePaymentTransaction body = new InvoicePaymentTransaction();
+body.setPaymentId(paymentId);
+body.setAmount(new BigDecimal("50.00"));
+
+InvoicePayment result = invoicePaymentApi.createChargeback(paymentId, 
+                                                           body, 
+                                                           requestOptions);
 ```
 
 ```ruby
@@ -239,6 +335,45 @@ invoicePaymentApi.create_chargeback(payment_id,
 
 > Example Response:
 
+```java
+class InvoicePayment {
+    org.killbill.billing.client.model.gen.InvoicePayment@e920eb58
+    targetInvoiceId: 84ae9d9a-badf-45c2-b53b-7b8a077e42ea
+    accountId: 4dd59373-be7a-409e-beaa-a17e8b234591
+    paymentId: 96930ff3-82e1-4556-888a-0cb07ec120d6
+    paymentNumber: 1
+    paymentExternalKey: 96930ff3-82e1-4556-888a-0cb07ec120d6
+    authAmount: 0
+    capturedAmount: 0
+    purchasedAmount: 0.00
+    refundedAmount: 0
+    creditedAmount: 0
+    currency: USD
+    paymentMethodId: a9408abd-d505-4462-afe6-0d29a202d8b3
+    transactions: [class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@e72668f3
+        transactionId: 583ba30d-c6f4-4600-934e-73ef9782e444
+        transactionExternalKey: 583ba30d-c6f4-4600-934e-73ef9782e444
+        paymentId: 96930ff3-82e1-4556-888a-0cb07ec120d6
+        paymentExternalKey: 96930ff3-82e1-4556-888a-0cb07ec120d6
+        transactionType: PURCHASE
+        amount: 249.95
+        currency: USD
+        effectiveDate: 2012-09-26T00:00:08.000Z
+        processedAmount: 249.95
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: 
+        gatewayErrorMsg: 
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }]
+    paymentAttempts: null
+    auditLogs: []
+}
+```
 ```ruby
 {
    "targetInvoiceId":"dd185d1c-a4c5-4420-b06a-df42af446975",
@@ -428,7 +563,23 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.InvoicePaymentApi;
+protected InvoicePaymentApi invoicePaymentApi;
+
+UUID paymentId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+
+CustomFields customFields = new CustomFields();
+customFields.add(new CustomField(null, 
+                                 paymentId, 
+                                 ObjectType.INVOICE_PAYMENT, 
+                                 "Test Custom Field", 
+                                 "test_value", 
+                                 EMPTY_AUDIT_LOGS));
+
+invoicePaymentApi.createInvoicePaymentCustomFields(paymentId, 
+                                                   customFields, 
+                                                   requestOptions);
 ```
 
 ```ruby
@@ -457,6 +608,18 @@ invoicePaymentApi.create_invoice_payment_custom_fields(payment_id,
 ```
 > Example Response:
 
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: 59860a0d-c032-456d-a35e-3a48fe8579e5
+    objectType: INVOICE_PAYMENT
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
+```
 ```ruby
 [
    {
@@ -494,7 +657,14 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.InvoicePaymentApi;
+protected InvoicePaymentApi invoicePaymentApi;
+
+UUID paymentId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+
+List<CustomField> customFields = invoicePaymentApi.getInvoicePaymentCustomFields(paymentId,
+                                                                                 AuditLevel.NONE,
+                                                                                 requestOptions);
 ```
 
 ```ruby
@@ -512,6 +682,18 @@ invoicePaymentApi.get_invoice_payment_custom_fields(payment_id, api_key, api_sec
 
 > Example Response:
 
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: 59860a0d-c032-456d-a35e-3a48fe8579e5
+    objectType: INVOICE_PAYMENT
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
+```
 ```ruby
 [
    {
@@ -556,7 +738,19 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.InvoicePaymentApi;
+protected InvoicePaymentApi invoicePaymentApi;
+
+UUID paymentId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+CustomField customFieldModified = new CustomField();
+customFieldModified.setCustomFieldId(customFieldsId);
+customFieldModified.setValue("NewValue");
+
+invoicePaymentApi.modifyInvoicePaymentCustomFields(paymentId, 
+                                                   customFieldModified, 
+                                                   requestOptions);
 ```
 
 ```ruby
@@ -586,6 +780,9 @@ invoicePaymentApi.modify_invoice_payment_custom_fields(payment_id,
 
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
@@ -617,7 +814,15 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.InvoicePaymentApi;
+protected InvoicePaymentApi invoicePaymentApi;
+
+UUID paymentId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+invoicePaymentApi.deleteInvoicePaymentCustomFields(paymentId, 
+                                                   customFieldsId, 
+                                                   requestOptions);
 ```
 
 ```ruby
@@ -643,6 +848,9 @@ invoicePaymentApi.delete_invoice_payment_custom_fields(payment_id,
 ```
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
@@ -673,7 +881,24 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.InvoicePaymentApi;
+protected InvoicePaymentApi invoicePaymentApi;
+
+UUID paymentId = UUID.fromString("45d6f4c5-21be-49b1-99c5-7b0c3c985bf0");
+
+InvoicePaymentTransaction refund = new InvoicePaymentTransaction();
+refund.setPaymentId(paymentId);
+refund.setAmount(BigDecimal.ONE);
+
+UUID paymentMethodId = UUID.fromString("28a3ed1a-7a58-4ac2-b864-2ca723abb864");
+
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+invoicePaymentApi.createRefundWithAdjustments(paymentId, 
+                                              refund, 
+                                              paymentMethodId, 
+                                              NULL_PLUGIN_PROPERTIES, 
+                                              requestOptions);
 ```
 
 ```ruby
@@ -702,6 +927,64 @@ invoicePaymentApi.create_refund_with_adjustments(payment_id,
 ```
 > Example Response:
 
+```java
+class InvoicePayment {
+    org.killbill.billing.client.model.gen.InvoicePayment@916e89e1
+    targetInvoiceId: 5de44543-2cd9-4781-b6a3-12c47a9244ed
+    accountId: 9b535e8a-dbfe-479a-8936-75c8b5e9cf45
+    paymentId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
+    paymentNumber: 1
+    paymentExternalKey: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
+    authAmount: 0
+    capturedAmount: 0
+    purchasedAmount: 249.95
+    refundedAmount: 1
+    creditedAmount: 0
+    currency: USD
+    paymentMethodId: 28a3ed1a-7a58-4ac2-b864-2ca723abb864
+    transactions: [class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@ab430f5e
+        transactionId: 6727a8db-ec00-4d85-89f2-cda778b21ddf
+        transactionExternalKey: 6727a8db-ec00-4d85-89f2-cda778b21ddf
+        paymentId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
+        paymentExternalKey: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
+        transactionType: PURCHASE
+        amount: 249.95
+        currency: USD
+        effectiveDate: 2012-09-26T00:00:05.000Z
+        processedAmount: 249.95
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: 
+        gatewayErrorMsg: 
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }, class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@d404a66c
+        transactionId: a29e0204-a4db-400f-9f5f-3de1e57169d8
+        transactionExternalKey: b4903f2e-ea23-4c95-a2c8-a3d81b7dfd60
+        paymentId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
+        paymentExternalKey: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
+        transactionType: REFUND
+        amount: 1
+        currency: USD
+        effectiveDate: 2012-09-26T00:00:10.000Z
+        processedAmount: 1
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: 
+        gatewayErrorMsg: 
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }]
+    paymentAttempts: null
+    auditLogs: []
+}
+```
 ```ruby
 {
    "targetInvoiceId":"045900ff-5b2a-4709-b7bd-d70501998dd5",
@@ -777,7 +1060,16 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.InvoicePaymentApi;
+protected InvoicePaymentApi invoicePaymentApi;
+
+UUID paymentId = UUID.fromString("45d6f4c5-21be-49b1-99c5-7b0c3c985bf0");
+
+UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
+Tags result = invoicePaymentApi.createInvoicePaymentTags(paymentId, 
+                                                         ImmutableList.<UUID>of(autoPayOffId), 
+                                                         requestOptions);
 ```
 
 ```ruby
@@ -804,6 +1096,18 @@ invoicePaymentApi.create_invoice_payment_tags(payment_id,
 
 > Example Response:
 
+```java
+//First element of the list
+class Tag {
+    org.killbill.billing.client.model.gen.Tag@bd138472
+    tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
+    objectType: INVOICE_PAYMENT
+    objectId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
+    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionName: AUTO_PAY_OFF
+    auditLogs: []
+}
+```
 ```ruby
 [
    {
@@ -843,7 +1147,17 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.InvoicePaymentApi;
+protected InvoicePaymentApi invoicePaymentApi;
+
+UUID paymentId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
+
+Boolean includedDeleted = false; // Will not include deleted tags
+
+List<Tag> tags = invoicePaymentApi.getInvoicePaymentTags(paymentId, 
+                                                         includedDeleted, 
+                                                         AuditLevel.FULL, 
+                                                         requestOptions);
 ```
 
 ```ruby
@@ -864,6 +1178,28 @@ invoicePaymentApi.get_invoice_payment_tags(payment_id, api_key, api_secret)
 
 > Example Response:
 
+```java
+//First element of the list
+class Tag {
+    org.killbill.billing.client.model.gen.Tag@cae768d7
+    tagId: d724f79d-fad1-4758-b35e-d62708450d90
+    objectType: INVOICE_PAYMENT
+    objectId: e659f0f3-745c-46d5-953c-28fe9282fc7d
+    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionName: AUTO_PAY_OFF
+    auditLogs: [class AuditLog {
+        changeType: INSERT
+        changeDate: 2012-08-25T00:00:02.000Z
+        objectType: TAG
+        objectId: d724f79d-fad1-4758-b35e-d62708450d90
+        changedBy: Toto
+        reasonCode: i am god
+        comments: no comment
+        userToken: e36f7ba5-fb5b-41c0-b47c-77c48ab37dd9
+        history: null
+    }]
+}
+```
 ```ruby
 [
    {
@@ -909,7 +1245,16 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.InvoicePaymentApi;
+protected InvoicePaymentApi invoicePaymentApi;
+
+UUID paymentId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
+
+UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
+invoicePaymentApi.deleteInvoicePaymentTags(paymentId, 
+                                           ImmutableList.<UUID>of(autoPayOffId), 
+                                           requestOptions);
 ```
 
 ```ruby
@@ -935,6 +1280,9 @@ invoicePaymentApi.delete_invoice_payment_tags(payment_id,
 ```
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
