@@ -34,7 +34,20 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentMethodApi;
+protected PaymentMethodApi paymentMethodApi;
+
+UUID paymentMethodId = UUID.fromString("3c449da6-7ec4-4c74-813f-f5055739a0b9");
+Boolean includedDeleted = false; // Will not include deleted
+Boolean withPluginInfo = true; // Will not reflect plugin info
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+PaymentMethod paymentMethodJson = paymentMethodApi.getPaymentMethod(paymentMethodId, 
+                                                                    includedDeleted, 
+                                                                    withPluginInfo, 
+                                                                    NULL_PLUGIN_PROPERTIES, 
+                                                                    AuditLevel.NONE, 
+                                                                    requestOptions);
 ```
 
 ```ruby
@@ -55,6 +68,42 @@ paymentMethodApi.get_payment_method(payment_method_id, api_key, api_secret)
 
 > Example Response:
 
+```java
+class PaymentMethod {
+    org.killbill.billing.client.model.gen.PaymentMethod@c789046
+    paymentMethodId: 3c449da6-7ec4-4c74-813f-f5055739a0b9
+    externalKey: 7c13b1fb-5fa5-49cb-bbb6-50b0fa78a988
+    accountId: 2b995dde-ce30-451f-8bbf-5bb9ed312505
+    isDefault: true
+    pluginName: noop
+    pluginInfo: class PaymentMethodPluginDetail {
+        externalPaymentMethodId: afcdfd42-1bad-4caf-86be-93a27da51c55
+        isDefaultPaymentMethod: false
+        properties: [class PluginProperty {
+            key: CC_NAME
+            value: Bozo
+            isUpdatable: false
+        }, class PluginProperty {
+            key: CC_CITY
+            value: SF
+            isUpdatable: false
+        }, class PluginProperty {
+            key: CC_LAST_4
+            value: 4365
+            isUpdatable: false
+        }, class PluginProperty {
+            key: CC_STATE
+            value: CA
+            isUpdatable: false
+        }, class PluginProperty {
+            key: CC_COUNTRY
+            value: Zimbawe
+            isUpdatable: false
+        }]
+    }
+    auditLogs: []
+}
+```
 ```ruby
 {
    "paymentMethodId":"6a0bf13e-d57f-4f79-84bd-3690135f1923",
@@ -105,7 +154,20 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentMethodApi;
+protected PaymentMethodApi paymentMethodApi;
+
+String externalKey = "foo";
+Boolean includedDeleted = false; // Will not include deleted
+Boolean withPluginInfo = false; // Will not reflect plugin info
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+PaymentMethod paymentMethod = paymentMethodApi.getPaymentMethodByKey(externalKey, 
+                                                                     includedDeleted,
+                                                                     withPluginInfo,
+                                                                     NULL_PLUGIN_PROPERTIES, 
+                                                                     AuditLevel.NONE
+                                                                     equestOptions);
 ```
 
 ```ruby
@@ -130,6 +192,18 @@ paymentMethodApi.get_payment_method_by_key(external_key, api_key, api_secret)
 
 > Example Response:
 
+```java
+class PaymentMethod {
+    org.killbill.billing.client.model.gen.PaymentMethod@360d34cd
+    paymentMethodId: c46dbe85-a14b-4d5b-8b0d-e6a07b7ff111
+    externalKey: foo
+    accountId: dae298f7-62b0-4774-a213-92f968693cdc
+    isDefault: true
+    pluginName: noop
+    pluginInfo: null
+    auditLogs: []
+}
+```
 ```ruby
 {
    "paymentMethodId":"4307ac7c-04a7-41e1-9cb0-8a4d4420104c",
@@ -179,7 +253,19 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentMethodApi;
+protected PaymentMethodApi paymentMethodApi;
+
+UUID paymentMethodId = UUID.fromString("3c449da6-7ec4-4c74-813f-f5055739a0b9");
+Boolean deleteDefaultPmWithAutoPayOff = true; // Will delete default payment method with auto pay off
+Boolean forceDefaultPmDeletion = true; // Will force default payment method deletion
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+paymentMethodApi.deletePaymentMethod(paymentMethodId, 
+                                     deleteDefaultPmWithAutoPayOff, 
+                                     forceDefaultPmDeletion, 
+                                     NULL_PLUGIN_PROPERTIES, 
+                                     requestOptions);
 ```
 
 ```ruby
@@ -207,6 +293,9 @@ paymentMethodApi.delete_payment_method(payment_method_id,
 
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
@@ -225,6 +314,122 @@ no content
 
 A `204` http status without content.
 
+## Retrieve payment method audit logs with history by id
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/paymentMethods/{paymentMethodId}/auditLogsWithHistory`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+import org.killbill.billing.client.api.gen.PaymentMethodApi;
+protected PaymentMethodApi paymentMethodApi;
+
+UUID paymentMethodId = UUID.fromString("e9d95f16-a426-46d0-b76b-90814792fb36");
+
+List<AuditLog> result = paymentMethodApi.getPaymentMethodAuditLogsWithHistory(paymentMethodId, requestOptions);
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+account_email_id = 'bb390282-6757-4f4f-8dd5-456abd9f30b2'
+
+accountApi.get_account_email_audit_logs_with_history(account_id,
+                                                     account_email_id,
+                                                     api_key,
+                                                     api_secret)
+```
+
+```ruby
+account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
+
+account.email_audit_logs_with_history(account_email_id, options)
+```
+
+> Example Response:
+
+```shell
+**TODO**
+```
+```java
+//First element of the list
+class AuditLog {
+    changeType: INSERT
+    changeDate: 2012-08-25T00:00:03.000Z
+    objectType: PAYMENT_METHOD
+    objectId: e9d95f16-a426-46d0-b76b-90814792fb36
+    changedBy: Toto
+    reasonCode: i am god
+    comments: no comment
+    userToken: 081ae8a2-b267-4808-8ae9-eb60f4e5a2d5
+    history: {id=null, 
+              createdDate=2012-08-25T00:00:03.000Z, 
+              updatedDate=2012-08-25T00:00:03.000Z, 
+              recordId=1, 
+              accountRecordId=1, 
+              tenantRecordId=1, 
+              externalKey=85905d6e-64d6-4ac9-85d5-0ce45d37a426, 
+              accountId=58780aff-a193-4544-9f82-6b3d91b040ac, 
+              pluginName=noop, 
+              isActive=true, 
+              active=true, 
+              tableName=PAYMENT_METHODS, 
+              historyTableName=PAYMENT_METHOD_HISTORY}
+}
+```
+```ruby
+[
+   {
+      "changeType":"INSERT",
+      "changeDate":"2013-08-01T06:00:00.000Z",
+      "objectType":"ACCOUNT_EMAIL",
+      "objectId":"a4627e89-a73b-4167-a7ba-92a2881eb3c4",
+      "changedBy":"test_account_tags",
+      "userToken":"79005abf-a8cf-44e1-84fc-945381d35bd5",
+      "history":{
+         "id":null,
+         "createdDate":"2013-08-01T06:00:00.000Z",
+         "updatedDate":"2013-08-01T06:00:00.000Z",
+         "recordId":18,
+         "accountRecordId":525,
+         "tenantRecordId":842,
+         "accountId":"1ced5fc2-b032-4969-a38b-d4db9ab5368f",
+         "email":"email@example.com",
+         "isActive":true,
+         "tableName":"ACCOUNT_EMAIL",
+         "historyTableName":"ACCOUNT_EMAIL_HISTORY"
+      }
+   }
+]
+```
+```python
+[{'change_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc()),
+ 'change_type': 'INSERT',
+ 'changed_by': 'Me',
+ 'comments': None,
+ 'history': {'created_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc()),
+             'id': None,
+             'updated_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc())},
+ 'object_id': 'bb390282-6757-4f4f-8dd5-456abd9f30b2',
+ 'object_type': 'ACCOUNT_EMAIL',
+ 'reason_code': None,
+ 'user_token': '548055b7-2c5e-4315-9293-d76c00bd9737'}]
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of account email audit logs with history.
+
 ##  Add custom fields to payment method
 
 **HTTP Request** 
@@ -238,7 +443,24 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentMethodApi;
+protected PaymentMethodApi paymentMethodApi;
+
+UUID paymentMethodId = UUID.fromString("3c449da6-7ec4-4c74-813f-f5055739a0b9");
+
+final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+
+CustomFields customFields = new CustomFields();
+customFields.add(new CustomField(null, 
+                                 paymentMethodId, 
+                                 ObjectType.PAYMENT_METHOD, 
+                                 "Test Custom Field", 
+                                 "test_value", 
+                                 EMPTY_AUDIT_LOGS));
+
+paymentMethodApi.createPaymentMethodCustomFields(paymentMethodId, 
+                                                 customFields, 
+                                                 requestOptions);
 ```
 
 ```ruby
@@ -267,6 +489,19 @@ paymentMethodApi.create_payment_method_custom_fields(payment_method_id,
 ```
 
 > Example Response:
+
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: 3c449da6-7ec4-4c74-813f-f5055739a0b9
+    objectType: PAYMENT_METHOD
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
+```
 
 ```ruby
 [
@@ -305,7 +540,14 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentMethodApi;
+protected PaymentMethodApi paymentMethodApi;
+
+UUID paymentMethodId = UUID.fromString("3c449da6-7ec4-4c74-813f-f5055739a0b9");
+
+List<CustomField> customFields = paymentMethodApi.getPaymentMethodCustomFields(paymentMethodId,
+                                                                               AuditLevel.NONE,
+                                                                               requestOptions);
 ```
 
 ```ruby
@@ -325,6 +567,18 @@ paymentMethodApi.get_payment_method_custom_fields(payment_method_id,
 
 > Example Response:
 
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: 3c449da6-7ec4-4c74-813f-f5055739a0b9
+    objectType: PAYMENT_METHOD
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
+```
 ```ruby
 [
    {
@@ -369,7 +623,20 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentMethodApi;
+protected PaymentMethodApi paymentMethodApi;
+
+UUID paymentMethodId = UUID.fromString("3c449da6-7ec4-4c74-813f-f5055739a0b9");
+
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+CustomField customFieldModified = new CustomField();
+customFieldModified.setCustomFieldId(customFieldsId);
+customFieldModified.setValue("NewValue");
+
+paymentMethodApi.modifyPaymentMethodCustomFields(paymentMethodId, 
+                                                 customFieldModified, 
+                                                 requestOptions);
 ```
 
 ```ruby
@@ -401,6 +668,9 @@ paymentMethodApi.modify_payment_method_custom_fields(payment_method_id,
 
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
@@ -431,7 +701,15 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentMethodApi;
+protected PaymentMethodApi paymentMethodApi;
+
+UUID paymentMethodId = UUID.fromString("3c449da6-7ec4-4c74-813f-f5055739a0b9");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+paymentMethodApi.deletePaymentMethodCustomFields(paymentMethodId, 
+                                                 customFieldsId, 
+                                                 requestOptions);
 ```
 
 ```ruby
@@ -455,6 +733,9 @@ paymentMethodApi.delete_payment_method_custom_fields(payment_method_id,
 ```
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
@@ -485,7 +766,23 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentMethodApi;
+protected PaymentMethodApi paymentMethodApi;
+
+Long offset = 0L;
+Long limit = 1L;
+String pluginName = null;
+Boolean withPluginInfo = false;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+
+PaymentMethods allPaymentMethods = paymentMethodApi.getPaymentMethods(offset,
+                                                                      limit,
+                                                                      pluginName,
+                                                                      withPluginInfo
+                                                                      NULL_PLUGIN_PROPERTIES,
+                                                                      AuditLevel.NONE,
+                                                                      requestOptions);
 ```
 
 ```ruby
@@ -504,6 +801,19 @@ paymentMethodApi.get_payment_methods(api_key, api_secret)
 ```
 > Example Response:
 
+```java
+//First element of the list
+class PaymentMethod {
+    org.killbill.billing.client.model.gen.PaymentMethod@3b058e2d
+    paymentMethodId: 98420efb-142f-4437-9a93-817ded413313
+    externalKey: e78ae144-8727-46f4-8cf2-63636813f232
+    accountId: 73f59eee-abec-4d3f-ab62-21dba663bd25
+    isDefault: true
+    pluginName: noop
+    pluginInfo: null
+    auditLogs: []
+}
+```
 ```ruby
 [
   {
@@ -553,7 +863,24 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentMethodApi;
+protected PaymentMethodApi paymentMethodApi;
+
+String searchKey = "4365";
+Long offset = 0L;
+Long limit = 100L;
+String pluginName = null;
+Boolean withPluginInfo = true;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+List<PaymentMethod> results = paymentMethodApi.searchPaymentMethods(searchKey, 
+                                                                    offset, 
+                                                                    limit, 
+                                                                    pluginName, 
+                                                                    withPluginInfo, 
+                                                                    NULL_PLUGIN_PROPERTIES,  
+                                                                    AuditLevel.NONE,  
+                                                                    requestOptions);
 ```
 
 ```ruby
@@ -576,6 +903,43 @@ paymentMethodApi.search_payment_methods(search_key, api_key, api_secret)
 
 > Example Response:
 
+```java
+//First element of the list
+class PaymentMethod {
+    org.killbill.billing.client.model.gen.PaymentMethod@6b40b41a
+    paymentMethodId: 62c434f7-41fe-497d-8fb0-c35bb6706180
+    externalKey: 4ac4162a-ae9c-48ca-bb43-8a4bcd6c2717
+    accountId: a6941a79-8b7b-4da7-99e0-bffc3d549f87
+    isDefault: true
+    pluginName: noop
+    pluginInfo: class PaymentMethodPluginDetail {
+        externalPaymentMethodId: 9ddcce2d-b65f-4e08-8006-1395e47ba97a
+        isDefaultPaymentMethod: false
+        properties: [class PluginProperty {
+            key: CC_NAME
+            value: Bozo
+            isUpdatable: false
+        }, class PluginProperty {
+            key: CC_CITY
+            value: SF
+            isUpdatable: false
+        }, class PluginProperty {
+            key: CC_LAST_4
+            value: 4365
+            isUpdatable: false
+        }, class PluginProperty {
+            key: CC_STATE
+            value: CA
+            isUpdatable: false
+        }, class PluginProperty {
+            key: CC_COUNTRY
+            value: Zimbawe
+            isUpdatable: false
+        }]
+    }
+    auditLogs: []
+}
+```
 ```ruby
 [
   {
