@@ -97,6 +97,16 @@ KillBillHttpClient killBillHttpClient = new KillBillHttpClient(String.format("ht
                                             DEFAULT_REQUEST_TIMEOUT_SEC * 1000);
                                             
 KillBillClient killBillClient = new KillBillClient(killBillHttpClient);
+
+// Request Options example
+protected static final String createdBy = "me";
+protected static final String reason = "Going through my first tutorial";
+protected static final String comment = "I like it!";
+RequestOptions requestOptions = RequestOptions.builder()
+                                                      .withCreatedBy(createdBy)
+                                                      .withReason(reason)
+                                                      .withComment(comment)
+                                                      .withQueryParams(queryParams).build();
 ```
 
 ```ruby
