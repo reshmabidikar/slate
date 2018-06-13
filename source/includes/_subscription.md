@@ -57,7 +57,38 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID accountId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
+
+Subscription input = new Subscription();
+input.setAccountId(accountId);
+input.setExternalKey("foobarxyz");
+input.setProductName("Shotgun");
+input.setProductCategory(ProductCategory.BASE);
+input.setBillingPeriod(BillingPeriod.MONTHLY);
+input.setPriceList(PriceListSet.DEFAULT_PRICELIST_NAME);
+
+LocalDate entitlementDate = null;
+LocalDate billingDate = null;
+Boolean renameKeyIfExistsAndUnused = null; 
+Boolean migrated = null;
+Integer bcd = null;
+Boolean callCompletion true
+long DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC = 10;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+Subscription subscription = subscriptionApi.createSubscription(input, 
+                                                               entitlementDate, 
+                                                               billingDate, 
+                                                               renameKeyIfExistsAndUnused, 
+                                                               migrated, 
+                                                               bcd, 
+                                                               callCompletion, 
+                                                               DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC, 
+                                                               NULL_PLUGIN_PROPERTIES, 
+                                                               requestOptions);
 ```
 
 ```ruby
@@ -89,6 +120,91 @@ subscriptionApi.create_subscription(body,
 
 > Example Response:
 
+```java
+class Subscription {
+    org.killbill.billing.client.model.gen.Subscription@7e595d4c
+    accountId: 905a0636-ab63-40c0-acd4-b461b6808b5d
+    bundleId: 86526fef-6e81-4f7d-9caf-02e832c9b89b
+    subscriptionId: 85eef0e7-1de2-4dd3-91ad-a5668685d922
+    externalKey: foobarxyz
+    startDate: 2012-04-25
+    productName: Shotgun
+    productCategory: BASE
+    billingPeriod: MONTHLY
+    phaseType: TRIAL
+    priceList: DEFAULT
+    planName: shotgun-monthly
+    state: ACTIVE
+    sourceType: NATIVE
+    cancelledDate: null
+    chargedThroughDate: 2012-04-25
+    billingStartDate: 2012-04-25
+    billingEndDate: null
+    billCycleDayLocal: 25
+    events: [class EventSubscription {
+        org.killbill.billing.client.model.gen.EventSubscription@8e5dc5dd
+        eventId: a02af86d-475d-4253-8911-a909d6d2be20
+        billingPeriod: MONTHLY
+        effectiveDate: 2012-04-25
+        plan: shotgun-monthly
+        product: Shotgun
+        priceList: DEFAULT
+        eventType: START_ENTITLEMENT
+        isBlockedBilling: false
+        isBlockedEntitlement: false
+        serviceName: entitlement-service
+        serviceStateName: ENT_STARTED
+        phase: shotgun-monthly-trial
+        auditLogs: []
+    }, class EventSubscription {
+        org.killbill.billing.client.model.gen.EventSubscription@fe3f607b
+        eventId: 4eba9fc0-19f2-4ff7-a23d-31a5468cd8a2
+        billingPeriod: MONTHLY
+        effectiveDate: 2012-04-25
+        plan: shotgun-monthly
+        product: Shotgun
+        priceList: DEFAULT
+        eventType: START_BILLING
+        isBlockedBilling: false
+        isBlockedEntitlement: false
+        serviceName: billing-service
+        serviceStateName: START_BILLING
+        phase: shotgun-monthly-trial
+        auditLogs: []
+    }, class EventSubscription {
+        org.killbill.billing.client.model.gen.EventSubscription@8ee05db
+        eventId: f2c704a4-ef6b-4eee-8183-9fed6f19aac3
+        billingPeriod: MONTHLY
+        effectiveDate: 2012-05-25
+        plan: shotgun-monthly
+        product: Shotgun
+        priceList: DEFAULT
+        eventType: PHASE
+        isBlockedBilling: false
+        isBlockedEntitlement: false
+        serviceName: entitlement+billing-service
+        serviceStateName: PHASE
+        phase: shotgun-monthly-evergreen
+        auditLogs: []
+    }]
+    priceOverrides: [class PhasePriceOverride {
+        planName: shotgun-monthly
+        phaseName: shotgun-monthly-trial
+        phaseType: TRIAL
+        fixedPrice: 0
+        recurringPrice: null
+        usagePriceOverrides: []
+    }, class PhasePriceOverride {
+        planName: shotgun-monthly
+        phaseName: shotgun-monthly-evergreen
+        phaseType: EVERGREEN
+        fixedPrice: null
+        recurringPrice: 249.95
+        usagePriceOverrides: []
+    }]
+    auditLogs: []
+}
+```
 ```ruby
 {
    "accountId":"e1826665-4524-4d57-81b5-a5eb11146f3f",
@@ -184,7 +300,21 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID accountId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
+LocalDate requestedDate = null;
+EntitlementActionPolicy entitlementPolicy = null;
+BillingActionPolicy billingPolicy = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+subscriptionApi.cancelSubscriptionPlan(accountId, 
+                                       requestedDate, 
+                                       entitlementPolicy, 
+                                       billingPolicy, 
+                                       NULL_PLUGIN_PROPERTIES, 
+                                       requestOptions);
 ```
 
 ```ruby
@@ -215,6 +345,9 @@ subscriptionApi.cancel_subscription_plan(subscription_id,
 
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
@@ -250,7 +383,14 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
+
+Subscription objFromJson = subscriptionApi.getSubscription(subscriptionId, 
+                                                           AuditLevel.NONE, 
+                                                           requestOptions);
 ```
 
 ```ruby
@@ -268,6 +408,91 @@ subscriptionApi.get_subscription(subscription_id, api_key, api_secret)
 
 > Example Response:
 
+```java
+class Subscription {
+    org.killbill.billing.client.model.gen.Subscription@c620bf78
+    accountId: e903d1d6-7423-40fe-8ab7-d9d449484cda
+    bundleId: 603db1e6-299e-4b8b-9dfc-beecccca39b2
+    subscriptionId: b0f8f527-78c6-4fef-8fb2-53c9ed60a714
+    externalKey: 99999
+    startDate: 2012-04-25
+    productName: Shotgun
+    productCategory: BASE
+    billingPeriod: ANNUAL
+    phaseType: TRIAL
+    priceList: DEFAULT
+    planName: shotgun-annual
+    state: ACTIVE
+    sourceType: NATIVE
+    cancelledDate: null
+    chargedThroughDate: 2012-04-25
+    billingStartDate: 2012-04-25
+    billingEndDate: null
+    billCycleDayLocal: 25
+    events: [class EventSubscription {
+        org.killbill.billing.client.model.gen.EventSubscription@c8078c46
+        eventId: 7227bab2-b394-42de-b40c-97cecfd1d9ae
+        billingPeriod: ANNUAL
+        effectiveDate: 2012-04-25
+        plan: shotgun-annual
+        product: Shotgun
+        priceList: DEFAULT
+        eventType: START_ENTITLEMENT
+        isBlockedBilling: false
+        isBlockedEntitlement: false
+        serviceName: entitlement-service
+        serviceStateName: ENT_STARTED
+        phase: shotgun-annual-trial
+        auditLogs: []
+    }, class EventSubscription {
+        org.killbill.billing.client.model.gen.EventSubscription@1be0ca21
+        eventId: ce8578e7-553f-45d7-a4d1-2abb7e625f64
+        billingPeriod: ANNUAL
+        effectiveDate: 2012-04-25
+        plan: shotgun-annual
+        product: Shotgun
+        priceList: DEFAULT
+        eventType: START_BILLING
+        isBlockedBilling: false
+        isBlockedEntitlement: false
+        serviceName: billing-service
+        serviceStateName: START_BILLING
+        phase: shotgun-annual-trial
+        auditLogs: []
+    }, class EventSubscription {
+        org.killbill.billing.client.model.gen.EventSubscription@f0472744
+        eventId: 26d5ea05-b91d-43e6-8aa2-ac0ac82f6a95
+        billingPeriod: ANNUAL
+        effectiveDate: 2012-05-25
+        plan: shotgun-annual
+        product: Shotgun
+        priceList: DEFAULT
+        eventType: PHASE
+        isBlockedBilling: false
+        isBlockedEntitlement: false
+        serviceName: entitlement+billing-service
+        serviceStateName: PHASE
+        phase: shotgun-annual-evergreen
+        auditLogs: []
+    }]
+    priceOverrides: [class PhasePriceOverride {
+        planName: shotgun-annual
+        phaseName: shotgun-annual-trial
+        phaseType: TRIAL
+        fixedPrice: 0
+        recurringPrice: null
+        usagePriceOverrides: []
+    }, class PhasePriceOverride {
+        planName: shotgun-annual
+        phaseName: shotgun-annual-evergreen
+        phaseType: EVERGREEN
+        fixedPrice: null
+        recurringPrice: 2399.95
+        usagePriceOverrides: []
+    }]
+    auditLogs: []
+}
+```
 ```ruby
 {
    "accountId":"0cdaeca7-4984-47dc-b245-7c32627f26cd",
@@ -425,7 +650,28 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
+UUID accountId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
+
+Subscription newInput = new Subscription();
+newInput.setAccountId(accountId);
+newInput.setSubscriptionId(subscriptionId);
+newInput.setProductName("Shotgun");
+newInput.setProductCategory(ProductCategory.BASE);
+newInput.setBillingPeriod(BillingPeriod.MONTHLY);
+newInput.setPriceList("DEFAULT");
+
+LocalDate requestedDate = null;
+
+subscriptionApi.changeSubscriptionPlan(subscriptionId, 
+                                       newInput, 
+                                       requestedDate, 
+                                       BillingActionPolicy.IMMEDIATE, 
+                                       NULL_PLUGIN_PROPERTIES, 
+                                       requestOptions);
 ```
 
 ```ruby
@@ -467,6 +713,9 @@ subscriptionApi.change_subscription_plan(subscription_id,
 
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 {
    "accountId":"986c5d4e-b322-4d71-ad24-e3bf6e38734a",
@@ -600,7 +849,21 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
+
+Subscription updatedSubscription = new Subscription();
+updatedSubscription.setSubscriptionId(subscriptionId);
+updatedSubscription.setBillCycleDayLocal(9);
+
+LocalDate effectiveFromDate = null;
+
+subscriptionApi.updateSubscriptionBCD(subscriptionId, 
+                                      updatedSubscription, 
+                                      effectiveFromDate, 
+                                      requestOptions);
 ```
 
 ```ruby
@@ -634,6 +897,9 @@ subscriptionApi.update_subscription_bcd(subscription_id,
 
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
@@ -738,7 +1004,24 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
+
+final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+
+CustomFields customFields = new CustomFields();
+customFields.add(new CustomField(null, 
+                                 subscriptionId, 
+                                 ObjectType.SUBSCRIPTION, 
+                                 "Test Custom Field", 
+                                 "test_value", 
+                                 EMPTY_AUDIT_LOGS));
+
+subscriptionApi.createSubscriptionCustomFields(subscriptionId, 
+                                               customFields, 
+                                               requestOptions);
 ```
 
 ```ruby
@@ -768,6 +1051,18 @@ subscriptionApi.create_subscription_custom_fields(subscription_id,
 
 > Example Response:
 
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: cca08349-8b26-41c7-bfcc-2e3cf70a0f28
+    objectType: SUBSCRIPTION
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
+```
 ```ruby
 [
    {
@@ -807,7 +1102,14 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
+
+List<CustomField> customFields = subscriptionApi.getSubscriptionCustomFields(subscriptionId,
+                                                                             AuditLevel.NONE,
+                                                                             requestOptions);
 ```
 
 ```ruby
@@ -827,6 +1129,18 @@ subscriptionApi.get_subscription_custom_fields(subscription_id,
 
 > Example Response:
 
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: cca08349-8b26-41c7-bfcc-2e3cf70a0f28
+    objectType: SUBSCRIPTION
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
+```
 ```ruby
 [
    {
@@ -873,7 +1187,19 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+CustomField customFieldModified = new CustomField();
+customFieldModified.setCustomFieldId(customFieldsId);
+customFieldModified.setValue("NewValue");
+
+subscriptionApi.modifySubscriptionCustomFields(subscriptionId, 
+                                               customFieldModified, 
+                                               requestOptions);
 ```
 
 ```ruby
@@ -904,6 +1230,10 @@ subscriptionApi.modify_subscription_custom_fields(subscription_id,
 ```
 
 > Example Response:
+
+```java
+no content
+```
 
 ```ruby
 no content
@@ -937,7 +1267,15 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+subscriptionApi.deleteSubscriptionCustomFields(subscriptionId, 
+                                               customFieldsId, 
+                                               requestOptions);
 ```
 
 ```ruby
@@ -962,6 +1300,9 @@ subscriptionApi.delete_subscription_custom_fields(subscription_id,
 
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
@@ -993,7 +1334,15 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
+UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
+Tags result = subscriptionApi.createSubscriptionTags(subscriptionId, 
+                                                     ImmutableList.<UUID>of(autoPayOffId), 
+                                                     requestOptions);
 ```
 
 ```ruby
@@ -1019,6 +1368,18 @@ subscriptionApi.create_subscription_tags(subscription_id,
 ```
 > Example Response:
 
+```java
+//First element of the list
+class Tag {
+    org.killbill.billing.client.model.gen.Tag@bd138472
+    tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
+    objectType: SUBSCRIPTION
+    objectId: 917992d3-5f1f-4828-9fff-799cc4211aa9
+    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionName: AUTO_PAY_OFF
+    auditLogs: []
+}
+```
 ```ruby
 [
    {
@@ -1058,7 +1419,17 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
+
+Boolean includedDeleted = false; // Will not include deleted tags
+
+List<Tag> tags = subscriptionApi.getSubscriptionTags(subscriptionId, 
+                                                     includedDeleted, 
+                                                     AuditLevel.FULL, 
+                                                     requestOptions);
 ```
 
 ```ruby
@@ -1066,8 +1437,8 @@ included_deleted = false
 audit = 'NONE'
 
 subscription.tags(included_deleted,
-             audit,
-             options)
+                  audit,
+                  options)
 ```
 
 ```python
@@ -1081,6 +1452,18 @@ subscriptionApi.get_subscription_tags(subscription_id,
 
 > Example Response:
 
+```java
+//First element of the list
+class Tag {
+    org.killbill.billing.client.model.gen.Tag@bd138472
+    tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
+    objectType: SUBSCRIPTION
+    objectId: 917992d3-5f1f-4828-9fff-799cc4211aa9
+    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionName: AUTO_PAY_OFF
+    auditLogs: []
+}
+```
 ```ruby
 [
    {
@@ -1126,7 +1509,16 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
+
+UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
+subscriptionApi.deleteSubscriptionTags(subscriptionId, 
+                                       ImmutableList.<UUID>of(autoPayOffId), 
+                                       requestOptions);
 ```
 
 ```ruby
@@ -1153,6 +1545,9 @@ subscriptionApi.delete_subscription_tags(subscription_id,
 
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
@@ -1183,7 +1578,15 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+subscriptionApi.uncancelSubscriptionPlan(subscriptionId, 
+                                         NULL_PLUGIN_PROPERTIES, 
+                                         requestOptions);
 ```
 
 ```ruby
@@ -1205,6 +1608,9 @@ subscriptionApi.uncancel_subscription_plan(subscription_id,
 
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
@@ -1233,7 +1639,55 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID accountId = UUID.fromString("abfba40d-d2dd-47f0-94f2-8ea3e6bc8794");
+
+Subscription base = new Subscription();
+base.setAccountId(accountId);
+base.setExternalKey("base");
+base.setProductName("Shotgun");
+base.setProductCategory(ProductCategory.BASE);
+base.setBillingPeriod(BillingPeriod.MONTHLY);
+base.setPriceList("DEFAULT");
+
+final Subscription addOn1 = new Subscription();
+addOn1.setAccountId(accountId);
+addOn1.setProductName("Telescopic-Scope");
+addOn1.setProductCategory(ProductCategory.ADD_ON);
+addOn1.setBillingPeriod(BillingPeriod.MONTHLY);
+addOn1.setPriceList("DEFAULT");
+
+final Subscription addOn2 = new Subscription();
+addOn2.setAccountId(accountId);
+addOn2.setProductName("Laser-Scope");
+addOn2.setProductCategory(ProductCategory.ADD_ON);
+addOn2.setBillingPeriod(BillingPeriod.MONTHLY);
+addOn2.setPriceList("DEFAULT");
+
+final Subscriptions subscriptions = new Subscriptions();
+subscriptions.add(base);
+subscriptions.add(addOn1);
+subscriptions.add(addOn2);
+
+LocalDate entitlementDate = null;
+LocalDate billingDate = null;
+Boolean migrated = null;
+Boolean renameKeyIfExistsAndUnused = null;
+Boolean callCompletion = true;
+long DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC = 10;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+final Bundle bundle = subscriptionApi.createSubscriptionWithAddOns(subscriptions, 
+                                                                   entitlementDate, 
+                                                                   billingDate, 
+                                                                   migrated, 
+                                                                   renameKeyIfExistsAndUnused, 
+                                                                   callCompletion, 
+                                                                   DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC, 
+                                                                   NULL_PLUGIN_PROPERTIES, 
+                                                                   requestOptions);
 ```
 
 ```ruby
@@ -1294,6 +1748,405 @@ subscriptionApi.create_subscriptions_with_add_ons([body],
 
 > Example Response:
 
+```java
+class Bundle {
+    org.killbill.billing.client.model.gen.Bundle@ddd846f9
+    accountId: abfba40d-d2dd-47f0-94f2-8ea3e6bc8794
+    bundleId: 83f3a7b5-63c9-4b06-a1f5-7140fec67558
+    externalKey: base
+    subscriptions: [class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@bb1bf160
+        accountId: abfba40d-d2dd-47f0-94f2-8ea3e6bc8794
+        bundleId: 83f3a7b5-63c9-4b06-a1f5-7140fec67558
+        subscriptionId: 6fcf439b-4198-4963-8f0e-7e3054525a24
+        externalKey: base
+        startDate: 2012-04-25
+        productName: Shotgun
+        productCategory: BASE
+        billingPeriod: MONTHLY
+        phaseType: TRIAL
+        priceList: DEFAULT
+        planName: shotgun-monthly
+        state: ACTIVE
+        sourceType: NATIVE
+        cancelledDate: null
+        chargedThroughDate: 2012-04-25
+        billingStartDate: 2012-04-25
+        billingEndDate: null
+        billCycleDayLocal: 25
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@a6789138
+            eventId: fb7d653a-cadb-46f6-a04f-dbe7043385ed
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@b4b456ed
+            eventId: b5c00fdf-6ce4-46ad-b996-5513146d8acd
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@fb1cc392
+            eventId: edd91628-323d-4a3a-b07e-bef09a2623a2
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-05-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        priceOverrides: [class PhasePriceOverride {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-trial
+            phaseType: TRIAL
+            fixedPrice: 0
+            recurringPrice: null
+            usagePriceOverrides: []
+        }, class PhasePriceOverride {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: null
+            recurringPrice: 249.95
+            usagePriceOverrides: []
+        }]
+        auditLogs: []
+    }, class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@37a59f88
+        accountId: abfba40d-d2dd-47f0-94f2-8ea3e6bc8794
+        bundleId: 83f3a7b5-63c9-4b06-a1f5-7140fec67558
+        subscriptionId: a490a1c8-ca78-4cbd-bb5a-1ce214cc2f23
+        externalKey: base
+        startDate: 2012-04-25
+        productName: Telescopic-Scope
+        productCategory: ADD_ON
+        billingPeriod: MONTHLY
+        phaseType: DISCOUNT
+        priceList: DEFAULT
+        planName: telescopic-scope-monthly
+        state: ACTIVE
+        sourceType: NATIVE
+        cancelledDate: null
+        chargedThroughDate: 2012-05-25
+        billingStartDate: 2012-04-25
+        billingEndDate: null
+        billCycleDayLocal: 25
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@9c41861a
+            eventId: 6be47e8c-0ff6-45ee-9b79-7a91c6867e6c
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: telescopic-scope-monthly
+            product: Telescopic-Scope
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: telescopic-scope-monthly-discount
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@a386d43d
+            eventId: 0c6b12cb-9390-4d64-b98a-93a8c9a6b67b
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: telescopic-scope-monthly
+            product: Telescopic-Scope
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: telescopic-scope-monthly-discount
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@429a9148
+            eventId: 27ce7282-c84c-495a-a7fc-be393cfcf3a7
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-05-25
+            plan: telescopic-scope-monthly
+            product: Telescopic-Scope
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: telescopic-scope-monthly-evergreen
+            auditLogs: []
+        }]
+        priceOverrides: [class PhasePriceOverride {
+            planName: telescopic-scope-monthly
+            phaseName: telescopic-scope-monthly-discount
+            phaseType: DISCOUNT
+            fixedPrice: null
+            recurringPrice: 399.95
+            usagePriceOverrides: []
+        }, class PhasePriceOverride {
+            planName: telescopic-scope-monthly
+            phaseName: telescopic-scope-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: null
+            recurringPrice: 999.95
+            usagePriceOverrides: []
+        }]
+        auditLogs: []
+    }, class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@10da5c43
+        accountId: abfba40d-d2dd-47f0-94f2-8ea3e6bc8794
+        bundleId: 83f3a7b5-63c9-4b06-a1f5-7140fec67558
+        subscriptionId: 8f957bfa-61da-45ca-ae4c-ed34b045f18e
+        externalKey: base
+        startDate: 2012-04-25
+        productName: Laser-Scope
+        productCategory: ADD_ON
+        billingPeriod: MONTHLY
+        phaseType: DISCOUNT
+        priceList: DEFAULT
+        planName: laser-scope-monthly
+        state: ACTIVE
+        sourceType: NATIVE
+        cancelledDate: null
+        chargedThroughDate: 2012-05-25
+        billingStartDate: 2012-04-25
+        billingEndDate: null
+        billCycleDayLocal: 25
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@6615c622
+            eventId: eb05b9d5-a055-426c-8411-7fd9b4728d45
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: laser-scope-monthly
+            product: Laser-Scope
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: laser-scope-monthly-discount
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@41ddb948
+            eventId: 6fbe3e71-7e3b-4c3b-8bdd-27c8dc71e044
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: laser-scope-monthly
+            product: Laser-Scope
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: laser-scope-monthly-discount
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@182c6fd0
+            eventId: bec40e45-6ffb-49f3-831d-722f19d8ed09
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-05-25
+            plan: laser-scope-monthly
+            product: Laser-Scope
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: laser-scope-monthly-evergreen
+            auditLogs: []
+        }]
+        priceOverrides: [class PhasePriceOverride {
+            planName: laser-scope-monthly
+            phaseName: laser-scope-monthly-discount
+            phaseType: DISCOUNT
+            fixedPrice: null
+            recurringPrice: 999.95
+            usagePriceOverrides: []
+        }, class PhasePriceOverride {
+            planName: laser-scope-monthly
+            phaseName: laser-scope-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: null
+            recurringPrice: 1999.95
+            usagePriceOverrides: []
+        }]
+        auditLogs: []
+    }]
+    timeline: class BundleTimeline {
+        org.killbill.billing.client.model.gen.BundleTimeline@8a202296
+        accountId: abfba40d-d2dd-47f0-94f2-8ea3e6bc8794
+        bundleId: 83f3a7b5-63c9-4b06-a1f5-7140fec67558
+        externalKey: base
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@5aa4f7e9
+            eventId: eb05b9d5-a055-426c-8411-7fd9b4728d45
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: laser-scope-monthly
+            product: Laser-Scope
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: laser-scope-monthly-discount
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@1df149f3
+            eventId: 6be47e8c-0ff6-45ee-9b79-7a91c6867e6c
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: laser-scope-monthly
+            product: Laser-Scope
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: laser-scope-monthly-discount
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@68a2bc3b
+            eventId: fb7d653a-cadb-46f6-a04f-dbe7043385ed
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: laser-scope-monthly
+            product: Laser-Scope
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: laser-scope-monthly-discount
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@787b414d
+            eventId: 6fbe3e71-7e3b-4c3b-8bdd-27c8dc71e044
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: laser-scope-monthly
+            product: Laser-Scope
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: laser-scope-monthly-discount
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@5ba02249
+            eventId: 0c6b12cb-9390-4d64-b98a-93a8c9a6b67b
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: telescopic-scope-monthly
+            product: Telescopic-Scope
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: telescopic-scope-monthly-discount
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@d45c4b96
+            eventId: b5c00fdf-6ce4-46ad-b996-5513146d8acd
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@2360e010
+            eventId: bec40e45-6ffb-49f3-831d-722f19d8ed09
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-05-25
+            plan: laser-scope-monthly
+            product: Laser-Scope
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: laser-scope-monthly-evergreen
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@49d428fe
+            eventId: 27ce7282-c84c-495a-a7fc-be393cfcf3a7
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-05-25
+            plan: telescopic-scope-monthly
+            product: Telescopic-Scope
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: telescopic-scope-monthly-evergreen
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@aebff2be
+            eventId: edd91628-323d-4a3a-b07e-bef09a2623a2
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-05-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        auditLogs: []
+    }
+    auditLogs: []
+}
+```
 ```ruby
 no content
 ```
@@ -1331,7 +2184,61 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID accountId = UUID.fromString("a3087bfb-eb81-466d-afeb-6501c30f8f85");
+
+Subscription base = new Subscription();
+base.setAccountId(accountId);
+base.setExternalKey("base");
+base.setProductName("Shotgun");
+base.setProductCategory(ProductCategory.BASE);
+base.setBillingPeriod(BillingPeriod.MONTHLY);
+base.setPriceList("DEFAULT");
+
+final Subscription addOn1 = new Subscription();
+addOn1.setAccountId(accountId);
+addOn1.setProductName("Telescopic-Scope");
+addOn1.setProductCategory(ProductCategory.ADD_ON);
+addOn1.setBillingPeriod(BillingPeriod.MONTHLY);
+addOn1.setPriceList("DEFAULT");
+
+final Subscription addOn2 = new Subscription();
+addOn2.setAccountId(accountId);
+addOn2.setProductName("Laser-Scope");
+addOn2.setProductCategory(ProductCategory.ADD_ON);
+addOn2.setBillingPeriod(BillingPeriod.MONTHLY);
+addOn2.setPriceList("DEFAULT");
+
+final Subscriptions subscriptions = new Subscriptions();
+subscriptions.add(base);
+subscriptions.add(addOn1);
+subscriptions.add(addOn2);
+
+BulkSubscriptionsBundles bulkSubscriptionsBundles = new BulkSubscriptionsBundles();
+
+BulkSubscriptionsBundle bulkSubscriptionsBundle = new BulkSubscriptionsBundle();
+bulkSubscriptionsBundle.setBaseEntitlementAndAddOns(subscriptions);
+bulkSubscriptionsBundles.add(bulkSubscriptionsBundle);
+
+LocalDate entitlementDate = null;
+LocalDate billingDate = null;
+Boolean renameKeyIfExistsAndUnused = false;
+Boolean migrated = false;
+Boolean callCompletion = true;
+long DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC = 10;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+Bundles bundles = subscriptionApi.createSubscriptionsWithAddOns(bulkSubscriptionsBundles, 
+                                                                entitlementDate, 
+                                                                billingDate, 
+                                                                renameKeyIfExistsAndUnused, 
+                                                                migrated, 
+                                                                callCompletion, 
+                                                                DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC,
+                                                                NULL_PLUGIN_PROPERTIES, 
+                                                                requestOptions);
 ```
 
 ```ruby
@@ -1387,6 +2294,57 @@ subscriptionApi.create_subscription_with_add_ons(body,
 
 > Example Response:
 
+```java
+class BulkSubscriptionsBundle {
+    baseEntitlementAndAddOns: [class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@23b30120
+        accountId: a3087bfb-eb81-466d-afeb-6501c30f8f85
+        bundleId: 2df85b05-4a69-474b-9e10-02a836674cc8
+        subscriptionId: null
+        externalKey: null
+        startDate: null
+        productName: Telescopic-Scope
+        productCategory: ADD_ON
+        billingPeriod: MONTHLY
+        phaseType: null
+        priceList: DEFAULT
+        planName: null
+        state: null
+        sourceType: null
+        cancelledDate: null
+        chargedThroughDate: null
+        billingStartDate: null
+        billingEndDate: null
+        billCycleDayLocal: null
+        events: null
+        priceOverrides: null
+        auditLogs: null
+    }, class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@1b88c7d0
+        accountId: a3087bfb-eb81-466d-afeb-6501c30f8f85
+        bundleId: 2df85b05-4a69-474b-9e10-02a836674cc8
+        subscriptionId: null
+        externalKey: null
+        startDate: null
+        productName: Laser-Scope
+        productCategory: ADD_ON
+        billingPeriod: MONTHLY
+        phaseType: null
+        priceList: DEFAULT
+        planName: null
+        state: null
+        sourceType: null
+        cancelledDate: null
+        chargedThroughDate: null
+        billingStartDate: null
+        billingEndDate: null
+        billCycleDayLocal: null
+        events: null
+        priceOverrides: null
+        auditLogs: null
+    }]
+}
+```
 ```ruby
 no content
 ```
@@ -1423,7 +2381,15 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+subscriptionApi.undoChangeSubscriptionPlan(subscriptionId, 
+                                           NULL_PLUGIN_PROPERTIES, 
+                                           requestOptions);
 ```
 
 ```ruby
@@ -1445,6 +2411,9 @@ subscriptionApi.undo_change_subscription_plan(subscription_id,
 
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
