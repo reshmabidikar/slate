@@ -63,12 +63,9 @@ protected SubscriptionApi subscriptionApi;
 UUID accountId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
 
 Subscription input = new Subscription();
-input.setAccountId(accountId);
-input.setExternalKey("foobarxyz");
-input.setProductName("Shotgun");
-input.setProductCategory(ProductCategory.BASE);
-input.setBillingPeriod(BillingPeriod.MONTHLY);
-input.setPriceList(PriceListSet.DEFAULT_PRICELIST_NAME);
+input.setAccountId(accountJson.getAccountId());
+input.setExternalKey("somethingSpecial");
+input.setPlanName("shotgun-monthly");
 
 LocalDate entitlementDate = null;
 LocalDate billingDate = null;
@@ -122,11 +119,11 @@ subscriptionApi.create_subscription(body,
 
 ```java
 class Subscription {
-    org.killbill.billing.client.model.gen.Subscription@7e595d4c
-    accountId: 905a0636-ab63-40c0-acd4-b461b6808b5d
-    bundleId: 86526fef-6e81-4f7d-9caf-02e832c9b89b
-    subscriptionId: 85eef0e7-1de2-4dd3-91ad-a5668685d922
-    externalKey: foobarxyz
+    org.killbill.billing.client.model.gen.Subscription@49563466
+    accountId: e8cd6795-0da1-4848-831f-51977eed42b1
+    bundleId: eac6eecf-2060-434a-b472-170f80a7591c
+    subscriptionId: a74081ee-d7bb-4387-a1df-34e962e37699
+    externalKey: somethingSpecial
     startDate: 2012-04-25
     productName: Shotgun
     productCategory: BASE
@@ -137,13 +134,13 @@ class Subscription {
     state: ACTIVE
     sourceType: NATIVE
     cancelledDate: null
-    chargedThroughDate: 2012-04-25
+    chargedThroughDate: null
     billingStartDate: 2012-04-25
     billingEndDate: null
     billCycleDayLocal: 25
     events: [class EventSubscription {
-        org.killbill.billing.client.model.gen.EventSubscription@8e5dc5dd
-        eventId: a02af86d-475d-4253-8911-a909d6d2be20
+        org.killbill.billing.client.model.gen.EventSubscription@37b70727
+        eventId: 9ef798a3-95f6-41ac-9b86-00c9385c155f
         billingPeriod: MONTHLY
         effectiveDate: 2012-04-25
         plan: shotgun-monthly
@@ -157,8 +154,8 @@ class Subscription {
         phase: shotgun-monthly-trial
         auditLogs: []
     }, class EventSubscription {
-        org.killbill.billing.client.model.gen.EventSubscription@fe3f607b
-        eventId: 4eba9fc0-19f2-4ff7-a23d-31a5468cd8a2
+        org.killbill.billing.client.model.gen.EventSubscription@410923f5
+        eventId: 65ec07fa-61c7-4f05-bd6f-82cea23cf06a
         billingPeriod: MONTHLY
         effectiveDate: 2012-04-25
         plan: shotgun-monthly
@@ -172,8 +169,8 @@ class Subscription {
         phase: shotgun-monthly-trial
         auditLogs: []
     }, class EventSubscription {
-        org.killbill.billing.client.model.gen.EventSubscription@8ee05db
-        eventId: f2c704a4-ef6b-4eee-8183-9fed6f19aac3
+        org.killbill.billing.client.model.gen.EventSubscription@cac84db3
+        eventId: 88f77a50-edca-4cc3-b234-5d70c457128c
         billingPeriod: MONTHLY
         effectiveDate: 2012-05-25
         plan: shotgun-monthly
