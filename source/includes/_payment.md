@@ -432,7 +432,7 @@ import org.killbill.billing.client.api.gen.PaymentApi;
 protected PaymentApi paymentApi;
 
 UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
-Boolean withPluginInfo = false; // Will not reflect payment attempts
+Boolean withPluginInfo = false; // Will not reflect plugin info
 Boolean withAttempts = true; // Will reflect payment attempts
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
 
@@ -647,7 +647,7 @@ import org.killbill.billing.client.api.gen.PaymentApi;
 protected PaymentApi paymentApi;
 
 String externalPaymentKey = "11b28b2e-a377-4b95-b712-d71cbcb28f80";
-Boolean withPluginInfo = false; // Will not reflect payment attempts
+Boolean withPluginInfo = false; // Will not reflect plugin info
 Boolean withAttempts = false; // Will not reflect payment attempts
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
 
@@ -3210,7 +3210,7 @@ protected PaymentApi paymentApi;
 String searchKey = "ccbc67f5-91cb-4b9a-9648-fa6aedaf0890";
 Long offset = 0L;
 Long limit = 100L;
-Boolean withPluginInfo = false; // Will not reflect payment attempts
+Boolean withPluginInfo = false; // Will not reflect plugin info
 Boolean withAttempts = true;  // Will reflect payment attempts
 String pluginName = null;
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
