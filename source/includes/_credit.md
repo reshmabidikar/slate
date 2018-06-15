@@ -44,9 +44,11 @@ credit.setDescription("description");
 credit.setItemDetails("itemDetails");
 
 Boolean autoCommit = false;
+Map<String, String> pluginProperty = null;
 
 creditApi.createCredit(credit, 
-                       autoCommit, 
+                       autoCommit,
+                       pluginProperty,
                        requestOptions);
 ```
 

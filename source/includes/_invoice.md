@@ -197,10 +197,12 @@ adjustmentInvoiceItem.setAmount(adjustedAmount);
 adjustmentInvoiceItem.setCurrency(Currency.USD);
 
 LocalDate requestedDate = null;
+Map<String, String> pluginProperty = null;
 
 Invoice result = invoiceApi.adjustInvoiceItem(invoiceId, 
                                               adjustmentInvoiceItem, 
-                                              requestedDate, 
+                                              requestedDate,
+                                              pluginProperty,
                                               requestOptions);
 ```
 
@@ -2144,17 +2146,12 @@ LocalDate requestedDate = clock.getUTCToday();
 Boolean payInvoice = false;
 Map<String, String> pluginProperty = null;
 Boolean autoCommit = true;
-String paymentExternalKey = null;
-String transactionExternalKey null;
 
 List<InvoiceItem> createdExternalCharges = invoiceApi.createExternalCharges(accountId, 
                                                                             externalCharges, 
-                                                                            requestedDate, 
-                                                                            payInvoice, 
+                                                                            requestedDate,
+                                                                            autoCommit
                                                                             pluginProperty, 
-                                                                            autoCommit, 
-                                                                            paymentExternalKey, 
-                                                                            transactionExternalKey, 
                                                                             requestOptions);
 ```
 
@@ -2244,10 +2241,6 @@ no content
 | ---- | -----| -------- | ----------- |
 | **requestedDate** | string | false | requested date |
 | **autoCommit** | boolean | false | auto commit |
-| **payInvoice** | boolean | false | pay invoice |
-| **paymentExternalKey** | string | false | payment external key |
-| **transactionExternalKey** | boolean | false | transaction external key |
-
 
 **Response**
 
@@ -3439,6 +3432,138 @@ class Invoice {
 **Returns**
 
 Return a list with invoices matched with the search key entered.
+
+## Create tax items
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/invoices/taxes/{accountId}`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+UUID accountId = UUID.fromString("eb36c64c-b575-4538-b26f-a89c473984da");
+UID bundleId = UUID.fromString("28723cec-5510-49be-9e87-3a36d246f25e");
+
+InvoiceItem taxItem = new InvoiceItem();
+taxItem.setAccountId(accountId);
+taxItem.setAmount(BigDecimal.TEN);
+taxItem.setCurrency(Currency.USD);
+taxItem.setBundleId(bundleId);
+final InvoiceItems input = new InvoiceItems();
+input.add(taxItem);
+
+Boolean autoCommit = true;
+LocalDate requestedDate = clock.getUTCToday();
+Map<String, String> pluginProperty = null;
+
+List<InvoiceItem> createdExternalCharges = invoiceApi.createTaxItems(accountId, 
+                                                                     input,
+                                                                     autoCommit,
+                                                                     requestedDate,
+                                                                     pluginProperty,
+                                                                     requestOptions);
+```
+
+```ruby
+invoice_item             = KillBillClient::Model::InvoiceItem.new()
+invoice_item.account_id  = "29ef0d50-90d1-4163-bb46-ef1b82675ae6"
+invoice_item.amount      = '50.0'
+invoice_item.currency    = 'USD'
+invoice_item.description = 'My charge'
+
+auto_commit = true
+
+invoice_item.create_tax_items(auto_commit, 
+                              user, 
+                              reason, 
+                              comment, 
+                              options)
+```
+
+```python
+invoiceApi = killbill.api.InvoiceApi()
+body = InvoiceItem(account_id=account_id,
+                   amount=50.0,
+                   currency='USD',
+                   description='My charge')
+
+invoiceApi.create_tax_items(account_id,
+                            [body],
+                            created_by,
+                            api_key,
+                            api_secret,
+                            auto_commit=True)
+```
+
+> Example Response:
+
+```java
+class InvoiceItem {
+    org.killbill.billing.client.model.gen.InvoiceItem@bedd818e
+    invoiceItemId: 04ebfae8-7898-4c1b-b10e-6fad862e7077
+    invoiceId: 000108b4-d0e3-452f-8537-13f6669f8767
+    linkedInvoiceItemId: null
+    accountId: eb36c64c-b575-4538-b26f-a89c473984da
+    childAccountId: null
+    bundleId: 28723cec-5510-49be-9e87-3a36d246f25e
+    subscriptionId: null
+    productName: null
+    planName: null
+    phaseName: null
+    usageName: null
+    prettyProductName: null
+    prettyPlanName: null
+    prettyPhaseName: null
+    prettyUsageName: null
+    itemType: TAX
+    description: Tax
+    startDate: 2012-09-25
+    endDate: null
+    amount: 10.00
+    rate: null
+    currency: USD
+    quantity: null
+    itemDetails: null
+    childItems: null
+    auditLogs: []
+}
+```
+```ruby
+{
+   "invoiceItemId":"20d3bdc8-48c1-48f5-9d9f-5cf0d273dff6",
+   "invoiceId":"40655121-ac13-4fe4-af49-02ba668ff4bb",
+   "accountId":"29ef0d50-90d1-4163-bb46-ef1b82675ae6",
+   "itemType":"TAX",
+   "description":"My charge",
+   "startDate":"2013-08-01",
+   "amount":50.0,
+   "currency":"USD",
+   "auditLogs":[]
+}
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **requestedDate** | string | false | requested date |
+| **autoCommit** | boolean | false | auto commit |
+
+
+**Response**
+
+Returns a invoice object.
 
 ## Upload the invoice template for the tenant
 
