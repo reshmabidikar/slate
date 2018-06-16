@@ -268,7 +268,6 @@ Kill Bill relies on HTTP response codes to indicate the success or failure of an
 * **`4xx`** status often indicate a client side error -- e.g missing madatory API field
 * **`5xx`** status indicate an error with Kill Bill's servers or third party system -- e.g payment gateway returns 5xx.
 
-200, 201, 202, 204
 
 ```
 HTTP status code summary:
