@@ -2,7 +2,11 @@
 
 ## Bundle Resource
 
-The `Bundle` resource represents a collection of subscriptions that are associated with a particular instance of a product. 
+The `Bundle` resource represents a collection of subscriptions. Grouping certain subscriptions into a bundle is mostly useful to ensure
+that certain operations propagate to the group. A common example is upon cancellation, to ensure that when cancelling a `BASE` subscription,
+any `ADD_ON` subscriptions in the same bundle also end up being cancelled automatically. The Bundle is automatically created by the system
+when creating the intial subscription and in order to add additional subscriptions in the same bundle one must specify the `bundleId` previously
+created.
 
 The attributes are the following:
 
@@ -27,7 +31,16 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+String externalKey = "93199";
+Boolean includedDeleted = false; // Will not include deleted bundles
+
+Bundles bundles = bundleApi.getBundleByKey(externalKey, 
+                                           includedDeleted,
+                                           AuditLevel.NONE,
+                                           requestOptions);
 ```
 
 ```ruby
@@ -49,6 +62,151 @@ bundleApi.get_bundle_by_key(bundle_external_key, api_key, api_secret)
 
 > Example Response:
 
+```java
+class Bundle {
+    org.killbill.billing.client.model.gen.Bundle@2b6e1c9d
+    accountId: a7c0b70d-fbc3-43cf-98e7-0af57c1a93fb
+    bundleId: 4a2fcd90-7c8c-4877-93f9-9e99e8cd6953
+    externalKey: 93199
+    subscriptions: [class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@22dc8662
+        accountId: a7c0b70d-fbc3-43cf-98e7-0af57c1a93fb
+        bundleId: 4a2fcd90-7c8c-4877-93f9-9e99e8cd6953
+        subscriptionId: 9a55b6f3-ada7-4a78-915f-373af56cbb00
+        externalKey: 93199
+        startDate: 2012-04-25
+        productName: Shotgun
+        productCategory: BASE
+        billingPeriod: MONTHLY
+        phaseType: TRIAL
+        priceList: DEFAULT
+        planName: shotgun-monthly
+        state: ACTIVE
+        sourceType: NATIVE
+        cancelledDate: null
+        chargedThroughDate: 2012-04-25
+        billingStartDate: 2012-04-25
+        billingEndDate: null
+        billCycleDayLocal: 25
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@ebe2ab4a
+            eventId: 37b7e919-08ba-4c7d-a902-8d7a10b47157
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@9e770028
+            eventId: 2a994af7-8faf-444f-a1df-fd6c68a9dbab
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@54e085c2
+            eventId: 95ddcc14-ea6d-4a5c-b057-3a0d33341ab9
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-05-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        priceOverrides: [class PhasePriceOverride {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-trial
+            phaseType: TRIAL
+            fixedPrice: 0
+            recurringPrice: null
+            usagePriceOverrides: []
+        }, class PhasePriceOverride {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: null
+            recurringPrice: 249.95
+            usagePriceOverrides: []
+        }]
+        auditLogs: []
+    }]
+    timeline: class BundleTimeline {
+        org.killbill.billing.client.model.gen.BundleTimeline@7ea930a8
+        accountId: a7c0b70d-fbc3-43cf-98e7-0af57c1a93fb
+        bundleId: 4a2fcd90-7c8c-4877-93f9-9e99e8cd6953
+        externalKey: 93199
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@89e50f83
+            eventId: 37b7e919-08ba-4c7d-a902-8d7a10b47157
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@cb989fa0
+            eventId: 2a994af7-8faf-444f-a1df-fd6c68a9dbab
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@5fe74ae5
+            eventId: 95ddcc14-ea6d-4a5c-b057-3a0d33341ab9
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-05-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        auditLogs: []
+    }
+    auditLogs: []
+}
+```
 ```ruby
 {
    "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
@@ -334,6 +492,17 @@ Retrieves the details information for the `Bundle` using its `bundleId`.
 
 > Example Request:
 
+```java
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("90ec582a-5da8-49d5-a656-c63cbc9d30fd");
+
+Bundle result = bundleApi.getBundle(bundleId, 
+                                    AuditLevel.NONE, 
+                                    requestOptions);
+```
+
 ```ruby
 bundle_id = "5b7a5f2d-4054-412f-b354-b722c2cff4ec"
 
@@ -354,7 +523,172 @@ bundleApi.get_bundle(bundle_id, api_key, api_secret)
 **TODO**
 ```
 ```java
-**TODO**
+class Bundle {
+    org.killbill.billing.client.model.gen.Bundle@efd93c26
+    accountId: 11d96ccc-9bfb-4349-8d75-0ae5a7ed8d14
+    bundleId: 90ec582a-5da8-49d5-a656-c63cbc9d30fd
+    externalKey: 93199
+    subscriptions: [class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@256a98cc
+        accountId: 11d96ccc-9bfb-4349-8d75-0ae5a7ed8d14
+        bundleId: 90ec582a-5da8-49d5-a656-c63cbc9d30fd
+        subscriptionId: 2a95b238-719f-4c2d-a63e-f1f34f11dd53
+        externalKey: 93199
+        startDate: 2012-04-25
+        productName: Shotgun
+        productCategory: BASE
+        billingPeriod: MONTHLY
+        phaseType: TRIAL
+        priceList: DEFAULT
+        planName: shotgun-monthly
+        state: CANCELLED
+        sourceType: NATIVE
+        cancelledDate: 2012-04-25
+        chargedThroughDate: 2012-04-25
+        billingStartDate: 2012-04-25
+        billingEndDate: 2012-04-25
+        billCycleDayLocal: 25
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@a883ef63
+            eventId: 18719cae-eab1-4f75-9ea7-f1e3135a3e7c
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@856f5bdf
+            eventId: 81518934-4418-491b-819c-72ab7c840bd6
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@3ced19b8
+            eventId: c0a8f0ce-db27-4371-81f0-74148e36663f
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: STOP_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: true
+            serviceName: entitlement-service
+            serviceStateName: ENT_CANCELLED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@401111f4
+            eventId: 762e80db-d75e-4b67-9ccc-b816a00181b7
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: STOP_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: STOP_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }]
+        priceOverrides: [class PhasePriceOverride {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-trial
+            phaseType: TRIAL
+            fixedPrice: 0
+            recurringPrice: null
+            usagePriceOverrides: []
+        }]
+        auditLogs: []
+    }]
+    timeline: class BundleTimeline {
+        org.killbill.billing.client.model.gen.BundleTimeline@b8eeb095
+        accountId: 11d96ccc-9bfb-4349-8d75-0ae5a7ed8d14
+        bundleId: 90ec582a-5da8-49d5-a656-c63cbc9d30fd
+        externalKey: 93199
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@d88c1e6d
+            eventId: 18719cae-eab1-4f75-9ea7-f1e3135a3e7c
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@92c880de
+            eventId: 81518934-4418-491b-819c-72ab7c840bd6
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@4871bbf6
+            eventId: c0a8f0ce-db27-4371-81f0-74148e36663f
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: STOP_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: true
+            serviceName: entitlement-service
+            serviceStateName: ENT_CANCELLED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@3be2d635
+            eventId: 762e80db-d75e-4b67-9ccc-b816a00181b7
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: STOP_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: STOP_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }]
+        auditLogs: []
+    }
+    auditLogs: []
+}
 ```
 ```ruby
 {
@@ -640,6 +974,29 @@ The new account_id should be set in this object
 
 > Example Request:
 
+```java
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("b84a8af9-73d4-4749-8d81-38dbcc2d7fb1");
+UUID accountId = UUID.fromString("d82d3638-fca7-4c16-9e68-8f8db75997cc");
+
+Bundle bundle = new Bundle();
+bundle.setAccountId(accountId);
+bundle.setBundleId(bundleId);
+
+LocalDate requestedDate = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+BillingActionPolicy billingPolicy = null;
+
+Bundle result = bundleApi.transferBundle(bundleId, 
+                                         bundle, 
+                                         requestedDate, 
+                                         billingPolicy,
+                                         NULL_PLUGIN_PROPERTIES, 
+                                         requestOptions);
+```
+
 ```ruby
 requested_date = "2013-08-01"
 billing_policy = "END_OF_TERM"
@@ -675,7 +1032,149 @@ bundleApi.transfer_bundle(bundle_id,
 **TODO**
 ```
 ```java
-**TODO**
+class Bundle {
+    org.killbill.billing.client.model.gen.Bundle@222591c5
+    accountId: d82d3638-fca7-4c16-9e68-8f8db75997cc
+    bundleId: b84a8af9-73d4-4749-8d81-38dbcc2d7fb1
+    externalKey: 93199
+    subscriptions: [class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@a668d933
+        accountId: d82d3638-fca7-4c16-9e68-8f8db75997cc
+        bundleId: b84a8af9-73d4-4749-8d81-38dbcc2d7fb1
+        subscriptionId: 373e7cce-0558-4c31-98af-aab54b67c4a6
+        externalKey: 93199
+        startDate: 2012-04-25
+        productName: Shotgun
+        productCategory: BASE
+        billingPeriod: MONTHLY
+        phaseType: TRIAL
+        priceList: DEFAULT
+        planName: shotgun-monthly
+        state: ACTIVE
+        sourceType: TRANSFERRED
+        cancelledDate: null
+        chargedThroughDate: null
+        billingStartDate: 2012-04-25
+        billingEndDate: null
+        billCycleDayLocal: 25
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@1e1bbe63
+            eventId: 1779fcae-a6ca-43dd-9429-85f946fa4055
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@54887921
+            eventId: b242eda1-dc26-4875-b92c-a99c76084a06
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@5652e31d
+            eventId: 5b59caa3-d996-4c9c-afc1-cc932e5a0ff8
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-05-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        priceOverrides: [class PhasePriceOverride {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-trial
+            phaseType: TRIAL
+            fixedPrice: 0
+            recurringPrice: null
+            usagePriceOverrides: []
+        }, class PhasePriceOverride {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: null
+            recurringPrice: 249.95
+            usagePriceOverrides: []
+        }]
+        auditLogs: []
+    }]
+    timeline: class BundleTimeline {
+        org.killbill.billing.client.model.gen.BundleTimeline@8ad5adda
+        accountId: d82d3638-fca7-4c16-9e68-8f8db75997cc
+        bundleId: b84a8af9-73d4-4749-8d81-38dbcc2d7fb1
+        externalKey: 93199
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@49f9e293
+            eventId: 1779fcae-a6ca-43dd-9429-85f946fa4055
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@55e764b4
+            eventId: b242eda1-dc26-4875-b92c-a99c76084a06
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@16aec25d
+            eventId: 5b59caa3-d996-4c9c-afc1-cc932e5a0ff8
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-05-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        auditLogs: []
+    }
+    auditLogs: []
+}
 ```
 ```ruby
 {
@@ -806,6 +1305,40 @@ Returns a bundle object if a valid account and bundle id's was provided.
 
 > Example Request:
 
+```java
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("b84a8af9-73d4-4749-8d81-38dbcc2d7fb1");
+
+String stateName = "block";
+String service = "service";
+Boolean isBlockChange = false;
+Boolean isBlockEntitlement = true;
+Boolean isBlockBilling = true;
+DateTime effectiveDate = null;
+List<AuditLog> auditLogs = null;
+
+BlockingState blockingState = new BlockingState(bundleId, 
+                                                stateName, 
+                                                service, 
+                                                isBlockChange, 
+                                                isBlockEntitlement, 
+                                                isBlockBilling, 
+                                                effectiveDate, 
+                                                BlockingStateType.SUBSCRIPTION_BUNDLE, 
+                                                auditLogs);
+
+LocalDate requestedDate = clock.getToday(DateTimeZone.forID(account.getTimeZone()));
+Map<String, String> pluginProperty = ImmutableMap.<String, String>of();
+
+bundleApi.addBundleBlockingState(bundleId, 
+                                 blockingState, 
+                                 requestedDate, 
+                                 pluginProperty, 
+                                 requestOptions);
+```
+
 ```ruby
 state_name = "STATE1"
 service = "ServiceStateService"
@@ -848,7 +1381,7 @@ bundleApi.add_bundle_blocking_state(bundle_id,
 **TODO**
 ```
 ```java
-**TODO**
+no content
 ```
 ```ruby
 no content
@@ -880,7 +1413,23 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("b84a8af9-73d4-4749-8d81-38dbcc2d7fb1");
+final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+
+CustomFields customFields = new CustomFields();
+customFields.add(new CustomField(null, 
+                                 bundleId, 
+                                 ObjectType.BUNDLE, 
+                                 "Test Custom Field", 
+                                 "test_value", 
+                                 EMPTY_AUDIT_LOGS));
+
+bundleApi.createBundleCustomFields(bundleId, 
+                                   customFields, 
+                                   requestOptions);
 ```
 
 ```ruby
@@ -909,6 +1458,18 @@ bundleApi.create_bundle_custom_fields(bundle_id,
 
 > Example Response:
 
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: 59860a0d-c032-456d-a35e-3a48fe8579e5
+    objectType: BUNDLE
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
+```
 ```ruby
 [
    {
@@ -945,7 +1506,14 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+
+List<CustomField> bundleCustomFields = bundleApi.getBundleCustomFields(bundleId,
+                                                                       AuditLevel.NONE,
+                                                                       requestOptions);
 ```
 
 ```ruby
@@ -963,6 +1531,18 @@ bundleApi.get_bundle_custom_fields(bundle_id, api_key, api_secret)
 
 > Example Response:
 
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: 59860a0d-c032-456d-a35e-3a48fe8579e5
+    objectType: BUNDLE
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
+```
 ```ruby
 [
    {
@@ -1008,7 +1588,19 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+CustomField customFieldModified = new CustomField();
+customFieldModified.setCustomFieldId(customFieldsId);
+customFieldModified.setValue("NewValue");
+
+bundleApi.modifyBundleCustomFields(bundleId, 
+                                   customFieldModified, 
+                                   requestOptions);
 ```
 
 ```ruby
@@ -1038,13 +1630,15 @@ bundleApi.modify_bundle_custom_fields(bundle_id,
 
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
 ```python
 no content
 ```
-
 
 **Query Parameters**
 
@@ -1067,7 +1661,15 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+bundleApi.deleteBundleCustomFields(bundleId, 
+                                   customFieldsId, 
+                                   requestOptions);
 ```
 
 ```ruby
@@ -1092,6 +1694,9 @@ bundleApi.delete_bundle_custom_fields(bundle_id,
 
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
@@ -1288,7 +1893,16 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
+
+UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
+Tags result = bundleApi.createBundleTags(bundleId, 
+                                         ImmutableList.<UUID>of(autoPayOffId), 
+                                         requestOptions);
 ```
 
 ```ruby
@@ -1315,6 +1929,18 @@ bundleApi.create_bundle_tags(bundle_id,
 
 > Example Response:
 
+```java
+//First element of the list
+class Tag {
+    org.killbill.billing.client.model.gen.Tag@bd138472
+    tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
+    objectType: BUNDLE
+    objectId: 917992d3-5f1f-4828-9fff-799cc4211aa9
+    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionName: AUTO_PAY_OFF
+    auditLogs: []
+}
+```
 ```ruby
 [
    {
@@ -1356,7 +1982,16 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
+Boolean includedDeleted = false; // Will not include deleted tags
+
+List<Tag> tags1 = bundleApi.getBundleTags(bundleId, 
+                                          includedDeleted, 
+                                          AuditLevel.FULL, 
+                                          requestOptions);
 ```
 
 ```ruby
@@ -1376,6 +2011,28 @@ bundleApi.get_bundle_tags(bundle_id, api_key, api_secret)
 ```
 > Example Response:
 
+```java
+//First element of the list
+class Tag {
+    org.killbill.billing.client.model.gen.Tag@cae768d7
+    tagId: d724f79d-fad1-4758-b35e-d62708450d90
+    objectType: BUNDLE
+    objectId: e659f0f3-745c-46d5-953c-28fe9282fc7d
+    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionName: AUTO_PAY_OFF
+    auditLogs: [class AuditLog {
+        changeType: INSERT
+        changeDate: 2012-08-25T00:00:02.000Z
+        objectType: TAG
+        objectId: d724f79d-fad1-4758-b35e-d62708450d90
+        changedBy: Toto
+        reasonCode: i am god
+        comments: no comment
+        userToken: e36f7ba5-fb5b-41c0-b47c-77c48ab37dd9
+        history: null
+    }]
+}
+```
 ```ruby
 [
    {
@@ -1423,7 +2080,16 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+UUID bundleId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
+
+UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
+bundleApi.deleteBundleTags(bundleId, 
+                           ImmutableList.<UUID>of(autoPayOffId), 
+                           requestOptions);
 ```
 
 ```ruby
@@ -1450,6 +2116,9 @@ bundleApi.delete_bundle_tags(bundle_id,
 
 > Example Response:
 
+```java
+no content
+```
 ```ruby
 no content
 ```
@@ -1480,7 +2149,16 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+Long offset = 0L;
+Long limit = 1L;
+
+Bundles allBundles = bundleApi.getBundles(offset, 
+                                          limit, 
+                                          AuditLevel.NONE, 
+                                          requestOptions);
 ```
 
 ```ruby
@@ -1499,6 +2177,138 @@ bundleApi.get_bundles(api_key, api_secret,)
 ```
 > Example Response:
 
+```java
+//First element of the list
+class Bundle {
+    org.killbill.billing.client.model.gen.Bundle@2659bf49
+    accountId: b99980fb-331f-4129-834b-3522e845a4e3
+    bundleId: b424e3d6-d747-4309-954d-1acb41bc690c
+    externalKey: 757e352e-dd97-4800-93a8-d2c38e407140
+    subscriptions: [class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@ec70e97d
+        accountId: b99980fb-331f-4129-834b-3522e845a4e3
+        bundleId: b424e3d6-d747-4309-954d-1acb41bc690c
+        subscriptionId: bacec1ee-7815-485f-bec2-0a875a8d68ad
+        externalKey: 757e352e-dd97-4800-93a8-d2c38e407140
+        startDate: 2012-08-25
+        productName: Shotgun
+        productCategory: BASE
+        billingPeriod: MONTHLY
+        phaseType: TRIAL
+        priceList: DEFAULT
+        planName: shotgun-monthly
+        state: ACTIVE
+        sourceType: NATIVE
+        cancelledDate: null
+        chargedThroughDate: 2012-08-25
+        billingStartDate: 2012-08-25
+        billingEndDate: null
+        billCycleDayLocal: 24
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@324b0f94
+            eventId: 9b35680c-c63c-47c8-9fe5-671b4bfa4e69
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-08-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@a1eefba7
+            eventId: b24494ca-755c-4432-8b21-6923d5fdd30f
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-08-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@66e2bfa7
+            eventId: a306143d-d2a3-4f72-95c8-91b97ee7e6ca
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-09-24
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        priceOverrides: []
+        auditLogs: []
+    }]
+    timeline: class BundleTimeline {
+        org.killbill.billing.client.model.gen.BundleTimeline@d6ec82ea
+        accountId: b99980fb-331f-4129-834b-3522e845a4e3
+        bundleId: b424e3d6-d747-4309-954d-1acb41bc690c
+        externalKey: 757e352e-dd97-4800-93a8-d2c38e407140
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@43676058
+            eventId: 9b35680c-c63c-47c8-9fe5-671b4bfa4e69
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-08-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@2e29a294
+            eventId: b24494ca-755c-4432-8b21-6923d5fdd30f
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-08-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@9c578f29
+            eventId: a306143d-d2a3-4f72-95c8-91b97ee7e6ca
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-09-24
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        auditLogs: []
+    }
+    auditLogs: []
+}
+```
 ```ruby
 [
   {
@@ -1777,7 +2587,18 @@ TODO
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+String searchKey = "93199";
+Long offset = 0L;
+Long limit = 1L;
+
+Bundles result = bundleApi.searchBundles(searchKey, 
+                                         offset, 
+                                         limit, 
+                                         AuditLevel.NONE, 
+                                         requestOptions);
 ```
 
 ```ruby
@@ -1799,6 +2620,138 @@ bundleApi.search_bundles(search_key, api_key, api_secret)
 ```
 > Example Response:
 
+```java
+//First element of the list
+class Bundle {
+    org.killbill.billing.client.model.gen.Bundle@6c335adf
+    accountId: 132f0ce0-b3ae-4e49-90fd-b265ae8515b6
+    bundleId: 23a23ae2-5b41-4b88-a731-98cb6f6f3f21
+    externalKey: 93199
+    subscriptions: [class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@30aa99f
+        accountId: 132f0ce0-b3ae-4e49-90fd-b265ae8515b6
+        bundleId: 23a23ae2-5b41-4b88-a731-98cb6f6f3f21
+        subscriptionId: bc39131f-538d-406c-96f2-38db68dd328a
+        externalKey: 93199
+        startDate: 2012-04-25
+        productName: Shotgun
+        productCategory: BASE
+        billingPeriod: MONTHLY
+        phaseType: TRIAL
+        priceList: DEFAULT
+        planName: shotgun-monthly
+        state: ACTIVE
+        sourceType: NATIVE
+        cancelledDate: null
+        chargedThroughDate: 2012-04-25
+        billingStartDate: 2012-04-25
+        billingEndDate: null
+        billCycleDayLocal: 25
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@850eec8c
+            eventId: 03b54e77-da03-4efb-823c-03d4a42557f4
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@c9d2600
+            eventId: 81afc2cd-ac13-4b48-86c9-920443291ff7
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@e7c34c4e
+            eventId: 0bd9e27d-50fe-4144-9b52-01a0964d2306
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-05-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        priceOverrides: []
+        auditLogs: []
+    }]
+    timeline: class BundleTimeline {
+        org.killbill.billing.client.model.gen.BundleTimeline@92a9f4c7
+        accountId: 132f0ce0-b3ae-4e49-90fd-b265ae8515b6
+        bundleId: 23a23ae2-5b41-4b88-a731-98cb6f6f3f21
+        externalKey: 93199
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@9fa4b25a
+            eventId: 03b54e77-da03-4efb-823c-03d4a42557f4
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@77fd66a
+            eventId: 81afc2cd-ac13-4b48-86c9-920443291ff7
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@b5670810
+            eventId: 0bd9e27d-50fe-4144-9b52-01a0964d2306
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-05-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        auditLogs: []
+    }
+    auditLogs: []
+}
+```
 ```ruby
 [
   {

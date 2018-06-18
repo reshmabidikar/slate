@@ -97,6 +97,16 @@ KillBillHttpClient killBillHttpClient = new KillBillHttpClient(String.format("ht
                                             DEFAULT_REQUEST_TIMEOUT_SEC * 1000);
                                             
 KillBillClient killBillClient = new KillBillClient(killBillHttpClient);
+
+// Request Options example
+protected static final String createdBy = "me";
+protected static final String reason = "Going through my first tutorial";
+protected static final String comment = "I like it!";
+RequestOptions requestOptions = RequestOptions.builder()
+                                                      .withCreatedBy(createdBy)
+                                                      .withReason(reason)
+                                                      .withComment(comment)
+                                                      .withQueryParams(queryParams).build();
 ```
 
 ```ruby
@@ -258,7 +268,6 @@ Kill Bill relies on HTTP response codes to indicate the success or failure of an
 * **`4xx`** status often indicate a client side error -- e.g missing madatory API field
 * **`5xx`** status indicate an error with Kill Bill's servers or third party system -- e.g payment gateway returns 5xx.
 
-200, 201, 202, 204
 
 ```
 HTTP status code summary:
@@ -283,4 +292,10 @@ In addition to these error codes, the system will often return some json to prov
 * **`code`** : Each error in Kill Bill is associated with a an [ErrorCode](https://github.com/killbill/killbill-api/blob/master/src/main/java/org/killbill/billing/ErrorCode.java#L21).
 * **`formattedMsg`** : A description of the error for the specific resource(s).
 * **`cause`** : An optional stack trace.
+
+
+## Additional Resources
+
+TODO: Provide pointers to documentation manual and explain what they are.
+
 
