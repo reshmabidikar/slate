@@ -30,7 +30,6 @@ The attributes are the following:
 * **`phone`** <span style="color:#32A9C7">*[User generated, default null]*</span>: The phone contact to reach the customer.
 * **`notes`** <span style="color:#32A9C7">*[User generated, default null]*</span>: Additonal notes about the customer, usually set by customer service department.
 * **`isMigrated`** <span style="color:#32A9C7">*[User generated, default null]*</span>: Whether this account was migrated from another system.
-* **`isNotifiedForInvoices`** : TODO deprecated ?
 
 ## Create an Account 
 
@@ -119,7 +118,6 @@ class Account {
     phone: null
     notes: null
     isMigrated: false
-    isNotifiedForInvoices: false
     accountBalance: null
     accountCBA: null
     auditLogs: []
@@ -136,7 +134,6 @@ class Account {
    "currency":"USD",
    "isPaymentDelegatedToParent":false,
    "timeZone":"UTC",
-   "isNotifiedForInvoices":false,
    "auditLogs":[]
 }
 ```
@@ -237,7 +234,6 @@ class Account {
     phone: null
     notes: null
     isMigrated: false
-    isNotifiedForInvoices: false
     accountBalance: null
     accountCBA: null
     auditLogs: []
@@ -268,7 +264,6 @@ class Account {
    "phone":null,
    "notes":null,
    "isMigrated":null,
-   "isNotifiedForInvoices":false,
    "accountBalance":null,
    "accountCBA":null,
    "auditLogs":[]
@@ -399,7 +394,6 @@ class Account {
     phone: null
     notes: null
     isMigrated: false
-    isNotifiedForInvoices: false
     accountBalance: null
     accountCBA: null
     auditLogs: []
@@ -430,7 +424,6 @@ class Account {
    "phone":null,
    "notes":null,
    "isMigrated":null,
-   "isNotifiedForInvoices":false,
    "accountBalance":null,
    "accountCBA":null,
    "auditLogs":[]
@@ -561,7 +554,6 @@ no content
    "country":"US",
    "locale":"fr_FR",
    "notes":"My notes",
-   "isNotifiedForInvoices":false,
    "auditLogs":[]
 }
 ```
@@ -1024,7 +1016,6 @@ class AuditLog {
               phone=81 53 26 56, 
               notes=notes, 
               migrated=false, 
-              isNotifiedForInvoices=false, 
               tableName=ACCOUNT, 
               historyTableName=ACCOUNT_HISTORY}
 }
@@ -1067,7 +1058,6 @@ class AuditLog {
          "phone":null,
          "notes":null,
          "migrated":null,
-         "isNotifiedForInvoices":false,
          "tableName":"ACCOUNT",
          "historyTableName":"ACCOUNT_HISTORY"
       }
@@ -2381,7 +2371,6 @@ class Account {
     phone: 81 53 26 56
     notes: notes
     isMigrated: false
-    isNotifiedForInvoices: false
     accountBalance: 0
     accountCBA: 0E-9
     auditLogs: []
@@ -2407,7 +2396,6 @@ class Account {
       "state":"California",
       "country":"US",
       "locale":"fr_FR",
-      "isNotifiedForInvoices":false,
       "auditLogs":[
 
       ]
@@ -2781,143 +2769,6 @@ no content
 **Response**
 
 A `204` http status without content.
-
-## Set account email notification
-
-**HTTP Request** 
-
-`PUT http://example.com/1.0/kb/accounts/{accountId}/emailNotifications`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
-Boolean isNotifiedForInvoices = true;
-
-InvoiceEmail invoiceEmailJsonWithNotifications = new InvoiceEmail(accountId, 
-                                                                  isNotifiedForInvoices, 
-                                                                  AuditLevel.NONE);
-
-accountApi.setEmailNotificationsForAccount(accountId, 
-                                           invoiceEmailJsonWithNotifications, 
-                                           requestOptions);
-```
-
-```ruby
-account_email_notifications = KillBillClient::Model::Account.new
-account_email_notifications.account_id = account.account_id
-account_email_notifications.is_notified_for_invoices = true
-      
-account_email_notifications.update_email_notifications(user,
-                                                       reason,
-                                                       comment,
-                                                       options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
-body = InvoiceEmail(account_id=account_id, is_notified_for_invoices=True)
-
-accountApi.set_email_notifications_for_account(account_id,
-                                               body,
-                                               created_by,
-                                               api_key,
-                                               api_secret)
-```
-
-> Example Response:
-
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-
-**Query Parameters**
-
-None.
-
-**Response**
-
-A `204` http status without content.
-
-## Retrieve account email notification
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/accounts/{accountId}/emailNotifications`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
-
-InvoiceEmail invoiceEmailJson = accountApi.getEmailNotificationsForAccount(accountId, 
-                                                                           requestOptions);
-```
-
-```ruby
-account.email_notifications(options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
-
-accountApi.get_email_notifications_for_account(account_id, api_key, api_secret)
-```
-
-> Example Response:
-
-```java
-class InvoiceEmail {
-    org.killbill.billing.client.model.gen.InvoiceEmail@41f53b0
-    accountId: 873c26ef-a3fa-4942-b2f5-549b51f20b1a
-    isNotifiedForInvoices: true
-    auditLogs: []
-}
-```
-```ruby
-{
-   "accountId":"58acec2f-1ae3-43db-9672-0c288a0eea9e",
-   "isNotifiedForInvoices":true
-}
-```
-```python
-{
- 'account_id': 'c84de569-b654-4f7f-ab13-17616302d310',
- 'audit_logs': [],
- 'is_notified_for_invoices': True
-}
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-Returns invoice email object.
 
 ## Add account email
 
@@ -4909,7 +4760,6 @@ class AccountTimeline {
         phone: 81 53 26 56
         notes: notes
         isMigrated: false
-        isNotifiedForInvoices: false
         accountBalance: null
         accountCBA: null
         auditLogs: []
@@ -5156,7 +5006,6 @@ class AccountTimeline {
       "state":"California",
       "country":"US",
       "locale":"fr_FR",
-      "isNotifiedForInvoices":false,
       "auditLogs":[
          {
             "changeType":"INSERT",
@@ -6061,7 +5910,6 @@ class Account {
     phone: 81 53 26 56
     notes: notes
     isMigrated: false
-    isNotifiedForInvoices: false
     accountBalance: null
     accountCBA: null
     auditLogs: []
@@ -6087,7 +5935,6 @@ class Account {
       "state":"California",
       "country":"US",
       "locale":"fr_FR",
-      "isNotifiedForInvoices":false,
       "auditLogs":[]
    }
 ]
@@ -6242,7 +6089,6 @@ class Account {
     phone: 81 53 26 56
     notes: notes
     isMigrated: false
-    isNotifiedForInvoices: false
     accountBalance: null
     accountCBA: null
     auditLogs: []
@@ -6268,7 +6114,6 @@ class Account {
       "state":"California",
       "country":"US",
       "locale":"fr_FR",
-      "isNotifiedForInvoices":false,
       "auditLogs":[]
    }
 ]
