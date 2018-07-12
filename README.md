@@ -17,5 +17,14 @@ The setup is described in the original [slate repo](https://github.com/lord/slat
 The main file to edit is the [index.html.rd](https://github.com/killbill/slate/blob/master/source/index.html.md), and the following is a summary of the [markdown syntax for slate](https://github.com/lord/slate/wiki/Markdown-Syntax).
 
 
+## Publishing
+
+In order to publish the doc on github pages, simply run
+
+```
+> ./deploy.sh
+```
+
+
 
 

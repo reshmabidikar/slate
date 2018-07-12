@@ -1332,7 +1332,6 @@ class AuditLog {
          "phone":null,
          "notes":null,
          "migrated":null,
-         "isNotifiedForInvoices":false,
          "tableName":"ACCOUNT",
          "historyTableName":"ACCOUNT_HISTORY"
       }
@@ -2852,7 +2851,6 @@ class ComboPaymentTransaction {
         phone: 81 53 26 56
         notes: notes
         isMigrated: false
-        isNotifiedForInvoices: false
         accountBalance: null
         accountCBA: null
         auditLogs: []
