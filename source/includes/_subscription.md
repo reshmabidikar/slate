@@ -200,6 +200,21 @@ class Subscription {
         recurringPrice: 249.95
         usagePriceOverrides: []
     }]
+    prices: [class PhasePrice {
+        planName: shotgun-monthly
+        phaseName: shotgun-monthly-trial
+        phaseType: TRIAL
+        fixedPrice: 0
+        recurringPrice: null
+        usagePrices: []
+    }, class PhasePrice {
+        planName: shotgun-monthly
+        phaseName: shotgun-monthly-evergreen
+        phaseType: EVERGREEN
+        fixedPrice: null
+        recurringPrice: 249.95
+        usagePrices: []
+    }]
     auditLogs: []
 }
 ```
@@ -506,6 +521,21 @@ class Subscription {
         recurringPrice: 2399.95
         usagePriceOverrides: []
     }]
+    prices: [class PhasePrice {
+        planName: shotgun-annual
+        phaseName: shotgun-annual-trial
+        phaseType: TRIAL
+        fixedPrice: 0
+        recurringPrice: null
+        usagePrices: []
+    }, class PhasePrice {
+        planName: shotgun-annual
+        phaseName: shotgun-annual-evergreen
+        phaseType: EVERGREEN
+        fixedPrice: null
+        recurringPrice: 249.95
+        usagePrices: []
+    }]
     auditLogs: []
 }
 ```
@@ -588,7 +618,6 @@ class Subscription {
    "auditLogs":[]
 }
 ```
-
 ```python
 {'account_id': '3b1a5a67-f0ac-475c-9aad-735d309f0c1f',
  'audit_logs': [],
@@ -1899,6 +1928,21 @@ class Bundle {
             recurringPrice: 249.95
             usagePriceOverrides: []
         }]
+        prices: [class PhasePrice {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-trial
+            phaseType: TRIAL
+            fixedPrice: 0
+            recurringPrice: null
+            usagePrices: []
+        }, class PhasePrice {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: null
+            recurringPrice: 249.95
+            usagePrices: []
+        }]
         auditLogs: []
     }, class Subscription {
         org.killbill.billing.client.model.gen.Subscription@37a59f88
@@ -1981,6 +2025,21 @@ class Bundle {
             recurringPrice: 999.95
             usagePriceOverrides: []
         }]
+        prices: [class PhasePrice {
+            planName: telescopic-scope-monthly
+            phaseName: telescopic-scope-monthly-trial
+            phaseType: TRIAL
+            fixedPrice: 0
+            recurringPrice: null
+            usagePrices: []
+        }, class PhasePrice {
+            planName: telescopic-scope-monthly
+            phaseName: telescopic-scope-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: null
+            recurringPrice: 249.95
+            usagePrices: []
+        }]
         auditLogs: []
     }, class Subscription {
         org.killbill.billing.client.model.gen.Subscription@10da5c43
@@ -2062,6 +2121,21 @@ class Bundle {
             fixedPrice: null
             recurringPrice: 1999.95
             usagePriceOverrides: []
+        }]
+        prices: [class PhasePrice {
+            planName: laser-scope-monthly
+            phaseName: laser-scope-monthly-trial
+            phaseType: TRIAL
+            fixedPrice: 0
+            recurringPrice: null
+            usagePrices: []
+        }, class PhasePrice {
+            planName: laser-scope-monthly
+            phaseName: laser-scope-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: null
+            recurringPrice: 249.95
+            usagePrices: []
         }]
         auditLogs: []
     }]
@@ -2382,6 +2456,7 @@ class BulkSubscriptionsBundle {
         billCycleDayLocal: null
         events: null
         priceOverrides: null
+        prices: null
         auditLogs: null
     }, class Subscription {
         org.killbill.billing.client.model.gen.Subscription@1b88c7d0
@@ -2405,6 +2480,7 @@ class BulkSubscriptionsBundle {
         billCycleDayLocal: null
         events: null
         priceOverrides: null
+        prices: null
         auditLogs: null
     }]
 }
