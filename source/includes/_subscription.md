@@ -43,6 +43,7 @@ The attributes are the following:
 * **`billCycleDayLocal`** <span style="color:#32A9C7">*[User or system generated]*</span>: For billing period that are multiple of months -- e.g `MONHTLY` -- this represents the date during the month at which the system triggers invoicing.
 * **`events`** <span style="color:#32A9C7">*[System generated]*</span>: List of subscription events tracking what happened -- e.g `CHANGE_PLAN`.
 * **`priceOverrides`** <span style="color:#32A9C7">*[User generated]*</span>: Catalog price override section used when creating the subscription to adjust default catalog price.
+* **`price`** <span style="color:#32A9C7">*[TODO]*</span>: TODO
 
 ## Create an subscription
 
@@ -258,6 +259,24 @@ class Subscription {
          "phaseName":"basic-monthly-in-advance-evergreen",
          "phaseType":"EVERGREEN",
          "recurringPrice":1000.0
+      }
+   ],
+   "prices":[
+      {
+         "planName":"basic-monthly-in-advance",
+         "phaseName":"asic-monthly-in-advance-trial",
+         "phaseType":"TRIAL",
+         "fixedPrice":0,
+         "recurringPrice":null,
+         "usagePrices":[]
+      },
+      {
+         "planName":"basic-monthly-in-advance",
+         "phaseName":"basic-monthly-in-advance-evergreen",
+         "phaseType":"EVERGREEN",
+         "fixedPrice":null,
+         "recurringPrice":500.0,
+         "usagePrices":[]
       }
    ],
    "auditLogs":[]
@@ -548,6 +567,24 @@ class Subscription {
          "recurringPrice":1000.0
       }
    ],
+   "prices":[
+      {
+         "planName":"basic-monthly-in-advance",
+         "phaseName":"asic-monthly-in-advance-trial",
+         "phaseType":"TRIAL",
+         "fixedPrice":0,
+         "recurringPrice":null,
+         "usagePrices":[]
+      },
+      {
+         "planName":"basic-monthly-in-advance",
+         "phaseName":"basic-monthly-in-advance-evergreen",
+         "phaseType":"EVERGREEN",
+         "fixedPrice":null,
+         "recurringPrice":500.0,
+         "usagePrices":[]
+      }
+   ],
    "auditLogs":[]
 }
 ```
@@ -811,6 +848,24 @@ no content
          "phaseName":"super-monthly-evergreen",
          "phaseType":"EVERGREEN",
          "recurringPrice":1000.0
+      }
+   ],
+   "prices":[
+      {
+         "planName":"sports-monthly",
+         "phaseName":"sports-monthly-trial",
+         "phaseType":"TRIAL",
+         "fixedPrice":0,
+         "recurringPrice":null,
+         "usagePrices":[]
+      },
+      {
+         "planName":"sports-monthly",
+         "phaseName":"sports-monthly-evergreen",
+         "phaseType":"EVERGREEN",
+         "fixedPrice":null,
+         "recurringPrice":500.0,
+         "usagePrices":[]
       }
    ],
    "auditLogs":[]
