@@ -185,21 +185,7 @@ class Subscription {
         phase: shotgun-monthly-evergreen
         auditLogs: []
     }]
-    priceOverrides: [class PhasePriceOverride {
-        planName: shotgun-monthly
-        phaseName: shotgun-monthly-trial
-        phaseType: TRIAL
-        fixedPrice: 0
-        recurringPrice: null
-        usagePriceOverrides: []
-    }, class PhasePriceOverride {
-        planName: shotgun-monthly
-        phaseName: shotgun-monthly-evergreen
-        phaseType: EVERGREEN
-        fixedPrice: null
-        recurringPrice: 249.95
-        usagePriceOverrides: []
-    }]
+    priceOverrides: null
     prices: [class PhasePrice {
         planName: shotgun-monthly
         phaseName: shotgun-monthly-trial
@@ -266,14 +252,6 @@ class Subscription {
          "serviceStateName":"START_BILLING",
          "phase":"basic-monthly-in-advance-evergreen",
          "auditLogs":[]
-      }
-   ],
-   "priceOverrides":[
-      {
-         "planName":"basic-monthly-in-advance",
-         "phaseName":"basic-monthly-in-advance-evergreen",
-         "phaseType":"EVERGREEN",
-         "recurringPrice":1000.0
       }
    ],
    "prices":[
@@ -506,21 +484,7 @@ class Subscription {
         phase: shotgun-annual-evergreen
         auditLogs: []
     }]
-    priceOverrides: [class PhasePriceOverride {
-        planName: shotgun-annual
-        phaseName: shotgun-annual-trial
-        phaseType: TRIAL
-        fixedPrice: 0
-        recurringPrice: null
-        usagePriceOverrides: []
-    }, class PhasePriceOverride {
-        planName: shotgun-annual
-        phaseName: shotgun-annual-evergreen
-        phaseType: EVERGREEN
-        fixedPrice: null
-        recurringPrice: 2399.95
-        usagePriceOverrides: []
-    }]
+    priceOverrides: null
     prices: [class PhasePrice {
         planName: shotgun-annual
         phaseName: shotgun-annual-trial
@@ -587,14 +551,6 @@ class Subscription {
          "serviceStateName":"START_BILLING",
          "phase":"basic-monthly-in-advance-evergreen",
          "auditLogs":[]
-      }
-   ],
-   "priceOverrides":[
-      {
-         "planName":"basic-monthly-in-advance",
-         "phaseName":"basic-monthly-in-advance-evergreen",
-         "phaseType":"EVERGREEN",
-         "recurringPrice":1000.0
       }
    ],
    "prices":[
@@ -671,18 +627,6 @@ class Subscription {
  'phase_type': 'TRIAL',
  'plan_name': 'standard-monthly',
  'price_list': 'DEFAULT',
- 'price_overrides': [{'fixed_price': 0.0,
-                      'phase_name': 'standard-monthly-trial',
-                      'phase_type': 'TRIAL',
-                      'plan_name': 'standard-monthly',
-                      'recurring_price': None,
-                      'usage_price_overrides': []},
-                     {'fixed_price': None,
-                      'phase_name': 'standard-monthly-evergreen',
-                      'phase_type': 'EVERGREEN',
-                      'plan_name': 'standard-monthly',
-                      'recurring_price': 100.0,
-                      'usage_price_overrides': []}],
  'prices': [{'fixed_price': 0.0,
               'phase_name': 'standard-monthly-trial',
               'phase_type': 'TRIAL',
@@ -869,26 +813,6 @@ no content
          "serviceStateName":"PHASE",
          "phase":"super-monthly-evergreen",
          "auditLogs":[]
-      }
-   ],
-   "priceOverrides":[
-      {
-         "planName":"sports-monthly",
-         "phaseName":"sports-monthly-trial",
-         "phaseType":"TRIAL",
-         "fixedPrice":0
-      },
-      {
-         "planName":"super-monthly",
-         "phaseName":"super-monthly-trial",
-         "phaseType":"TRIAL",
-         "fixedPrice":0
-      },
-      {
-         "planName":"super-monthly",
-         "phaseName":"super-monthly-evergreen",
-         "phaseType":"EVERGREEN",
-         "recurringPrice":1000.0
       }
    ],
    "prices":[
@@ -1913,21 +1837,7 @@ class Bundle {
             phase: shotgun-monthly-evergreen
             auditLogs: []
         }]
-        priceOverrides: [class PhasePriceOverride {
-            planName: shotgun-monthly
-            phaseName: shotgun-monthly-trial
-            phaseType: TRIAL
-            fixedPrice: 0
-            recurringPrice: null
-            usagePriceOverrides: []
-        }, class PhasePriceOverride {
-            planName: shotgun-monthly
-            phaseName: shotgun-monthly-evergreen
-            phaseType: EVERGREEN
-            fixedPrice: null
-            recurringPrice: 249.95
-            usagePriceOverrides: []
-        }]
+        priceOverrides: null
         prices: [class PhasePrice {
             planName: shotgun-monthly
             phaseName: shotgun-monthly-trial
@@ -2010,21 +1920,7 @@ class Bundle {
             phase: telescopic-scope-monthly-evergreen
             auditLogs: []
         }]
-        priceOverrides: [class PhasePriceOverride {
-            planName: telescopic-scope-monthly
-            phaseName: telescopic-scope-monthly-discount
-            phaseType: DISCOUNT
-            fixedPrice: null
-            recurringPrice: 399.95
-            usagePriceOverrides: []
-        }, class PhasePriceOverride {
-            planName: telescopic-scope-monthly
-            phaseName: telescopic-scope-monthly-evergreen
-            phaseType: EVERGREEN
-            fixedPrice: null
-            recurringPrice: 999.95
-            usagePriceOverrides: []
-        }]
+        priceOverrides: null
         prices: [class PhasePrice {
             planName: telescopic-scope-monthly
             phaseName: telescopic-scope-monthly-trial
@@ -2107,21 +2003,7 @@ class Bundle {
             phase: laser-scope-monthly-evergreen
             auditLogs: []
         }]
-        priceOverrides: [class PhasePriceOverride {
-            planName: laser-scope-monthly
-            phaseName: laser-scope-monthly-discount
-            phaseType: DISCOUNT
-            fixedPrice: null
-            recurringPrice: 999.95
-            usagePriceOverrides: []
-        }, class PhasePriceOverride {
-            planName: laser-scope-monthly
-            phaseName: laser-scope-monthly-evergreen
-            phaseType: EVERGREEN
-            fixedPrice: null
-            recurringPrice: 1999.95
-            usagePriceOverrides: []
-        }]
+        priceOverrides: null
         prices: [class PhasePrice {
             planName: laser-scope-monthly
             phaseName: laser-scope-monthly-trial
