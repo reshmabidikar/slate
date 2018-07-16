@@ -654,7 +654,7 @@ UUID invoiceItemId = UUID.fromString("111732ad-196d-423f-8ccd-de44109dc944")
 Boolean withItems = true; // Will fetch invoice items
 Boolean withChildrenItems = false; //  Will include children items
 
-Invoice invoiceByNumber = invoiceApi.getInvoiceByItemId(invoiceItemId, 
+Invoice invoiceByItemId = invoiceApi.getInvoiceByItemId(invoiceItemId, 
                                                         withItems, 
                                                         withChildrenItems, 
                                                         AuditLevel.NONE, 
@@ -676,9 +676,12 @@ KillBillClient::Model::Invoice.find_by_invoice_item_id(invoice_item_id,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-item_id = '8fae6721-3ebc-4103-85f5-aa13dde0e4f5'
+invoice_item_id = '8fae6721-3ebc-4103-85f5-aa13dde0e4f5'
 
-invoiceApi.get_invoice_by_item_id(invoice_number, api_key, api_secret, with_items=True)
+invoiceApi.get_invoice_by_item_id(invoice_item_id, 
+                                  api_key, 
+                                  api_secret, 
+                                  with_items=True)
 ```
 > Example Response:
 
