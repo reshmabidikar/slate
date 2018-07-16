@@ -3366,12 +3366,14 @@ import org.killbill.billing.client.api.gen.AccountApi;
 protected AccountApi accountApi;
 
 UUID accountId = UUID.fromString("d3a82897-ae72-4a2e-9bca-e3c1fe087f84");
+LocalDate startDate = null;
 Boolean withItems = true; // Will fetch invoice items as well
 Boolean withMigrationInvoices = false; // Will not fetch migrated invoice - if any
 Boolean unpaidInvoicesOnly = false; // Will not restrict to unpaid invoices
 Boolean includeVoidedInvoices = false; // Will not include void invoices
 
-Invoices invoices = accountApi.getInvoicesForAccount(accountId, 
+Invoices invoices = accountApi.getInvoicesForAccount(accountId,
+                                                     startDate, 
                                                      withItems, 
                                                      withMigrationInvoices, 
                                                      unpaidInvoicesOnly, 
@@ -3557,6 +3559,7 @@ class Invoice {
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
+| **startDate** | date | false |  Filter invoices using a start date. |
 | **withItems** | boolean | true | Choose true if you want items info. |
 | **withMigrationInvoices** | boolean | true | Choose true if you want migration invoices |
 | **unpaidInvoicesOnly** | boolean | true | Choose true if you want unpaid invoices only |

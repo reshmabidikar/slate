@@ -264,7 +264,7 @@ invoicePaymentApi.complete_invoice_payment_transaction(payment_id,
 no content
 ```
 ```ruby
-TODO
+no content
 ```
 ```python
 no content
