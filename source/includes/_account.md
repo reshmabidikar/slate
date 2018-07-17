@@ -561,6 +561,9 @@ no content
 no content
 ```
 
+Note that the following fields are not updatable, they can only be set once when creating the original `Account`:  `externalKey`, `currency`, timeZone`, `referenceTime`. In addition the `billCycleDayLocal` can be updated but only **once**, that is one can create an `Account` without specifying the `billCycleDayLocal` and later update its value; this, in particular allows the system to update its value to a good default, that is one that will avoid leading pro-rations, when creating the first subscription.
+
+
 
 **Query Parameters**
 
@@ -573,6 +576,10 @@ no content
 A `204` http status without content.
 
 ## Close account
+
+This endpoint can be used when no other state change will occur on this `Account` to bring it to a stable state. Depending on the value of the query parameters it will potentially cancel all active subscriptions, write-off unpaid invoices, ... This endpoint is not about account deletion - we provide no support to remove state through apis; such deletion operations if really needed would have to happen at the database level and are not encouraged  -- and can be tricky to get right.
+
+
 
 **HTTP Request** 
 
@@ -655,7 +662,10 @@ no content
 
 A `204` http status without content.
 
-## Retrieve account customFields
+## Retrieve all custom fields
+
+Retrieves the custom fields attached to various resources owned by the `Account`.
+Assuming there were custom fields attached to various subscriptions, invoices, payments, ... for this specific account, this endpoint would allow to retrieve them all or potentially filter them by type -- e.g `Subscription`.
 
 **HTTP Request** 
 
@@ -762,6 +772,11 @@ class CustomField {
 Returns a list of custom fields objects
 
 ## Retrieve account tags
+
+
+Retrieves the tags attached to various resources owned by the `Account`.
+Assuming there were tagged subscriptions, invoices, payments, ... for this specific account, this endpoint would allow to retrieve them all or potentially filter them by type -- e.g `Subscription`.
+
 
 **HTTP Request** 
 
@@ -1088,6 +1103,10 @@ Returns a list of account audit logs with history.
 
 ## Block an account
 
+As part of the entitlement features, Kill Bill provides an abstraction to include `BlockingState` events into the per `Account` event stream. The main idea is to allow to modify billing -- e.g pause a specific subscription, all subscriptions, ... -- or the entitlement state -- disable service associated with a given subscription. The [entitlement internal documentation](http://docs.killbill.io/latest/entitlement_subsystem.html) provides some overview of the mechanism. Blocking states are mostly manipulated from inside Kill Bill core, but the functionality is exposed through the API, with the caveat that it is an advanced feature and can lead to unintented behavior if not used properly.
+
+
+
 **HTTP Request** 
 
 `POST http://example.com/1.0/kb/accounts/{accountId}/block`
@@ -1165,6 +1184,9 @@ no content
 A `201` http status without content.
 
 ## Retrieve blocking states for account
+
+Retrieves the `BlockingState` assocaited to a given resource.
+`BlockingState` can be set at the `Account`, `Bundle` or `Subscription`.
 
 **HTTP Request** 
 
@@ -2243,56 +2265,11 @@ class Bundle {
 
 Returns a list of account bundle objects.
 
-## Rebalance account CBA
-
-**HTTP Request** 
-
-`PUT http://example.com/1.0/kb/accounts/{accountId}/cbaRebalancing`
-
-> Example Request:
-
-```shell
-TODO	
-```
-
-```java
-TODO
-```
-
-```ruby
-account.cba_rebalancing(user, 
-                        reason,
-                        comment,
-                        options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-
-accountApi.rebalance_existing_cba_on_account(account_id, 
-                                             created_by, 
-                                             api_key, 
-                                             api_secret)
-```
-
-> Example Response:
-
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-None.
-
-**Response**
-
-A `204` http status without content.
-
 ## List children accounts
+
+
+When using the [hierarchical account](http://docs.killbill.io/latest/ha.html) feature, this api allows to retrieve
+all children `Account` for a given parent `Account`.
 
 **HTTP Request** 
 
@@ -2451,6 +2428,8 @@ Returns a list of account objects.
 
 ## Add custom fields to account
 
+Allow to add custom fields for a given `Account`.
+
 **HTTP Request** 
 
 `POST http://example.com/1.0/kb/accounts/{accountId}/customFields`
@@ -2533,6 +2512,9 @@ class CustomField {
 ```python
 no content
 ```
+
+Note that none of these fields are mantatory when creating the `Account`. This allows to create shell accounts, simply for the purpose of having a valid `accountId` and create state around it -- e.g payments, .. 
+
 **Query Parameters**
 
 None.
@@ -3262,6 +3244,8 @@ Return a list of invoice payments objects.
 
 ## Trigger a payment for all unpaid invoices
 
+This call allows to make a series of payment calls, one against each unpaid invoice using a specific payment method.
+
 **HTTP Request** 
 
 `POST http://example.com/1.0/kb/accounts/{accountId}/invoicePayments`
@@ -3572,6 +3556,9 @@ Return a list with invoice objects.
 
 ## Retrieve overdue state for account
 
+The system can be configured to move `Account` through various [overdue](http://docs.killbill.io/0.20/userguide_subscription.html#components-overdue) , a.k.a. dunning state, when invoices are left unpaid. This allows to retrieve the current state for an `Account`.
+
+
 **HTTP Request** 
 
 `GET http://example.com/1.0/kb/accounts/{accountId}/overdue`
@@ -3650,6 +3637,9 @@ None.
 Returns a overdue state object.
 
 ## Add a payment method
+
+
+Add a [Payment method](http://docs.killbill.io/0.20/userguide_subscription.html#_payment_methods) for a gives `Account`.
 
 **HTTP Request** 
 
@@ -3917,6 +3907,8 @@ A `204` http status without content.
 
 ## Refresh account payment methods
 
+This endpoint is for a rare use cases where information for a particular payment method is stored inside the third party gateway, and both Kill Bill core and its payment plugin need to have their view updated.
+
 **HTTP Request** 
 
 `PUT http://example.com/1.0/kb/accounts/{accountId}/paymentMethods/refresh`
@@ -4144,6 +4136,11 @@ class Payment {
 Returns a list of all account payments object.
 
 ## Trigger a payment (authorization, purchase or credit)
+
+This api is part of the raw payment apis, unreleated to subscriptions and invoices. It simply allows
+to make a trigger a payment transaction against a particular payment gateway through Kill Bill core and the plugin
+communicating with the payment gateway.
+
 
 **HTTP Request** 
 
@@ -4694,6 +4691,9 @@ no content
 A `204` http status without content.
 
 ## Retrieve account timeline
+
+
+This api allows to retrieve the chronological set of things that occured on a given `Account`.
 
 **HTTP Request** 
 
@@ -5783,6 +5783,9 @@ class AccountTimeline {
 Returns a list of account tag objects.
 
 ## Transfer a given child credit to the parent level
+
+In the context of the Hierarchical Account feature, this allows to move the potential child credit at the parent level.
+
 
 **HTTP Request** 
 
