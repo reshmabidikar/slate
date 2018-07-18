@@ -42,15 +42,16 @@ Create a new customer `Account`.
 > Example Request:
 
 ```shell
-curl -v \
-  -u admin:password \
+curl -X POST "http://localhost:8080/1.0/kb/accounts" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
   -H "X-Killbill-ApiKey: bob" \
   -H "X-Killbill-ApiSecret: lazar" \
   -H "Content-Type: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -X POST \
-  --data-binary '{"name":"John Doe","email":"john@example.com","currency":"USD"}' \
-  "http://127.0.0.1:8080/1.0/kb/accounts"
+  -d "{ \"name\": \"John Doe\", \"email\": \"john@example.com\", \"currency\": \"USD\"}"
 ```
 ```java
 import org.killbill.billing.client.api.gen.AccountApi;
@@ -86,11 +87,7 @@ accountApi.create_account(body,
 > Example Response:
 
 ```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://127.0.0.1:8080/1.0/kb/accounts/e8877928-0226-488d-9272-07a5e66d897f
-< Content-Type: application/json
-< Content-Length: 0
+no content
 ```
 ```java
 class Account {
@@ -162,13 +159,11 @@ Retrieves the details information for the `Account` using its `accountId`.
 > Example Request:
 
 ```shell
-curl \
-  -u admin:password \
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d?accountWithBalance=false&accountWithBalanceAndCBA=false&audit=NONE" /
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
   -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar" \
-  -H "Content-Type: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  "http://127.0.0.1:8080/1.0/kb/accounts/e8877928-0226-488d-9272-07a5e66d897f"	
+  -H "X-Killbill-ApiSecret: lazar"
 ```
 
 ```java
@@ -206,7 +201,35 @@ accountApi.get_account(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
-**TODO**
+{
+  "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+  "name": "John Doe",
+  "firstNameLength": null,
+  "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+  "email": "john@example.com",
+  "billCycleDayLocal": 0,
+  "currency": "USD",
+  "parentAccountId": null,
+  "isPaymentDelegatedToParent": false,
+  "paymentMethodId": null,
+  "referenceTime": "2018-07-17T15:02:45.000Z",
+  "timeZone": "UTC",
+  "address1": null,
+  "address2": null,
+  "postalCode": null,
+  "company": null,
+  "city": null,
+  "state": null,
+  "country": null,
+  "locale": null,
+  "phone": null,
+  "notes": null,
+  "isMigrated": null,
+  "accountBalance": null,
+  "accountCBA": null,
+  "auditLogs": []
+}
+
 ```
 ```java
 class Account {
@@ -326,7 +349,11 @@ Retrieves the details information for the `Account` using its `externalKey`.
 > Example Request:
 
 ```shell
-TODO
+curl -X GET "http://localhost:8080/1.0/kb/accounts?externalKey=example_external_key&accountWithBalance=false&accountWithBalanceAndCBA=false&audit=NONE" \ 
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"
 ```
 
 ```java
@@ -366,7 +393,34 @@ accountApi.get_account(external_key, api_key, api_secret)
 > Example Response:
 
 ```shell
-**TODO**
+{
+  "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+  "name": "John Doe",
+  "firstNameLength": null,
+  "externalKey": "example_external_key",
+  "email": "john@example.com",
+  "billCycleDayLocal": 0,
+  "currency": "USD",
+  "parentAccountId": null,
+  "isPaymentDelegatedToParent": false,
+  "paymentMethodId": null,
+  "referenceTime": "2018-07-17T15:02:45.000Z",
+  "timeZone": "UTC",
+  "address1": null,
+  "address2": null,
+  "postalCode": null,
+  "company": null,
+  "city": null,
+  "state": null,
+  "country": null,
+  "locale": null,
+  "phone": null,
+  "notes": null,
+  "isMigrated": null,
+  "accountBalance": null,
+  "accountCBA": null,
+  "auditLogs": []
+}
 ```
 ```java
 class Account {
@@ -482,7 +536,16 @@ Returns an account object if a valid external key was provided.
 > Example Request:
 
 ```shell
-TODO	
+curl -X PUT "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d?treatNullAsReset=false" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar" \
+  -H "Content-Type: application/json" \
+  -d "{ \"name\": \"Another Name\"}"	
 ```
 
 ```java
@@ -530,7 +593,7 @@ accountApi.update_account(account_id,
 > Example Response:
 
 ```shell
-**TODO**
+no content
 ```
 ```java
 no content
@@ -581,7 +644,14 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -X DELETE "http://localhost:8080/1.0/kb/accounts/29fd0a00-f08b-4886-849b-3f4b98c8df27?cancelAllSubscriptions=false&writeOffUnpaidInvoices=false&itemAdjustUnpaidInvoices=false&removeFutureNotifications=true" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -629,7 +699,7 @@ accountApi.close_account(account_id,
 > Example Response:
 
 ```shell
-**TODO**
+no content
 ```
 ```java
 no content
@@ -664,7 +734,11 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allCustomFields?objectType=ACCOUNT&audit=NONE" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -701,7 +775,16 @@ account.all_custom_fields(object_type,
 > Example Response:
 
 ```shell
-**TODO**
+[
+  {
+    "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "objectType": "ACCOUNT",
+    "name": "Test Custom Field",
+    "value": "test_value",
+    "auditLogs": []
+  }
+]
 ```
 ```java
 //First element of the list
@@ -770,7 +853,11 @@ Returns a list of custom fields objects
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allTags?objectType=ACCOUNT&includedDeleted=false&audit=NONE" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -806,7 +893,16 @@ account.all_tags(object_type,
 > Example Response:
 
 ```shell
-**TODO**
+[
+  {
+    "tagId": "0f7c5837-1ed9-41ab-b391-9ef7ea4ab049",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "tagDefinitionId": "00000000-0000-0000-0000-000000000002",
+    "tagDefinitionName": "AUTO_INVOICING_OFF",
+    "auditLogs": []
+  }
+]
 ```
 ```java
 //First element of the list
@@ -866,7 +962,11 @@ Returns a list of tag objects
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/auditLogs" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -893,7 +993,74 @@ account.audit(options)
 > Example Response:
 
 ```shell
-**TODO**
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2018-07-17T15:02:45.000Z",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "bca75b40-ffa3-41f8-9fde-06f83ee303e8",
+    "history": null
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2018-07-17T18:46:47.000Z",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "9a61a1e6-78f3-43d3-addf-e7ada180b23d",
+    "history": null
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2018-07-17T18:48:37.000Z",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "0c41a04d-4037-4fa9-af71-dfe54af4d3ae",
+    "history": null
+  },
+  {
+    "changeType": "INSERT",
+    "changeDate": "2018-07-17T19:07:25.000Z",
+    "objectType": "CUSTOM_FIELD",
+    "objectId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "c9b9ab11-14b1-41b5-8371-1c425f273336",
+    "history": null
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2018-07-17T19:26:46.000Z",
+    "objectType": "CUSTOM_FIELD",
+    "objectId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "fd26b216-deb2-43d4-b748-dec8e9917ada",
+    "history": null
+  },
+  {
+    "changeType": "DELETE",
+    "changeDate": "2018-07-17T20:02:01.000Z",
+    "objectType": "CUSTOM_FIELD",
+    "objectId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "0d5c8db7-974f-47e0-9332-5d9625f72155",
+    "history": null
+  }
+]
 ```
 ```java
 //First element of the list
@@ -949,7 +1116,11 @@ Returns a list of account audit logs.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/auditLogsWithHistory" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -976,7 +1147,134 @@ account.audit_logs_with_history(options)
 > Example Response:
 
 ```shell
-**TODO**
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2018-07-17T15:02:45.000Z",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "bca75b40-ffa3-41f8-9fde-06f83ee303e8",
+    "history": {
+      "id": null,
+      "createdDate": "2018-07-17T15:02:45.000Z",
+      "updatedDate": "2018-07-17T15:02:45.000Z",
+      "recordId": 120,
+      "accountRecordId": 120,
+      "tenantRecordId": 101,
+      "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "email": "john@example.com",
+      "name": "John Doe",
+      "firstNameLength": null,
+      "currency": "USD",
+      "parentAccountId": null,
+      "isPaymentDelegatedToParent": null,
+      "billingCycleDayLocal": 0,
+      "paymentMethodId": null,
+      "referenceTime": "2018-07-17T15:02:45.000Z",
+      "timeZone": "UTC",
+      "locale": null,
+      "address1": null,
+      "address2": null,
+      "companyName": null,
+      "city": null,
+      "stateOrProvince": null,
+      "country": null,
+      "postalCode": null,
+      "phone": null,
+      "notes": null,
+      "migrated": null,
+      "tableName": "ACCOUNT",
+      "historyTableName": "ACCOUNT_HISTORY"
+    }
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2018-07-17T18:46:47.000Z",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "9a61a1e6-78f3-43d3-addf-e7ada180b23d",
+    "history": {
+      "id": null,
+      "createdDate": "2018-07-17T18:46:47.000Z",
+      "updatedDate": "2018-07-17T18:46:47.000Z",
+      "recordId": 120,
+      "accountRecordId": 120,
+      "tenantRecordId": 101,
+      "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "email": "john@example.com",
+      "name": "Another Name",
+      "firstNameLength": null,
+      "currency": "USD",
+      "parentAccountId": null,
+      "isPaymentDelegatedToParent": false,
+      "billingCycleDayLocal": 0,
+      "paymentMethodId": null,
+      "referenceTime": "2018-07-17T15:02:45.000Z",
+      "timeZone": "UTC",
+      "locale": null,
+      "address1": null,
+      "address2": null,
+      "companyName": null,
+      "city": null,
+      "stateOrProvince": null,
+      "country": null,
+      "postalCode": null,
+      "phone": null,
+      "notes": null,
+      "migrated": null,
+      "tableName": "ACCOUNT",
+      "historyTableName": "ACCOUNT_HISTORY"
+    }
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2018-07-17T18:48:37.000Z",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "0c41a04d-4037-4fa9-af71-dfe54af4d3ae",
+    "history": {
+      "id": null,
+      "createdDate": "2018-07-17T18:48:37.000Z",
+      "updatedDate": "2018-07-17T18:48:37.000Z",
+      "recordId": 120,
+      "accountRecordId": 120,
+      "tenantRecordId": 101,
+      "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "email": "john@example.com",
+      "name": "John Doe",
+      "firstNameLength": null,
+      "currency": "USD",
+      "parentAccountId": null,
+      "isPaymentDelegatedToParent": false,
+      "billingCycleDayLocal": 0,
+      "paymentMethodId": null,
+      "referenceTime": "2018-07-17T15:02:45.000Z",
+      "timeZone": "UTC",
+      "locale": null,
+      "address1": null,
+      "address2": null,
+      "companyName": null,
+      "city": null,
+      "stateOrProvince": null,
+      "country": null,
+      "postalCode": null,
+      "phone": null,
+      "notes": null,
+      "migrated": null,
+      "tableName": "ACCOUNT",
+      "historyTableName": "ACCOUNT_HISTORY"
+    }
+  }
+]
 ```
 ```java
 //First element of the list
@@ -1095,7 +1393,16 @@ Returns a list of account audit logs with history.
 > Example Request:
 
 ```shell
-TODO	
+curl -X POST "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar" \
+  -H "Content-Type: application/json" \
+  -d "{ \"stateName\": \"STATE1\", \"service\": \"ServiceStateService\", \"isBlockChange\": false, \"isBlockEntitlement\": false, \"isBlockBilling\": false, \"effectiveDate\": \"2018-07-17T21:17:28.842Z\", \"type\": \"ACCOUNT\" }"
 ```
 
 ```java
@@ -1141,7 +1448,7 @@ accountApi.add_account_blocking_state(account_id,
 > Example Response:
 
 ```shell
-**TODO**
+no content
 ```
 ```java
 **TODO**
@@ -1173,7 +1480,11 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block?blockingStateTypes=ACCOUNT&audit=NONE" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -1212,7 +1523,19 @@ accountApi.get_blocking_states(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
-**TODO**
+[
+  {
+    "blockedId": "10483c3a-3394-4667-8519-0d849e9a8ec2",
+    "stateName": "STATE1",
+    "service": "ServiceStateService",
+    "isBlockChange": false,
+    "isBlockEntitlement": false,
+    "isBlockBilling": false,
+    "effectiveDate": "2018-07-18T14:45:37.000Z",
+    "type": "ACCOUNT",
+    "auditLogs": []
+  }
+]
 ```
 ```java
 //First element of the list
@@ -1291,7 +1614,11 @@ Returns a blocking state object
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/bundles?audit=NONE" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -1323,7 +1650,156 @@ accountApi.get_account_bundles(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
-**TODO**
+[
+  {
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "subscriptions": [
+      {
+        "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+        "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+        "subscriptionId": "8ab101b6-15e8-433b-b4f7-f99eeaa56a77",
+        "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+        "startDate": "2018-07-18",
+        "productName": "Standard",
+        "productCategory": "BASE",
+        "billingPeriod": "MONTHLY",
+        "phaseType": "TRIAL",
+        "priceList": "DEFAULT",
+        "planName": "standard-monthly",
+        "state": "ACTIVE",
+        "sourceType": "NATIVE",
+        "cancelledDate": null,
+        "chargedThroughDate": null,
+        "billingStartDate": "2018-07-18",
+        "billingEndDate": null,
+        "billCycleDayLocal": 17,
+        "events": [
+          {
+            "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-18",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "START_ENTITLEMENT",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "entitlement-service",
+            "serviceStateName": "ENT_STARTED",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-18",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "START_BILLING",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "billing-service",
+            "serviceStateName": "START_BILLING",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "f058c95f-9a86-435b-8bba-4f8532635450",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-08-17",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "PHASE",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "entitlement+billing-service",
+            "serviceStateName": "PHASE",
+            "phase": "standard-monthly-evergreen",
+            "auditLogs": []
+          }
+        ],
+        "priceOverrides": null,
+        "prices": [
+          {
+            "planName": "standard-monthly",
+            "phaseName": "standard-monthly-trial",
+            "phaseType": "TRIAL",
+            "fixedPrice": 0,
+            "recurringPrice": null,
+            "usagePrices": []
+          },
+          {
+            "planName": "standard-monthly",
+            "phaseName": "standard-monthly-evergreen",
+            "phaseType": "EVERGREEN",
+            "fixedPrice": null,
+            "recurringPrice": 100,
+            "usagePrices": []
+          }
+        ],
+        "auditLogs": []
+      }
+    ],
+    "timeline": {
+      "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+      "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+      "events": [
+        {
+          "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-18",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_ENTITLEMENT",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "entitlement-service",
+          "serviceStateName": "ENT_STARTED",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-18",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_BILLING",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "billing-service",
+          "serviceStateName": "START_BILLING",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "f058c95f-9a86-435b-8bba-4f8532635450",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-08-17",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "PHASE",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "entitlement+billing-service",
+          "serviceStateName": "PHASE",
+          "phase": "standard-monthly-evergreen",
+          "auditLogs": []
+        }
+      ],
+      "auditLogs": []
+    },
+    "auditLogs": []
+  }
+]
 ```
 ```java
 //First element of the list
@@ -2252,7 +2728,14 @@ Returns a list of account bundle objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -X PUT "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/cbaRebalancing" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -2277,6 +2760,9 @@ accountApi.rebalance_existing_cba_on_account(account_id,
 
 > Example Response:
 
+```shell
+no content
+```
 ```ruby
 no content
 ```
@@ -2301,7 +2787,11 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/children?accountWithBalance=false&accountWithBalanceAndCBA=false&audit=NONE" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -2342,7 +2832,28 @@ accountApi.get_children_accounts(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
-**TODO**
+[
+   {
+      "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
+      "name":"John Doe",
+      "externalKey":"1522172592-516014",
+      "email":"John@example.com",
+      "billCycleDayLocal":0,
+      "currency":"USD",
+      "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
+      "isPaymentDelegatedToParent":true,
+      "timeZone":"UTC",
+      "address1":"7, yoyo road",
+      "address2":"Apt 5",
+      "postalCode":"94105",
+      "company":"Unemployed",
+      "city":"San Francisco",
+      "state":"California",
+      "country":"US",
+      "locale":"fr_FR",
+      "auditLogs":[]
+   }
+]
 ```
 ```java
 //First element of the list
@@ -2458,7 +2969,16 @@ Returns a list of account objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -X POST "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar" \
+  -H "Content-Type: application/json" \
+  -d "[ { \"objectType\": \"ACCOUNT\", \"name\": \"Test Custom Field\", \"value\": \"test_value\" }]"	
 ```
 
 ```java
@@ -2506,6 +3026,9 @@ accountApi.create_account_custom_fields(account_id,
 
 > Example Response:
 
+```shell
+no content
+```
 ```java
 //First element of the list
 class CustomField {
@@ -2550,7 +3073,11 @@ Returns a custom field object.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields?audit=NONE" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -2578,6 +3105,18 @@ accountApi.get_account_custom_fields(account_id, api_key, api_secret)
 
 > Example Response:
 
+```shell
+[
+  {
+    "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "objectType": "ACCOUNT",
+    "name": "Test Custom Field",
+    "value": "test_value",
+    "auditLogs": []
+  }
+]
+```
 ```java
 //First element of the list
 class CustomField {
@@ -2630,13 +3169,22 @@ Returns a list of custom field objects.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/bundles/{accountId}/customFields`
+`PUT http://example.com/1.0/kb/accounts/{accountId}/customFields`
 
 
 > Example Request:
 
 ```shell
-TODO	
+curl -X PUT "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar" \
+  -H "Content-Type: application/json" \
+  -d "[ { \"customFieldId\": \"48e24ca0-1cfe-41c3-85e7-0ff0d51679fe\", \"objectId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"objectType\": \"ACCOUNT\", \"name\": \"Test Custom Field\", \"value\": \"test_modify_value\", \"auditLogs\": [] }]"	
 ```
 
 ```java
@@ -2682,6 +3230,9 @@ account.modify_account_custom_fields(account_id,
 
 > Example Response:
 
+```shell
+no content
+```
 ```java
 no content
 ```
@@ -2709,7 +3260,14 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -X DELETE "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -2749,6 +3307,9 @@ account.delete_account_custom_fields(account_id,
 
 > Example Response:
 
+```shell
+no content
+```
 ```java
 no content
 ```
@@ -2779,7 +3340,16 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -X POST "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar" \
+  -H "Content-Type: application/json" \
+  -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"email\": \"email@example.com\"}"	
 ```
 
 ```java
@@ -2822,6 +3392,9 @@ accountApi.add_email(account_id,
 
 > Example Response:
 
+```shell
+no content
+```
 ```java
 no content
 ```
@@ -2850,7 +3423,11 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -2876,6 +3453,14 @@ accountApi.get_emails(account_id, api_key, api_secret)
 
 > Example Response:
 
+```shell
+[
+   {
+      "accountId":"e4ca38b3-934d-42e8-a292-ffb0af5549f2",
+      "email":"email@example.com"
+   }
+]
+```
 ```java
 //First element of the list
 class AccountEmail {
@@ -2888,7 +3473,7 @@ class AccountEmail {
 ```ruby
 [
    {
-      "accountId":"e4ca38b3-934d-42e8-a292-ffb0af5549f2",
+      "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
       "email":"email@example.com"
    }
 ]
@@ -2921,7 +3506,14 @@ Returns a list of objects with account id's and their emails.
 > Example Request:
 
 ```shell
-TODO	
+curl -X DELETE "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/email%40example.com" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -2960,6 +3552,9 @@ accountApi.remove_email(account_id,
 
 > Example Response:
 
+```shell
+no content
+```
 ```java
 no content
 ```
@@ -2987,7 +3582,11 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/aa2a5614-88d9-4ec3-a042-a4771bd66670/auditLogsWithHistory" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -3022,7 +3621,31 @@ account.email_audit_logs_with_history(account_email_id, options)
 > Example Response:
 
 ```shell
-**TODO**
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2018-07-18T15:13:22.000Z",
+    "objectType": "ACCOUNT_EMAIL",
+    "objectId": "aa2a5614-88d9-4ec3-a042-a4771bd66670",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "927546eb-3431-4bcf-8fcc-1787d2130772",
+    "history": {
+      "id": null,
+      "createdDate": "2018-07-18T15:13:22.000Z",
+      "updatedDate": "2018-07-18T15:13:22.000Z",
+      "recordId": 1,
+      "accountRecordId": 120,
+      "tenantRecordId": 101,
+      "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "email": "email@example.com",
+      "isActive": true,
+      "tableName": "ACCOUNT_EMAIL",
+      "historyTableName": "ACCOUNT_EMAIL_HISTORY"
+    }
+  }
+]
 ```
 ```java
 //First element of the list
@@ -3104,7 +3727,11 @@ Returns a list of account email audit logs with history.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments?withPluginInfo=false&withAttempts=false&audit=NONE" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -3139,6 +3766,41 @@ accountApi.get_invoice_payments(account_id, api_key, api_secret)
 
 > Example Response:
 
+```shell
+[
+   {
+      "targetInvoiceId":"d1d6e8d8-c476-4b53-badf-c23f78c02c09",
+      "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "paymentId":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
+      "paymentNumber":"319",
+      "paymentExternalKey":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
+      "authAmount":0,
+      "capturedAmount":0,
+      "purchasedAmount":50.0,
+      "refundedAmount":0,
+      "creditedAmount":0,
+      "currency":"USD",
+      "paymentMethodId":"6c064894-60cb-4d7e-a679-7b2464522968",
+      "transactions":[
+         {
+            "transactionId":"91c7363c-76b9-48f5-aafa-f098d4470a2a",
+            "transactionExternalKey":"91c7363c-76b9-48f5-aafa-f098d4470a2a",
+            "paymentId":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
+            "paymentExternalKey":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
+            "transactionType":"PURCHASE",
+            "amount":50.0,
+            "currency":"USD",
+            "effectiveDate":"2013-08-01T06:00:01.000Z",
+            "processedAmount":50.0,
+            "processedCurrency":"USD",
+            "status":"SUCCESS",
+            "auditLogs":[]
+         }
+      ],
+      "auditLogs":[]
+   }
+]
+```
 ```java
 //First element of the list
 class InvoicePayment {
@@ -3269,7 +3931,14 @@ Return a list of invoice payments objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -X POST "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments?paymentMethodId=f835c556-0694-4883-b4c1-d1b6e308409b&externalPayment=false" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -3325,6 +3994,9 @@ accountApi.pay_all_invoices(account_id,
 
 > Example Response:
 
+```shell
+no content
+```
 ```java
 no content
 ```
@@ -3358,7 +4030,11 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoices?withItems=false&withMigrationInvoices=false&unpaidInvoicesOnly=false&includeVoidedInvoices=false&audit=NONE" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -3396,6 +4072,38 @@ accountApi.get_invoices_for_account(account_id, api_key, api_secret)
 
 > Example Response:
 
+```shell
+[
+   {
+      "amount":50.0,
+      "currency":"USD",
+      "status":"COMMITTED",
+      "creditAdj":0.0,
+      "refundAdj":0.0,
+      "invoiceId":"d981abbb-3622-487a-9564-d594c9d04f83",
+      "invoiceDate":"2013-08-01",
+      "targetDate":"2013-08-01",
+      "invoiceNumber":"1563",
+      "balance":0.0,
+      "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "items":[
+         {
+            "invoiceItemId":"5f3b4e9c-66bd-4c5c-b84a-4ae951cc2f1d",
+            "invoiceId":"d981abbb-3622-487a-9564-d594c9d04f83",
+            "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
+            "itemType":"EXTERNAL_CHARGE",
+            "description":"Some description",
+            "startDate":"2013-08-01",
+            "amount":50.0,
+            "currency":"USD",
+            "auditLogs":[]
+         }
+      ],
+      "isParentInvoice":false,
+      "auditLogs":[]
+   }
+]
+```
 ```java
 //First element of the list
 class Invoice {
@@ -3579,7 +4287,11 @@ Return a list with invoice objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/overdue" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -3604,6 +4316,21 @@ accountApi.get_overdue_account(account_id, api_key, api_secret)
 
 > Example Response:
 
+```shell
+{
+  "name": "__KILLBILL__CLEAR__OVERDUE_STATE__",
+  "externalMessage": "",
+  "daysBetweenPaymentRetries": [
+    8,
+    8,
+    8
+  ],
+  "isDisableEntitlementAndChangesBlocked": false,
+  "isBlockChanges": false,
+  "isClearState": true,
+  "reevaluationIntervalDays": null
+}
+```
 ```java
 class OverdueState {
     name: OD3
@@ -3658,7 +4385,16 @@ Returns a overdue state object.
 > Example Request:
 
 ```shell
-TODO	
+curl -X POST "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods?isDefault=false&payAllUnpaidInvoices=false" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar" \
+  -H "Content-Type: application/json" \
+  -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"isDefault\": false, \"pluginName\": \"__EXTERNAL_PAYMENT__\"}"	
 ```
 
 ```java
@@ -3720,6 +4456,9 @@ accountApi.create_payment_method(account_id,
 
 > Example Response:
 
+```shell
+no content
+```
 ```java
 class PaymentMethod {
     org.killbill.billing.client.model.gen.PaymentMethod@a820eeea
@@ -3769,7 +4508,11 @@ Returns a payment method object.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods?withPluginInfo=false&includedDeleted=false&audit=NONE" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -3800,6 +4543,19 @@ accountApi.get_payment_methods_for_account(account_id, api_key, api_secret)
 ```
 > Example Response:
 
+```shell
+[
+  {
+    "paymentMethodId": "f835c556-0694-4883-b4c1-d1b6e308409b",
+    "externalKey": "unknown",
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "isDefault": false,
+    "pluginName": "__EXTERNAL_PAYMENT__",
+    "pluginInfo": null,
+    "auditLogs": []
+  }
+]
+```
 ```java
 //First element of the list
 class PaymentMethod {
@@ -3855,7 +4611,12 @@ Returns a list of payment method objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -X PUT "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/f835c556-0694-4883-b4c1-d1b6e308409b/setDefault?payAllUnpaidInvoices=false" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" -H "X-Killbill-ApiKey: bob" -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -3895,6 +4656,9 @@ accountApi.set_default_payment_method(account_id,
 ```
 > Example Response:
 
+```shell
+no content
+```
 ```java
 no content
 ```
@@ -3924,7 +4688,14 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -X PUT "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/refresh" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -3962,6 +4733,9 @@ accountApi.refresh_payment_methods(account_id,
 ```
 > Example Response:
 
+```shell
+no content
+```
 ```java
 no content
 ```
@@ -3989,7 +4763,11 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments?withAttempts=false&withPluginInfo=false&audit=NONE" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -4021,6 +4799,42 @@ accountApi.get_payments_for_account(account_id, api_key, api_secret)
 ```
 > Example Response:
 
+```shell
+[
+   {
+      "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "paymentId":"b83132eb-1bf9-4a02-8572-376e4b1f06c9",
+      "paymentNumber":"325",
+      "paymentExternalKey":"b83132eb-1bf9-4a02-8572-376e4b1f06c9",
+      "authAmount":0,
+      "capturedAmount":0,
+      "purchasedAmount":50.0,
+      "refundedAmount":0,
+      "creditedAmount":0,
+      "currency":"USD",
+      "paymentMethodId":"6041ffab-ae5f-45d3-bdf8-ce8cbfa5fd5c",
+      "transactions":[
+         {
+            "transactionId":"be9dceca-9c5d-4038-818c-57e6fccfbe92",
+            "transactionExternalKey":"be9dceca-9c5d-4038-818c-57e6fccfbe92",
+            "paymentId":"b83132eb-1bf9-4a02-8572-376e4b1f06c9",
+            "paymentExternalKey":"b83132eb-1bf9-4a02-8572-376e4b1f06c9",
+            "transactionType":"PURCHASE",
+            "amount":50.0,
+            "currency":"USD",
+            "effectiveDate":"2013-08-01T06:00:02.000Z",
+            "processedAmount":50.0,
+            "processedCurrency":"USD",
+            "status":"SUCCESS",
+            "auditLogs":[
+
+            ]
+         }
+      ],
+      "auditLogs":[]
+   }
+]
+```
 ```java
 //First element of the list
 class Payment {
@@ -4152,7 +4966,16 @@ Returns a list of all account payments object.
 > Example Request:
 
 ```shell
-TODO	
+curl -X POST "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments?paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar" \
+  -H "Content-Type: application/json" \
+  -d "{ \"transactionType\": \"AUTHORIZE\", \"amount\": 0}"	
 ```
 
 ```java
@@ -4233,6 +5056,9 @@ accountApi.process_payment(account_id,
 
 > Example Response:
 
+```shell
+no content
+```
 ```java
 class Payment {
     org.killbill.billing.client.model.gen.Payment@6816b5c8
@@ -4327,7 +5153,16 @@ Returns a payment transaction object.
 > Example Request:
 
 ```shell
-TODO	
+curl -X POST "http://localhost:8080/1.0/kb/accounts/payments?externalKey=2ad52f53-85ae-408a-9879-32a7e59dd03d&paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar" \
+  -H "Content-Type: application/json" \
+  -d "{ \"transactionType\": \"AUTHORIZE\", \"amount\": 0}"	
 ```
 
 ```java
@@ -4387,6 +5222,9 @@ accountApi.process_payment_by_external_key(body,
 
 > Example Response:
 
+```shell
+no content
+```
 ```ruby
 {
    "accountId":"2ad4cae9-c44a-43f9-b3f8-2e3e4e097838",
@@ -4443,7 +5281,16 @@ Returns a payment transaction object.
 > Example Request:
 
 ```shell
-TODO	
+curl -X POST "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar" \
+  -H "Content-Type: application/json" \
+  -d "[ \"00000000-0000-0000-0000-000000000002\"]"	
 ```
 
 ```java
@@ -4482,6 +5329,9 @@ accountApi.create_account_tags(account_id,
 ```
 > Example Response:
 
+```shell
+no content
+```
 ```java
 //First element of the list
 class Tag {
@@ -4531,7 +5381,11 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags?includedDeleted=false&audit=NONE" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -4565,6 +5419,18 @@ accountApi.get_account_tags(account_id, api_key, api_secret)
 
 > Example Response:
 
+```shell
+[
+  {
+    "tagId": "0f7c5837-1ed9-41ab-b391-9ef7ea4ab049",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "tagDefinitionId": "00000000-0000-0000-0000-000000000002",
+    "tagDefinitionName": "AUTO_INVOICING_OFF",
+    "auditLogs": []
+  }
+]
+```
 ```java
 //First element of the list
 class Tag {
@@ -4635,7 +5501,14 @@ Returns a list of account tag objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -X DELETE "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -4673,6 +5546,9 @@ accountApi.delete_account_tags(account_id,
 ```
 > Example Response:
 
+```shell
+no content
+```
 ```java
 no content
 ```
@@ -4702,7 +5578,11 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/timeline?parallel=false&audit=NONE" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -4736,6 +5616,42 @@ accountApi.get_account_timeline(account_id, api_key, api_secret)
 
 > Example Response:
 
+```shell
+{
+  "account": {
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "name": "John Doe",
+    "firstNameLength": null,
+    "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "email": "john@example.com",
+    "billCycleDayLocal": 0,
+    "currency": "USD",
+    "parentAccountId": null,
+    "isPaymentDelegatedToParent": false,
+    "paymentMethodId": null,
+    "referenceTime": "2018-07-17T15:02:45.000Z",
+    "timeZone": "UTC",
+    "address1": null,
+    "address2": null,
+    "postalCode": null,
+    "company": null,
+    "city": null,
+    "state": null,
+    "country": null,
+    "locale": null,
+    "phone": null,
+    "notes": null,
+    "isMigrated": null,
+    "accountBalance": null,
+    "accountCBA": null,
+    "auditLogs": []
+  },
+  "bundles": [],
+  "invoices": [],
+  "payments": []
+}
+
+```
 ```java
 class AccountTimeline {
     account: class Account {
@@ -5791,7 +6707,14 @@ Returns a list of account tag objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -X PUT "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/transferCredit" \
+  -H "accept: application/json" \
+  -H "X-Killbill-CreatedBy: demo" \
+  -H "X-Killbill-Reason: demo" \
+  -H "X-Killbill-Comment: demo" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -5820,6 +6743,9 @@ accountApi.transfer_child_credit_to_parent(child_account_id,
 ```
 > Example Response:
 
+```shell
+no content
+```
 ```java
 no content
 ```
@@ -5847,7 +6773,11 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/pagination?offset=0&limit=100&accountWithBalance=false&accountWithBalanceAndCBA=false&audit=NONE" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -5886,6 +6816,38 @@ accountApi.get_accounts(api_key, api_secret)
 ```
 > Example Response:
 
+```shell
+[
+  {
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "name": "John Doe",
+    "firstNameLength": null,
+    "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "email": "john@example.com",
+    "billCycleDayLocal": 0,
+    "currency": "USD",
+    "parentAccountId": null,
+    "isPaymentDelegatedToParent": false,
+    "paymentMethodId": null,
+    "referenceTime": "2018-07-17T15:02:45.000Z",
+    "timeZone": "UTC",
+    "address1": null,
+    "address2": null,
+    "postalCode": null,
+    "company": null,
+    "city": null,
+    "state": null,
+    "country": null,
+    "locale": null,
+    "phone": null,
+    "notes": null,
+    "isMigrated": null,
+    "accountBalance": null,
+    "accountCBA": null,
+    "auditLogs": []
+  }
+]
+```
 ```java
 //First element of the list
 class Account {
@@ -6020,7 +6982,11 @@ Returns a list with all accounts.
 > Example Request:
 
 ```shell
-TODO	
+curl -X GET "http://localhost:8080/1.0/kb/accounts/search/John%20Doe?offset=0&limit=100&accountWithBalance=false&accountWithBalanceAndCBA=false&audit=NONE" \
+  -H "accept: application/json" \
+  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
+  -H "X-Killbill-ApiKey: bob" \
+  -H "X-Killbill-ApiSecret: lazar"	
 ```
 
 ```java
@@ -6065,6 +7031,38 @@ accountApi.search_accounts(search_key, api_key, api_secret)
 
 > Example Response:
 
+```shell
+[
+  {
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "name": "John Doe",
+    "firstNameLength": null,
+    "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "email": "john@example.com",
+    "billCycleDayLocal": 0,
+    "currency": "USD",
+    "parentAccountId": null,
+    "isPaymentDelegatedToParent": false,
+    "paymentMethodId": null,
+    "referenceTime": "2018-07-17T15:02:45.000Z",
+    "timeZone": "UTC",
+    "address1": null,
+    "address2": null,
+    "postalCode": null,
+    "company": null,
+    "city": null,
+    "state": null,
+    "country": null,
+    "locale": null,
+    "phone": null,
+    "notes": null,
+    "isMigrated": null,
+    "accountBalance": null,
+    "accountCBA": null,
+    "auditLogs": []
+  }
+]
+```
 ```java
 //First element of the list
 class Account {
