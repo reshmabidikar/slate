@@ -42,16 +42,18 @@ Create a new customer `Account`.
 > Example Request:
 
 ```shell
-curl -X POST "http://localhost:8080/1.0/kb/accounts" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar" \
-  -H "Content-Type: application/json" \
-  -d "{ \"name\": \"John Doe\", \"email\": \"john@example.com\", \"currency\": \"USD\"}"
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"name\": \"John Doe\", \"email\": \"john@example.com\", \"currency\": \"USD\"}" \
+    "http://localhost:8080/1.0/kb/accounts" 
 ```
 ```java
 import org.killbill.billing.client.api.gen.AccountApi;
@@ -87,7 +89,11 @@ accountApi.create_account(body,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/accounts/a8984103-b8e1-47cc-9914-4b1c4f9dbeab
+< Content-Type: application/json
+< Content-Length: 0
 ```
 ```java
 class Account {
@@ -159,11 +165,12 @@ Retrieves the details information for the `Account` using its `accountId`.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d?accountWithBalance=false&accountWithBalanceAndCBA=false&audit=NONE" /
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d" 
 ```
 
 ```java
@@ -201,6 +208,10 @@ accountApi.get_account(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 {
   "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
   "name": "John Doe",
@@ -349,11 +360,12 @@ Retrieves the details information for the `Account` using its `externalKey`.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts?externalKey=example_external_key&accountWithBalance=false&accountWithBalanceAndCBA=false&audit=NONE" \ 
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts?externalKey=2ad52f53-85ae-408a-9879-32a7e59dd03d"
 ```
 
 ```java
@@ -393,6 +405,10 @@ accountApi.get_account(external_key, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 {
   "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
   "name": "John Doe",
@@ -536,16 +552,18 @@ Returns an account object if a valid external key was provided.
 > Example Request:
 
 ```shell
-curl -X PUT "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d?treatNullAsReset=false" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar" \
-  -H "Content-Type: application/json" \
-  -d "{ \"name\": \"Another Name\"}"	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"name\": \"Another Name\"}" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d"	
 ```
 
 ```java
@@ -593,7 +611,10 @@ accountApi.update_account(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+
 ```
 ```java
 no content
@@ -644,14 +665,15 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-curl -X DELETE "http://localhost:8080/1.0/kb/accounts/29fd0a00-f08b-4886-849b-3f4b98c8df27?cancelAllSubscriptions=false&writeOffUnpaidInvoices=false&itemAdjustUnpaidInvoices=false&removeFutureNotifications=true" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/8785164f-b5d7-4da1-9495-33f5105e8d80"
 ```
 
 ```java
@@ -699,7 +721,9 @@ accountApi.close_account(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
 ```
 ```java
 no content
@@ -734,11 +758,12 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allCustomFields?objectType=ACCOUNT&audit=NONE" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allCustomFields"
 ```
 
 ```java
@@ -775,6 +800,10 @@ account.all_custom_fields(object_type,
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
   {
     "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
@@ -853,11 +882,12 @@ Returns a list of custom fields objects
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allTags?objectType=ACCOUNT&includedDeleted=false&audit=NONE" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allTags"
 ```
 
 ```java
@@ -893,6 +923,10 @@ account.all_tags(object_type,
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
   {
     "tagId": "0f7c5837-1ed9-41ab-b391-9ef7ea4ab049",
@@ -962,11 +996,12 @@ Returns a list of tag objects
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/auditLogs" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/auditLogs"
 ```
 
 ```java
@@ -993,6 +1028,10 @@ account.audit(options)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
   {
     "changeType": "INSERT",
@@ -1116,11 +1155,12 @@ Returns a list of account audit logs.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/auditLogsWithHistory" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/auditLogsWithHistory"
 ```
 
 ```java
@@ -1147,6 +1187,10 @@ account.audit_logs_with_history(options)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
   {
     "changeType": "INSERT",
@@ -1393,16 +1437,18 @@ Returns a list of account audit logs with history.
 > Example Request:
 
 ```shell
-curl -X POST "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar" \
-  -H "Content-Type: application/json" \
-  -d "{ \"stateName\": \"STATE1\", \"service\": \"ServiceStateService\", \"isBlockChange\": false, \"isBlockEntitlement\": false, \"isBlockBilling\": false, \"effectiveDate\": \"2018-07-17T21:17:28.842Z\", \"type\": \"ACCOUNT\" }"
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"stateName\": \"STATE1\", \"service\": \"ServiceStateService\", \"isBlockChange\": false, \"isBlockEntitlement\": false, \"isBlockBilling\": false, \"effectiveDate\": \"2018-07-17T21:17:28.842Z\", \"type\": \"ACCOUNT\" }" \
+    "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block"
 ```
 
 ```java
@@ -1448,7 +1494,10 @@ accountApi.add_account_blocking_state(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block?blockingStateTypes=ACCOUNT
+< Content-Length: 0
 ```
 ```java
 **TODO**
@@ -1480,11 +1529,12 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block?blockingStateTypes=ACCOUNT&audit=NONE" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block?blockingStateTypes=ACCOUNT"
 ```
 
 ```java
@@ -1523,6 +1573,10 @@ accountApi.get_blocking_states(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
   {
     "blockedId": "10483c3a-3394-4667-8519-0d849e9a8ec2",
@@ -1614,11 +1668,12 @@ Returns a blocking state object
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/bundles?audit=NONE" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/bundles" 
 ```
 
 ```java
@@ -1650,6 +1705,10 @@ accountApi.get_account_bundles(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
   {
     "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
@@ -2728,14 +2787,17 @@ Returns a list of account bundle objects.
 > Example Request:
 
 ```shell
-curl -X PUT "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/cbaRebalancing" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/cbaRebalancing"
 ```
 
 ```java
@@ -2761,7 +2823,9 @@ accountApi.rebalance_existing_cba_on_account(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
 ```
 ```ruby
 no content
@@ -2787,11 +2851,12 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/children?accountWithBalance=false&accountWithBalanceAndCBA=false&audit=NONE" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/children"
 ```
 
 ```java
@@ -2832,6 +2897,10 @@ accountApi.get_children_accounts(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
    {
       "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
@@ -2969,16 +3038,18 @@ Returns a list of account objects.
 > Example Request:
 
 ```shell
-curl -X POST "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar" \
-  -H "Content-Type: application/json" \
-  -d "[ { \"objectType\": \"ACCOUNT\", \"name\": \"Test Custom Field\", \"value\": \"test_value\" }]"	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ { \"objectType\": \"ACCOUNT\", \"name\": \"Test Custom Field\", \"value\": \"demo_test_value\" }]" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
 ```
 
 ```java
@@ -3027,7 +3098,11 @@ accountApi.create_account_custom_fields(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields
+< Content-Type: application/json
+< Content-Length: 0
 ```
 ```java
 //First element of the list
@@ -3073,11 +3148,12 @@ Returns a custom field object.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields?audit=NONE" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"	
 ```
 
 ```java
@@ -3106,6 +3182,10 @@ accountApi.get_account_custom_fields(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
   {
     "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
@@ -3175,16 +3255,18 @@ Returns a list of custom field objects.
 > Example Request:
 
 ```shell
-curl -X PUT "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar" \
-  -H "Content-Type: application/json" \
-  -d "[ { \"customFieldId\": \"48e24ca0-1cfe-41c3-85e7-0ff0d51679fe\", \"objectId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"objectType\": \"ACCOUNT\", \"name\": \"Test Custom Field\", \"value\": \"test_modify_value\", \"auditLogs\": [] }]"	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ { \"customFieldId\": \"48e24ca0-1cfe-41c3-85e7-0ff0d51679fe\", \"objectId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"objectType\": \"ACCOUNT\", \"name\": \"Test Custom Field\", \"value\": \"test_modify_value\", \"auditLogs\": [] }]" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
 ```
 
 ```java
@@ -3231,7 +3313,9 @@ account.modify_account_custom_fields(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
 ```
 ```java
 no content
@@ -3260,14 +3344,15 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-curl -X DELETE "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
 ```
 
 ```java
@@ -3308,7 +3393,9 @@ account.delete_account_custom_fields(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
 ```
 ```java
 no content
@@ -3340,16 +3427,18 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-curl -X POST "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar" \
-  -H "Content-Type: application/json" \
-  -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"email\": \"email@example.com\"}"	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"email\": \"email@example.com\"}" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
 ```
 
 ```java
@@ -3393,7 +3482,11 @@ accountApi.add_email(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails
+< Content-Type: application/json
+< Content-Length: 0
 ```
 ```java
 no content
@@ -3423,11 +3516,12 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
 ```
 
 ```java
@@ -3454,6 +3548,10 @@ accountApi.get_emails(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
    {
       "accountId":"e4ca38b3-934d-42e8-a292-ffb0af5549f2",
@@ -3506,14 +3604,15 @@ Returns a list of objects with account id's and their emails.
 > Example Request:
 
 ```shell
-curl -X DELETE "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/email%40example.com" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/email%40example.com"
 ```
 
 ```java
@@ -3553,7 +3652,9 @@ accountApi.remove_email(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
 ```
 ```java
 no content
@@ -3582,11 +3683,12 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/aa2a5614-88d9-4ec3-a042-a4771bd66670/auditLogsWithHistory" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/aa2a5614-88d9-4ec3-a042-a4771bd66670/auditLogsWithHistory"
 ```
 
 ```java
@@ -3621,6 +3723,10 @@ account.email_audit_logs_with_history(account_email_id, options)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
   {
     "changeType": "INSERT",
@@ -3727,11 +3833,12 @@ Returns a list of account email audit logs with history.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments?withPluginInfo=false&withAttempts=false&audit=NONE" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments"	
 ```
 
 ```java
@@ -3767,6 +3874,10 @@ accountApi.get_invoice_payments(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
    {
       "targetInvoiceId":"d1d6e8d8-c476-4b53-badf-c23f78c02c09",
@@ -3931,14 +4042,17 @@ Return a list of invoice payments objects.
 > Example Request:
 
 ```shell
-curl -X POST "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments?paymentMethodId=f835c556-0694-4883-b4c1-d1b6e308409b&externalPayment=false" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments?paymentMethodId=f835c556-0694-4883-b4c1-d1b6e308409b"	
 ```
 
 ```java
@@ -3995,7 +4109,9 @@ accountApi.pay_all_invoices(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
 ```
 ```java
 no content
@@ -4019,7 +4135,7 @@ no content
 
 **Response**
 
-A `201` http status without content.
+A `204` http status without content.
 
 ## Retrieve account invoices
 
@@ -4030,11 +4146,12 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoices?withItems=false&withMigrationInvoices=false&unpaidInvoicesOnly=false&includeVoidedInvoices=false&audit=NONE" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoices"
 ```
 
 ```java
@@ -4073,6 +4190,10 @@ accountApi.get_invoices_for_account(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
    {
       "amount":50.0,
@@ -4287,11 +4408,12 @@ Return a list with invoice objects.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/overdue" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/overdue"
 ```
 
 ```java
@@ -4317,6 +4439,10 @@ accountApi.get_overdue_account(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 {
   "name": "__KILLBILL__CLEAR__OVERDUE_STATE__",
   "externalMessage": "",
@@ -4385,16 +4511,18 @@ Returns a overdue state object.
 > Example Request:
 
 ```shell
-curl -X POST "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods?isDefault=false&payAllUnpaidInvoices=false" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar" \
-  -H "Content-Type: application/json" \
-  -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"isDefault\": false, \"pluginName\": \"__EXTERNAL_PAYMENT__\"}"	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"isDefault\": false, \"pluginName\": \"__EXTERNAL_PAYMENT__\"}" \
+    "http://localhost:8080/1.0/kb/accounts/8785164f-b5d7-4da1-9495-33f5105e8d80/paymentMethods"	
 ```
 
 ```java
@@ -4457,7 +4585,11 @@ accountApi.create_payment_method(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/paymentMethods/064cd61b-557d-48ba-8605-8d22912c7dfb
+< Content-Type: application/json
+< Content-Length: 0
 ```
 ```java
 class PaymentMethod {
@@ -4508,11 +4640,12 @@ Returns a payment method object.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods?withPluginInfo=false&includedDeleted=false&audit=NONE" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods"
 ```
 
 ```java
@@ -4544,6 +4677,10 @@ accountApi.get_payment_methods_for_account(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
   {
     "paymentMethodId": "f835c556-0694-4883-b4c1-d1b6e308409b",
@@ -4611,12 +4748,17 @@ Returns a list of payment method objects.
 > Example Request:
 
 ```shell
-curl -X PUT "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/f835c556-0694-4883-b4c1-d1b6e308409b/setDefault?payAllUnpaidInvoices=false" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" -H "X-Killbill-ApiKey: bob" -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/f835c556-0694-4883-b4c1-d1b6e308409b/setDefault"
 ```
 
 ```java
@@ -4657,7 +4799,9 @@ accountApi.set_default_payment_method(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
 ```
 ```java
 no content
@@ -4688,14 +4832,17 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-curl -X PUT "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/refresh" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/refresh"
 ```
 
 ```java
@@ -4734,7 +4881,9 @@ accountApi.refresh_payment_methods(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
 ```
 ```java
 no content
@@ -4763,11 +4912,12 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments?withAttempts=false&withPluginInfo=false&audit=NONE" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments"	
 ```
 
 ```java
@@ -4800,6 +4950,10 @@ accountApi.get_payments_for_account(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
    {
       "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
@@ -4966,16 +5120,18 @@ Returns a list of all account payments object.
 > Example Request:
 
 ```shell
-curl -X POST "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments?paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar" \
-  -H "Content-Type: application/json" \
-  -d "{ \"transactionType\": \"AUTHORIZE\", \"amount\": 0}"	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"transactionType\": \"AUTHORIZE\", \"amount\": 0}" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments?paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947"
 ```
 
 ```java
@@ -5057,7 +5213,11 @@ accountApi.process_payment(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/payments/7c01a554-7b39-42dc-959f-3111724733d0
+< Content-Type: application/json
+< Content-Length: 0
 ```
 ```java
 class Payment {
@@ -5153,16 +5313,18 @@ Returns a payment transaction object.
 > Example Request:
 
 ```shell
-curl -X POST "http://localhost:8080/1.0/kb/accounts/payments?externalKey=2ad52f53-85ae-408a-9879-32a7e59dd03d&paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar" \
-  -H "Content-Type: application/json" \
-  -d "{ \"transactionType\": \"AUTHORIZE\", \"amount\": 0}"	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"transactionType\": \"AUTHORIZE\", \"amount\": 0}" \
+    "http://localhost:8080/1.0/kb/accounts/payments?externalKey=2ad52f53-85ae-408a-9879-32a7e59dd03d&paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947"
 ```
 
 ```java
@@ -5223,7 +5385,11 @@ accountApi.process_payment_by_external_key(body,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/payments/b4c5b34f-cd3e-4269-9f71-55daf8edde60
+< Content-Type: application/json
+< Content-Length: 0
 ```
 ```ruby
 {
@@ -5281,16 +5447,18 @@ Returns a payment transaction object.
 > Example Request:
 
 ```shell
-curl -X POST "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar" \
-  -H "Content-Type: application/json" \
-  -d "[ \"00000000-0000-0000-0000-000000000002\"]"	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ \"00000000-0000-0000-0000-000000000002\"]" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags"
 ```
 
 ```java
@@ -5330,7 +5498,11 @@ accountApi.create_account_tags(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags
+< Content-Type: application/json
+< Content-Length: 0
 ```
 ```java
 //First element of the list
@@ -5381,11 +5553,12 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags?includedDeleted=false&audit=NONE" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags"
 ```
 
 ```java
@@ -5420,6 +5593,10 @@ accountApi.get_account_tags(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
   {
     "tagId": "0f7c5837-1ed9-41ab-b391-9ef7ea4ab049",
@@ -5501,14 +5678,15 @@ Returns a list of account tag objects.
 > Example Request:
 
 ```shell
-curl -X DELETE "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags"
 ```
 
 ```java
@@ -5547,7 +5725,9 @@ accountApi.delete_account_tags(account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
 ```
 ```java
 no content
@@ -5578,11 +5758,12 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/timeline?parallel=false&audit=NONE" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/timeline"
 ```
 
 ```java
@@ -5617,6 +5798,10 @@ accountApi.get_account_timeline(account_id, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 {
   "account": {
     "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
@@ -6707,14 +6892,17 @@ Returns a list of account tag objects.
 > Example Request:
 
 ```shell
-curl -X PUT "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/transferCredit" \
-  -H "accept: application/json" \
-  -H "X-Killbill-CreatedBy: demo" \
-  -H "X-Killbill-Reason: demo" \
-  -H "X-Killbill-Comment: demo" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/transferCredit"
 ```
 
 ```java
@@ -6744,7 +6932,9 @@ accountApi.transfer_child_credit_to_parent(child_account_id,
 > Example Response:
 
 ```shell
-no content
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
 ```
 ```java
 no content
@@ -6773,11 +6963,12 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/pagination?offset=0&limit=100&accountWithBalance=false&accountWithBalanceAndCBA=false&audit=NONE" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/pagination"
 ```
 
 ```java
@@ -6817,6 +7008,10 @@ accountApi.get_accounts(api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
   {
     "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
@@ -6982,11 +7177,12 @@ Returns a list with all accounts.
 > Example Request:
 
 ```shell
-curl -X GET "http://localhost:8080/1.0/kb/accounts/search/John%20Doe?offset=0&limit=100&accountWithBalance=false&accountWithBalanceAndCBA=false&audit=NONE" \
-  -H "accept: application/json" \
-  -H "authorization: Basic YWRtaW46cGFzc3dvcmQ=" \
-  -H "X-Killbill-ApiKey: bob" \
-  -H "X-Killbill-ApiSecret: lazar"	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/search/John%20Doe"
 ```
 
 ```java
@@ -7032,6 +7228,10 @@ accountApi.search_accounts(search_key, api_key, api_secret)
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
 [
   {
     "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
