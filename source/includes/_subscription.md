@@ -54,7 +54,19 @@ The attributes are the following:
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '{ 
+            "accountId": "581d86fc-7cfc-46f2-b6d4-4dbc1d98beb3",
+            "externalKey": "somethingSpecial",
+            "planName": "super-monthly"
+        }' \
+    "http://127.0.0.1:8080/1.0/kb/subscriptions" 
 ```
 
 ```java
@@ -117,6 +129,14 @@ subscriptionApi.create_subscription(body,
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712
+< Content-Type: application/json
+< Content-Length: 0
+```
 
 ```java
 class Subscription {
@@ -305,7 +325,13 @@ Returns a subscription object.
 > Example Request:
 
 ```shell
-TODO	
+curl  -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712'
 ```
 
 ```java
@@ -354,6 +380,13 @@ subscriptionApi.cancel_subscription_plan(subscription_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 no content
 ```
@@ -388,7 +421,12 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/d4a919f4-7459-494f-85e5-af8880f63e90' 
 ```
 
 ```java
@@ -416,6 +454,102 @@ subscriptionApi.get_subscription(subscription_id, api_key, api_secret)
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+<
+{
+    "accountId":"581d86fc-7cfc-46f2-b6d4-4dbc1d98beb3",
+    "bundleId":"3b7a754c-4fe3-49a4-a56c-c8f56fc4116c",
+    "subscriptionId":"d4a919f4-7459-494f-85e5-af8880f63e90",
+    "externalKey":"somethingSpecial",
+    "startDate":"2018-07-19",
+    "productName":"Super",
+    "productCategory":"BASE",
+    "billingPeriod":"MONTHLY",
+    "phaseType":"TRIAL",
+    "priceList":"DEFAULT",
+    "planName":"super-monthly",
+    "state":"ACTIVE",
+    "sourceType":"NATIVE",
+    "cancelledDate":null,
+    "chargedThroughDate":"2018-07-19",
+    "billingStartDate":"2018-07-19",
+    "billingEndDate":null,
+    "billCycleDayLocal":18,
+    "events":
+    [
+        {"
+            eventId":"d1fc7c9a-bdcd-447c-90f4-72c8de37d457",
+            "billingPeriod":"MONTHLY",
+            "effectiveDate":"2018-07-19",
+            "plan":"super-monthly",
+            "product":"Super",
+            "priceList":"DEFAULT",
+            "eventType":"START_ENTITLEMENT",
+            "isBlockedBilling":false,
+            "isBlockedEntitlement":false,
+            "serviceName":"entitlement-service",
+            "serviceStateName":"ENT_STARTED",
+            "phase":"super-monthly-trial",
+            "auditLogs":[]
+        },
+        {
+            "eventId":"e1cea834-9c21-450a-8ff5-8e1ebef705d1",
+            "billingPeriod":"MONTHLY",
+            "effectiveDate":"2018-07-19",
+            "plan":"super-monthly",
+            "product":"Super",
+            "priceList":"DEFAULT",
+            "eventType":"START_BILLING",
+            "isBlockedBilling":false,
+            "isBlockedEntitlement":false,
+            "serviceName":"billing-service",
+            "serviceStateName":"START_BILLING",
+            "phase":"super-monthly-trial",
+            "auditLogs":[]
+        },
+        {
+            "eventId":"c9045227-4638-46ca-9a4a-2d3086168505",
+            "billingPeriod":"MONTHLY",
+            "effectiveDate":"2018-08-18",
+            "plan":"super-monthly",
+            "product":"Super",
+            "priceList":"DEFAULT",
+            "eventType":"PHASE",
+            "isBlockedBilling":false,
+            "isBlockedEntitlement":false,
+            "serviceName":"entitlement+billing-service",
+            "serviceStateName":"PHASE",
+            "phase":"super-monthly-evergreen",
+            "auditLogs":[]
+        }
+    ],
+    "priceOverrides":null,
+    "prices":
+    [
+        {
+            "planName":"super-monthly",
+            "phaseName":"super-monthly-trial",
+            "phaseType":"TRIAL",
+            "fixedPrice":0,
+            "recurringPrice":null,
+            "usagePrices":[]
+        },
+        {
+            "planName":"super-monthly",
+            "phaseName":"super-monthly-evergreen",
+            "phaseType":"EVERGREEN",
+            "fixedPrice":null,
+            "recurringPrice":1000.00,
+            "usagePrices":[]
+        }
+    ],
+    "auditLogs":[]}
+```
+            
 
 ```java
 class Subscription {
@@ -665,7 +799,20 @@ Returns a subscription object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '{ 
+            "accountId": "581d86fc-7cfc-46f2-b6d4-4dbc1d98beb3",
+            "productName": "Sports", 
+            "billingPeriod": "MONTHLY", 
+            "priceList": "DEFAULT"
+        }' \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712'
 ```
 
 ```java
@@ -731,6 +878,13 @@ subscriptionApi.change_subscription_plan(subscription_id,
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
 
 ```java
 no content
@@ -862,7 +1016,15 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '{ "billCycleDayLocal": 10 }' \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/bcd' 
 ```
 
 ```java
@@ -914,6 +1076,13 @@ subscriptionApi.update_subscription_bcd(subscription_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 no content
 ```
@@ -944,7 +1113,21 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '{ 
+            "stateName": "STATE",
+            "service": "ServiceStateService",
+            "isBlockChange": false,
+            "isBlockEntitlement": false,
+            "isBlockBilling": false
+    }' \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/block' 
 ```
 
 ```java
@@ -991,6 +1174,14 @@ subscriptionApi.add_subscription_blocking_state(subscription_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Location: http://127.0.0.1:8080/1.0/kb/accounts/581d86fc-7cfc-46f2-b6d4-4dbc1d98beb3/block?blockingStateTypes=SUBSCRIPTION
+< Content-Length: 0
+```
+
 ```ruby
 no content
 ```
@@ -1017,7 +1208,20 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '[{ 
+            "objectId": "77e23878-8b9d-403b-bf31-93003e125712",
+            "objectType": "SUBSCRIPTION",
+            "name": "Test Custom Field",
+            "value": "test_value"
+    }]' \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/customFields' 
 ```
 
 ```java
@@ -1068,6 +1272,14 @@ subscriptionApi.create_subscription_custom_fields(subscription_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/customFields
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 //First element of the list
 class CustomField {
@@ -1115,7 +1327,12 @@ Returns a custom field object.
 > Example Request:
 
 ```shell
-TODO	
+curl \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/customFields' 
 ```
 
 ```java
@@ -1145,6 +1362,23 @@ subscriptionApi.get_subscription_custom_fields(subscription_id,
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 Ok
+< Content-Type: application/json
+<
+[
+    {
+        "customFieldId":"439ed0f8-9b37-4688-bace-e2595b1d3801",
+        "objectId":"77e23878-8b9d-403b-bf31-93003e125712",
+        "objectType":"SUBSCRIPTION",
+        "name":"Test Custom Field",
+        "value":"test_value",
+        "auditLogs":[]
+    }
+]
+```
 
 ```java
 //First element of the list
@@ -1200,7 +1434,18 @@ Returns a list of custom field objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '[{ 
+            "customFieldId": "439ed0f8-9b37-4688-bace-e2595b1d3801",
+            "value": "NewValue"
+    }]' \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/customFields' 
 ```
 
 ```java
@@ -1248,6 +1493,13 @@ subscriptionApi.modify_subscription_custom_fields(subscription_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 no content
 ```
@@ -1280,7 +1532,13 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/customFields?customField=439ed0f8-9b37-4688-bace-e2595b1d3801' 
 ```
 
 ```java
@@ -1317,6 +1575,13 @@ subscriptionApi.delete_subscription_custom_fields(subscription_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 no content
 ```
@@ -1347,7 +1612,17 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '[
+            "00000000-0000-0000-0000-000000000001"
+        ]' \
+  'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags' 
 ```
 
 ```java
@@ -1384,6 +1659,14 @@ subscriptionApi.create_subscription_tags(subscription_id,
                                          api_secret)
 ```
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags
+< Content-Type: application/json
+< Content-Length: 0
+```
 
 ```java
 //First element of the list
@@ -1432,7 +1715,12 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags' 
 ```
 
 ```java
@@ -1468,6 +1756,22 @@ subscriptionApi.get_subscription_tags(subscription_id,
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+[
+    {
+        "tagId":"d0513754-56a9-4694-abb1-3ac46c72e861",
+        "objectType":"SUBSCRIPTION",
+        "objectId":"77e23878-8b9d-403b-bf31-93003e125712",
+        "tagDefinitionId":"00000000-0000-0000-0000-000000000001",
+        "tagDefinitionName":"AUTO_PAY_OFF",
+        "auditLogs":[]
+    }
+]
+```
 
 ```java
 //First element of the list
@@ -1522,7 +1826,13 @@ Returns a list of bundle tag objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags?tagDef=00000000-0000-0000-0000-000000000001' 	
 ```
 
 ```java
@@ -1562,6 +1872,13 @@ subscriptionApi.delete_subscription_tags(subscription_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 no content
 ```
@@ -1591,7 +1908,13 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/uncancel' 
 ```
 
 ```java
@@ -1625,6 +1948,13 @@ subscriptionApi.uncancel_subscription_plan(subscription_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 no content
 ```
@@ -1652,7 +1982,35 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '[
+          {
+            "baseEntitlementAndAddOns": [
+              {
+                "accountId": "886adb60-be70-40c8-b97d-1f8ecbc30a64",
+                "externalKey": "base",
+                "productName": "Sports",
+                "productCategory": "BASE",
+                "billingPeriod": "MONTHLY",
+                "priceList": "DEFAULT"
+              },
+              {
+                "accountId": "886adb60-be70-40c8-b97d-1f8ecbc30a64",
+                "productName": "OilSlick",
+                "productCategory": "ADD_ON",
+                "billingPeriod": "MONTHLY",
+                "priceList": "DEFAULT"
+              }
+            ]
+          }
+        ]' \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/createSubscriptionsWithAddOns' 
 ```
 
 ```java
@@ -1764,6 +2122,14 @@ subscriptionApi.create_subscriptions_with_add_ons([body],
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/accounts/886adb60-be70-40c8-b97d-1f8ecbc30a64/bundles?bundlesFilter=cbcc7642-1aa5-4609-b89d-5356d05819be
+< Content-Type: application/json
+< Content-Length: 0
+```
 
 ```java
 class Bundle {
@@ -2200,7 +2566,31 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '[
+          {
+            "accountId": "581d86fc-7cfc-46f2-b6d4-4dbc1d98beb3",
+            "externalKey": "base",
+            "productName": "Sports",
+            "productCategory": "BASE",
+            "billingPeriod": "MONTHLY",
+            "priceList": "DEFAULT"
+        },
+        {
+          "accountId": "581d86fc-7cfc-46f2-b6d4-4dbc1d98beb3",
+          "productName": "OilSlick",
+          "productCategory": "ADD_ON",
+          "billingPeriod": "MONTHLY",
+          "priceList": "DEFAULT"
+        }
+        ]' \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/createSubscriptionWithAddOns' 
 ```
 
 ```java
@@ -2314,6 +2704,14 @@ subscriptionApi.create_subscription_with_add_ons(body,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/accounts/886adb60-be70-40c8-b97d-1f8ecbc30a64/bundles?bundlesFilter=cbcc7642-1aa5-4609-b89d-5356d05819be
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 class BulkSubscriptionsBundle {
     baseEntitlementAndAddOns: [class Subscription {
@@ -2399,7 +2797,13 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/undoChangePlan' 
 ```
 
 ```java
@@ -2432,6 +2836,13 @@ subscriptionApi.undo_change_subscription_plan(subscription_id,
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
 
 ```java
 no content

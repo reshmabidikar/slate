@@ -23,7 +23,15 @@ In terms of api, we offer basic CRUD operations, where catalog (versions) are fe
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/catalog"	
 ```
 
 ```java
@@ -47,6 +55,10 @@ catalogApi.delete_catalog(created_by, api_key, api_secret)
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+```
 ```java
 no content
 ```
@@ -74,7 +86,12 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/catalog"	
 ```
 
 ```java
@@ -103,6 +120,170 @@ catalogApi.get_catalog_json(api_key, api_secret)
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "name": "SpyCarBasic",
+    "effectiveDate": "2013-02-08T00:00:00.000+0000",
+    "currencies": [
+      "USD",
+      "GBP"
+    ],
+    "units": [],
+    "products": [
+      {
+        "type": "ADD_ON",
+        "name": "Super",
+        "prettyName": "Super",
+        "plans": [
+          {
+            "name": "super-monthly",
+            "prettyName": "super-monthly",
+            "billingPeriod": "MONTHLY",
+            "phases": [
+              {
+                "type": "TRIAL",
+                "prices": [],
+                "fixedPrices": [],
+                "duration": {
+                  "unit": "DAYS",
+                  "number": 30
+                },
+                "usages": []
+              },
+              {
+                "type": "EVERGREEN",
+                "prices": [
+                  {
+                    "currency": "GBP",
+                    "value": 750
+                  },
+                  {
+                    "currency": "USD",
+                    "value": 1000
+                  }
+                ],
+                "fixedPrices": [],
+                "duration": {
+                  "unit": "UNLIMITED",
+                  "number": -1
+                },
+                "usages": []
+              }
+            ]
+          }
+        ],
+        "included": [],
+        "available": []
+      },
+      {
+        "type": "BASE",
+        "name": "Standard",
+        "prettyName": "Standard",
+        "plans": [
+          {
+            "name": "standard-monthly",
+            "prettyName": "standard-monthly",
+            "billingPeriod": "MONTHLY",
+            "phases": [
+              {
+                "type": "TRIAL",
+                "prices": [],
+                "fixedPrices": [],
+                "duration": {
+                  "unit": "DAYS",
+                  "number": 30
+                },
+                "usages": []
+              },
+              {
+                "type": "EVERGREEN",
+                "prices": [
+                  {
+                    "currency": "GBP",
+                    "value": 75
+                  },
+                  {
+                    "currency": "USD",
+                    "value": 100
+                  }
+                ],
+                "fixedPrices": [],
+                "duration": {
+                  "unit": "UNLIMITED",
+                  "number": -1
+                },
+                "usages": []
+              }
+            ]
+          }
+        ],
+        "included": [],
+        "available": []
+      },
+      {
+        "type": "BASE",
+        "name": "Sports",
+        "prettyName": "Sports",
+        "plans": [
+          {
+            "name": "sports-monthly",
+            "prettyName": "sports-monthly",
+            "billingPeriod": "MONTHLY",
+            "phases": [
+              {
+                "type": "TRIAL",
+                "prices": [],
+                "fixedPrices": [],
+                "duration": {
+                  "unit": "DAYS",
+                  "number": 30
+                },
+                "usages": []
+              },
+              {
+                "type": "EVERGREEN",
+                "prices": [
+                  {
+                    "currency": "GBP",
+                    "value": 375
+                  },
+                  {
+                    "currency": "USD",
+                    "value": 500
+                  }
+                ],
+                "fixedPrices": [],
+                "duration": {
+                  "unit": "UNLIMITED",
+                  "number": -1
+                },
+                "usages": []
+              }
+            ]
+          }
+        ],
+        "included": [],
+        "available": []
+      }
+    ],
+    "priceLists": [
+      {
+        "name": "DEFAULT",
+        "plans": [
+          "sports-monthly",
+          "standard-monthly",
+          "super-monthly"
+        ]
+      }
+    ]
+  }
+]
+```
 ```java
 class Catalog {
     name: Firearms
@@ -1416,7 +1597,12 @@ Returns a catalog in JSON format.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/catalog/availableAddons"	
 ```
 
 ```java
@@ -1448,6 +1634,26 @@ catalogApi.get_available_addons(api_key,
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+   {
+      "product":"Basic",
+      "plan":"basic-annual",
+      "finalPhaseBillingPeriod":"ANNUAL",
+      "priceList":"DEFAULT",
+      "finalPhaseRecurringPrice":[
+         {
+            "currency":"USD",
+            "value":10000.0
+         }
+      ]
+   }
+]
+```
 ```java
 //First element of the list
 class PlanDetail {
@@ -1504,7 +1710,12 @@ Returns a list with add-ons for a product.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/catalog/availableBasePlans"	
 ```
 
 ```java
@@ -1528,6 +1739,46 @@ catalogApi.get_available_base_plans(api_key, api_secret)
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "product": "Sports",
+    "plan": "sports-monthly",
+    "priceList": "DEFAULT",
+    "finalPhaseBillingPeriod": "MONTHLY",
+    "finalPhaseRecurringPrice": [
+      {
+        "currency": "GBP",
+        "value": 375
+      },
+      {
+        "currency": "USD",
+        "value": 500
+      }
+    ]
+  },
+  {
+    "product": "Standard",
+    "plan": "standard-monthly",
+    "priceList": "DEFAULT",
+    "finalPhaseBillingPeriod": "MONTHLY",
+    "finalPhaseRecurringPrice": [
+      {
+        "currency": "GBP",
+        "value": 75
+      },
+      {
+        "currency": "USD",
+        "value": 100
+      }
+    ]
+  }
+]
+```
 ```java
 //First element of the list
 class PlanDetail {
@@ -1611,7 +1862,12 @@ Returns a list with the available base plans.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/catalog/phase?subscriptionId=8ab101b6-15e8-433b-b4f7-f99eeaa56a77&requestedDate=2018-7-18"	
 ```
 
 ```java
@@ -1635,6 +1891,25 @@ catalogApi.get_phase_for_subscription_and_date(api_key,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+{
+  "type": "TRIAL",
+  "prices": [],
+  "fixedPrices": [],
+  "duration": {
+    "unit": "DAYS",
+    "number": 30
+  },
+  "usages": []
+} 
+```
+```java
+TODO
+```
 ```ruby
 {
    "duration":{
@@ -1681,7 +1956,12 @@ Returns a list with phase info.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/catalog/plan?subscriptionId=8ab101b6-15e8-433b-b4f7-f99eeaa56a77&requestedDate=2018-7-18"	
 ```
 
 ```java
@@ -1705,6 +1985,47 @@ catalogApi.get_plan_for_subscription_and_date(api_key,
 
 > Example Response:
 
+```shell
+{
+  "name": "standard-monthly",
+  "prettyName": "standard-monthly",
+  "billingPeriod": "MONTHLY",
+  "phases": [
+    {
+      "type": "TRIAL",
+      "prices": [],
+      "fixedPrices": [],
+      "duration": {
+        "unit": "DAYS",
+        "number": 30
+      },
+      "usages": []
+    },
+    {
+      "type": "EVERGREEN",
+      "prices": [
+        {
+          "currency": "GBP",
+          "value": 75
+        },
+        {
+          "currency": "USD",
+          "value": 100
+        }
+      ],
+      "fixedPrices": [],
+      "duration": {
+        "unit": "UNLIMITED",
+        "number": -1
+      },
+      "usages": []
+    }
+  ]
+}
+```
+```java
+TODO
+```
 ```ruby
 {
    "billing_period":"MONTHLY",
@@ -1790,7 +2111,12 @@ Returns a list with plan info.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/catalog/priceList?subscriptionId=8ab101b6-15e8-433b-b4f7-f99eeaa56a77&requestedDate=2018-7-18"	
 ```
 
 ```java
@@ -1814,6 +2140,19 @@ catalogApi.get_price_list_for_subscription_and_date(api_key,
 
 > Example Response:
 
+```shell
+{
+  "name": "DEFAULT",
+  "plans": [
+    "sports-monthly",
+    "standard-monthly",
+    "super-monthly"
+  ]
+}
+```
+```java 
+TODO
+```
 ```ruby
 {
    "name":"DEFAULT",
@@ -1849,7 +2188,12 @@ Returns a price list.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/catalog/product?subscriptionId=8ab101b6-15e8-433b-b4f7-f99eeaa56a77&requestedDate=2018-7-18"	
 ```
 
 ```java
@@ -1873,6 +2217,23 @@ catalogApi.get_product_for_subscription_and_date(api_key,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+{
+  "type": "BASE",
+  "name": "Standard",
+  "prettyName": "Standard",
+  "plans": [],
+  "included": [],
+  "available": []
+}
+```
+```java 
+TODO
+```
 ```ruby
 {
    "available":[
@@ -1918,7 +2279,18 @@ Returns a list with the product info.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"planId\": \"basic-annual\", \"productName\": \"Basic\", \"productCategory\": \"BASE\", \"currency\": \"USD\", \"amount\": 1000, \"billingPeriod\": \"ANNUAL\", \"trialLength\": 0, \"trialTimeUnit\": \"UNLIMITED\"}"	
+    "http://localhost:8080/1.0/kb/catalog/simplePlan"
 ```
 
 ```java
@@ -1975,8 +2347,15 @@ catalogApi.add_simple_plan(body, created_by, api_key, api_secret)
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/catalog
+< Content-Type: application/json
+< Content-Length: 0
+```
 ```java
-no content
+TODO
 ```
 ```ruby
 no content
@@ -2002,7 +2381,12 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "accept: application/json" \
+    "http://localhost:8080/1.0/kb/catalog/versions"
 ```
 
 ```java
@@ -2026,6 +2410,15 @@ catalogApi.get_catalog_versions(api_key, api_secret)
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  "2013-02-08T00:00:00.000Z"
+]
+```
 ```java
 2013-02-08T00:00:00.000Z
 ```
@@ -2053,7 +2446,12 @@ Returns a list with the available catalog versions.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: text/xml" \
+    "http://localhost:8080/1.0/kb/catalog/xml"	
 ```
 
 ```java
@@ -2082,6 +2480,230 @@ catalogApi.get_catalog_xml(api_key, api_secret)
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: text/xml
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <catalogs>
+    <versions>
+      <version>
+        <effectiveDate>2013-02-08T00:00:00Z</effectiveDate>
+        <catalogName>SpyCarBasic</catalogName>
+        <currencies>
+          <currency>USD</currency>
+          <currency>GBP</currency>
+        </currencies>
+        <units/>
+        <products>
+          <product name="Basic" prettyName="Basic">
+            <category>BASE</category>
+            <included/>
+            <available/>
+            <limits/>
+          </product>
+          <product name="Sports" prettyName="Sports">
+            <category>BASE</category>
+            <included/>
+            <available/>
+            <limits/>
+          </product>
+          <product name="Standard" prettyName="Standard">
+            <category>BASE</category>
+            <included/>
+            <available/>
+            <limits/>
+          </product>
+          <product name="Super" prettyName="Super">
+            <category>ADD_ON</category>
+            <included/>
+            <available/>
+            <limits/>
+          </product>
+        </products>
+        <rules>
+          <changePolicy>
+            <changePolicyCase>
+              <policy>IMMEDIATE</policy>
+            </changePolicyCase>
+          </changePolicy>
+          <changeAlignment>
+            <changeAlignmentCase>
+              <alignment>START_OF_BUNDLE</alignment>
+            </changeAlignmentCase>
+          </changeAlignment>
+          <cancelPolicy>
+            <cancelPolicyCase>
+              <policy>IMMEDIATE</policy>
+            </cancelPolicyCase>
+          </cancelPolicy>
+          <createAlignment>
+            <createAlignmentCase>
+              <alignment>START_OF_BUNDLE</alignment>
+            </createAlignmentCase>
+          </createAlignment>
+          <billingAlignment>
+            <billingAlignmentCase>
+              <alignment>ACCOUNT</alignment>
+            </billingAlignmentCase>
+          </billingAlignment>
+          <priceList>
+            <priceListCase>
+              <toPriceList>DEFAULT</toPriceList>
+            </priceListCase>
+          </priceList>
+        </rules>
+        <plans>
+          <plan name="basic-annual" prettyName="basic-annual">
+            <product>Basic</product>
+            <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+            <initialPhases/>
+            <finalPhase type="EVERGREEN">
+              <duration>
+                <unit>UNLIMITED</unit>
+                <number>-1</number>
+              </duration>
+              <recurring>
+                <billingPeriod>ANNUAL</billingPeriod>
+                <recurringPrice>
+                  <price>
+                    <currency>USD</currency>
+                    <value>1000</value>
+                  </price>
+                </recurringPrice>
+              </recurring>
+              <usages/>
+            </finalPhase>
+            <plansAllowedInBundle>-1</plansAllowedInBundle>
+          </plan>
+          <plan name="sports-monthly" prettyName="sports-monthly">
+            <product>Sports</product>
+            <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+            <initialPhases>
+              <phase type="TRIAL">
+                <duration>
+                  <unit>DAYS</unit>
+                  <number>30</number>
+                </duration>
+                <fixed type="ONE_TIME">
+                  <fixedPrice/>
+                </fixed>
+                <usages/>
+              </phase>
+            </initialPhases>
+            <finalPhase type="EVERGREEN">
+              <duration>
+                <unit>UNLIMITED</unit>
+                <number>-1</number>
+              </duration>
+              <recurring>
+                <billingPeriod>MONTHLY</billingPeriod>
+                <recurringPrice>
+                  <price>
+                    <currency>GBP</currency>
+                    <value>375.00</value>
+                  </price>
+                  <price>
+                    <currency>USD</currency>
+                    <value>500.00</value>
+                  </price>
+                </recurringPrice>
+              </recurring>
+              <usages/>
+            </finalPhase>
+            <plansAllowedInBundle>-1</plansAllowedInBundle>
+          </plan>
+          <plan name="standard-monthly" prettyName="standard-monthly">
+            <product>Standard</product>
+            <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+            <initialPhases>
+              <phase type="TRIAL">
+                <duration>
+                  <unit>DAYS</unit>
+                  <number>30</number>
+                </duration>
+                <fixed type="ONE_TIME">
+                  <fixedPrice/>
+                </fixed>
+                <usages/>
+              </phase>
+            </initialPhases>
+            <finalPhase type="EVERGREEN">
+              <duration>
+                <unit>UNLIMITED</unit>
+                <number>-1</number>
+              </duration>
+              <recurring>
+                <billingPeriod>MONTHLY</billingPeriod>
+                <recurringPrice>
+                  <price>
+                    <currency>GBP</currency>
+                    <value>75.00</value>
+                  </price>
+                  <price>
+                    <currency>USD</currency>
+                    <value>100.00</value>
+                  </price>
+                </recurringPrice>
+              </recurring>
+              <usages/>
+            </finalPhase>
+            <plansAllowedInBundle>-1</plansAllowedInBundle>
+          </plan>
+          <plan name="super-monthly" prettyName="super-monthly">
+            <product>Super</product>
+            <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+            <initialPhases>
+              <phase type="TRIAL">
+                <duration>
+                  <unit>DAYS</unit>
+                  <number>30</number>
+                </duration>
+                <fixed type="ONE_TIME">
+                  <fixedPrice/>
+                </fixed>
+                <usages/>
+              </phase>
+            </initialPhases>
+            <finalPhase type="EVERGREEN">
+              <duration>
+                <unit>UNLIMITED</unit>
+                <number>-1</number>
+              </duration>
+              <recurring>
+                <billingPeriod>MONTHLY</billingPeriod>
+                <recurringPrice>
+                  <price>
+                    <currency>GBP</currency>
+                    <value>750.00</value>
+                  </price>
+                  <price>
+                    <currency>USD</currency>
+                    <value>1000.00</value>
+                  </price>
+                </recurringPrice>
+              </recurring>
+              <usages/>
+            </finalPhase>
+            <plansAllowedInBundle>-1</plansAllowedInBundle>
+          </plan>
+        </plans>
+        <priceLists>
+          <defaultPriceList name="DEFAULT">
+            <plans>
+              <plan>basic-annual</plan>
+              <plan>sports-monthly</plan>
+              <plan>standard-monthly</plan>
+              <plan>super-monthly</plan>
+            </plans>
+          </defaultPriceList>
+        </priceLists>
+      </version>
+    </versions>
+    <catalogName>SpyCarBasic</catalogName>
+  </catalogs>
+```
 ```java
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <catalogs>
@@ -2666,7 +3288,18 @@ Returns a catalog in XML format.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: text/xml" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \"
+    -d "<?xml version="1.0" encoding="UTF-8" standalone="yes"?><catalog> ..."
+    "http://localhost:8080/1.0/kb/catalog/xml"
 ```
 
 ```java
@@ -2698,6 +3331,13 @@ catalogApi.upload_catalog_xml(xml_catalog,
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/catalog/xml
+< Content-Type: text/xml
+< Content-Length: 0
+```
 ```java
 no content
 ```
