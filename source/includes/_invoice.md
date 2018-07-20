@@ -634,6 +634,196 @@ class Invoice {
 
 Returns a invoice object.
 
+## Retrieve an invoice by invoice item id
+
+**HTTP Request**
+
+`GET http://example.com/1.0/kb/invoices/byItemId/{itemId}`
+
+> Example Request:
+
+```shell
+TODO	
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+UUID invoiceItemId = UUID.fromString("111732ad-196d-423f-8ccd-de44109dc944")
+Boolean withItems = true; // Will fetch invoice items
+Boolean withChildrenItems = false; //  Will include children items
+
+Invoice invoiceByItemId = invoiceApi.getInvoiceByItemId(invoiceItemId, 
+                                                        withItems, 
+                                                        withChildrenItems, 
+                                                        AuditLevel.NONE, 
+                                                        requestOptions);
+```
+
+```ruby
+invoice_item_id = "f641ce8a-a874-4e98-ada5-2bd8fdb74945"
+with_items = true
+with_children_items = false
+audit = 'NONE'
+
+KillBillClient::Model::Invoice.find_by_invoice_item_id(invoice_item_id, 
+                                                       with_items,
+                                                       with_children_items, 
+                                                       audit, 
+                                                       options)
+```
+
+```python
+invoiceApi = killbill.api.InvoiceApi()
+invoice_item_id = '8fae6721-3ebc-4103-85f5-aa13dde0e4f5'
+
+invoiceApi.get_invoice_by_item_id(invoice_item_id, 
+                                  api_key, 
+                                  api_secret, 
+                                  with_items=True)
+```
+> Example Response:
+
+```java
+class Invoice {
+    org.killbill.billing.client.model.gen.Invoice@5c66117a
+    amount: 0.00
+    currency: USD
+    status: COMMITTED
+    creditAdj: 0.00
+    refundAdj: 0.00
+    invoiceId: 3a51917b-c0f9-4d9d-972e-1c5db7906b1b
+    invoiceDate: 2012-04-25
+    targetDate: 2012-04-25
+    invoiceNumber: 1
+    balance: 0.00
+    accountId: 3c186380-b31a-4934-b25b-717056219e73
+    bundleKeys: null
+    credits: null
+    items: [class InvoiceItem {
+        org.killbill.billing.client.model.gen.InvoiceItem@74f2032c
+        invoiceItemId: 111732ad-196d-423f-8ccd-de44109dc944
+        invoiceId: 3a51917b-c0f9-4d9d-972e-1c5db7906b1b
+        linkedInvoiceItemId: null
+        accountId: 3c186380-b31a-4934-b25b-717056219e73
+        childAccountId: null
+        bundleId: 66ebdda5-741a-4284-942a-62b2d576b014
+        subscriptionId: c8c63a23-f7fd-413a-a8be-4a692c4c7e62
+        productName: Shotgun
+        planName: shotgun-monthly
+        phaseName: shotgun-monthly-trial
+        usageName: null
+        prettyProductName: Shotgun
+        prettyPlanName: Shotgun Monthly
+        prettyPhaseName: shotgun-monthly-trial
+        prettyUsageName: null
+        itemType: FIXED
+        description: shotgun-monthly-trial
+        startDate: 2012-04-25
+        endDate: null
+        amount: 0.00
+        rate: null
+        currency: USD
+        quantity: null
+        itemDetails: null
+        childItems: null
+        auditLogs: []
+    }]
+    isParentInvoice: false
+    parentInvoiceId: null
+    parentAccountId: null
+    auditLogs: []
+}
+```
+```ruby
+{
+   "amount":7.0,
+   "currency":"USD",
+   "status":"COMMITTED",
+   "creditAdj":0.0,
+   "refundAdj":0.0,
+   "invoiceId":"31db9f9a-91ff-49f4-b5a1-5e4fce59a197",
+   "invoiceDate":"2013-08-01",
+   "targetDate":"2013-08-01",
+   "invoiceNumber":"1913",
+   "balance":0.0,
+   "accountId":"be19b229-c076-47aa-aa4d-f53bec505dc7",
+   "items":[
+      {
+         "invoiceItemId":"f641ce8a-a874-4e98-ada5-2bd8fdb74945",
+         "invoiceId":"31db9f9a-91ff-49f4-b5a1-5e4fce59a197",
+         "accountId":"be19b229-c076-47aa-aa4d-f53bec505dc7",
+         "itemType":"EXTERNAL_CHARGE",
+         "description":"My first charge",
+         "startDate":"2013-08-01",
+         "amount":7.0,
+         "currency":"USD",
+         "auditLogs":[]
+      }
+   ],
+   "isParentInvoice":false,
+   "auditLogs":[]
+}
+```
+```python
+{'account_id': '4d5d7a84-e04e-41ea-80be-871c4eda3610',
+ 'amount': 0.0,
+ 'audit_logs': [],
+ 'balance': 0.0,
+ 'bundle_keys': None,
+ 'credit_adj': 0.0,
+ 'credits': None,
+ 'currency': 'USD',
+ 'invoice_date': datetime.date(2018, 7, 13),
+ 'invoice_id': 'f14b8e48-aadc-4a68-9d2c-b7e45758e156',
+ 'invoice_number': '306',
+ 'is_parent_invoice': False,
+ 'items': [{'account_id': '4d5d7a84-e04e-41ea-80be-871c4eda3610',
+            'amount': 0.0,
+            'audit_logs': [],
+            'bundle_id': '25b289db-a0e8-4796-a1e3-6c87ee8fef44',
+            'child_account_id': None,
+            'child_items': None,
+            'currency': 'USD',
+            'description': 'standard-monthly-trial',
+            'end_date': None,
+            'invoice_id': 'f14b8e48-aadc-4a68-9d2c-b7e45758e156',
+            'invoice_item_id': '8fae6721-3ebc-4103-85f5-aa13dde0e4f5',
+            'item_details': None,
+            'item_type': 'FIXED',
+            'linked_invoice_item_id': None,
+            'phase_name': 'standard-monthly-trial',
+            'plan_name': 'standard-monthly',
+            'pretty_phase_name': 'standard-monthly-trial',
+            'pretty_plan_name': 'standard-monthly',
+            'pretty_product_name': 'Standard',
+            'pretty_usage_name': None,
+            'product_name': 'Standard',
+            'quantity': None,
+            'rate': None,
+            'start_date': datetime.date(2018, 7, 13),
+            'subscription_id': 'fec6602d-3d11-4039-b09e-86fd488c7082',
+            'usage_name': None}],
+ 'parent_account_id': None,
+ 'parent_invoice_id': None,
+ 'refund_adj': 0.0,
+ 'status': 'COMMITTED',
+ 'target_date': datetime.date(2018, 7, 13)}                                                                                                                                                                                                                                                                                                        
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **withItems** | boolean | false | choose true if you want to include items |
+| **withChildrenItems** | boolean | false | choose true if you want to include children items date |
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Returns a invoice object.
+
 ## Delete a CBA item
 
 **HTTP Request**

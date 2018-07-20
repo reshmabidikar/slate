@@ -30,7 +30,12 @@ The attributes are the following:
 > Example Request:
 
 ```shell
-TODO	
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/paymentMethods/916619a4-02bb-4d3d-b3da-2584ac897b19' 
 ```
 
 ```java
@@ -67,6 +72,21 @@ paymentMethodApi.get_payment_method(payment_method_id, api_key, api_secret)
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+{
+    "paymentMethodId":"916619a4-02bb-4d3d-b3da-2584ac897b19",
+    "externalKey":"coolPaymentMethod",
+    "accountId":"84c7e0d4-a5ed-405f-a655-3ed16ae19997",
+    "isDefault":false,
+    "pluginName":"__EXTERNAL_PAYMENT__",
+    "pluginInfo":null,
+    "auditLogs":[]
+}
+```
 
 ```java
 class PaymentMethod {
@@ -150,7 +170,12 @@ Returns a payment method object.
 > Example Request:
 
 ```shell
-TODO	
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/paymentMethods/916619a4-02bb-4d3d-b3da-2584ac897b19?externalKey=coolPaymentMethod' 
 ```
 
 ```java
@@ -191,6 +216,21 @@ paymentMethodApi.get_payment_method_by_key(external_key, api_key, api_secret)
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+{
+    "paymentMethodId":"916619a4-02bb-4d3d-b3da-2584ac897b19",
+    "externalKey":"coolPaymentMethod",
+    "accountId":"84c7e0d4-a5ed-405f-a655-3ed16ae19997",
+    "isDefault":false,
+    "pluginName":"__EXTERNAL_PAYMENT__",
+    "pluginInfo":null,
+    "auditLogs":[]
+}
+```
 
 ```java
 class PaymentMethod {
@@ -249,7 +289,13 @@ Returns a payment method object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    'http://127.0.0.1:8080/1.0/kb/paymentMethods/916619a4-02bb-4d3d-b3da-2584ac897b19' 	
 ```
 
 ```java
@@ -293,6 +339,13 @@ paymentMethodApi.delete_payment_method(payment_method_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 no content
 ```
@@ -323,7 +376,12 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/paymentMethods/916619a4-02bb-4d3d-b3da-2584ac897b19/auditLogsWithHistory' 
 ```
 
 ```java
@@ -355,8 +413,39 @@ account.email_audit_logs_with_history(account_email_id, options)
 > Example Response:
 
 ```shell
-**TODO**
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2018-07-19T14:56:07.000Z",
+    "objectType": "PAYMENT_METHOD",
+    "objectId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
+    "changedBy": "admin",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "f77892e9-32bd-4d59-8039-5e12798b53fe",
+    "history": 
+    {
+      "id": null,
+      "createdDate": "2018-07-19T14:56:07.000Z",
+      "updatedDate": "2018-07-19T14:56:07.000Z",
+      "recordId": 10,
+      "accountRecordId": 35,
+      "tenantRecordId": 1,
+      "externalKey": "unknown",
+      "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
+      "pluginName": "__EXTERNAL_PAYMENT__",
+      "isActive": true,
+      "active": true,
+      "tableName": "PAYMENT_METHODS",
+      "historyTableName": "PAYMENT_METHOD_HISTORY"
+    }
+  }
+]
 ```
+
 ```java
 //First element of the list
 class AuditLog {
@@ -439,7 +528,20 @@ Returns a list of account email audit logs with history.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Content-Type: application/json' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    -d '[{ 
+            "objectId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
+            "objectType": "PAYMENT_METHOD",
+            "name": "Test Custom Field",
+            "value": "test_value"
+    }]' \
+    'http://127.0.0.1:8080/1.0/kb/paymentMethods/916619a4-02bb-4d3d-b3da-2584ac897b19/customFields' 
 ```
 
 ```java
@@ -490,6 +592,14 @@ paymentMethodApi.create_payment_method_custom_fields(payment_method_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/paymentMethods/916619a4-02bb-4d3d-b3da-2584ac897b19/customFields
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 //First element of the list
 class CustomField {
@@ -536,7 +646,12 @@ Returns a custom field object.
 > Example Request:
 
 ```shell
-TODO	
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/paymentMethods/916619a4-02bb-4d3d-b3da-2584ac897b19/customFields' 
 ```
 
 ```java
@@ -566,6 +681,22 @@ paymentMethodApi.get_payment_method_custom_fields(payment_method_id,
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+[
+  {
+    "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f",
+    "objectId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
+    "objectType": "PAYMENT_METHOD",
+    "name": "Test Custom Field",
+    "value": "test_value",
+    "auditLogs": []
+  }
+]
+```
 
 ```java
 //First element of the list
@@ -619,7 +750,18 @@ Returns a list of custom field objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Content-Type: application/json' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    -d '[{ 
+            "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f",
+            "value": "NewValue"
+    }]' \
+    'http://127.0.0.1:8080/1.0/kb/paymentMethods/916619a4-02bb-4d3d-b3da-2584ac897b19/customFields' 
 ```
 
 ```java
@@ -668,6 +810,13 @@ paymentMethodApi.modify_payment_method_custom_fields(payment_method_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 no content
 ```
@@ -697,7 +846,13 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    'http://127.0.0.1:8080/1.0/kb/paymentMethods/77e23878-8b9d-403b-bf31-93003e125712/customFields?customField=439ed0f8-9b37-4688-bace-e2595b1d3801' 
 ```
 
 ```java
@@ -733,6 +888,13 @@ paymentMethodApi.delete_payment_method_custom_fields(payment_method_id,
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 no content
 ```
@@ -762,7 +924,12 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/paymentMethods/pagination' 
 ```
 
 ```java
@@ -800,6 +967,32 @@ paymentMethodApi = killbill.api.PaymentMethodApi()
 paymentMethodApi.get_payment_methods(api_key, api_secret)
 ```
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+[
+  {
+    "paymentMethodId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
+    "externalKey": "coolPaymentMethod",
+    "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
+    "isDefault": false,
+    "pluginName": "__EXTERNAL_PAYMENT__",
+    "pluginInfo": null,
+    "auditLogs": []
+  },
+  {
+    "paymentMethodId": "dc89832d-18a3-42fd-b3be-cac074fddb36",
+    "externalKey": "paypal",
+    "accountId": "ca15adc4-1061-4e54-a9a0-15e773b3b154",
+    "isDefault": false,
+    "pluginName": "killbill-paypal-express",
+    "pluginInfo": null,
+    "auditLogs": []
+  }
+]
+```
 
 ```java
 //First element of the list
@@ -859,7 +1052,12 @@ Returns a list with all payment methods.
 > Example Request:
 
 ```shell
-TODO	
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/paymentMethods/search/coolPaymentMethod' 
 ```
 
 ```java
@@ -902,6 +1100,23 @@ paymentMethodApi.search_payment_methods(search_key, api_key, api_secret)
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+[
+  {
+    "paymentMethodId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
+    "externalKey": "coolPaymentMethod",
+    "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
+    "isDefault": false,
+    "pluginName": "__EXTERNAL_PAYMENT__",
+    "pluginInfo": null,
+    "auditLogs": []
+  }
+]
+```
 
 ```java
 //First element of the list

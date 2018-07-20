@@ -27,7 +27,12 @@ Retrieves the details information for the `Bundle` using its `externalKey`.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/bundles?externalKey=2cd2f4b5-a1c0-42a7-924f-64c7b791332d"
 ```
 
 ```java
@@ -62,6 +67,162 @@ bundleApi.get_bundle_by_key(bundle_external_key, api_key, api_secret)
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "subscriptions": [
+      {
+        "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+        "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+        "subscriptionId": "8ab101b6-15e8-433b-b4f7-f99eeaa56a77",
+        "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+        "startDate": "2018-07-18",
+        "productName": "Standard",
+        "productCategory": "BASE",
+        "billingPeriod": "MONTHLY",
+        "phaseType": "TRIAL",
+        "priceList": "DEFAULT",
+        "planName": "standard-monthly",
+        "state": "ACTIVE",
+        "sourceType": "NATIVE",
+        "cancelledDate": null,
+        "chargedThroughDate": null,
+        "billingStartDate": "2018-07-18",
+        "billingEndDate": null,
+        "billCycleDayLocal": 17,
+        "events": [
+          {
+            "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-18",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "START_ENTITLEMENT",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "entitlement-service",
+            "serviceStateName": "ENT_STARTED",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-18",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "START_BILLING",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "billing-service",
+            "serviceStateName": "START_BILLING",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "f058c95f-9a86-435b-8bba-4f8532635450",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-08-17",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "PHASE",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "entitlement+billing-service",
+            "serviceStateName": "PHASE",
+            "phase": "standard-monthly-evergreen",
+            "auditLogs": []
+          }
+        ],
+        "priceOverrides": null,
+        "prices": [
+          {
+            "planName": "standard-monthly",
+            "phaseName": "standard-monthly-trial",
+            "phaseType": "TRIAL",
+            "fixedPrice": 0,
+            "recurringPrice": null,
+            "usagePrices": []
+          },
+          {
+            "planName": "standard-monthly",
+            "phaseName": "standard-monthly-evergreen",
+            "phaseType": "EVERGREEN",
+            "fixedPrice": null,
+            "recurringPrice": 100,
+            "usagePrices": []
+          }
+        ],
+        "auditLogs": []
+      }
+    ],
+    "timeline": {
+      "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+      "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+      "events": [
+        {
+          "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-18",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_ENTITLEMENT",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "entitlement-service",
+          "serviceStateName": "ENT_STARTED",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-18",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_BILLING",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "billing-service",
+          "serviceStateName": "START_BILLING",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "f058c95f-9a86-435b-8bba-4f8532635450",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-08-17",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "PHASE",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "entitlement+billing-service",
+          "serviceStateName": "PHASE",
+          "phase": "standard-monthly-evergreen",
+          "auditLogs": []
+        }
+      ],
+      "auditLogs": []
+    },
+    "auditLogs": []
+  }
+]
+```
 ```java
 class Bundle {
     org.killbill.billing.client.model.gen.Bundle@2b6e1c9d
@@ -492,6 +653,14 @@ Retrieves the details information for the `Bundle` using its `bundleId`.
 
 > Example Request:
 
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d"
+```
 ```java
 import org.killbill.billing.client.api.gen.BundleApi;
 protected BundleApi bundleApi;
@@ -520,7 +689,158 @@ bundleApi.get_bundle(bundle_id, api_key, api_secret)
 > Example Response:
 
 ```shell
-**TODO**
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+{
+  "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+  "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+  "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+  "subscriptions": [
+    {
+      "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+      "subscriptionId": "8ab101b6-15e8-433b-b4f7-f99eeaa56a77",
+      "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+      "startDate": "2018-07-18",
+      "productName": "Standard",
+      "productCategory": "BASE",
+      "billingPeriod": "MONTHLY",
+      "phaseType": "TRIAL",
+      "priceList": "DEFAULT",
+      "planName": "standard-monthly",
+      "state": "ACTIVE",
+      "sourceType": "NATIVE",
+      "cancelledDate": null,
+      "chargedThroughDate": null,
+      "billingStartDate": "2018-07-18",
+      "billingEndDate": null,
+      "billCycleDayLocal": 17,
+      "events": [
+        {
+          "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-18",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_ENTITLEMENT",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "entitlement-service",
+          "serviceStateName": "ENT_STARTED",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-18",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_BILLING",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "billing-service",
+          "serviceStateName": "START_BILLING",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "f058c95f-9a86-435b-8bba-4f8532635450",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-08-17",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "PHASE",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "entitlement+billing-service",
+          "serviceStateName": "PHASE",
+          "phase": "standard-monthly-evergreen",
+          "auditLogs": []
+        }
+      ],
+      "priceOverrides": null,
+      "prices": [
+        {
+          "planName": "standard-monthly",
+          "phaseName": "standard-monthly-trial",
+          "phaseType": "TRIAL",
+          "fixedPrice": 0,
+          "recurringPrice": null,
+          "usagePrices": []
+        },
+        {
+          "planName": "standard-monthly",
+          "phaseName": "standard-monthly-evergreen",
+          "phaseType": "EVERGREEN",
+          "fixedPrice": null,
+          "recurringPrice": 100,
+          "usagePrices": []
+        }
+      ],
+      "auditLogs": []
+    }
+  ],
+  "timeline": {
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "events": [
+      {
+        "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
+        "billingPeriod": "MONTHLY",
+        "effectiveDate": "2018-07-18",
+        "plan": "standard-monthly",
+        "product": "Standard",
+        "priceList": "DEFAULT",
+        "eventType": "START_ENTITLEMENT",
+        "isBlockedBilling": false,
+        "isBlockedEntitlement": false,
+        "serviceName": "entitlement-service",
+        "serviceStateName": "ENT_STARTED",
+        "phase": "standard-monthly-trial",
+        "auditLogs": []
+      },
+      {
+        "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
+        "billingPeriod": "MONTHLY",
+        "effectiveDate": "2018-07-18",
+        "plan": "standard-monthly",
+        "product": "Standard",
+        "priceList": "DEFAULT",
+        "eventType": "START_BILLING",
+        "isBlockedBilling": false,
+        "isBlockedEntitlement": false,
+        "serviceName": "billing-service",
+        "serviceStateName": "START_BILLING",
+        "phase": "standard-monthly-trial",
+        "auditLogs": []
+      },
+      {
+        "eventId": "f058c95f-9a86-435b-8bba-4f8532635450",
+        "billingPeriod": "MONTHLY",
+        "effectiveDate": "2018-08-17",
+        "plan": "standard-monthly",
+        "product": "Standard",
+        "priceList": "DEFAULT",
+        "eventType": "PHASE",
+        "isBlockedBilling": false,
+        "isBlockedEntitlement": false,
+        "serviceName": "entitlement+billing-service",
+        "serviceStateName": "PHASE",
+        "phase": "standard-monthly-evergreen",
+        "auditLogs": []
+      }
+    ],
+    "auditLogs": []
+  },
+  "auditLogs": []
+}
 ```
 ```java
 class Bundle {
@@ -974,6 +1294,20 @@ The new account_id should be set in this object
 
 > Example Request:
 
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"accountId\": \"8785164f-b5d7-4da1-9495-33f5105e8d80\", \"bundleId\": \"2cd2f4b5-a1c0-42a7-924f-64c7b791332d\"}" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d"
+```
 ```java
 import org.killbill.billing.client.api.gen.BundleApi;
 protected BundleApi bundleApi;
@@ -1029,7 +1363,11 @@ bundleApi.transfer_bundle(bundle_id,
 > Example Response:
 
 ```shell
-**TODO**
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d?billingPolicy=END_OF_TERM
+< Content-Type: application/json
+< Content-Length: 0
 ```
 ```java
 class Bundle {
@@ -1305,6 +1643,20 @@ Returns a bundle object if a valid account and bundle id's was provided.
 
 > Example Request:
 
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"stateName\": \"STATE1\", \"service\": \"ServiceStateService\", \"isBlockChange\": false, \"isBlockEntitlement\": false, \"isBlockBilling\": false, \"effectiveDate\": \"2018-07-17T21:17:28.842Z\", \"type\": \"SUBSCRIPTION\" }" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/block"
+```
 ```java
 import org.killbill.billing.client.api.gen.BundleApi;
 protected BundleApi bundleApi;
@@ -1378,7 +1730,11 @@ bundleApi.add_bundle_blocking_state(bundle_id,
 > Example Response:
 
 ```shell
-**TODO**
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/block?blockingStateTypes=SUBSCRIPTION_BUNDLE
+< Content-Type: application/json
+< Content-Length: 0
 ```
 ```java
 no content
@@ -1409,7 +1765,18 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ { \"objectType\": \"BUNDLE\", \"name\": \"Test Custom Field\", \"value\": \"demo_test_value\" }]" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"
 ```
 
 ```java
@@ -1458,6 +1825,13 @@ bundleApi.create_bundle_custom_fields(bundle_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields
+< Content-Type: application/json
+< Content-Length: 0
+```
 ```java
 //First element of the list
 class CustomField {
@@ -1502,7 +1876,12 @@ Returns a custom field object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"
 ```
 
 ```java
@@ -1531,6 +1910,22 @@ bundleApi.get_bundle_custom_fields(bundle_id, api_key, api_secret)
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "customFieldId": "349de10f-4bb1-4e1a-93f6-11b745200bf5",
+    "objectId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "objectType": "BUNDLE",
+    "name": "Test Custom Field",
+    "value": "demo_test_value",
+    "auditLogs": []
+  }
+]
+```
 ```java
 //First element of the list
 class CustomField {
@@ -1584,7 +1979,18 @@ Returns a list of custom field objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ { \"customFieldId\": \"349de10f-4bb1-4e1a-93f6-11b745200bf5\", \"objectId\": \"2cd2f4b5-a1c0-42a7-924f-64c7b791332d\", \"objectType\": \"BUNDLE\", \"name\": \"Test Custom Field\", \"value\": \"test_modify_value\", \"auditLogs\": [] }]" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"
 ```
 
 ```java
@@ -1630,6 +2036,11 @@ bundleApi.modify_bundle_custom_fields(bundle_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
 ```java
 no content
 ```
@@ -1657,7 +2068,15 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields?customField=349de10f-4bb1-4e1a-93f6-11b745200bf5"
 ```
 
 ```java
@@ -1694,6 +2113,11 @@ bundleApi.delete_bundle_custom_fields(bundle_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
 ```java
 no content
 ```
@@ -1723,6 +2147,21 @@ A `204` http status without content.
 
 > Example Request:
 
+```shell
+  -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/pause" \
+```
+```java
+TODO	
+```
 ```ruby
 bundle = KillBillClient::Model::Bundle.new
 bundle.bundle_id = bundle_id
@@ -1748,10 +2187,12 @@ bundleApi.pause_bundle(bundle_id,
 > Example Response:
 
 ```shell
-**TODO**
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
 ```
 ```java
-**TODO**
+no content
 ```
 ```ruby
 no content
@@ -1779,6 +2220,23 @@ A `204` http status without content.
 
 > Example Request:
 
+```shell
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"bundleId\": \"2cd2f4b5-a1c0-42a7-924f-64c7b791332d\", \"externalKey\": \"another_external_key\"}" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/renameKey"
+```
+```java
+TODO	
+```
 ```ruby
 bundle = KillBillClient::Model::Bundle.new
 bundle.bundle_id = bundle_id
@@ -1805,10 +2263,12 @@ bundleApi.rename_external_key(bundle_id,
 > Example Response:
 
 ```shell
-**TODO**
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
 ```
 ```java
-**TODO**
+no content
 ```
 ```ruby
 no content
@@ -1834,6 +2294,22 @@ A `204` http status without content.
 
 > Example Request:
 
+```shell
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/resume"
+```
+```java
+TODO	
+```
 ```ruby
 bundle = KillBillClient::Model::Bundle.new
 bundle.bundle_id = bundle_id
@@ -1858,10 +2334,12 @@ bundleApi.resume_bundle(bundle_id,
 > Example Response:
 
 ```shell
-**TODO**
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
 ```
 ```java
-**TODO**
+no content
 ```
 ```ruby
 no content
@@ -1889,7 +2367,18 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ \"00000000-0000-0000-0000-000000000002\"]" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags"
 ```
 
 ```java
@@ -1929,6 +2418,13 @@ bundleApi.create_bundle_tags(bundle_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags
+< Content-Type: application/json
+< Content-Length: 0
+```
 ```java
 //First element of the list
 class Tag {
@@ -1978,7 +2474,12 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags"
 ```
 
 ```java
@@ -2011,6 +2512,22 @@ bundleApi.get_bundle_tags(bundle_id, api_key, api_secret)
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "tagId": "e054c84a-0518-4611-92a8-53e849f0affd",
+    "objectType": "BUNDLE",
+    "objectId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "tagDefinitionId": "00000000-0000-0000-0000-000000000002",
+    "tagDefinitionName": "AUTO_INVOICING_OFF",
+    "auditLogs": []
+  }
+]
+```
 ```java
 //First element of the list
 class Tag {
@@ -2076,7 +2593,15 @@ Returns a list of bundle tag objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags?tagDef=00000000-0000-0000-0000-000000000002"
 ```
 
 ```java
@@ -2116,6 +2641,11 @@ bundleApi.delete_bundle_tags(bundle_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
 ```java
 no content
 ```
@@ -2145,7 +2675,12 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/bundles/pagination"
 ```
 
 ```java
@@ -2177,6 +2712,366 @@ bundleApi.get_bundles(api_key, api_secret,)
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "externalKey": "another_external_key",
+    "subscriptions": [
+      {
+        "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+        "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+        "subscriptionId": "8ab101b6-15e8-433b-b4f7-f99eeaa56a77",
+        "externalKey": "another_external_key",
+        "startDate": "2018-07-18",
+        "productName": "Standard",
+        "productCategory": "BASE",
+        "billingPeriod": "MONTHLY",
+        "phaseType": "TRIAL",
+        "priceList": "DEFAULT",
+        "planName": "standard-monthly",
+        "state": "CANCELLED",
+        "sourceType": "NATIVE",
+        "cancelledDate": "2018-07-19",
+        "chargedThroughDate": null,
+        "billingStartDate": "2018-07-18",
+        "billingEndDate": "2018-07-19",
+        "billCycleDayLocal": 17,
+        "events": [
+          {
+            "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-18",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "START_ENTITLEMENT",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "entitlement-service",
+            "serviceStateName": "ENT_STARTED",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-18",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "START_BILLING",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "billing-service",
+            "serviceStateName": "START_BILLING",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "01387e92-8b6c-4c74-811f-3d2698646049",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-19",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "STOP_ENTITLEMENT",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": true,
+            "serviceName": "entitlement-service",
+            "serviceStateName": "ENT_CANCELLED",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "1d605f2d-e605-47d5-b55c-904a0cba12f8",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-19",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "STOP_BILLING",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "billing-service",
+            "serviceStateName": "STOP_BILLING",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "e9f343aa-3650-4709-a09d-8a3df908bd47",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-19",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "SERVICE_STATE_CHANGE",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "ServiceStateService",
+            "serviceStateName": "STATE1",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          }
+        ],
+        "priceOverrides": null,
+        "prices": [],
+        "auditLogs": []
+      }
+    ],
+    "timeline": {
+      "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+      "externalKey": "another_external_key",
+      "events": [
+        {
+          "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-18",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_ENTITLEMENT",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "entitlement-service",
+          "serviceStateName": "ENT_STARTED",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-18",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_BILLING",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "billing-service",
+          "serviceStateName": "START_BILLING",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "01387e92-8b6c-4c74-811f-3d2698646049",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-19",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "STOP_ENTITLEMENT",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": true,
+          "serviceName": "entitlement-service",
+          "serviceStateName": "ENT_CANCELLED",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "1d605f2d-e605-47d5-b55c-904a0cba12f8",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-19",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "STOP_BILLING",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "billing-service",
+          "serviceStateName": "STOP_BILLING",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "e9f343aa-3650-4709-a09d-8a3df908bd47",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-19",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "SERVICE_STATE_CHANGE",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "ServiceStateService",
+          "serviceStateName": "STATE1",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        }
+      ],
+      "auditLogs": []
+    },
+    "auditLogs": []
+  },
+  {
+    "accountId": "8785164f-b5d7-4da1-9495-33f5105e8d80",
+    "bundleId": "02134ca5-8254-4c73-aaf2-89ed99a28fce",
+    "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "subscriptions": [
+      {
+        "accountId": "8785164f-b5d7-4da1-9495-33f5105e8d80",
+        "bundleId": "02134ca5-8254-4c73-aaf2-89ed99a28fce",
+        "subscriptionId": "3b78a8c1-30fb-4b4e-a247-b131cbf6fa71",
+        "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+        "startDate": "2018-07-19",
+        "productName": "Standard",
+        "productCategory": "BASE",
+        "billingPeriod": "MONTHLY",
+        "phaseType": "TRIAL",
+        "priceList": "DEFAULT",
+        "planName": "standard-monthly",
+        "state": "ACTIVE",
+        "sourceType": "TRANSFERRED",
+        "cancelledDate": null,
+        "chargedThroughDate": "2018-07-19",
+        "billingStartDate": "2018-07-19",
+        "billingEndDate": null,
+        "billCycleDayLocal": 18,
+        "events": [
+          {
+            "eventId": "f247597d-deac-468e-8b18-9a04c633ec71",
+            "billingPeriod": null,
+            "effectiveDate": "2018-07-19",
+            "plan": null,
+            "product": null,
+            "priceList": null,
+            "eventType": "SERVICE_STATE_CHANGE",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "account-service",
+            "serviceStateName": "CLOSE_ACCOUNT",
+            "phase": null,
+            "auditLogs": []
+          },
+          {
+            "eventId": "15987747-2c28-4475-965c-3b1cff08faa9",
+            "billingPeriod": null,
+            "effectiveDate": "2018-07-19",
+            "plan": null,
+            "product": null,
+            "priceList": null,
+            "eventType": "START_ENTITLEMENT",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "entitlement-service",
+            "serviceStateName": "ENT_STARTED",
+            "phase": null,
+            "auditLogs": []
+          },
+          {
+            "eventId": "51c53d93-d3c1-4906-b295-c5a1b0d761e7",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-19",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "START_BILLING",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "billing-service",
+            "serviceStateName": "START_BILLING",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "2cf6cd36-d0d1-461b-b525-f2a36a73be76",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-08-17",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "PHASE",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "entitlement+billing-service",
+            "serviceStateName": "PHASE",
+            "phase": "standard-monthly-evergreen",
+            "auditLogs": []
+          }
+        ],
+        "priceOverrides": null,
+        "prices": [],
+        "auditLogs": []
+      }
+    ],
+    "timeline": {
+      "accountId": "8785164f-b5d7-4da1-9495-33f5105e8d80",
+      "bundleId": "02134ca5-8254-4c73-aaf2-89ed99a28fce",
+      "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+      "events": [
+        {
+          "eventId": "f247597d-deac-468e-8b18-9a04c633ec71",
+          "billingPeriod": null,
+          "effectiveDate": "2018-07-19",
+          "plan": null,
+          "product": null,
+          "priceList": null,
+          "eventType": "SERVICE_STATE_CHANGE",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "account-service",
+          "serviceStateName": "CLOSE_ACCOUNT",
+          "phase": null,
+          "auditLogs": []
+        },
+        {
+          "eventId": "15987747-2c28-4475-965c-3b1cff08faa9",
+          "billingPeriod": null,
+          "effectiveDate": "2018-07-19",
+          "plan": null,
+          "product": null,
+          "priceList": null,
+          "eventType": "START_ENTITLEMENT",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "entitlement-service",
+          "serviceStateName": "ENT_STARTED",
+          "phase": null,
+          "auditLogs": []
+        },
+        {
+          "eventId": "51c53d93-d3c1-4906-b295-c5a1b0d761e7",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-19",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_BILLING",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "billing-service",
+          "serviceStateName": "START_BILLING",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "2cf6cd36-d0d1-461b-b525-f2a36a73be76",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-08-17",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "PHASE",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "entitlement+billing-service",
+          "serviceStateName": "PHASE",
+          "phase": "standard-monthly-evergreen",
+          "auditLogs": []
+        }
+      ],
+      "auditLogs": []
+    },
+    "auditLogs": []
+  }
+]
+```
 ```java
 //First element of the list
 class Bundle {
@@ -2583,7 +3478,12 @@ Returns a list with all bundles.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/bundles/search/another_external_key"
 ```
 
 ```java
@@ -2620,6 +3520,205 @@ bundleApi.search_bundles(search_key, api_key, api_secret)
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "externalKey": "another_external_key",
+    "subscriptions": [
+      {
+        "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+        "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+        "subscriptionId": "8ab101b6-15e8-433b-b4f7-f99eeaa56a77",
+        "externalKey": "another_external_key",
+        "startDate": "2018-07-18",
+        "productName": "Standard",
+        "productCategory": "BASE",
+        "billingPeriod": "MONTHLY",
+        "phaseType": "TRIAL",
+        "priceList": "DEFAULT",
+        "planName": "standard-monthly",
+        "state": "CANCELLED",
+        "sourceType": "NATIVE",
+        "cancelledDate": "2018-07-19",
+        "chargedThroughDate": null,
+        "billingStartDate": "2018-07-18",
+        "billingEndDate": "2018-07-19",
+        "billCycleDayLocal": 17,
+        "events": [
+          {
+            "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-18",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "START_ENTITLEMENT",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "entitlement-service",
+            "serviceStateName": "ENT_STARTED",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-18",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "START_BILLING",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "billing-service",
+            "serviceStateName": "START_BILLING",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "01387e92-8b6c-4c74-811f-3d2698646049",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-19",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "STOP_ENTITLEMENT",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": true,
+            "serviceName": "entitlement-service",
+            "serviceStateName": "ENT_CANCELLED",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "1d605f2d-e605-47d5-b55c-904a0cba12f8",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-19",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "STOP_BILLING",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "billing-service",
+            "serviceStateName": "STOP_BILLING",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "e9f343aa-3650-4709-a09d-8a3df908bd47",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-19",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "SERVICE_STATE_CHANGE",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "ServiceStateService",
+            "serviceStateName": "STATE1",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          }
+        ],
+        "priceOverrides": null,
+        "prices": [],
+        "auditLogs": []
+      }
+    ],
+    "timeline": {
+      "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+      "externalKey": "another_external_key",
+      "events": [
+        {
+          "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-18",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_ENTITLEMENT",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "entitlement-service",
+          "serviceStateName": "ENT_STARTED",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-18",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_BILLING",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "billing-service",
+          "serviceStateName": "START_BILLING",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "01387e92-8b6c-4c74-811f-3d2698646049",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-19",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "STOP_ENTITLEMENT",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": true,
+          "serviceName": "entitlement-service",
+          "serviceStateName": "ENT_CANCELLED",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "1d605f2d-e605-47d5-b55c-904a0cba12f8",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-19",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "STOP_BILLING",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "billing-service",
+          "serviceStateName": "STOP_BILLING",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "e9f343aa-3650-4709-a09d-8a3df908bd47",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-19",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "SERVICE_STATE_CHANGE",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "ServiceStateService",
+          "serviceStateName": "STATE1",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        }
+      ],
+      "auditLogs": []
+    },
+    "auditLogs": []
+  }
+]
+```
 ```java
 //First element of the list
 class Bundle {
