@@ -86,7 +86,17 @@ The attributes are the following:
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/invoices?accountId=29fd0a00-f08b-4886-849b-3f4b98c8df27"	
 ```
 
 ```java
@@ -99,7 +109,6 @@ LocalDate targetDate = today.plus(1, ChronoUnit.DAYS);
 Invoice result = invoiceApi.createFutureInvoice(accountId, 
                                                 targetDate, 
                                                 requestOptions);
-
 ```
 
 ```ruby
@@ -126,6 +135,13 @@ invoiceApi.create_future_invoice(account_id,
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5
+< Content-Type: application/json
+< Content-Length: 0
+```
 ```java
 class Invoice {
     org.killbill.billing.client.model.gen.Invoice@8673fcce
@@ -177,7 +193,18 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"invoiceItemId\": \"903e55d3-8072-47f1-80fc-32857dbdbcc5\", \"invoiceId\": \"903e55d3-8072-47f1-80fc-32857dbdbcc5\", \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"description\": \"Free adjustment: good customer\", \"amount\": 50, \"currency\": \"USD\"}" \
+    "http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5"	
 ```
 
 ```java
@@ -239,6 +266,13 @@ invoiceApi.adjust_invoice_item(invoice_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5
+< Content-Type: application/json
+< Content-Length: 0
+```
 ```java
 class Invoice {
     org.killbill.billing.client.model.gen.Invoice@7ae5a94f
@@ -303,7 +337,12 @@ Returns a invoice object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5"	
 ```
 
 ```java
@@ -340,6 +379,31 @@ invoiceApi.get_invoice(invoice_id, api_key, api_secret)
 ```
 > Example Response:
 
+```shell
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+{
+  "amount": 0,
+  "currency": "USD",
+  "status": "DRAFT",
+  "creditAdj": 50,
+  "refundAdj": 0,
+  "invoiceId": "903e55d3-8072-47f1-80fc-32857dbdbcc5",
+  "invoiceDate": "2018-07-20",
+  "targetDate": "2018-07-20",
+  "invoiceNumber": "310",
+  "balance": 0,
+  "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+  "bundleKeys": null,
+  "credits": null,
+  "items": [],
+  "isParentInvoice": false,
+  "parentInvoiceId": null,
+  "parentAccountId": null,
+  "auditLogs": []
+}
+```
 ```java
 class Invoice {
     org.killbill.billing.client.model.gen.Invoice@d6d47bb7
@@ -463,7 +527,12 @@ Returns a invoice object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/invoices/byNumber/310"
 ```
 
 ```java
@@ -500,6 +569,32 @@ invoiceApi.get_invoice_by_number(invoice_number, api_key, api_secret)
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+{
+  "amount": 0,
+  "currency": "USD",
+  "status": "DRAFT",
+  "creditAdj": 50,
+  "refundAdj": 0,
+  "invoiceId": "903e55d3-8072-47f1-80fc-32857dbdbcc5",
+  "invoiceDate": "2018-07-20",
+  "targetDate": "2018-07-20",
+  "invoiceNumber": "310",
+  "balance": 0,
+  "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+  "bundleKeys": null,
+  "credits": null,
+  "items": [],
+  "isParentInvoice": false,
+  "parentInvoiceId": null,
+  "parentAccountId": null,
+  "auditLogs": []
+}
+```
 ```java
 class Invoice {
     org.killbill.billing.client.model.gen.Invoice@fde9afb7
@@ -643,7 +738,12 @@ Returns a invoice object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/invoices/byItemId/3f0aa8f7-ca75-40cc-8c78-15a15cdbb977"	
 ```
 
 ```java
@@ -685,6 +785,32 @@ invoiceApi.get_invoice_by_item_id(invoice_item_id,
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+{
+  "amount": 0,
+  "currency": "USD",
+  "status": "DRAFT",
+  "creditAdj": 50,
+  "refundAdj": 0,
+  "invoiceId": "18e9b3d9-9083-4725-9e8a-27d3a57c2e88",
+  "invoiceDate": "2018-07-20",
+  "targetDate": "2018-07-20",
+  "invoiceNumber": "311",
+  "balance": 0,
+  "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+  "bundleKeys": null,
+  "credits": null,
+  "items": [],
+  "isParentInvoice": false,
+  "parentInvoiceId": null,
+  "parentAccountId": null,
+  "auditLogs": []
+}
+```
 ```java
 class Invoice {
     org.killbill.billing.client.model.gen.Invoice@5c66117a
@@ -833,7 +959,15 @@ Returns a invoice object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/invoices/404a98a8-4dd8-4737-a39f-be871e916a8c/a35fb7b5-aec8-489e-aadf-c86107aa1d92/cba?accountId=8785164f-b5d7-4da1-9495-33f5105e8d80"	
 ```
 
 ```java
@@ -868,6 +1002,14 @@ invoiceApi.delete_cba(invoice_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java 
+TODO
+```
 ```ruby
 no content
 ```
@@ -894,7 +1036,18 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ { \"objectType\": \"INVOICE\", \"name\": \"Test Custom Field\", \"value\": \"demo_test_value\" }]" \
+    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"	
 ```
 
 ```java
@@ -945,6 +1098,13 @@ invoiceApi.create_invoice_custom_fields(invoice_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields
+< Content-Type: application/json
+< Content-Length: 0
+```
 ```java
 //First element of the list
 class CustomField {
@@ -990,7 +1150,12 @@ Returns a custom field object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"	
 ```
 
 ```java
@@ -1019,6 +1184,22 @@ invoiceApi.get_invoice_custom_fields(invoice_id, api_key, api_secret)
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "customFieldId": "349de10f-4bb1-4e1a-93f6-11b745200bf5",
+    "objectId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "objectType": "INVOICE",
+    "name": "Test Custom Field",
+    "value": "demo_test_value",
+    "auditLogs": []
+  }
+]
+```
 ```java
 //First element of the list
 class CustomField {
@@ -1074,7 +1255,18 @@ Returns a list of custom field objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ { \"customFieldId\": \"349de10f-4bb1-4e1a-93f6-11b745200bf5\", \"objectId\": \"2cd2f4b5-a1c0-42a7-924f-64c7b791332d\", \"objectType\": \"INVOICE\", \"name\": \"Test Custom Field\", \"value\": \"test_modify_value\", \"auditLogs\": [] }]" \
+    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"	
 ```
 
 ```java
@@ -1123,6 +1315,11 @@ invoiceApi.modify_invoice_custom_fields(invoice_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
 ```java
 no content
 ```
@@ -1151,7 +1348,15 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields?customField=349de10f-4bb1-4e1a-93f6-11b745200bf5"	
 ```
 
 ```java
@@ -1188,6 +1393,12 @@ invoiceApi.delete_invoice_custom_fields(invoice_id,
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+
 ```java
 no content
 ```
@@ -1219,7 +1430,12 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: text/html" \
+    "http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5/html"	
 ```
 
 ```java
@@ -1245,6 +1461,114 @@ invoiceApi.get_invoice_as_html(invoice_id, api_key, api_secret)
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: text/html
+
+<html>
+    <head>
+        <style type="text/css">
+            th {align=left; width=225px; border-bottom: solid 2px black;}
+        </style>
+    </head>
+    <body>
+        <h1>invoiceTitle</h1>
+        <table>
+            <tr>
+                <td rowspan=3 width=350px>Insert image here</td>
+                <td width=100px/>
+                <td width=225px/>
+                <td width=225px/>
+            </tr>
+            <tr>
+                <td />
+                <td align=right>invoiceDate</td>
+                <td>Jul 20, 2018</td>
+            </tr>
+            <tr>
+                <td />
+                <td align=right>invoiceNumber</td>
+                <td>310</td>
+            </tr>
+            <tr>
+                <td>companyName</td>
+                <td></td>
+                <td align=right>accountOwnerName</td>
+                <td>Another Name</td>
+            </tr>
+            <tr>
+                <td>companyAddress</td>
+                <td />
+                <td />
+                <td>john@example.com</td>
+            </tr>
+            <tr>
+                <td>companyCityProvincePostalCode</td>
+                <td />
+                <td />
+                <td></td>
+            </tr>
+            <tr>
+                <td>companyCountry</td>
+                <td />
+                <td />
+                <td />
+            </tr>
+            <tr>
+                <td><companyUrl</td>
+                <td />
+                <td />
+                <td />
+            </tr>
+        </table>
+        <br />
+        <br />
+        <br />
+        <table>
+            <tr>
+                <th>invoiceItemBundleName</td>
+                <th>invoiceItemDescription</td>
+                <th>invoiceItemServicePeriod</td>
+                <th>invoiceItemAmount</td>
+            </tr>
+            
+            <tr>
+                <td>Adjustment (account credit)</td>
+                <td></td>
+                <td>Jul 20, 2018 - Jul 20, 2018</td>
+                <td>USD 50.00</td>
+            </tr>
+            
+            <tr>
+                <td>example</td>
+                <td></td>
+                <td>Jul 20, 2018 - Jul 20, 2018</td>
+                <td>USD -50.00</td>
+            </tr>
+            
+            <tr>
+                <td colspan=4 />
+            </tr>
+            <tr>
+                <td colspan=2 />
+                <td align=right><strong>invoiceAmount</strong></td>
+                <td align=right><strong>0.00</strong></td>
+            </tr>
+            <tr>
+                <td colspan=2 />
+                <td align=right><strong>invoiceAmountPaid</strong></td>
+                <td align=right><strong>0.00</strong></td>
+            </tr>
+            <tr>
+                <td colspan=2 />
+                <td align=right><strong>invoiceBalance</strong></td>
+                <td align=right><strong>0</strong></td>
+            </tr>
+        </table>
+    </body>
+</html>
+```
 ```java
 <html>
     <head>
@@ -1554,7 +1878,18 @@ Returns a invoice rendered as HTML.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"purchasedAmount\": 50, \"targetInvoiceId\": \"903e55d3-8072-47f1-80fc-32857dbdbcc5\"}" \
+    "http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5/payments?externalPayment=false"	
 ```
 
 ```java
@@ -1607,6 +1942,11 @@ invoiceApi.create_instant_payment(invoice_id,
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
 ```java
 class InvoicePayment {
     org.killbill.billing.client.model.gen.InvoicePayment@abf605f2
@@ -1672,7 +2012,12 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5/payments"	
 ```
 
 ```java
@@ -1702,6 +2047,49 @@ invoiceApi.get_payments_for_invoice(invoice_id, api_key, api_secret)
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+{
+  "targetInvoiceId": "903e55d3-8072-47f1-80fc-32857dbdbcc5",
+  "accountId": "8b66b9f9-bfb4-463a-86c7-e267128a294a",
+  "paymentId": "cc7fcd4d-e701-4679-9741-41289103db83",
+  "paymentNumber": "19",
+  "paymentExternalKey": "cc7fcd4d-e701-4679-9741-41289103db83",
+  "authAmount": 0,
+  "capturedAmount": 0,
+  "purchasedAmount": 500,
+  "refundedAmount": 0,
+  "creditedAmount": 0,
+  "currency": "USD",
+  "paymentMethodId": "39f3461c-5357-42f7-a8a9-ec79502fdb6b",
+  "transactions": [
+    {
+      "transactionId": "6787dc2d-4f5e-49b5-9764-0070fd1238c2",
+      "transactionExternalKey": "6787dc2d-4f5e-49b5-9764-0070fd1238c2",
+      "paymentId": "cc7fcd4d-e701-4679-9741-41289103db83",
+      "paymentExternalKey": "cc7fcd4d-e701-4679-9741-41289103db83",
+      "transactionType": "PURCHASE",
+      "amount": 500,
+      "currency": "USD",
+      "effectiveDate": "2018-07-19T20:48:34.000Z",
+      "processedAmount": 500,
+      "processedCurrency": "USD",
+      "status": "SUCCESS",
+      "gatewayErrorCode": null,
+      "gatewayErrorMsg": null,
+      "firstPaymentReferenceId": null,
+      "secondPaymentReferenceId": null,
+      "properties": null,
+      "auditLogs": []
+    }
+  ],
+  "paymentAttempts": null,
+  "auditLogs": []
+}
+```
 ```java
 class InvoicePayment {
     org.killbill.billing.client.model.gen.InvoicePayment@c52fce27
@@ -1826,7 +2214,7 @@ class InvoicePayment {
 
 **Returns**
 
-A `200` http status without content.
+Returns a invoice payment object.
 
 ## Perform the invoice status transition from DRAFT to COMMITTED
 
@@ -1837,7 +2225,17 @@ A `200` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5/commitInvoice"	
 ```
 
 ```java
@@ -1870,6 +2268,11 @@ invoiceApi.commit_invoice(invoice_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
 ```java
 no content
 ```
@@ -1897,7 +2300,18 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ \"00000000-0000-0000-0000-000000000002\"]" \
+    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags"	
 ```
 
 ```java
@@ -1937,6 +2351,13 @@ invoiceApi.create_invoice_tags(invoice_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags
+< Content-Type: application/json
+< Content-Length: 0
+```
 ```java
 //First element of the list
 class Tag {
@@ -1987,7 +2408,12 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags"	
 ```
 
 ```java
@@ -2022,6 +2448,22 @@ invoiceApi.get_invoice_tags(invoice_id, api_key, api_secret)
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "tagId": "e054c84a-0518-4611-92a8-53e849f0affd",
+    "objectType": "INVOICE",
+    "objectId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "tagDefinitionId": "00000000-0000-0000-0000-000000000002",
+    "tagDefinitionName": "AUTO_INVOICING_OFF",
+    "auditLogs": []
+  }
+]
+```
 ```java
 //First element of the list
 class Tag {
@@ -2085,7 +2527,15 @@ Returns a list of invoice tag objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags?tagDef=00000000-0000-0000-0000-000000000002"	
 ```
 
 ```java
@@ -2123,6 +2573,11 @@ invoiceApi.delete_invoice_tags(invoice_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
 ```java
 no content
 ```
@@ -2152,7 +2607,17 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/invoices/18e9b3d9-9083-4725-9e8a-27d3a57c2e88/voidInvoice"	
 ```
 
 ```java
@@ -2180,6 +2645,11 @@ invoiceApi.void_invoice(invoice_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
 ```java
 no content
 ```
@@ -2207,7 +2677,18 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: text/plain" \
+    -H "Accept: text/plain" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "\"sports-monthly = Voiture Sport\"" \
+    "http://localhost:8080/1.0/kb/invoices/catalogTranslation/fr_FR"
 ```
 
 ```java
@@ -2242,6 +2723,16 @@ invoiceApi.upload_catalog_translation(locale,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/invoices/catalogTranslation/fr_FR/ 
+< Content-Type: text/plain
+< Content-Length: 0
+```
+```java 
+TODO
+```
 ```ruby
 "sports-monthly = Voiture Sport"
 ```
@@ -2268,7 +2759,12 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: text/plain" \
+    "http://localhost:8080/1.0/kb/invoices/catalogTranslation/fr_FR"	
 ```
 
 ```java
@@ -2290,6 +2786,15 @@ invoiceApi.get_catalog_translation(locale, api_key, api_secret)
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: text/plain
+"sports-monthly = Voiture Sport"
+```
+```java
+TODO
+```
 ```ruby
 "sports-monthly = Voiture Sport"
 ```
@@ -2315,7 +2820,18 @@ A `200` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ { \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"description\": \"My charge\", \"amount\": 50, \"currency\": \"USD\" }]"	\
+    "http://localhost:8080/1.0/kb/invoices/charges/2ad52f53-85ae-408a-9879-32a7e59dd03d"
 ```
 
 ```java
@@ -2378,6 +2894,42 @@ invoiceApi.create_external_charges(account_id,
 
 > Example Response:
 
+```shell
+< HTTP/1.1 201 Created
+< Content-Type: application/json
+< Content-Length: 0
+
+[
+  {
+    "invoiceItemId": "3aaadeeb-5ffe-4226-a8b6-57723f1f8c12",
+    "invoiceId": "c6fe2246-62e2-450d-b9fc-a27003771535",
+    "linkedInvoiceItemId": null,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "childAccountId": null,
+    "bundleId": null,
+    "subscriptionId": null,
+    "productName": null,
+    "planName": null,
+    "phaseName": null,
+    "usageName": null,
+    "prettyProductName": null,
+    "prettyPlanName": null,
+    "prettyPhaseName": null,
+    "prettyUsageName": null,
+    "itemType": "EXTERNAL_CHARGE",
+    "description": "My charge",
+    "startDate": "2018-07-20",
+    "endDate": null,
+    "amount": 50,
+    "rate": null,
+    "currency": "USD",
+    "quantity": null,
+    "itemDetails": null,
+    "childItems": null,
+    "auditLogs": []
+  }
+]
+```
 ```java
 class InvoiceItem {
     org.killbill.billing.client.model.gen.InvoiceItem@a39beab1
@@ -2445,7 +2997,18 @@ Returns a invoice object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"dryRunType\": \"UPCOMING_INVOICE\"}" \
+    "http://localhost:8080/1.0/kb/invoices/dryRun?accountId=2ad52f53-85ae-408a-9879-32a7e59dd03d" 	
 ```
 
 ```java
@@ -2521,6 +3084,12 @@ invoiceApi.generate_dry_run_invoice(body,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Content-Type: application/json
+< Content-Length: 0
+```
 ```java
 class Invoice {
     org.killbill.billing.client.model.gen.Invoice@2e7ac6ec
@@ -2669,7 +3238,18 @@ Returns a invoice object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: text/html" \
+    -H "Accept: text/html" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "\"Some_HTML_String\"" \
+    "http://localhost:8080/1.0/kb/invoices/manualPayTemplate?deleteIfExists=false"	
 ```
 
 ```java
@@ -2701,6 +3281,16 @@ invoiceApi.upload_invoice_mp_template(body,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/invoices/manualPayTemplate/%7Blocale:.*%7D/ 
+< Content-Type: text/html
+< Content-Length: 0
+```
+```java 
+
+```
 ```ruby
 "
 <meta charset=\"UTF-8\">
@@ -2883,7 +3473,12 @@ Returns a invoice template.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: text/html" \
+    "http://localhost:8080/1.0/kb/invoices/manualPayTemplate/%257Blocale%3A.*%257D"	
 ```
 
 ```java
@@ -2905,6 +3500,16 @@ invoiceApi.get_invoice_mp_template(api_key, api_secret)
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: text/html
+
+"Some_HTML_String"
+```
+```java 
+TODO
+```
 ```ruby
 "
 <meta charset=\"UTF-8\">
@@ -3239,7 +3844,18 @@ Returns a invoice template.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ { \"invoiceItemId\": \"f38505c9-d673-4f0b-b7d4-9125cac2a567\", \"invoiceId\": \"f38505c9-d673-4f0b-b7d4-9125cac2a567\", \"linkedInvoiceItemId\": \"f38505c9-d673-4f0b-b7d4-9125cac2a567\", \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"itemType\": \"EXTERNAL_CHARGE\", \"amount\": 10, \"rate\": 0, \"currency\": \"USD\" }]" \
+    "http://localhost:8080/1.0/kb/invoices/migration/2ad52f53-85ae-408a-9879-32a7e59dd03d"	
 ```
 
 ```java
@@ -3294,6 +3910,13 @@ invoiceApi.create_migration_invoice(account_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/invoices/71742c60-273f-4c91-8b8c-7555a3554b0a/ 
+< Content-Type: application/json
+< Content-Length: 0
+```
 ```java
 no content
 ```
@@ -3325,7 +3948,12 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/invoices/pagination"	
 ```
 
 ```java
@@ -3360,6 +3988,154 @@ invoiceApi.get_invoices(api_key, api_secret)
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "COMMITTED",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "404a98a8-4dd8-4737-a39f-be871e916a8c",
+    "invoiceDate": "2018-07-19",
+    "targetDate": "2018-07-19",
+    "invoiceNumber": "309",
+    "balance": 0,
+    "accountId": "8785164f-b5d7-4da1-9495-33f5105e8d80",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  },
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "COMMITTED",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "903e55d3-8072-47f1-80fc-32857dbdbcc5",
+    "invoiceDate": "2018-07-20",
+    "targetDate": "2018-07-20",
+    "invoiceNumber": "310",
+    "balance": 0,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  },
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "VOID",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "18e9b3d9-9083-4725-9e8a-27d3a57c2e88",
+    "invoiceDate": "2018-07-20",
+    "targetDate": "2018-07-20",
+    "invoiceNumber": "311",
+    "balance": 0,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  },
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "DRAFT",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "c6fe2246-62e2-450d-b9fc-a27003771535",
+    "invoiceDate": "2018-07-20",
+    "targetDate": "2018-07-20",
+    "invoiceNumber": "312",
+    "balance": 0,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  },
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "DRAFT",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "d6c7b6b9-f048-4266-bde6-4c381e69f432",
+    "invoiceDate": "2018-07-20",
+    "targetDate": "2018-07-20",
+    "invoiceNumber": "313",
+    "balance": 0,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  },
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "COMMITTED",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "71742c60-273f-4c91-8b8c-7555a3554b0a",
+    "invoiceDate": "2018-07-20",
+    "targetDate": "2018-07-20",
+    "invoiceNumber": "314",
+    "balance": 0,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  },
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "COMMITTED",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "e8032d7d-4354-46f7-82fa-8e635cc61fc5",
+    "invoiceDate": "2018-07-20",
+    "targetDate": "2018-07-20",
+    "invoiceNumber": "315",
+    "balance": 0,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  }
+]
+```
 ```java
 //First element of the list
 class Invoice {
@@ -3476,7 +4252,12 @@ Returns a list with all invoices.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/invoices/search/404a98a8-4dd8-4737-a39f-be871e916a8c"	
 ```
 
 ```java
@@ -3516,6 +4297,34 @@ invoiceApi.search_invoices(search_key, api_key, api_secret)
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "COMMITTED",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "404a98a8-4dd8-4737-a39f-be871e916a8c",
+    "invoiceDate": "2018-07-19",
+    "targetDate": "2018-07-19",
+    "invoiceNumber": "309",
+    "balance": 0,
+    "accountId": "8785164f-b5d7-4da1-9495-33f5105e8d80",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  }
+]
+```
 ```java
 //First element of the list
 class Invoice {
@@ -3632,7 +4441,18 @@ Return a list with invoices matched with the search key entered.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ { \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"amount\": 50, \"currency\": \"USD\" }]" \
+    "http://localhost:8080/1.0/kb/invoices/taxes/2ad52f53-85ae-408a-9879-32a7e59dd03d"
 ```
 
 ```java
@@ -3695,6 +4515,43 @@ invoiceApi.create_tax_items(account_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Content-Type: application/json
+< Content-Length: 0
+
+[
+  {
+    "invoiceItemId": "e91e8d48-d8de-4931-9758-6cfff86cb2f4",
+    "invoiceId": "434dd357-099d-45f8-9b48-79dcd20c61ce",
+    "linkedInvoiceItemId": null,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "childAccountId": null,
+    "bundleId": null,
+    "subscriptionId": null,
+    "productName": null,
+    "planName": null,
+    "phaseName": null,
+    "usageName": null,
+    "prettyProductName": null,
+    "prettyPlanName": null,
+    "prettyPhaseName": null,
+    "prettyUsageName": null,
+    "itemType": "TAX",
+    "description": "Tax",
+    "startDate": "2018-07-20",
+    "endDate": null,
+    "amount": 50,
+    "rate": null,
+    "currency": "USD",
+    "quantity": null,
+    "itemDetails": null,
+    "childItems": null,
+    "auditLogs": []
+  }
+]
+```
 ```java
 class InvoiceItem {
     org.killbill.billing.client.model.gen.InvoiceItem@bedd818e
@@ -3764,7 +4621,18 @@ Returns a invoice object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: text/html" \
+    -H "Accept: text/html" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "Some_HTML_String" \
+    "http://localhost:8080/1.0/kb/invoices/template"	
 ```
 
 ```java
@@ -3796,6 +4664,16 @@ invoiceApi.upload_invoice_template(body,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/invoices/template
+< Content-Type: text/html
+< Content-Length: 0
+```
+```java
+TODO
+```
 ```ruby
 "
 <meta charset=\"UTF-8\">
@@ -3978,7 +4856,12 @@ Returns a invoice template.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: text/html" \
+    "http://localhost:8080/1.0/kb/invoices/template"	
 ```
 
 ```java
@@ -4000,6 +4883,16 @@ invoiceApi.get_invoice_template(api_key, api_secret)
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: text/html
+
+Some_HTML_String
+```
+```java 
+TODO
+```
 ```ruby
 "
 <meta charset=\"UTF-8\">
@@ -4334,7 +5227,18 @@ Returns a invoice template.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: text/plain" \
+    -H "Accept: text/plain" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "sports-monthly = Voiture Sport"
+    "http://localhost:8080/1.0/kb/invoices/translation/fr_FR"
 ```
 
 ```java
@@ -4365,6 +5269,16 @@ invoiceApi.upload_invoice_translation(locale,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/invoices/translation/fr_FR/
+< Content-Type: text/plain
+< Content-Length: 0
+```
+```java 
+TODO
+```
 ```ruby
 invoiceTitle=FACTURE
 invoiceDate=Date:
@@ -4412,7 +5326,12 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: text/plain" \
+    "http://localhost:8080/1.0/kb/invoices/translation/fr_FR"	
 ```
 
 ```java
@@ -4434,6 +5353,16 @@ invoiceApi.get_invoice_translation(locale, api_key, api_secret)
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: text/plain
+
+sports-monthly = Voiture Sport
+```
+```java 
+TODO
+```
 ```ruby
 invoiceTitle=FACTURE
 invoiceDate=Date:
