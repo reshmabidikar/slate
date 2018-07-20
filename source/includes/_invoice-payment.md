@@ -33,7 +33,12 @@ The attributes are the following:
 > Example Request:
 
 ```shell
-TODO	
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83' 
 ```
 
 ```java
@@ -72,6 +77,49 @@ invoicePaymentApi.get_invoice_payment(payment_id, api_key, api_secret)
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+{
+  "targetInvoiceId": "4be34fe4-5845-4a35-afd8-632ad04cccf9",
+  "accountId": "8b66b9f9-bfb4-463a-86c7-e267128a294a",
+  "paymentId": "cc7fcd4d-e701-4679-9741-41289103db83",
+  "paymentNumber": "19",
+  "paymentExternalKey": "cc7fcd4d-e701-4679-9741-41289103db83",
+  "authAmount": 0,
+  "capturedAmount": 0,
+  "purchasedAmount": 500,
+  "refundedAmount": 0,
+  "creditedAmount": 0,
+  "currency": "USD",
+  "paymentMethodId": "39f3461c-5357-42f7-a8a9-ec79502fdb6b",
+  "transactions": [
+    {
+      "transactionId": "6787dc2d-4f5e-49b5-9764-0070fd1238c2",
+      "transactionExternalKey": "6787dc2d-4f5e-49b5-9764-0070fd1238c2",
+      "paymentId": "cc7fcd4d-e701-4679-9741-41289103db83",
+      "paymentExternalKey": "cc7fcd4d-e701-4679-9741-41289103db83",
+      "transactionType": "PURCHASE",
+      "amount": 500,
+      "currency": "USD",
+      "effectiveDate": "2018-07-19T20:48:34.000Z",
+      "processedAmount": 500,
+      "processedCurrency": "USD",
+      "status": "SUCCESS",
+      "gatewayErrorCode": null,
+      "gatewayErrorMsg": null,
+      "firstPaymentReferenceId": null,
+      "secondPaymentReferenceId": null,
+      "properties": null,
+      "auditLogs": []
+    }
+  ],
+  "paymentAttempts": null,
+  "auditLogs": []
+}
+```
 
 ```java
 class InvoicePayment {
@@ -218,7 +266,17 @@ Returns a invoice payment object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Content-Type: application/json' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    -d '{
+            "paymentId": "cc7fcd4d-e701-4679-9741-41289103db83"
+        }' \
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83' 
 ```
 
 ```java
@@ -260,6 +318,13 @@ invoicePaymentApi.complete_invoice_payment_transaction(payment_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 no content
 ```
@@ -287,7 +352,19 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Content-Type: application/json' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    -d '{
+          "paymentId": "cc7fcd4d-e701-4679-9741-41289103db83",
+          "amount": 5,
+          "currency": "USD"
+        }' \
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/chargebacks' 
 ```
 
 ```java
@@ -334,6 +411,14 @@ invoicePaymentApi.create_chargeback(payment_id,
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/
+< Content-Type: application/json
+< Content-Length: 0
+```
 
 ```java
 class InvoicePayment {
@@ -442,7 +527,19 @@ Returns a invoice payment object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Content-Type: application/json' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    -d '{
+          "transactionExternalKey": "a335f7d2-e115-436f-8c63-2b0114d974de",
+          "paymentId": "cc7fcd4d-e701-4679-9741-41289103db83",
+          "effectiveDate": "2018-07-20T15:05:36.853Z"        
+        }' \
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/chargebackReversals' 
 ```
 
 ```java
@@ -479,6 +576,14 @@ invoicePaymentApi.create_chargeback_reversal(payment_id,
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/
+< Content-Type: application/json
+< Content-Length: 0
+```
 
 ```ruby
 {
@@ -559,7 +664,20 @@ Returns a invoice payment object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Content-Type: application/json' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    -d '[{ 
+            "objectId": "2495e35e-2b96-434c-8877-62dbbf20f7e9",
+            "objectType": "INVOICE_PAYMENT",
+            "name": "Test Custom Fields",
+            "value": "test_value"
+    }]' \
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/2495e35e-2b96-434c-8877-62dbbf20f7e9/customFields' 
 ```
 
 ```java
@@ -608,6 +726,14 @@ invoicePaymentApi.create_invoice_payment_custom_fields(payment_id,
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/invoicePayments/2495e35e-2b96-434c-8877-62dbbf20f7e9/customFields
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 //First element of the list
 class CustomField {
@@ -653,7 +779,12 @@ Returns a custom field object.
 > Example Request:
 
 ```shell
-TODO	
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/2495e35e-2b96-434c-8877-62dbbf20f7e9/customFields' 
 ```
 
 ```java
@@ -681,6 +812,22 @@ invoicePaymentApi.get_invoice_payment_custom_fields(payment_id, api_key, api_sec
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+[
+  {
+    "customFieldId": "3fbf75aa-6f22-4a02-974b-55eeded2cf6b",
+    "objectId": "2495e35e-2b96-434c-8877-62dbbf20f7e9",
+    "objectType": "PAYMENT",
+    "name": "Test Custom Field",
+    "value": "test_value",
+    "auditLogs": []
+  }
+]
+```
 
 ```java
 //First element of the list
@@ -734,7 +881,18 @@ Returns a list of custom field objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Content-Type: application/json' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    -d '[{ 
+            "customFieldId": "e2408cac-931b-43eb-855b-9f2902615c39",
+            "value": "NewValue"
+    }]' \
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/2495e35e-2b96-434c-8877-62dbbf20f7e9/customFields' 
 ```
 
 ```java
@@ -780,6 +938,13 @@ invoicePaymentApi.modify_invoice_payment_custom_fields(payment_id,
 
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 no content
 ```
@@ -810,7 +975,13 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/2495e35e-2b96-434c-8877-62dbbf20f7e9/customFields?customField=e2408cac-931b-43eb-855b-9f2902615c39' 
 ```
 
 ```java
@@ -848,6 +1019,13 @@ invoicePaymentApi.delete_invoice_payment_custom_fields(payment_id,
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
 ```java
 no content
 ```
@@ -877,7 +1055,19 @@ A `204` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Content-Type: application/json' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    -d '{
+          "paymentId": "cc7fcd4d-e701-4679-9741-41289103db83",
+          "amount": 50,
+          "currency": "USD"
+        }' \
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/refunds' 
 ```
 
 ```java
@@ -926,6 +1116,14 @@ invoicePaymentApi.create_refund_with_adjustments(payment_id,
                                                  api_secret)
 ```
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/
+< Content-Type: application/json
+< Content-Length: 0
+```
 
 ```java
 class InvoicePayment {
@@ -1056,7 +1254,17 @@ Returns a invoice payment object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Content-Type: application/json' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    -d '[
+            "00000000-0000-0000-0000-000000000001"
+        ]' \
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/tags' 
 ```
 
 ```java
@@ -1095,6 +1303,14 @@ invoicePaymentApi.create_invoice_payment_tags(payment_id,
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/tags
+< Content-Type: application/json
+< Content-Length: 0
+```
 
 ```java
 //First element of the list
@@ -1143,7 +1359,12 @@ A `201` http status without content.
 > Example Request:
 
 ```shell
-TODO	
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/tags' 
 ```
 
 ```java
@@ -1177,6 +1398,22 @@ invoicePaymentApi.get_invoice_payment_tags(payment_id, api_key, api_secret)
 ```
 
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+[
+  {
+    "tagId": "e7f68cab-3b9a-4150-909a-5f1c17f1fb2b",
+    "objectType": "PAYMENT",
+    "objectId": "cc7fcd4d-e701-4679-9741-41289103db83",
+    "tagDefinitionId": "00000000-0000-0000-0000-000000000001",
+    "tagDefinitionName": "AUTO_PAY_OFF",
+    "auditLogs": []
+  }
+]
+```
 
 ```java
 //First element of the list
@@ -1241,7 +1478,13 @@ Returns a list of invoice payment tag objects.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/tags?tagDef=00000000-0000-0000-0000-000000000001' 	
 ```
 
 ```java
@@ -1279,6 +1522,13 @@ invoicePaymentApi.delete_invoice_payment_tags(payment_id,
                                               tag_def=tag)
 ```
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
 
 ```java
 no content
