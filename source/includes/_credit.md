@@ -28,7 +28,18 @@ The attributes are the following:
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"creditAmount\": 50.0, \"currency\": \"USD\", \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"description\": \"example\"}" \
+    "http://localhost:8080/1.0/kb/credits?autoCommit=false"	
 ```
 
 ```java
@@ -80,6 +91,12 @@ creditApi.create_credit(body, created_by, api_key, api_secret)
 
 > Example Response:
 
+```shell
+    < HTTP/1.1 201 Created
+    < Location: http://localhost:8080/1.0/kb/credits/c8bfa9d1-76e5-4a42-92d0-b106c0902c16
+< Content-Type: application/json
+< Content-Length: 0
+```
 ```java
 class Credit {
     org.killbill.billing.client.model.gen.Credit@a32400a5
@@ -130,7 +147,12 @@ Returns a credit object.
 > Example Request:
 
 ```shell
-TODO	
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/credits/c8bfa9d1-76e5-4a42-92d0-b106c0902c16"	
 ```
 
 ```java
@@ -155,6 +177,24 @@ creditApi.get_credit(credit_id, api_key, api_secret)
 ```
 > Example Response:
 
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+
+{
+  "creditId": "c8bfa9d1-76e5-4a42-92d0-b106c0902c16",
+  "creditAmount": 50,
+  "currency": "USD",
+  "invoiceId": "903e55d3-8072-47f1-80fc-32857dbdbcc5",
+  "invoiceNumber": "310",
+  "effectiveDate": "2018-07-20",
+  "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+  "description": "example",
+  "itemDetails": null,
+  "auditLogs": []
+}
+```
 ```java
 class Credit {
     org.killbill.billing.client.model.gen.Credit@a32400a5
