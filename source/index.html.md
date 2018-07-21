@@ -1,14 +1,14 @@
 --- 
 includes:
-  - account
-  - bundle
   - catalog
+  - account
+  - payment-method
+  - subscription
+  - bundle
+  - invoice
   - credit
   - invoice-payment
-  - invoice
-  - payment-method
   - payment
-  - subscription
   
 title: Kill Bill 
 

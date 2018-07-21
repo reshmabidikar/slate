@@ -21,7 +21,7 @@ The attributes are the following:
 * **`pluginName`** <span style="color:#32A9C7">*[User generated]*</span>: The plugin identifier. All payments operation associated with this payment method will be delegated to the payment plugin associated with this identifier.
 * **`pluginInfo`** <span style="color:#32A9C7">*[User generated]*</span>:  TODO
 
-##  Retrieve a payment method by id
+## Retrieve a payment method by id
 
 **HTTP Request** 
 
@@ -367,157 +367,7 @@ no content
 
 A `204` http status without content.
 
-## Retrieve payment method audit logs with history by id
 
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/paymentMethods/{paymentMethodId}/auditLogsWithHistory`
-
-> Example Request:
-
-```shell
-curl \
-    -u admin:password \
-    -H 'X-Killbill-ApiKey: bob' \
-    -H 'X-Killbill-ApiSecret: lazar' \
-    -H 'Accept: application/json' \
-    'http://127.0.0.1:8080/1.0/kb/paymentMethods/916619a4-02bb-4d3d-b3da-2584ac897b19/auditLogsWithHistory' 
-```
-
-```java
-import org.killbill.billing.client.api.gen.PaymentMethodApi;
-protected PaymentMethodApi paymentMethodApi;
-
-UUID paymentMethodId = UUID.fromString("e9d95f16-a426-46d0-b76b-90814792fb36");
-
-List<AuditLog> result = paymentMethodApi.getPaymentMethodAuditLogsWithHistory(paymentMethodId, requestOptions);
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
-account_email_id = 'bb390282-6757-4f4f-8dd5-456abd9f30b2'
-
-accountApi.get_account_email_audit_logs_with_history(account_id,
-                                                     account_email_id,
-                                                     api_key,
-                                                     api_secret)
-```
-
-```ruby
-account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
-
-account.email_audit_logs_with_history(account_email_id, options)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-<
-[
-  {
-    "changeType": "INSERT",
-    "changeDate": "2018-07-19T14:56:07.000Z",
-    "objectType": "PAYMENT_METHOD",
-    "objectId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
-    "changedBy": "admin",
-    "reasonCode": null,
-    "comments": null,
-    "userToken": "f77892e9-32bd-4d59-8039-5e12798b53fe",
-    "history": 
-    {
-      "id": null,
-      "createdDate": "2018-07-19T14:56:07.000Z",
-      "updatedDate": "2018-07-19T14:56:07.000Z",
-      "recordId": 10,
-      "accountRecordId": 35,
-      "tenantRecordId": 1,
-      "externalKey": "unknown",
-      "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
-      "pluginName": "__EXTERNAL_PAYMENT__",
-      "isActive": true,
-      "active": true,
-      "tableName": "PAYMENT_METHODS",
-      "historyTableName": "PAYMENT_METHOD_HISTORY"
-    }
-  }
-]
-```
-
-```java
-//First element of the list
-class AuditLog {
-    changeType: INSERT
-    changeDate: 2012-08-25T00:00:03.000Z
-    objectType: PAYMENT_METHOD
-    objectId: e9d95f16-a426-46d0-b76b-90814792fb36
-    changedBy: Toto
-    reasonCode: i am god
-    comments: no comment
-    userToken: 081ae8a2-b267-4808-8ae9-eb60f4e5a2d5
-    history: {id=null, 
-              createdDate=2012-08-25T00:00:03.000Z, 
-              updatedDate=2012-08-25T00:00:03.000Z, 
-              recordId=1, 
-              accountRecordId=1, 
-              tenantRecordId=1, 
-              externalKey=85905d6e-64d6-4ac9-85d5-0ce45d37a426, 
-              accountId=58780aff-a193-4544-9f82-6b3d91b040ac, 
-              pluginName=noop, 
-              isActive=true, 
-              active=true, 
-              tableName=PAYMENT_METHODS, 
-              historyTableName=PAYMENT_METHOD_HISTORY}
-}
-```
-```ruby
-[
-   {
-      "changeType":"INSERT",
-      "changeDate":"2013-08-01T06:00:00.000Z",
-      "objectType":"ACCOUNT_EMAIL",
-      "objectId":"a4627e89-a73b-4167-a7ba-92a2881eb3c4",
-      "changedBy":"test_account_tags",
-      "userToken":"79005abf-a8cf-44e1-84fc-945381d35bd5",
-      "history":{
-         "id":null,
-         "createdDate":"2013-08-01T06:00:00.000Z",
-         "updatedDate":"2013-08-01T06:00:00.000Z",
-         "recordId":18,
-         "accountRecordId":525,
-         "tenantRecordId":842,
-         "accountId":"1ced5fc2-b032-4969-a38b-d4db9ab5368f",
-         "email":"email@example.com",
-         "isActive":true,
-         "tableName":"ACCOUNT_EMAIL",
-         "historyTableName":"ACCOUNT_EMAIL_HISTORY"
-      }
-   }
-]
-```
-```python
-[{'change_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc()),
- 'change_type': 'INSERT',
- 'changed_by': 'Me',
- 'comments': None,
- 'history': {'created_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc()),
-             'id': None,
-             'updated_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc())},
- 'object_id': 'bb390282-6757-4f4f-8dd5-456abd9f30b2',
- 'object_type': 'ACCOUNT_EMAIL',
- 'reason_code': None,
- 'user_token': '548055b7-2c5e-4315-9293-d76c00bd9737'}]
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-    
-Returns a list of account email audit logs with history.
 
 ##  Add custom fields to payment method
 
@@ -914,6 +764,159 @@ no content
 **Returns**
 
 A `204` http status without content.
+
+
+## Retrieve payment method audit logs with history by id
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/paymentMethods/{paymentMethodId}/auditLogsWithHistory`
+
+> Example Request:
+
+```shell
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/paymentMethods/916619a4-02bb-4d3d-b3da-2584ac897b19/auditLogsWithHistory' 
+```
+
+```java
+import org.killbill.billing.client.api.gen.PaymentMethodApi;
+protected PaymentMethodApi paymentMethodApi;
+
+UUID paymentMethodId = UUID.fromString("e9d95f16-a426-46d0-b76b-90814792fb36");
+
+List<AuditLog> result = paymentMethodApi.getPaymentMethodAuditLogsWithHistory(paymentMethodId, requestOptions);
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+account_email_id = 'bb390282-6757-4f4f-8dd5-456abd9f30b2'
+
+accountApi.get_account_email_audit_logs_with_history(account_id,
+                                                     account_email_id,
+                                                     api_key,
+                                                     api_secret)
+```
+
+```ruby
+account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
+
+account.email_audit_logs_with_history(account_email_id, options)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2018-07-19T14:56:07.000Z",
+    "objectType": "PAYMENT_METHOD",
+    "objectId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
+    "changedBy": "admin",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "f77892e9-32bd-4d59-8039-5e12798b53fe",
+    "history": 
+    {
+      "id": null,
+      "createdDate": "2018-07-19T14:56:07.000Z",
+      "updatedDate": "2018-07-19T14:56:07.000Z",
+      "recordId": 10,
+      "accountRecordId": 35,
+      "tenantRecordId": 1,
+      "externalKey": "unknown",
+      "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
+      "pluginName": "__EXTERNAL_PAYMENT__",
+      "isActive": true,
+      "active": true,
+      "tableName": "PAYMENT_METHODS",
+      "historyTableName": "PAYMENT_METHOD_HISTORY"
+    }
+  }
+]
+```
+
+```java
+//First element of the list
+class AuditLog {
+    changeType: INSERT
+    changeDate: 2012-08-25T00:00:03.000Z
+    objectType: PAYMENT_METHOD
+    objectId: e9d95f16-a426-46d0-b76b-90814792fb36
+    changedBy: Toto
+    reasonCode: i am god
+    comments: no comment
+    userToken: 081ae8a2-b267-4808-8ae9-eb60f4e5a2d5
+    history: {id=null, 
+              createdDate=2012-08-25T00:00:03.000Z, 
+              updatedDate=2012-08-25T00:00:03.000Z, 
+              recordId=1, 
+              accountRecordId=1, 
+              tenantRecordId=1, 
+              externalKey=85905d6e-64d6-4ac9-85d5-0ce45d37a426, 
+              accountId=58780aff-a193-4544-9f82-6b3d91b040ac, 
+              pluginName=noop, 
+              isActive=true, 
+              active=true, 
+              tableName=PAYMENT_METHODS, 
+              historyTableName=PAYMENT_METHOD_HISTORY}
+}
+```
+```ruby
+[
+   {
+      "changeType":"INSERT",
+      "changeDate":"2013-08-01T06:00:00.000Z",
+      "objectType":"ACCOUNT_EMAIL",
+      "objectId":"a4627e89-a73b-4167-a7ba-92a2881eb3c4",
+      "changedBy":"test_account_tags",
+      "userToken":"79005abf-a8cf-44e1-84fc-945381d35bd5",
+      "history":{
+         "id":null,
+         "createdDate":"2013-08-01T06:00:00.000Z",
+         "updatedDate":"2013-08-01T06:00:00.000Z",
+         "recordId":18,
+         "accountRecordId":525,
+         "tenantRecordId":842,
+         "accountId":"1ced5fc2-b032-4969-a38b-d4db9ab5368f",
+         "email":"email@example.com",
+         "isActive":true,
+         "tableName":"ACCOUNT_EMAIL",
+         "historyTableName":"ACCOUNT_EMAIL_HISTORY"
+      }
+   }
+]
+```
+```python
+[{'change_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc()),
+ 'change_type': 'INSERT',
+ 'changed_by': 'Me',
+ 'comments': None,
+ 'history': {'created_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc()),
+             'id': None,
+             'updated_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc())},
+ 'object_id': 'bb390282-6757-4f4f-8dd5-456abd9f30b2',
+ 'object_type': 'ACCOUNT_EMAIL',
+ 'reason_code': None,
+ 'user_token': '548055b7-2c5e-4315-9293-d76c00bd9737'}]
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of account email audit logs with history.
 
 ##  List payment methods
 

@@ -184,11 +184,12 @@ no content
 
 A `201` http status without content.
 
-## Adjust an invoice item
+
+## Create a migration invoice
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/{invoiceId}`
+`POST http://example.com/1.0/kb/invoices/migration/{accountId}`
 
 > Example Request:
 
@@ -203,65 +204,58 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"invoiceItemId\": \"903e55d3-8072-47f1-80fc-32857dbdbcc5\", \"invoiceId\": \"903e55d3-8072-47f1-80fc-32857dbdbcc5\", \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"description\": \"Free adjustment: good customer\", \"amount\": 50, \"currency\": \"USD\"}" \
-    "http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5"	
+    -d "[ { \"invoiceItemId\": \"f38505c9-d673-4f0b-b7d4-9125cac2a567\", \"invoiceId\": \"f38505c9-d673-4f0b-b7d4-9125cac2a567\", \"linkedInvoiceItemId\": \"f38505c9-d673-4f0b-b7d4-9125cac2a567\", \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"itemType\": \"EXTERNAL_CHARGE\", \"amount\": 10, \"rate\": 0, \"currency\": \"USD\" }]" \
+    "http://localhost:8080/1.0/kb/invoices/migration/2ad52f53-85ae-408a-9879-32a7e59dd03d"	
 ```
 
 ```java
 import org.killbill.billing.client.api.gen.InvoiceApi;
 protected InvoiceApi invoiceApi;
 
-UUID accountId = UUID.fromString("53805dbc-720a-4eaf-9072-ade723ee860f");
-UUID invoiceId = UUID.fromString("4be08988-35a1-4fce-bebc-699af2a95b18");
-UUID invoiceItemId = UUID.fromString("5f1e9142-b4de-4409-9366-9920cc1683e9");
-BigDecimal adjustedAmount = BigDecimal.TEN;
+UUID accountId = UUID.fromString("fe1a6f86-9ec5-4ac3-8d39-15f024cc8339");
 
-InvoiceItem adjustmentInvoiceItem = new InvoiceItem();
-adjustmentInvoiceItem.setAccountId(accountId);
-adjustmentInvoiceItem.setInvoiceId(invoiceItemId);
-adjustmentInvoiceItem.setInvoiceItemId(invoiceItemId);
-adjustmentInvoiceItem.setAmount(adjustedAmount);
-adjustmentInvoiceItem.setCurrency(Currency.USD);
+BigDecimal chargeAmount = BigDecimal.TEN;
+InvoiceItem externalCharge = new InvoiceItem();
+externalCharge.setStartDate(new LocalDate());
+externalCharge.setAccountId(accountId);
+externalCharge.setAmount(chargeAmount);
+externalCharge.setItemType(InvoiceItemType.EXTERNAL_CHARGE);
+externalCharge.setCurrency(Currency.USD);
+InvoiceItems inputInvoice = new InvoiceItems();
+inputInvoice.add(externalCharge);
 
-LocalDate requestedDate = null;
-Map<String, String> pluginProperty = null;
+LocalDate targetDate = null;
 
-Invoice result = invoiceApi.adjustInvoiceItem(invoiceId, 
-                                              adjustmentInvoiceItem, 
-                                              requestedDate,
-                                              pluginProperty,
-                                              requestOptions);
+Invoice migrationInvoice = invoiceApi.createMigrationInvoice(accountId, 
+                                                             inputInvoice, 
+                                                             targetDate,
+                                                             requestOptions);
 ```
 
 ```ruby
-invoice_item                 = KillBillClient::Model::InvoiceItem.new
-invoice_item.account_id      = "3ee3aa82-1d45-4bbc-b36b-74d628e095d0"
-invoice_item.invoice_id      = "2c98cfa2-7929-4cc2-9397-1624fb72c6d5"
-invoice_item.invoice_item_id = "b311f709-ad51-4f67-8722-18ce04334c31"
-invoice_item.amount          = 100.00
-invoice_item.currency        = 'USD'
-invoice_item.description     = 'Free adjustment: good customer'
-
-invoice_item.update(user, 
-                    reason, 
-                    comment, 
-                    options)
+account_id = "be19b229-c076-47aa-aa4d-f53bec505dc7"
+invoices = "external_invoice_list"
+target_date = "2018-03-15"
+KillBillClient::Model::Invoice.create_migration_invoice(account_id, 
+                                                        invoices, 
+                                                        target_date, 
+                                                        user, 
+                                                        reason, 
+                                                        comment, 
+                                                        options)
 ```
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-body = InvoiceItem(account_id='3ee3aa82-1d45-4bbc-b36b-74d628e095d0',
-                   invoice_id='2c98cfa2-7929-4cc2-9397-1624fb72c6d5',
-                   invoice_item_id='b311f709-ad51-4f67-8722-18ce04334c31',
-                   amount=100,
-                   currency='USD',
-                   description='Free adjustment: good customer')
+body = 'external_invoice_list'
+target_date = datetime.date(2018, 6, 11)
 
-invoiceApi.adjust_invoice_item(invoice_id,
-                               body,
-                               created_by,
-                               api_key,
-                               api_secret)
+invoiceApi.create_migration_invoice(account_id,
+                                    [body],
+                                    created_by,
+                                    api_key,
+                                    api_secret,
+                                    target_date)
 ```
 
 > Example Response:
@@ -269,48 +263,371 @@ invoiceApi.adjust_invoice_item(invoice_id,
 ```shell
 # Subset of headers returned when specifying -v curl option
 < HTTP/1.1 201 Created
-< Location: http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5
+< Location: http://localhost:8080/1.0/kb/invoices/71742c60-273f-4c91-8b8c-7555a3554b0a/ 
 < Content-Type: application/json
 < Content-Length: 0
 ```
 ```java
-class Invoice {
-    org.killbill.billing.client.model.gen.Invoice@7ae5a94f
-    amount: 224.95
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **accountId** | string | true | account id |
+| **targetDate** | string | true | target date |
+
+
+**Response**
+
+A `201` http status without content.
+
+## Create external charge(s)
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/invoices/charges/{accountId}`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ { \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"description\": \"My charge\", \"amount\": 50, \"currency\": \"USD\" }]"	\
+    "http://localhost:8080/1.0/kb/invoices/charges/2ad52f53-85ae-408a-9879-32a7e59dd03d"
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+UUID accountId = UUID.fromString("616789aa-4004-4681-b38c-b95871d534fc");
+
+InvoiceItem externalCharge = new InvoiceItem();
+externalCharge.setAccountId(accountId);
+externalCharge.setAmount(BigDecimal.TEN);
+externalCharge.setDescription("My charge");
+
+InvoiceItems externalCharges = new InvoiceItems();
+externalCharges.add(externalCharge);
+
+LocalDate requestedDate = clock.getUTCToday();
+Boolean payInvoice = false;
+Map<String, String> pluginProperty = null;
+Boolean autoCommit = true;
+
+List<InvoiceItem> createdExternalCharges = invoiceApi.createExternalCharges(accountId, 
+                                                                            externalCharges, 
+                                                                            requestedDate,
+                                                                            autoCommit
+                                                                            pluginProperty, 
+                                                                            requestOptions);
+```
+
+```ruby
+invoice_item             = KillBillClient::Model::InvoiceItem.new()
+invoice_item.account_id  = "83e5e82d-fe72-4873-9b8b-946f4d250b0d"
+invoice_item.amount      = '50.0'
+invoice_item.currency    = 'USD'
+invoice_item.description = 'My charge'
+
+auto_commit = true
+
+invoice_item.create(auto_commit, 
+                    user, 
+                    reason, 
+                    comment, 
+                    options)
+```
+
+```python
+invoiceApi = killbill.api.InvoiceApi()
+body = InvoiceItem(account_id=account_id,
+                   amount=50.0,
+                   currency='USD',
+                   description='My charge')
+
+invoiceApi.create_external_charges(account_id,
+                                   [body],
+                                   created_by,
+                                   api_key,
+                                   api_secret,
+                                   auto_commit=True)
+```
+
+> Example Response:
+
+```shell
+< HTTP/1.1 201 Created
+< Content-Type: application/json
+< Content-Length: 0
+
+[
+  {
+    "invoiceItemId": "3aaadeeb-5ffe-4226-a8b6-57723f1f8c12",
+    "invoiceId": "c6fe2246-62e2-450d-b9fc-a27003771535",
+    "linkedInvoiceItemId": null,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "childAccountId": null,
+    "bundleId": null,
+    "subscriptionId": null,
+    "productName": null,
+    "planName": null,
+    "phaseName": null,
+    "usageName": null,
+    "prettyProductName": null,
+    "prettyPlanName": null,
+    "prettyPhaseName": null,
+    "prettyUsageName": null,
+    "itemType": "EXTERNAL_CHARGE",
+    "description": "My charge",
+    "startDate": "2018-07-20",
+    "endDate": null,
+    "amount": 50,
+    "rate": null,
+    "currency": "USD",
+    "quantity": null,
+    "itemDetails": null,
+    "childItems": null,
+    "auditLogs": []
+  }
+]
+```
+```java
+class InvoiceItem {
+    org.killbill.billing.client.model.gen.InvoiceItem@a39beab1
+    invoiceItemId: 836d08c4-2bc8-485f-91c1-2dd81b18844e
+    invoiceId: 3006fe16-3641-47b6-804e-2719f8f40c87
+    linkedInvoiceItemId: 2781cefd-fc73-41d2-9823-f8f0d0b60e2b
+    accountId: 616789aa-4004-4681-b38c-b95871d534fc
+    childAccountId: null
+    bundleId: null
+    subscriptionId: null
+    productName: null
+    planName: null
+    phaseName: null
+    usageName: null
+    prettyProductName: null
+    prettyPlanName: null
+    prettyPhaseName: null
+    prettyUsageName: null
+    itemType: EXTERNAL_CHARGE
+    description: b1b7442b-cd1b-4bb7-9d30-6b50ea469202
+    startDate: 2012-09-25
+    endDate: 2012-10-05
+    amount: 10.00
+    rate: null
     currency: USD
-    status: COMMITTED
-    creditAdj: 0.00
-    refundAdj: 0.00
-    invoiceId: 4be08988-35a1-4fce-bebc-699af2a95b18
-    invoiceDate: 2012-09-25
-    targetDate: 2012-09-24
-    invoiceNumber: 2
-    balance: 224.95
-    accountId: 53805dbc-720a-4eaf-9072-ade723ee860f
-    bundleKeys: null
-    credits: null
-    items: []
-    isParentInvoice: false
-    parentInvoiceId: null
-    parentAccountId: null
+    quantity: null
+    itemDetails: Item Details
+    childItems: null
     auditLogs: []
 }
 ```
 ```ruby
 {
-   "amount":400.0,
+   "invoiceItemId":"4661b7a9-f19f-431e-80ed-547932527fbe",
+   "invoiceId":"d27bca74-7e08-4eff-9479-51e8009fe3d0",
+   "accountId":"83e5e82d-fe72-4873-9b8b-946f4d250b0d",
+   "itemType":"EXTERNAL_CHARGE",
+   "description":"My charge",
+   "startDate":"2013-08-01",
+   "amount":50.0,
+   "currency":"USD"
+}
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **requestedDate** | string | false | requested date |
+| **autoCommit** | boolean | false | auto commit |
+
+**Response**
+
+Returns a invoice object.
+
+
+## Create tax items
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/invoices/taxes/{accountId}`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ { \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"amount\": 50, \"currency\": \"USD\" }]" \
+    "http://localhost:8080/1.0/kb/invoices/taxes/2ad52f53-85ae-408a-9879-32a7e59dd03d"
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+UUID accountId = UUID.fromString("eb36c64c-b575-4538-b26f-a89c473984da");
+UID bundleId = UUID.fromString("28723cec-5510-49be-9e87-3a36d246f25e");
+
+InvoiceItem taxItem = new InvoiceItem();
+taxItem.setAccountId(accountId);
+taxItem.setAmount(BigDecimal.TEN);
+taxItem.setCurrency(Currency.USD);
+taxItem.setBundleId(bundleId);
+final InvoiceItems input = new InvoiceItems();
+input.add(taxItem);
+
+Boolean autoCommit = true;
+LocalDate requestedDate = clock.getUTCToday();
+Map<String, String> pluginProperty = null;
+
+List<InvoiceItem> createdExternalCharges = invoiceApi.createTaxItems(accountId, 
+                                                                     input,
+                                                                     autoCommit,
+                                                                     requestedDate,
+                                                                     pluginProperty,
+                                                                     requestOptions);
+```
+
+```ruby
+invoice_item             = KillBillClient::Model::InvoiceItem.new()
+invoice_item.account_id  = "29ef0d50-90d1-4163-bb46-ef1b82675ae6"
+invoice_item.amount      = '50.0'
+invoice_item.currency    = 'USD'
+invoice_item.description = 'My charge'
+
+auto_commit = true
+
+invoice_item.create_tax_items(auto_commit, 
+                              user, 
+                              reason, 
+                              comment, 
+                              options)
+```
+
+```python
+invoiceApi = killbill.api.InvoiceApi()
+body = InvoiceItem(account_id=account_id,
+                   amount=50.0,
+                   currency='USD',
+                   description='My charge')
+
+invoiceApi.create_tax_items(account_id,
+                            [body],
+                            created_by,
+                            api_key,
+                            api_secret,
+                            auto_commit=True)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Content-Type: application/json
+< Content-Length: 0
+
+[
+  {
+    "invoiceItemId": "e91e8d48-d8de-4931-9758-6cfff86cb2f4",
+    "invoiceId": "434dd357-099d-45f8-9b48-79dcd20c61ce",
+    "linkedInvoiceItemId": null,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "childAccountId": null,
+    "bundleId": null,
+    "subscriptionId": null,
+    "productName": null,
+    "planName": null,
+    "phaseName": null,
+    "usageName": null,
+    "prettyProductName": null,
+    "prettyPlanName": null,
+    "prettyPhaseName": null,
+    "prettyUsageName": null,
+    "itemType": "TAX",
+    "description": "Tax",
+    "startDate": "2018-07-20",
+    "endDate": null,
+    "amount": 50,
+    "rate": null,
+    "currency": "USD",
+    "quantity": null,
+    "itemDetails": null,
+    "childItems": null,
+    "auditLogs": []
+  }
+]
+```
+```java
+class InvoiceItem {
+    org.killbill.billing.client.model.gen.InvoiceItem@bedd818e
+    invoiceItemId: 04ebfae8-7898-4c1b-b10e-6fad862e7077
+    invoiceId: 000108b4-d0e3-452f-8537-13f6669f8767
+    linkedInvoiceItemId: null
+    accountId: eb36c64c-b575-4538-b26f-a89c473984da
+    childAccountId: null
+    bundleId: 28723cec-5510-49be-9e87-3a36d246f25e
+    subscriptionId: null
+    productName: null
+    planName: null
+    phaseName: null
+    usageName: null
+    prettyProductName: null
+    prettyPlanName: null
+    prettyPhaseName: null
+    prettyUsageName: null
+    itemType: TAX
+    description: Tax
+    startDate: 2012-09-25
+    endDate: null
+    amount: 10.00
+    rate: null
+    currency: USD
+    quantity: null
+    itemDetails: null
+    childItems: null
+    auditLogs: []
+}
+```
+```ruby
+{
+   "invoiceItemId":"20d3bdc8-48c1-48f5-9d9f-5cf0d273dff6",
+   "invoiceId":"40655121-ac13-4fe4-af49-02ba668ff4bb",
+   "accountId":"29ef0d50-90d1-4163-bb46-ef1b82675ae6",
+   "itemType":"TAX",
+   "description":"My charge",
+   "startDate":"2013-08-01",
+   "amount":50.0,
    "currency":"USD",
-   "status":"COMMITTED",
-   "creditAdj":0.0,
-   "refundAdj":0.0,
-   "invoiceId":"2c98cfa2-7929-4cc2-9397-1624fb72c6d5",
-   "invoiceDate":"2013-08-31",
-   "targetDate":"2013-08-31",
-   "invoiceNumber":"1884",
-   "balance":0,
-   "accountId":"3ee3aa82-1d45-4bbc-b36b-74d628e095d0",
-   "items":[],
-   "isParentInvoice":false,
    "auditLogs":[]
 }
 ```
@@ -323,8 +640,10 @@ no content
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
 | **requestedDate** | string | false | requested date |
+| **autoCommit** | boolean | false | auto commit |
 
-**Returns**
+
+**Response**
 
 Returns a invoice object.
 
@@ -950,476 +1269,9 @@ class Invoice {
 
 Returns a invoice object.
 
-## Delete a CBA item
 
-**HTTP Request**
 
-`DELETE http://example.com/1.0/kb/invoices/{invoiceId}/{invoiceItemId}/cba`
 
-> Example Request:
-
-```shell
-curl -v \
-    -X DELETE \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/invoices/404a98a8-4dd8-4737-a39f-be871e916a8c/a35fb7b5-aec8-489e-aadf-c86107aa1d92/cba?accountId=8785164f-b5d7-4da1-9495-33f5105e8d80"	
-```
-
-```java
-TODO
-```
-
-```ruby
-invoice_item                 = KillBillClient::Model::InvoiceItem.new
-invoice_item.account_id      = "3ee3aa82-1d45-4bbc-b36b-74d628e095d0"
-invoice_item.invoice_id      = "2c98cfa2-7929-4cc2-9397-1624fb72c6d5"
-invoice_item.invoice_item_id = "b311f709-ad51-4f67-8722-18ce04334c31"
-
-invoice_item.delete(user, 
-                    reason, 
-                    comment, 
-                    options)
-```
-
-```python
-invoiceApi = killbill.api.InvoiceApi()
-invoice_id='2c98cfa2-7929-4cc2-9397-1624fb72c6d5',
-invoice_item_id='b311f709-ad51-4f67-8722-18ce04334c31'
-account_id = '3ee3aa82-1d45-4bbc-b36b-74d628e095d0',
-
-invoiceApi.delete_cba(invoice_id,
-                      invoice_item_id,
-                      account_id,
-                      created_by,
-                      api_key,
-                      api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java 
-TODO
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **accountId** | string | true | account id |
-
-**Returns**
-
-A `204` http status without content.
-
-## Add custom fields to invoice
-
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X POST \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    -d "[ { \"objectType\": \"INVOICE\", \"name\": \"Test Custom Field\", \"value\": \"demo_test_value\" }]" \
-    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"	
-```
-
-```java
-import org.killbill.billing.client.api.gen.InvoiceApi;
-protected InvoiceApi invoiceApi;
-
-UUID invoiceId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
-
-final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
-
-CustomFields customFields = new CustomFields();
-customFields.add(new CustomField(null, 
-                                 invoiceId, 
-                                 ObjectType.INVOICE, 
-                                 "Test Custom Field", 
-                                 "test_value", 
-                                 EMPTY_AUDIT_LOGS));
-
-invoiceApi.createInvoiceCustomFields(invoiceId, 
-                                     customFields, 
-                                     requestOptions);
-```
-
-```ruby
-custom_field = KillBillClient::Model::CustomFieldAttributes.new
-custom_field.object_type = 'INVOICE'
-custom_field.name = 'Test Custom Field'
-custom_field.value = 'test_value'
-
-invoice.add_custom_field(custom_field, 
-                         user,
-                         reason,
-                         comment,
-                         options)
-```
-
-```python
-invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
-body = CustomField(name='Test Custom Field', value='test_value')
-
-invoiceApi.create_invoice_custom_fields(invoice_id,
-                                        [body],
-                                        created_by,
-                                        api_key,
-                                        api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields
-< Content-Type: application/json
-< Content-Length: 0
-```
-```java
-//First element of the list
-class CustomField {
-    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
-    customFieldId: null
-    objectId: 59860a0d-c032-456d-a35e-3a48fe8579e5
-    objectType: INVOICE
-    name: Test Custom Field
-    value: test_value
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"INVOICE",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-Returns a custom field object.
-
-## Retrieve invoice custom fields
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"	
-```
-
-```java
-import org.killbill.billing.client.api.gen.InvoiceApi;
-protected InvoiceApi invoiceApi;
-
-UUID invoiceId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
-
-List<CustomField> customFields = invoiceApi.getInvoiceCustomFields(invoiceId,
-                                                                   AuditLevel.NONE,
-                                                                   requestOptions);
-```
-
-```ruby
-audit = 'NONE'
-
-invoice.custom_fields(audit, options)
-```
-
-```python
-invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
-
-invoiceApi.get_invoice_custom_fields(invoice_id, api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  {
-    "customFieldId": "349de10f-4bb1-4e1a-93f6-11b745200bf5",
-    "objectId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
-    "objectType": "INVOICE",
-    "name": "Test Custom Field",
-    "value": "demo_test_value",
-    "auditLogs": []
-  }
-]
-```
-```java
-//First element of the list
-class CustomField {
-    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
-    customFieldId: null
-    objectId: 59860a0d-c032-456d-a35e-3a48fe8579e5
-    objectType: INVOICE
-    name: Test Custom Field
-    value: test_value
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"INVOICE",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
-```
-
-```python
-[{'audit_logs': [],
- 'custom_field_id': '5670b594-9317-4aeb-bfef-2c2342ec172a',
- 'name': 'Test Custom Field',
- 'object_id': '4927c1a2-3959-4f71-98e7-ce3ba19c92ac',
- 'object_type': 'INVOICE',
- 'value': 'test_value'}]
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **audit** | enum | false | level of audit logs returned |
-
-**Returns**
-
-Returns a list of custom field objects.
-
-## Modify custom fields to invoice
-
-**HTTP Request** 
-
-`PUT http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
-
-
-> Example Request:
-
-```shell
-curl -v \
-    -X PUT \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    -d "[ { \"customFieldId\": \"349de10f-4bb1-4e1a-93f6-11b745200bf5\", \"objectId\": \"2cd2f4b5-a1c0-42a7-924f-64c7b791332d\", \"objectType\": \"INVOICE\", \"name\": \"Test Custom Field\", \"value\": \"test_modify_value\", \"auditLogs\": [] }]" \
-    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"	
-```
-
-```java
-import org.killbill.billing.client.api.gen.InvoiceApi;
-protected InvoiceApi invoiceApi;
-
-UUID invoiceId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
-
-UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-
-CustomField customFieldModified = new CustomField();
-customFieldModified.setCustomFieldId(customFieldsId);
-customFieldModified.setValue("NewValue");
-
-invoiceApi.modifyInvoiceCustomFields(invoiceId, 
-                                     customFieldModified, 
-                                     requestOptions);
-```
-
-```ruby
-custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-custom_field.name = 'Test Modify'
-custom_field.value = 'test_modify_value'
-
-invoice.modify_custom_field(custom_field,                                                                                            
-                            user, 
-                            reason,
-                            comment, 
-                            options)
-```
-
-```python
-invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
-custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-body = CustomField(custom_field_id=custom_field_id, 
-                   name='Test Custom Field', 
-                   value='test_value')
-
-invoiceApi.modify_invoice_custom_fields(invoice_id, 
-                                        [body], 
-                                        created_by, 
-                                        api_key, 
-                                        api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-A `204` http status without content.
-
-## Remove custom fields from invoice
-
-**HTTP Request** 
-
-`DELETE http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X DELETE \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields?customField=349de10f-4bb1-4e1a-93f6-11b745200bf5"	
-```
-
-```java
-import org.killbill.billing.client.api.gen.InvoiceApi;
-protected InvoiceApi invoiceApi;
-
-UUID invoiceId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
-
-UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-
-invoiceApi.deleteInvoiceCustomFields(invoiceId, 
-                                     customFieldsId, 
-                                     requestOptions);
-```
-
-```ruby
-custom_field_id = custom_field.id
-
-invoice.remove_custom_field(custom_field_id,                                                                                            
-                            user, 
-                            reason,
-                            comment, 
-                            options)
-```
-
-```python
-invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac' 
-
-invoiceApi.delete_invoice_custom_fields(invoice_id, 
-                                        created_by, 
-                                        api_key, 
-                                        api_secret)
-```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-
-```java
-no content
-```
-
-```ruby
-no content
-```
-
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **customField** | string | true | a list of custom field objects that you want to remove it |
-
-**Returns**
-
-A `204` http status without content.
 
 ## Render an invoice as HTML
 
@@ -1869,6 +1721,618 @@ None.
 
 Returns a invoice rendered as HTML.
 
+
+## Perform the invoice status transition from DRAFT to COMMITTED
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/invoices/{invoiceId}/commitInvoice`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5/commitInvoice"	
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+UUID invoiceId = UUID.fromString("ca09d09a-59b2-4ada-8c15-597c9efde46c");
+
+invoiceApi.commitInvoice(invoiceId, requestOptions);
+```
+
+```ruby
+invoice = KillBillClient::Model::Invoice.new
+invoice.invoice_id = "2c98cfa2-7929-4cc2-9397-1624fb72c6d5"
+
+invoice.commit(user, 
+               reason, 
+               comment, 
+               options)
+```
+
+```python
+invoiceApi = killbill.api.InvoiceApi()
+
+invoiceApi.commit_invoice(invoice_id, 
+                          created_by, 
+                          api_key, 
+                          api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None. 
+
+**Returns**
+
+A `204` http status without content.
+
+
+## Perform the action of voiding an invoice
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/invoices/{invoiceId}/voidInvoice`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/invoices/18e9b3d9-9083-4725-9e8a-27d3a57c2e88/voidInvoice"	
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+UUID invoiceId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
+
+invoiceApi.voidInvoice(invoiceId, requestOptions);
+```
+
+```ruby
+**TODO**
+```
+
+```python
+invoiceApi = killbill.api.InvoiceApi()
+invoice_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
+
+invoiceApi.void_invoice(invoice_id, 
+                        created_by, 
+                        api_key, 
+                        api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Response**
+
+A `204` http status without content.
+
+## Adjust an invoice item
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/invoices/{invoiceId}`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"invoiceItemId\": \"903e55d3-8072-47f1-80fc-32857dbdbcc5\", \"invoiceId\": \"903e55d3-8072-47f1-80fc-32857dbdbcc5\", \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"description\": \"Free adjustment: good customer\", \"amount\": 50, \"currency\": \"USD\"}" \
+    "http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5"	
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+UUID accountId = UUID.fromString("53805dbc-720a-4eaf-9072-ade723ee860f");
+UUID invoiceId = UUID.fromString("4be08988-35a1-4fce-bebc-699af2a95b18");
+UUID invoiceItemId = UUID.fromString("5f1e9142-b4de-4409-9366-9920cc1683e9");
+BigDecimal adjustedAmount = BigDecimal.TEN;
+
+InvoiceItem adjustmentInvoiceItem = new InvoiceItem();
+adjustmentInvoiceItem.setAccountId(accountId);
+adjustmentInvoiceItem.setInvoiceId(invoiceItemId);
+adjustmentInvoiceItem.setInvoiceItemId(invoiceItemId);
+adjustmentInvoiceItem.setAmount(adjustedAmount);
+adjustmentInvoiceItem.setCurrency(Currency.USD);
+
+LocalDate requestedDate = null;
+Map<String, String> pluginProperty = null;
+
+Invoice result = invoiceApi.adjustInvoiceItem(invoiceId, 
+                                              adjustmentInvoiceItem, 
+                                              requestedDate,
+                                              pluginProperty,
+                                              requestOptions);
+```
+
+```ruby
+invoice_item                 = KillBillClient::Model::InvoiceItem.new
+invoice_item.account_id      = "3ee3aa82-1d45-4bbc-b36b-74d628e095d0"
+invoice_item.invoice_id      = "2c98cfa2-7929-4cc2-9397-1624fb72c6d5"
+invoice_item.invoice_item_id = "b311f709-ad51-4f67-8722-18ce04334c31"
+invoice_item.amount          = 100.00
+invoice_item.currency        = 'USD'
+invoice_item.description     = 'Free adjustment: good customer'
+
+invoice_item.update(user, 
+                    reason, 
+                    comment, 
+                    options)
+```
+
+```python
+invoiceApi = killbill.api.InvoiceApi()
+body = InvoiceItem(account_id='3ee3aa82-1d45-4bbc-b36b-74d628e095d0',
+                   invoice_id='2c98cfa2-7929-4cc2-9397-1624fb72c6d5',
+                   invoice_item_id='b311f709-ad51-4f67-8722-18ce04334c31',
+                   amount=100,
+                   currency='USD',
+                   description='Free adjustment: good customer')
+
+invoiceApi.adjust_invoice_item(invoice_id,
+                               body,
+                               created_by,
+                               api_key,
+                               api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5
+< Content-Type: application/json
+< Content-Length: 0
+```
+```java
+class Invoice {
+    org.killbill.billing.client.model.gen.Invoice@7ae5a94f
+    amount: 224.95
+    currency: USD
+    status: COMMITTED
+    creditAdj: 0.00
+    refundAdj: 0.00
+    invoiceId: 4be08988-35a1-4fce-bebc-699af2a95b18
+    invoiceDate: 2012-09-25
+    targetDate: 2012-09-24
+    invoiceNumber: 2
+    balance: 224.95
+    accountId: 53805dbc-720a-4eaf-9072-ade723ee860f
+    bundleKeys: null
+    credits: null
+    items: []
+    isParentInvoice: false
+    parentInvoiceId: null
+    parentAccountId: null
+    auditLogs: []
+}
+```
+```ruby
+{
+   "amount":400.0,
+   "currency":"USD",
+   "status":"COMMITTED",
+   "creditAdj":0.0,
+   "refundAdj":0.0,
+   "invoiceId":"2c98cfa2-7929-4cc2-9397-1624fb72c6d5",
+   "invoiceDate":"2013-08-31",
+   "targetDate":"2013-08-31",
+   "invoiceNumber":"1884",
+   "balance":0,
+   "accountId":"3ee3aa82-1d45-4bbc-b36b-74d628e095d0",
+   "items":[],
+   "isParentInvoice":false,
+   "auditLogs":[]
+}
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **requestedDate** | string | false | requested date |
+
+**Returns**
+
+Returns a invoice object.
+
+
+## Delete a CBA item
+
+**HTTP Request**
+
+`DELETE http://example.com/1.0/kb/invoices/{invoiceId}/{invoiceItemId}/cba`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/invoices/404a98a8-4dd8-4737-a39f-be871e916a8c/a35fb7b5-aec8-489e-aadf-c86107aa1d92/cba?accountId=8785164f-b5d7-4da1-9495-33f5105e8d80"	
+```
+
+```java
+TODO
+```
+
+```ruby
+invoice_item                 = KillBillClient::Model::InvoiceItem.new
+invoice_item.account_id      = "3ee3aa82-1d45-4bbc-b36b-74d628e095d0"
+invoice_item.invoice_id      = "2c98cfa2-7929-4cc2-9397-1624fb72c6d5"
+invoice_item.invoice_item_id = "b311f709-ad51-4f67-8722-18ce04334c31"
+
+invoice_item.delete(user, 
+                    reason, 
+                    comment, 
+                    options)
+```
+
+```python
+invoiceApi = killbill.api.InvoiceApi()
+invoice_id='2c98cfa2-7929-4cc2-9397-1624fb72c6d5',
+invoice_item_id='b311f709-ad51-4f67-8722-18ce04334c31'
+account_id = '3ee3aa82-1d45-4bbc-b36b-74d628e095d0',
+
+invoiceApi.delete_cba(invoice_id,
+                      invoice_item_id,
+                      account_id,
+                      created_by,
+                      api_key,
+                      api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java 
+TODO
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **accountId** | string | true | account id |
+
+**Returns**
+
+A `204` http status without content.
+
+
+## Generate a dryRun invoice
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/invoices/dryRun`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"dryRunType\": \"UPCOMING_INVOICE\"}" \
+    "http://localhost:8080/1.0/kb/invoices/dryRun?accountId=2ad52f53-85ae-408a-9879-32a7e59dd03d" 	
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+DryRunType dryRunType = DryRunType.SUBSCRIPTION_ACTION;
+SubscriptionEventType dryRunAction = SubscriptionEventType.START_BILLING;
+PhaseType phaseType = null;
+String productName = "Assault-Rifle";
+ProductCategory productCategory = ProductCategory.BASE;
+BillingPeriod billingPeriod = BillingPeriod.ANNUAL;
+String priceListName = null;
+UUID subscriptionId = null;
+UUID bundleId = null;
+LocalDate effectiveDate = null;
+BillingActionPolicy billingPolicy = null;
+List<PhasePriceOverride> priceOverrides = null;
+
+InvoiceDryRun dryRunArg = new InvoiceDryRun(dryRunType, 
+                                            dryRunAction,
+                                            phaseType, 
+                                            productName, 
+                                            productCategory, 
+                                            billingPeriod, 
+                                            priceListName, 
+                                            subscriptionId, 
+                                            bundleId, 
+                                            effectiveDate, 
+                                            billingPolicy,
+                                            priceOverrides);
+
+
+UUID accountId = UUID.fromString("fe1a6f86-9ec5-4ac3-8d39-15f024cc8339");
+LocalDate targetDate = today.plus(1, ChronoUnit.DAYS);
+
+Invoice dryRunInvoice = invoiceApi.generateDryRunInvoice(dryRunArg, 
+                                                         accountId, 
+                                                         targetDate, 
+                                                         requestOptions);
+```
+
+```ruby
+#
+# This case is when you create a dry-run invoice with UPCOMING_INVOICE, 
+# to see what is the next invoice that the system will generate for this account 
+# 
+account_id = "5527abbc-d83d-447f-bf3d-ab9542ea631e"
+target_date = nil
+upcoming_invoice_target_date = true
+
+KillBillClient::Model::Invoice.trigger_invoice_dry_run(account_id, 
+                                                       target_date, 
+                                                       upcoming_invoice_target_date, 
+                                                       options)
+```
+
+```python
+#
+# This case is when you create a dry-run invoice with UPCOMING_INVOICE, 
+# to see what is the next invoice that the system will generate for this account 
+# 
+invoiceApi = killbill.api.InvoiceApi()
+body = InvoiceDryRun(dry_run_type='UPCOMING_INVOICE')
+account_id = '00e87495-92dc-4640-8490-e2c794748151'
+
+invoiceApi.generate_dry_run_invoice(body,
+                                    account_id,
+                                    created_by,
+                                    api_key,
+                                    api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Content-Type: application/json
+< Content-Length: 0
+```
+```java
+class Invoice {
+    org.killbill.billing.client.model.gen.Invoice@2e7ac6ec
+    amount: 0.00
+    currency: USD
+    status: COMMITTED
+    creditAdj: 0.00
+    refundAdj: 0.00
+    invoiceId: ef25cb16-08ef-4945-a875-c6ffa3c1fd77
+    invoiceDate: 2012-04-25
+    targetDate: 2012-04-25
+    invoiceNumber: null
+    balance: 0.00
+    accountId: fe1a6f86-9ec5-4ac3-8d39-15f024cc8339
+    bundleKeys: null
+    credits: null
+    items: [class InvoiceItem {
+        org.killbill.billing.client.model.gen.InvoiceItem@8be409a8
+        invoiceItemId: 514a2e5c-b3d4-4d67-8825-f56968b84493
+        invoiceId: ef25cb16-08ef-4945-a875-c6ffa3c1fd77
+        linkedInvoiceItemId: null
+        accountId: fe1a6f86-9ec5-4ac3-8d39-15f024cc8339
+        childAccountId: null
+        bundleId: ca41fb1a-e8ff-4adc-a481-96510d9726b0
+        subscriptionId: 3e8f647c-2e8c-4256-9afd-86dd640486d8
+        productName: Assault-Rifle
+        planName: assault-rifle-annual
+        phaseName: assault-rifle-annual-trial
+        usageName: null
+        prettyProductName: null
+        prettyPlanName: null
+        prettyPhaseName: null
+        prettyUsageName: null
+        itemType: FIXED
+        description: assault-rifle-annual-trial
+        startDate: 2012-04-25
+        endDate: null
+        amount: 0.00
+        rate: null
+        currency: USD
+        quantity: null
+        itemDetails: null
+        childItems: null
+        auditLogs: []
+    }]
+    isParentInvoice: false
+    parentInvoiceId: null
+    parentAccountId: null
+    auditLogs: []
+}
+```
+```ruby
+{
+   "amount":500.0,
+   "currency":"USD",
+   "status":"COMMITTED",
+   "creditAdj":0.0,
+   "refundAdj":0.0,
+   "invoiceId":"8c62095e-898d-444e-a05b-a498f8bd9d1b",
+   "invoiceDate":"2013-08-01",
+   "targetDate":"2013-08-31",
+   "balance":500.0,
+   "accountId":"5527abbc-d83d-447f-bf3d-ab9542ea631e",
+   "items":[
+      {
+         "invoiceItemId":"a45f76a2-7775-4053-bd7c-50a7542e52d3",
+         "invoiceId":"8c62095e-898d-444e-a05b-a498f8bd9d1b",
+         "accountId":"5527abbc-d83d-447f-bf3d-ab9542ea631e",
+         "bundleId":"8e26532b-e5c0-4d4a-b2f0-2eeec8668ada",
+         "subscriptionId":"466e26d9-6e44-4afb-9c2f-2b93a4f52329",
+         "planName":"sports-monthly",
+         "phaseName":"sports-monthly-evergreen",
+         "itemType":"RECURRING",
+         "description":"sports-monthly-evergreen",
+         "startDate":"2013-08-31",
+         "endDate":"2013-09-30",
+         "amount":500.0,
+         "currency":"USD"
+      }
+   ],
+   "isParentInvoice":false
+}
+```
+```python
+{'account_id': '00e87495-92dc-4640-8490-e2c794748151',
+ 'amount': 100.0,
+ 'audit_logs': [],
+ 'balance': 100.0,
+ 'bundle_keys': None,
+ 'credit_adj': 0.0,
+ 'credits': None,
+ 'currency': 'USD',
+ 'invoice_date': datetime.date(2018, 5, 10),
+ 'invoice_id': 'a1c2ab02-d5d8-450d-bb7c-e8f169018570',
+ 'invoice_number': None,
+ 'is_parent_invoice': False,
+ 'items': [{'account_id': '00e87495-92dc-4640-8490-e2c794748151',
+            'amount': 100.0,
+            'audit_logs': [],
+            'bundle_id': '3c02be83-3c2d-4f5a-827e-edfe85266d54',
+            'child_account_id': None,
+            'child_items': None,
+            'currency': 'USD',
+            'description': 'standard-monthly-evergreen',
+            'end_date': datetime.date(2018, 8, 9),
+            'invoice_id': 'a1c2ab02-d5d8-450d-bb7c-e8f169018570',
+            'invoice_item_id': 'fe1ec859-dbb9-4851-a030-709a32672bca',
+            'item_details': None,
+            'item_type': 'RECURRING',
+            'linked_invoice_item_id': None,
+            'phase_name': 'standard-monthly-evergreen',
+            'plan_name': 'standard-monthly',
+            'pretty_phase_name': None,
+            'pretty_plan_name': None,
+            'pretty_usage_name': None,
+            'quantity': None,
+            'rate': 100.0,
+            'start_date': datetime.date(2018, 7, 9),
+            'subscription_id': '99e4caa5-d5da-4243-8c91-a38c5cd29632',
+            'usage_name': None}],
+ 'parent_account_id': None,
+ 'parent_invoice_id': None,
+ 'refund_adj': 0.0,
+ 'status': 'COMMITTED',
+ 'target_date': datetime.date(2018, 7, 9)}
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **accountId** | string | true | account id |
+| **targetDate** | string | true | target date |
+
+
+**Response**
+
+Returns a invoice object.
+
+
 ## Trigger a payment for invoice
 
 **HTTP Request** 
@@ -2002,6 +2466,7 @@ no content
 **Returns**
 
 A `201` http status without content.
+
 
 ## Retrieve payments associated with an invoice
 
@@ -2216,11 +2681,231 @@ class InvoicePayment {
 
 Returns a invoice payment object.
 
-## Perform the invoice status transition from DRAFT to COMMITTED
+
+## Add custom fields to invoice
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/invoices/{invoiceId}/commitInvoice`
+`POST http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ { \"objectType\": \"INVOICE\", \"name\": \"Test Custom Field\", \"value\": \"demo_test_value\" }]" \
+    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"	
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+UUID invoiceId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+
+final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+
+CustomFields customFields = new CustomFields();
+customFields.add(new CustomField(null, 
+                                 invoiceId, 
+                                 ObjectType.INVOICE, 
+                                 "Test Custom Field", 
+                                 "test_value", 
+                                 EMPTY_AUDIT_LOGS));
+
+invoiceApi.createInvoiceCustomFields(invoiceId, 
+                                     customFields, 
+                                     requestOptions);
+```
+
+```ruby
+custom_field = KillBillClient::Model::CustomFieldAttributes.new
+custom_field.object_type = 'INVOICE'
+custom_field.name = 'Test Custom Field'
+custom_field.value = 'test_value'
+
+invoice.add_custom_field(custom_field, 
+                         user,
+                         reason,
+                         comment,
+                         options)
+```
+
+```python
+invoiceApi = killbill.api.InvoiceApi()
+invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+body = CustomField(name='Test Custom Field', value='test_value')
+
+invoiceApi.create_invoice_custom_fields(invoice_id,
+                                        [body],
+                                        created_by,
+                                        api_key,
+                                        api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields
+< Content-Type: application/json
+< Content-Length: 0
+```
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: 59860a0d-c032-456d-a35e-3a48fe8579e5
+    objectType: INVOICE
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
+```
+```ruby
+[
+   {
+      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
+      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
+      "objectType":"INVOICE",
+      "name":"Test Custom Field",
+      "value":"test_value",
+      "auditLogs":[]
+   }
+]
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+Returns a custom field object.
+
+## Retrieve invoice custom fields
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"	
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+UUID invoiceId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+
+List<CustomField> customFields = invoiceApi.getInvoiceCustomFields(invoiceId,
+                                                                   AuditLevel.NONE,
+                                                                   requestOptions);
+```
+
+```ruby
+audit = 'NONE'
+
+invoice.custom_fields(audit, options)
+```
+
+```python
+invoiceApi = killbill.api.InvoiceApi()
+invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+
+invoiceApi.get_invoice_custom_fields(invoice_id, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "customFieldId": "349de10f-4bb1-4e1a-93f6-11b745200bf5",
+    "objectId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "objectType": "INVOICE",
+    "name": "Test Custom Field",
+    "value": "demo_test_value",
+    "auditLogs": []
+  }
+]
+```
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: 59860a0d-c032-456d-a35e-3a48fe8579e5
+    objectType: INVOICE
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
+```
+```ruby
+[
+   {
+      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
+      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
+      "objectType":"INVOICE",
+      "name":"Test Custom Field",
+      "value":"test_value",
+      "auditLogs":[]
+   }
+]
+```
+
+```python
+[{'audit_logs': [],
+ 'custom_field_id': '5670b594-9317-4aeb-bfef-2c2342ec172a',
+ 'name': 'Test Custom Field',
+ 'object_id': '4927c1a2-3959-4f71-98e7-ce3ba19c92ac',
+ 'object_type': 'INVOICE',
+ 'value': 'test_value'}]
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Returns a list of custom field objects.
+
+## Modify custom fields to invoice
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
+
 
 > Example Request:
 
@@ -2235,35 +2920,52 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5/commitInvoice"	
+    -d "[ { \"customFieldId\": \"349de10f-4bb1-4e1a-93f6-11b745200bf5\", \"objectId\": \"2cd2f4b5-a1c0-42a7-924f-64c7b791332d\", \"objectType\": \"INVOICE\", \"name\": \"Test Custom Field\", \"value\": \"test_modify_value\", \"auditLogs\": [] }]" \
+    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"	
 ```
 
 ```java
 import org.killbill.billing.client.api.gen.InvoiceApi;
 protected InvoiceApi invoiceApi;
 
-UUID invoiceId = UUID.fromString("ca09d09a-59b2-4ada-8c15-597c9efde46c");
+UUID invoiceId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
 
-invoiceApi.commitInvoice(invoiceId, requestOptions);
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+CustomField customFieldModified = new CustomField();
+customFieldModified.setCustomFieldId(customFieldsId);
+customFieldModified.setValue("NewValue");
+
+invoiceApi.modifyInvoiceCustomFields(invoiceId, 
+                                     customFieldModified, 
+                                     requestOptions);
 ```
 
 ```ruby
-invoice = KillBillClient::Model::Invoice.new
-invoice.invoice_id = "2c98cfa2-7929-4cc2-9397-1624fb72c6d5"
+custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
+custom_field.name = 'Test Modify'
+custom_field.value = 'test_modify_value'
 
-invoice.commit(user, 
-               reason, 
-               comment, 
-               options)
+invoice.modify_custom_field(custom_field,                                                                                            
+                            user, 
+                            reason,
+                            comment, 
+                            options)
 ```
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
+invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
+body = CustomField(custom_field_id=custom_field_id, 
+                   name='Test Custom Field', 
+                   value='test_value')
 
-invoiceApi.commit_invoice(invoice_id, 
-                          created_by, 
-                          api_key, 
-                          api_secret)
+invoiceApi.modify_invoice_custom_fields(invoice_id, 
+                                        [body], 
+                                        created_by, 
+                                        api_key, 
+                                        api_secret)
 ```
 
 > Example Response:
@@ -2283,13 +2985,98 @@ no content
 no content
 ```
 
+
 **Query Parameters**
 
-None. 
+None.
 
 **Returns**
 
 A `204` http status without content.
+
+## Remove custom fields from invoice
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields?customField=349de10f-4bb1-4e1a-93f6-11b745200bf5"	
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+UUID invoiceId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+invoiceApi.deleteInvoiceCustomFields(invoiceId, 
+                                     customFieldsId, 
+                                     requestOptions);
+```
+
+```ruby
+custom_field_id = custom_field.id
+
+invoice.remove_custom_field(custom_field_id,                                                                                            
+                            user, 
+                            reason,
+                            comment, 
+                            options)
+```
+
+```python
+invoiceApi = killbill.api.InvoiceApi()
+invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac' 
+
+invoiceApi.delete_invoice_custom_fields(invoice_id, 
+                                        created_by, 
+                                        api_key, 
+                                        api_secret)
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+
+```java
+no content
+```
+
+```ruby
+no content
+```
+
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **customField** | string | true | a list of custom field objects that you want to remove it |
+
+**Returns**
+
+A `204` http status without content.
+
+
 
 ## Add tags to invoice
 
@@ -2598,75 +3385,7 @@ no content
 
 A `204` http status without content.
 
-## Perform the action of voiding an invoice
 
-**HTTP Request** 
-
-`PUT http://example.com/1.0/kb/invoices/{invoiceId}/voidInvoice`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X PUT \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/invoices/18e9b3d9-9083-4725-9e8a-27d3a57c2e88/voidInvoice"	
-```
-
-```java
-import org.killbill.billing.client.api.gen.InvoiceApi;
-protected InvoiceApi invoiceApi;
-
-UUID invoiceId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
-
-invoiceApi.voidInvoice(invoiceId, requestOptions);
-```
-
-```ruby
-**TODO**
-```
-
-```python
-invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
-
-invoiceApi.void_invoice(invoice_id, 
-                        created_by, 
-                        api_key, 
-                        api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-None.
-
-**Response**
-
-A `204` http status without content.
 
 ## Upload the catalog translation for the tenant
 
@@ -2811,11 +3530,14 @@ None.
 
 A `200` http status without content.
 
-## Create external charge(s)
+
+
+
+## Upload the invoice translation for the tenant
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/charges/{accountId}`
+`POST http://example.com/1.0/kb/invoices/translation/{locale}`
 
 > Example Request:
 
@@ -2825,153 +3547,76 @@ curl -v \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
+    -H "Content-Type: text/plain" \
+    -H "Accept: text/plain" \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ { \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"description\": \"My charge\", \"amount\": 50, \"currency\": \"USD\" }]"	\
-    "http://localhost:8080/1.0/kb/invoices/charges/2ad52f53-85ae-408a-9879-32a7e59dd03d"
+    -d "sports-monthly = Voiture Sport"
+    "http://localhost:8080/1.0/kb/invoices/translation/fr_FR"
 ```
 
 ```java
-import org.killbill.billing.client.api.gen.InvoiceApi;
-protected InvoiceApi invoiceApi;
-
-UUID accountId = UUID.fromString("616789aa-4004-4681-b38c-b95871d534fc");
-
-InvoiceItem externalCharge = new InvoiceItem();
-externalCharge.setAccountId(accountId);
-externalCharge.setAmount(BigDecimal.TEN);
-externalCharge.setDescription("My charge");
-
-InvoiceItems externalCharges = new InvoiceItems();
-externalCharges.add(externalCharge);
-
-LocalDate requestedDate = clock.getUTCToday();
-Boolean payInvoice = false;
-Map<String, String> pluginProperty = null;
-Boolean autoCommit = true;
-
-List<InvoiceItem> createdExternalCharges = invoiceApi.createExternalCharges(accountId, 
-                                                                            externalCharges, 
-                                                                            requestedDate,
-                                                                            autoCommit
-                                                                            pluginProperty, 
-                                                                            requestOptions);
+TODO
 ```
 
 ```ruby
-invoice_item             = KillBillClient::Model::InvoiceItem.new()
-invoice_item.account_id  = "83e5e82d-fe72-4873-9b8b-946f4d250b0d"
-invoice_item.amount      = '50.0'
-invoice_item.currency    = 'USD'
-invoice_item.description = 'My charge'
-
-auto_commit = true
-
-invoice_item.create(auto_commit, 
-                    user, 
-                    reason, 
-                    comment, 
-                    options)
+invoice_translation = get_resource_as_string("InvoiceTranslation_fr_FR.properties")
+locale = "fr_FR"
+delete_if_exists = false
+KillBillClient::Model::Invoice.upload_invoice_translation(invoice_translation,
+                                                          locale,
+                                                          delete_if_exists, 
+                                                          options)
 ```
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-body = InvoiceItem(account_id=account_id,
-                   amount=50.0,
-                   currency='USD',
-                   description='My charge')
+locale = 'fr_FR'
+body = "sports-monthly = Voiture Sport"
 
-invoiceApi.create_external_charges(account_id,
-                                   [body],
-                                   created_by,
-                                   api_key,
-                                   api_secret,
-                                   auto_commit=True)
+invoiceApi.upload_invoice_translation(locale,
+                                      body,
+                                      created_by,
+                                      api_key,
+                                      api_secret)
 ```
 
 > Example Response:
 
 ```shell
+# Subset of headers returned when specifying -v curl option
 < HTTP/1.1 201 Created
-< Content-Type: application/json
+< Location: http://localhost:8080/1.0/kb/invoices/translation/fr_FR/
+< Content-Type: text/plain
 < Content-Length: 0
-
-[
-  {
-    "invoiceItemId": "3aaadeeb-5ffe-4226-a8b6-57723f1f8c12",
-    "invoiceId": "c6fe2246-62e2-450d-b9fc-a27003771535",
-    "linkedInvoiceItemId": null,
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "childAccountId": null,
-    "bundleId": null,
-    "subscriptionId": null,
-    "productName": null,
-    "planName": null,
-    "phaseName": null,
-    "usageName": null,
-    "prettyProductName": null,
-    "prettyPlanName": null,
-    "prettyPhaseName": null,
-    "prettyUsageName": null,
-    "itemType": "EXTERNAL_CHARGE",
-    "description": "My charge",
-    "startDate": "2018-07-20",
-    "endDate": null,
-    "amount": 50,
-    "rate": null,
-    "currency": "USD",
-    "quantity": null,
-    "itemDetails": null,
-    "childItems": null,
-    "auditLogs": []
-  }
-]
 ```
-```java
-class InvoiceItem {
-    org.killbill.billing.client.model.gen.InvoiceItem@a39beab1
-    invoiceItemId: 836d08c4-2bc8-485f-91c1-2dd81b18844e
-    invoiceId: 3006fe16-3641-47b6-804e-2719f8f40c87
-    linkedInvoiceItemId: 2781cefd-fc73-41d2-9823-f8f0d0b60e2b
-    accountId: 616789aa-4004-4681-b38c-b95871d534fc
-    childAccountId: null
-    bundleId: null
-    subscriptionId: null
-    productName: null
-    planName: null
-    phaseName: null
-    usageName: null
-    prettyProductName: null
-    prettyPlanName: null
-    prettyPhaseName: null
-    prettyUsageName: null
-    itemType: EXTERNAL_CHARGE
-    description: b1b7442b-cd1b-4bb7-9d30-6b50ea469202
-    startDate: 2012-09-25
-    endDate: 2012-10-05
-    amount: 10.00
-    rate: null
-    currency: USD
-    quantity: null
-    itemDetails: Item Details
-    childItems: null
-    auditLogs: []
-}
+```java 
+TODO
 ```
 ```ruby
-{
-   "invoiceItemId":"4661b7a9-f19f-431e-80ed-547932527fbe",
-   "invoiceId":"d27bca74-7e08-4eff-9479-51e8009fe3d0",
-   "accountId":"83e5e82d-fe72-4873-9b8b-946f4d250b0d",
-   "itemType":"EXTERNAL_CHARGE",
-   "description":"My charge",
-   "startDate":"2013-08-01",
-   "amount":50.0,
-   "currency":"USD"
-}
+invoiceTitle=FACTURE
+invoiceDate=Date:
+invoiceNumber=Facture #
+invoiceAmount=XXXMontant à payer
+invoiceAmountPaid=XXXMontant payé
+invoiceBalance=Nouveau montant
+
+accountOwnerName=Chauffeur
+
+companyName=Killbill, Inc.
+companyAddress=P.O. Box 1234
+companyCityProvincePostalCode=Springfield
+companyCountry=USA
+companyUrl=http://killbilling.org
+
+invoiceItemBundleName=Armes
+invoiceItemDescription=Description
+invoiceItemServicePeriod=Periode de facturation
+invoiceItemAmount=Montant
+
+processedPaymentCurrency=(*) Le payment à été payé en
+processedPaymentRate=Le taux de conversion est
 ```
 ```python
 no content
@@ -2980,254 +3625,95 @@ no content
 **Query Parameters**
 
 | Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **requestedDate** | string | false | requested date |
-| **autoCommit** | boolean | false | auto commit |
+| ---- | -----| -------- | ---- | ------------
+| **deleteIfExists** | boolean | false |  delete translation if exists |
 
 **Response**
 
-Returns a invoice object.
+A `201` http status without content.
 
-## Generate a dryRun invoice
+## Retrieves the invoice translation for the tenant
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/dryRun`
+`GET http://example.com/1.0/kb/invoices/translation/{locale}`
 
 > Example Request:
 
 ```shell
 curl -v \
-    -X POST \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    -d "{ \"dryRunType\": \"UPCOMING_INVOICE\"}" \
-    "http://localhost:8080/1.0/kb/invoices/dryRun?accountId=2ad52f53-85ae-408a-9879-32a7e59dd03d" 	
+    -H "Accept: text/plain" \
+    "http://localhost:8080/1.0/kb/invoices/translation/fr_FR"	
 ```
 
 ```java
-import org.killbill.billing.client.api.gen.InvoiceApi;
-protected InvoiceApi invoiceApi;
-
-DryRunType dryRunType = DryRunType.SUBSCRIPTION_ACTION;
-SubscriptionEventType dryRunAction = SubscriptionEventType.START_BILLING;
-PhaseType phaseType = null;
-String productName = "Assault-Rifle";
-ProductCategory productCategory = ProductCategory.BASE;
-BillingPeriod billingPeriod = BillingPeriod.ANNUAL;
-String priceListName = null;
-UUID subscriptionId = null;
-UUID bundleId = null;
-LocalDate effectiveDate = null;
-BillingActionPolicy billingPolicy = null;
-List<PhasePriceOverride> priceOverrides = null;
-
-InvoiceDryRun dryRunArg = new InvoiceDryRun(dryRunType, 
-                                            dryRunAction,
-                                            phaseType, 
-                                            productName, 
-                                            productCategory, 
-                                            billingPeriod, 
-                                            priceListName, 
-                                            subscriptionId, 
-                                            bundleId, 
-                                            effectiveDate, 
-                                            billingPolicy,
-                                            priceOverrides);
-
-
-UUID accountId = UUID.fromString("fe1a6f86-9ec5-4ac3-8d39-15f024cc8339");
-LocalDate targetDate = today.plus(1, ChronoUnit.DAYS);
-
-Invoice dryRunInvoice = invoiceApi.generateDryRunInvoice(dryRunArg, 
-                                                         accountId, 
-                                                         targetDate, 
-                                                         requestOptions);
+TODO
 ```
 
 ```ruby
-#
-# This case is when you create a dry-run invoice with UPCOMING_INVOICE, 
-# to see what is the next invoice that the system will generate for this account 
-# 
-account_id = "5527abbc-d83d-447f-bf3d-ab9542ea631e"
-target_date = nil
-upcoming_invoice_target_date = true
-
-KillBillClient::Model::Invoice.trigger_invoice_dry_run(account_id, 
-                                                       target_date, 
-                                                       upcoming_invoice_target_date, 
+locale = "fr_FR"
+KillBillClient::Model::Invoice.get_invoice_translation(locale,
                                                        options)
 ```
 
 ```python
-#
-# This case is when you create a dry-run invoice with UPCOMING_INVOICE, 
-# to see what is the next invoice that the system will generate for this account 
-# 
 invoiceApi = killbill.api.InvoiceApi()
-body = InvoiceDryRun(dry_run_type='UPCOMING_INVOICE')
-account_id = '00e87495-92dc-4640-8490-e2c794748151'
+locale = 'fr_FR'
 
-invoiceApi.generate_dry_run_invoice(body,
-                                    account_id,
-                                    created_by,
-                                    api_key,
-                                    api_secret)
+invoiceApi.get_invoice_translation(locale, api_key, api_secret)
 ```
 
 > Example Response:
 
 ```shell
 # Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Content-Type: application/json
-< Content-Length: 0
+< HTTP/1.1 200 OK
+< Content-Type: text/plain
+
+sports-monthly = Voiture Sport
 ```
-```java
-class Invoice {
-    org.killbill.billing.client.model.gen.Invoice@2e7ac6ec
-    amount: 0.00
-    currency: USD
-    status: COMMITTED
-    creditAdj: 0.00
-    refundAdj: 0.00
-    invoiceId: ef25cb16-08ef-4945-a875-c6ffa3c1fd77
-    invoiceDate: 2012-04-25
-    targetDate: 2012-04-25
-    invoiceNumber: null
-    balance: 0.00
-    accountId: fe1a6f86-9ec5-4ac3-8d39-15f024cc8339
-    bundleKeys: null
-    credits: null
-    items: [class InvoiceItem {
-        org.killbill.billing.client.model.gen.InvoiceItem@8be409a8
-        invoiceItemId: 514a2e5c-b3d4-4d67-8825-f56968b84493
-        invoiceId: ef25cb16-08ef-4945-a875-c6ffa3c1fd77
-        linkedInvoiceItemId: null
-        accountId: fe1a6f86-9ec5-4ac3-8d39-15f024cc8339
-        childAccountId: null
-        bundleId: ca41fb1a-e8ff-4adc-a481-96510d9726b0
-        subscriptionId: 3e8f647c-2e8c-4256-9afd-86dd640486d8
-        productName: Assault-Rifle
-        planName: assault-rifle-annual
-        phaseName: assault-rifle-annual-trial
-        usageName: null
-        prettyProductName: null
-        prettyPlanName: null
-        prettyPhaseName: null
-        prettyUsageName: null
-        itemType: FIXED
-        description: assault-rifle-annual-trial
-        startDate: 2012-04-25
-        endDate: null
-        amount: 0.00
-        rate: null
-        currency: USD
-        quantity: null
-        itemDetails: null
-        childItems: null
-        auditLogs: []
-    }]
-    isParentInvoice: false
-    parentInvoiceId: null
-    parentAccountId: null
-    auditLogs: []
-}
+```java 
+TODO
 ```
 ```ruby
-{
-   "amount":500.0,
-   "currency":"USD",
-   "status":"COMMITTED",
-   "creditAdj":0.0,
-   "refundAdj":0.0,
-   "invoiceId":"8c62095e-898d-444e-a05b-a498f8bd9d1b",
-   "invoiceDate":"2013-08-01",
-   "targetDate":"2013-08-31",
-   "balance":500.0,
-   "accountId":"5527abbc-d83d-447f-bf3d-ab9542ea631e",
-   "items":[
-      {
-         "invoiceItemId":"a45f76a2-7775-4053-bd7c-50a7542e52d3",
-         "invoiceId":"8c62095e-898d-444e-a05b-a498f8bd9d1b",
-         "accountId":"5527abbc-d83d-447f-bf3d-ab9542ea631e",
-         "bundleId":"8e26532b-e5c0-4d4a-b2f0-2eeec8668ada",
-         "subscriptionId":"466e26d9-6e44-4afb-9c2f-2b93a4f52329",
-         "planName":"sports-monthly",
-         "phaseName":"sports-monthly-evergreen",
-         "itemType":"RECURRING",
-         "description":"sports-monthly-evergreen",
-         "startDate":"2013-08-31",
-         "endDate":"2013-09-30",
-         "amount":500.0,
-         "currency":"USD"
-      }
-   ],
-   "isParentInvoice":false
-}
+invoiceTitle=FACTURE
+invoiceDate=Date:
+invoiceNumber=Facture #
+invoiceAmount=XXXMontant à payer
+invoiceAmountPaid=XXXMontant payé
+invoiceBalance=Nouveau montant
+
+accountOwnerName=Chauffeur
+
+companyName=Killbill, Inc.
+companyAddress=P.O. Box 1234
+companyCityProvincePostalCode=Springfield
+companyCountry=USA
+companyUrl=http://killbilling.org
+
+invoiceItemBundleName=Armes
+invoiceItemDescription=Description
+invoiceItemServicePeriod=Periode de facturation
+invoiceItemAmount=Montant
+
+processedPaymentCurrency=(*) Le payment à été payé en
+processedPaymentRate=Le taux de conversion est
 ```
 ```python
-{'account_id': '00e87495-92dc-4640-8490-e2c794748151',
- 'amount': 100.0,
- 'audit_logs': [],
- 'balance': 100.0,
- 'bundle_keys': None,
- 'credit_adj': 0.0,
- 'credits': None,
- 'currency': 'USD',
- 'invoice_date': datetime.date(2018, 5, 10),
- 'invoice_id': 'a1c2ab02-d5d8-450d-bb7c-e8f169018570',
- 'invoice_number': None,
- 'is_parent_invoice': False,
- 'items': [{'account_id': '00e87495-92dc-4640-8490-e2c794748151',
-            'amount': 100.0,
-            'audit_logs': [],
-            'bundle_id': '3c02be83-3c2d-4f5a-827e-edfe85266d54',
-            'child_account_id': None,
-            'child_items': None,
-            'currency': 'USD',
-            'description': 'standard-monthly-evergreen',
-            'end_date': datetime.date(2018, 8, 9),
-            'invoice_id': 'a1c2ab02-d5d8-450d-bb7c-e8f169018570',
-            'invoice_item_id': 'fe1ec859-dbb9-4851-a030-709a32672bca',
-            'item_details': None,
-            'item_type': 'RECURRING',
-            'linked_invoice_item_id': None,
-            'phase_name': 'standard-monthly-evergreen',
-            'plan_name': 'standard-monthly',
-            'pretty_phase_name': None,
-            'pretty_plan_name': None,
-            'pretty_usage_name': None,
-            'quantity': None,
-            'rate': 100.0,
-            'start_date': datetime.date(2018, 7, 9),
-            'subscription_id': '99e4caa5-d5da-4243-8c91-a38c5cd29632',
-            'usage_name': None}],
- 'parent_account_id': None,
- 'parent_invoice_id': None,
- 'refund_adj': 0.0,
- 'status': 'COMMITTED',
- 'target_date': datetime.date(2018, 7, 9)}
+sports-monthly = Voiture Sport
 ```
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **accountId** | string | true | account id |
-| **targetDate** | string | true | target date |
-
+None. 
 
 **Response**
 
-Returns a invoice object.
+A `200` http status without content.
+
 
 ## Upload the manualPay invoice template for the tenant
 
@@ -3835,783 +4321,6 @@ None.
 
 Returns a invoice template.
 
-## Create a migration invoice
-
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/invoices/migration/{accountId}`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X POST \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    -d "[ { \"invoiceItemId\": \"f38505c9-d673-4f0b-b7d4-9125cac2a567\", \"invoiceId\": \"f38505c9-d673-4f0b-b7d4-9125cac2a567\", \"linkedInvoiceItemId\": \"f38505c9-d673-4f0b-b7d4-9125cac2a567\", \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"itemType\": \"EXTERNAL_CHARGE\", \"amount\": 10, \"rate\": 0, \"currency\": \"USD\" }]" \
-    "http://localhost:8080/1.0/kb/invoices/migration/2ad52f53-85ae-408a-9879-32a7e59dd03d"	
-```
-
-```java
-import org.killbill.billing.client.api.gen.InvoiceApi;
-protected InvoiceApi invoiceApi;
-
-UUID accountId = UUID.fromString("fe1a6f86-9ec5-4ac3-8d39-15f024cc8339");
-
-BigDecimal chargeAmount = BigDecimal.TEN;
-InvoiceItem externalCharge = new InvoiceItem();
-externalCharge.setStartDate(new LocalDate());
-externalCharge.setAccountId(accountId);
-externalCharge.setAmount(chargeAmount);
-externalCharge.setItemType(InvoiceItemType.EXTERNAL_CHARGE);
-externalCharge.setCurrency(Currency.USD);
-InvoiceItems inputInvoice = new InvoiceItems();
-inputInvoice.add(externalCharge);
-
-LocalDate targetDate = null;
-
-Invoice migrationInvoice = invoiceApi.createMigrationInvoice(accountId, 
-                                                             inputInvoice, 
-                                                             targetDate,
-                                                             requestOptions);
-```
-
-```ruby
-account_id = "be19b229-c076-47aa-aa4d-f53bec505dc7"
-invoices = "external_invoice_list"
-target_date = "2018-03-15"
-KillBillClient::Model::Invoice.create_migration_invoice(account_id, 
-                                                        invoices, 
-                                                        target_date, 
-                                                        user, 
-                                                        reason, 
-                                                        comment, 
-                                                        options)
-```
-
-```python
-invoiceApi = killbill.api.InvoiceApi()
-body = 'external_invoice_list'
-target_date = datetime.date(2018, 6, 11)
-
-invoiceApi.create_migration_invoice(account_id,
-                                    [body],
-                                    created_by,
-                                    api_key,
-                                    api_secret,
-                                    target_date)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://localhost:8080/1.0/kb/invoices/71742c60-273f-4c91-8b8c-7555a3554b0a/ 
-< Content-Type: application/json
-< Content-Length: 0
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **accountId** | string | true | account id |
-| **targetDate** | string | true | target date |
-
-
-**Response**
-
-A `201` http status without content.
-
-## List invoices
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/invoices/pagination`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/invoices/pagination"	
-```
-
-```java
-import org.killbill.billing.client.api.gen.InvoiceApi;
-protected InvoiceApi invoiceApi;
-
-Long offset = 0L;
-Long limit = 1L;
-Boolean withItems = false; // Will not fetch invoice items
-
-Invoices result = invoiceApi.getInvoices(offset, 
-                                         limit, 
-                                         withItems, 
-                                         AuditLevel.NONE, 
-                                         requestOptions);
-```
-
-```ruby
-offset = 0
-limit = 100
-
-invoice.find_in_batches(offset,
-                        limit,
-                        options)
-```
-
-```python
-invoiceApi = killbill.api.InvoiceApi()
-
-invoiceApi.get_invoices(api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  {
-    "amount": 0,
-    "currency": "USD",
-    "status": "COMMITTED",
-    "creditAdj": 0,
-    "refundAdj": 0,
-    "invoiceId": "404a98a8-4dd8-4737-a39f-be871e916a8c",
-    "invoiceDate": "2018-07-19",
-    "targetDate": "2018-07-19",
-    "invoiceNumber": "309",
-    "balance": 0,
-    "accountId": "8785164f-b5d7-4da1-9495-33f5105e8d80",
-    "bundleKeys": null,
-    "credits": null,
-    "items": [],
-    "isParentInvoice": false,
-    "parentInvoiceId": null,
-    "parentAccountId": null,
-    "auditLogs": []
-  },
-  {
-    "amount": 0,
-    "currency": "USD",
-    "status": "COMMITTED",
-    "creditAdj": 0,
-    "refundAdj": 0,
-    "invoiceId": "903e55d3-8072-47f1-80fc-32857dbdbcc5",
-    "invoiceDate": "2018-07-20",
-    "targetDate": "2018-07-20",
-    "invoiceNumber": "310",
-    "balance": 0,
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "bundleKeys": null,
-    "credits": null,
-    "items": [],
-    "isParentInvoice": false,
-    "parentInvoiceId": null,
-    "parentAccountId": null,
-    "auditLogs": []
-  },
-  {
-    "amount": 0,
-    "currency": "USD",
-    "status": "VOID",
-    "creditAdj": 0,
-    "refundAdj": 0,
-    "invoiceId": "18e9b3d9-9083-4725-9e8a-27d3a57c2e88",
-    "invoiceDate": "2018-07-20",
-    "targetDate": "2018-07-20",
-    "invoiceNumber": "311",
-    "balance": 0,
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "bundleKeys": null,
-    "credits": null,
-    "items": [],
-    "isParentInvoice": false,
-    "parentInvoiceId": null,
-    "parentAccountId": null,
-    "auditLogs": []
-  },
-  {
-    "amount": 0,
-    "currency": "USD",
-    "status": "DRAFT",
-    "creditAdj": 0,
-    "refundAdj": 0,
-    "invoiceId": "c6fe2246-62e2-450d-b9fc-a27003771535",
-    "invoiceDate": "2018-07-20",
-    "targetDate": "2018-07-20",
-    "invoiceNumber": "312",
-    "balance": 0,
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "bundleKeys": null,
-    "credits": null,
-    "items": [],
-    "isParentInvoice": false,
-    "parentInvoiceId": null,
-    "parentAccountId": null,
-    "auditLogs": []
-  },
-  {
-    "amount": 0,
-    "currency": "USD",
-    "status": "DRAFT",
-    "creditAdj": 0,
-    "refundAdj": 0,
-    "invoiceId": "d6c7b6b9-f048-4266-bde6-4c381e69f432",
-    "invoiceDate": "2018-07-20",
-    "targetDate": "2018-07-20",
-    "invoiceNumber": "313",
-    "balance": 0,
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "bundleKeys": null,
-    "credits": null,
-    "items": [],
-    "isParentInvoice": false,
-    "parentInvoiceId": null,
-    "parentAccountId": null,
-    "auditLogs": []
-  },
-  {
-    "amount": 0,
-    "currency": "USD",
-    "status": "COMMITTED",
-    "creditAdj": 0,
-    "refundAdj": 0,
-    "invoiceId": "71742c60-273f-4c91-8b8c-7555a3554b0a",
-    "invoiceDate": "2018-07-20",
-    "targetDate": "2018-07-20",
-    "invoiceNumber": "314",
-    "balance": 0,
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "bundleKeys": null,
-    "credits": null,
-    "items": [],
-    "isParentInvoice": false,
-    "parentInvoiceId": null,
-    "parentAccountId": null,
-    "auditLogs": []
-  },
-  {
-    "amount": 0,
-    "currency": "USD",
-    "status": "COMMITTED",
-    "creditAdj": 0,
-    "refundAdj": 0,
-    "invoiceId": "e8032d7d-4354-46f7-82fa-8e635cc61fc5",
-    "invoiceDate": "2018-07-20",
-    "targetDate": "2018-07-20",
-    "invoiceNumber": "315",
-    "balance": 0,
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "bundleKeys": null,
-    "credits": null,
-    "items": [],
-    "isParentInvoice": false,
-    "parentInvoiceId": null,
-    "parentAccountId": null,
-    "auditLogs": []
-  }
-]
-```
-```java
-//First element of the list
-class Invoice {
-    org.killbill.billing.client.model.gen.Invoice@30849f9
-    amount: 0.00
-    currency: USD
-    status: COMMITTED
-    creditAdj: 0.00
-    refundAdj: 0.00
-    invoiceId: 1a49101b-305e-4b4d-8403-7377596407b6
-    invoiceDate: 2012-08-25
-    targetDate: 2012-08-25
-    invoiceNumber: 1
-    balance: 0.00
-    accountId: 715c9695-4730-4fd7-80db-d5e38dfc9aa0
-    bundleKeys: null
-    credits: null
-    items: []
-    isParentInvoice: false
-    parentInvoiceId: null
-    parentAccountId: null
-    auditLogs: []
-}
-```
-```ruby
-[
-    {
-       "amount":7.0,
-       "currency":"USD",
-       "status":"COMMITTED",
-       "creditAdj":0.0,
-       "refundAdj":0.0,
-       "invoiceId":"31db9f9a-91ff-49f4-b5a1-5e4fce59a197",
-       "invoiceDate":"2013-08-01",
-       "targetDate":"2013-08-01",
-       "invoiceNumber":"1913",
-       "balance":0.0,
-       "accountId":"be19b229-c076-47aa-aa4d-f53bec505dc7",
-       "items":[
-          {
-             "invoiceItemId":"f641ce8a-a874-4e98-ada5-2bd8fdb74945",
-             "invoiceId":"31db9f9a-91ff-49f4-b5a1-5e4fce59a197",
-             "accountId":"be19b229-c076-47aa-aa4d-f53bec505dc7",
-             "itemType":"EXTERNAL_CHARGE",
-             "description":"My first charge",
-             "startDate":"2013-08-01",
-             "amount":7.0,
-             "currency":"USD",
-             "auditLogs":[]
-          }
-       ],
-       "isParentInvoice":false,
-       "auditLogs":[]
-    }
-]
-```
-```python
-[{'account_id': '40d6c91b-13f4-4689-8acc-b3455ab956ac',
- 'amount': 0.0,
- 'audit_logs': [],
- 'balance': 0.0,
- 'bundle_keys': None,
- 'credit_adj': 0.0,
- 'credits': None,
- 'currency': 'USD',
- 'invoice_date': datetime.date(2018, 5, 10),
- 'invoice_id': '14f2bbf3-bd2d-4e32-86eb-b9d32ce4be74',
- 'invoice_number': '1015',
- 'is_parent_invoice': False,
- 'items': [],
- 'parent_account_id': None,
- 'parent_invoice_id': None,
- 'refund_adj': 0.0,
- 'status': 'COMMITTED',
- 'target_date': datetime.date(2018, 5, 10)}, {'account_id': '7f6894df-d1d6-499b-8cd0-a09da4d3beaf',
- 'amount': 0.0,
- 'audit_logs': [],
- 'balance': 0.0,
- 'bundle_keys': None,
- 'credit_adj': 0.0,
- 'credits': None,
- 'currency': 'USD',
- 'invoice_date': datetime.date(2018, 5, 10),
- 'invoice_id': 'cd98fb3b-25a4-4e1c-8426-0c1080531ad9',
- 'invoice_number': '1016',
- 'is_parent_invoice': False,
- 'items': [],
- 'parent_account_id': None,
- 'parent_invoice_id': None,
- 'refund_adj': 0.0,
- 'status': 'COMMITTED',
- 'target_date': datetime.date(2018, 5, 10)}]
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **offset** | long | true | offset |
-| **limit** | long | true | limit search items |
-| **withItems** | boolean | false | choose true if you want to include items |
-| **audit** | enum | false | level of audit logs returned |
-
-**Returns**
-
-Returns a list with all invoices.
-
-## Search invoices
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/invoices/search/{searchKey}`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/invoices/search/404a98a8-4dd8-4737-a39f-be871e916a8c"	
-```
-
-```java
-import org.killbill.billing.client.api.gen.InvoiceApi;
-protected InvoiceApi invoiceApi;
-
-String searchKey = "1a49101b-305e-4b4d-8403-7377596407b6";
-
-Long offset = 0L;
-Long limit = 1L;
-Boolean withItems = false; // Will not fetch invoice items
-
-invoiceApi.searchInvoices(searchKey, 
-                          offset,
-                          limit, 
-                          withItems,
-                          requestOptions);
-```
-
-```ruby
-search_key = 'COMMITTED'
-offset = 0
-limit = 100
-
-invoice.find_in_batches_by_search_key(search_key,
-                                      offset,
-                                      limit,
-                                      options)
-```
-
-```python
-invoiceApi = killbill.api.InvoiceApi()
-search_key = 'USD'
-
-invoiceApi.search_invoices(search_key, api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  {
-    "amount": 0,
-    "currency": "USD",
-    "status": "COMMITTED",
-    "creditAdj": 0,
-    "refundAdj": 0,
-    "invoiceId": "404a98a8-4dd8-4737-a39f-be871e916a8c",
-    "invoiceDate": "2018-07-19",
-    "targetDate": "2018-07-19",
-    "invoiceNumber": "309",
-    "balance": 0,
-    "accountId": "8785164f-b5d7-4da1-9495-33f5105e8d80",
-    "bundleKeys": null,
-    "credits": null,
-    "items": [],
-    "isParentInvoice": false,
-    "parentInvoiceId": null,
-    "parentAccountId": null,
-    "auditLogs": []
-  }
-]
-```
-```java
-//First element of the list
-class Invoice {
-    org.killbill.billing.client.model.gen.Invoice@30849f9
-    amount: 0.00
-    currency: USD
-    status: COMMITTED
-    creditAdj: 0.00
-    refundAdj: 0.00
-    invoiceId: 1a49101b-305e-4b4d-8403-7377596407b6
-    invoiceDate: 2012-08-25
-    targetDate: 2012-08-25
-    invoiceNumber: 1
-    balance: 0.00
-    accountId: 715c9695-4730-4fd7-80db-d5e38dfc9aa0
-    bundleKeys: null
-    credits: null
-    items: []
-    isParentInvoice: false
-    parentInvoiceId: null
-    parentAccountId: null
-    auditLogs: []
-}
-```
-```ruby
-[
-    {
-       "amount":7.0,
-       "currency":"USD",
-       "status":"COMMITTED",
-       "creditAdj":0.0,
-       "refundAdj":0.0,
-       "invoiceId":"31db9f9a-91ff-49f4-b5a1-5e4fce59a197",
-       "invoiceDate":"2013-08-01",
-       "targetDate":"2013-08-01",
-       "invoiceNumber":"1913",
-       "balance":0.0,
-       "accountId":"be19b229-c076-47aa-aa4d-f53bec505dc7",
-       "items":[
-          {
-             "invoiceItemId":"f641ce8a-a874-4e98-ada5-2bd8fdb74945",
-             "invoiceId":"31db9f9a-91ff-49f4-b5a1-5e4fce59a197",
-             "accountId":"be19b229-c076-47aa-aa4d-f53bec505dc7",
-             "itemType":"EXTERNAL_CHARGE",
-             "description":"My first charge",
-             "startDate":"2013-08-01",
-             "amount":7.0,
-             "currency":"USD",
-             "auditLogs":[]
-          }
-       ],
-       "isParentInvoice":false,
-       "auditLogs":[]
-    }
-]
-```
-```python
-[{'account_id': '554f89d7-c9bd-4e48-a28d-5d2d88f0ea19',
- 'amount': 0.0,
- 'audit_logs': [],
- 'balance': 0.0,
- 'bundle_keys': None,
- 'credit_adj': 0.0,
- 'credits': None,
- 'currency': 'USD',
- 'invoice_date': datetime.date(2018, 5, 10),
- 'invoice_id': '5ffe67ba-322a-407c-8051-0a5839774a1c',
- 'invoice_number': '1017',
- 'is_parent_invoice': False,
- 'items': [],
- 'parent_account_id': None,
- 'parent_invoice_id': None,
- 'refund_adj': 0.0,
- 'status': 'COMMITTED',
- 'target_date': datetime.date(2018, 5, 10)}, {'account_id': '58e8ffe1-d01e-4716-bf46-c76b881b6574',
- 'amount': 0.0,
- 'audit_logs': [],
- 'balance': 0.0,
- 'bundle_keys': None,
- 'credit_adj': 0.0,
- 'credits': None,
- 'currency': 'USD',
- 'invoice_date': datetime.date(2018, 5, 10),
- 'invoice_id': '4a836b76-447c-4d5c-9dc7-96f1c9b0cf9c',
- 'invoice_number': '1018',
- 'is_parent_invoice': False,
- 'items': [],
- 'parent_account_id': None,
- 'parent_invoice_id': None,
- 'refund_adj': 0.0,
- 'status': 'COMMITTED',
- 'target_date': datetime.date(2018, 5, 10)}]
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **offset** | long | true | offset |
-| **limit** | long | true | limit search items |
-| **withItems** | boolean | false | choose true if you want to include items |
-| **audit** | enum | false | level of audit logs returned |
-
-**Returns**
-
-Return a list with invoices matched with the search key entered.
-
-## Create tax items
-
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/invoices/taxes/{accountId}`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X POST \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    -d "[ { \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"amount\": 50, \"currency\": \"USD\" }]" \
-    "http://localhost:8080/1.0/kb/invoices/taxes/2ad52f53-85ae-408a-9879-32a7e59dd03d"
-```
-
-```java
-import org.killbill.billing.client.api.gen.InvoiceApi;
-protected InvoiceApi invoiceApi;
-
-UUID accountId = UUID.fromString("eb36c64c-b575-4538-b26f-a89c473984da");
-UID bundleId = UUID.fromString("28723cec-5510-49be-9e87-3a36d246f25e");
-
-InvoiceItem taxItem = new InvoiceItem();
-taxItem.setAccountId(accountId);
-taxItem.setAmount(BigDecimal.TEN);
-taxItem.setCurrency(Currency.USD);
-taxItem.setBundleId(bundleId);
-final InvoiceItems input = new InvoiceItems();
-input.add(taxItem);
-
-Boolean autoCommit = true;
-LocalDate requestedDate = clock.getUTCToday();
-Map<String, String> pluginProperty = null;
-
-List<InvoiceItem> createdExternalCharges = invoiceApi.createTaxItems(accountId, 
-                                                                     input,
-                                                                     autoCommit,
-                                                                     requestedDate,
-                                                                     pluginProperty,
-                                                                     requestOptions);
-```
-
-```ruby
-invoice_item             = KillBillClient::Model::InvoiceItem.new()
-invoice_item.account_id  = "29ef0d50-90d1-4163-bb46-ef1b82675ae6"
-invoice_item.amount      = '50.0'
-invoice_item.currency    = 'USD'
-invoice_item.description = 'My charge'
-
-auto_commit = true
-
-invoice_item.create_tax_items(auto_commit, 
-                              user, 
-                              reason, 
-                              comment, 
-                              options)
-```
-
-```python
-invoiceApi = killbill.api.InvoiceApi()
-body = InvoiceItem(account_id=account_id,
-                   amount=50.0,
-                   currency='USD',
-                   description='My charge')
-
-invoiceApi.create_tax_items(account_id,
-                            [body],
-                            created_by,
-                            api_key,
-                            api_secret,
-                            auto_commit=True)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Content-Type: application/json
-< Content-Length: 0
-
-[
-  {
-    "invoiceItemId": "e91e8d48-d8de-4931-9758-6cfff86cb2f4",
-    "invoiceId": "434dd357-099d-45f8-9b48-79dcd20c61ce",
-    "linkedInvoiceItemId": null,
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "childAccountId": null,
-    "bundleId": null,
-    "subscriptionId": null,
-    "productName": null,
-    "planName": null,
-    "phaseName": null,
-    "usageName": null,
-    "prettyProductName": null,
-    "prettyPlanName": null,
-    "prettyPhaseName": null,
-    "prettyUsageName": null,
-    "itemType": "TAX",
-    "description": "Tax",
-    "startDate": "2018-07-20",
-    "endDate": null,
-    "amount": 50,
-    "rate": null,
-    "currency": "USD",
-    "quantity": null,
-    "itemDetails": null,
-    "childItems": null,
-    "auditLogs": []
-  }
-]
-```
-```java
-class InvoiceItem {
-    org.killbill.billing.client.model.gen.InvoiceItem@bedd818e
-    invoiceItemId: 04ebfae8-7898-4c1b-b10e-6fad862e7077
-    invoiceId: 000108b4-d0e3-452f-8537-13f6669f8767
-    linkedInvoiceItemId: null
-    accountId: eb36c64c-b575-4538-b26f-a89c473984da
-    childAccountId: null
-    bundleId: 28723cec-5510-49be-9e87-3a36d246f25e
-    subscriptionId: null
-    productName: null
-    planName: null
-    phaseName: null
-    usageName: null
-    prettyProductName: null
-    prettyPlanName: null
-    prettyPhaseName: null
-    prettyUsageName: null
-    itemType: TAX
-    description: Tax
-    startDate: 2012-09-25
-    endDate: null
-    amount: 10.00
-    rate: null
-    currency: USD
-    quantity: null
-    itemDetails: null
-    childItems: null
-    auditLogs: []
-}
-```
-```ruby
-{
-   "invoiceItemId":"20d3bdc8-48c1-48f5-9d9f-5cf0d273dff6",
-   "invoiceId":"40655121-ac13-4fe4-af49-02ba668ff4bb",
-   "accountId":"29ef0d50-90d1-4163-bb46-ef1b82675ae6",
-   "itemType":"TAX",
-   "description":"My charge",
-   "startDate":"2013-08-01",
-   "amount":50.0,
-   "currency":"USD",
-   "auditLogs":[]
-}
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **requestedDate** | string | false | requested date |
-| **autoCommit** | boolean | false | auto commit |
-
-
-**Response**
-
-Returns a invoice object.
-
 ## Upload the invoice template for the tenant
 
 **HTTP Request** 
@@ -5218,110 +4927,13 @@ None.
 
 Returns a invoice template.
 
-## Upload the invoice translation for the tenant
+
+
+## List invoices
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/translation/{locale}`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X POST \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: text/plain" \
-    -H "Accept: text/plain" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    -d "sports-monthly = Voiture Sport"
-    "http://localhost:8080/1.0/kb/invoices/translation/fr_FR"
-```
-
-```java
-TODO
-```
-
-```ruby
-invoice_translation = get_resource_as_string("InvoiceTranslation_fr_FR.properties")
-locale = "fr_FR"
-delete_if_exists = false
-KillBillClient::Model::Invoice.upload_invoice_translation(invoice_translation,
-                                                          locale,
-                                                          delete_if_exists, 
-                                                          options)
-```
-
-```python
-invoiceApi = killbill.api.InvoiceApi()
-locale = 'fr_FR'
-body = "sports-monthly = Voiture Sport"
-
-invoiceApi.upload_invoice_translation(locale,
-                                      body,
-                                      created_by,
-                                      api_key,
-                                      api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://localhost:8080/1.0/kb/invoices/translation/fr_FR/
-< Content-Type: text/plain
-< Content-Length: 0
-```
-```java 
-TODO
-```
-```ruby
-invoiceTitle=FACTURE
-invoiceDate=Date:
-invoiceNumber=Facture #
-invoiceAmount=XXXMontant à payer
-invoiceAmountPaid=XXXMontant payé
-invoiceBalance=Nouveau montant
-
-accountOwnerName=Chauffeur
-
-companyName=Killbill, Inc.
-companyAddress=P.O. Box 1234
-companyCityProvincePostalCode=Springfield
-companyCountry=USA
-companyUrl=http://killbilling.org
-
-invoiceItemBundleName=Armes
-invoiceItemDescription=Description
-invoiceItemServicePeriod=Periode de facturation
-invoiceItemAmount=Montant
-
-processedPaymentCurrency=(*) Le payment à été payé en
-processedPaymentRate=Le taux de conversion est
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **deleteIfExists** | boolean | false |  delete translation if exists |
-
-**Response**
-
-A `201` http status without content.
-
-## Retrieves the invoice translation for the tenant
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/invoices/translation/{locale}`
+`GET http://example.com/1.0/kb/invoices/pagination`
 
 > Example Request:
 
@@ -5330,25 +4942,38 @@ curl -v \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: text/plain" \
-    "http://localhost:8080/1.0/kb/invoices/translation/fr_FR"	
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/invoices/pagination"	
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+Long offset = 0L;
+Long limit = 1L;
+Boolean withItems = false; // Will not fetch invoice items
+
+Invoices result = invoiceApi.getInvoices(offset, 
+                                         limit, 
+                                         withItems, 
+                                         AuditLevel.NONE, 
+                                         requestOptions);
 ```
 
 ```ruby
-locale = "fr_FR"
-KillBillClient::Model::Invoice.get_invoice_translation(locale,
-                                                       options)
+offset = 0
+limit = 100
+
+invoice.find_in_batches(offset,
+                        limit,
+                        options)
 ```
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-locale = 'fr_FR'
 
-invoiceApi.get_invoice_translation(locale, api_key, api_secret)
+invoiceApi.get_invoices(api_key, api_secret)
 ```
 
 > Example Response:
@@ -5356,45 +4981,445 @@ invoiceApi.get_invoice_translation(locale, api_key, api_secret)
 ```shell
 # Subset of headers returned when specifying -v curl option
 < HTTP/1.1 200 OK
-< Content-Type: text/plain
+< Content-Type: application/json
 
-sports-monthly = Voiture Sport
+[
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "COMMITTED",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "404a98a8-4dd8-4737-a39f-be871e916a8c",
+    "invoiceDate": "2018-07-19",
+    "targetDate": "2018-07-19",
+    "invoiceNumber": "309",
+    "balance": 0,
+    "accountId": "8785164f-b5d7-4da1-9495-33f5105e8d80",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  },
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "COMMITTED",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "903e55d3-8072-47f1-80fc-32857dbdbcc5",
+    "invoiceDate": "2018-07-20",
+    "targetDate": "2018-07-20",
+    "invoiceNumber": "310",
+    "balance": 0,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  },
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "VOID",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "18e9b3d9-9083-4725-9e8a-27d3a57c2e88",
+    "invoiceDate": "2018-07-20",
+    "targetDate": "2018-07-20",
+    "invoiceNumber": "311",
+    "balance": 0,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  },
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "DRAFT",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "c6fe2246-62e2-450d-b9fc-a27003771535",
+    "invoiceDate": "2018-07-20",
+    "targetDate": "2018-07-20",
+    "invoiceNumber": "312",
+    "balance": 0,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  },
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "DRAFT",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "d6c7b6b9-f048-4266-bde6-4c381e69f432",
+    "invoiceDate": "2018-07-20",
+    "targetDate": "2018-07-20",
+    "invoiceNumber": "313",
+    "balance": 0,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  },
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "COMMITTED",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "71742c60-273f-4c91-8b8c-7555a3554b0a",
+    "invoiceDate": "2018-07-20",
+    "targetDate": "2018-07-20",
+    "invoiceNumber": "314",
+    "balance": 0,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  },
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "COMMITTED",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "e8032d7d-4354-46f7-82fa-8e635cc61fc5",
+    "invoiceDate": "2018-07-20",
+    "targetDate": "2018-07-20",
+    "invoiceNumber": "315",
+    "balance": 0,
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  }
+]
 ```
-```java 
-TODO
+```java
+//First element of the list
+class Invoice {
+    org.killbill.billing.client.model.gen.Invoice@30849f9
+    amount: 0.00
+    currency: USD
+    status: COMMITTED
+    creditAdj: 0.00
+    refundAdj: 0.00
+    invoiceId: 1a49101b-305e-4b4d-8403-7377596407b6
+    invoiceDate: 2012-08-25
+    targetDate: 2012-08-25
+    invoiceNumber: 1
+    balance: 0.00
+    accountId: 715c9695-4730-4fd7-80db-d5e38dfc9aa0
+    bundleKeys: null
+    credits: null
+    items: []
+    isParentInvoice: false
+    parentInvoiceId: null
+    parentAccountId: null
+    auditLogs: []
+}
 ```
 ```ruby
-invoiceTitle=FACTURE
-invoiceDate=Date:
-invoiceNumber=Facture #
-invoiceAmount=XXXMontant à payer
-invoiceAmountPaid=XXXMontant payé
-invoiceBalance=Nouveau montant
-
-accountOwnerName=Chauffeur
-
-companyName=Killbill, Inc.
-companyAddress=P.O. Box 1234
-companyCityProvincePostalCode=Springfield
-companyCountry=USA
-companyUrl=http://killbilling.org
-
-invoiceItemBundleName=Armes
-invoiceItemDescription=Description
-invoiceItemServicePeriod=Periode de facturation
-invoiceItemAmount=Montant
-
-processedPaymentCurrency=(*) Le payment à été payé en
-processedPaymentRate=Le taux de conversion est
+[
+    {
+       "amount":7.0,
+       "currency":"USD",
+       "status":"COMMITTED",
+       "creditAdj":0.0,
+       "refundAdj":0.0,
+       "invoiceId":"31db9f9a-91ff-49f4-b5a1-5e4fce59a197",
+       "invoiceDate":"2013-08-01",
+       "targetDate":"2013-08-01",
+       "invoiceNumber":"1913",
+       "balance":0.0,
+       "accountId":"be19b229-c076-47aa-aa4d-f53bec505dc7",
+       "items":[
+          {
+             "invoiceItemId":"f641ce8a-a874-4e98-ada5-2bd8fdb74945",
+             "invoiceId":"31db9f9a-91ff-49f4-b5a1-5e4fce59a197",
+             "accountId":"be19b229-c076-47aa-aa4d-f53bec505dc7",
+             "itemType":"EXTERNAL_CHARGE",
+             "description":"My first charge",
+             "startDate":"2013-08-01",
+             "amount":7.0,
+             "currency":"USD",
+             "auditLogs":[]
+          }
+       ],
+       "isParentInvoice":false,
+       "auditLogs":[]
+    }
+]
 ```
 ```python
-sports-monthly = Voiture Sport
+[{'account_id': '40d6c91b-13f4-4689-8acc-b3455ab956ac',
+ 'amount': 0.0,
+ 'audit_logs': [],
+ 'balance': 0.0,
+ 'bundle_keys': None,
+ 'credit_adj': 0.0,
+ 'credits': None,
+ 'currency': 'USD',
+ 'invoice_date': datetime.date(2018, 5, 10),
+ 'invoice_id': '14f2bbf3-bd2d-4e32-86eb-b9d32ce4be74',
+ 'invoice_number': '1015',
+ 'is_parent_invoice': False,
+ 'items': [],
+ 'parent_account_id': None,
+ 'parent_invoice_id': None,
+ 'refund_adj': 0.0,
+ 'status': 'COMMITTED',
+ 'target_date': datetime.date(2018, 5, 10)}, {'account_id': '7f6894df-d1d6-499b-8cd0-a09da4d3beaf',
+ 'amount': 0.0,
+ 'audit_logs': [],
+ 'balance': 0.0,
+ 'bundle_keys': None,
+ 'credit_adj': 0.0,
+ 'credits': None,
+ 'currency': 'USD',
+ 'invoice_date': datetime.date(2018, 5, 10),
+ 'invoice_id': 'cd98fb3b-25a4-4e1c-8426-0c1080531ad9',
+ 'invoice_number': '1016',
+ 'is_parent_invoice': False,
+ 'items': [],
+ 'parent_account_id': None,
+ 'parent_invoice_id': None,
+ 'refund_adj': 0.0,
+ 'status': 'COMMITTED',
+ 'target_date': datetime.date(2018, 5, 10)}]
 ```
 
 **Query Parameters**
 
-None. 
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **offset** | long | true | offset |
+| **limit** | long | true | limit search items |
+| **withItems** | boolean | false | choose true if you want to include items |
+| **audit** | enum | false | level of audit logs returned |
 
-**Response**
+**Returns**
 
-A `200` http status without content.
+Returns a list with all invoices.
+
+## Search invoices
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/invoices/search/{searchKey}`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/invoices/search/404a98a8-4dd8-4737-a39f-be871e916a8c"	
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+String searchKey = "1a49101b-305e-4b4d-8403-7377596407b6";
+
+Long offset = 0L;
+Long limit = 1L;
+Boolean withItems = false; // Will not fetch invoice items
+
+invoiceApi.searchInvoices(searchKey, 
+                          offset,
+                          limit, 
+                          withItems,
+                          requestOptions);
+```
+
+```ruby
+search_key = 'COMMITTED'
+offset = 0
+limit = 100
+
+invoice.find_in_batches_by_search_key(search_key,
+                                      offset,
+                                      limit,
+                                      options)
+```
+
+```python
+invoiceApi = killbill.api.InvoiceApi()
+search_key = 'USD'
+
+invoiceApi.search_invoices(search_key, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "COMMITTED",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "404a98a8-4dd8-4737-a39f-be871e916a8c",
+    "invoiceDate": "2018-07-19",
+    "targetDate": "2018-07-19",
+    "invoiceNumber": "309",
+    "balance": 0,
+    "accountId": "8785164f-b5d7-4da1-9495-33f5105e8d80",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  }
+]
+```
+```java
+//First element of the list
+class Invoice {
+    org.killbill.billing.client.model.gen.Invoice@30849f9
+    amount: 0.00
+    currency: USD
+    status: COMMITTED
+    creditAdj: 0.00
+    refundAdj: 0.00
+    invoiceId: 1a49101b-305e-4b4d-8403-7377596407b6
+    invoiceDate: 2012-08-25
+    targetDate: 2012-08-25
+    invoiceNumber: 1
+    balance: 0.00
+    accountId: 715c9695-4730-4fd7-80db-d5e38dfc9aa0
+    bundleKeys: null
+    credits: null
+    items: []
+    isParentInvoice: false
+    parentInvoiceId: null
+    parentAccountId: null
+    auditLogs: []
+}
+```
+```ruby
+[
+    {
+       "amount":7.0,
+       "currency":"USD",
+       "status":"COMMITTED",
+       "creditAdj":0.0,
+       "refundAdj":0.0,
+       "invoiceId":"31db9f9a-91ff-49f4-b5a1-5e4fce59a197",
+       "invoiceDate":"2013-08-01",
+       "targetDate":"2013-08-01",
+       "invoiceNumber":"1913",
+       "balance":0.0,
+       "accountId":"be19b229-c076-47aa-aa4d-f53bec505dc7",
+       "items":[
+          {
+             "invoiceItemId":"f641ce8a-a874-4e98-ada5-2bd8fdb74945",
+             "invoiceId":"31db9f9a-91ff-49f4-b5a1-5e4fce59a197",
+             "accountId":"be19b229-c076-47aa-aa4d-f53bec505dc7",
+             "itemType":"EXTERNAL_CHARGE",
+             "description":"My first charge",
+             "startDate":"2013-08-01",
+             "amount":7.0,
+             "currency":"USD",
+             "auditLogs":[]
+          }
+       ],
+       "isParentInvoice":false,
+       "auditLogs":[]
+    }
+]
+```
+```python
+[{'account_id': '554f89d7-c9bd-4e48-a28d-5d2d88f0ea19',
+ 'amount': 0.0,
+ 'audit_logs': [],
+ 'balance': 0.0,
+ 'bundle_keys': None,
+ 'credit_adj': 0.0,
+ 'credits': None,
+ 'currency': 'USD',
+ 'invoice_date': datetime.date(2018, 5, 10),
+ 'invoice_id': '5ffe67ba-322a-407c-8051-0a5839774a1c',
+ 'invoice_number': '1017',
+ 'is_parent_invoice': False,
+ 'items': [],
+ 'parent_account_id': None,
+ 'parent_invoice_id': None,
+ 'refund_adj': 0.0,
+ 'status': 'COMMITTED',
+ 'target_date': datetime.date(2018, 5, 10)}, {'account_id': '58e8ffe1-d01e-4716-bf46-c76b881b6574',
+ 'amount': 0.0,
+ 'audit_logs': [],
+ 'balance': 0.0,
+ 'bundle_keys': None,
+ 'credit_adj': 0.0,
+ 'credits': None,
+ 'currency': 'USD',
+ 'invoice_date': datetime.date(2018, 5, 10),
+ 'invoice_id': '4a836b76-447c-4d5c-9dc7-96f1c9b0cf9c',
+ 'invoice_number': '1018',
+ 'is_parent_invoice': False,
+ 'items': [],
+ 'parent_account_id': None,
+ 'parent_invoice_id': None,
+ 'refund_adj': 0.0,
+ 'status': 'COMMITTED',
+ 'target_date': datetime.date(2018, 5, 10)}]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **offset** | long | true | offset |
+| **limit** | long | true | limit search items |
+| **withItems** | boolean | false | choose true if you want to include items |
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Return a list with invoices matched with the search key entered.
+
+

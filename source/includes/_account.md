@@ -756,930 +756,7 @@ no content
 
 A `204` http status without content.
 
-## Retrieve all custom fields
 
-Retrieves the custom fields attached to various resources owned by the `Account`.
-Assuming there were custom fields attached to various subscriptions, invoices, payments, ... for this specific account, this endpoint would allow to retrieve them all or potentially filter them by type -- e.g `Subscription`.
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/accounts/{accountId}/allCustomFields`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allCustomFields"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("b38de59f-7dd0-447a-a508-9b022b808250");
-
-CustomFields allAccountCustomFields = accountApi.getAllCustomFields(accountId, 
-                                                                    ObjectType.ACCOUNT, 
-                                                                    AuditLevel.FULL, 
-                                                                    requestOptions);
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
-
-accountApi.get_all_custom_fields(account_id, 
-                                 api_key, 
-                                 api_secret, 
-                                 object_type='ACCOUNT')
-```
-
-```ruby
-object_type = 'ACCOUNT'
-audit = 'NONE'
-
-account.all_custom_fields(object_type,
-                          audit, 
-                          options)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  {
-    "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
-    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "objectType": "ACCOUNT",
-    "name": "Test Custom Field",
-    "value": "test_value",
-    "auditLogs": []
-  }
-]
-```
-```java
-//First element of the list
-class CustomField {
-    org.killbill.billing.client.model.gen.CustomField@238cc919
-    customFieldId: dba8ec60-ee02-4231-9fa0-6613773b4e9e
-    objectId: b38de59f-7dd0-447a-a508-9b022b808250
-    objectType: ACCOUNT
-    name: 385af
-    value: 8296f
-    auditLogs: [class AuditLog {
-        changeType: INSERT
-        changeDate: 2012-08-25T00:00:01.000Z
-        objectType: CUSTOM_FIELD
-        objectId: dba8ec60-ee02-4231-9fa0-6613773b4e9e
-        changedBy: Toto
-        reasonCode: i am god
-        comments: no comment
-        userToken: 10e278f1-61b8-4885-b1f6-d6f4db19c998
-        history: null
-    }]
-}
-```
-```ruby
-[
-   {
-      "tagId":"ce1715f6-35e8-4d86-9063-65a54625992d",
-      "objectType":"ACCOUNT",
-      "objectId":"0f55a05d-9946-41d7-be75-ee71f49829b1",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
-      "auditLogs":[]
-   }
-]
-```
-```python
-[
-  {
-    'audit_logs': [],
-    'object_id': '8f2618dc-9e8e-4df6-b835-68c747a48313',
-    'object_type': 'ACCOUNT',
-    'tag_definition_id': '00000000-0000-0000-0000-000000000002',
-    'tag_definition_name': 'AUTO_INVOICING_OFF',
-    'tag_id': '726a64eb-0fc2-4e1b-81c4-ebf879a3b5b6'
-  }
-]
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **objectType** | string | false | choose type of object (e.g. `ACCOUNT`, `BUNDLE`, `SUBSCRIPTION`) |
-| **audit** | enum | false | level of audit logs returned |
-
-**Returns**
-    
-Returns a list of custom fields objects
-
-## Retrieve account tags
-
-
-Retrieves the tags attached to various resources owned by the `Account`.
-Assuming there were tagged subscriptions, invoices, payments, ... for this specific account, this endpoint would allow to retrieve them all or potentially filter them by type -- e.g `Subscription`.
-
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/accounts/{accountId}/allTags`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allTags"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("ee6835f0-8347-42d3-958c-9a939383ba28");
-
-Tags allAccountTags = accountApi.getAllTags(accountId,
-                                            ObjectType.ACCOUNT,
-                                            AuditLevel.NONE,
-                                            requestOptions);
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
-
-accountApi.get_account_tags(account_id, api_key, api_secret)
-```
-
-```ruby
-object_type = 'ACCOUNT'
-included_deleted = false
-audit = 'NONE'
-
-account.all_tags(object_type, 
-                 included_deleted, 
-                 audit, 
-                 options)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  {
-    "tagId": "0f7c5837-1ed9-41ab-b391-9ef7ea4ab049",
-    "objectType": "ACCOUNT",
-    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "tagDefinitionId": "00000000-0000-0000-0000-000000000002",
-    "tagDefinitionName": "AUTO_INVOICING_OFF",
-    "auditLogs": []
-  }
-]
-```
-```java
-//First element of the list
-class Tag {
-    org.killbill.billing.client.model.gen.Tag@45e9c8ec
-    tagId: 659b37ed-59d7-4b46-b4e4-37d11cdc0bce
-    objectType: ACCOUNT
-    objectId: ee6835f0-8347-42d3-958c-9a939383ba28
-    tagDefinitionId: 00000000-0000-0000-0000-000000000001
-    tagDefinitionName: AUTO_PAY_OFF
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "tagId":"ce1715f6-35e8-4d86-9063-65a54625992d",
-      "objectType":"ACCOUNT",
-      "objectId":"0f55a05d-9946-41d7-be75-ee71f49829b1",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
-      "auditLogs":[]
-   }
-]
-```
-```python
-[
-  {
-    'audit_logs': [],
-    'object_id': '8f2618dc-9e8e-4df6-b835-68c747a48313',
-    'object_type': 'ACCOUNT',
-    'tag_definition_id': '00000000-0000-0000-0000-000000000002',
-    'tag_definition_name': 'AUTO_INVOICING_OFF',
-    'tag_id': '726a64eb-0fc2-4e1b-81c4-ebf879a3b5b6'
-  }
-]
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **objectType** | string | false | choose type of object (e.g. `ACCOUNT`, `BUNDLE`, `SUBSCRIPTION`) |
-| **includedDeleted** | boolean | true | choose true to include deleted tags |
-| **audit** | enum | false | level of audit logs returned |
-
-**Returns**
-    
-Returns a list of tag objects
-
-## Retrieve audit logs by account id
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/accounts/{accountId}/auditLogs`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/auditLogs"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("e9432491-6558-4007-85ef-cdae171d240c");
-
-AuditLogs auditLogsJson = accountApi.getAccountAuditLogs(accountId, 
-                                                         requestOptions);
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '4e4d8acd-c97d-447a-814b-28f995a9106c'
-
-accountApi.get_account_audit_logs(account_id, api_key, api_secret)
-```
-
-```ruby
-account.audit(options)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  {
-    "changeType": "INSERT",
-    "changeDate": "2018-07-17T15:02:45.000Z",
-    "objectType": "ACCOUNT",
-    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "changedBy": "demo",
-    "reasonCode": "demo",
-    "comments": "demo",
-    "userToken": "bca75b40-ffa3-41f8-9fde-06f83ee303e8",
-    "history": null
-  },
-  {
-    "changeType": "UPDATE",
-    "changeDate": "2018-07-17T18:46:47.000Z",
-    "objectType": "ACCOUNT",
-    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "changedBy": "demo",
-    "reasonCode": "demo",
-    "comments": "demo",
-    "userToken": "9a61a1e6-78f3-43d3-addf-e7ada180b23d",
-    "history": null
-  },
-  {
-    "changeType": "UPDATE",
-    "changeDate": "2018-07-17T18:48:37.000Z",
-    "objectType": "ACCOUNT",
-    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "changedBy": "demo",
-    "reasonCode": "demo",
-    "comments": "demo",
-    "userToken": "0c41a04d-4037-4fa9-af71-dfe54af4d3ae",
-    "history": null
-  },
-  {
-    "changeType": "INSERT",
-    "changeDate": "2018-07-17T19:07:25.000Z",
-    "objectType": "CUSTOM_FIELD",
-    "objectId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
-    "changedBy": "demo",
-    "reasonCode": "demo",
-    "comments": "demo",
-    "userToken": "c9b9ab11-14b1-41b5-8371-1c425f273336",
-    "history": null
-  },
-  {
-    "changeType": "UPDATE",
-    "changeDate": "2018-07-17T19:26:46.000Z",
-    "objectType": "CUSTOM_FIELD",
-    "objectId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
-    "changedBy": "demo",
-    "reasonCode": "demo",
-    "comments": "demo",
-    "userToken": "fd26b216-deb2-43d4-b748-dec8e9917ada",
-    "history": null
-  },
-  {
-    "changeType": "DELETE",
-    "changeDate": "2018-07-17T20:02:01.000Z",
-    "objectType": "CUSTOM_FIELD",
-    "objectId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
-    "changedBy": "demo",
-    "reasonCode": "demo",
-    "comments": "demo",
-    "userToken": "0d5c8db7-974f-47e0-9332-5d9625f72155",
-    "history": null
-  }
-]
-```
-```java
-//First element of the list
-class AuditLog {
-    changeType: INSERT
-    changeDate: 2012-08-25T00:00:01.000Z
-    objectType: ACCOUNT
-    objectId: e9432491-6558-4007-85ef-cdae171d240c
-    changedBy: Toto
-    reasonCode: i am god
-    comments: no comment
-    userToken: 6cd7a8ec-0678-436f-a2cb-a58f9ee3668b
-    history: null
-}
-```
-```ruby
-[
-   {
-      "changeType":"INSERT",
-      "changeDate":"2013-08-01T06:00:00.000Z",
-      "objectType":"ACCOUNT",
-      "objectId":"ccaf0822-a58b-4f1d-82d2-907439b68054",
-      "changedBy":"test_account_tags",
-      "userToken":"17d7807c-5c44-4e57-adc5-d0323c779b1f"
-   }
-]
-```
-```python
-[{'change_date': datetime.datetime(2018, 5, 23, 14, 30, 5, tzinfo=tzutc()),
- 'change_type': 'INSERT',
- 'changed_by': 'test',
- 'comments': None,
- 'object_id': '4e4d8acd-c97d-447a-814b-28f995a9106c',
- 'object_type': 'ACCOUNT',
- 'reason_code': None,
- 'user_token': '89ef6e86-4869-4974-abb9-0d870e8578b2'}]
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-    
-Returns a list of account audit logs.
-
-## Retrieve account audit logs with history by account id
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/accounts/{accountId}/auditLogsWithHistory`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/auditLogsWithHistory"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("ecbff3be-3cbf-4e1d-ae05-d323d4597877");
-
-List<AuditLog> auditLogWithHistories = accountApi.getAccountAuditLogsWithHistory(accountId, 
-                                                                                 requestOptions);
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
-
-accountApi.get_account_audit_logs_with_history(account_id, api_key, api_secret)
-```
-
-```ruby
-account.audit_logs_with_history(options)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  {
-    "changeType": "INSERT",
-    "changeDate": "2018-07-17T15:02:45.000Z",
-    "objectType": "ACCOUNT",
-    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "changedBy": "demo",
-    "reasonCode": "demo",
-    "comments": "demo",
-    "userToken": "bca75b40-ffa3-41f8-9fde-06f83ee303e8",
-    "history": {
-      "id": null,
-      "createdDate": "2018-07-17T15:02:45.000Z",
-      "updatedDate": "2018-07-17T15:02:45.000Z",
-      "recordId": 120,
-      "accountRecordId": 120,
-      "tenantRecordId": 101,
-      "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "email": "john@example.com",
-      "name": "John Doe",
-      "firstNameLength": null,
-      "currency": "USD",
-      "parentAccountId": null,
-      "isPaymentDelegatedToParent": null,
-      "billingCycleDayLocal": 0,
-      "paymentMethodId": null,
-      "referenceTime": "2018-07-17T15:02:45.000Z",
-      "timeZone": "UTC",
-      "locale": null,
-      "address1": null,
-      "address2": null,
-      "companyName": null,
-      "city": null,
-      "stateOrProvince": null,
-      "country": null,
-      "postalCode": null,
-      "phone": null,
-      "notes": null,
-      "migrated": null,
-      "tableName": "ACCOUNT",
-      "historyTableName": "ACCOUNT_HISTORY"
-    }
-  },
-  {
-    "changeType": "UPDATE",
-    "changeDate": "2018-07-17T18:46:47.000Z",
-    "objectType": "ACCOUNT",
-    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "changedBy": "demo",
-    "reasonCode": "demo",
-    "comments": "demo",
-    "userToken": "9a61a1e6-78f3-43d3-addf-e7ada180b23d",
-    "history": {
-      "id": null,
-      "createdDate": "2018-07-17T18:46:47.000Z",
-      "updatedDate": "2018-07-17T18:46:47.000Z",
-      "recordId": 120,
-      "accountRecordId": 120,
-      "tenantRecordId": 101,
-      "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "email": "john@example.com",
-      "name": "Another Name",
-      "firstNameLength": null,
-      "currency": "USD",
-      "parentAccountId": null,
-      "isPaymentDelegatedToParent": false,
-      "billingCycleDayLocal": 0,
-      "paymentMethodId": null,
-      "referenceTime": "2018-07-17T15:02:45.000Z",
-      "timeZone": "UTC",
-      "locale": null,
-      "address1": null,
-      "address2": null,
-      "companyName": null,
-      "city": null,
-      "stateOrProvince": null,
-      "country": null,
-      "postalCode": null,
-      "phone": null,
-      "notes": null,
-      "migrated": null,
-      "tableName": "ACCOUNT",
-      "historyTableName": "ACCOUNT_HISTORY"
-    }
-  },
-  {
-    "changeType": "UPDATE",
-    "changeDate": "2018-07-17T18:48:37.000Z",
-    "objectType": "ACCOUNT",
-    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "changedBy": "demo",
-    "reasonCode": "demo",
-    "comments": "demo",
-    "userToken": "0c41a04d-4037-4fa9-af71-dfe54af4d3ae",
-    "history": {
-      "id": null,
-      "createdDate": "2018-07-17T18:48:37.000Z",
-      "updatedDate": "2018-07-17T18:48:37.000Z",
-      "recordId": 120,
-      "accountRecordId": 120,
-      "tenantRecordId": 101,
-      "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "email": "john@example.com",
-      "name": "John Doe",
-      "firstNameLength": null,
-      "currency": "USD",
-      "parentAccountId": null,
-      "isPaymentDelegatedToParent": false,
-      "billingCycleDayLocal": 0,
-      "paymentMethodId": null,
-      "referenceTime": "2018-07-17T15:02:45.000Z",
-      "timeZone": "UTC",
-      "locale": null,
-      "address1": null,
-      "address2": null,
-      "companyName": null,
-      "city": null,
-      "stateOrProvince": null,
-      "country": null,
-      "postalCode": null,
-      "phone": null,
-      "notes": null,
-      "migrated": null,
-      "tableName": "ACCOUNT",
-      "historyTableName": "ACCOUNT_HISTORY"
-    }
-  }
-]
-```
-```java
-//First element of the list
-class AuditLog {
-    changeType: INSERT
-    changeDate: 2012-08-25T00:00:01.000Z
-    objectType: ACCOUNT
-    objectId: ecbff3be-3cbf-4e1d-ae05-d323d4597877
-    changedBy: Toto
-    reasonCode: i am god
-    comments: no comment
-    userToken: d698ba59-cacd-4739-9e40-68506ec046ca
-    history: {id=null, 
-              createdDate=2012-08-25T00:00:01.000Z, 
-              updatedDate=2012-08-25T00:00:01.000Z, 
-              recordId=1, accountRecordId=1, 
-              tenantRecordId=1, 
-              externalKey=5bb29c30-c83a-4237-b886-6605319baf8f, 
-              email=a946d@6a7f4, 
-              name=40f79b31-64eb-429b-96b5-89c05a21883f, 
-              firstNameLength=4, 
-              currency=USD, 
-              parentAccountId=null, 
-              isPaymentDelegatedToParent=false, 
-              billingCycleDayLocal=0, 
-              paymentMethodId=null, 
-              referenceTime=2012-08-25T00:00:01.000Z, 
-              timeZone=UTC, 
-              locale=fr, 
-              address1=12 rue des ecoles, 
-              address2=Poitier, 
-              companyName=Renault, 
-              city=Quelque part, 
-              stateOrProvince=Poitou, 
-              country=France, 
-              postalCode=44 567, 
-              phone=81 53 26 56, 
-              notes=notes, 
-              migrated=false, 
-              tableName=ACCOUNT, 
-              historyTableName=ACCOUNT_HISTORY}
-}
-```
-```ruby
-[
-   {
-      "changeType":"INSERT",
-      "changeDate":"2013-08-01T06:00:00.000Z",
-      "objectType":"ACCOUNT",
-      "objectId":"08a1c2e4-687f-48ca-9c38-888108a2ce0a",
-      "changedBy":"test_account_tags",
-      "userToken":"5c0632c3-6567-4b0b-8e37-e2a9bb9ab6b2",
-      "history":{
-         "id":null,
-         "createdDate":"2013-08-01T06:00:00.000Z",
-         "updatedDate":"2013-08-01T06:00:00.000Z",
-         "recordId":505,
-         "accountRecordId":505,
-         "tenantRecordId":822,
-         "externalKey":"1527086785-621747",
-         "email":"kill@bill.com",
-         "name":"KillBillClient",
-         "firstNameLength":null,
-         "currency":"USD",
-         "parentAccountId":null,
-         "isPaymentDelegatedToParent":null,
-         "billingCycleDayLocal":0,
-         "paymentMethodId":null,
-         "referenceTime":"2013-08-01T06:00:00.000Z",
-         "timeZone":"UTC",
-         "locale":"fr_FR",
-         "address1":"7, yoyo road",
-         "address2":"Apt 5",
-         "companyName":"Unemployed",
-         "city":"San Francisco",
-         "stateOrProvince":"California",
-         "country":"US",
-         "postalCode":"94105",
-         "phone":null,
-         "notes":null,
-         "migrated":null,
-         "tableName":"ACCOUNT",
-         "historyTableName":"ACCOUNT_HISTORY"
-      }
-   }
-]
-```
-```python
-[{'change_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc()),
- 'change_type': 'INSERT',
- 'changed_by': 'test',
- 'comments': None,
- 'history': {'created_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc()),
-             'id': None,
-             'updated_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc())},
- 'object_id': 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda',
- 'object_type': 'ACCOUNT',
- 'reason_code': None,
- 'user_token': '40e771bf-160e-4ff6-82be-463f2d9e634d'}]
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-    
-Returns a list of account audit logs with history.
-
-## Block an account
-
-As part of the entitlement features, Kill Bill provides an abstraction to include `BlockingState` events into the per `Account` event stream. The main idea is to allow to modify billing -- e.g pause a specific subscription, all subscriptions, ... -- or the entitlement state -- disable service associated with a given subscription. The [entitlement internal documentation](http://docs.killbill.io/latest/entitlement_subsystem.html) provides some overview of the mechanism. Blocking states are mostly manipulated from inside Kill Bill core, but the functionality is exposed through the API, with the caveat that it is an advanced feature and can lead to unintented behavior if not used properly.
-
-
-
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/accounts/{accountId}/block`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X POST \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    -d "{ \"stateName\": \"STATE1\", \"service\": \"ServiceStateService\", \"isBlockChange\": false, \"isBlockEntitlement\": false, \"isBlockBilling\": false, \"effectiveDate\": \"2018-07-17T21:17:28.842Z\", \"type\": \"ACCOUNT\" }" \
-    "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block"
-```
-
-```java
-TODO
-```
-
-```ruby
-state_name = "STATE1"
-service = "ServiceStateService"
-block_change = false
-block_entitlement = false
-block_billing = false
-requested_date = "2013-08-01"
-
-account.set_blocking_state(state_name,
-                           service,
-                           block_change, 
-                           block_entitlement,
-                           block_billing, 
-                           requested_date,
-                           user, 
-                           reason, 
-                           comment,
-                           options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
-body = BlockingState(state_name='STATE1',
-                     service='ServiceStateService',
-                     is_block_change=False,
-                     is_block_entitlement=False,
-                     is_block_billing=False)
-
-accountApi.add_account_blocking_state(account_id, 
-                                      body, 
-                                      created_by, 
-                                      api_key, 
-                                      api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block?blockingStateTypes=ACCOUNT
-< Content-Length: 0
-```
-```java
-**TODO**
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **requestedDate** | string | true | Requested date for block an account |
-
-**Returns**
-
-A `201` http status without content.
-
-## Retrieve blocking states for account
-
-Retrieves the `BlockingState` assocaited to a given resource.
-`BlockingState` can be set at the `Account`, `Bundle` or `Subscription`.
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/accounts/{accountId}/block`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block?blockingStateTypes=ACCOUNT"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("ee6835f0-8347-42d3-958c-9a939383ba28");
-
-List<BlockingStateType> blockingStateTypes = ImmutableList.<BlockingStateType>of(BlockingStateType.SUBSCRIPTION_BUNDLE);
-List<String> blockingStateSvcs = ImmutableList.<String>of("service");
-
-BlockingStates blockingStates = accountApi.getBlockingStates(accountId, 
-                                                             blockingStateTypes, 
-                                                             blockingStateSvcs, 
-                                                             AuditLevel.FULL, 
-                                                             requestOptions);
-```
-
-```ruby
-blocking_state_types = 'ACCOUNT'
-blocking_state_svcs = nil
-audit = 'NONE'
-
-account.blocking_states(blocking_state_types,
-                        blocking_state_svcs, 
-                        audit,
-                        options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
-
-accountApi.get_blocking_states(account_id, api_key, api_secret)
-```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  {
-    "blockedId": "10483c3a-3394-4667-8519-0d849e9a8ec2",
-    "stateName": "STATE1",
-    "service": "ServiceStateService",
-    "isBlockChange": false,
-    "isBlockEntitlement": false,
-    "isBlockBilling": false,
-    "effectiveDate": "2018-07-18T14:45:37.000Z",
-    "type": "ACCOUNT",
-    "auditLogs": []
-  }
-]
-```
-```java
-//First element of the list
-class BlockingState {
-    org.killbill.billing.client.model.gen.BlockingState@95047f38
-    blockedId: e3d9aa57-1c1e-4206-a44a-d87e69d5bf2a
-    stateName: block
-    service: service
-    isBlockChange: false
-    isBlockEntitlement: true
-    isBlockBilling: true
-    effectiveDate: 2012-04-25T00:03:42.000Z
-    type: SUBSCRIPTION_BUNDLE
-    auditLogs: [class AuditLog {
-        changeType: INSERT
-        changeDate: 2012-04-25T00:03:45.000Z
-        objectType: BLOCKING_STATES
-        objectId: 8fc09849-bd98-417f-a0ab-943f9ce8e15d
-        changedBy: Toto
-        reasonCode: i am god
-        comments: no comment
-        userToken: 46d56616-1545-424a-882b-b158442534ff
-        history: null
-    }]
-}
-```
-```ruby
-[
-   {
-      "blockedId":"d13b2272-d182-499c-a393-8efed203ae7d",
-      "stateName":"STATE1",
-      "service":"ServiceStateService",
-      "blockChange":false,
-      "blockEntitlement":false,
-      "blockBilling":false,
-      "effectiveDate":"2013-08-01T06:00:00.000Z",
-      "type":"ACCOUNT",
-      "auditLogs":[]
-   }
-]
-```
-```python
-[
-  {
-    'audit_logs': [],
-    'blocked_id': '7e7dd5a9-6b65-4f40-a14b-1f4f408ef83c',
-    'effective_date': datetime.datetime(2018, 5, 3, 19, 19, 12, tzinfo=tzutc()),
-    'is_block_billing': False,
-    'is_block_change': False,
-    'is_block_entitlement': False,
-    'service': 'ServiceStateService',
-    'state_name': 'STATE1',
-    'type': 'ACCOUNT'
-  }
-]
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **blockingStateTypes** | string | true | blocking state types |
-| **blockingStateSvcs** | string | false | blocking state svcs |
-| **audit** | enum | false | level of audit logs returned |
-
-**Returns**
-
-Returns a blocking state object
 
 ## Retrieve bundles for account
 
@@ -2800,1311 +1877,6 @@ class Bundle {
 
 Returns a list of account bundle objects.
 
-## List children accounts
-
-When using the [hierarchical account](http://docs.killbill.io/latest/ha.html) feature, this api allows to retrieve
-all children `Account` for a given parent `Account`.
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/accounts/{accountId}/children`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/children"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID parentAccountId = UUID.fromString("ee6835f0-8347-42d3-958c-9a939383ba28");
-Boolean accountWithBalance = true; // Will include account balance
-Boolean accountWithBalanceAndCBA = true; // Will include account balance and CBA info
-
-Accounts childrenAccounts = accountApi.getChildrenAccounts(parentAccountId, 
-                                                           accountWithBalance, 
-                                                           accountWithBalanceAndCBA, 
-                                                           AuditLevel.NONE, 
-                                                           requestOptions);
-```
-
-```ruby
-account_id = account.account_id
-with_balance = false
-with_balance_and_cba = false
-audit = 'NONE'
-
-childrens_account = KillBillClient::Model::Account.children(account_id,
-                                                            with_balance, 
-                                                            with_balance_and_cba, 
-                                                            audit, 
-                                                            options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
-
-accountApi.get_children_accounts(account_id, api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-   {
-      "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
-      "name":"John Doe",
-      "externalKey":"1522172592-516014",
-      "email":"John@example.com",
-      "billCycleDayLocal":0,
-      "currency":"USD",
-      "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
-      "isPaymentDelegatedToParent":true,
-      "timeZone":"UTC",
-      "address1":"7, yoyo road",
-      "address2":"Apt 5",
-      "postalCode":"94105",
-      "company":"Unemployed",
-      "city":"San Francisco",
-      "state":"California",
-      "country":"US",
-      "locale":"fr_FR",
-      "auditLogs":[]
-   }
-]
-```
-```java
-//First element of the list
-class Account {
-    org.killbill.billing.client.model.gen.Account@cfbf4058
-    accountId: b58e1b76-461c-4681-9ecf-3a3e5e95fc27
-    name: 01f814b3-b4c2-41e9-9d6c-4a010916424c
-    firstNameLength: 4
-    externalKey: 3bf9144f-11a3-4a0b-9923-03a1c667ba93
-    email: 8c0f9@f059d
-    billCycleDayLocal: 0
-    currency: USD
-    parentAccountId: e72357f9-76ff-4533-b846-b61f39973b70
-    isPaymentDelegatedToParent: true
-    paymentMethodId: null
-    referenceTime: 2012-08-25T00:00:02.000Z
-    timeZone: UTC
-    address1: 12 rue des ecoles
-    address2: Poitier
-    postalCode: 44 567
-    company: Renault
-    city: Quelque part
-    state: Poitou
-    country: France
-    locale: fr
-    phone: 81 53 26 56
-    notes: notes
-    isMigrated: false
-    accountBalance: 0
-    accountCBA: 0E-9
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
-      "name":"John Doe",
-      "externalKey":"1522172592-516014",
-      "email":"John@example.com",
-      "billCycleDayLocal":0,
-      "currency":"USD",
-      "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
-      "isPaymentDelegatedToParent":true,
-      "timeZone":"UTC",
-      "address1":"7, yoyo road",
-      "address2":"Apt 5",
-      "postalCode":"94105",
-      "company":"Unemployed",
-      "city":"San Francisco",
-      "state":"California",
-      "country":"US",
-      "locale":"fr_FR",
-      "auditLogs":[
-
-      ]
-   }
-]
-```
-```python
-[
-    {
-     'account_balance': None,
-     'account_cba': None,
-     'account_id': '07c0cef4-41c5-4606-b2cd-661332cdd41c',
-     'address1': None,
-     'address2': None,
-     'audit_logs': [],
-     'bill_cycle_day_local': 0,
-     'city': None,
-     'company': None,
-     'country': 'USA',
-     'currency': 'USD',
-     'email': None,
-     'external_key': 'rpwtgr',
-     'first_name_length': None,
-     'is_migrated': False,
-     'is_notified_for_invoices': False,
-     'is_payment_delegated_to_parent': False,
-     'locale': None,
-     'name': 'John',
-     'notes': None,
-     'parent_account_id': None,
-     'payment_method_id': None,
-     'phone': None,
-     'postal_code': None,
-     'reference_time': datetime.datetime(2018, 5, 3, 15, 53, 44, tzinfo=tzutc()),
-     'state': 'CA',
-     'time_zone': 'UTC'
-    }
-]
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **accountWithBalance** | boolean | false | if true, returns `accountBalance` info |
-| **accountWithBalanceAndCBA** | boolean | false | if true, returns `accountBalance` and `accountCBA` info |
-| **audit** | enum | false | level of audit logs returned |
-
-**Returns**
-
-Returns a list of account objects.
-
-## Add custom fields to account
-
-Allow to add custom fields for a given `Account`.
-
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/accounts/{accountId}/customFields`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X POST \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    -d "[ { \"objectType\": \"ACCOUNT\", \"name\": \"Test Custom Field\", \"value\": \"demo_test_value\" }]" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("15434b45-54c1-4a44-851c-b1f2f7a52f03");
-final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
-
-CustomFields customFields = new CustomFields();
-customFields.add(new CustomField(null, 
-                                 accountId,
-                                 "Test Custom Field", 
-                                 "test_value", 
-                                 EMPTY_AUDIT_LOGS));
-
-accountApi.createAccountCustomFields(accountId, 
-                                     customFields, 
-                                     requestOptions);
-```
-
-```ruby
-custom_field = KillBillClient::Model::CustomFieldAttributes.new
-custom_field.object_type = 'ACCOUNT'
-custom_field.name = 'Test Custom Field'
-custom_field.value = 'test_value'
-
-account.add_custom_field(custom_field, 
-                         user,
-                         reason,
-                         comment,
-                         options)
-```
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
-body = CustomField(name='Test Custom Field', value='test_value')
-
-accountApi.create_account_custom_fields(account_id,
-                                        [body],
-                                        created_by,
-                                        api_key,
-                                        api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields
-< Content-Type: application/json
-< Content-Length: 0
-```
-```java
-//First element of the list
-class CustomField {
-    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
-    customFieldId: null
-    objectId: 59860a0d-c032-456d-a35e-3a48fe8579e5
-    objectType: ACCOUNT
-    name: Test Custom Field
-    value: test_value
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "customFieldId":"6e571e22-b794-413c-be6f-1b2aa4bf9824",
-      "objectId":"0149ffc6-fdfd-40b1-8cf4-29a66aef51d4",
-      "objectType":"ACCOUNT",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
-```
-```python
-no content
-```
-
-Note that none of these fields are mantatory when creating the `Account`. This allows to create shell accounts, simply for the purpose of having a valid `accountId` and create state around it -- e.g payments, .. 
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-Returns a custom field object.
-
-## Retrieve account custom fields
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/accounts/{accountId}/customFields`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"	
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
-
-List<CustomField> accountCustomFields = accountApi.getAccountCustomFields(accountId,
-                                                                          AuditLevel.NONE, 
-                                                                          requestOptions);
-```
-
-```ruby
-audit = 'NONE'
-
-account.custom_fields(audit, options)
-```
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
-
-accountApi.get_account_custom_fields(account_id, api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  {
-    "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
-    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "objectType": "ACCOUNT",
-    "name": "Test Custom Field",
-    "value": "test_value",
-    "auditLogs": []
-  }
-]
-```
-```java
-//First element of the list
-class CustomField {
-    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
-    customFieldId: null
-    objectId: 59860a0d-c032-456d-a35e-3a48fe8579e5
-    objectType: ACCOUNT
-    name: Test Custom Field
-    value: test_value
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"ACCOUNT",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
-```
-```python
-[
- {
-   'audit_logs': [],
-   'custom_field_id': 'd7bb1afb-df19-4db2-ba7f-9a4f71e9b131',
-   'name': 'Test Custom Field',
-   'object_id': '89c45186-8ab0-44f8-8bc9-e670924830a2',
-   'object_type': 'ACCOUNT',
-   'value': 'test_value'
- }
-]
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **audit** | enum | false | level of audit logs returned |
-
-**Returns**
-
-Returns a list of custom field objects.
-
-## Modify custom fields to account
-
-**HTTP Request** 
-
-`PUT http://example.com/1.0/kb/accounts/{accountId}/customFields`
-
-
-> Example Request:
-
-```shell
-curl -v \
-    -X PUT \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    -d "[ { \"customFieldId\": \"48e24ca0-1cfe-41c3-85e7-0ff0d51679fe\", \"objectId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"objectType\": \"ACCOUNT\", \"name\": \"Test Custom Field\", \"value\": \"test_modify_value\", \"auditLogs\": [] }]" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
-UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-
-CustomField customFieldModified = new CustomField();
-customFieldModified.setCustomFieldId(customFieldsId);
-customFieldModified.setValue("NewValue");
-
-accountApi.modifyAccountCustomFields(accountId, 
-                                     customFieldModified, 
-                                     requestOptions);
-```
-
-```ruby
-custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-custom_field.name = 'Test Modify'
-custom_field.value = 'test_modify_value'
-
-account.modify_custom_field(custom_field,                                                                                            
-                            user, 
-                            reason,
-                            comment, 
-                            options)
-```
-
-```python
-account = killbill.api.AccountApi()
-body = CustomField(custom_field_id=custom_field_id, 
-                   name='Test Custom Field', 
-                   value='test_value')
-
-account.modify_account_custom_fields(account_id, 
-                                     [body], 
-                                     created_by, 
-                                     api_key, 
-                                     api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-A `204` http status without content.
-
-## Remove custom fields from account
-
-**HTTP Request** 
-
-`DELETE http://example.com/1.0/kb/accounts/{accountId}/customField`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X DELETE \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
-UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-
-accountApi.deleteAccountCustomFields(accountId, 
-                                     customFieldsId, 
-                                     requestOptions);
-```
-
-```ruby
-custom_field_id = custom_field.id
-
-account.remove_custom_field(custom_field_id, 
-                            user, 
-                            reason,
-                            comment, 
-                            options)
-```
-
-```python
-account = killbill.api.AccountApi()
-account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
-custom_field_id = '9913e0f6-b5ef-498b-ac47-60e1626eba8f'
-custom_field = [custom_field_id]
-
-account.delete_account_custom_fields(account_id,
-                                     created_by,
-                                     api_key,
-                                     api_secret,
-                                     custom_field=custom_field)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
-
-**Response**
-
-A `204` http status without content.
-
-## Add account email
-
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/accounts/{accountId}/emails`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X POST \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"email\": \"email@example.com\"}" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
-String email = "email@example.com";
-
-AccountEmail accountEmail = new AccountEmail(accountId, 
-                                             email, 
-                                             AuditLevel.NONE);
-
-accountApi.addEmail(accountId, 
-                    accountEmail, 
-                    requestOptions);
-```
-
-```ruby
-account.email = 'email@example.com'
-
-account.add_email(account.email,
-                  user,
-                  reason,
-                  comment,
-                  options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
-body = AccountEmail(account_id=account_id, email='email@example.com')
-
-accountApi.add_email(account_id,
-                     body,
-                     created_by,
-                     api_key,
-                     api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails
-< Content-Type: application/json
-< Content-Length: 0
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-
-**Query Parameters**
-
-None.
-
-**Response**
-
-A `201` http status without content.
-
-## Retrieve an account emails
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/accounts/{accountId}/emails`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("cd026587-c93b-471c-a98d-224c21636fbc");
-
-List<AccountEmail> emails = accountApi.getEmails(accountId, requestOptions);
-```
-
-```ruby
-audit = 'NONE'
-account.emails(audit, options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = 'c8f51346-562d-429b-8c89-27a0f72009b3'
-
-accountApi.get_emails(account_id, api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-   {
-      "accountId":"e4ca38b3-934d-42e8-a292-ffb0af5549f2",
-      "email":"email@example.com"
-   }
-]
-```
-```java
-//First element of the list
-class AccountEmail {
-    org.killbill.billing.client.model.gen.AccountEmail@bdc0f8ad
-    accountId: cd026587-c93b-471c-a98d-224c21636fbc
-    email: email@example.com
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "email":"email@example.com"
-   }
-]
-```
-```python
-[
-  {
-    'account_id': 'c8f51346-562d-429b-8c89-27a0f72009b3',
-    'audit_logs': [],
-    'email': 'email@example.com'
-  }
-]
-```
-
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-Returns a list of objects with account id's and their emails.
-
-## Delete email from account
-
-**HTTP Request** 
-
-`DELETE http://example.com/1.0/kb/accounts/{accountId}/emails/{email}`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X DELETE \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/email%40example.com"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
-String email = "email@example.com";
-
-accountApi.removeEmail(accountId, 
-                       email, 
-                       requestOptions);
-```
-
-```ruby
-email = 'email@example.com'
-
-account.remove_email(email,
-                     user,
-                     reason,
-                     comment,
-                     options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
-email = 'email@example.com'
-
-accountApi.remove_email(account_id,
-                        email,
-                        created_by,
-                        api_key,
-                        api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-None.
-
-**Response**
-
-A `204` http status without content.
-
-## Retrieve account email audit logs with history by id
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/accounts/{accountId}/emails/{accountEmailId}/auditLogsWithHistory`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/aa2a5614-88d9-4ec3-a042-a4771bd66670/auditLogsWithHistory"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
-UUID accountEmailId = UUID.fromString("f637441d-855e-4bf5-bac1-6426bdb116d6");
-
-List<AuditLog> result = accountApi.getAccountEmailAuditLogsWithHistory(accountId, 
-                                                                       accountEmailId, 
-                                                                       requestOptions);
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
-account_email_id = 'bb390282-6757-4f4f-8dd5-456abd9f30b2'
-
-accountApi.get_account_email_audit_logs_with_history(account_id,
-                                                     account_email_id,
-                                                     api_key,
-                                                     api_secret)
-```
-
-```ruby
-account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
-
-account.email_audit_logs_with_history(account_email_id, options)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  {
-    "changeType": "INSERT",
-    "changeDate": "2018-07-18T15:13:22.000Z",
-    "objectType": "ACCOUNT_EMAIL",
-    "objectId": "aa2a5614-88d9-4ec3-a042-a4771bd66670",
-    "changedBy": "demo",
-    "reasonCode": "demo",
-    "comments": "demo",
-    "userToken": "927546eb-3431-4bcf-8fcc-1787d2130772",
-    "history": {
-      "id": null,
-      "createdDate": "2018-07-18T15:13:22.000Z",
-      "updatedDate": "2018-07-18T15:13:22.000Z",
-      "recordId": 1,
-      "accountRecordId": 120,
-      "tenantRecordId": 101,
-      "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "email": "email@example.com",
-      "isActive": true,
-      "tableName": "ACCOUNT_EMAIL",
-      "historyTableName": "ACCOUNT_EMAIL_HISTORY"
-    }
-  }
-]
-```
-```java
-//First element of the list
-class AuditLog {
-    changeType: INSERT
-    changeDate: 2012-08-25T00:00:02.000Z
-    objectType: ACCOUNT_EMAIL
-    objectId: f637441d-855e-4bf5-bac1-6426bdb116d6
-    changedBy: Toto
-    reasonCode: i am god
-    comments: no comment
-    userToken: 317c943b-f137-4866-9798-33c5818339f9
-    history: {id=null, 
-              createdDate=2012-08-25T00:00:02.000Z, 
-              updatedDate=2012-08-25T00:00:02.000Z, 
-              recordId=1, 
-              accountRecordId=1, 
-              tenantRecordId=1, 
-              accountId=9f86c177-addd-48da-b734-da219b33f655, 
-              email=af6c8ec2-bed8-4a86-aa23-535276aad7ca, 
-              isActive=true, 
-              tableName=ACCOUNT_EMAIL, 
-              historyTableName=ACCOUNT_EMAIL_HISTORY}
-}
-```
-```ruby
-[
-   {
-      "changeType":"INSERT",
-      "changeDate":"2013-08-01T06:00:00.000Z",
-      "objectType":"ACCOUNT_EMAIL",
-      "objectId":"a4627e89-a73b-4167-a7ba-92a2881eb3c4",
-      "changedBy":"test_account_tags",
-      "userToken":"79005abf-a8cf-44e1-84fc-945381d35bd5",
-      "history":{
-         "id":null,
-         "createdDate":"2013-08-01T06:00:00.000Z",
-         "updatedDate":"2013-08-01T06:00:00.000Z",
-         "recordId":18,
-         "accountRecordId":525,
-         "tenantRecordId":842,
-         "accountId":"1ced5fc2-b032-4969-a38b-d4db9ab5368f",
-         "email":"email@example.com",
-         "isActive":true,
-         "tableName":"ACCOUNT_EMAIL",
-         "historyTableName":"ACCOUNT_EMAIL_HISTORY"
-      }
-   }
-]
-```
-```python
-[{'change_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc()),
- 'change_type': 'INSERT',
- 'changed_by': 'Me',
- 'comments': None,
- 'history': {'created_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc()),
-             'id': None,
-             'updated_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc())},
- 'object_id': 'bb390282-6757-4f4f-8dd5-456abd9f30b2',
- 'object_type': 'ACCOUNT_EMAIL',
- 'reason_code': None,
- 'user_token': '548055b7-2c5e-4315-9293-d76c00bd9737'}]
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-    
-Returns a list of account email audit logs with history.
-
-## Retrieve account invoice payments
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/accounts/{accountId}/invoicePayments`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments"	
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("e011caa5-ba35-4ac6-81cb-63b4f08122dc");
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
-
-InvoicePayments result = accountApi.getInvoicePayments(accountId, 
-                                                       NULL_PLUGIN_PROPERTIES, 
-                                                       requestOptions);
-```
-
-```ruby
-audit ='NONE'
-with_plugin_info = false
-with_attempts = false
-
-account.invoice_payments(audit,
-                         with_plugin_info,
-                         with_attempts,
-                         options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '110952d7-1b7e-482c-b6bb-103e46794927'
-
-accountApi.get_invoice_payments(account_id, api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-   {
-      "targetInvoiceId":"d1d6e8d8-c476-4b53-badf-c23f78c02c09",
-      "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "paymentId":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
-      "paymentNumber":"319",
-      "paymentExternalKey":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
-      "authAmount":0,
-      "capturedAmount":0,
-      "purchasedAmount":50.0,
-      "refundedAmount":0,
-      "creditedAmount":0,
-      "currency":"USD",
-      "paymentMethodId":"6c064894-60cb-4d7e-a679-7b2464522968",
-      "transactions":[
-         {
-            "transactionId":"91c7363c-76b9-48f5-aafa-f098d4470a2a",
-            "transactionExternalKey":"91c7363c-76b9-48f5-aafa-f098d4470a2a",
-            "paymentId":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
-            "paymentExternalKey":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
-            "transactionType":"PURCHASE",
-            "amount":50.0,
-            "currency":"USD",
-            "effectiveDate":"2013-08-01T06:00:01.000Z",
-            "processedAmount":50.0,
-            "processedCurrency":"USD",
-            "status":"SUCCESS",
-            "auditLogs":[]
-         }
-      ],
-      "auditLogs":[]
-   }
-]
-```
-```java
-//First element of the list
-class InvoicePayment {
-    org.killbill.billing.client.model.gen.InvoicePayment@40d72f3f
-    targetInvoiceId: a84bb73f-bafc-48cc-880f-3b2fa7d80d58
-    accountId: e011caa5-ba35-4ac6-81cb-63b4f08122dc
-    paymentId: 66d4954d-f8f3-4611-903e-371a6e6d076c
-    paymentNumber: 1
-    paymentExternalKey: 66d4954d-f8f3-4611-903e-371a6e6d076c
-    authAmount: 0
-    capturedAmount: 0
-    purchasedAmount: 249.95
-    refundedAmount: 0
-    creditedAmount: 0
-    currency: USD
-    paymentMethodId: 9934bcc5-3ea5-4eb9-85fb-bef74225e1de
-    transactions: [class PaymentTransaction {
-        org.killbill.billing.client.model.gen.PaymentTransaction@5ad9bcb6
-        transactionId: 5a7b1d87-98a1-4cbb-8967-f53733d032be
-        transactionExternalKey: 5a7b1d87-98a1-4cbb-8967-f53733d032be
-        paymentId: 66d4954d-f8f3-4611-903e-371a6e6d076c
-        paymentExternalKey: 66d4954d-f8f3-4611-903e-371a6e6d076c
-        transactionType: PURCHASE
-        amount: 249.95
-        currency: USD
-        effectiveDate: 2012-09-26T00:00:04.000Z
-        processedAmount: 249.95
-        processedCurrency: USD
-        status: SUCCESS
-        gatewayErrorCode: 
-        gatewayErrorMsg: 
-        firstPaymentReferenceId: null
-        secondPaymentReferenceId: null
-        properties: null
-        auditLogs: []
-    }]
-    paymentAttempts: null
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "targetInvoiceId":"d1d6e8d8-c476-4b53-badf-c23f78c02c09",
-      "accountId":"e967f6ac-e713-4bbd-aa7e-473e6d35674c",
-      "paymentId":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
-      "paymentNumber":"319",
-      "paymentExternalKey":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
-      "authAmount":0,
-      "capturedAmount":0,
-      "purchasedAmount":50.0,
-      "refundedAmount":0,
-      "creditedAmount":0,
-      "currency":"USD",
-      "paymentMethodId":"6c064894-60cb-4d7e-a679-7b2464522968",
-      "transactions":[
-         {
-            "transactionId":"91c7363c-76b9-48f5-aafa-f098d4470a2a",
-            "transactionExternalKey":"91c7363c-76b9-48f5-aafa-f098d4470a2a",
-            "paymentId":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
-            "paymentExternalKey":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
-            "transactionType":"PURCHASE",
-            "amount":50.0,
-            "currency":"USD",
-            "effectiveDate":"2013-08-01T06:00:01.000Z",
-            "processedAmount":50.0,
-            "processedCurrency":"USD",
-            "status":"SUCCESS",
-            "auditLogs":[]
-         }
-      ],
-      "auditLogs":[]
-   }
-]
-```
-```python
-[{'account_id': '110952d7-1b7e-482c-b6bb-103e46794927',
- 'audit_logs': [],
- 'auth_amount': 0.0,
- 'captured_amount': 0.0,
- 'credited_amount': 0.0,
- 'currency': 'USD',
- 'payment_attempts': None,
- 'payment_external_key': '00ac58a6-7f0e-4149-9682-7d2110a18fb7',
- 'payment_id': '00ac58a6-7f0e-4149-9682-7d2110a18fb7',
- 'payment_method_id': '4a2a793a-48b0-41f1-ab7e-eff4efda3747',
- 'payment_number': '291',
- 'purchased_amount': 50.0,
- 'refunded_amount': 0.0,
- 'target_invoice_id': '9696fb14-6016-484d-b288-f57854d61193',
- 'transactions': [{'amount': 50.0,
-                   'audit_logs': [],
-                   'currency': 'USD',
-                   'effective_date': datetime.datetime(2018, 5, 4, 16, 51, 1, tzinfo=tzutc()),
-                   'first_payment_reference_id': None,
-                   'gateway_error_code': None,
-                   'gateway_error_msg': None,
-                   'payment_external_key': '00ac58a6-7f0e-4149-9682-7d2110a18fb7',
-                   'payment_id': '00ac58a6-7f0e-4149-9682-7d2110a18fb7',
-                   'processed_amount': 50.0,
-                   'processed_currency': 'USD',
-                   'properties': None,
-                   'second_payment_reference_id': None,
-                   'status': 'SUCCESS',
-                   'transaction_external_key': '1063f716-cf90-42fe-aa2c-888fa21cf4bb',
-                   'transaction_id': '1063f716-cf90-42fe-aa2c-888fa21cf4bb',
-                   'transaction_type': 'PURCHASE'}]}]
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **audit** | enum | false | level of audit logs returned |
-| **withPluginInfo** | boolean | false | Choose true if you want plugin info. |
-| **withAttempts** | boolean | false | Choose true if you want payment attempts. |
-
-**Returns**
-
-Return a list of invoice payments objects.
-
-## Trigger a payment for all unpaid invoices
-
-This call allows to make a series of payment calls, one against each unpaid invoice using a specific payment method.
-
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/accounts/{accountId}/invoicePayments`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X POST \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments?paymentMethodId=f835c556-0694-4883-b4c1-d1b6e308409b"	
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("e011caa5-ba35-4ac6-81cb-63b4f08122dc");
-UUID paymentMethodId = null;
-Boolean externalPayment = true; // Will use a external payment method
-BigDecimal paymentAmount = null;
-LocalDate targetDate = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
-
-accountApi.payAllInvoices(accountId, 
-                          paymentMethodId, 
-                          externalPayment, 
-                          paymentAmount, 
-                          targetDate,
-                          NULL_PLUGIN_PROPERTIES, 
-                          requestOptions);
-```
-
-```ruby
-invoice_payment                  = KillBillClient::Model::InvoicePayment.new
-invoice_payment.account_id       = account.account_id
-invoice_payment.purchased_amount = '50.0'
-
-external_payment  = true
-payment_method_id = nil
-target_date       = nil
-
-invoice_payment.bulk_create(external_payment,
-                            payment_method_id,
-                            target_date,
-                            user,
-                            reason,
-                            comment,
-                            options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
-
-accountApi.pay_all_invoices(account_id, 
-                            created_by,
-                            api_key, 
-                            api_secret, 
-                            external_payment=True,
-                            payment_method_id=None,
-                            target_date=None)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **paymentMethodId** | string | false | Payment method id. |
-| **externalPayment** | boolean | true | Choose true if you use a external payment method. |
-| **paymentAmount** | string | false | Total payment amount. |
-| **targetDate** | string | false | Total payment amount. |
-
-**Response**
-
-A `204` http status without content.
-
 ## Retrieve account invoices
 
 **HTTP Request** 
@@ -4367,120 +2139,13 @@ class Invoice {
 
 Return a list with invoice objects.
 
-## Retrieve overdue state for account
+## Trigger a payment for all unpaid invoices
 
-The system can be configured to move `Account` through various [overdue](http://docs.killbill.io/0.20/userguide_subscription.html#components-overdue) , a.k.a. dunning state, when invoices are left unpaid. This allows to retrieve the current state for an `Account`.
-
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/accounts/{accountId}/overdue`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/overdue"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("d3a82897-ae72-4a2e-9bca-e3c1fe087f84");
-
-OverdueState result = accountApi.getOverdueAccount(accountId, requestOptions);
-```
-
-```ruby
-account.overdue(options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
-
-accountApi.get_overdue_account(account_id, api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-{
-  "name": "__KILLBILL__CLEAR__OVERDUE_STATE__",
-  "externalMessage": "",
-  "daysBetweenPaymentRetries": [
-    8,
-    8,
-    8
-  ],
-  "isDisableEntitlementAndChangesBlocked": false,
-  "isBlockChanges": false,
-  "isClearState": true,
-  "reevaluationIntervalDays": null
-}
-```
-```java
-class OverdueState {
-    name: OD3
-    externalMessage: Reached OD3
-    daysBetweenPaymentRetries: [8, 8, 8]
-    isDisableEntitlementAndChangesBlocked: true
-    isBlockChanges: true
-    isClearState: false
-    reevaluationIntervalDays: 5
-}
-```
-```ruby
-{
-   "name":"__KILLBILL__CLEAR__OVERDUE_STATE__",
-   "externalMessage":"",
-   "daysBetweenPaymentRetries":[
-      8,
-      8,
-      8
-   ],
-   "disableEntitlementAndChangesBlocked":false,
-   "blockChanges":false,
-   "clearState":true
-}
-```
-```python
-{
- 'days_between_payment_retries': [8, 8, 8],
- 'external_message': '',
- 'is_block_changes': False,
- 'is_clear_state': True,
- 'is_disable_entitlement_and_changes_blocked': False,
- 'name': '__KILLBILL__CLEAR__OVERDUE_STATE__',
- 'reevaluation_interval_days': None
-}
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-Returns a overdue state object.
-
-## Add a payment method
-
-
-Add a [Payment method](http://docs.killbill.io/0.20/userguide_subscription.html#_payment_methods) for a gives `Account`.
+This call allows to make a series of payment calls, one against each unpaid invoice using a specific payment method.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts/{accountId}/paymentMethods`
+`POST http://example.com/1.0/kb/accounts/{accountId}/invoicePayments`
 
 > Example Request:
 
@@ -4495,121 +2160,96 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"isDefault\": false, \"pluginName\": \"__EXTERNAL_PAYMENT__\"}" \
-    "http://localhost:8080/1.0/kb/accounts/8785164f-b5d7-4da1-9495-33f5105e8d80/paymentMethods"	
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments?paymentMethodId=f835c556-0694-4883-b4c1-d1b6e308409b"	
 ```
 
 ```java
 import org.killbill.billing.client.api.gen.AccountApi;
 protected AccountApi accountApi;
 
-UUID accountId = UUID.fromString("d751dd57-7644-469a-9e69-f98d36d86f67");
-
+UUID accountId = UUID.fromString("e011caa5-ba35-4ac6-81cb-63b4f08122dc");
 UUID paymentMethodId = null;
-String externalKey = UUID.randomUUID().toString();
-Boolean isDefault = true; // Will set this new payment method as default
-String pluginName = "__EXTERNAL_PAYMENT__"; 
-PaymentMethodPluginDetail info = new PaymentMethodPluginDetail();
-ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
-
-PaymentMethod paymentMethod = new PaymentMethod(paymentMethodId, 
-                                                externalKey, 
-                                                accountId, 
-                                                isDefault, 
-                                                pluginName, 
-                                                info, 
-                                                EMPTY_AUDIT_LOGS);
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
+Boolean externalPayment = true; // Will use a external payment method
+BigDecimal paymentAmount = null;
+LocalDate targetDate = null;
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
 
-PaymentMethod paymentMethodPP = accountApi.createPaymentMethod(accountId, 
-                                                               paymentMethod, 
-                                                               NULL_PLUGIN_NAMES, 
-                                                               NULL_PLUGIN_PROPERTIES, 
-                                                               requestOptions);
+accountApi.payAllInvoices(accountId, 
+                          paymentMethodId, 
+                          externalPayment, 
+                          paymentAmount, 
+                          targetDate,
+                          NULL_PLUGIN_PROPERTIES, 
+                          requestOptions);
 ```
 
 ```ruby
-pm             = KillBillClient::Model::PaymentMethod.new
-pm.account_id  = account.account_id
-pm.plugin_name = '__EXTERNAL_PAYMENT__'
-pm.plugin_info = nil
+invoice_payment                  = KillBillClient::Model::InvoicePayment.new
+invoice_payment.account_id       = account.account_id
+invoice_payment.purchased_amount = '50.0'
 
-is_default = true
+external_payment  = true
+payment_method_id = nil
+target_date       = nil
 
-pm.create(is_default, 
-          user, 
-          reason, 
-          comment,
-          options)
+invoice_payment.bulk_create(external_payment,
+                            payment_method_id,
+                            target_date,
+                            user,
+                            reason,
+                            comment,
+                            options)
 ```
 
 ```python
 accountApi = killbill.api.AccountApi()
-account_id = '059ecfb8-6b4d-4a89-9537-63a687e6cf10'
-body = PaymentMethod(plugin_name='__EXTERNAL_PAYMENT__', plugin_info=None)
+account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
-accountApi.create_payment_method(account_id, 
-                                 body, 
-                                 created_by, 
-                                 api_key, 
-                                 api_secret)
+accountApi.pay_all_invoices(account_id, 
+                            created_by,
+                            api_key, 
+                            api_secret, 
+                            external_payment=True,
+                            payment_method_id=None,
+                            target_date=None)
 ```
 
 > Example Response:
 
 ```shell
 # Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://localhost:8080/1.0/kb/paymentMethods/064cd61b-557d-48ba-8605-8d22912c7dfb
+< HTTP/1.1 204 No Content
 < Content-Type: application/json
-< Content-Length: 0
 ```
 ```java
-class PaymentMethod {
-    org.killbill.billing.client.model.gen.PaymentMethod@a820eeea
-    paymentMethodId: 538c5a98-879b-4735-88df-e58f7a4bf874
-    externalKey: a85a3fbe-30e8-457d-8a5a-55e16bcd730b
-    accountId: d751dd57-7644-469a-9e69-f98d36d86f67
-    isDefault: false
-    pluginName: __EXTERNAL_PAYMENT__
-    pluginInfo: null
-    auditLogs: []
-}
+no content
 ```
 ```ruby
-{
-   "paymentMethodId":"059ecfb8-6b4d-4a89-9537-63a687e6cf10",
-   "externalKey":"unknown",
-   "accountId":"fa488b6e-c52a-450a-94bf-6607ae8b484f",
-   "isDefault":true,
-   "pluginName":"__EXTERNAL_PAYMENT__",
-   "pluginInfo":{
-      "properties":[]
-   },
-   "auditLogs":[]
-}
+no content
 ```
 ```python
 no content
 ```
 
+
 **Query Parameters**
 
 | Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **isDefault** | boolean | true | Choose true if you want to set new payment as default. |
-| **payAllUnpaidInvoices** | boolean | true | Choose true if you want to pay all unpaid invoices. |
+| ---- | -----| -------- | ----------- | 
+| **paymentMethodId** | string | false | Payment method id. |
+| **externalPayment** | boolean | true | Choose true if you use a external payment method. |
+| **paymentAmount** | string | false | Total payment amount. |
+| **targetDate** | string | false | Total payment amount. |
 
-**Returns**
+**Response**
 
-Returns a payment method object.
+A `204` http status without content.
 
-## Retrieve account payment methods
+## Retrieve account invoice payments
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/paymentMethods`
+`GET http://example.com/1.0/kb/accounts/{accountId}/invoicePayments`
 
 > Example Request:
 
@@ -4619,35 +2259,39 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods"
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments"	
 ```
 
 ```java
 import org.killbill.billing.client.api.gen.AccountApi;
 protected AccountApi accountApi;
 
-UUID accountId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
+UUID accountId = UUID.fromString("e011caa5-ba35-4ac6-81cb-63b4f08122dc");
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
 
-List<PaymentMethod> paymentMethods = accountApi.getPaymentMethodsForAccount(accountId, 
-                                                                            NULL_PLUGIN_PROPERTIES, 
-                                                                            requestOptions);
+InvoicePayments result = accountApi.getInvoicePayments(accountId, 
+                                                       NULL_PLUGIN_PROPERTIES, 
+                                                       requestOptions);
 ```
 
 ```ruby
-account_id = account.account_id
+audit ='NONE'
 with_plugin_info = false
+with_attempts = false
 
-payment_method.find_all_by_account_id(account_id, 
-                                      with_plugin_info,
-                                      options)
+account.invoice_payments(audit,
+                         with_plugin_info,
+                         with_attempts,
+                         options)
 ```
+
 ```python
 accountApi = killbill.api.AccountApi()
-account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
+account_id = '110952d7-1b7e-482c-b6bb-103e46794927'
 
-accountApi.get_payment_methods_for_account(account_id, api_key, api_secret)
+accountApi.get_invoice_payments(account_id, api_key, api_secret)
 ```
+
 > Example Response:
 
 ```shell
@@ -4656,228 +2300,159 @@ accountApi.get_payment_methods_for_account(account_id, api_key, api_secret)
 < Content-Type: application/json
 
 [
-  {
-    "paymentMethodId": "f835c556-0694-4883-b4c1-d1b6e308409b",
-    "externalKey": "unknown",
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "isDefault": false,
-    "pluginName": "__EXTERNAL_PAYMENT__",
-    "pluginInfo": null,
-    "auditLogs": []
-  }
+   {
+      "targetInvoiceId":"d1d6e8d8-c476-4b53-badf-c23f78c02c09",
+      "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "paymentId":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
+      "paymentNumber":"319",
+      "paymentExternalKey":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
+      "authAmount":0,
+      "capturedAmount":0,
+      "purchasedAmount":50.0,
+      "refundedAmount":0,
+      "creditedAmount":0,
+      "currency":"USD",
+      "paymentMethodId":"6c064894-60cb-4d7e-a679-7b2464522968",
+      "transactions":[
+         {
+            "transactionId":"91c7363c-76b9-48f5-aafa-f098d4470a2a",
+            "transactionExternalKey":"91c7363c-76b9-48f5-aafa-f098d4470a2a",
+            "paymentId":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
+            "paymentExternalKey":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
+            "transactionType":"PURCHASE",
+            "amount":50.0,
+            "currency":"USD",
+            "effectiveDate":"2013-08-01T06:00:01.000Z",
+            "processedAmount":50.0,
+            "processedCurrency":"USD",
+            "status":"SUCCESS",
+            "auditLogs":[]
+         }
+      ],
+      "auditLogs":[]
+   }
 ]
 ```
 ```java
 //First element of the list
-class PaymentMethod {
-    org.killbill.billing.client.model.gen.PaymentMethod@5528b1ed
-    paymentMethodId: 1a4e5b9a-5280-4624-b2fc-2ea6d047d7fa
-    externalKey: eed36074-d493-4335-839e-2adca4cb4187
-    accountId: faf239a5-456a-4eb9-aef9-8d2254ef57dc
-    isDefault: true
-    pluginName: __EXTERNAL_PAYMENT__
-    pluginInfo: null
+class InvoicePayment {
+    org.killbill.billing.client.model.gen.InvoicePayment@40d72f3f
+    targetInvoiceId: a84bb73f-bafc-48cc-880f-3b2fa7d80d58
+    accountId: e011caa5-ba35-4ac6-81cb-63b4f08122dc
+    paymentId: 66d4954d-f8f3-4611-903e-371a6e6d076c
+    paymentNumber: 1
+    paymentExternalKey: 66d4954d-f8f3-4611-903e-371a6e6d076c
+    authAmount: 0
+    capturedAmount: 0
+    purchasedAmount: 249.95
+    refundedAmount: 0
+    creditedAmount: 0
+    currency: USD
+    paymentMethodId: 9934bcc5-3ea5-4eb9-85fb-bef74225e1de
+    transactions: [class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@5ad9bcb6
+        transactionId: 5a7b1d87-98a1-4cbb-8967-f53733d032be
+        transactionExternalKey: 5a7b1d87-98a1-4cbb-8967-f53733d032be
+        paymentId: 66d4954d-f8f3-4611-903e-371a6e6d076c
+        paymentExternalKey: 66d4954d-f8f3-4611-903e-371a6e6d076c
+        transactionType: PURCHASE
+        amount: 249.95
+        currency: USD
+        effectiveDate: 2012-09-26T00:00:04.000Z
+        processedAmount: 249.95
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: 
+        gatewayErrorMsg: 
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }]
+    paymentAttempts: null
     auditLogs: []
 }
 ```
 ```ruby
-{
-   "paymentMethodId":"059ecfb8-6b4d-4a89-9537-63a687e6cf10",
-   "externalKey":"unknown",
-   "accountId":"fa488b6e-c52a-450a-94bf-6607ae8b484f",
-   "isDefault":true,
-   "pluginName":"__EXTERNAL_PAYMENT__",
-   "pluginInfo":{
-      "properties":[]
-   },
-   "auditLogs":[]
-}
+[
+   {
+      "targetInvoiceId":"d1d6e8d8-c476-4b53-badf-c23f78c02c09",
+      "accountId":"e967f6ac-e713-4bbd-aa7e-473e6d35674c",
+      "paymentId":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
+      "paymentNumber":"319",
+      "paymentExternalKey":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
+      "authAmount":0,
+      "capturedAmount":0,
+      "purchasedAmount":50.0,
+      "refundedAmount":0,
+      "creditedAmount":0,
+      "currency":"USD",
+      "paymentMethodId":"6c064894-60cb-4d7e-a679-7b2464522968",
+      "transactions":[
+         {
+            "transactionId":"91c7363c-76b9-48f5-aafa-f098d4470a2a",
+            "transactionExternalKey":"91c7363c-76b9-48f5-aafa-f098d4470a2a",
+            "paymentId":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
+            "paymentExternalKey":"3f84661c-4fb7-42ac-8a02-3e8f48840e51",
+            "transactionType":"PURCHASE",
+            "amount":50.0,
+            "currency":"USD",
+            "effectiveDate":"2013-08-01T06:00:01.000Z",
+            "processedAmount":50.0,
+            "processedCurrency":"USD",
+            "status":"SUCCESS",
+            "auditLogs":[]
+         }
+      ],
+      "auditLogs":[]
+   }
+]
 ```
 ```python
-[{'account_id': '88a5987a-1e1c-47c5-ba95-34ef14db3d46',
+[{'account_id': '110952d7-1b7e-482c-b6bb-103e46794927',
  'audit_logs': [],
- 'external_key': 'unknown',
- 'is_default': False,
- 'payment_method_id': 'f49b513b-f045-46d8-9886-7f28df87e2a6',
- 'plugin_info': None,
- 'plugin_name': '__EXTERNAL_PAYMENT__'}]
+ 'auth_amount': 0.0,
+ 'captured_amount': 0.0,
+ 'credited_amount': 0.0,
+ 'currency': 'USD',
+ 'payment_attempts': None,
+ 'payment_external_key': '00ac58a6-7f0e-4149-9682-7d2110a18fb7',
+ 'payment_id': '00ac58a6-7f0e-4149-9682-7d2110a18fb7',
+ 'payment_method_id': '4a2a793a-48b0-41f1-ab7e-eff4efda3747',
+ 'payment_number': '291',
+ 'purchased_amount': 50.0,
+ 'refunded_amount': 0.0,
+ 'target_invoice_id': '9696fb14-6016-484d-b288-f57854d61193',
+ 'transactions': [{'amount': 50.0,
+                   'audit_logs': [],
+                   'currency': 'USD',
+                   'effective_date': datetime.datetime(2018, 5, 4, 16, 51, 1, tzinfo=tzutc()),
+                   'first_payment_reference_id': None,
+                   'gateway_error_code': None,
+                   'gateway_error_msg': None,
+                   'payment_external_key': '00ac58a6-7f0e-4149-9682-7d2110a18fb7',
+                   'payment_id': '00ac58a6-7f0e-4149-9682-7d2110a18fb7',
+                   'processed_amount': 50.0,
+                   'processed_currency': 'USD',
+                   'properties': None,
+                   'second_payment_reference_id': None,
+                   'status': 'SUCCESS',
+                   'transaction_external_key': '1063f716-cf90-42fe-aa2c-888fa21cf4bb',
+                   'transaction_id': '1063f716-cf90-42fe-aa2c-888fa21cf4bb',
+                   'transaction_type': 'PURCHASE'}]}]
 ```
 
 **Query Parameters**
 
 | Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **withPluginInfo** | boolean | true | Choose true if you want plugin info. |
+| ---- | -----| -------- | ----------- | 
+| **audit** | enum | false | level of audit logs returned |
+| **withPluginInfo** | boolean | false | Choose true if you want plugin info. |
+| **withAttempts** | boolean | false | Choose true if you want payment attempts. |
 
 **Returns**
 
-Returns a list of payment method objects.
-
-## Set the default payment method
-
-**HTTP Request** 
-
-`PUT http://example.com/1.0/kb/accounts/{accountId}/paymentMethods/{paymentMethodId}/setDefault`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X PUT \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/f835c556-0694-4883-b4c1-d1b6e308409b/setDefault"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
-UUID paymentMethodId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
-
-accountApi.setDefaultPaymentMethod(accountId, 
-                                   paymentMethodId, 
-                                   NULL_PLUGIN_PROPERTIES, 
-                                   requestOptions);
-```
-
-```ruby
-account_id = account.account_id
-KillBillClient::Model::PaymentMethod.set_default(payment_method_id,
-                                                 account_id,
-                                                 user,
-                                                 reason,
-                                                 comment,
-                                                 options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
-payment_method_id = '4f124c0d-cee7-49b1-a181-3b0738c685d7'
-
-accountApi.set_default_payment_method(account_id, 
-                                      payment_method_id, 
-                                      created_by, 
-                                      api_key, 
-                                      api_secret)
-```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **payAllUnpaidInvoices** | boolean | true | Choose true if you want to pay all unpaid invoices. |
-
-**Response**
-
-A `204` http status without content.
-
-## Refresh account payment methods
-
-This endpoint is for a rare use cases where information for a particular payment method is stored inside the third party gateway, and both Kill Bill core and its payment plugin need to have their view updated.
-
-**HTTP Request** 
-
-`PUT http://example.com/1.0/kb/accounts/{accountId}/paymentMethods/refresh`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X PUT \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/refresh"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
-String pluginName = "__EXTERNAL_PAYMENT__";
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
-
-accountApi.refreshPaymentMethods(accountId, 
-                                 pluginName, 
-                                 NULL_PLUGIN_PROPERTIES, 
-                                 requestOptions);
-```
-
-```ruby
-account_id = account.account_id
-
-KillBillClient::Model::PaymentMethod.refresh(account_id, 
-                                             user, 
-                                             reason, 
-                                             comment, 
-                                             options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
-
-accountApi.refresh_payment_methods(account_id, 
-                                   created_by,
-                                   api_key,
-                                   api_secret)
-```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-None.
-
-**Response**
-
-A `204` http status without content.
+Return a list of invoice payments objects.
 
 ## Retrieve account payments
 
@@ -5419,6 +2994,1802 @@ no content
 
 Returns a payment transaction object.
 
+
+## Add a payment method
+
+
+Add a [Payment method](http://docs.killbill.io/0.20/userguide_subscription.html#_payment_methods) for a gives `Account`.
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/accounts/{accountId}/paymentMethods`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"isDefault\": false, \"pluginName\": \"__EXTERNAL_PAYMENT__\"}" \
+    "http://localhost:8080/1.0/kb/accounts/8785164f-b5d7-4da1-9495-33f5105e8d80/paymentMethods"	
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("d751dd57-7644-469a-9e69-f98d36d86f67");
+
+UUID paymentMethodId = null;
+String externalKey = UUID.randomUUID().toString();
+Boolean isDefault = true; // Will set this new payment method as default
+String pluginName = "__EXTERNAL_PAYMENT__"; 
+PaymentMethodPluginDetail info = new PaymentMethodPluginDetail();
+ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+
+PaymentMethod paymentMethod = new PaymentMethod(paymentMethodId, 
+                                                externalKey, 
+                                                accountId, 
+                                                isDefault, 
+                                                pluginName, 
+                                                info, 
+                                                EMPTY_AUDIT_LOGS);
+ImmutableList<String> NULL_PLUGIN_NAMES = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+PaymentMethod paymentMethodPP = accountApi.createPaymentMethod(accountId, 
+                                                               paymentMethod, 
+                                                               NULL_PLUGIN_NAMES, 
+                                                               NULL_PLUGIN_PROPERTIES, 
+                                                               requestOptions);
+```
+
+```ruby
+pm             = KillBillClient::Model::PaymentMethod.new
+pm.account_id  = account.account_id
+pm.plugin_name = '__EXTERNAL_PAYMENT__'
+pm.plugin_info = nil
+
+is_default = true
+
+pm.create(is_default, 
+          user, 
+          reason, 
+          comment,
+          options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '059ecfb8-6b4d-4a89-9537-63a687e6cf10'
+body = PaymentMethod(plugin_name='__EXTERNAL_PAYMENT__', plugin_info=None)
+
+accountApi.create_payment_method(account_id, 
+                                 body, 
+                                 created_by, 
+                                 api_key, 
+                                 api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/paymentMethods/064cd61b-557d-48ba-8605-8d22912c7dfb
+< Content-Type: application/json
+< Content-Length: 0
+```
+```java
+class PaymentMethod {
+    org.killbill.billing.client.model.gen.PaymentMethod@a820eeea
+    paymentMethodId: 538c5a98-879b-4735-88df-e58f7a4bf874
+    externalKey: a85a3fbe-30e8-457d-8a5a-55e16bcd730b
+    accountId: d751dd57-7644-469a-9e69-f98d36d86f67
+    isDefault: false
+    pluginName: __EXTERNAL_PAYMENT__
+    pluginInfo: null
+    auditLogs: []
+}
+```
+```ruby
+{
+   "paymentMethodId":"059ecfb8-6b4d-4a89-9537-63a687e6cf10",
+   "externalKey":"unknown",
+   "accountId":"fa488b6e-c52a-450a-94bf-6607ae8b484f",
+   "isDefault":true,
+   "pluginName":"__EXTERNAL_PAYMENT__",
+   "pluginInfo":{
+      "properties":[]
+   },
+   "auditLogs":[]
+}
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **isDefault** | boolean | true | Choose true if you want to set new payment as default. |
+| **payAllUnpaidInvoices** | boolean | true | Choose true if you want to pay all unpaid invoices. |
+
+**Returns**
+
+Returns a payment method object.
+
+## Retrieve account payment methods
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/paymentMethods`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+List<PaymentMethod> paymentMethods = accountApi.getPaymentMethodsForAccount(accountId, 
+                                                                            NULL_PLUGIN_PROPERTIES, 
+                                                                            requestOptions);
+```
+
+```ruby
+account_id = account.account_id
+with_plugin_info = false
+
+payment_method.find_all_by_account_id(account_id, 
+                                      with_plugin_info,
+                                      options)
+```
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
+
+accountApi.get_payment_methods_for_account(account_id, api_key, api_secret)
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "paymentMethodId": "f835c556-0694-4883-b4c1-d1b6e308409b",
+    "externalKey": "unknown",
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "isDefault": false,
+    "pluginName": "__EXTERNAL_PAYMENT__",
+    "pluginInfo": null,
+    "auditLogs": []
+  }
+]
+```
+```java
+//First element of the list
+class PaymentMethod {
+    org.killbill.billing.client.model.gen.PaymentMethod@5528b1ed
+    paymentMethodId: 1a4e5b9a-5280-4624-b2fc-2ea6d047d7fa
+    externalKey: eed36074-d493-4335-839e-2adca4cb4187
+    accountId: faf239a5-456a-4eb9-aef9-8d2254ef57dc
+    isDefault: true
+    pluginName: __EXTERNAL_PAYMENT__
+    pluginInfo: null
+    auditLogs: []
+}
+```
+```ruby
+{
+   "paymentMethodId":"059ecfb8-6b4d-4a89-9537-63a687e6cf10",
+   "externalKey":"unknown",
+   "accountId":"fa488b6e-c52a-450a-94bf-6607ae8b484f",
+   "isDefault":true,
+   "pluginName":"__EXTERNAL_PAYMENT__",
+   "pluginInfo":{
+      "properties":[]
+   },
+   "auditLogs":[]
+}
+```
+```python
+[{'account_id': '88a5987a-1e1c-47c5-ba95-34ef14db3d46',
+ 'audit_logs': [],
+ 'external_key': 'unknown',
+ 'is_default': False,
+ 'payment_method_id': 'f49b513b-f045-46d8-9886-7f28df87e2a6',
+ 'plugin_info': None,
+ 'plugin_name': '__EXTERNAL_PAYMENT__'}]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **withPluginInfo** | boolean | true | Choose true if you want plugin info. |
+
+**Returns**
+
+Returns a list of payment method objects.
+
+## Set the default payment method
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/accounts/{accountId}/paymentMethods/{paymentMethodId}/setDefault`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/f835c556-0694-4883-b4c1-d1b6e308409b/setDefault"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
+UUID paymentMethodId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+accountApi.setDefaultPaymentMethod(accountId, 
+                                   paymentMethodId, 
+                                   NULL_PLUGIN_PROPERTIES, 
+                                   requestOptions);
+```
+
+```ruby
+account_id = account.account_id
+KillBillClient::Model::PaymentMethod.set_default(payment_method_id,
+                                                 account_id,
+                                                 user,
+                                                 reason,
+                                                 comment,
+                                                 options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
+payment_method_id = '4f124c0d-cee7-49b1-a181-3b0738c685d7'
+
+accountApi.set_default_payment_method(account_id, 
+                                      payment_method_id, 
+                                      created_by, 
+                                      api_key, 
+                                      api_secret)
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **payAllUnpaidInvoices** | boolean | true | Choose true if you want to pay all unpaid invoices. |
+
+**Response**
+
+A `204` http status without content.
+
+## Refresh account payment methods
+
+This endpoint is for a rare use cases where information for a particular payment method is stored inside the third party gateway, and both Kill Bill core and its payment plugin need to have their view updated.
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/accounts/{accountId}/paymentMethods/refresh`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/refresh"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
+String pluginName = "__EXTERNAL_PAYMENT__";
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+accountApi.refreshPaymentMethods(accountId, 
+                                 pluginName, 
+                                 NULL_PLUGIN_PROPERTIES, 
+                                 requestOptions);
+```
+
+```ruby
+account_id = account.account_id
+
+KillBillClient::Model::PaymentMethod.refresh(account_id, 
+                                             user, 
+                                             reason, 
+                                             comment, 
+                                             options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
+
+accountApi.refresh_payment_methods(account_id, 
+                                   created_by,
+                                   api_key,
+                                   api_secret)
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Response**
+
+A `204` http status without content.
+
+
+## Retrieve overdue state for account
+
+The system can be configured to move `Account` through various [overdue](http://docs.killbill.io/0.20/userguide_subscription.html#components-overdue) , a.k.a. dunning state, when invoices are left unpaid. This allows to retrieve the current state for an `Account`.
+
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/overdue`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/overdue"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("d3a82897-ae72-4a2e-9bca-e3c1fe087f84");
+
+OverdueState result = accountApi.getOverdueAccount(accountId, requestOptions);
+```
+
+```ruby
+account.overdue(options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
+
+accountApi.get_overdue_account(account_id, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+{
+  "name": "__KILLBILL__CLEAR__OVERDUE_STATE__",
+  "externalMessage": "",
+  "daysBetweenPaymentRetries": [
+    8,
+    8,
+    8
+  ],
+  "isDisableEntitlementAndChangesBlocked": false,
+  "isBlockChanges": false,
+  "isClearState": true,
+  "reevaluationIntervalDays": null
+}
+```
+```java
+class OverdueState {
+    name: OD3
+    externalMessage: Reached OD3
+    daysBetweenPaymentRetries: [8, 8, 8]
+    isDisableEntitlementAndChangesBlocked: true
+    isBlockChanges: true
+    isClearState: false
+    reevaluationIntervalDays: 5
+}
+```
+```ruby
+{
+   "name":"__KILLBILL__CLEAR__OVERDUE_STATE__",
+   "externalMessage":"",
+   "daysBetweenPaymentRetries":[
+      8,
+      8,
+      8
+   ],
+   "disableEntitlementAndChangesBlocked":false,
+   "blockChanges":false,
+   "clearState":true
+}
+```
+```python
+{
+ 'days_between_payment_retries': [8, 8, 8],
+ 'external_message': '',
+ 'is_block_changes': False,
+ 'is_clear_state': True,
+ 'is_disable_entitlement_and_changes_blocked': False,
+ 'name': '__KILLBILL__CLEAR__OVERDUE_STATE__',
+ 'reevaluation_interval_days': None
+}
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+Returns a overdue state object.
+
+
+## Block an account
+
+As part of the entitlement features, Kill Bill provides an abstraction to include `BlockingState` events into the per `Account` event stream. The main idea is to allow to modify billing -- e.g pause a specific subscription, all subscriptions, ... -- or the entitlement state -- disable service associated with a given subscription. The [entitlement internal documentation](http://docs.killbill.io/latest/entitlement_subsystem.html) provides some overview of the mechanism. Blocking states are mostly manipulated from inside Kill Bill core, but the functionality is exposed through the API, with the caveat that it is an advanced feature and can lead to unintented behavior if not used properly.
+
+
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/accounts/{accountId}/block`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"stateName\": \"STATE1\", \"service\": \"ServiceStateService\", \"isBlockChange\": false, \"isBlockEntitlement\": false, \"isBlockBilling\": false, \"effectiveDate\": \"2018-07-17T21:17:28.842Z\", \"type\": \"ACCOUNT\" }" \
+    "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block"
+```
+
+```java
+TODO
+```
+
+```ruby
+state_name = "STATE1"
+service = "ServiceStateService"
+block_change = false
+block_entitlement = false
+block_billing = false
+requested_date = "2013-08-01"
+
+account.set_blocking_state(state_name,
+                           service,
+                           block_change, 
+                           block_entitlement,
+                           block_billing, 
+                           requested_date,
+                           user, 
+                           reason, 
+                           comment,
+                           options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+body = BlockingState(state_name='STATE1',
+                     service='ServiceStateService',
+                     is_block_change=False,
+                     is_block_entitlement=False,
+                     is_block_billing=False)
+
+accountApi.add_account_blocking_state(account_id, 
+                                      body, 
+                                      created_by, 
+                                      api_key, 
+                                      api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block?blockingStateTypes=ACCOUNT
+< Content-Length: 0
+```
+```java
+**TODO**
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **requestedDate** | string | true | Requested date for block an account |
+
+**Returns**
+
+A `201` http status without content.
+
+## Retrieve blocking states for account
+
+Retrieves the `BlockingState` assocaited to a given resource.
+`BlockingState` can be set at the `Account`, `Bundle` or `Subscription`.
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/block`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block?blockingStateTypes=ACCOUNT"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("ee6835f0-8347-42d3-958c-9a939383ba28");
+
+List<BlockingStateType> blockingStateTypes = ImmutableList.<BlockingStateType>of(BlockingStateType.SUBSCRIPTION_BUNDLE);
+List<String> blockingStateSvcs = ImmutableList.<String>of("service");
+
+BlockingStates blockingStates = accountApi.getBlockingStates(accountId, 
+                                                             blockingStateTypes, 
+                                                             blockingStateSvcs, 
+                                                             AuditLevel.FULL, 
+                                                             requestOptions);
+```
+
+```ruby
+blocking_state_types = 'ACCOUNT'
+blocking_state_svcs = nil
+audit = 'NONE'
+
+account.blocking_states(blocking_state_types,
+                        blocking_state_svcs, 
+                        audit,
+                        options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
+accountApi.get_blocking_states(account_id, api_key, api_secret)
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "blockedId": "10483c3a-3394-4667-8519-0d849e9a8ec2",
+    "stateName": "STATE1",
+    "service": "ServiceStateService",
+    "isBlockChange": false,
+    "isBlockEntitlement": false,
+    "isBlockBilling": false,
+    "effectiveDate": "2018-07-18T14:45:37.000Z",
+    "type": "ACCOUNT",
+    "auditLogs": []
+  }
+]
+```
+```java
+//First element of the list
+class BlockingState {
+    org.killbill.billing.client.model.gen.BlockingState@95047f38
+    blockedId: e3d9aa57-1c1e-4206-a44a-d87e69d5bf2a
+    stateName: block
+    service: service
+    isBlockChange: false
+    isBlockEntitlement: true
+    isBlockBilling: true
+    effectiveDate: 2012-04-25T00:03:42.000Z
+    type: SUBSCRIPTION_BUNDLE
+    auditLogs: [class AuditLog {
+        changeType: INSERT
+        changeDate: 2012-04-25T00:03:45.000Z
+        objectType: BLOCKING_STATES
+        objectId: 8fc09849-bd98-417f-a0ab-943f9ce8e15d
+        changedBy: Toto
+        reasonCode: i am god
+        comments: no comment
+        userToken: 46d56616-1545-424a-882b-b158442534ff
+        history: null
+    }]
+}
+```
+```ruby
+[
+   {
+      "blockedId":"d13b2272-d182-499c-a393-8efed203ae7d",
+      "stateName":"STATE1",
+      "service":"ServiceStateService",
+      "blockChange":false,
+      "blockEntitlement":false,
+      "blockBilling":false,
+      "effectiveDate":"2013-08-01T06:00:00.000Z",
+      "type":"ACCOUNT",
+      "auditLogs":[]
+   }
+]
+```
+```python
+[
+  {
+    'audit_logs': [],
+    'blocked_id': '7e7dd5a9-6b65-4f40-a14b-1f4f408ef83c',
+    'effective_date': datetime.datetime(2018, 5, 3, 19, 19, 12, tzinfo=tzutc()),
+    'is_block_billing': False,
+    'is_block_change': False,
+    'is_block_entitlement': False,
+    'service': 'ServiceStateService',
+    'state_name': 'STATE1',
+    'type': 'ACCOUNT'
+  }
+]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **blockingStateTypes** | string | true | blocking state types |
+| **blockingStateSvcs** | string | false | blocking state svcs |
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Returns a blocking state object
+
+## Add account email
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/accounts/{accountId}/emails`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"email\": \"email@example.com\"}" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
+String email = "email@example.com";
+
+AccountEmail accountEmail = new AccountEmail(accountId, 
+                                             email, 
+                                             AuditLevel.NONE);
+
+accountApi.addEmail(accountId, 
+                    accountEmail, 
+                    requestOptions);
+```
+
+```ruby
+account.email = 'email@example.com'
+
+account.add_email(account.email,
+                  user,
+                  reason,
+                  comment,
+                  options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
+body = AccountEmail(account_id=account_id, email='email@example.com')
+
+accountApi.add_email(account_id,
+                     body,
+                     created_by,
+                     api_key,
+                     api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails
+< Content-Type: application/json
+< Content-Length: 0
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+
+**Query Parameters**
+
+None.
+
+**Response**
+
+A `201` http status without content.
+
+## Retrieve an account emails
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/emails`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("cd026587-c93b-471c-a98d-224c21636fbc");
+
+List<AccountEmail> emails = accountApi.getEmails(accountId, requestOptions);
+```
+
+```ruby
+audit = 'NONE'
+account.emails(audit, options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'c8f51346-562d-429b-8c89-27a0f72009b3'
+
+accountApi.get_emails(account_id, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+   {
+      "accountId":"e4ca38b3-934d-42e8-a292-ffb0af5549f2",
+      "email":"email@example.com"
+   }
+]
+```
+```java
+//First element of the list
+class AccountEmail {
+    org.killbill.billing.client.model.gen.AccountEmail@bdc0f8ad
+    accountId: cd026587-c93b-471c-a98d-224c21636fbc
+    email: email@example.com
+    auditLogs: []
+}
+```
+```ruby
+[
+   {
+      "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "email":"email@example.com"
+   }
+]
+```
+```python
+[
+  {
+    'account_id': 'c8f51346-562d-429b-8c89-27a0f72009b3',
+    'audit_logs': [],
+    'email': 'email@example.com'
+  }
+]
+```
+
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+Returns a list of objects with account id's and their emails.
+
+## Delete email from account
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/accounts/{accountId}/emails/{email}`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/email%40example.com"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
+String email = "email@example.com";
+
+accountApi.removeEmail(accountId, 
+                       email, 
+                       requestOptions);
+```
+
+```ruby
+email = 'email@example.com'
+
+account.remove_email(email,
+                     user,
+                     reason,
+                     comment,
+                     options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
+email = 'email@example.com'
+
+accountApi.remove_email(account_id,
+                        email,
+                        created_by,
+                        api_key,
+                        api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Response**
+
+A `204` http status without content.
+
+## List children accounts
+
+When using the [hierarchical account](http://docs.killbill.io/latest/ha.html) feature, this api allows to retrieve
+all children `Account` for a given parent `Account`.
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/children`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/children"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID parentAccountId = UUID.fromString("ee6835f0-8347-42d3-958c-9a939383ba28");
+Boolean accountWithBalance = true; // Will include account balance
+Boolean accountWithBalanceAndCBA = true; // Will include account balance and CBA info
+
+Accounts childrenAccounts = accountApi.getChildrenAccounts(parentAccountId, 
+                                                           accountWithBalance, 
+                                                           accountWithBalanceAndCBA, 
+                                                           AuditLevel.NONE, 
+                                                           requestOptions);
+```
+
+```ruby
+account_id = account.account_id
+with_balance = false
+with_balance_and_cba = false
+audit = 'NONE'
+
+childrens_account = KillBillClient::Model::Account.children(account_id,
+                                                            with_balance, 
+                                                            with_balance_and_cba, 
+                                                            audit, 
+                                                            options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
+
+accountApi.get_children_accounts(account_id, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+   {
+      "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
+      "name":"John Doe",
+      "externalKey":"1522172592-516014",
+      "email":"John@example.com",
+      "billCycleDayLocal":0,
+      "currency":"USD",
+      "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
+      "isPaymentDelegatedToParent":true,
+      "timeZone":"UTC",
+      "address1":"7, yoyo road",
+      "address2":"Apt 5",
+      "postalCode":"94105",
+      "company":"Unemployed",
+      "city":"San Francisco",
+      "state":"California",
+      "country":"US",
+      "locale":"fr_FR",
+      "auditLogs":[]
+   }
+]
+```
+```java
+//First element of the list
+class Account {
+    org.killbill.billing.client.model.gen.Account@cfbf4058
+    accountId: b58e1b76-461c-4681-9ecf-3a3e5e95fc27
+    name: 01f814b3-b4c2-41e9-9d6c-4a010916424c
+    firstNameLength: 4
+    externalKey: 3bf9144f-11a3-4a0b-9923-03a1c667ba93
+    email: 8c0f9@f059d
+    billCycleDayLocal: 0
+    currency: USD
+    parentAccountId: e72357f9-76ff-4533-b846-b61f39973b70
+    isPaymentDelegatedToParent: true
+    paymentMethodId: null
+    referenceTime: 2012-08-25T00:00:02.000Z
+    timeZone: UTC
+    address1: 12 rue des ecoles
+    address2: Poitier
+    postalCode: 44 567
+    company: Renault
+    city: Quelque part
+    state: Poitou
+    country: France
+    locale: fr
+    phone: 81 53 26 56
+    notes: notes
+    isMigrated: false
+    accountBalance: 0
+    accountCBA: 0E-9
+    auditLogs: []
+}
+```
+```ruby
+[
+   {
+      "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
+      "name":"John Doe",
+      "externalKey":"1522172592-516014",
+      "email":"John@example.com",
+      "billCycleDayLocal":0,
+      "currency":"USD",
+      "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
+      "isPaymentDelegatedToParent":true,
+      "timeZone":"UTC",
+      "address1":"7, yoyo road",
+      "address2":"Apt 5",
+      "postalCode":"94105",
+      "company":"Unemployed",
+      "city":"San Francisco",
+      "state":"California",
+      "country":"US",
+      "locale":"fr_FR",
+      "auditLogs":[
+
+      ]
+   }
+]
+```
+```python
+[
+    {
+     'account_balance': None,
+     'account_cba': None,
+     'account_id': '07c0cef4-41c5-4606-b2cd-661332cdd41c',
+     'address1': None,
+     'address2': None,
+     'audit_logs': [],
+     'bill_cycle_day_local': 0,
+     'city': None,
+     'company': None,
+     'country': 'USA',
+     'currency': 'USD',
+     'email': None,
+     'external_key': 'rpwtgr',
+     'first_name_length': None,
+     'is_migrated': False,
+     'is_notified_for_invoices': False,
+     'is_payment_delegated_to_parent': False,
+     'locale': None,
+     'name': 'John',
+     'notes': None,
+     'parent_account_id': None,
+     'payment_method_id': None,
+     'phone': None,
+     'postal_code': None,
+     'reference_time': datetime.datetime(2018, 5, 3, 15, 53, 44, tzinfo=tzutc()),
+     'state': 'CA',
+     'time_zone': 'UTC'
+    }
+]
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **accountWithBalance** | boolean | false | if true, returns `accountBalance` info |
+| **accountWithBalanceAndCBA** | boolean | false | if true, returns `accountBalance` and `accountCBA` info |
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Returns a list of children account objects.
+
+## Transfer a given child credit to the parent level
+
+In the context of the Hierarchical Account feature, this allows to move the potential child credit at the parent level.
+
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/accounts/{childAccountId}/transferCredit`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/transferCredit"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID childAccountId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
+
+accountApi.transferChildCreditToParent(childAccountId, requestOptions);
+```
+
+```ruby
+account.transfer_child_credit(user,
+                              reason,
+                              comment,
+                              options)
+```
+```python
+accountApi = killbill.api.AccountApi()
+child_account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
+
+accountApi.transfer_child_credit_to_parent(child_account_id,
+                                           created_by, 
+                                           api_key, 
+                                           api_secret)
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+A `204` http status without content.
+
+
+## Add custom fields to account
+
+Allow to add custom fields for a given `Account`.
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/accounts/{accountId}/customFields`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ { \"objectType\": \"ACCOUNT\", \"name\": \"Test Custom Field\", \"value\": \"demo_test_value\" }]" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("15434b45-54c1-4a44-851c-b1f2f7a52f03");
+final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+
+CustomFields customFields = new CustomFields();
+customFields.add(new CustomField(null, 
+                                 accountId,
+                                 "Test Custom Field", 
+                                 "test_value", 
+                                 EMPTY_AUDIT_LOGS));
+
+accountApi.createAccountCustomFields(accountId, 
+                                     customFields, 
+                                     requestOptions);
+```
+
+```ruby
+custom_field = KillBillClient::Model::CustomFieldAttributes.new
+custom_field.object_type = 'ACCOUNT'
+custom_field.name = 'Test Custom Field'
+custom_field.value = 'test_value'
+
+account.add_custom_field(custom_field, 
+                         user,
+                         reason,
+                         comment,
+                         options)
+```
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
+body = CustomField(name='Test Custom Field', value='test_value')
+
+accountApi.create_account_custom_fields(account_id,
+                                        [body],
+                                        created_by,
+                                        api_key,
+                                        api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields
+< Content-Type: application/json
+< Content-Length: 0
+```
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: 59860a0d-c032-456d-a35e-3a48fe8579e5
+    objectType: ACCOUNT
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
+```
+```ruby
+[
+   {
+      "customFieldId":"6e571e22-b794-413c-be6f-1b2aa4bf9824",
+      "objectId":"0149ffc6-fdfd-40b1-8cf4-29a66aef51d4",
+      "objectType":"ACCOUNT",
+      "name":"Test Custom Field",
+      "value":"test_value",
+      "auditLogs":[]
+   }
+]
+```
+```python
+no content
+```
+
+Note that none of these fields are mantatory when creating the `Account`. This allows to create shell accounts, simply for the purpose of having a valid `accountId` and create state around it -- e.g payments, .. 
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+Returns a custom field object.
+
+## Retrieve all custom fields
+
+Retrieves the custom fields attached to various resources owned by the `Account`.
+Assuming there were custom fields attached to various subscriptions, invoices, payments, ... for this specific account, this endpoint would allow to retrieve them all or potentially filter them by type -- e.g `Subscription`.
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/allCustomFields`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allCustomFields"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("b38de59f-7dd0-447a-a508-9b022b808250");
+
+CustomFields allAccountCustomFields = accountApi.getAllCustomFields(accountId, 
+                                                                    ObjectType.ACCOUNT, 
+                                                                    AuditLevel.FULL, 
+                                                                    requestOptions);
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
+accountApi.get_all_custom_fields(account_id, 
+                                 api_key, 
+                                 api_secret, 
+                                 object_type='ACCOUNT')
+```
+
+```ruby
+object_type = 'ACCOUNT'
+audit = 'NONE'
+
+account.all_custom_fields(object_type,
+                          audit, 
+                          options)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "objectType": "ACCOUNT",
+    "name": "Test Custom Field",
+    "value": "test_value",
+    "auditLogs": []
+  }
+]
+```
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@238cc919
+    customFieldId: dba8ec60-ee02-4231-9fa0-6613773b4e9e
+    objectId: b38de59f-7dd0-447a-a508-9b022b808250
+    objectType: ACCOUNT
+    name: 385af
+    value: 8296f
+    auditLogs: [class AuditLog {
+        changeType: INSERT
+        changeDate: 2012-08-25T00:00:01.000Z
+        objectType: CUSTOM_FIELD
+        objectId: dba8ec60-ee02-4231-9fa0-6613773b4e9e
+        changedBy: Toto
+        reasonCode: i am god
+        comments: no comment
+        userToken: 10e278f1-61b8-4885-b1f6-d6f4db19c998
+        history: null
+    }]
+}
+```
+```ruby
+[
+   {
+      "tagId":"ce1715f6-35e8-4d86-9063-65a54625992d",
+      "objectType":"ACCOUNT",
+      "objectId":"0f55a05d-9946-41d7-be75-ee71f49829b1",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[]
+   }
+]
+```
+```python
+[
+  {
+    'audit_logs': [],
+    'object_id': '8f2618dc-9e8e-4df6-b835-68c747a48313',
+    'object_type': 'ACCOUNT',
+    'tag_definition_id': '00000000-0000-0000-0000-000000000002',
+    'tag_definition_name': 'AUTO_INVOICING_OFF',
+    'tag_id': '726a64eb-0fc2-4e1b-81c4-ebf879a3b5b6'
+  }
+]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **objectType** | string | false | choose type of object (e.g. `ACCOUNT`, `BUNDLE`, `SUBSCRIPTION`) |
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+    
+Returns a list of custom fields objects
+
+## Retrieve account custom fields
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/customFields`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"	
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+
+List<CustomField> accountCustomFields = accountApi.getAccountCustomFields(accountId,
+                                                                          AuditLevel.NONE, 
+                                                                          requestOptions);
+```
+
+```ruby
+audit = 'NONE'
+
+account.custom_fields(audit, options)
+```
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
+
+accountApi.get_account_custom_fields(account_id, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "objectType": "ACCOUNT",
+    "name": "Test Custom Field",
+    "value": "test_value",
+    "auditLogs": []
+  }
+]
+```
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: 59860a0d-c032-456d-a35e-3a48fe8579e5
+    objectType: ACCOUNT
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
+```
+```ruby
+[
+   {
+      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
+      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
+      "objectType":"ACCOUNT",
+      "name":"Test Custom Field",
+      "value":"test_value",
+      "auditLogs":[]
+   }
+]
+```
+```python
+[
+ {
+   'audit_logs': [],
+   'custom_field_id': 'd7bb1afb-df19-4db2-ba7f-9a4f71e9b131',
+   'name': 'Test Custom Field',
+   'object_id': '89c45186-8ab0-44f8-8bc9-e670924830a2',
+   'object_type': 'ACCOUNT',
+   'value': 'test_value'
+ }
+]
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Returns a list of custom field objects.
+
+## Modify custom fields to account
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/accounts/{accountId}/customFields`
+
+
+> Example Request:
+
+```shell
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "[ { \"customFieldId\": \"48e24ca0-1cfe-41c3-85e7-0ff0d51679fe\", \"objectId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"objectType\": \"ACCOUNT\", \"name\": \"Test Custom Field\", \"value\": \"test_modify_value\", \"auditLogs\": [] }]" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+CustomField customFieldModified = new CustomField();
+customFieldModified.setCustomFieldId(customFieldsId);
+customFieldModified.setValue("NewValue");
+
+accountApi.modifyAccountCustomFields(accountId, 
+                                     customFieldModified, 
+                                     requestOptions);
+```
+
+```ruby
+custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
+custom_field.name = 'Test Modify'
+custom_field.value = 'test_modify_value'
+
+account.modify_custom_field(custom_field,                                                                                            
+                            user, 
+                            reason,
+                            comment, 
+                            options)
+```
+
+```python
+account = killbill.api.AccountApi()
+body = CustomField(custom_field_id=custom_field_id, 
+                   name='Test Custom Field', 
+                   value='test_value')
+
+account.modify_account_custom_fields(account_id, 
+                                     [body], 
+                                     created_by, 
+                                     api_key, 
+                                     api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+A `204` http status without content.
+
+## Remove custom fields from account
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/accounts/{accountId}/customField`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+accountApi.deleteAccountCustomFields(accountId, 
+                                     customFieldsId, 
+                                     requestOptions);
+```
+
+```ruby
+custom_field_id = custom_field.id
+
+account.remove_custom_field(custom_field_id, 
+                            user, 
+                            reason,
+                            comment, 
+                            options)
+```
+
+```python
+account = killbill.api.AccountApi()
+account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
+custom_field_id = '9913e0f6-b5ef-498b-ac47-60e1626eba8f'
+custom_field = [custom_field_id]
+
+account.delete_account_custom_fields(account_id,
+                                     created_by,
+                                     api_key,
+                                     api_secret,
+                                     custom_field=custom_field)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
+
+**Response**
+
+A `204` http status without content.
+
+
 ## Add tags to account
 
 **HTTP Request** 
@@ -5524,6 +4895,126 @@ no content
 **Returns**
 
 A `201` http status without content.
+
+
+## Retrieve all account tags
+
+
+Retrieves the tags attached to various resources owned by the `Account`.
+Assuming there were tagged subscriptions, invoices, payments, ... for this specific account, this endpoint would allow to retrieve them all or potentially filter them by type -- e.g `Subscription`.
+
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/allTags`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allTags"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("ee6835f0-8347-42d3-958c-9a939383ba28");
+
+Tags allAccountTags = accountApi.getAllTags(accountId,
+                                            ObjectType.ACCOUNT,
+                                            AuditLevel.NONE,
+                                            requestOptions);
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
+accountApi.get_account_tags(account_id, api_key, api_secret)
+```
+
+```ruby
+object_type = 'ACCOUNT'
+included_deleted = false
+audit = 'NONE'
+
+account.all_tags(object_type, 
+                 included_deleted, 
+                 audit, 
+                 options)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "tagId": "0f7c5837-1ed9-41ab-b391-9ef7ea4ab049",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "tagDefinitionId": "00000000-0000-0000-0000-000000000002",
+    "tagDefinitionName": "AUTO_INVOICING_OFF",
+    "auditLogs": []
+  }
+]
+```
+```java
+//First element of the list
+class Tag {
+    org.killbill.billing.client.model.gen.Tag@45e9c8ec
+    tagId: 659b37ed-59d7-4b46-b4e4-37d11cdc0bce
+    objectType: ACCOUNT
+    objectId: ee6835f0-8347-42d3-958c-9a939383ba28
+    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionName: AUTO_PAY_OFF
+    auditLogs: []
+}
+```
+```ruby
+[
+   {
+      "tagId":"ce1715f6-35e8-4d86-9063-65a54625992d",
+      "objectType":"ACCOUNT",
+      "objectId":"0f55a05d-9946-41d7-be75-ee71f49829b1",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[]
+   }
+]
+```
+```python
+[
+  {
+    'audit_logs': [],
+    'object_id': '8f2618dc-9e8e-4df6-b835-68c747a48313',
+    'object_type': 'ACCOUNT',
+    'tag_definition_id': '00000000-0000-0000-0000-000000000002',
+    'tag_definition_name': 'AUTO_INVOICING_OFF',
+    'tag_id': '726a64eb-0fc2-4e1b-81c4-ebf879a3b5b6'
+  }
+]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **objectType** | string | false | choose type of object (e.g. `ACCOUNT`, `BUNDLE`, `SUBSCRIPTION`) |
+| **includedDeleted** | boolean | true | choose true to include deleted tags |
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+    
+Returns a list of tag objects
 
 ## Retrieve account tags
 
@@ -5729,6 +5220,603 @@ no content
 **Response**
 
 A `204` http status without content.
+
+## Retrieve audit logs by account id
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/auditLogs`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/auditLogs"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("e9432491-6558-4007-85ef-cdae171d240c");
+
+AuditLogs auditLogsJson = accountApi.getAccountAuditLogs(accountId, 
+                                                         requestOptions);
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '4e4d8acd-c97d-447a-814b-28f995a9106c'
+
+accountApi.get_account_audit_logs(account_id, api_key, api_secret)
+```
+
+```ruby
+account.audit(options)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2018-07-17T15:02:45.000Z",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "bca75b40-ffa3-41f8-9fde-06f83ee303e8",
+    "history": null
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2018-07-17T18:46:47.000Z",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "9a61a1e6-78f3-43d3-addf-e7ada180b23d",
+    "history": null
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2018-07-17T18:48:37.000Z",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "0c41a04d-4037-4fa9-af71-dfe54af4d3ae",
+    "history": null
+  },
+  {
+    "changeType": "INSERT",
+    "changeDate": "2018-07-17T19:07:25.000Z",
+    "objectType": "CUSTOM_FIELD",
+    "objectId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "c9b9ab11-14b1-41b5-8371-1c425f273336",
+    "history": null
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2018-07-17T19:26:46.000Z",
+    "objectType": "CUSTOM_FIELD",
+    "objectId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "fd26b216-deb2-43d4-b748-dec8e9917ada",
+    "history": null
+  },
+  {
+    "changeType": "DELETE",
+    "changeDate": "2018-07-17T20:02:01.000Z",
+    "objectType": "CUSTOM_FIELD",
+    "objectId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "0d5c8db7-974f-47e0-9332-5d9625f72155",
+    "history": null
+  }
+]
+```
+```java
+//First element of the list
+class AuditLog {
+    changeType: INSERT
+    changeDate: 2012-08-25T00:00:01.000Z
+    objectType: ACCOUNT
+    objectId: e9432491-6558-4007-85ef-cdae171d240c
+    changedBy: Toto
+    reasonCode: i am god
+    comments: no comment
+    userToken: 6cd7a8ec-0678-436f-a2cb-a58f9ee3668b
+    history: null
+}
+```
+```ruby
+[
+   {
+      "changeType":"INSERT",
+      "changeDate":"2013-08-01T06:00:00.000Z",
+      "objectType":"ACCOUNT",
+      "objectId":"ccaf0822-a58b-4f1d-82d2-907439b68054",
+      "changedBy":"test_account_tags",
+      "userToken":"17d7807c-5c44-4e57-adc5-d0323c779b1f"
+   }
+]
+```
+```python
+[{'change_date': datetime.datetime(2018, 5, 23, 14, 30, 5, tzinfo=tzutc()),
+ 'change_type': 'INSERT',
+ 'changed_by': 'test',
+ 'comments': None,
+ 'object_id': '4e4d8acd-c97d-447a-814b-28f995a9106c',
+ 'object_type': 'ACCOUNT',
+ 'reason_code': None,
+ 'user_token': '89ef6e86-4869-4974-abb9-0d870e8578b2'}]
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of account audit logs.
+
+## Retrieve account audit logs with history by account id
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/auditLogsWithHistory`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/auditLogsWithHistory"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("ecbff3be-3cbf-4e1d-ae05-d323d4597877");
+
+List<AuditLog> auditLogWithHistories = accountApi.getAccountAuditLogsWithHistory(accountId, 
+                                                                                 requestOptions);
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+
+accountApi.get_account_audit_logs_with_history(account_id, api_key, api_secret)
+```
+
+```ruby
+account.audit_logs_with_history(options)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2018-07-17T15:02:45.000Z",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "bca75b40-ffa3-41f8-9fde-06f83ee303e8",
+    "history": {
+      "id": null,
+      "createdDate": "2018-07-17T15:02:45.000Z",
+      "updatedDate": "2018-07-17T15:02:45.000Z",
+      "recordId": 120,
+      "accountRecordId": 120,
+      "tenantRecordId": 101,
+      "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "email": "john@example.com",
+      "name": "John Doe",
+      "firstNameLength": null,
+      "currency": "USD",
+      "parentAccountId": null,
+      "isPaymentDelegatedToParent": null,
+      "billingCycleDayLocal": 0,
+      "paymentMethodId": null,
+      "referenceTime": "2018-07-17T15:02:45.000Z",
+      "timeZone": "UTC",
+      "locale": null,
+      "address1": null,
+      "address2": null,
+      "companyName": null,
+      "city": null,
+      "stateOrProvince": null,
+      "country": null,
+      "postalCode": null,
+      "phone": null,
+      "notes": null,
+      "migrated": null,
+      "tableName": "ACCOUNT",
+      "historyTableName": "ACCOUNT_HISTORY"
+    }
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2018-07-17T18:46:47.000Z",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "9a61a1e6-78f3-43d3-addf-e7ada180b23d",
+    "history": {
+      "id": null,
+      "createdDate": "2018-07-17T18:46:47.000Z",
+      "updatedDate": "2018-07-17T18:46:47.000Z",
+      "recordId": 120,
+      "accountRecordId": 120,
+      "tenantRecordId": 101,
+      "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "email": "john@example.com",
+      "name": "Another Name",
+      "firstNameLength": null,
+      "currency": "USD",
+      "parentAccountId": null,
+      "isPaymentDelegatedToParent": false,
+      "billingCycleDayLocal": 0,
+      "paymentMethodId": null,
+      "referenceTime": "2018-07-17T15:02:45.000Z",
+      "timeZone": "UTC",
+      "locale": null,
+      "address1": null,
+      "address2": null,
+      "companyName": null,
+      "city": null,
+      "stateOrProvince": null,
+      "country": null,
+      "postalCode": null,
+      "phone": null,
+      "notes": null,
+      "migrated": null,
+      "tableName": "ACCOUNT",
+      "historyTableName": "ACCOUNT_HISTORY"
+    }
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2018-07-17T18:48:37.000Z",
+    "objectType": "ACCOUNT",
+    "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "0c41a04d-4037-4fa9-af71-dfe54af4d3ae",
+    "history": {
+      "id": null,
+      "createdDate": "2018-07-17T18:48:37.000Z",
+      "updatedDate": "2018-07-17T18:48:37.000Z",
+      "recordId": 120,
+      "accountRecordId": 120,
+      "tenantRecordId": 101,
+      "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "email": "john@example.com",
+      "name": "John Doe",
+      "firstNameLength": null,
+      "currency": "USD",
+      "parentAccountId": null,
+      "isPaymentDelegatedToParent": false,
+      "billingCycleDayLocal": 0,
+      "paymentMethodId": null,
+      "referenceTime": "2018-07-17T15:02:45.000Z",
+      "timeZone": "UTC",
+      "locale": null,
+      "address1": null,
+      "address2": null,
+      "companyName": null,
+      "city": null,
+      "stateOrProvince": null,
+      "country": null,
+      "postalCode": null,
+      "phone": null,
+      "notes": null,
+      "migrated": null,
+      "tableName": "ACCOUNT",
+      "historyTableName": "ACCOUNT_HISTORY"
+    }
+  }
+]
+```
+```java
+//First element of the list
+class AuditLog {
+    changeType: INSERT
+    changeDate: 2012-08-25T00:00:01.000Z
+    objectType: ACCOUNT
+    objectId: ecbff3be-3cbf-4e1d-ae05-d323d4597877
+    changedBy: Toto
+    reasonCode: i am god
+    comments: no comment
+    userToken: d698ba59-cacd-4739-9e40-68506ec046ca
+    history: {id=null, 
+              createdDate=2012-08-25T00:00:01.000Z, 
+              updatedDate=2012-08-25T00:00:01.000Z, 
+              recordId=1, accountRecordId=1, 
+              tenantRecordId=1, 
+              externalKey=5bb29c30-c83a-4237-b886-6605319baf8f, 
+              email=a946d@6a7f4, 
+              name=40f79b31-64eb-429b-96b5-89c05a21883f, 
+              firstNameLength=4, 
+              currency=USD, 
+              parentAccountId=null, 
+              isPaymentDelegatedToParent=false, 
+              billingCycleDayLocal=0, 
+              paymentMethodId=null, 
+              referenceTime=2012-08-25T00:00:01.000Z, 
+              timeZone=UTC, 
+              locale=fr, 
+              address1=12 rue des ecoles, 
+              address2=Poitier, 
+              companyName=Renault, 
+              city=Quelque part, 
+              stateOrProvince=Poitou, 
+              country=France, 
+              postalCode=44 567, 
+              phone=81 53 26 56, 
+              notes=notes, 
+              migrated=false, 
+              tableName=ACCOUNT, 
+              historyTableName=ACCOUNT_HISTORY}
+}
+```
+```ruby
+[
+   {
+      "changeType":"INSERT",
+      "changeDate":"2013-08-01T06:00:00.000Z",
+      "objectType":"ACCOUNT",
+      "objectId":"08a1c2e4-687f-48ca-9c38-888108a2ce0a",
+      "changedBy":"test_account_tags",
+      "userToken":"5c0632c3-6567-4b0b-8e37-e2a9bb9ab6b2",
+      "history":{
+         "id":null,
+         "createdDate":"2013-08-01T06:00:00.000Z",
+         "updatedDate":"2013-08-01T06:00:00.000Z",
+         "recordId":505,
+         "accountRecordId":505,
+         "tenantRecordId":822,
+         "externalKey":"1527086785-621747",
+         "email":"kill@bill.com",
+         "name":"KillBillClient",
+         "firstNameLength":null,
+         "currency":"USD",
+         "parentAccountId":null,
+         "isPaymentDelegatedToParent":null,
+         "billingCycleDayLocal":0,
+         "paymentMethodId":null,
+         "referenceTime":"2013-08-01T06:00:00.000Z",
+         "timeZone":"UTC",
+         "locale":"fr_FR",
+         "address1":"7, yoyo road",
+         "address2":"Apt 5",
+         "companyName":"Unemployed",
+         "city":"San Francisco",
+         "stateOrProvince":"California",
+         "country":"US",
+         "postalCode":"94105",
+         "phone":null,
+         "notes":null,
+         "migrated":null,
+         "tableName":"ACCOUNT",
+         "historyTableName":"ACCOUNT_HISTORY"
+      }
+   }
+]
+```
+```python
+[{'change_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc()),
+ 'change_type': 'INSERT',
+ 'changed_by': 'test',
+ 'comments': None,
+ 'history': {'created_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc()),
+             'id': None,
+             'updated_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc())},
+ 'object_id': 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda',
+ 'object_type': 'ACCOUNT',
+ 'reason_code': None,
+ 'user_token': '40e771bf-160e-4ff6-82be-463f2d9e634d'}]
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of account audit logs with history.
+
+
+
+
+
+## Retrieve account email audit logs with history by id
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/emails/{accountEmailId}/auditLogsWithHistory`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/aa2a5614-88d9-4ec3-a042-a4771bd66670/auditLogsWithHistory"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
+UUID accountEmailId = UUID.fromString("f637441d-855e-4bf5-bac1-6426bdb116d6");
+
+List<AuditLog> result = accountApi.getAccountEmailAuditLogsWithHistory(accountId, 
+                                                                       accountEmailId, 
+                                                                       requestOptions);
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+account_email_id = 'bb390282-6757-4f4f-8dd5-456abd9f30b2'
+
+accountApi.get_account_email_audit_logs_with_history(account_id,
+                                                     account_email_id,
+                                                     api_key,
+                                                     api_secret)
+```
+
+```ruby
+account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
+
+account.email_audit_logs_with_history(account_email_id, options)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2018-07-18T15:13:22.000Z",
+    "objectType": "ACCOUNT_EMAIL",
+    "objectId": "aa2a5614-88d9-4ec3-a042-a4771bd66670",
+    "changedBy": "demo",
+    "reasonCode": "demo",
+    "comments": "demo",
+    "userToken": "927546eb-3431-4bcf-8fcc-1787d2130772",
+    "history": {
+      "id": null,
+      "createdDate": "2018-07-18T15:13:22.000Z",
+      "updatedDate": "2018-07-18T15:13:22.000Z",
+      "recordId": 1,
+      "accountRecordId": 120,
+      "tenantRecordId": 101,
+      "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "email": "email@example.com",
+      "isActive": true,
+      "tableName": "ACCOUNT_EMAIL",
+      "historyTableName": "ACCOUNT_EMAIL_HISTORY"
+    }
+  }
+]
+```
+```java
+//First element of the list
+class AuditLog {
+    changeType: INSERT
+    changeDate: 2012-08-25T00:00:02.000Z
+    objectType: ACCOUNT_EMAIL
+    objectId: f637441d-855e-4bf5-bac1-6426bdb116d6
+    changedBy: Toto
+    reasonCode: i am god
+    comments: no comment
+    userToken: 317c943b-f137-4866-9798-33c5818339f9
+    history: {id=null, 
+              createdDate=2012-08-25T00:00:02.000Z, 
+              updatedDate=2012-08-25T00:00:02.000Z, 
+              recordId=1, 
+              accountRecordId=1, 
+              tenantRecordId=1, 
+              accountId=9f86c177-addd-48da-b734-da219b33f655, 
+              email=af6c8ec2-bed8-4a86-aa23-535276aad7ca, 
+              isActive=true, 
+              tableName=ACCOUNT_EMAIL, 
+              historyTableName=ACCOUNT_EMAIL_HISTORY}
+}
+```
+```ruby
+[
+   {
+      "changeType":"INSERT",
+      "changeDate":"2013-08-01T06:00:00.000Z",
+      "objectType":"ACCOUNT_EMAIL",
+      "objectId":"a4627e89-a73b-4167-a7ba-92a2881eb3c4",
+      "changedBy":"test_account_tags",
+      "userToken":"79005abf-a8cf-44e1-84fc-945381d35bd5",
+      "history":{
+         "id":null,
+         "createdDate":"2013-08-01T06:00:00.000Z",
+         "updatedDate":"2013-08-01T06:00:00.000Z",
+         "recordId":18,
+         "accountRecordId":525,
+         "tenantRecordId":842,
+         "accountId":"1ced5fc2-b032-4969-a38b-d4db9ab5368f",
+         "email":"email@example.com",
+         "isActive":true,
+         "tableName":"ACCOUNT_EMAIL",
+         "historyTableName":"ACCOUNT_EMAIL_HISTORY"
+      }
+   }
+]
+```
+```python
+[{'change_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc()),
+ 'change_type': 'INSERT',
+ 'changed_by': 'Me',
+ 'comments': None,
+ 'history': {'created_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc()),
+             'id': None,
+             'updated_date': datetime.datetime(2018, 5, 23, 16, 7, 1, tzinfo=tzutc())},
+ 'object_id': 'bb390282-6757-4f4f-8dd5-456abd9f30b2',
+ 'object_type': 'ACCOUNT_EMAIL',
+ 'reason_code': None,
+ 'user_token': '548055b7-2c5e-4315-9293-d76c00bd9737'}]
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of account email audit logs with history.
+
+
 
 ## Retrieve account timeline
 
@@ -6867,79 +6955,6 @@ class AccountTimeline {
 
 Returns a list of account tag objects.
 
-## Transfer a given child credit to the parent level
-
-In the context of the Hierarchical Account feature, this allows to move the potential child credit at the parent level.
-
-
-**HTTP Request** 
-
-`PUT http://example.com/1.0/kb/accounts/{childAccountId}/transferCredit`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X PUT \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/transferCredit"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID childAccountId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
-
-accountApi.transferChildCreditToParent(childAccountId, requestOptions);
-```
-
-```ruby
-account.transfer_child_credit(user,
-                              reason,
-                              comment,
-                              options)
-```
-```python
-accountApi = killbill.api.AccountApi()
-child_account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
-
-accountApi.transfer_child_credit_to_parent(child_account_id,
-                                           created_by, 
-                                           api_key, 
-                                           api_secret)
-```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-A `204` http status without content.
 
 ## List accounts
 

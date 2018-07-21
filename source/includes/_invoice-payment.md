@@ -257,79 +257,189 @@ class InvoicePayment {
 
 Returns a invoice payment object.
 
-## Complete an existing transaction
+## Refund a payment, and adjust the invoice if needed
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/invoicePayments/{paymentId}`
+`POST http://example.com/1.0/kb/invoicePayments/{paymentId}/refunds`
 
 > Example Request:
 
 ```shell
 curl -v \
-    -X PUT \
+    -X POST \
     -u admin:password \
     -H 'X-Killbill-ApiKey: bob' \
     -H 'X-Killbill-ApiSecret: lazar' \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
     -d '{
-            "paymentId": "cc7fcd4d-e701-4679-9741-41289103db83"
+          "paymentId": "cc7fcd4d-e701-4679-9741-41289103db83",
+          "amount": 50,
+          "currency": "USD"
         }' \
-    'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83' 
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/refunds' 
 ```
 
 ```java
 import org.killbill.billing.client.api.gen.InvoicePaymentApi;
 protected InvoicePaymentApi invoicePaymentApi;
 
-UUID paymentId = UUID.fromString("80f5bfca-e142-4320-b8f2-ae4530ca7172");
-PaymentTransaction body = new PaymentTransaction();
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
+UUID paymentId = UUID.fromString("45d6f4c5-21be-49b1-99c5-7b0c3c985bf0");
+
+InvoicePaymentTransaction refund = new InvoicePaymentTransaction();
+refund.setPaymentId(paymentId);
+refund.setAmount(BigDecimal.ONE);
+
+UUID paymentMethodId = UUID.fromString("28a3ed1a-7a58-4ac2-b864-2ca723abb864");
+
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
 
-invoicePaymentApi.completeInvoicePaymentTransaction(paymentId, 
-                                                    body, 
-                                                    NULL_PLUGIN_NAMES, 
-                                                    NULL_PLUGIN_PROPERTIES, 
-                                                    requestOptions);
+invoicePaymentApi.createRefundWithAdjustments(paymentId, 
+                                              refund, 
+                                              paymentMethodId, 
+                                              NULL_PLUGIN_PROPERTIES, 
+                                              requestOptions);
 ```
 
 ```ruby
-payment_id = '2276b3c9-4e51-41b2-b5bf-9ddc11582ee4'
-
-KillBillClient::Model::InvoicePayment.complete_invoice_payment_transaction(payment_id, 
-                                                                           user, 
-                                                                           reason, 
-                                                                           comment, 
-                                                                           options)
+payment_id = '8d85a8e8-c94b-438f-aac1-e8cb436b2c05'
+amount ='50.0'
+adjustments = nil
+KillBillClient::Model::InvoicePayment.refund(payment_id, 
+                                             amount, 
+                                             adjustments, 
+                                             user, 
+                                             reason, 
+                                             comment, 
+                                             options)
 ```
 
 ```python
 invoicePaymentApi = killbill.api.InvoicePaymentApi()
-body = PaymentTransaction(payment_id=payment_id)
+payment_id = '8d85a8e8-c94b-438f-aac1-e8cb436b2c05'
+body = PaymentTransaction(amount=50.0)
 
-invoicePaymentApi.complete_invoice_payment_transaction(payment_id, 
-                                                       body, 
-                                                       created_by, 
-                                                       api_key, 
-                                                       api_secret)
+invoicePaymentApi.create_refund_with_adjustments(payment_id,
+                                                 body,
+                                                 created_by,
+                                                 api_key,
+                                                 api_secret)
 ```
-
 > Example Response:
 
 ```shell
 # Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/
 < Content-Type: application/json
 < Content-Length: 0
 ```
 
 ```java
-no content
+class InvoicePayment {
+    org.killbill.billing.client.model.gen.InvoicePayment@916e89e1
+    targetInvoiceId: 5de44543-2cd9-4781-b6a3-12c47a9244ed
+    accountId: 9b535e8a-dbfe-479a-8936-75c8b5e9cf45
+    paymentId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
+    paymentNumber: 1
+    paymentExternalKey: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
+    authAmount: 0
+    capturedAmount: 0
+    purchasedAmount: 249.95
+    refundedAmount: 1
+    creditedAmount: 0
+    currency: USD
+    paymentMethodId: 28a3ed1a-7a58-4ac2-b864-2ca723abb864
+    transactions: [class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@ab430f5e
+        transactionId: 6727a8db-ec00-4d85-89f2-cda778b21ddf
+        transactionExternalKey: 6727a8db-ec00-4d85-89f2-cda778b21ddf
+        paymentId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
+        paymentExternalKey: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
+        transactionType: PURCHASE
+        amount: 249.95
+        currency: USD
+        effectiveDate: 2012-09-26T00:00:05.000Z
+        processedAmount: 249.95
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: 
+        gatewayErrorMsg: 
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }, class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@d404a66c
+        transactionId: a29e0204-a4db-400f-9f5f-3de1e57169d8
+        transactionExternalKey: b4903f2e-ea23-4c95-a2c8-a3d81b7dfd60
+        paymentId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
+        paymentExternalKey: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
+        transactionType: REFUND
+        amount: 1
+        currency: USD
+        effectiveDate: 2012-09-26T00:00:10.000Z
+        processedAmount: 1
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: 
+        gatewayErrorMsg: 
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }]
+    paymentAttempts: null
+    auditLogs: []
+}
 ```
 ```ruby
-no content
+{
+   "targetInvoiceId":"045900ff-5b2a-4709-b7bd-d70501998dd5",
+   "accountId":"dc7d2b03-d989-4cfa-96db-f02b6475950e",
+   "paymentId":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
+   "paymentNumber":"347",
+   "paymentExternalKey":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
+   "authAmount":0,
+   "capturedAmount":0,
+   "purchasedAmount":50.0,
+   "refundedAmount":20.0,
+   "creditedAmount":0,
+   "currency":"USD",
+   "paymentMethodId":"4103cf10-08b4-4685-b3c2-1c2c88b0f32f",
+   "transactions":[
+      {
+         "transactionId":"1cd767ed-b3c1-4369-a447-09308f3bebf4",
+         "transactionExternalKey":"1cd767ed-b3c1-4369-a447-09308f3bebf4",
+         "paymentId":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
+         "paymentExternalKey":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
+         "transactionType":"PURCHASE",
+         "amount":50.0,
+         "currency":"USD",
+         "effectiveDate":"2013-08-01T06:00:02.000Z",
+         "processedAmount":50.0,
+         "processedCurrency":"USD",
+         "status":"SUCCESS",
+         "auditLogs":[]
+      },
+      {
+         "transactionId":"69f72535-dd5d-4784-b0a6-05d6f64359cf",
+         "transactionExternalKey":"d7118799-0268-45c9-a0e0-455fa2731a8b",
+         "paymentId":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
+         "paymentExternalKey":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
+         "transactionType":"REFUND",
+         "amount":20.0,
+         "currency":"USD",
+         "effectiveDate":"2013-08-01T06:00:03.000Z",
+         "processedAmount":20.0,
+         "processedCurrency":"USD",
+         "status":"SUCCESS",
+         "auditLogs":[]
+      }
+   ],
+   "auditLogs":[]
+}
 ```
 ```python
 no content
@@ -337,11 +447,14 @@ no content
 
 **Query Parameters**
 
-None.
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **externalPayment** | boolean | false | choose true if the payment method is external |
+| **paymentMethodId** | string | false | payment method id |
 
 **Returns**
 
-A `204` http status without content.
+Returns a invoice payment object.
 
 ## Record a chargeback
 
@@ -517,6 +630,93 @@ None.
 **Returns**
 
 Returns a invoice payment object.
+
+## Complete an existing transaction
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/invoicePayments/{paymentId}`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Content-Type: application/json' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    -d '{
+            "paymentId": "cc7fcd4d-e701-4679-9741-41289103db83"
+        }' \
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83' 
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoicePaymentApi;
+protected InvoicePaymentApi invoicePaymentApi;
+
+UUID paymentId = UUID.fromString("80f5bfca-e142-4320-b8f2-ae4530ca7172");
+PaymentTransaction body = new PaymentTransaction();
+ImmutableList<String> NULL_PLUGIN_NAMES = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+invoicePaymentApi.completeInvoicePaymentTransaction(paymentId, 
+                                                    body, 
+                                                    NULL_PLUGIN_NAMES, 
+                                                    NULL_PLUGIN_PROPERTIES, 
+                                                    requestOptions);
+```
+
+```ruby
+payment_id = '2276b3c9-4e51-41b2-b5bf-9ddc11582ee4'
+
+KillBillClient::Model::InvoicePayment.complete_invoice_payment_transaction(payment_id, 
+                                                                           user, 
+                                                                           reason, 
+                                                                           comment, 
+                                                                           options)
+```
+
+```python
+invoicePaymentApi = killbill.api.InvoicePaymentApi()
+body = PaymentTransaction(payment_id=payment_id)
+
+invoicePaymentApi.complete_invoice_payment_transaction(payment_id, 
+                                                       body, 
+                                                       created_by, 
+                                                       api_key, 
+                                                       api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+A `204` http status without content.
+
 
 ## Record a chargeback reversal
 
@@ -1046,204 +1246,6 @@ no content
 
 A `204` http status without content.
 
-## Refund a payment, and adjust the invoice if needed
-
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/invoicePayments/{paymentId}/refunds`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X POST \
-    -u admin:password \
-    -H 'X-Killbill-ApiKey: bob' \
-    -H 'X-Killbill-ApiSecret: lazar' \
-    -H 'Content-Type: application/json' \
-    -H 'X-Killbill-CreatedBy: demo' \
-    -d '{
-          "paymentId": "cc7fcd4d-e701-4679-9741-41289103db83",
-          "amount": 50,
-          "currency": "USD"
-        }' \
-    'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/refunds' 
-```
-
-```java
-import org.killbill.billing.client.api.gen.InvoicePaymentApi;
-protected InvoicePaymentApi invoicePaymentApi;
-
-UUID paymentId = UUID.fromString("45d6f4c5-21be-49b1-99c5-7b0c3c985bf0");
-
-InvoicePaymentTransaction refund = new InvoicePaymentTransaction();
-refund.setPaymentId(paymentId);
-refund.setAmount(BigDecimal.ONE);
-
-UUID paymentMethodId = UUID.fromString("28a3ed1a-7a58-4ac2-b864-2ca723abb864");
-
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
-
-invoicePaymentApi.createRefundWithAdjustments(paymentId, 
-                                              refund, 
-                                              paymentMethodId, 
-                                              NULL_PLUGIN_PROPERTIES, 
-                                              requestOptions);
-```
-
-```ruby
-payment_id = '8d85a8e8-c94b-438f-aac1-e8cb436b2c05'
-amount ='50.0'
-adjustments = nil
-KillBillClient::Model::InvoicePayment.refund(payment_id, 
-                                             amount, 
-                                             adjustments, 
-                                             user, 
-                                             reason, 
-                                             comment, 
-                                             options)
-```
-
-```python
-invoicePaymentApi = killbill.api.InvoicePaymentApi()
-payment_id = '8d85a8e8-c94b-438f-aac1-e8cb436b2c05'
-body = PaymentTransaction(amount=50.0)
-
-invoicePaymentApi.create_refund_with_adjustments(payment_id,
-                                                 body,
-                                                 created_by,
-                                                 api_key,
-                                                 api_secret)
-```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-class InvoicePayment {
-    org.killbill.billing.client.model.gen.InvoicePayment@916e89e1
-    targetInvoiceId: 5de44543-2cd9-4781-b6a3-12c47a9244ed
-    accountId: 9b535e8a-dbfe-479a-8936-75c8b5e9cf45
-    paymentId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-    paymentNumber: 1
-    paymentExternalKey: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-    authAmount: 0
-    capturedAmount: 0
-    purchasedAmount: 249.95
-    refundedAmount: 1
-    creditedAmount: 0
-    currency: USD
-    paymentMethodId: 28a3ed1a-7a58-4ac2-b864-2ca723abb864
-    transactions: [class PaymentTransaction {
-        org.killbill.billing.client.model.gen.PaymentTransaction@ab430f5e
-        transactionId: 6727a8db-ec00-4d85-89f2-cda778b21ddf
-        transactionExternalKey: 6727a8db-ec00-4d85-89f2-cda778b21ddf
-        paymentId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-        paymentExternalKey: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-        transactionType: PURCHASE
-        amount: 249.95
-        currency: USD
-        effectiveDate: 2012-09-26T00:00:05.000Z
-        processedAmount: 249.95
-        processedCurrency: USD
-        status: SUCCESS
-        gatewayErrorCode: 
-        gatewayErrorMsg: 
-        firstPaymentReferenceId: null
-        secondPaymentReferenceId: null
-        properties: null
-        auditLogs: []
-    }, class PaymentTransaction {
-        org.killbill.billing.client.model.gen.PaymentTransaction@d404a66c
-        transactionId: a29e0204-a4db-400f-9f5f-3de1e57169d8
-        transactionExternalKey: b4903f2e-ea23-4c95-a2c8-a3d81b7dfd60
-        paymentId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-        paymentExternalKey: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-        transactionType: REFUND
-        amount: 1
-        currency: USD
-        effectiveDate: 2012-09-26T00:00:10.000Z
-        processedAmount: 1
-        processedCurrency: USD
-        status: SUCCESS
-        gatewayErrorCode: 
-        gatewayErrorMsg: 
-        firstPaymentReferenceId: null
-        secondPaymentReferenceId: null
-        properties: null
-        auditLogs: []
-    }]
-    paymentAttempts: null
-    auditLogs: []
-}
-```
-```ruby
-{
-   "targetInvoiceId":"045900ff-5b2a-4709-b7bd-d70501998dd5",
-   "accountId":"dc7d2b03-d989-4cfa-96db-f02b6475950e",
-   "paymentId":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
-   "paymentNumber":"347",
-   "paymentExternalKey":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
-   "authAmount":0,
-   "capturedAmount":0,
-   "purchasedAmount":50.0,
-   "refundedAmount":20.0,
-   "creditedAmount":0,
-   "currency":"USD",
-   "paymentMethodId":"4103cf10-08b4-4685-b3c2-1c2c88b0f32f",
-   "transactions":[
-      {
-         "transactionId":"1cd767ed-b3c1-4369-a447-09308f3bebf4",
-         "transactionExternalKey":"1cd767ed-b3c1-4369-a447-09308f3bebf4",
-         "paymentId":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
-         "paymentExternalKey":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
-         "transactionType":"PURCHASE",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:02.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"69f72535-dd5d-4784-b0a6-05d6f64359cf",
-         "transactionExternalKey":"d7118799-0268-45c9-a0e0-455fa2731a8b",
-         "paymentId":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
-         "paymentExternalKey":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
-         "transactionType":"REFUND",
-         "amount":20.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:03.000Z",
-         "processedAmount":20.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **externalPayment** | boolean | false | choose true if the payment method is external |
-| **paymentMethodId** | string | false | payment method id |
-
-**Returns**
-
-Returns a invoice payment object.
 
 ## Add tags to payment
 

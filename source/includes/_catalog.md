@@ -14,50 +14,64 @@ Also, it is important to understand that the catalog is versionned to provide th
 
 In terms of api, we offer basic CRUD operations, where catalog (versions) are fetched/uploaded using XML. We also offer the ability to retrieve JSON, and have also added support to modify a given catalog version to add new plans - so called *simple plan* - mostly to easy the testing, and provide an easy way to play with the system - KAUI, our admin UI provides a nice integration for that purpose.
 
-##  Delete all versions for a per tenant catalog
+## Upload the full catalog as XML
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/catalog`
+`POST http://example.com/1.0/kb/catalog/xml`
 
 > Example Request:
 
 ```shell
 curl -v \
-    -X DELETE \
+    -X POST \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: text/xml" \
+    -H "Accept: application/json" \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/catalog"	
+    -H "X-Killbill-Comment: demo" \"
+    -d "<?xml version="1.0" encoding="UTF-8" standalone="yes"?><catalog> ..."
+    "http://localhost:8080/1.0/kb/catalog/xml"
 ```
 
 ```java
 import org.killbill.billing.client.api.gen.CatalogApi;
 protected CatalogApi catalogApi;
 
-catalogApi.deleteCatalog(requestOptions);
+String body = getResourceBodyString(catalog);
+
+catalogApi.uploadCatalogXml(body, requestOptions);
 ```
 
 ```ruby
-KillBillClient::Model::Catalog.delete_catalog(user,
-                                              reason,
-                                              comment,
-                                              options)
+catalog_file_xml = resource_file.read
+KillBillClient::Model::Catalog.upload_tenant_catalog(catalog_file_xml, 
+                                                     user,
+                                                     reason,
+                                                     comment,
+                                                     options)
 ```
 
 ```python
 catalogApi = killbill.api.CatalogApi()
-        
-catalogApi.delete_catalog(created_by, api_key, api_secret)
+xml_catalog = open("../resources/SpyCarBasic.xml", "r+").read()
+
+catalogApi.upload_catalog_xml(xml_catalog, 
+                              created_by, 
+                              api_key, 
+                              api_secret)
 ```
 > Example Response:
 
 ```shell
 # Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/catalog/xml
+< Content-Type: text/xml
+< Content-Length: 0
 ```
 ```java
 no content
@@ -75,7 +89,852 @@ None.
 
 **Returns**
 
-A `204` http status without content.
+A `201` http status without content.
+
+
+
+## Retrieve the catalog as XML
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/catalog/xml`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: text/xml" \
+    "http://localhost:8080/1.0/kb/catalog/xml"	
+```
+
+```java
+import org.killbill.billing.client.api.gen.CatalogApi;
+protected CatalogApi catalogApi;
+
+LocalDate requestedDate = null;
+UUID accountId = null;
+
+String catalog = catalogApi.getCatalogXml(requestedDate, 
+                                          accountId, 
+                                          requestOptions);
+```
+
+```ruby
+requested_date = nil
+
+KillBillClient::Model::Catalog.get_tenant_catalog_xml(requested_date,
+                                                      options)
+```
+
+```python
+catalogApi = killbill.api.CatalogApi()
+
+catalogApi.get_catalog_xml(api_key, api_secret)
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: text/xml
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+  <catalogs>
+    <versions>
+      <version>
+        <effectiveDate>2013-02-08T00:00:00Z</effectiveDate>
+        <catalogName>SpyCarBasic</catalogName>
+        <currencies>
+          <currency>USD</currency>
+          <currency>GBP</currency>
+        </currencies>
+        <units/>
+        <products>
+          <product name="Basic" prettyName="Basic">
+            <category>BASE</category>
+            <included/>
+            <available/>
+            <limits/>
+          </product>
+          <product name="Sports" prettyName="Sports">
+            <category>BASE</category>
+            <included/>
+            <available/>
+            <limits/>
+          </product>
+          <product name="Standard" prettyName="Standard">
+            <category>BASE</category>
+            <included/>
+            <available/>
+            <limits/>
+          </product>
+          <product name="Super" prettyName="Super">
+            <category>ADD_ON</category>
+            <included/>
+            <available/>
+            <limits/>
+          </product>
+        </products>
+        <rules>
+          <changePolicy>
+            <changePolicyCase>
+              <policy>IMMEDIATE</policy>
+            </changePolicyCase>
+          </changePolicy>
+          <changeAlignment>
+            <changeAlignmentCase>
+              <alignment>START_OF_BUNDLE</alignment>
+            </changeAlignmentCase>
+          </changeAlignment>
+          <cancelPolicy>
+            <cancelPolicyCase>
+              <policy>IMMEDIATE</policy>
+            </cancelPolicyCase>
+          </cancelPolicy>
+          <createAlignment>
+            <createAlignmentCase>
+              <alignment>START_OF_BUNDLE</alignment>
+            </createAlignmentCase>
+          </createAlignment>
+          <billingAlignment>
+            <billingAlignmentCase>
+              <alignment>ACCOUNT</alignment>
+            </billingAlignmentCase>
+          </billingAlignment>
+          <priceList>
+            <priceListCase>
+              <toPriceList>DEFAULT</toPriceList>
+            </priceListCase>
+          </priceList>
+        </rules>
+        <plans>
+          <plan name="basic-annual" prettyName="basic-annual">
+            <product>Basic</product>
+            <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+            <initialPhases/>
+            <finalPhase type="EVERGREEN">
+              <duration>
+                <unit>UNLIMITED</unit>
+                <number>-1</number>
+              </duration>
+              <recurring>
+                <billingPeriod>ANNUAL</billingPeriod>
+                <recurringPrice>
+                  <price>
+                    <currency>USD</currency>
+                    <value>1000</value>
+                  </price>
+                </recurringPrice>
+              </recurring>
+              <usages/>
+            </finalPhase>
+            <plansAllowedInBundle>-1</plansAllowedInBundle>
+          </plan>
+          <plan name="sports-monthly" prettyName="sports-monthly">
+            <product>Sports</product>
+            <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+            <initialPhases>
+              <phase type="TRIAL">
+                <duration>
+                  <unit>DAYS</unit>
+                  <number>30</number>
+                </duration>
+                <fixed type="ONE_TIME">
+                  <fixedPrice/>
+                </fixed>
+                <usages/>
+              </phase>
+            </initialPhases>
+            <finalPhase type="EVERGREEN">
+              <duration>
+                <unit>UNLIMITED</unit>
+                <number>-1</number>
+              </duration>
+              <recurring>
+                <billingPeriod>MONTHLY</billingPeriod>
+                <recurringPrice>
+                  <price>
+                    <currency>GBP</currency>
+                    <value>375.00</value>
+                  </price>
+                  <price>
+                    <currency>USD</currency>
+                    <value>500.00</value>
+                  </price>
+                </recurringPrice>
+              </recurring>
+              <usages/>
+            </finalPhase>
+            <plansAllowedInBundle>-1</plansAllowedInBundle>
+          </plan>
+          <plan name="standard-monthly" prettyName="standard-monthly">
+            <product>Standard</product>
+            <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+            <initialPhases>
+              <phase type="TRIAL">
+                <duration>
+                  <unit>DAYS</unit>
+                  <number>30</number>
+                </duration>
+                <fixed type="ONE_TIME">
+                  <fixedPrice/>
+                </fixed>
+                <usages/>
+              </phase>
+            </initialPhases>
+            <finalPhase type="EVERGREEN">
+              <duration>
+                <unit>UNLIMITED</unit>
+                <number>-1</number>
+              </duration>
+              <recurring>
+                <billingPeriod>MONTHLY</billingPeriod>
+                <recurringPrice>
+                  <price>
+                    <currency>GBP</currency>
+                    <value>75.00</value>
+                  </price>
+                  <price>
+                    <currency>USD</currency>
+                    <value>100.00</value>
+                  </price>
+                </recurringPrice>
+              </recurring>
+              <usages/>
+            </finalPhase>
+            <plansAllowedInBundle>-1</plansAllowedInBundle>
+          </plan>
+          <plan name="super-monthly" prettyName="super-monthly">
+            <product>Super</product>
+            <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+            <initialPhases>
+              <phase type="TRIAL">
+                <duration>
+                  <unit>DAYS</unit>
+                  <number>30</number>
+                </duration>
+                <fixed type="ONE_TIME">
+                  <fixedPrice/>
+                </fixed>
+                <usages/>
+              </phase>
+            </initialPhases>
+            <finalPhase type="EVERGREEN">
+              <duration>
+                <unit>UNLIMITED</unit>
+                <number>-1</number>
+              </duration>
+              <recurring>
+                <billingPeriod>MONTHLY</billingPeriod>
+                <recurringPrice>
+                  <price>
+                    <currency>GBP</currency>
+                    <value>750.00</value>
+                  </price>
+                  <price>
+                    <currency>USD</currency>
+                    <value>1000.00</value>
+                  </price>
+                </recurringPrice>
+              </recurring>
+              <usages/>
+            </finalPhase>
+            <plansAllowedInBundle>-1</plansAllowedInBundle>
+          </plan>
+        </plans>
+        <priceLists>
+          <defaultPriceList name="DEFAULT">
+            <plans>
+              <plan>basic-annual</plan>
+              <plan>sports-monthly</plan>
+              <plan>standard-monthly</plan>
+              <plan>super-monthly</plan>
+            </plans>
+          </defaultPriceList>
+        </priceLists>
+      </version>
+    </versions>
+    <catalogName>SpyCarBasic</catalogName>
+  </catalogs>
+```
+```java
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<catalogs>
+    <versions>
+        <version>
+            <effectiveDate>2013-02-08T00:00:00Z</effectiveDate>
+            <catalogName>SpyCarBasic</catalogName>
+            <currencies>
+                <currency>USD</currency>
+                <currency>GBP</currency>
+            </currencies>
+            <units/>
+            <products>
+                <product name="Sports" prettyName="Sports">
+                    <category>BASE</category>
+                    <included/>
+                    <available/>
+                    <limits/>
+                </product>
+                <product name="Standard" prettyName="Standard">
+                    <category>BASE</category>
+                    <included/>
+                    <available/>
+                    <limits/>
+                </product>
+                <product name="Super" prettyName="Super">
+                    <category>BASE</category>
+                    <included/>
+                    <available/>
+                    <limits/>
+                </product>
+            </products>
+            <rules>
+                <changePolicy>
+                    <changePolicyCase>
+                        <policy>IMMEDIATE</policy>
+                    </changePolicyCase>
+                </changePolicy>
+                <changeAlignment>
+                    <changeAlignmentCase>
+                        <alignment>START_OF_BUNDLE</alignment>
+                    </changeAlignmentCase>
+                </changeAlignment>
+                <cancelPolicy>
+                    <cancelPolicyCase>
+                        <policy>IMMEDIATE</policy>
+                    </cancelPolicyCase>
+                </cancelPolicy>
+                <createAlignment>
+                    <createAlignmentCase>
+                        <alignment>START_OF_BUNDLE</alignment>
+                    </createAlignmentCase>
+                </createAlignment>
+                <billingAlignment>
+                    <billingAlignmentCase>
+                        <alignment>ACCOUNT</alignment>
+                    </billingAlignmentCase>
+                </billingAlignment>
+                <priceList>
+                    <priceListCase>
+                        <toPriceList>DEFAULT</toPriceList>
+                    </priceListCase>
+                </priceList>
+            </rules>
+            <plans>
+                <plan name="sports-monthly" prettyName="sports-monthly">
+                    <product>Sports</product>
+                    <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+                    <initialPhases>
+                        <phase type="TRIAL">
+                            <duration>
+<unit>DAYS</unit>
+<number>30</number>
+                            </duration>
+                            <fixed type="ONE_TIME">
+<fixedPrice/>
+                            </fixed>
+                            <usages/>
+                        </phase>
+                    </initialPhases>
+                    <finalPhase type="EVERGREEN">
+                        <duration>
+                            <unit>UNLIMITED</unit>
+                            <number>-1</number>
+                        </duration>
+                        <recurring>
+                            <billingPeriod>MONTHLY</billingPeriod>
+                            <recurringPrice>
+<price>
+    <currency>GBP</currency>
+    <value>375.00</value>
+</price>
+<price>
+    <currency>USD</currency>
+    <value>500.00</value>
+</price>
+                            </recurringPrice>
+                        </recurring>
+                        <usages/>
+                    </finalPhase>
+                    <plansAllowedInBundle>-1</plansAllowedInBundle>
+                </plan>
+                <plan name="standard-monthly" prettyName="standard-monthly">
+                    <product>Standard</product>
+                    <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+                    <initialPhases>
+                        <phase type="TRIAL">
+                            <duration>
+<unit>DAYS</unit>
+<number>30</number>
+                            </duration>
+                            <fixed type="ONE_TIME">
+<fixedPrice/>
+                            </fixed>
+                            <usages/>
+                        </phase>
+                    </initialPhases>
+                    <finalPhase type="EVERGREEN">
+                        <duration>
+                            <unit>UNLIMITED</unit>
+                            <number>-1</number>
+                        </duration>
+                        <recurring>
+                            <billingPeriod>MONTHLY</billingPeriod>
+                            <recurringPrice>
+<price>
+    <currency>GBP</currency>
+    <value>75.00</value>
+</price>
+<price>
+    <currency>USD</currency>
+    <value>100.00</value>
+</price>
+                            </recurringPrice>
+                        </recurring>
+                        <usages/>
+                    </finalPhase>
+                    <plansAllowedInBundle>-1</plansAllowedInBundle>
+                </plan>
+                <plan name="super-monthly" prettyName="super-monthly">
+                    <product>Super</product>
+                    <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+                    <initialPhases>
+                        <phase type="TRIAL">
+                            <duration>
+<unit>DAYS</unit>
+<number>30</number>
+                            </duration>
+                            <fixed type="ONE_TIME">
+<fixedPrice/>
+                            </fixed>
+                            <usages/>
+                        </phase>
+                    </initialPhases>
+                    <finalPhase type="EVERGREEN">
+                        <duration>
+                            <unit>UNLIMITED</unit>
+                            <number>-1</number>
+                        </duration>
+                        <recurring>
+                            <billingPeriod>MONTHLY</billingPeriod>
+                            <recurringPrice>
+<price>
+    <currency>GBP</currency>
+    <value>750.00</value>
+</price>
+<price>
+    <currency>USD</currency>
+    <value>1000.00</value>
+</price>
+                            </recurringPrice>
+                        </recurring>
+                        <usages/>
+                    </finalPhase>
+                    <plansAllowedInBundle>-1</plansAllowedInBundle>
+                </plan>
+            </plans>
+            <priceLists>
+                <defaultPriceList name="DEFAULT">
+                    <plans>
+                        <plan>sports-monthly</plan>
+                        <plan>standard-monthly</plan>
+                        <plan>super-monthly</plan>
+                    </plans>
+                </defaultPriceList>
+            </priceLists>
+        </version>
+    </versions>
+    <catalogName>SpyCarBasic</catalogName>
+</catalogs>
+
+```
+```ruby
+<?xml version="1.0" encoding="UTF-8"?>
+<catalogs>
+   <versions>
+      <version>
+         <effectiveDate>2013-02-08T00:00:00Z</effectiveDate>
+         <catalogName>Movies</catalogName>
+         <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+         <currencies>
+            <currency>USD</currency>
+         </currencies>
+         <units />
+         <products>
+            <product name="Basic">
+               <category>BASE</category>
+               <included />
+               <available />
+               <limits />
+            </product>
+         </products>
+         <rules>
+            <changePolicy>
+               <changePolicyCase>
+                  <policy>END_OF_TERM</policy>
+               </changePolicyCase>
+            </changePolicy>
+            <changeAlignment>
+               <changeAlignmentCase>
+                  <alignment>START_OF_BUNDLE</alignment>
+               </changeAlignmentCase>
+            </changeAlignment>
+            <cancelPolicy>
+               <cancelPolicyCase>
+                  <productCategory>BASE</productCategory>
+                  <policy>END_OF_TERM</policy>
+               </cancelPolicyCase>
+               <cancelPolicyCase>
+                  <policy>IMMEDIATE</policy>
+               </cancelPolicyCase>
+            </cancelPolicy>
+            <createAlignment>
+               <createAlignmentCase>
+                  <alignment>START_OF_BUNDLE</alignment>
+               </createAlignmentCase>
+            </createAlignment>
+            <billingAlignment>
+               <billingAlignmentCase>
+                  <alignment>ACCOUNT</alignment>
+               </billingAlignmentCase>
+            </billingAlignment>
+            <priceList>
+               <priceListCase>
+                  <toPriceList>DEFAULT</toPriceList>
+               </priceListCase>
+            </priceList>
+         </rules>
+         <plans>
+            <plan name="basic-monthly">
+               <product>Basic</product>
+               <initialPhases />
+               <finalPhase type="EVERGREEN">
+                  <duration>
+                     <unit>UNLIMITED</unit>
+                     <number>-1</number>
+                  </duration>
+                  <recurring>
+                     <billingPeriod>MONTHLY</billingPeriod>
+                     <recurringPrice>
+                        <price>
+                           <currency>USD</currency>
+                           <value>1000.00</value>
+                        </price>
+                     </recurringPrice>
+                  </recurring>
+                  <usages />
+               </finalPhase>
+               <plansAllowedInBundle>-1</plansAllowedInBundle>
+            </plan>
+         </plans>
+         <priceLists>
+            <defaultPriceList name="DEFAULT">
+               <plans>
+                  <plan>basic-monthly</plan>
+               </plans>
+            </defaultPriceList>
+         </priceLists>
+      </version>
+      <version>
+         <effectiveDate>2013-02-08T00:00:01Z</effectiveDate>
+         <catalogName>Movies</catalogName>
+         <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+         <currencies>
+            <currency>USD</currency>
+         </currencies>
+         <units />
+         <products>
+            <product name="Basic">
+               <category>BASE</category>
+               <included />
+               <available />
+               <limits />
+            </product>
+         </products>
+         <rules>
+            <changePolicy>
+               <changePolicyCase>
+                  <policy>END_OF_TERM</policy>
+               </changePolicyCase>
+            </changePolicy>
+            <changeAlignment>
+               <changeAlignmentCase>
+                  <alignment>START_OF_BUNDLE</alignment>
+               </changeAlignmentCase>
+            </changeAlignment>
+            <cancelPolicy>
+               <cancelPolicyCase>
+                  <productCategory>BASE</productCategory>
+                  <policy>END_OF_TERM</policy>
+               </cancelPolicyCase>
+               <cancelPolicyCase>
+                  <policy>IMMEDIATE</policy>
+               </cancelPolicyCase>
+            </cancelPolicy>
+            <createAlignment>
+               <createAlignmentCase>
+                  <alignment>START_OF_BUNDLE</alignment>
+               </createAlignmentCase>
+            </createAlignment>
+            <billingAlignment>
+               <billingAlignmentCase>
+                  <alignment>ACCOUNT</alignment>
+               </billingAlignmentCase>
+            </billingAlignment>
+            <priceList>
+               <priceListCase>
+                  <toPriceList>DEFAULT</toPriceList>
+               </priceListCase>
+            </priceList>
+         </rules>
+         <plans>
+            <plan name="basic-monthly">
+               <product>Basic</product>
+               <initialPhases>
+                  <phase type="TRIAL">
+                     <duration>
+                        <unit>DAYS</unit>
+                        <number>30</number>
+                     </duration>
+                     <fixed type="ONE_TIME">
+                        <fixedPrice />
+                     </fixed>
+                     <usages />
+                  </phase>
+               </initialPhases>
+               <finalPhase type="EVERGREEN">
+                  <duration>
+                     <unit>UNLIMITED</unit>
+                     <number>-1</number>
+                  </duration>
+                  <recurring>
+                     <billingPeriod>MONTHLY</billingPeriod>
+                     <recurringPrice>
+                        <price>
+                           <currency>USD</currency>
+                           <value>1000.00</value>
+                        </price>
+                     </recurringPrice>
+                  </recurring>
+                  <usages />
+               </finalPhase>
+               <plansAllowedInBundle>-1</plansAllowedInBundle>
+            </plan>
+         </plans>
+         <priceLists>
+            <defaultPriceList name="DEFAULT">
+               <plans>
+                  <plan>basic-monthly</plan>
+               </plans>
+            </defaultPriceList>
+         </priceLists>
+      </version>
+   </versions>
+   <catalogName>Movies</catalogName>
+   <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+</catalogs>
+```
+```python
+<?xml version="1.0" encoding="UTF-8"?>
+<catalogs>
+   <versions>
+      <version>
+         <effectiveDate>2013-02-08T00:00:00Z</effectiveDate>
+         <catalogName>Movies</catalogName>
+         <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+         <currencies>
+            <currency>USD</currency>
+         </currencies>
+         <units />
+         <products>
+            <product name="Basic">
+               <category>BASE</category>
+               <included />
+               <available />
+               <limits />
+            </product>
+         </products>
+         <rules>
+            <changePolicy>
+               <changePolicyCase>
+                  <policy>END_OF_TERM</policy>
+               </changePolicyCase>
+            </changePolicy>
+            <changeAlignment>
+               <changeAlignmentCase>
+                  <alignment>START_OF_BUNDLE</alignment>
+               </changeAlignmentCase>
+            </changeAlignment>
+            <cancelPolicy>
+               <cancelPolicyCase>
+                  <productCategory>BASE</productCategory>
+                  <policy>END_OF_TERM</policy>
+               </cancelPolicyCase>
+               <cancelPolicyCase>
+                  <policy>IMMEDIATE</policy>
+               </cancelPolicyCase>
+            </cancelPolicy>
+            <createAlignment>
+               <createAlignmentCase>
+                  <alignment>START_OF_BUNDLE</alignment>
+               </createAlignmentCase>
+            </createAlignment>
+            <billingAlignment>
+               <billingAlignmentCase>
+                  <alignment>ACCOUNT</alignment>
+               </billingAlignmentCase>
+            </billingAlignment>
+            <priceList>
+               <priceListCase>
+                  <toPriceList>DEFAULT</toPriceList>
+               </priceListCase>
+            </priceList>
+         </rules>
+         <plans>
+            <plan name="basic-monthly">
+               <product>Basic</product>
+               <initialPhases />
+               <finalPhase type="EVERGREEN">
+                  <duration>
+                     <unit>UNLIMITED</unit>
+                     <number>-1</number>
+                  </duration>
+                  <recurring>
+                     <billingPeriod>MONTHLY</billingPeriod>
+                     <recurringPrice>
+                        <price>
+                           <currency>USD</currency>
+                           <value>1000.00</value>
+                        </price>
+                     </recurringPrice>
+                  </recurring>
+                  <usages />
+               </finalPhase>
+               <plansAllowedInBundle>-1</plansAllowedInBundle>
+            </plan>
+         </plans>
+         <priceLists>
+            <defaultPriceList name="DEFAULT">
+               <plans>
+                  <plan>basic-monthly</plan>
+               </plans>
+            </defaultPriceList>
+         </priceLists>
+      </version>
+      <version>
+         <effectiveDate>2013-02-08T00:00:01Z</effectiveDate>
+         <catalogName>Movies</catalogName>
+         <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+         <currencies>
+            <currency>USD</currency>
+         </currencies>
+         <units />
+         <products>
+            <product name="Basic">
+               <category>BASE</category>
+               <included />
+               <available />
+               <limits />
+            </product>
+         </products>
+         <rules>
+            <changePolicy>
+               <changePolicyCase>
+                  <policy>END_OF_TERM</policy>
+               </changePolicyCase>
+            </changePolicy>
+            <changeAlignment>
+               <changeAlignmentCase>
+                  <alignment>START_OF_BUNDLE</alignment>
+               </changeAlignmentCase>
+            </changeAlignment>
+            <cancelPolicy>
+               <cancelPolicyCase>
+                  <productCategory>BASE</productCategory>
+                  <policy>END_OF_TERM</policy>
+               </cancelPolicyCase>
+               <cancelPolicyCase>
+                  <policy>IMMEDIATE</policy>
+               </cancelPolicyCase>
+            </cancelPolicy>
+            <createAlignment>
+               <createAlignmentCase>
+                  <alignment>START_OF_BUNDLE</alignment>
+               </createAlignmentCase>
+            </createAlignment>
+            <billingAlignment>
+               <billingAlignmentCase>
+                  <alignment>ACCOUNT</alignment>
+               </billingAlignmentCase>
+            </billingAlignment>
+            <priceList>
+               <priceListCase>
+                  <toPriceList>DEFAULT</toPriceList>
+               </priceListCase>
+            </priceList>
+         </rules>
+         <plans>
+            <plan name="basic-monthly">
+               <product>Basic</product>
+               <initialPhases>
+                  <phase type="TRIAL">
+                     <duration>
+                        <unit>DAYS</unit>
+                        <number>30</number>
+                     </duration>
+                     <fixed type="ONE_TIME">
+                        <fixedPrice />
+                     </fixed>
+                     <usages />
+                  </phase>
+               </initialPhases>
+               <finalPhase type="EVERGREEN">
+                  <duration>
+                     <unit>UNLIMITED</unit>
+                     <number>-1</number>
+                  </duration>
+                  <recurring>
+                     <billingPeriod>MONTHLY</billingPeriod>
+                     <recurringPrice>
+                        <price>
+                           <currency>USD</currency>
+                           <value>1000.00</value>
+                        </price>
+                     </recurringPrice>
+                  </recurring>
+                  <usages />
+               </finalPhase>
+               <plansAllowedInBundle>-1</plansAllowedInBundle>
+            </plan>
+         </plans>
+         <priceLists>
+            <defaultPriceList name="DEFAULT">
+               <plans>
+                  <plan>basic-monthly</plan>
+               </plans>
+            </defaultPriceList>
+         </priceLists>
+      </version>
+   </versions>
+   <catalogName>Movies</catalogName>
+   <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
+</catalogs>
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **requestedDate** | string | false | requested date |
+
+**Returns**
+
+Returns a catalog in XML format.
+
 
 ## Retrieve the catalog as JSON
 
@@ -1588,11 +2447,11 @@ class Catalog {
 
 Returns a catalog in JSON format.
 
-## Retrieve available add-ons for a given product
+## Retrieve a list of catalog versions
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/catalog/availableAddons`
+`GET http://example.com/1.0/kb/catalog/versions`
 
 > Example Request:
 
@@ -1601,37 +2460,29 @@ curl -v \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/catalog/availableAddons"	
+    -H "accept: application/json" \
+    "http://localhost:8080/1.0/kb/catalog/versions"
 ```
 
 ```java
 import org.killbill.billing.client.api.gen.CatalogApi;
 protected CatalogApi catalogApi;
 
-String baseProductName = "Bullets";
-String priceListName = null;
 UUID accountId = null;
 
-List<PlanDetail> availableAddons = catalogApi.getAvailableAddons(baseProductName, 
-                                                                 priceListName, 
-                                                                 accountId, 
-                                                                 requestOptions);
+List<DateTime> versions = catalogApi.getCatalogVersions(accountId, requestOptions);
 ```
 
 ```ruby
-base_product_name = 'Basic'
-KillBillClient::Model::Catalog.available_addons(base_product_name, 
-                                                options)
+KillBillClient::Model::Catalog.get_tenant_catalog_versions(options)
 ```
 
 ```python
 catalogApi = killbill.api.CatalogApi()
-        
-catalogApi.get_available_addons(api_key, 
-                                api_secret, 
-                                base_product_name='Basic')
+
+catalogApi.get_catalog_versions(api_key, api_secret)
 ```
+
 > Example Response:
 
 ```shell
@@ -1640,66 +2491,28 @@ catalogApi.get_available_addons(api_key,
 < Content-Type: application/json
 
 [
-   {
-      "product":"Basic",
-      "plan":"basic-annual",
-      "finalPhaseBillingPeriod":"ANNUAL",
-      "priceList":"DEFAULT",
-      "finalPhaseRecurringPrice":[
-         {
-            "currency":"USD",
-            "value":10000.0
-         }
-      ]
-   }
+  "2013-02-08T00:00:00.000Z"
 ]
 ```
 ```java
-//First element of the list
-class PlanDetail {
-    product: Bullets
-    plan: bullets-usage-in-arrear
-    priceList: DEFAULT
-    finalPhaseBillingPeriod: NO_BILLING_PERIOD
-    finalPhaseRecurringPrice: []
-}
+2013-02-08T00:00:00.000Z
 ```
 ```ruby
-[
-   {
-      "product":"Basic",
-      "plan":"basic-annual",
-      "finalPhaseBillingPeriod":"ANNUAL",
-      "priceList":"DEFAULT",
-      "finalPhaseRecurringPrice":[
-         {
-            "currency":"USD",
-            "value":10000.0
-         }
-      ]
-   }
-]
+["2013-02-08T00:00:00.000Z"]
 ```
 ```python
-[{'product': 'Basic',
-  'plan': 'basic-annual',
-  'final_phase_billing_period': 'ANNUAL',
-  'price_list': 'DEFAULT',
-  'final_phase_recurring_price':[{'currency': 'USD',
-                                  'value': 10000.0}]
-}]
+[datetime.datetime(2013, 2, 8, 0, 0, tzinfo=tzutc())]
 ```
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **baseProductName** | string | true | base product name |
-| **priceListName** | string | true | price list name |
+None.
 
 **Returns**
 
-Returns a list with add-ons for a product.
+Returns a list with the available catalog versions.
+
+
 
 ## Retrieve available base plans
 
@@ -1852,6 +2665,183 @@ None.
 **Returns**
 
 Returns a list with the available base plans.
+
+## Retrieve available add-ons for a given product
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/catalog/availableAddons`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/catalog/availableAddons"	
+```
+
+```java
+import org.killbill.billing.client.api.gen.CatalogApi;
+protected CatalogApi catalogApi;
+
+String baseProductName = "Bullets";
+String priceListName = null;
+UUID accountId = null;
+
+List<PlanDetail> availableAddons = catalogApi.getAvailableAddons(baseProductName, 
+                                                                 priceListName, 
+                                                                 accountId, 
+                                                                 requestOptions);
+```
+
+```ruby
+base_product_name = 'Basic'
+KillBillClient::Model::Catalog.available_addons(base_product_name, 
+                                                options)
+```
+
+```python
+catalogApi = killbill.api.CatalogApi()
+        
+catalogApi.get_available_addons(api_key, 
+                                api_secret, 
+                                base_product_name='Basic')
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+   {
+      "product":"Basic",
+      "plan":"basic-annual",
+      "finalPhaseBillingPeriod":"ANNUAL",
+      "priceList":"DEFAULT",
+      "finalPhaseRecurringPrice":[
+         {
+            "currency":"USD",
+            "value":10000.0
+         }
+      ]
+   }
+]
+```
+```java
+//First element of the list
+class PlanDetail {
+    product: Bullets
+    plan: bullets-usage-in-arrear
+    priceList: DEFAULT
+    finalPhaseBillingPeriod: NO_BILLING_PERIOD
+    finalPhaseRecurringPrice: []
+}
+```
+```ruby
+[
+   {
+      "product":"Basic",
+      "plan":"basic-annual",
+      "finalPhaseBillingPeriod":"ANNUAL",
+      "priceList":"DEFAULT",
+      "finalPhaseRecurringPrice":[
+         {
+            "currency":"USD",
+            "value":10000.0
+         }
+      ]
+   }
+]
+```
+```python
+[{'product': 'Basic',
+  'plan': 'basic-annual',
+  'final_phase_billing_period': 'ANNUAL',
+  'price_list': 'DEFAULT',
+  'final_phase_recurring_price':[{'currency': 'USD',
+                                  'value': 10000.0}]
+}]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **baseProductName** | string | true | base product name |
+| **priceListName** | string | true | price list name |
+
+**Returns**
+
+Returns a list with add-ons for a product.
+
+## Delete all versions for a per tenant catalog
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/catalog`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/catalog"	
+```
+
+```java
+import org.killbill.billing.client.api.gen.CatalogApi;
+protected CatalogApi catalogApi;
+
+catalogApi.deleteCatalog(requestOptions);
+```
+
+```ruby
+KillBillClient::Model::Catalog.delete_catalog(user,
+                                              reason,
+                                              comment,
+                                              options)
+```
+
+```python
+catalogApi = killbill.api.CatalogApi()
+        
+catalogApi.delete_catalog(created_by, api_key, api_secret)
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+A `204` http status without content.
+
 
 ## Retrieve phase for a given subscription and date
 
@@ -2101,6 +3091,8 @@ TODO
 **Returns**
 
 Returns a list with plan info.
+
+
 
 ## Retrieve priceList for a given subscription and date
 
@@ -2372,986 +3364,3 @@ None.
 
 A `201` http status without content.
 
-##  Retrieve a list of catalog versions
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/catalog/versions`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "accept: application/json" \
-    "http://localhost:8080/1.0/kb/catalog/versions"
-```
-
-```java
-import org.killbill.billing.client.api.gen.CatalogApi;
-protected CatalogApi catalogApi;
-
-UUID accountId = null;
-
-List<DateTime> versions = catalogApi.getCatalogVersions(accountId, requestOptions);
-```
-
-```ruby
-KillBillClient::Model::Catalog.get_tenant_catalog_versions(options)
-```
-
-```python
-catalogApi = killbill.api.CatalogApi()
-
-catalogApi.get_catalog_versions(api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  "2013-02-08T00:00:00.000Z"
-]
-```
-```java
-2013-02-08T00:00:00.000Z
-```
-```ruby
-["2013-02-08T00:00:00.000Z"]
-```
-```python
-[datetime.datetime(2013, 2, 8, 0, 0, tzinfo=tzutc())]
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-Returns a list with the available catalog versions.
-
-## Retrieve the catalog as XML
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/catalog/xml`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: text/xml" \
-    "http://localhost:8080/1.0/kb/catalog/xml"	
-```
-
-```java
-import org.killbill.billing.client.api.gen.CatalogApi;
-protected CatalogApi catalogApi;
-
-LocalDate requestedDate = null;
-UUID accountId = null;
-
-String catalog = catalogApi.getCatalogXml(requestedDate, 
-                                          accountId, 
-                                          requestOptions);
-```
-
-```ruby
-requested_date = nil
-
-KillBillClient::Model::Catalog.get_tenant_catalog_xml(requested_date,
-                                                      options)
-```
-
-```python
-catalogApi = killbill.api.CatalogApi()
-
-catalogApi.get_catalog_xml(api_key, api_secret)
-```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: text/xml
-
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-  <catalogs>
-    <versions>
-      <version>
-        <effectiveDate>2013-02-08T00:00:00Z</effectiveDate>
-        <catalogName>SpyCarBasic</catalogName>
-        <currencies>
-          <currency>USD</currency>
-          <currency>GBP</currency>
-        </currencies>
-        <units/>
-        <products>
-          <product name="Basic" prettyName="Basic">
-            <category>BASE</category>
-            <included/>
-            <available/>
-            <limits/>
-          </product>
-          <product name="Sports" prettyName="Sports">
-            <category>BASE</category>
-            <included/>
-            <available/>
-            <limits/>
-          </product>
-          <product name="Standard" prettyName="Standard">
-            <category>BASE</category>
-            <included/>
-            <available/>
-            <limits/>
-          </product>
-          <product name="Super" prettyName="Super">
-            <category>ADD_ON</category>
-            <included/>
-            <available/>
-            <limits/>
-          </product>
-        </products>
-        <rules>
-          <changePolicy>
-            <changePolicyCase>
-              <policy>IMMEDIATE</policy>
-            </changePolicyCase>
-          </changePolicy>
-          <changeAlignment>
-            <changeAlignmentCase>
-              <alignment>START_OF_BUNDLE</alignment>
-            </changeAlignmentCase>
-          </changeAlignment>
-          <cancelPolicy>
-            <cancelPolicyCase>
-              <policy>IMMEDIATE</policy>
-            </cancelPolicyCase>
-          </cancelPolicy>
-          <createAlignment>
-            <createAlignmentCase>
-              <alignment>START_OF_BUNDLE</alignment>
-            </createAlignmentCase>
-          </createAlignment>
-          <billingAlignment>
-            <billingAlignmentCase>
-              <alignment>ACCOUNT</alignment>
-            </billingAlignmentCase>
-          </billingAlignment>
-          <priceList>
-            <priceListCase>
-              <toPriceList>DEFAULT</toPriceList>
-            </priceListCase>
-          </priceList>
-        </rules>
-        <plans>
-          <plan name="basic-annual" prettyName="basic-annual">
-            <product>Basic</product>
-            <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
-            <initialPhases/>
-            <finalPhase type="EVERGREEN">
-              <duration>
-                <unit>UNLIMITED</unit>
-                <number>-1</number>
-              </duration>
-              <recurring>
-                <billingPeriod>ANNUAL</billingPeriod>
-                <recurringPrice>
-                  <price>
-                    <currency>USD</currency>
-                    <value>1000</value>
-                  </price>
-                </recurringPrice>
-              </recurring>
-              <usages/>
-            </finalPhase>
-            <plansAllowedInBundle>-1</plansAllowedInBundle>
-          </plan>
-          <plan name="sports-monthly" prettyName="sports-monthly">
-            <product>Sports</product>
-            <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
-            <initialPhases>
-              <phase type="TRIAL">
-                <duration>
-                  <unit>DAYS</unit>
-                  <number>30</number>
-                </duration>
-                <fixed type="ONE_TIME">
-                  <fixedPrice/>
-                </fixed>
-                <usages/>
-              </phase>
-            </initialPhases>
-            <finalPhase type="EVERGREEN">
-              <duration>
-                <unit>UNLIMITED</unit>
-                <number>-1</number>
-              </duration>
-              <recurring>
-                <billingPeriod>MONTHLY</billingPeriod>
-                <recurringPrice>
-                  <price>
-                    <currency>GBP</currency>
-                    <value>375.00</value>
-                  </price>
-                  <price>
-                    <currency>USD</currency>
-                    <value>500.00</value>
-                  </price>
-                </recurringPrice>
-              </recurring>
-              <usages/>
-            </finalPhase>
-            <plansAllowedInBundle>-1</plansAllowedInBundle>
-          </plan>
-          <plan name="standard-monthly" prettyName="standard-monthly">
-            <product>Standard</product>
-            <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
-            <initialPhases>
-              <phase type="TRIAL">
-                <duration>
-                  <unit>DAYS</unit>
-                  <number>30</number>
-                </duration>
-                <fixed type="ONE_TIME">
-                  <fixedPrice/>
-                </fixed>
-                <usages/>
-              </phase>
-            </initialPhases>
-            <finalPhase type="EVERGREEN">
-              <duration>
-                <unit>UNLIMITED</unit>
-                <number>-1</number>
-              </duration>
-              <recurring>
-                <billingPeriod>MONTHLY</billingPeriod>
-                <recurringPrice>
-                  <price>
-                    <currency>GBP</currency>
-                    <value>75.00</value>
-                  </price>
-                  <price>
-                    <currency>USD</currency>
-                    <value>100.00</value>
-                  </price>
-                </recurringPrice>
-              </recurring>
-              <usages/>
-            </finalPhase>
-            <plansAllowedInBundle>-1</plansAllowedInBundle>
-          </plan>
-          <plan name="super-monthly" prettyName="super-monthly">
-            <product>Super</product>
-            <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
-            <initialPhases>
-              <phase type="TRIAL">
-                <duration>
-                  <unit>DAYS</unit>
-                  <number>30</number>
-                </duration>
-                <fixed type="ONE_TIME">
-                  <fixedPrice/>
-                </fixed>
-                <usages/>
-              </phase>
-            </initialPhases>
-            <finalPhase type="EVERGREEN">
-              <duration>
-                <unit>UNLIMITED</unit>
-                <number>-1</number>
-              </duration>
-              <recurring>
-                <billingPeriod>MONTHLY</billingPeriod>
-                <recurringPrice>
-                  <price>
-                    <currency>GBP</currency>
-                    <value>750.00</value>
-                  </price>
-                  <price>
-                    <currency>USD</currency>
-                    <value>1000.00</value>
-                  </price>
-                </recurringPrice>
-              </recurring>
-              <usages/>
-            </finalPhase>
-            <plansAllowedInBundle>-1</plansAllowedInBundle>
-          </plan>
-        </plans>
-        <priceLists>
-          <defaultPriceList name="DEFAULT">
-            <plans>
-              <plan>basic-annual</plan>
-              <plan>sports-monthly</plan>
-              <plan>standard-monthly</plan>
-              <plan>super-monthly</plan>
-            </plans>
-          </defaultPriceList>
-        </priceLists>
-      </version>
-    </versions>
-    <catalogName>SpyCarBasic</catalogName>
-  </catalogs>
-```
-```java
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<catalogs>
-    <versions>
-        <version>
-            <effectiveDate>2013-02-08T00:00:00Z</effectiveDate>
-            <catalogName>SpyCarBasic</catalogName>
-            <currencies>
-                <currency>USD</currency>
-                <currency>GBP</currency>
-            </currencies>
-            <units/>
-            <products>
-                <product name="Sports" prettyName="Sports">
-                    <category>BASE</category>
-                    <included/>
-                    <available/>
-                    <limits/>
-                </product>
-                <product name="Standard" prettyName="Standard">
-                    <category>BASE</category>
-                    <included/>
-                    <available/>
-                    <limits/>
-                </product>
-                <product name="Super" prettyName="Super">
-                    <category>BASE</category>
-                    <included/>
-                    <available/>
-                    <limits/>
-                </product>
-            </products>
-            <rules>
-                <changePolicy>
-                    <changePolicyCase>
-                        <policy>IMMEDIATE</policy>
-                    </changePolicyCase>
-                </changePolicy>
-                <changeAlignment>
-                    <changeAlignmentCase>
-                        <alignment>START_OF_BUNDLE</alignment>
-                    </changeAlignmentCase>
-                </changeAlignment>
-                <cancelPolicy>
-                    <cancelPolicyCase>
-                        <policy>IMMEDIATE</policy>
-                    </cancelPolicyCase>
-                </cancelPolicy>
-                <createAlignment>
-                    <createAlignmentCase>
-                        <alignment>START_OF_BUNDLE</alignment>
-                    </createAlignmentCase>
-                </createAlignment>
-                <billingAlignment>
-                    <billingAlignmentCase>
-                        <alignment>ACCOUNT</alignment>
-                    </billingAlignmentCase>
-                </billingAlignment>
-                <priceList>
-                    <priceListCase>
-                        <toPriceList>DEFAULT</toPriceList>
-                    </priceListCase>
-                </priceList>
-            </rules>
-            <plans>
-                <plan name="sports-monthly" prettyName="sports-monthly">
-                    <product>Sports</product>
-                    <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
-                    <initialPhases>
-                        <phase type="TRIAL">
-                            <duration>
-<unit>DAYS</unit>
-<number>30</number>
-                            </duration>
-                            <fixed type="ONE_TIME">
-<fixedPrice/>
-                            </fixed>
-                            <usages/>
-                        </phase>
-                    </initialPhases>
-                    <finalPhase type="EVERGREEN">
-                        <duration>
-                            <unit>UNLIMITED</unit>
-                            <number>-1</number>
-                        </duration>
-                        <recurring>
-                            <billingPeriod>MONTHLY</billingPeriod>
-                            <recurringPrice>
-<price>
-    <currency>GBP</currency>
-    <value>375.00</value>
-</price>
-<price>
-    <currency>USD</currency>
-    <value>500.00</value>
-</price>
-                            </recurringPrice>
-                        </recurring>
-                        <usages/>
-                    </finalPhase>
-                    <plansAllowedInBundle>-1</plansAllowedInBundle>
-                </plan>
-                <plan name="standard-monthly" prettyName="standard-monthly">
-                    <product>Standard</product>
-                    <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
-                    <initialPhases>
-                        <phase type="TRIAL">
-                            <duration>
-<unit>DAYS</unit>
-<number>30</number>
-                            </duration>
-                            <fixed type="ONE_TIME">
-<fixedPrice/>
-                            </fixed>
-                            <usages/>
-                        </phase>
-                    </initialPhases>
-                    <finalPhase type="EVERGREEN">
-                        <duration>
-                            <unit>UNLIMITED</unit>
-                            <number>-1</number>
-                        </duration>
-                        <recurring>
-                            <billingPeriod>MONTHLY</billingPeriod>
-                            <recurringPrice>
-<price>
-    <currency>GBP</currency>
-    <value>75.00</value>
-</price>
-<price>
-    <currency>USD</currency>
-    <value>100.00</value>
-</price>
-                            </recurringPrice>
-                        </recurring>
-                        <usages/>
-                    </finalPhase>
-                    <plansAllowedInBundle>-1</plansAllowedInBundle>
-                </plan>
-                <plan name="super-monthly" prettyName="super-monthly">
-                    <product>Super</product>
-                    <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
-                    <initialPhases>
-                        <phase type="TRIAL">
-                            <duration>
-<unit>DAYS</unit>
-<number>30</number>
-                            </duration>
-                            <fixed type="ONE_TIME">
-<fixedPrice/>
-                            </fixed>
-                            <usages/>
-                        </phase>
-                    </initialPhases>
-                    <finalPhase type="EVERGREEN">
-                        <duration>
-                            <unit>UNLIMITED</unit>
-                            <number>-1</number>
-                        </duration>
-                        <recurring>
-                            <billingPeriod>MONTHLY</billingPeriod>
-                            <recurringPrice>
-<price>
-    <currency>GBP</currency>
-    <value>750.00</value>
-</price>
-<price>
-    <currency>USD</currency>
-    <value>1000.00</value>
-</price>
-                            </recurringPrice>
-                        </recurring>
-                        <usages/>
-                    </finalPhase>
-                    <plansAllowedInBundle>-1</plansAllowedInBundle>
-                </plan>
-            </plans>
-            <priceLists>
-                <defaultPriceList name="DEFAULT">
-                    <plans>
-                        <plan>sports-monthly</plan>
-                        <plan>standard-monthly</plan>
-                        <plan>super-monthly</plan>
-                    </plans>
-                </defaultPriceList>
-            </priceLists>
-        </version>
-    </versions>
-    <catalogName>SpyCarBasic</catalogName>
-</catalogs>
-
-```
-```ruby
-<?xml version="1.0" encoding="UTF-8"?>
-<catalogs>
-   <versions>
-      <version>
-         <effectiveDate>2013-02-08T00:00:00Z</effectiveDate>
-         <catalogName>Movies</catalogName>
-         <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
-         <currencies>
-            <currency>USD</currency>
-         </currencies>
-         <units />
-         <products>
-            <product name="Basic">
-               <category>BASE</category>
-               <included />
-               <available />
-               <limits />
-            </product>
-         </products>
-         <rules>
-            <changePolicy>
-               <changePolicyCase>
-                  <policy>END_OF_TERM</policy>
-               </changePolicyCase>
-            </changePolicy>
-            <changeAlignment>
-               <changeAlignmentCase>
-                  <alignment>START_OF_BUNDLE</alignment>
-               </changeAlignmentCase>
-            </changeAlignment>
-            <cancelPolicy>
-               <cancelPolicyCase>
-                  <productCategory>BASE</productCategory>
-                  <policy>END_OF_TERM</policy>
-               </cancelPolicyCase>
-               <cancelPolicyCase>
-                  <policy>IMMEDIATE</policy>
-               </cancelPolicyCase>
-            </cancelPolicy>
-            <createAlignment>
-               <createAlignmentCase>
-                  <alignment>START_OF_BUNDLE</alignment>
-               </createAlignmentCase>
-            </createAlignment>
-            <billingAlignment>
-               <billingAlignmentCase>
-                  <alignment>ACCOUNT</alignment>
-               </billingAlignmentCase>
-            </billingAlignment>
-            <priceList>
-               <priceListCase>
-                  <toPriceList>DEFAULT</toPriceList>
-               </priceListCase>
-            </priceList>
-         </rules>
-         <plans>
-            <plan name="basic-monthly">
-               <product>Basic</product>
-               <initialPhases />
-               <finalPhase type="EVERGREEN">
-                  <duration>
-                     <unit>UNLIMITED</unit>
-                     <number>-1</number>
-                  </duration>
-                  <recurring>
-                     <billingPeriod>MONTHLY</billingPeriod>
-                     <recurringPrice>
-                        <price>
-                           <currency>USD</currency>
-                           <value>1000.00</value>
-                        </price>
-                     </recurringPrice>
-                  </recurring>
-                  <usages />
-               </finalPhase>
-               <plansAllowedInBundle>-1</plansAllowedInBundle>
-            </plan>
-         </plans>
-         <priceLists>
-            <defaultPriceList name="DEFAULT">
-               <plans>
-                  <plan>basic-monthly</plan>
-               </plans>
-            </defaultPriceList>
-         </priceLists>
-      </version>
-      <version>
-         <effectiveDate>2013-02-08T00:00:01Z</effectiveDate>
-         <catalogName>Movies</catalogName>
-         <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
-         <currencies>
-            <currency>USD</currency>
-         </currencies>
-         <units />
-         <products>
-            <product name="Basic">
-               <category>BASE</category>
-               <included />
-               <available />
-               <limits />
-            </product>
-         </products>
-         <rules>
-            <changePolicy>
-               <changePolicyCase>
-                  <policy>END_OF_TERM</policy>
-               </changePolicyCase>
-            </changePolicy>
-            <changeAlignment>
-               <changeAlignmentCase>
-                  <alignment>START_OF_BUNDLE</alignment>
-               </changeAlignmentCase>
-            </changeAlignment>
-            <cancelPolicy>
-               <cancelPolicyCase>
-                  <productCategory>BASE</productCategory>
-                  <policy>END_OF_TERM</policy>
-               </cancelPolicyCase>
-               <cancelPolicyCase>
-                  <policy>IMMEDIATE</policy>
-               </cancelPolicyCase>
-            </cancelPolicy>
-            <createAlignment>
-               <createAlignmentCase>
-                  <alignment>START_OF_BUNDLE</alignment>
-               </createAlignmentCase>
-            </createAlignment>
-            <billingAlignment>
-               <billingAlignmentCase>
-                  <alignment>ACCOUNT</alignment>
-               </billingAlignmentCase>
-            </billingAlignment>
-            <priceList>
-               <priceListCase>
-                  <toPriceList>DEFAULT</toPriceList>
-               </priceListCase>
-            </priceList>
-         </rules>
-         <plans>
-            <plan name="basic-monthly">
-               <product>Basic</product>
-               <initialPhases>
-                  <phase type="TRIAL">
-                     <duration>
-                        <unit>DAYS</unit>
-                        <number>30</number>
-                     </duration>
-                     <fixed type="ONE_TIME">
-                        <fixedPrice />
-                     </fixed>
-                     <usages />
-                  </phase>
-               </initialPhases>
-               <finalPhase type="EVERGREEN">
-                  <duration>
-                     <unit>UNLIMITED</unit>
-                     <number>-1</number>
-                  </duration>
-                  <recurring>
-                     <billingPeriod>MONTHLY</billingPeriod>
-                     <recurringPrice>
-                        <price>
-                           <currency>USD</currency>
-                           <value>1000.00</value>
-                        </price>
-                     </recurringPrice>
-                  </recurring>
-                  <usages />
-               </finalPhase>
-               <plansAllowedInBundle>-1</plansAllowedInBundle>
-            </plan>
-         </plans>
-         <priceLists>
-            <defaultPriceList name="DEFAULT">
-               <plans>
-                  <plan>basic-monthly</plan>
-               </plans>
-            </defaultPriceList>
-         </priceLists>
-      </version>
-   </versions>
-   <catalogName>Movies</catalogName>
-   <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
-</catalogs>
-```
-```python
-<?xml version="1.0" encoding="UTF-8"?>
-<catalogs>
-   <versions>
-      <version>
-         <effectiveDate>2013-02-08T00:00:00Z</effectiveDate>
-         <catalogName>Movies</catalogName>
-         <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
-         <currencies>
-            <currency>USD</currency>
-         </currencies>
-         <units />
-         <products>
-            <product name="Basic">
-               <category>BASE</category>
-               <included />
-               <available />
-               <limits />
-            </product>
-         </products>
-         <rules>
-            <changePolicy>
-               <changePolicyCase>
-                  <policy>END_OF_TERM</policy>
-               </changePolicyCase>
-            </changePolicy>
-            <changeAlignment>
-               <changeAlignmentCase>
-                  <alignment>START_OF_BUNDLE</alignment>
-               </changeAlignmentCase>
-            </changeAlignment>
-            <cancelPolicy>
-               <cancelPolicyCase>
-                  <productCategory>BASE</productCategory>
-                  <policy>END_OF_TERM</policy>
-               </cancelPolicyCase>
-               <cancelPolicyCase>
-                  <policy>IMMEDIATE</policy>
-               </cancelPolicyCase>
-            </cancelPolicy>
-            <createAlignment>
-               <createAlignmentCase>
-                  <alignment>START_OF_BUNDLE</alignment>
-               </createAlignmentCase>
-            </createAlignment>
-            <billingAlignment>
-               <billingAlignmentCase>
-                  <alignment>ACCOUNT</alignment>
-               </billingAlignmentCase>
-            </billingAlignment>
-            <priceList>
-               <priceListCase>
-                  <toPriceList>DEFAULT</toPriceList>
-               </priceListCase>
-            </priceList>
-         </rules>
-         <plans>
-            <plan name="basic-monthly">
-               <product>Basic</product>
-               <initialPhases />
-               <finalPhase type="EVERGREEN">
-                  <duration>
-                     <unit>UNLIMITED</unit>
-                     <number>-1</number>
-                  </duration>
-                  <recurring>
-                     <billingPeriod>MONTHLY</billingPeriod>
-                     <recurringPrice>
-                        <price>
-                           <currency>USD</currency>
-                           <value>1000.00</value>
-                        </price>
-                     </recurringPrice>
-                  </recurring>
-                  <usages />
-               </finalPhase>
-               <plansAllowedInBundle>-1</plansAllowedInBundle>
-            </plan>
-         </plans>
-         <priceLists>
-            <defaultPriceList name="DEFAULT">
-               <plans>
-                  <plan>basic-monthly</plan>
-               </plans>
-            </defaultPriceList>
-         </priceLists>
-      </version>
-      <version>
-         <effectiveDate>2013-02-08T00:00:01Z</effectiveDate>
-         <catalogName>Movies</catalogName>
-         <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
-         <currencies>
-            <currency>USD</currency>
-         </currencies>
-         <units />
-         <products>
-            <product name="Basic">
-               <category>BASE</category>
-               <included />
-               <available />
-               <limits />
-            </product>
-         </products>
-         <rules>
-            <changePolicy>
-               <changePolicyCase>
-                  <policy>END_OF_TERM</policy>
-               </changePolicyCase>
-            </changePolicy>
-            <changeAlignment>
-               <changeAlignmentCase>
-                  <alignment>START_OF_BUNDLE</alignment>
-               </changeAlignmentCase>
-            </changeAlignment>
-            <cancelPolicy>
-               <cancelPolicyCase>
-                  <productCategory>BASE</productCategory>
-                  <policy>END_OF_TERM</policy>
-               </cancelPolicyCase>
-               <cancelPolicyCase>
-                  <policy>IMMEDIATE</policy>
-               </cancelPolicyCase>
-            </cancelPolicy>
-            <createAlignment>
-               <createAlignmentCase>
-                  <alignment>START_OF_BUNDLE</alignment>
-               </createAlignmentCase>
-            </createAlignment>
-            <billingAlignment>
-               <billingAlignmentCase>
-                  <alignment>ACCOUNT</alignment>
-               </billingAlignmentCase>
-            </billingAlignment>
-            <priceList>
-               <priceListCase>
-                  <toPriceList>DEFAULT</toPriceList>
-               </priceListCase>
-            </priceList>
-         </rules>
-         <plans>
-            <plan name="basic-monthly">
-               <product>Basic</product>
-               <initialPhases>
-                  <phase type="TRIAL">
-                     <duration>
-                        <unit>DAYS</unit>
-                        <number>30</number>
-                     </duration>
-                     <fixed type="ONE_TIME">
-                        <fixedPrice />
-                     </fixed>
-                     <usages />
-                  </phase>
-               </initialPhases>
-               <finalPhase type="EVERGREEN">
-                  <duration>
-                     <unit>UNLIMITED</unit>
-                     <number>-1</number>
-                  </duration>
-                  <recurring>
-                     <billingPeriod>MONTHLY</billingPeriod>
-                     <recurringPrice>
-                        <price>
-                           <currency>USD</currency>
-                           <value>1000.00</value>
-                        </price>
-                     </recurringPrice>
-                  </recurring>
-                  <usages />
-               </finalPhase>
-               <plansAllowedInBundle>-1</plansAllowedInBundle>
-            </plan>
-         </plans>
-         <priceLists>
-            <defaultPriceList name="DEFAULT">
-               <plans>
-                  <plan>basic-monthly</plan>
-               </plans>
-            </defaultPriceList>
-         </priceLists>
-      </version>
-   </versions>
-   <catalogName>Movies</catalogName>
-   <recurringBillingMode>IN_ADVANCE</recurringBillingMode>
-</catalogs>
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **requestedDate** | string | false | requested date |
-
-**Returns**
-
-Returns a catalog in XML format.
-
-## Upload the full catalog as XML
-
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/catalog/xml`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X POST \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: text/xml" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \"
-    -d "<?xml version="1.0" encoding="UTF-8" standalone="yes"?><catalog> ..."
-    "http://localhost:8080/1.0/kb/catalog/xml"
-```
-
-```java
-import org.killbill.billing.client.api.gen.CatalogApi;
-protected CatalogApi catalogApi;
-
-String body = getResourceBodyString(catalog);
-
-catalogApi.uploadCatalogXml(body, requestOptions);
-```
-
-```ruby
-catalog_file_xml = resource_file.read
-KillBillClient::Model::Catalog.upload_tenant_catalog(catalog_file_xml, 
-                                                     user,
-                                                     reason,
-                                                     comment,
-                                                     options)
-```
-
-```python
-catalogApi = killbill.api.CatalogApi()
-xml_catalog = open("../resources/SpyCarBasic.xml", "r+").read()
-
-catalogApi.upload_catalog_xml(xml_catalog, 
-                              created_by, 
-                              api_key, 
-                              api_secret)
-```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://localhost:8080/1.0/kb/catalog/xml
-< Content-Type: text/xml
-< Content-Length: 0
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-A `201` http status without content.
