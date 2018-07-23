@@ -16,632 +16,6 @@ The attributes are the following:
 * **`subscriptions`** <span style="color:#32A9C7">*(Array[SubscriptionJson], optional, read only)*</span>: List of subscriptions included in this bundle.
 * **`timeline`** <span style="color:#32A9C7">*(BundleTimelineJson, optional, read only)*</span>: Event list.
 
-## Retrieve a bundle by external key
-
-**HTTP Request** 
-
-Retrieves the details information for the `Bundle` using its `externalKey`.
-
-`GET http://example.com/1.0/kb/bundles`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/bundles?externalKey=2cd2f4b5-a1c0-42a7-924f-64c7b791332d"
-```
-
-```java
-import org.killbill.billing.client.api.gen.BundleApi;
-protected BundleApi bundleApi;
-
-String externalKey = "93199";
-Boolean includedDeleted = false; // Will not include deleted bundles
-
-Bundles bundles = bundleApi.getBundleByKey(externalKey, 
-                                           includedDeleted,
-                                           AuditLevel.NONE,
-                                           requestOptions);
-```
-
-```ruby
-external_key = '4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135'
-included_deleted = false
-
-bundle = KillBillClient::Model::Bundle.new
-bundle.find_by_external_key(external_key, 
-                            included_deleted, 
-                            options)
-```
-
-```python
-bundleApi = killbill.api.BundleApi()
-bundle_external_key = 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'
-
-bundleApi.get_bundle_by_key(bundle_external_key, api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  {
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
-    "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
-    "subscriptions": [
-      {
-        "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-        "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
-        "subscriptionId": "8ab101b6-15e8-433b-b4f7-f99eeaa56a77",
-        "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
-        "startDate": "2018-07-18",
-        "productName": "Standard",
-        "productCategory": "BASE",
-        "billingPeriod": "MONTHLY",
-        "phaseType": "TRIAL",
-        "priceList": "DEFAULT",
-        "planName": "standard-monthly",
-        "state": "ACTIVE",
-        "sourceType": "NATIVE",
-        "cancelledDate": null,
-        "chargedThroughDate": null,
-        "billingStartDate": "2018-07-18",
-        "billingEndDate": null,
-        "billCycleDayLocal": 17,
-        "events": [
-          {
-            "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
-            "billingPeriod": "MONTHLY",
-            "effectiveDate": "2018-07-18",
-            "plan": "standard-monthly",
-            "product": "Standard",
-            "priceList": "DEFAULT",
-            "eventType": "START_ENTITLEMENT",
-            "isBlockedBilling": false,
-            "isBlockedEntitlement": false,
-            "serviceName": "entitlement-service",
-            "serviceStateName": "ENT_STARTED",
-            "phase": "standard-monthly-trial",
-            "auditLogs": []
-          },
-          {
-            "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
-            "billingPeriod": "MONTHLY",
-            "effectiveDate": "2018-07-18",
-            "plan": "standard-monthly",
-            "product": "Standard",
-            "priceList": "DEFAULT",
-            "eventType": "START_BILLING",
-            "isBlockedBilling": false,
-            "isBlockedEntitlement": false,
-            "serviceName": "billing-service",
-            "serviceStateName": "START_BILLING",
-            "phase": "standard-monthly-trial",
-            "auditLogs": []
-          },
-          {
-            "eventId": "f058c95f-9a86-435b-8bba-4f8532635450",
-            "billingPeriod": "MONTHLY",
-            "effectiveDate": "2018-08-17",
-            "plan": "standard-monthly",
-            "product": "Standard",
-            "priceList": "DEFAULT",
-            "eventType": "PHASE",
-            "isBlockedBilling": false,
-            "isBlockedEntitlement": false,
-            "serviceName": "entitlement+billing-service",
-            "serviceStateName": "PHASE",
-            "phase": "standard-monthly-evergreen",
-            "auditLogs": []
-          }
-        ],
-        "priceOverrides": null,
-        "prices": [
-          {
-            "planName": "standard-monthly",
-            "phaseName": "standard-monthly-trial",
-            "phaseType": "TRIAL",
-            "fixedPrice": 0,
-            "recurringPrice": null,
-            "usagePrices": []
-          },
-          {
-            "planName": "standard-monthly",
-            "phaseName": "standard-monthly-evergreen",
-            "phaseType": "EVERGREEN",
-            "fixedPrice": null,
-            "recurringPrice": 100,
-            "usagePrices": []
-          }
-        ],
-        "auditLogs": []
-      }
-    ],
-    "timeline": {
-      "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
-      "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
-      "events": [
-        {
-          "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
-          "billingPeriod": "MONTHLY",
-          "effectiveDate": "2018-07-18",
-          "plan": "standard-monthly",
-          "product": "Standard",
-          "priceList": "DEFAULT",
-          "eventType": "START_ENTITLEMENT",
-          "isBlockedBilling": false,
-          "isBlockedEntitlement": false,
-          "serviceName": "entitlement-service",
-          "serviceStateName": "ENT_STARTED",
-          "phase": "standard-monthly-trial",
-          "auditLogs": []
-        },
-        {
-          "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
-          "billingPeriod": "MONTHLY",
-          "effectiveDate": "2018-07-18",
-          "plan": "standard-monthly",
-          "product": "Standard",
-          "priceList": "DEFAULT",
-          "eventType": "START_BILLING",
-          "isBlockedBilling": false,
-          "isBlockedEntitlement": false,
-          "serviceName": "billing-service",
-          "serviceStateName": "START_BILLING",
-          "phase": "standard-monthly-trial",
-          "auditLogs": []
-        },
-        {
-          "eventId": "f058c95f-9a86-435b-8bba-4f8532635450",
-          "billingPeriod": "MONTHLY",
-          "effectiveDate": "2018-08-17",
-          "plan": "standard-monthly",
-          "product": "Standard",
-          "priceList": "DEFAULT",
-          "eventType": "PHASE",
-          "isBlockedBilling": false,
-          "isBlockedEntitlement": false,
-          "serviceName": "entitlement+billing-service",
-          "serviceStateName": "PHASE",
-          "phase": "standard-monthly-evergreen",
-          "auditLogs": []
-        }
-      ],
-      "auditLogs": []
-    },
-    "auditLogs": []
-  }
-]
-```
-```java
-class Bundle {
-    org.killbill.billing.client.model.gen.Bundle@2b6e1c9d
-    accountId: a7c0b70d-fbc3-43cf-98e7-0af57c1a93fb
-    bundleId: 4a2fcd90-7c8c-4877-93f9-9e99e8cd6953
-    externalKey: 93199
-    subscriptions: [class Subscription {
-        org.killbill.billing.client.model.gen.Subscription@22dc8662
-        accountId: a7c0b70d-fbc3-43cf-98e7-0af57c1a93fb
-        bundleId: 4a2fcd90-7c8c-4877-93f9-9e99e8cd6953
-        subscriptionId: 9a55b6f3-ada7-4a78-915f-373af56cbb00
-        externalKey: 93199
-        startDate: 2012-04-25
-        productName: Shotgun
-        productCategory: BASE
-        billingPeriod: MONTHLY
-        phaseType: TRIAL
-        priceList: DEFAULT
-        planName: shotgun-monthly
-        state: ACTIVE
-        sourceType: NATIVE
-        cancelledDate: null
-        chargedThroughDate: 2012-04-25
-        billingStartDate: 2012-04-25
-        billingEndDate: null
-        billCycleDayLocal: 25
-        events: [class EventSubscription {
-            org.killbill.billing.client.model.gen.EventSubscription@ebe2ab4a
-            eventId: 37b7e919-08ba-4c7d-a902-8d7a10b47157
-            billingPeriod: MONTHLY
-            effectiveDate: 2012-04-25
-            plan: shotgun-monthly
-            product: Shotgun
-            priceList: DEFAULT
-            eventType: START_ENTITLEMENT
-            isBlockedBilling: false
-            isBlockedEntitlement: false
-            serviceName: entitlement-service
-            serviceStateName: ENT_STARTED
-            phase: shotgun-monthly-trial
-            auditLogs: []
-        }, class EventSubscription {
-            org.killbill.billing.client.model.gen.EventSubscription@9e770028
-            eventId: 2a994af7-8faf-444f-a1df-fd6c68a9dbab
-            billingPeriod: MONTHLY
-            effectiveDate: 2012-04-25
-            plan: shotgun-monthly
-            product: Shotgun
-            priceList: DEFAULT
-            eventType: START_BILLING
-            isBlockedBilling: false
-            isBlockedEntitlement: false
-            serviceName: billing-service
-            serviceStateName: START_BILLING
-            phase: shotgun-monthly-trial
-            auditLogs: []
-        }, class EventSubscription {
-            org.killbill.billing.client.model.gen.EventSubscription@54e085c2
-            eventId: 95ddcc14-ea6d-4a5c-b057-3a0d33341ab9
-            billingPeriod: MONTHLY
-            effectiveDate: 2012-05-25
-            plan: shotgun-monthly
-            product: Shotgun
-            priceList: DEFAULT
-            eventType: PHASE
-            isBlockedBilling: false
-            isBlockedEntitlement: false
-            serviceName: entitlement+billing-service
-            serviceStateName: PHASE
-            phase: shotgun-monthly-evergreen
-            auditLogs: []
-        }]
-        priceOverrides: [class PhasePriceOverride {
-            planName: shotgun-monthly
-            phaseName: shotgun-monthly-trial
-            phaseType: TRIAL
-            fixedPrice: 0
-            recurringPrice: null
-            usagePriceOverrides: []
-        }, class PhasePriceOverride {
-            planName: shotgun-monthly
-            phaseName: shotgun-monthly-evergreen
-            phaseType: EVERGREEN
-            fixedPrice: null
-            recurringPrice: 249.95
-            usagePriceOverrides: []
-        }]
-        auditLogs: []
-    }]
-    timeline: class BundleTimeline {
-        org.killbill.billing.client.model.gen.BundleTimeline@7ea930a8
-        accountId: a7c0b70d-fbc3-43cf-98e7-0af57c1a93fb
-        bundleId: 4a2fcd90-7c8c-4877-93f9-9e99e8cd6953
-        externalKey: 93199
-        events: [class EventSubscription {
-            org.killbill.billing.client.model.gen.EventSubscription@89e50f83
-            eventId: 37b7e919-08ba-4c7d-a902-8d7a10b47157
-            billingPeriod: MONTHLY
-            effectiveDate: 2012-04-25
-            plan: shotgun-monthly
-            product: Shotgun
-            priceList: DEFAULT
-            eventType: START_ENTITLEMENT
-            isBlockedBilling: false
-            isBlockedEntitlement: false
-            serviceName: entitlement-service
-            serviceStateName: ENT_STARTED
-            phase: shotgun-monthly-trial
-            auditLogs: []
-        }, class EventSubscription {
-            org.killbill.billing.client.model.gen.EventSubscription@cb989fa0
-            eventId: 2a994af7-8faf-444f-a1df-fd6c68a9dbab
-            billingPeriod: MONTHLY
-            effectiveDate: 2012-04-25
-            plan: shotgun-monthly
-            product: Shotgun
-            priceList: DEFAULT
-            eventType: START_BILLING
-            isBlockedBilling: false
-            isBlockedEntitlement: false
-            serviceName: billing-service
-            serviceStateName: START_BILLING
-            phase: shotgun-monthly-trial
-            auditLogs: []
-        }, class EventSubscription {
-            org.killbill.billing.client.model.gen.EventSubscription@5fe74ae5
-            eventId: 95ddcc14-ea6d-4a5c-b057-3a0d33341ab9
-            billingPeriod: MONTHLY
-            effectiveDate: 2012-05-25
-            plan: shotgun-monthly
-            product: Shotgun
-            priceList: DEFAULT
-            eventType: PHASE
-            isBlockedBilling: false
-            isBlockedEntitlement: false
-            serviceName: entitlement+billing-service
-            serviceStateName: PHASE
-            phase: shotgun-monthly-evergreen
-            auditLogs: []
-        }]
-        auditLogs: []
-    }
-    auditLogs: []
-}
-```
-```ruby
-{
-   "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
-   "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
-   "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
-   "subscriptions":[
-      {
-         "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
-         "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
-         "subscriptionId":"e29573cc-d0e6-4d26-b97e-1a9c02d520ad",
-         "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
-         "startDate":"2013-08-01",
-         "productName":"Sports",
-         "productCategory":"BASE",
-         "billingPeriod":"MONTHLY",
-         "phaseType":"TRIAL",
-         "priceList":"DEFAULT",
-         "planName":"sports-monthly",
-         "state":"ACTIVE",
-         "sourceType":"NATIVE",
-         "chargedThroughDate":"2013-08-01",
-         "billingStartDate":"2013-08-01",
-         "billCycleDayLocal":31,
-         "events":[
-            {
-               "eventId":"e0136144-a852-4eaa-b721-c8b585dcb4a6",
-               "billingPeriod":"MONTHLY",
-               "effectiveDate":"2013-08-01",
-               "plan":"sports-monthly",
-               "product":"Sports",
-               "priceList":"DEFAULT",
-               "eventType":"START_ENTITLEMENT",
-               "isBlockedBilling":false,
-               "isBlockedEntitlement":false,
-               "serviceName":"entitlement-service",
-               "serviceStateName":"ENT_STARTED",
-               "phase":"sports-monthly-trial",
-               "auditLogs":[]
-            },
-            {
-               "eventId":"72a51773-9e1d-4ad7-beeb-03139f60ea3d",
-               "billingPeriod":"MONTHLY",
-               "effectiveDate":"2013-08-01",
-               "plan":"sports-monthly",
-               "product":"Sports",
-               "priceList":"DEFAULT",
-               "eventType":"START_BILLING",
-               "isBlockedBilling":false,
-               "isBlockedEntitlement":false,
-               "serviceName":"billing-service",
-               "serviceStateName":"START_BILLING",
-               "phase":"sports-monthly-trial",
-               "auditLogs":[]
-            },
-            {
-               "eventId":"341992e2-4565-4457-9d20-d2803d11aa61",
-               "billingPeriod":"MONTHLY",
-               "effectiveDate":"2013-08-31",
-               "plan":"sports-monthly",
-               "product":"Sports",
-               "priceList":"DEFAULT",
-               "eventType":"PHASE",
-               "isBlockedBilling":false,
-               "isBlockedEntitlement":false,
-               "serviceName":"entitlement+billing-service",
-               "serviceStateName":"PHASE",
-               "phase":"sports-monthly-evergreen",
-               "auditLogs":[]
-            }
-         ],
-         "priceOverrides":[
-            {
-               "planName":"sports-monthly",
-               "phaseName":"sports-monthly-trial",
-               "phaseType":"TRIAL",
-               "fixedPrice":0
-            },
-            {
-               "planName":"sports-monthly",
-               "phaseName":"sports-monthly-evergreen",
-               "phaseType":"EVERGREEN",
-               "recurringPrice":500.0
-            }
-         ],
-         "auditLogs":[]
-      }
-   ],
-   "timeline":{
-      "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
-      "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
-      "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
-      "events":[
-         {
-            "eventId":"e0136144-a852-4eaa-b721-c8b585dcb4a6",
-            "billingPeriod":"MONTHLY",
-            "effectiveDate":"2013-08-01",
-            "plan":"sports-monthly",
-            "product":"Sports",
-            "priceList":"DEFAULT",
-            "eventType":"START_ENTITLEMENT",
-            "isBlockedBilling":false,
-            "isBlockedEntitlement":false,
-            "serviceName":"entitlement-service",
-            "serviceStateName":"ENT_STARTED",
-            "phase":"sports-monthly-trial",
-            "auditLogs":[]
-         },
-         {
-            "eventId":"72a51773-9e1d-4ad7-beeb-03139f60ea3d",
-            "billingPeriod":"MONTHLY",
-            "effectiveDate":"2013-08-01",
-            "plan":"sports-monthly",
-            "product":"Sports",
-            "priceList":"DEFAULT",
-            "eventType":"START_BILLING",
-            "isBlockedBilling":false,
-            "isBlockedEntitlement":false,
-            "serviceName":"billing-service",
-            "serviceStateName":"START_BILLING",
-            "phase":"sports-monthly-trial",
-            "auditLogs":[]
-         },
-         {
-            "eventId":"341992e2-4565-4457-9d20-d2803d11aa61",
-            "billingPeriod":"MONTHLY",
-            "effectiveDate":"2013-08-31",
-            "plan":"sports-monthly",
-            "product":"Sports",
-            "priceList":"DEFAULT",
-            "eventType":"PHASE",
-            "isBlockedBilling":false,
-            "isBlockedEntitlement":false,
-            "serviceName":"entitlement+billing-service",
-            "serviceStateName":"PHASE",
-            "phase":"sports-monthly-evergreen",
-            "auditLogs":[]
-         }
-      ],
-      "auditLogs":[]
-   },
-   "auditLogs":[]
-}
-```
-```python
-{'account_id': '8ef95bea-9306-4b26-a43c-090de8779599',
- 'audit_logs': [],
- 'bundle_id': 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691',
- 'external_key': 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691',
- 'subscriptions': [{'account_id': '8ef95bea-9306-4b26-a43c-090de8779599',
-                    'audit_logs': [],
-                    'bill_cycle_day_local': 6,
-                    'billing_end_date': None,
-                    'billing_period': 'MONTHLY',
-                    'billing_start_date': datetime.date(2018, 5, 7),
-                    'bundle_id': 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691',
-                    'cancelled_date': None,
-                    'charged_through_date': None,
-                    'events': [{'audit_logs': [],
-                                'billing_period': 'MONTHLY',
-                                'effective_date': datetime.date(2018, 5, 7),
-                                'event_id': '80ca6915-0293-4b1d-8bc6-b3c9fe1bee03',
-                                'event_type': 'START_ENTITLEMENT',
-                                'is_blocked_billing': False,
-                                'is_blocked_entitlement': False,
-                                'phase': 'standard-monthly-trial',
-                                'plan': 'standard-monthly',
-                                'price_list': 'DEFAULT',
-                                'product': 'Standard',
-                                'service_name': 'entitlement-service',
-                                'service_state_name': 'ENT_STARTED'},
-                               {'audit_logs': [],
-                                'billing_period': 'MONTHLY',
-                                'effective_date': datetime.date(2018, 5, 7),
-                                'event_id': 'ce26b570-0a9f-463e-b65c-96a9fd67f124',
-                                'event_type': 'START_BILLING',
-                                'is_blocked_billing': False,
-                                'is_blocked_entitlement': False,
-                                'phase': 'standard-monthly-trial',
-                                'plan': 'standard-monthly',
-                                'price_list': 'DEFAULT',
-                                'product': 'Standard',
-                                'service_name': 'billing-service',
-                                'service_state_name': 'START_BILLING'},
-                               {'audit_logs': [],
-                                'billing_period': 'MONTHLY',
-                                'effective_date': datetime.date(2018, 6, 6),
-                                'event_id': 'c7af9fa3-5465-4e69-8a84-6977c711921c',
-                                'event_type': 'PHASE',
-                                'is_blocked_billing': False,
-                                'is_blocked_entitlement': False,
-                                'phase': 'standard-monthly-evergreen',
-                                'plan': 'standard-monthly',
-                                'price_list': 'DEFAULT',
-                                'product': 'Standard',
-                                'service_name': 'entitlement+billing-service',
-                                'service_state_name': 'PHASE'}],
-                    'external_key': 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691',
-                    'phase_type': 'TRIAL',
-                    'plan_name': 'standard-monthly',
-                    'price_list': 'DEFAULT',
-                    'price_overrides': [{'fixed_price': 0.0,
-                                         'phase_name': 'standard-monthly-trial',
-                                         'phase_type': 'TRIAL',
-                                         'plan_name': 'standard-monthly',
-                                         'recurring_price': None,
-                                         'usage_price_overrides': []},
-                                        {'fixed_price': None,
-                                         'phase_name': 'standard-monthly-evergreen',
-                                         'phase_type': 'EVERGREEN',
-                                         'plan_name': 'standard-monthly',
-                                         'recurring_price': 100.0,
-                                         'usage_price_overrides': []}],
-                    'product_category': 'BASE',
-                    'product_name': 'Standard',
-                    'source_type': 'NATIVE',
-                    'start_date': datetime.date(2018, 5, 7),
-                    'state': 'ACTIVE',
-                    'subscription_id': '6f6cab9d-dfe0-4b89-9a09-b16055f72f5c'}],
- 'timeline': {'account_id': '8ef95bea-9306-4b26-a43c-090de8779599',
-              'audit_logs': [],
-              'bundle_id': 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691',
-              'events': [{'audit_logs': [],
-                          'billing_period': 'MONTHLY',
-                          'effective_date': datetime.date(2018, 5, 7),
-                          'event_id': '80ca6915-0293-4b1d-8bc6-b3c9fe1bee03',
-                          'event_type': 'START_ENTITLEMENT',
-                          'is_blocked_billing': False,
-                          'is_blocked_entitlement': False,
-                          'phase': 'standard-monthly-trial',
-                          'plan': 'standard-monthly',
-                          'price_list': 'DEFAULT',
-                          'product': 'Standard',
-                          'service_name': 'entitlement-service',
-                          'service_state_name': 'ENT_STARTED'},
-                         {'audit_logs': [],
-                          'billing_period': 'MONTHLY',
-                          'effective_date': datetime.date(2018, 5, 7),
-                          'event_id': 'ce26b570-0a9f-463e-b65c-96a9fd67f124',
-                          'event_type': 'START_BILLING',
-                          'is_blocked_billing': False,
-                          'is_blocked_entitlement': False,
-                          'phase': 'standard-monthly-trial',
-                          'plan': 'standard-monthly',
-                          'price_list': 'DEFAULT',
-                          'product': 'Standard',
-                          'service_name': 'billing-service',
-                          'service_state_name': 'START_BILLING'},
-                         {'audit_logs': [],
-                          'billing_period': 'MONTHLY',
-                          'effective_date': datetime.date(2018, 6, 6),
-                          'event_id': 'c7af9fa3-5465-4e69-8a84-6977c711921c',
-                          'event_type': 'PHASE',
-                          'is_blocked_billing': False,
-                          'is_blocked_entitlement': False,
-                          'phase': 'standard-monthly-evergreen',
-                          'plan': 'standard-monthly',
-                          'price_list': 'DEFAULT',
-                          'product': 'Standard',
-                          'service_name': 'entitlement+billing-service',
-                          'service_state_name': 'PHASE'}],
-              'external_key': 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'}}
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **includedDeleted** | boolean | true | choose true to include deleted bundles |
-| **audit** | enum | false | level of audit logs returned |
-
-**Returns**
-
-Returns a bundle object if a valid external key was provided.
-
 ## Retrieve a bundle by id
 
 Retrieves the details information for the `Bundle` using its `bundleId`.
@@ -1283,6 +657,709 @@ class Bundle {
 
 Returns a bundle object if a valid identifier was provided.
 
+## Retrieve a bundle by external key
+
+**HTTP Request** 
+
+Retrieves the details information for the `Bundle` using its `externalKey`.
+
+`GET http://example.com/1.0/kb/bundles`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/bundles?externalKey=2cd2f4b5-a1c0-42a7-924f-64c7b791332d"
+```
+
+```java
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
+
+String externalKey = "93199";
+Boolean includedDeleted = false; // Will not include deleted bundles
+
+Bundles bundles = bundleApi.getBundleByKey(externalKey, 
+                                           includedDeleted,
+                                           AuditLevel.NONE,
+                                           requestOptions);
+```
+
+```ruby
+external_key = '4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135'
+included_deleted = false
+
+bundle = KillBillClient::Model::Bundle.new
+bundle.find_by_external_key(external_key, 
+                            included_deleted, 
+                            options)
+```
+
+```python
+bundleApi = killbill.api.BundleApi()
+bundle_external_key = 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'
+
+bundleApi.get_bundle_by_key(bundle_external_key, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "subscriptions": [
+      {
+        "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+        "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+        "subscriptionId": "8ab101b6-15e8-433b-b4f7-f99eeaa56a77",
+        "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+        "startDate": "2018-07-18",
+        "productName": "Standard",
+        "productCategory": "BASE",
+        "billingPeriod": "MONTHLY",
+        "phaseType": "TRIAL",
+        "priceList": "DEFAULT",
+        "planName": "standard-monthly",
+        "state": "ACTIVE",
+        "sourceType": "NATIVE",
+        "cancelledDate": null,
+        "chargedThroughDate": null,
+        "billingStartDate": "2018-07-18",
+        "billingEndDate": null,
+        "billCycleDayLocal": 17,
+        "events": [
+          {
+            "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-18",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "START_ENTITLEMENT",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "entitlement-service",
+            "serviceStateName": "ENT_STARTED",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-18",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "START_BILLING",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "billing-service",
+            "serviceStateName": "START_BILLING",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "f058c95f-9a86-435b-8bba-4f8532635450",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-08-17",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "PHASE",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "entitlement+billing-service",
+            "serviceStateName": "PHASE",
+            "phase": "standard-monthly-evergreen",
+            "auditLogs": []
+          }
+        ],
+        "priceOverrides": null,
+        "prices": [
+          {
+            "planName": "standard-monthly",
+            "phaseName": "standard-monthly-trial",
+            "phaseType": "TRIAL",
+            "fixedPrice": 0,
+            "recurringPrice": null,
+            "usagePrices": []
+          },
+          {
+            "planName": "standard-monthly",
+            "phaseName": "standard-monthly-evergreen",
+            "phaseType": "EVERGREEN",
+            "fixedPrice": null,
+            "recurringPrice": 100,
+            "usagePrices": []
+          }
+        ],
+        "auditLogs": []
+      }
+    ],
+    "timeline": {
+      "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+      "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+      "events": [
+        {
+          "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-18",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_ENTITLEMENT",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "entitlement-service",
+          "serviceStateName": "ENT_STARTED",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-18",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_BILLING",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "billing-service",
+          "serviceStateName": "START_BILLING",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "f058c95f-9a86-435b-8bba-4f8532635450",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-08-17",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "PHASE",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "entitlement+billing-service",
+          "serviceStateName": "PHASE",
+          "phase": "standard-monthly-evergreen",
+          "auditLogs": []
+        }
+      ],
+      "auditLogs": []
+    },
+    "auditLogs": []
+  }
+]
+```
+```java
+class Bundle {
+    org.killbill.billing.client.model.gen.Bundle@2b6e1c9d
+    accountId: a7c0b70d-fbc3-43cf-98e7-0af57c1a93fb
+    bundleId: 4a2fcd90-7c8c-4877-93f9-9e99e8cd6953
+    externalKey: 93199
+    subscriptions: [class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@22dc8662
+        accountId: a7c0b70d-fbc3-43cf-98e7-0af57c1a93fb
+        bundleId: 4a2fcd90-7c8c-4877-93f9-9e99e8cd6953
+        subscriptionId: 9a55b6f3-ada7-4a78-915f-373af56cbb00
+        externalKey: 93199
+        startDate: 2012-04-25
+        productName: Shotgun
+        productCategory: BASE
+        billingPeriod: MONTHLY
+        phaseType: TRIAL
+        priceList: DEFAULT
+        planName: shotgun-monthly
+        state: ACTIVE
+        sourceType: NATIVE
+        cancelledDate: null
+        chargedThroughDate: 2012-04-25
+        billingStartDate: 2012-04-25
+        billingEndDate: null
+        billCycleDayLocal: 25
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@ebe2ab4a
+            eventId: 37b7e919-08ba-4c7d-a902-8d7a10b47157
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@9e770028
+            eventId: 2a994af7-8faf-444f-a1df-fd6c68a9dbab
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@54e085c2
+            eventId: 95ddcc14-ea6d-4a5c-b057-3a0d33341ab9
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-05-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        priceOverrides: [class PhasePriceOverride {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-trial
+            phaseType: TRIAL
+            fixedPrice: 0
+            recurringPrice: null
+            usagePriceOverrides: []
+        }, class PhasePriceOverride {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: null
+            recurringPrice: 249.95
+            usagePriceOverrides: []
+        }]
+        auditLogs: []
+    }]
+    timeline: class BundleTimeline {
+        org.killbill.billing.client.model.gen.BundleTimeline@7ea930a8
+        accountId: a7c0b70d-fbc3-43cf-98e7-0af57c1a93fb
+        bundleId: 4a2fcd90-7c8c-4877-93f9-9e99e8cd6953
+        externalKey: 93199
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@89e50f83
+            eventId: 37b7e919-08ba-4c7d-a902-8d7a10b47157
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@cb989fa0
+            eventId: 2a994af7-8faf-444f-a1df-fd6c68a9dbab
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-04-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@5fe74ae5
+            eventId: 95ddcc14-ea6d-4a5c-b057-3a0d33341ab9
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-05-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        auditLogs: []
+    }
+    auditLogs: []
+}
+```
+```ruby
+{
+   "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+   "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+   "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+   "subscriptions":[
+      {
+         "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+         "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+         "subscriptionId":"e29573cc-d0e6-4d26-b97e-1a9c02d520ad",
+         "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+         "startDate":"2013-08-01",
+         "productName":"Sports",
+         "productCategory":"BASE",
+         "billingPeriod":"MONTHLY",
+         "phaseType":"TRIAL",
+         "priceList":"DEFAULT",
+         "planName":"sports-monthly",
+         "state":"ACTIVE",
+         "sourceType":"NATIVE",
+         "chargedThroughDate":"2013-08-01",
+         "billingStartDate":"2013-08-01",
+         "billCycleDayLocal":31,
+         "events":[
+            {
+               "eventId":"e0136144-a852-4eaa-b721-c8b585dcb4a6",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"sports-monthly",
+               "product":"Sports",
+               "priceList":"DEFAULT",
+               "eventType":"START_ENTITLEMENT",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement-service",
+               "serviceStateName":"ENT_STARTED",
+               "phase":"sports-monthly-trial",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"72a51773-9e1d-4ad7-beeb-03139f60ea3d",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-01",
+               "plan":"sports-monthly",
+               "product":"Sports",
+               "priceList":"DEFAULT",
+               "eventType":"START_BILLING",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"billing-service",
+               "serviceStateName":"START_BILLING",
+               "phase":"sports-monthly-trial",
+               "auditLogs":[]
+            },
+            {
+               "eventId":"341992e2-4565-4457-9d20-d2803d11aa61",
+               "billingPeriod":"MONTHLY",
+               "effectiveDate":"2013-08-31",
+               "plan":"sports-monthly",
+               "product":"Sports",
+               "priceList":"DEFAULT",
+               "eventType":"PHASE",
+               "isBlockedBilling":false,
+               "isBlockedEntitlement":false,
+               "serviceName":"entitlement+billing-service",
+               "serviceStateName":"PHASE",
+               "phase":"sports-monthly-evergreen",
+               "auditLogs":[]
+            }
+         ],
+         "priceOverrides":[
+            {
+               "planName":"sports-monthly",
+               "phaseName":"sports-monthly-trial",
+               "phaseType":"TRIAL",
+               "fixedPrice":0
+            },
+            {
+               "planName":"sports-monthly",
+               "phaseName":"sports-monthly-evergreen",
+               "phaseType":"EVERGREEN",
+               "recurringPrice":500.0
+            }
+         ],
+         "auditLogs":[]
+      }
+   ],
+   "timeline":{
+      "accountId":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995",
+      "bundleId":"5b7a5f2d-4054-412f-b354-b722c2cff4ec",
+      "externalKey":"4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135",
+      "events":[
+         {
+            "eventId":"e0136144-a852-4eaa-b721-c8b585dcb4a6",
+            "billingPeriod":"MONTHLY",
+            "effectiveDate":"2013-08-01",
+            "plan":"sports-monthly",
+            "product":"Sports",
+            "priceList":"DEFAULT",
+            "eventType":"START_ENTITLEMENT",
+            "isBlockedBilling":false,
+            "isBlockedEntitlement":false,
+            "serviceName":"entitlement-service",
+            "serviceStateName":"ENT_STARTED",
+            "phase":"sports-monthly-trial",
+            "auditLogs":[]
+         },
+         {
+            "eventId":"72a51773-9e1d-4ad7-beeb-03139f60ea3d",
+            "billingPeriod":"MONTHLY",
+            "effectiveDate":"2013-08-01",
+            "plan":"sports-monthly",
+            "product":"Sports",
+            "priceList":"DEFAULT",
+            "eventType":"START_BILLING",
+            "isBlockedBilling":false,
+            "isBlockedEntitlement":false,
+            "serviceName":"billing-service",
+            "serviceStateName":"START_BILLING",
+            "phase":"sports-monthly-trial",
+            "auditLogs":[]
+         },
+         {
+            "eventId":"341992e2-4565-4457-9d20-d2803d11aa61",
+            "billingPeriod":"MONTHLY",
+            "effectiveDate":"2013-08-31",
+            "plan":"sports-monthly",
+            "product":"Sports",
+            "priceList":"DEFAULT",
+            "eventType":"PHASE",
+            "isBlockedBilling":false,
+            "isBlockedEntitlement":false,
+            "serviceName":"entitlement+billing-service",
+            "serviceStateName":"PHASE",
+            "phase":"sports-monthly-evergreen",
+            "auditLogs":[]
+         }
+      ],
+      "auditLogs":[]
+   },
+   "auditLogs":[]
+}
+```
+```python
+{'account_id': '8ef95bea-9306-4b26-a43c-090de8779599',
+ 'audit_logs': [],
+ 'bundle_id': 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691',
+ 'external_key': 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691',
+ 'subscriptions': [{'account_id': '8ef95bea-9306-4b26-a43c-090de8779599',
+                    'audit_logs': [],
+                    'bill_cycle_day_local': 6,
+                    'billing_end_date': None,
+                    'billing_period': 'MONTHLY',
+                    'billing_start_date': datetime.date(2018, 5, 7),
+                    'bundle_id': 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691',
+                    'cancelled_date': None,
+                    'charged_through_date': None,
+                    'events': [{'audit_logs': [],
+                                'billing_period': 'MONTHLY',
+                                'effective_date': datetime.date(2018, 5, 7),
+                                'event_id': '80ca6915-0293-4b1d-8bc6-b3c9fe1bee03',
+                                'event_type': 'START_ENTITLEMENT',
+                                'is_blocked_billing': False,
+                                'is_blocked_entitlement': False,
+                                'phase': 'standard-monthly-trial',
+                                'plan': 'standard-monthly',
+                                'price_list': 'DEFAULT',
+                                'product': 'Standard',
+                                'service_name': 'entitlement-service',
+                                'service_state_name': 'ENT_STARTED'},
+                               {'audit_logs': [],
+                                'billing_period': 'MONTHLY',
+                                'effective_date': datetime.date(2018, 5, 7),
+                                'event_id': 'ce26b570-0a9f-463e-b65c-96a9fd67f124',
+                                'event_type': 'START_BILLING',
+                                'is_blocked_billing': False,
+                                'is_blocked_entitlement': False,
+                                'phase': 'standard-monthly-trial',
+                                'plan': 'standard-monthly',
+                                'price_list': 'DEFAULT',
+                                'product': 'Standard',
+                                'service_name': 'billing-service',
+                                'service_state_name': 'START_BILLING'},
+                               {'audit_logs': [],
+                                'billing_period': 'MONTHLY',
+                                'effective_date': datetime.date(2018, 6, 6),
+                                'event_id': 'c7af9fa3-5465-4e69-8a84-6977c711921c',
+                                'event_type': 'PHASE',
+                                'is_blocked_billing': False,
+                                'is_blocked_entitlement': False,
+                                'phase': 'standard-monthly-evergreen',
+                                'plan': 'standard-monthly',
+                                'price_list': 'DEFAULT',
+                                'product': 'Standard',
+                                'service_name': 'entitlement+billing-service',
+                                'service_state_name': 'PHASE'}],
+                    'external_key': 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691',
+                    'phase_type': 'TRIAL',
+                    'plan_name': 'standard-monthly',
+                    'price_list': 'DEFAULT',
+                    'price_overrides': [{'fixed_price': 0.0,
+                                         'phase_name': 'standard-monthly-trial',
+                                         'phase_type': 'TRIAL',
+                                         'plan_name': 'standard-monthly',
+                                         'recurring_price': None,
+                                         'usage_price_overrides': []},
+                                        {'fixed_price': None,
+                                         'phase_name': 'standard-monthly-evergreen',
+                                         'phase_type': 'EVERGREEN',
+                                         'plan_name': 'standard-monthly',
+                                         'recurring_price': 100.0,
+                                         'usage_price_overrides': []}],
+                    'product_category': 'BASE',
+                    'product_name': 'Standard',
+                    'source_type': 'NATIVE',
+                    'start_date': datetime.date(2018, 5, 7),
+                    'state': 'ACTIVE',
+                    'subscription_id': '6f6cab9d-dfe0-4b89-9a09-b16055f72f5c'}],
+ 'timeline': {'account_id': '8ef95bea-9306-4b26-a43c-090de8779599',
+              'audit_logs': [],
+              'bundle_id': 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691',
+              'events': [{'audit_logs': [],
+                          'billing_period': 'MONTHLY',
+                          'effective_date': datetime.date(2018, 5, 7),
+                          'event_id': '80ca6915-0293-4b1d-8bc6-b3c9fe1bee03',
+                          'event_type': 'START_ENTITLEMENT',
+                          'is_blocked_billing': False,
+                          'is_blocked_entitlement': False,
+                          'phase': 'standard-monthly-trial',
+                          'plan': 'standard-monthly',
+                          'price_list': 'DEFAULT',
+                          'product': 'Standard',
+                          'service_name': 'entitlement-service',
+                          'service_state_name': 'ENT_STARTED'},
+                         {'audit_logs': [],
+                          'billing_period': 'MONTHLY',
+                          'effective_date': datetime.date(2018, 5, 7),
+                          'event_id': 'ce26b570-0a9f-463e-b65c-96a9fd67f124',
+                          'event_type': 'START_BILLING',
+                          'is_blocked_billing': False,
+                          'is_blocked_entitlement': False,
+                          'phase': 'standard-monthly-trial',
+                          'plan': 'standard-monthly',
+                          'price_list': 'DEFAULT',
+                          'product': 'Standard',
+                          'service_name': 'billing-service',
+                          'service_state_name': 'START_BILLING'},
+                         {'audit_logs': [],
+                          'billing_period': 'MONTHLY',
+                          'effective_date': datetime.date(2018, 6, 6),
+                          'event_id': 'c7af9fa3-5465-4e69-8a84-6977c711921c',
+                          'event_type': 'PHASE',
+                          'is_blocked_billing': False,
+                          'is_blocked_entitlement': False,
+                          'phase': 'standard-monthly-evergreen',
+                          'plan': 'standard-monthly',
+                          'price_list': 'DEFAULT',
+                          'product': 'Standard',
+                          'service_name': 'entitlement+billing-service',
+                          'service_state_name': 'PHASE'}],
+              'external_key': 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'}}
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **includedDeleted** | boolean | true | choose true to include deleted bundles |
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Returns a bundle object if a valid external key was provided.
+
+
+
+## Update a bundle externalKey
+
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/bundles/{bundleId}/renameKey`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"bundleId\": \"2cd2f4b5-a1c0-42a7-924f-64c7b791332d\", \"externalKey\": \"another_external_key\"}" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/renameKey"
+```
+```java
+TODO	
+```
+```ruby
+bundle = KillBillClient::Model::Bundle.new
+bundle.bundle_id = bundle_id
+bundle.external_key = "new_external_key"
+
+bundle.rename_external_key(user, 
+                           reason, 
+                           comment, 
+                           options)
+```
+
+```python
+bundleApi = killbill.api.BundleApi()
+body = Bundle(bundle_id=bundle_id, 
+              external_key='new_external_key')
+
+bundleApi.rename_external_key(bundle_id,
+                              body,
+                              created_by,
+                              api_key,
+                              api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+A `204` http status without content.
+
+
 ## Transfer a bundle to another account
 
 The new account_id should be set in this object
@@ -1633,6 +1710,153 @@ no content
 **Returns**
 
 Returns a bundle object if a valid account and bundle id's was provided.
+
+
+## Pause a bundle
+
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/bundles/{bundleId}/pause`
+
+> Example Request:
+
+```shell
+  -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/pause" \
+```
+```java
+TODO	
+```
+```ruby
+bundle = KillBillClient::Model::Bundle.new
+bundle.bundle_id = bundle_id
+requested_date = "2013-08-01"
+
+bundle.pause(requested_date, 
+             user, 
+             reason, 
+             comment, 
+             options)
+```
+
+```python
+bundleApi = killbill.api.BundleApi()
+bundle_id = 'ce967207-851c-4040-bfbd-74a8924f9b8a'
+
+bundleApi.pause_bundle(bundle_id, 
+                       created_by, 
+                       api_key, 
+                       api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **requestedDate** | string | false | requested date for pause a bundle |
+
+**Returns**
+
+A `204` http status without content.
+
+## Resume a bundle
+
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/bundles/{bundleId}/resume`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/resume"
+```
+```java
+TODO	
+```
+```ruby
+bundle = KillBillClient::Model::Bundle.new
+bundle.bundle_id = bundle_id
+requested_date = "2013-08-01"
+
+bundle.resume(requested_date, 
+              user, 
+              reason, 
+              comment, 
+              options)
+```
+
+```python
+bundleApi = killbill.api.BundleApi()
+bundle_id = 'ce967207-851c-4040-bfbd-74a8924f9b8a'
+
+bundleApi.resume_bundle(bundle_id, 
+                        created_by, 
+                        api_key, 
+                        api_secret)
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **requestedDate** | string | false | requested date for resume a bundle |
+
+**Returns**
+
+A `204` http status without content.
 
 ## Block a bundle
 
@@ -2138,225 +2362,7 @@ no content
 
 A `204` http status without content.
 
-## Pause a bundle
 
-
-**HTTP Request** 
-
-`PUT http://example.com/1.0/kb/bundles/{bundleId}/pause`
-
-> Example Request:
-
-```shell
-  -X PUT \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/pause" \
-```
-```java
-TODO	
-```
-```ruby
-bundle = KillBillClient::Model::Bundle.new
-bundle.bundle_id = bundle_id
-requested_date = "2013-08-01"
-
-bundle.pause(requested_date, 
-             user, 
-             reason, 
-             comment, 
-             options)
-```
-
-```python
-bundleApi = killbill.api.BundleApi()
-bundle_id = 'ce967207-851c-4040-bfbd-74a8924f9b8a'
-
-bundleApi.pause_bundle(bundle_id, 
-                       created_by, 
-                       api_key, 
-                       api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **requestedDate** | string | false | requested date for pause a bundle |
-
-**Returns**
-
-A `204` http status without content.
-
-## Update a bundle externalKey
-
-
-**HTTP Request** 
-
-`PUT http://example.com/1.0/kb/bundles/{bundleId}/renameKey`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X PUT \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    -d "{ \"bundleId\": \"2cd2f4b5-a1c0-42a7-924f-64c7b791332d\", \"externalKey\": \"another_external_key\"}" \
-    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/renameKey"
-```
-```java
-TODO	
-```
-```ruby
-bundle = KillBillClient::Model::Bundle.new
-bundle.bundle_id = bundle_id
-bundle.external_key = "new_external_key"
-
-bundle.rename_external_key(user, 
-                           reason, 
-                           comment, 
-                           options)
-```
-
-```python
-bundleApi = killbill.api.BundleApi()
-body = Bundle(bundle_id=bundle_id, 
-              external_key='new_external_key')
-
-bundleApi.rename_external_key(bundle_id,
-                              body,
-                              created_by,
-                              api_key,
-                              api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-A `204` http status without content.
-
-## Resume a bundle
-
-
-**HTTP Request** 
-
-`PUT http://example.com/1.0/kb/bundles/{bundleId}/resume`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X PUT \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/resume"
-```
-```java
-TODO	
-```
-```ruby
-bundle = KillBillClient::Model::Bundle.new
-bundle.bundle_id = bundle_id
-requested_date = "2013-08-01"
-
-bundle.resume(requested_date, 
-              user, 
-              reason, 
-              comment, 
-              options)
-```
-
-```python
-bundleApi = killbill.api.BundleApi()
-bundle_id = 'ce967207-851c-4040-bfbd-74a8924f9b8a'
-
-bundleApi.resume_bundle(bundle_id, 
-                        created_by, 
-                        api_key, 
-                        api_secret)
-```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **requestedDate** | string | false | requested date for resume a bundle |
-
-**Returns**
-
-A `204` http status without content.
 
 ## Add tags to bundle
 

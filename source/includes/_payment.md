@@ -1435,173 +1435,7 @@ None.
 
 A `204` http status without content.
 
-## Retrieve payment audit logs with history by id
 
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/payments/{paymentId}/auditLogsWithHistory`
-
-> Example Request:
-
-```shell
-curl \
-    -u admin:password \
-    -H 'X-Killbill-ApiKey: bob' \
-    -H 'X-Killbill-ApiSecret: lazar' \
-    -H 'Accept: application/json' \
-    'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/auditLogsWithHistory' 
-```
-
-```java
-import org.killbill.billing.client.api.gen.PaymentApi;
-protected PaymentApi paymentApi;
-
-UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
-
-List<AuditLog> paymentAuditLogWithHistory = paymentApi.getPaymentAuditLogsWithHistory(paymentId, 
-                                                                                      requestOptions);
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
-
-accountApi.get_account_audit_logs_with_history(account_id, api_key, api_secret)
-```
-
-```ruby
-account.audit_logs_with_history(options)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-<
-[
-  {
-    "changeType": "INSERT",
-    "changeDate": "2018-07-19T16:39:00.000Z",
-    "objectType": "PAYMENT",
-    "objectId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
-    "changedBy": "demo",
-    "reasonCode": null,
-    "comments": null,
-    "userToken": "5d32d0ab-3c08-47b2-8c6d-bb9d2a7fd62c",
-    "history": 
-    {
-      "id": null,
-      "createdDate": "2018-07-19T16:39:00.000Z",
-      "updatedDate": "2018-07-19T16:39:00.000Z",
-      "recordId": 14,
-      "accountRecordId": 35,
-      "tenantRecordId": 1,
-      "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
-      "paymentNumber": null,
-      "paymentMethodId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
-      "externalKey": "paymentExternalKey",
-      "stateName": null,
-      "lastSuccessStateName": null,
-      "tableName": "PAYMENTS",
-      "historyTableName": "PAYMENT_HISTORY"
-    }
-  },
-]
-```
-
-```java
-//First element of the list
-class AuditLog {
-    changeType: INSERT
-    changeDate: 2012-08-25T00:00:02.000Z
-    objectType: PAYMENT
-    objectId: 5f8d8211-973b-40c2-b996-eb64c545a651
-    changedBy: Toto
-    reasonCode: i am god
-    comments: no comment
-    userToken: 2529c9c2-9916-4306-9270-d2bfa8bfb44b
-    history: {id=null, 
-              createdDate=2012-08-25T00:00:02.000Z, 
-              updatedDate=2012-08-25T00:00:02.000Z, 
-              recordId=1, 
-              accountRecordId=1, 
-              tenantRecordId=1, 
-              accountId=d6bf4cff-9e13-460f-b375-f71f7daaaa83, 
-              paymentNumber=null, 
-              paymentMethodId=abd4eb92-5518-4aff-8568-dac97fe81586, 
-              externalKey=fa5bb343-ad44-41d3-b6f0-21a61efcbb5b, 
-              stateName=null, 
-              lastSuccessStateName=null, 
-              tableName=PAYMENTS, 
-              historyTableName=PAYMENT_HISTORY}
-}
-```
-```ruby
-[
-   {
-      "changeType":"INSERT",
-      "changeDate":"2013-08-01T06:00:00.000Z",
-      "objectType":"ACCOUNT",
-      "objectId":"08a1c2e4-687f-48ca-9c38-888108a2ce0a",
-      "changedBy":"test_account_tags",
-      "userToken":"5c0632c3-6567-4b0b-8e37-e2a9bb9ab6b2",
-      "history":{
-         "id":null,
-         "createdDate":"2013-08-01T06:00:00.000Z",
-         "updatedDate":"2013-08-01T06:00:00.000Z",
-         "recordId":505,
-         "accountRecordId":505,
-         "tenantRecordId":822,
-         "externalKey":"1527086785-621747",
-         "email":"kill@bill.com",
-         "name":"KillBillClient",
-         "firstNameLength":null,
-         "currency":"USD",
-         "parentAccountId":null,
-         "isPaymentDelegatedToParent":null,
-         "billingCycleDayLocal":0,
-         "paymentMethodId":null,
-         "referenceTime":"2013-08-01T06:00:00.000Z",
-         "timeZone":"UTC",
-         "locale":"fr_FR",
-         "address1":"7, yoyo road",
-         "address2":"Apt 5",
-         "companyName":"Unemployed",
-         "city":"San Francisco",
-         "stateOrProvince":"California",
-         "country":"US",
-         "postalCode":"94105",
-         "phone":null,
-         "notes":null,
-         "migrated":null,
-         "tableName":"ACCOUNT",
-         "historyTableName":"ACCOUNT_HISTORY"
-      }
-   }
-]
-```
-```python
-[{'change_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc()),
- 'change_type': 'INSERT',
- 'changed_by': 'test',
- 'comments': None,
- 'history': {'created_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc()),
-             'id': None,
-             'updated_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc())},
- 'object_id': 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda',
- 'object_type': 'ACCOUNT',
- 'reason_code': None,
- 'user_token': '40e771bf-160e-4ff6-82be-463f2d9e634d'}]
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-    
-Returns a list of account audit logs with history.
 
 ## Record a chargeback [payment]
 
@@ -2112,393 +1946,7 @@ None.
 
 Returns a payment object.
 
-## Add custom fields to payment [payment]
 
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/payments/{paymentId}/customFields`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X POST \
-    -u admin:password \
-    -H 'X-Killbill-ApiKey: bob' \
-    -H 'X-Killbill-ApiSecret: lazar' \
-    -H 'Content-Type: application/json' \
-    -H 'X-Killbill-CreatedBy: demo' \
-    -d '[{ 
-            "objectId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
-            "objectType": "PAYMENT",
-            "name": "Test Custom Field",
-            "value": "test_value"
-    }]' \
-    'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/customFields' 
-```
-
-```java
-import org.killbill.billing.client.api.gen.PaymentApi;
-protected PaymentApi paymentApi;
-
-UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
-
-final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
-
-CustomFields customFields = new CustomFields();
-customFields.add(new CustomField(null, 
-                                 paymentId, 
-                                 ObjectType.PAYMENT, 
-                                 "Test Custom Field", 
-                                 "test_value", 
-                                 EMPTY_AUDIT_LOGS));
-
-paymentApi.createPaymentCustomFields(paymentId, 
-                                     customFields, 
-                                     requestOptions);
-```
-
-```ruby
-custom_field = KillBillClient::Model::CustomFieldAttributes.new
-custom_field.object_type = 'PAYMENT'
-custom_field.name = 'Test Custom Field'
-custom_field.value = 'test_value'
-
-payment.add_custom_field(custom_field, 
-                         user,
-                         reason,
-                         comment,
-                         options)
-```
-
-```python
-paymentApi = killbill.api.PaymentApi()
-body = CustomField(name='Test Custom Field', value='test_value')
-
-paymentApi.create_payment_custom_fields(payment_id,
-                                        [body],
-                                        created_by,
-                                        api_key,
-                                        api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-//First element of the list
-class CustomField {
-    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
-    customFieldId: null
-    objectId: cca08349-8b26-41c7-bfcc-2e3cf70a0f28
-    objectType: PAYMENT
-    name: Test Custom Field
-    value: test_value
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"PAYMENT",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-Returns a custom field object.
-
-## Retrieve payment custom fields [payment]
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/payments/{paymentId}/customFields`
-
-> Example Request:
-
-```shell
-curl \
-    -u admin:password \
-    -H 'X-Killbill-ApiKey: bob' \
-    -H 'X-Killbill-ApiSecret: lazar' \
-    -H 'Accept: application/json' \
-    'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/customFields' 
-```
-
-```java
-import org.killbill.billing.client.api.gen.PaymentApi;
-protected PaymentApi paymentApi;
-
-UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
-
-List<CustomField> customFields = paymentApi.getPaymentCustomFields(paymentId,
-                                                                   AuditLevel.NONE,
-                                                                   requestOptions);
-```
-
-```ruby
-audit = 'NONE'
-
-payment.custom_fields(audit, options)
-```
-
-```python
-paymentApi = killbill.api.PaymentApi()
-
-paymentApi.get_payment_custom_fields(payment_id, api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-<
-[
-  {
-    "customFieldId": "e4bac228-872d-4966-8072-2c3ac06442ed",
-    "objectId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
-    "objectType": "PAYMENT",
-    "name": "Test Custom Field",
-    "value": "test_value",
-    "auditLogs": []
-  }
-]
-```
-
-```java
-//First element of the list
-class CustomField {
-    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
-    customFieldId: null
-    objectId: cca08349-8b26-41c7-bfcc-2e3cf70a0f28
-    objectType: PAYMENT
-    name: Test Custom Field
-    value: test_value
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"PAYMENT",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
-```
-```python
-[{'audit_logs': [],
- 'custom_field_id': '893e0286-2b48-493b-99af-aac9b172dc75',
- 'name': 'Test Custom Field',
- 'object_id': '924bebe7-58e7-40e8-a5ed-192efb59d8ee',
- 'object_type': 'PAYMENT',
- 'value': 'test_value'}]
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **audit** | enum | false | level of audit logs returned |
-
-**Returns**
-
-Returns a list of custom field objects.
-
-## Modify custom fields to payment [payment]
-
-**HTTP Request** 
-
-`PUT http://example.com/1.0/kb/payments/{paymentId}/customFields`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X PUT \
-    -u admin:password \
-    -H 'X-Killbill-ApiKey: bob' \
-    -H 'X-Killbill-ApiSecret: lazar' \
-    -H 'Content-Type: application/json' \
-    -H 'X-Killbill-CreatedBy: demo' \
-    -d '[{ 
-            "customFieldId": "e4bac228-872d-4966-8072-2c3ac06442ed",
-            "value": "NewValue"
-    }]' \
-    'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/customFields' 
-```
-
-```java
-import org.killbill.billing.client.api.gen.PaymentApi;
-protected PaymentApi paymentApi;
-
-UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
-UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-
-CustomField customFieldModified = new CustomField();
-customFieldModified.setCustomFieldId(customFieldsId);
-customFieldModified.setValue("NewValue");
-
-paymentApi.modifyPaymentCustomFields(paymentId, 
-                                     customFieldModified, 
-                                     requestOptions);
-```
-
-```ruby
-custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-custom_field.name = 'Test Modify'
-custom_field.value = 'test_modify_value'
-
-payment.modify_custom_field(custom_field,                                                                                            
-                            user, 
-                            reason,
-                            comment, 
-                            options)
-```
-```python
-paymentApi = killbill.api.PaymentApi()
-payment_id = 'f33e0adc-78df-438a-b920-aaacd7f8597a'
-custom_field_id = '9913e0f6-b5ef-498b-ac47-60e1626eba8f'
-body = CustomField(custom_field_id=custom_field_id, name='Test Modify', value='test_modify_value')
-
-paymentApi.modify_payment_custom_fields(payment_id,
-                                        [body],
-                                        created_by,
-                                        api_key,
-                                        api_secret)
-```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-no content
-```
-
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **customFieldList** | string | true | a list of custom field objects that you want to modify |
-
-**Returns**
-
-A `204` http status without content.
-
-## Remove custom fields from payment [payment]
-
-**HTTP Request** 
-
-`DELETE http://example.com/1.0/kb/payments/{paymentId}/customFields`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X DELETE \
-    -u admin:password \
-    -H 'X-Killbill-ApiKey: bob' \
-    -H 'X-Killbill-ApiSecret: lazar' \
-    -H 'X-Killbill-CreatedBy: demo' \
-    'http://127.0.0.1:8080/1.0/kb/payments/77e23878-8b9d-403b-bf31-93003e125712/customFields?customField=e4bac228-872d-4966-8072-2c3ac06442ed' 
-```
-
-```java
-import org.killbill.billing.client.api.gen.PaymentApi;
-protected PaymentApi paymentApi;
-
-UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
-UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-
-paymentApi.deletePaymentCustomFields(paymentId, 
-                                     customFieldsId, 
-                                     requestOptions);
-```
-
-```ruby
-custom_field_id = custom_field.id
-
-payment.remove_custom_field(custom_field_id,                                                                                            
-                            user, 
-                            reason,
-                            comment, 
-                            options)
-```
-
-```python
-paymentApi = killbill.api.PaymentApi()
-payment_id = 'f33e0adc-78df-438a-b920-aaacd7f8597a'
-
-paymentApi.delete_payment_custom_fields(payment_id,
-                                        created_by,
-                                        api_key,
-                                        api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
-
-**Returns**
-
-A `204` http status without content.
 
 ## Refund an existing payment
 
@@ -3482,6 +2930,563 @@ None.
 **Returns**
 
 Returns a payment object.
+
+
+## Add custom fields to payment [payment]
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/payments/{paymentId}/customFields`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Content-Type: application/json' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    -d '[{ 
+            "objectId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
+            "objectType": "PAYMENT",
+            "name": "Test Custom Field",
+            "value": "test_value"
+    }]' \
+    'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/customFields' 
+```
+
+```java
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
+
+final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+
+CustomFields customFields = new CustomFields();
+customFields.add(new CustomField(null, 
+                                 paymentId, 
+                                 ObjectType.PAYMENT, 
+                                 "Test Custom Field", 
+                                 "test_value", 
+                                 EMPTY_AUDIT_LOGS));
+
+paymentApi.createPaymentCustomFields(paymentId, 
+                                     customFields, 
+                                     requestOptions);
+```
+
+```ruby
+custom_field = KillBillClient::Model::CustomFieldAttributes.new
+custom_field.object_type = 'PAYMENT'
+custom_field.name = 'Test Custom Field'
+custom_field.value = 'test_value'
+
+payment.add_custom_field(custom_field, 
+                         user,
+                         reason,
+                         comment,
+                         options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+body = CustomField(name='Test Custom Field', value='test_value')
+
+paymentApi.create_payment_custom_fields(payment_id,
+                                        [body],
+                                        created_by,
+                                        api_key,
+                                        api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/
+< Content-Type: application/json
+< Content-Length: 0
+```
+
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: cca08349-8b26-41c7-bfcc-2e3cf70a0f28
+    objectType: PAYMENT
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
+```
+```ruby
+[
+   {
+      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
+      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
+      "objectType":"PAYMENT",
+      "name":"Test Custom Field",
+      "value":"test_value",
+      "auditLogs":[]
+   }
+]
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+Returns a custom field object.
+
+## Retrieve payment custom fields [payment]
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/payments/{paymentId}/customFields`
+
+> Example Request:
+
+```shell
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/customFields' 
+```
+
+```java
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
+
+List<CustomField> customFields = paymentApi.getPaymentCustomFields(paymentId,
+                                                                   AuditLevel.NONE,
+                                                                   requestOptions);
+```
+
+```ruby
+audit = 'NONE'
+
+payment.custom_fields(audit, options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+
+paymentApi.get_payment_custom_fields(payment_id, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+[
+  {
+    "customFieldId": "e4bac228-872d-4966-8072-2c3ac06442ed",
+    "objectId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
+    "objectType": "PAYMENT",
+    "name": "Test Custom Field",
+    "value": "test_value",
+    "auditLogs": []
+  }
+]
+```
+
+```java
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: cca08349-8b26-41c7-bfcc-2e3cf70a0f28
+    objectType: PAYMENT
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
+```
+```ruby
+[
+   {
+      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
+      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
+      "objectType":"PAYMENT",
+      "name":"Test Custom Field",
+      "value":"test_value",
+      "auditLogs":[]
+   }
+]
+```
+```python
+[{'audit_logs': [],
+ 'custom_field_id': '893e0286-2b48-493b-99af-aac9b172dc75',
+ 'name': 'Test Custom Field',
+ 'object_id': '924bebe7-58e7-40e8-a5ed-192efb59d8ee',
+ 'object_type': 'PAYMENT',
+ 'value': 'test_value'}]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Returns a list of custom field objects.
+
+## Modify custom fields to payment [payment]
+
+**HTTP Request** 
+
+`PUT http://example.com/1.0/kb/payments/{paymentId}/customFields`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Content-Type: application/json' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    -d '[{ 
+            "customFieldId": "e4bac228-872d-4966-8072-2c3ac06442ed",
+            "value": "NewValue"
+    }]' \
+    'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/customFields' 
+```
+
+```java
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+CustomField customFieldModified = new CustomField();
+customFieldModified.setCustomFieldId(customFieldsId);
+customFieldModified.setValue("NewValue");
+
+paymentApi.modifyPaymentCustomFields(paymentId, 
+                                     customFieldModified, 
+                                     requestOptions);
+```
+
+```ruby
+custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
+custom_field.name = 'Test Modify'
+custom_field.value = 'test_modify_value'
+
+payment.modify_custom_field(custom_field,                                                                                            
+                            user, 
+                            reason,
+                            comment, 
+                            options)
+```
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = 'f33e0adc-78df-438a-b920-aaacd7f8597a'
+custom_field_id = '9913e0f6-b5ef-498b-ac47-60e1626eba8f'
+body = CustomField(custom_field_id=custom_field_id, name='Test Modify', value='test_modify_value')
+
+paymentApi.modify_payment_custom_fields(payment_id,
+                                        [body],
+                                        created_by,
+                                        api_key,
+                                        api_secret)
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
+```java
+no content
+```
+
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **customFieldList** | string | true | a list of custom field objects that you want to modify |
+
+**Returns**
+
+A `204` http status without content.
+
+## Remove custom fields from payment [payment]
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/payments/{paymentId}/customFields`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    'http://127.0.0.1:8080/1.0/kb/payments/77e23878-8b9d-403b-bf31-93003e125712/customFields?customField=e4bac228-872d-4966-8072-2c3ac06442ed' 
+```
+
+```java
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+paymentApi.deletePaymentCustomFields(paymentId, 
+                                     customFieldsId, 
+                                     requestOptions);
+```
+
+```ruby
+custom_field_id = custom_field.id
+
+payment.remove_custom_field(custom_field_id,                                                                                            
+                            user, 
+                            reason,
+                            comment, 
+                            options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = 'f33e0adc-78df-438a-b920-aaacd7f8597a'
+
+paymentApi.delete_payment_custom_fields(payment_id,
+                                        created_by,
+                                        api_key,
+                                        api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- | 
+| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
+
+**Returns**
+
+A `204` http status without content.
+
+## Retrieve payment audit logs with history by id
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/payments/{paymentId}/auditLogsWithHistory`
+
+> Example Request:
+
+```shell
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/auditLogsWithHistory' 
+```
+
+```java
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
+
+List<AuditLog> paymentAuditLogWithHistory = paymentApi.getPaymentAuditLogsWithHistory(paymentId, 
+                                                                                      requestOptions);
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+
+accountApi.get_account_audit_logs_with_history(account_id, api_key, api_secret)
+```
+
+```ruby
+account.audit_logs_with_history(options)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2018-07-19T16:39:00.000Z",
+    "objectType": "PAYMENT",
+    "objectId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
+    "changedBy": "demo",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "5d32d0ab-3c08-47b2-8c6d-bb9d2a7fd62c",
+    "history": 
+    {
+      "id": null,
+      "createdDate": "2018-07-19T16:39:00.000Z",
+      "updatedDate": "2018-07-19T16:39:00.000Z",
+      "recordId": 14,
+      "accountRecordId": 35,
+      "tenantRecordId": 1,
+      "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
+      "paymentNumber": null,
+      "paymentMethodId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
+      "externalKey": "paymentExternalKey",
+      "stateName": null,
+      "lastSuccessStateName": null,
+      "tableName": "PAYMENTS",
+      "historyTableName": "PAYMENT_HISTORY"
+    }
+  },
+]
+```
+
+```java
+//First element of the list
+class AuditLog {
+    changeType: INSERT
+    changeDate: 2012-08-25T00:00:02.000Z
+    objectType: PAYMENT
+    objectId: 5f8d8211-973b-40c2-b996-eb64c545a651
+    changedBy: Toto
+    reasonCode: i am god
+    comments: no comment
+    userToken: 2529c9c2-9916-4306-9270-d2bfa8bfb44b
+    history: {id=null, 
+              createdDate=2012-08-25T00:00:02.000Z, 
+              updatedDate=2012-08-25T00:00:02.000Z, 
+              recordId=1, 
+              accountRecordId=1, 
+              tenantRecordId=1, 
+              accountId=d6bf4cff-9e13-460f-b375-f71f7daaaa83, 
+              paymentNumber=null, 
+              paymentMethodId=abd4eb92-5518-4aff-8568-dac97fe81586, 
+              externalKey=fa5bb343-ad44-41d3-b6f0-21a61efcbb5b, 
+              stateName=null, 
+              lastSuccessStateName=null, 
+              tableName=PAYMENTS, 
+              historyTableName=PAYMENT_HISTORY}
+}
+```
+```ruby
+[
+   {
+      "changeType":"INSERT",
+      "changeDate":"2013-08-01T06:00:00.000Z",
+      "objectType":"ACCOUNT",
+      "objectId":"08a1c2e4-687f-48ca-9c38-888108a2ce0a",
+      "changedBy":"test_account_tags",
+      "userToken":"5c0632c3-6567-4b0b-8e37-e2a9bb9ab6b2",
+      "history":{
+         "id":null,
+         "createdDate":"2013-08-01T06:00:00.000Z",
+         "updatedDate":"2013-08-01T06:00:00.000Z",
+         "recordId":505,
+         "accountRecordId":505,
+         "tenantRecordId":822,
+         "externalKey":"1527086785-621747",
+         "email":"kill@bill.com",
+         "name":"KillBillClient",
+         "firstNameLength":null,
+         "currency":"USD",
+         "parentAccountId":null,
+         "isPaymentDelegatedToParent":null,
+         "billingCycleDayLocal":0,
+         "paymentMethodId":null,
+         "referenceTime":"2013-08-01T06:00:00.000Z",
+         "timeZone":"UTC",
+         "locale":"fr_FR",
+         "address1":"7, yoyo road",
+         "address2":"Apt 5",
+         "companyName":"Unemployed",
+         "city":"San Francisco",
+         "stateOrProvince":"California",
+         "country":"US",
+         "postalCode":"94105",
+         "phone":null,
+         "notes":null,
+         "migrated":null,
+         "tableName":"ACCOUNT",
+         "historyTableName":"ACCOUNT_HISTORY"
+      }
+   }
+]
+```
+```python
+[{'change_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc()),
+ 'change_type': 'INSERT',
+ 'changed_by': 'test',
+ 'comments': None,
+ 'history': {'created_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc()),
+             'id': None,
+             'updated_date': datetime.datetime(2018, 5, 23, 14, 43, 41, tzinfo=tzutc())},
+ 'object_id': 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda',
+ 'object_type': 'ACCOUNT',
+ 'reason_code': None,
+ 'user_token': '40e771bf-160e-4ff6-82be-463f2d9e634d'}]
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of account audit logs with history.
 
 ## Get payments
 
