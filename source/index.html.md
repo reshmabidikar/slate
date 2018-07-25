@@ -9,6 +9,7 @@ includes:
   - credit
   - invoice-payment
   - payment
+  - admin
   
 title: Kill Bill 
 
