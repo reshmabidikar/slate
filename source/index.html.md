@@ -194,9 +194,6 @@ Besides the traditional CRUD apis associated with each resource, we also offer p
 * **`X-Killbill-Pagination-MaxNbRecords`** : TODO
 * **`X-Killbill-Pagination-NextPageUri`** : The uri that can be used to retrieve the next page.
 
-```
-TODO coding example
-```
 
 ## Audit and History
 
@@ -225,8 +222,11 @@ curl \
 ```
 
 ```java
-TODO  Api does not exist ;-( but would look like:
-Account result = killBillClient.getAccount(accountId, AuditLevel.MINIMAL, inputOptions);
+Account result = accountApi.getAccount(accountId,
+                                      false,
+                                      false,
+                                      AuditLevel.MINIMAL,
+                                      requestOptions);
 ```
 
 ```ruby
@@ -254,11 +254,80 @@ TODO  Api does not exist ;-(
 
 Every api that retrieves information, whether associated to a specific resource, or for a list of resources -- pagination -- will allow to return audit logs. 
 
-Audit and history information associated to a given resource is always stored atomically to ensure that if state was changed, such audit and history information exists and is acurate.
+Audit and history information associated to a given resource is always stored atomically to ensure that if state was changed, such audit and history information exists and is accurate.
 
 ## Versioning
 
-TODO
+
+### Kill Bill Server
+
+Kill Bill software is composed of many different repositories, all of them hosted on our [github account](https://github.com/killbill).
+
+The Kill Bill server version, or simply Kill Bill version, is the one from the [killbill](https://github.com/killbill/killbill) repository, and more specifically since we are using `maven` to build, this is indicated in the corresponding `pom.xml`. This repository depends on a few others, each of those having their own versions:
+
+* `killbill-api`: APIs used by plugins to communicate with Kill Bill core
+* `killbill-plugin-api`: SPIs used by Kill Bill core to communicate with plugins
+* `killbill-commons`: Common code across modules
+* `killbill-platform`: Platform related code such as OSGI framework, webapp pieces
+* `killbill-client`: Java client, only used for integration tests inside killbill repository.
+
+The version for all these dependencies is managed in the parent [pom.xml](https://github.com/killbill/killbill-oss-parent/blob/master/pom.xml). So in particular, for a given Kill Bill version, you can look up the version of the parent `pom.xml` and from there access all the dependencies.
+
+The current **stable** and **production** ready version of Kill Bill is `0.20.y`. You should use latest relased (`y`) version as it may contain critical bug fixes.
+
+* Any bug fixes will result in a new version by incrementing the `patch` number and we guarantee compatibility with previous `0.20.y`. Such version will be accompanied by release notes on github - e.g [0.20.1` release notes](https://github.com/killbill/killbill/releases/tag/killbill-0.20.1).
+* New development may happen in parallel, and could result in `0.21.y` release; such releases are deemed unstable, and will not be supportetd on the public mailing list.
+
+The choice of releasing `0.x.y` and not `1.x.y` is motivated by our desire to add additional features in upcoming releases, and is in no way a statement about code instability.
+
+### Client Libraries
+
+Our client libraries contain a `README` section to describe the compatibility with Kill Bill server. For instance, such compatibility mapping can be seen in our java client [here](https://github.com/killbill/killbill-client-java/blob/master/README.md#kill-bill-compatibility).
+
+
+### Plugins
+
+Each plugin also has its own versionning, and we also keep a `README` with the mapping section. For example, such section for the adyen payment plugin can be found [here](https://github.com/killbill/killbill-adyen-plugin/blob/master/README.md#kill-bill-compatibility).
+
+However, we keep a global repository for all plugins [here](https://github.com/killbill/killbill-cloud/blob/master/kpm/lib/kpm/plugins_directory.yml); the simple file-based approach, is somewhat an internal implementation, which bring us to our next topic, `KPM`.
+
+
+
+
+### KPM
+
+`KPM`, Kill Bill Package Manager provides among [other things](https://github.com/killbill/killbill-cloud/tree/master/kpm) to retrieve version mapping for dependencies and plugins -- see section on the right side.
+
+
+```
+
+# Look up version dependencies matching Kill Bill release 0.20.1:
+> kpm info  --version=0.20.1
+
+Fetching info for version 0.20.1...
+Dependencies for version 0.20.1
+  killbill 0.20.1
+  killbill-oss-parent 0.142.3
+  killbill-api 0.52.0
+  killbill-plugin-api 0.25.0
+  killbill-commons 0.22.1
+  killbill-platform 0.38.1
+
+
+Known plugin for KB version 0.20.1
+  adyen 0.7.0
+  analytics 6.0.0
+  avatax 0.6.1
+  email-notifications 0.5.0
+  kpm 1.3.0
+  litle 5.0.0
+  payment_bridge 0.1.0
+  paypal 6.0.0
+  payment-test 6.0.0
+  stripe 6.0.0
+  ...
+```
+
 
 ## Errors
 
@@ -297,6 +366,5 @@ In addition to these error codes, the system will often return some json to prov
 
 ## Additional Resources
 
-TODO: Provide pointers to documentation manual and explain what they are.
-
+Our main documentation is hosted on [here](http://docs.killbill.io).
 
