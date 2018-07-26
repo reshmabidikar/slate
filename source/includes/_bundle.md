@@ -16,7 +16,9 @@ The attributes are the following:
 * **`subscriptions`** <span style="color:#32A9C7">*(Array[SubscriptionJson], optional, read only)*</span>: List of subscriptions included in this bundle.
 * **`timeline`** <span style="color:#32A9C7">*(BundleTimelineJson, optional, read only)*</span>: Event list.
 
-## Retrieve a bundle by id
+## Bundle
+
+### Retrieve a bundle by id
 
 Retrieves the details information for the `Bundle` using its `bundleId`.
 
@@ -657,7 +659,7 @@ class Bundle {
 
 Returns a bundle object if a valid identifier was provided.
 
-## Retrieve a bundle by external key
+### Retrieve a bundle by external key
 
 **HTTP Request** 
 
@@ -1285,7 +1287,7 @@ Returns a bundle object if a valid external key was provided.
 
 
 
-## Update a bundle externalKey
+### Update a bundle externalKey
 
 
 **HTTP Request** 
@@ -1360,7 +1362,9 @@ None.
 A `204` http status without content.
 
 
-## Transfer a bundle to another account
+## Transfer
+
+### Transfer a bundle to another account
 
 The new account_id should be set in this object
 
@@ -1712,7 +1716,9 @@ no content
 Returns a bundle object if a valid account and bundle id's was provided.
 
 
-## Pause a bundle
+## Blocking State
+
+### Pause a bundle
 
 
 **HTTP Request** 
@@ -1785,7 +1791,7 @@ no content
 
 A `204` http status without content.
 
-## Resume a bundle
+### Resume a bundle
 
 
 **HTTP Request** 
@@ -1858,7 +1864,7 @@ no content
 
 A `204` http status without content.
 
-## Block a bundle
+### Block a bundle
 
 
 **HTTP Request** 
@@ -1980,7 +1986,9 @@ no content
 
 A `201` http status without content.
 
-## Add custom fields to bundle
+## Custom Fields
+
+### Add custom fields to bundle
 
 **HTTP Request** 
 
@@ -2091,7 +2099,7 @@ None.
 
 Returns a custom field object.
 
-## Retrieve bundle custom fields
+### Retrieve bundle custom fields
 
 **HTTP Request** 
 
@@ -2193,7 +2201,7 @@ class CustomField {
 
 Returns a list of custom field objects.
 
-## Modify custom fields to bundle
+### Modify custom fields to bundle
 
 **HTTP Request** 
 
@@ -2283,7 +2291,7 @@ None.
 
 A `204` http status without content.
 
-## Remove custom fields from bundle
+### Remove custom fields from bundle
 
 **HTTP Request** 
 
@@ -2363,8 +2371,9 @@ no content
 A `204` http status without content.
 
 
+## Tags
 
-## Add tags to bundle
+### Add tags to bundle
 
 **HTTP Request** 
 
@@ -2471,7 +2480,7 @@ no content
 
 A `201` http status without content.
 
-## Retrieve bundle tags
+### Retrieve bundle tags
 
 **HTTP Request** 
 
@@ -2590,7 +2599,7 @@ class Tag {
 
 Returns a list of bundle tag objects.
 
-## Remove tags from bundle
+### Remove tags from bundle
 
 **HTTP Request** 
 
@@ -2672,7 +2681,9 @@ no content
 
 A `204` http status without content.
 
-## List bundles
+## Pagination/Search
+
+### List bundles
 
 **HTTP Request** 
 
@@ -3475,7 +3486,7 @@ class Bundle {
 
 Returns a list with all bundles.
 
-## Search bundles
+### Search bundles
 
 **HTTP Request** 
 

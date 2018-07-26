@@ -51,7 +51,7 @@ The attributes are the following:
 * **`parentInvoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: In the hierarchical model, the `ID` of the parent invoice.
 * **`parentAccountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: In the hierarchical model, the `ID` of the parent account.
 
-### InvoiceItem
+#### InvoiceItem
 
 * **`invoiceItemId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
 * **`invoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `Invoice` `ID`.
@@ -77,7 +77,9 @@ The attributes are the following:
 * **`itemDetails`** <span style="color:#32A9C7">*[User or system generated]*</span>: In usage mode, details about what was invoiced.
 * **`childItems`** <span style="color:#32A9C7">*[User or system generated]*</span>: In the hierarchical model, the items for the children.
 
-## Trigger an invoice generation
+## Invoice
+
+### Trigger an invoice generation
 
 **HTTP Request** 
 
@@ -185,7 +187,7 @@ no content
 A `201` http status without content.
 
 
-## Create a migration invoice
+### Create a migration invoice
 
 **HTTP Request** 
 
@@ -289,7 +291,7 @@ no content
 
 A `201` http status without content.
 
-## Create external charge(s)
+### Create external charge(s)
 
 **HTTP Request** 
 
@@ -467,7 +469,7 @@ no content
 Returns a invoice object.
 
 
-## Create tax items
+### Create tax items
 
 **HTTP Request** 
 
@@ -647,7 +649,7 @@ no content
 
 Returns a invoice object.
 
-## Retrieve an invoice by id
+### Retrieve an invoice by id
 
 **HTTP Request**
 
@@ -837,7 +839,7 @@ class Invoice {
 
 Returns a invoice object.
 
-## Retrieve an invoice by number
+### Retrieve an invoice by number
 
 **HTTP Request**
 
@@ -1048,7 +1050,7 @@ class Invoice {
 
 Returns a invoice object.
 
-## Retrieve an invoice by invoice item id
+### Retrieve an invoice by invoice item id
 
 **HTTP Request**
 
@@ -1273,7 +1275,7 @@ Returns a invoice object.
 
 
 
-## Render an invoice as HTML
+### Render an invoice as HTML
 
 **HTTP Request** 
 
@@ -1722,7 +1724,7 @@ None.
 Returns a invoice rendered as HTML.
 
 
-## Perform the invoice status transition from DRAFT to COMMITTED
+### Perform the invoice status transition from DRAFT to COMMITTED
 
 **HTTP Request** 
 
@@ -1798,7 +1800,7 @@ None.
 A `204` http status without content.
 
 
-## Perform the action of voiding an invoice
+### Perform the action of voiding an invoice
 
 **HTTP Request** 
 
@@ -1868,7 +1870,7 @@ None.
 
 A `204` http status without content.
 
-## Adjust an invoice item
+### Adjust an invoice item
 
 **HTTP Request** 
 
@@ -2013,7 +2015,7 @@ no content
 Returns a invoice object.
 
 
-## Delete a CBA item
+### Delete a CBA item
 
 **HTTP Request**
 
@@ -2091,7 +2093,9 @@ no content
 A `204` http status without content.
 
 
-## Generate a dryRun invoice
+## Dry-run
+
+### Generate a dryRun invoice
 
 **HTTP Request** 
 
@@ -2333,7 +2337,9 @@ class Invoice {
 Returns a invoice object.
 
 
-## Trigger a payment for invoice
+## Payments
+
+### Trigger a payment for invoice
 
 **HTTP Request** 
 
@@ -2468,7 +2474,7 @@ no content
 A `201` http status without content.
 
 
-## Retrieve payments associated with an invoice
+### Retrieve payments associated with an invoice
 
 **HTTP Request** 
 
@@ -2682,7 +2688,9 @@ class InvoicePayment {
 Returns a invoice payment object.
 
 
-## Add custom fields to invoice
+## Custom Fields
+
+### Add custom fields to invoice
 
 **HTTP Request** 
 
@@ -2796,7 +2804,7 @@ None.
 
 Returns a custom field object.
 
-## Retrieve invoice custom fields
+### Retrieve invoice custom fields
 
 **HTTP Request** 
 
@@ -2900,7 +2908,7 @@ class CustomField {
 
 Returns a list of custom field objects.
 
-## Modify custom fields to invoice
+### Modify custom fields to invoice
 
 **HTTP Request** 
 
@@ -2994,7 +3002,7 @@ None.
 
 A `204` http status without content.
 
-## Remove custom fields from invoice
+### Remove custom fields from invoice
 
 **HTTP Request** 
 
@@ -3077,8 +3085,9 @@ no content
 A `204` http status without content.
 
 
+## Tags
 
-## Add tags to invoice
+### Add tags to invoice
 
 **HTTP Request** 
 
@@ -3186,7 +3195,7 @@ no content
 
 A `201` http status without content.
 
-## Retrieve invoice tags
+### Retrieve invoice tags
 
 **HTTP Request** 
 
@@ -3305,7 +3314,7 @@ class Tag {
 
 Returns a list of invoice tag objects.
 
-## Remove tags from invoice
+### Remove tags from invoice
 
 **HTTP Request** 
 
@@ -3386,8 +3395,9 @@ no content
 A `204` http status without content.
 
 
+## Translation
 
-## Upload the catalog translation for the tenant
+### Upload the catalog translation for the tenant
 
 **HTTP Request** 
 
@@ -3469,7 +3479,7 @@ no content
 
 A `201` http status without content.
 
-## Retrieves the catalog translation for the tenant
+### Retrieves the catalog translation for the tenant
 
 **HTTP Request** 
 
@@ -3533,7 +3543,7 @@ A `200` http status without content.
 
 
 
-## Upload the invoice translation for the tenant
+### Upload the invoice translation for the tenant
 
 **HTTP Request** 
 
@@ -3632,7 +3642,7 @@ no content
 
 A `201` http status without content.
 
-## Retrieves the invoice translation for the tenant
+### Retrieves the invoice translation for the tenant
 
 **HTTP Request** 
 
@@ -3715,7 +3725,9 @@ None.
 A `200` http status without content.
 
 
-## Upload the manualPay invoice template for the tenant
+## Template
+
+### Upload the manualPay invoice template for the tenant
 
 **HTTP Request** 
 
@@ -3950,7 +3962,7 @@ no content
 
 Returns a invoice template.
 
-## Retrieves the manualPay invoice template for the tenant
+### Retrieves the manualPay invoice template for the tenant
 
 **HTTP Request** 
 
@@ -4321,7 +4333,7 @@ None.
 
 Returns a invoice template.
 
-## Upload the invoice template for the tenant
+### Upload the invoice template for the tenant
 
 **HTTP Request** 
 
@@ -4556,7 +4568,7 @@ no content
 
 Returns a invoice template.
 
-## Retrieves the invoice template for the tenant
+### Retrieves the invoice template for the tenant
 
 **HTTP Request** 
 
@@ -4928,8 +4940,9 @@ None.
 Returns a invoice template.
 
 
+## Pagination/Search
 
-## List invoices
+### List invoices
 
 **HTTP Request** 
 
@@ -5233,7 +5246,7 @@ class Invoice {
 
 Returns a list with all invoices.
 
-## Search invoices
+### Search invoices
 
 **HTTP Request** 
 

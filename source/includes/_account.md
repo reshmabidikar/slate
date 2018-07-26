@@ -31,7 +31,9 @@ The attributes are the following:
 * **`notes`** <span style="color:#32A9C7">*[User generated, default null]*</span>: Additonal notes about the customer, usually set by customer service department.
 * **`isMigrated`** <span style="color:#32A9C7">*[User generated, default null]*</span>: Whether this account was migrated from another system.
 
-## Create an Account 
+## Account
+
+### Create an Account 
 
 Create a new customer `Account`.
 
@@ -153,7 +155,7 @@ None.
 
 A `201` http status if this was successful and a `Location` header to indicate how to fetch the resource.
 
-## Retrieve an Account by its ID
+### Retrieve an Account by its ID
 
 Retrieves the details information for the `Account` using its `accountId`.
 
@@ -348,7 +350,7 @@ class Account {
 
 Returns an account object if a valid identifier was provided.
 
-## Retrieve an Account by its external key
+### Retrieve an Account by its external key
 
 Retrieves the details information for the `Account` using its `externalKey`.
 
@@ -543,7 +545,7 @@ class Account {
 
 Returns an account object if a valid external key was provided.
 
-## Update an Account
+### Update an Account
 
 **HTTP Request** 
 
@@ -659,7 +661,7 @@ Note that the following fields are not updatable, they can only be set once when
 
 A `204` http status without content.
 
-## Close account
+### Close account
 
 This endpoint can be used when no other state change will occur on this `Account` to bring it to a stable state. Depending on the value of the query parameters it will potentially cancel all active subscriptions, write-off unpaid invoices, ... This endpoint is not about account deletion - we provide no support to remove state through apis; such deletion operations if really needed would have to happen at the database level and are not encouraged  -- and can be tricky to get right.
 
@@ -757,8 +759,9 @@ no content
 A `204` http status without content.
 
 
+## Bundle
 
-## Retrieve bundles for account
+### Retrieve bundles for account
 
 **HTTP Request** 
 
@@ -1877,7 +1880,9 @@ class Bundle {
 
 Returns a list of account bundle objects.
 
-## Retrieve account invoices
+## Invoice
+
+### Retrieve account invoices
 
 **HTTP Request** 
 
@@ -2139,7 +2144,9 @@ class Invoice {
 
 Return a list with invoice objects.
 
-## Trigger a payment for all unpaid invoices
+## Payment 
+
+### Trigger a payment for all unpaid invoices
 
 This call allows to make a series of payment calls, one against each unpaid invoice using a specific payment method.
 
@@ -2245,7 +2252,7 @@ no content
 
 A `204` http status without content.
 
-## Retrieve account invoice payments
+### Retrieve account invoice payments
 
 **HTTP Request** 
 
@@ -2454,7 +2461,7 @@ class InvoicePayment {
 
 Return a list of invoice payments objects.
 
-## Retrieve account payments
+### Retrieve account payments
 
 **HTTP Request** 
 
@@ -2662,7 +2669,7 @@ class Payment {
 
 Returns a list of all account payments object.
 
-## Trigger a payment (authorization, purchase or credit)
+### Trigger a payment (authorization, purchase or credit)
 
 This api is part of the raw payment apis, unreleated to subscriptions and invoices. It simply allows
 to make a trigger a payment transaction against a particular payment gateway through Kill Bill core and the plugin
@@ -2860,7 +2867,7 @@ no content
 
 Returns a payment transaction object.
 
-## Trigger a payment using the account external key (authorization, purchase or credit)
+### Trigger a payment using the account external key (authorization, purchase or credit)
 
 **HTTP Request** 
 
@@ -2994,8 +3001,9 @@ no content
 
 Returns a payment transaction object.
 
+## Payment Method
 
-## Add a payment method
+### Add a payment method
 
 
 Add a [Payment method](http://docs.killbill.io/0.20/userguide_subscription.html#_payment_methods) for a gives `Account`.
@@ -3127,7 +3135,7 @@ no content
 
 Returns a payment method object.
 
-## Retrieve account payment methods
+### Retrieve account payment methods
 
 **HTTP Request** 
 
@@ -3235,7 +3243,7 @@ class PaymentMethod {
 
 Returns a list of payment method objects.
 
-## Set the default payment method
+### Set the default payment method
 
 **HTTP Request** 
 
@@ -3319,7 +3327,7 @@ no content
 
 A `204` http status without content.
 
-## Refresh account payment methods
+### Refresh account payment methods
 
 This endpoint is for a rare use cases where information for a particular payment method is stored inside the third party gateway, and both Kill Bill core and its payment plugin need to have their view updated.
 
@@ -3402,7 +3410,9 @@ None.
 A `204` http status without content.
 
 
-## Retrieve overdue state for account
+## Overdue
+
+### Retrieve overdue state for account
 
 The system can be configured to move `Account` through various [overdue](http://docs.killbill.io/0.20/userguide_subscription.html#components-overdue) , a.k.a. dunning state, when invoices are left unpaid. This allows to retrieve the current state for an `Account`.
 
@@ -3509,7 +3519,9 @@ None.
 Returns a overdue state object.
 
 
-## Block an account
+## Blocking State
+
+### Block an account
 
 As part of the entitlement features, Kill Bill provides an abstraction to include `BlockingState` events into the per `Account` event stream. The main idea is to allow to modify billing -- e.g pause a specific subscription, all subscriptions, ... -- or the entitlement state -- disable service associated with a given subscription. The [entitlement internal documentation](http://docs.killbill.io/latest/entitlement_subsystem.html) provides some overview of the mechanism. Blocking states are mostly manipulated from inside Kill Bill core, but the functionality is exposed through the API, with the caveat that it is an advanced feature and can lead to unintented behavior if not used properly.
 
@@ -3605,7 +3617,7 @@ no content
 
 A `201` http status without content.
 
-## Retrieve blocking states for account
+### Retrieve blocking states for account
 
 Retrieves the `BlockingState` assocaited to a given resource.
 `BlockingState` can be set at the `Account`, `Bundle` or `Subscription`.
@@ -3747,7 +3759,9 @@ class BlockingState {
 
 Returns a blocking state object
 
-## Add account email
+## Email
+
+### Add account email
 
 **HTTP Request** 
 
@@ -3836,7 +3850,7 @@ None.
 
 A `201` http status without content.
 
-## Retrieve an account emails
+### Retrieve an account emails
 
 **HTTP Request** 
 
@@ -3924,7 +3938,7 @@ None.
 
 Returns a list of objects with account id's and their emails.
 
-## Delete email from account
+### Delete email from account
 
 **HTTP Request** 
 
@@ -4003,7 +4017,9 @@ None.
 
 A `204` http status without content.
 
-## List children accounts
+## HA
+
+### List children accounts
 
 When using the [hierarchical account](http://docs.killbill.io/latest/ha.html) feature, this api allows to retrieve
 all children `Account` for a given parent `Account`.
@@ -4193,7 +4209,7 @@ class Account {
 
 Returns a list of children account objects.
 
-## Transfer a given child credit to the parent level
+### Transfer a given child credit to the parent level
 
 In the context of the Hierarchical Account feature, this allows to move the potential child credit at the parent level.
 
@@ -4267,8 +4283,9 @@ None.
 
 A `204` http status without content.
 
+## Custom Fields
 
-## Add custom fields to account
+### Add custom fields to account
 
 Allow to add custom fields for a given `Account`.
 
@@ -4383,7 +4400,7 @@ None.
 
 Returns a custom field object.
 
-## Retrieve all custom fields
+### Retrieve all custom fields
 
 Retrieves the custom fields attached to various resources owned by the `Account`.
 Assuming there were custom fields attached to various subscriptions, invoices, payments, ... for this specific account, this endpoint would allow to retrieve them all or potentially filter them by type -- e.g `Subscription`.
@@ -4510,7 +4527,7 @@ class CustomField {
     
 Returns a list of custom fields objects
 
-## Retrieve account custom fields
+### Retrieve account custom fields
 
 **HTTP Request** 
 
@@ -4616,7 +4633,7 @@ class CustomField {
 
 Returns a list of custom field objects.
 
-## Modify custom fields to account
+### Modify custom fields to account
 
 **HTTP Request** 
 
@@ -4706,7 +4723,7 @@ None.
 
 A `204` http status without content.
 
-## Remove custom fields from account
+### Remove custom fields from account
 
 **HTTP Request** 
 
@@ -4790,7 +4807,9 @@ no content
 A `204` http status without content.
 
 
-## Add tags to account
+## Tags
+
+### Add tags to account
 
 **HTTP Request** 
 
@@ -4897,7 +4916,7 @@ no content
 A `201` http status without content.
 
 
-## Retrieve all account tags
+### Retrieve all account tags
 
 
 Retrieves the tags attached to various resources owned by the `Account`.
@@ -5016,7 +5035,7 @@ class Tag {
     
 Returns a list of tag objects
 
-## Retrieve account tags
+### Retrieve account tags
 
 **HTTP Request** 
 
@@ -5141,7 +5160,7 @@ class Tag {
 
 Returns a list of account tag objects.
 
-## Remove tags from account
+### Remove tags from account
 
 **HTTP Request** 
 
@@ -5221,7 +5240,9 @@ no content
 
 A `204` http status without content.
 
-## Retrieve audit logs by account id
+## Audit Logs
+
+### Retrieve audit logs by account id
 
 **HTTP Request** 
 
@@ -5380,7 +5401,7 @@ None.
     
 Returns a list of account audit logs.
 
-## Retrieve account audit logs with history by account id
+### Retrieve account audit logs with history by account id
 
 **HTTP Request** 
 
@@ -5666,7 +5687,7 @@ Returns a list of account audit logs with history.
 
 
 
-## Retrieve account email audit logs with history by id
+### Retrieve account email audit logs with history by id
 
 **HTTP Request** 
 
@@ -5818,10 +5839,10 @@ Returns a list of account email audit logs with history.
 
 
 
-## Retrieve account timeline
+### Retrieve account timeline
 
 
-This api allows to retrieve the chronological set of things that occured on a given `Account`.
+This api allows to retrieve the chronological set of things that occurred on a given `Account`.
 
 **HTTP Request** 
 
@@ -6956,7 +6977,9 @@ class AccountTimeline {
 Returns a list of account tag objects.
 
 
-## List accounts
+## Pagination/Search
+
+### List accounts
 
 **HTTP Request** 
 
@@ -7170,7 +7193,7 @@ class Account {
 
 Returns a list with all accounts.
 
-## Search accounts
+### Search accounts
 
 **HTTP Request** 
 

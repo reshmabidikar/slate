@@ -19,7 +19,9 @@ The attributes are the following:
 * **`itemDetails`** <span style="color:#32A9C7">*[User or system generated]*</span>
 
 
-## Create a credit
+## Credit
+
+### Create a credit
 
 **HTTP Request** 
 
@@ -138,7 +140,7 @@ no content
 
 Returns a credit object.
 
-## Retrieve a credit by id
+### Retrieve a credit by id
 
 **HTTP Request** 
 

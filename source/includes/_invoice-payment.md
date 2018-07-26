@@ -24,7 +24,9 @@ The attributes are the following:
 * **`transactions`** <span style="color:#32A9C7">*[See `PaymentTransaction` below]*</span>. A list of payment transactions, which could be of different types - e.g `PURCHASE`, `REFUND`
 * **`paymentAttempts`** <span style="color:#32A9C7">*[See `PaymentAttempt` below]*</span>. A list of payment attempts when the system is configured to retry failed payments.
 
-## Retrieve a payment by id
+## Invoice Payment
+
+### Retrieve a payment by id
 
 **HTTP Request** 
 
@@ -257,7 +259,7 @@ class InvoicePayment {
 
 Returns a invoice payment object.
 
-## Refund a payment, and adjust the invoice if needed
+### Refund a payment, and adjust the invoice if needed
 
 **HTTP Request** 
 
@@ -456,7 +458,7 @@ no content
 
 Returns a invoice payment object.
 
-## Record a chargeback
+### Record a chargeback
 
 **HTTP Request** 
 
@@ -631,7 +633,7 @@ None.
 
 Returns a invoice payment object.
 
-## Complete an existing transaction
+### Complete an existing transaction
 
 **HTTP Request** 
 
@@ -718,7 +720,7 @@ None.
 A `204` http status without content.
 
 
-## Record a chargeback reversal
+### Record a chargeback reversal
 
 **HTTP Request** 
 
@@ -855,7 +857,9 @@ None.
 
 Returns a invoice payment object.
 
-## Add custom fields to payment
+## Custom Fields
+
+### Add custom fields to payment
 
 **HTTP Request** 
 
@@ -970,7 +974,7 @@ None.
 
 Returns a custom field object.
 
-## Retrieve payment custom fields
+### Retrieve payment custom fields
 
 **HTTP Request** 
 
@@ -1072,7 +1076,7 @@ class CustomField {
 
 Returns a list of custom field objects.
 
-## Modify custom fields to payment
+### Modify custom fields to payment
 
 **HTTP Request** 
 
@@ -1166,7 +1170,7 @@ no content
 
 A `204` http status without content.
 
-## Remove custom fields from payment
+### Remove custom fields from payment
 
 **HTTP Request** 
 
@@ -1246,8 +1250,9 @@ no content
 
 A `204` http status without content.
 
+## Tags
 
-## Add tags to payment
+### Add tags to payment
 
 **HTTP Request** 
 
@@ -1352,7 +1357,7 @@ no content
 
 A `201` http status without content.
 
-## Retrieve payment tags
+### Retrieve payment tags
 
 **HTTP Request** 
 
@@ -1471,7 +1476,7 @@ class Tag {
 
 Returns a list of invoice payment tag objects.
 
-## Remove tags from payment
+### Remove tags from payment
 
 **HTTP Request** 
 

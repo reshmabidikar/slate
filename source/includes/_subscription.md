@@ -45,7 +45,9 @@ The attributes are the following:
 * **`priceOverrides`** <span style="color:#32A9C7">*[User generated]*</span>: Catalog price override section used when creating the subscription to adjust default catalog price.
 * **`price`** <span style="color:#32A9C7">*[TODO]*</span>: TODO
 
-## Create a subscription
+## Subscriptions
+
+### Create a subscription
 
 **HTTP Request** 
 
@@ -316,7 +318,7 @@ no content
 
 Returns a subscription object.
 
-## Create multiple entitlements with addOn products
+### Create multiple entitlements with addOn products
 
 **HTTP Request** 
 
@@ -900,7 +902,7 @@ no content
 
 A `201` http status without content.
 
-## Create an entitlement with addOn products
+### Create an entitlement with addOn products
 
 **HTTP Request** 
 
@@ -1131,7 +1133,7 @@ no content
 
 A `201` http status without content.
 
-## Retrieve a subscription by id
+### Retrieve a subscription by id
 
 **HTTP Request** 
 
@@ -1510,7 +1512,7 @@ class Subscription {
 Returns a subscription object.
 
 
-## Update the BCD associated to a subscription
+### Update the BCD associated to a subscription
 
 **HTTP Request** 
 
@@ -1608,7 +1610,7 @@ no content
 A `204` http status without content.
 
 
-## Change subscription plan
+### Change subscription plan
 
 **HTTP Request** 
 
@@ -1826,7 +1828,7 @@ no content
 A `204` http status without content.
 
 
-## Undo a pending change plan on an subscription
+### Undo a pending change plan on an subscription
 
 **HTTP Request** 
 
@@ -1902,7 +1904,7 @@ A `204` http status without content.
 
 
 
-## Cancel a subscription plan
+### Cancel a subscription plan
 
 **HTTP Request** 
 
@@ -1999,7 +2001,7 @@ no content
 A `204` http status without content.
 
 
-## Un-cancel an subscription
+### Un-cancel an subscription
 
 **HTTP Request** 
 
@@ -2074,8 +2076,9 @@ None.
 A `204` http status without content.
 
 
+## Blocking State
 
-## Block a subscription
+### Block a subscription
 
 **HTTP Request** 
 
@@ -2171,305 +2174,9 @@ no content
 A `201` http status without content.
 
 
-## Add tags to subscription
+## Custom Fields
 
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/subscriptions/{subscriptionId}/tags`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X POST \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -d '[
-            "00000000-0000-0000-0000-000000000001"
-        ]' \
-  'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags' 
-```
-
-```java
-import org.killbill.billing.client.api.gen.SubscriptionApi;
-protected SubscriptionApi subscriptionApi;
-
-UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
-UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-
-Tags result = subscriptionApi.createSubscriptionTags(subscriptionId, 
-                                                     ImmutableList.<UUID>of(autoPayOffId), 
-                                                     requestOptions);
-```
-
-```ruby
-tag_name = 'TEST'
-
-subscription.add_tag(tag_name,
-                     user,
-                     reason,
-                     comment,
-                     options)
-```
-
-```python
-subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
-tag = ["00000000-0000-0000-0000-000000000002"]
-
-subscriptionApi.create_subscription_tags(subscription_id,
-                                         tag,
-                                         created_by,
-                                         api_key,
-                                         api_secret)
-```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-//First element of the list
-class Tag {
-    org.killbill.billing.client.model.gen.Tag@bd138472
-    tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
-    objectType: SUBSCRIPTION
-    objectId: 917992d3-5f1f-4828-9fff-799cc4211aa9
-    tagDefinitionId: 00000000-0000-0000-0000-000000000001
-    tagDefinitionName: AUTO_PAY_OFF
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
-      "objectType":"SUBSCRIPTION",
-      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
-      "auditLogs":[]
-   }
-]
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagDef** | string | true | list with tag definition id's to add |
-
-**Returns**
-
-A `201` http status without content.
-
-## Retrieve subscription tags
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/subscriptions/{subscriptionId}/tags`
-
-> Example Request:
-
-```shell
-curl \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags' 
-```
-
-```java
-import org.killbill.billing.client.api.gen.SubscriptionApi;
-protected SubscriptionApi subscriptionApi;
-
-UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
-
-Boolean includedDeleted = false; // Will not include deleted tags
-
-List<Tag> tags = subscriptionApi.getSubscriptionTags(subscriptionId, 
-                                                     includedDeleted, 
-                                                     AuditLevel.FULL, 
-                                                     requestOptions);
-```
-
-```ruby
-included_deleted = false
-audit = 'NONE'
-
-subscription.tags(included_deleted,
-                  audit,
-                  options)
-```
-
-```python
-subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
-
-subscriptionApi.get_subscription_tags(subscription_id,
-                                      api_key,
-                                      api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-<
-[
-    {
-        "tagId":"d0513754-56a9-4694-abb1-3ac46c72e861",
-        "objectType":"SUBSCRIPTION",
-        "objectId":"77e23878-8b9d-403b-bf31-93003e125712",
-        "tagDefinitionId":"00000000-0000-0000-0000-000000000001",
-        "tagDefinitionName":"AUTO_PAY_OFF",
-        "auditLogs":[]
-    }
-]
-```
-
-```java
-//First element of the list
-class Tag {
-    org.killbill.billing.client.model.gen.Tag@bd138472
-    tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
-    objectType: SUBSCRIPTION
-    objectId: 917992d3-5f1f-4828-9fff-799cc4211aa9
-    tagDefinitionId: 00000000-0000-0000-0000-000000000001
-    tagDefinitionName: AUTO_PAY_OFF
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
-      "objectType":"SUBSCRIPTION",
-      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
-      "auditLogs":[]
-   }
-]
-```
-```python
-[{'audit_logs': [],
- 'object_id': 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa',
- 'object_type': 'SUBSCRIPTION',
- 'tag_definition_id': '00000000-0000-0000-0000-000000000002',
- 'tag_definition_name': 'AUTO_INVOICING_OFF',
- 'tag_id': 'a1fd0122-1ec8-4bc3-b71e-ab2a76ae5957'}]
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **audit** | enum | false | level of audit logs returned |
-| **includedDeleted** | boolean | false | choose true if you want to include deleted tags |
-
-**Returns**
-
-Returns a list of bundle tag objects.
-
-## Remove tags from subscription
-
-**HTTP Request** 
-
-`DELETE http://example.com/1.0/kb/subscriptions/{subscriptionId}/tags`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X DELETE \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "X-Killbill-CreatedBy: demo" \
-    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags?tagDef=00000000-0000-0000-0000-000000000001' 	
-```
-
-```java
-import org.killbill.billing.client.api.gen.SubscriptionApi;
-protected SubscriptionApi subscriptionApi;
-
-UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
-
-UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-
-subscriptionApi.deleteSubscriptionTags(subscriptionId, 
-                                       ImmutableList.<UUID>of(autoPayOffId), 
-                                       requestOptions);
-```
-
-```ruby
-tag_name = 'TEST'
-
-subscription.remove_tag(tag_name,
-                        user,
-                        reason,
-                        comment,
-                        options)
-```
-
-```python
-subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
-tag = ["00000000-0000-0000-0000-000000000002"]
-
-subscriptionApi.delete_subscription_tags(subscription_id,
-                                         created_by,
-                                         api_key,
-                                         api_secret,
-                                         tag_def=tag)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true |  list of tags that you want to remove it |
-
-**Response**
-
-A `204` http status without content.
-
-
-
-## Add custom fields to subscription
+### Add custom fields to subscription
 
 **HTTP Request** 
 
@@ -2588,7 +2295,7 @@ None.
 
 Returns a custom field object.
 
-## Retrieve subscription custom fields
+### Retrieve subscription custom fields
 
 **HTTP Request** 
 
@@ -2695,7 +2402,7 @@ class CustomField {
 
 Returns a list of custom field objects.
 
-## Modify custom fields to subscription
+### Modify custom fields to subscription
 
 **HTTP Request** 
 
@@ -2793,7 +2500,7 @@ no content
 
 A `204` http status without content.
 
-## Remove custom fields from subscription
+### Remove custom fields from subscription
 
 **HTTP Request** 
 
@@ -2873,5 +2580,300 @@ no content
 
 A `204` http status without content.
 
+## Tags
 
+### Add tags to subscription
 
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/subscriptions/{subscriptionId}/tags`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '[
+            "00000000-0000-0000-0000-000000000001"
+        ]' \
+  'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags' 
+```
+
+```java
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
+UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
+Tags result = subscriptionApi.createSubscriptionTags(subscriptionId, 
+                                                     ImmutableList.<UUID>of(autoPayOffId), 
+                                                     requestOptions);
+```
+
+```ruby
+tag_name = 'TEST'
+
+subscription.add_tag(tag_name,
+                     user,
+                     reason,
+                     comment,
+                     options)
+```
+
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
+tag = ["00000000-0000-0000-0000-000000000002"]
+
+subscriptionApi.create_subscription_tags(subscription_id,
+                                         tag,
+                                         created_by,
+                                         api_key,
+                                         api_secret)
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags
+< Content-Type: application/json
+< Content-Length: 0
+```
+
+```java
+//First element of the list
+class Tag {
+    org.killbill.billing.client.model.gen.Tag@bd138472
+    tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
+    objectType: SUBSCRIPTION
+    objectId: 917992d3-5f1f-4828-9fff-799cc4211aa9
+    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionName: AUTO_PAY_OFF
+    auditLogs: []
+}
+```
+```ruby
+[
+   {
+      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
+      "objectType":"SUBSCRIPTION",
+      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[]
+   }
+]
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **tagDef** | string | true | list with tag definition id's to add |
+
+**Returns**
+
+A `201` http status without content.
+
+### Retrieve subscription tags
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/subscriptions/{subscriptionId}/tags`
+
+> Example Request:
+
+```shell
+curl \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags' 
+```
+
+```java
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
+
+Boolean includedDeleted = false; // Will not include deleted tags
+
+List<Tag> tags = subscriptionApi.getSubscriptionTags(subscriptionId, 
+                                                     includedDeleted, 
+                                                     AuditLevel.FULL, 
+                                                     requestOptions);
+```
+
+```ruby
+included_deleted = false
+audit = 'NONE'
+
+subscription.tags(included_deleted,
+                  audit,
+                  options)
+```
+
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
+
+subscriptionApi.get_subscription_tags(subscription_id,
+                                      api_key,
+                                      api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+[
+    {
+        "tagId":"d0513754-56a9-4694-abb1-3ac46c72e861",
+        "objectType":"SUBSCRIPTION",
+        "objectId":"77e23878-8b9d-403b-bf31-93003e125712",
+        "tagDefinitionId":"00000000-0000-0000-0000-000000000001",
+        "tagDefinitionName":"AUTO_PAY_OFF",
+        "auditLogs":[]
+    }
+]
+```
+
+```java
+//First element of the list
+class Tag {
+    org.killbill.billing.client.model.gen.Tag@bd138472
+    tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
+    objectType: SUBSCRIPTION
+    objectId: 917992d3-5f1f-4828-9fff-799cc4211aa9
+    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionName: AUTO_PAY_OFF
+    auditLogs: []
+}
+```
+```ruby
+[
+   {
+      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
+      "objectType":"SUBSCRIPTION",
+      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[]
+   }
+]
+```
+```python
+[{'audit_logs': [],
+ 'object_id': 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa',
+ 'object_type': 'SUBSCRIPTION',
+ 'tag_definition_id': '00000000-0000-0000-0000-000000000002',
+ 'tag_definition_name': 'AUTO_INVOICING_OFF',
+ 'tag_id': 'a1fd0122-1ec8-4bc3-b71e-ab2a76ae5957'}]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **audit** | enum | false | level of audit logs returned |
+| **includedDeleted** | boolean | false | choose true if you want to include deleted tags |
+
+**Returns**
+
+Returns a list of bundle tag objects.
+
+### Remove tags from subscription
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/subscriptions/{subscriptionId}/tags`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags?tagDef=00000000-0000-0000-0000-000000000001' 	
+```
+
+```java
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
+
+UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
+subscriptionApi.deleteSubscriptionTags(subscriptionId, 
+                                       ImmutableList.<UUID>of(autoPayOffId), 
+                                       requestOptions);
+```
+
+```ruby
+tag_name = 'TEST'
+
+subscription.remove_tag(tag_name,
+                        user,
+                        reason,
+                        comment,
+                        options)
+```
+
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
+tag = ["00000000-0000-0000-0000-000000000002"]
+
+subscriptionApi.delete_subscription_tags(subscription_id,
+                                         created_by,
+                                         api_key,
+                                         api_secret,
+                                         tag_def=tag)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **tagList** | string | true |  list of tags that you want to remove it |
+
+**Response**
+
+A `204` http status without content.
