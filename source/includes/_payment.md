@@ -26,7 +26,7 @@ The attributes are the following:
 * **`transactions`** <span style="color:#32A9C7">*[See `PaymentTransaction` bellow]*</span>: The list of `PaymentTransaction` associated wtih this payment.
 * **`paymentAttempts`** <span style="color:#32A9C7">*[`PaymentAttempt`]*</span>: The list of payment retries -- only effective when the system has been configured to retry failed transactions.
 
-### PaymentTransaction
+#### PaymentTransaction
 
 * **`transactionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
 * **`transactionExternalKey`** <span style="color:#32A9C7">*[User generated, default transactionId, immutable]*</span>: The external key provided from client.
@@ -44,8 +44,9 @@ The attributes are the following:
 * **`secondPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: This is typically the `ID` from the actual payment processor, when the gateway is a PSP.
 * **`properties`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: Properties passed during payment operation to be interpreted by the plugin - those are plugin specific.
 
+## Payments
 
-## Capture an existing authorization
+### Capture an existing authorization
 
 **HTTP Request** 
 
@@ -245,7 +246,7 @@ None.
 
 Returns a payment object.
 
-## Capture an existing authorization [using external key]
+### Capture an existing authorization [using external key]
 
 **HTTP Request** 
 
@@ -459,7 +460,7 @@ None.
 
 Returns a payment object.
 
-## Retrieve a payment by id [payment]
+### Retrieve a payment by id [payment]
 
 **HTTP Request** 
 
@@ -721,7 +722,7 @@ class Payment {
 
 Returns a payment object.
 
-## Retrieve a payment by external key
+### Retrieve a payment by external key
 
 **HTTP Request** 
 
@@ -1003,7 +1004,7 @@ class Payment {
 
 Returns a payment object.
 
-## Complete an existing transaction [payment]
+### Complete an existing transaction [payment]
 
 **HTTP Request** 
 
@@ -1123,7 +1124,7 @@ None.
 
 A `204` http status without content.
 
-## Complete an existing transaction [using external key]
+### Complete an existing transaction [using external key]
 
 **HTTP Request** 
 
@@ -1241,7 +1242,7 @@ None.
 
 A `204` http status without content.
 
-## Void an existing payment
+### Void an existing payment
 
 **HTTP Request** 
 
@@ -1339,7 +1340,7 @@ None.
 
 Returns a payment transaction object.
 
-## Void an existing payment [using external key]
+### Void an existing payment [using external key]
 
 **HTTP Request** 
 
@@ -1437,7 +1438,7 @@ A `204` http status without content.
 
 
 
-## Record a chargeback [payment]
+### Record a chargeback [payment]
 
 **HTTP Request** 
 
@@ -1563,7 +1564,7 @@ None.
 
 Returns a payment object.
 
-## Record a chargeback [using external key]
+### Record a chargeback [using external key]
 
 **HTTP Request** 
 
@@ -1688,7 +1689,7 @@ None.
 
 Returns a payment object.
 
-## Record a chargeback reversal [payment]
+### Record a chargeback reversal [payment]
 
 **HTTP Request** 
 
@@ -1819,7 +1820,7 @@ None.
 
 Returns a payment object.
 
-## Record a chargeback reversal [using external key]
+### Record a chargeback reversal [using external key]
 
 **HTTP Request** 
 
@@ -1948,7 +1949,7 @@ Returns a payment object.
 
 
 
-## Refund an existing payment
+### Refund an existing payment
 
 **HTTP Request** 
 
@@ -2143,7 +2144,7 @@ None.
 
 Returns a payment object.
 
-## Refund an existing payment with external key
+### Refund an existing payment with external key
 
 **HTTP Request** 
 
@@ -2263,312 +2264,7 @@ None.
 
 Returns a payment object.
 
-## Add tags to payment [payment]
-
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/payments/{paymentId}/tags`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X POST \
-    -u admin:password \
-    -H 'X-Killbill-ApiKey: bob' \
-    -H 'X-Killbill-ApiSecret: lazar' \
-    -H 'Content-Type: application/json' \
-    -H 'X-Killbill-CreatedBy: demo' \
-    -d '[
-            "00000000-0000-0000-0000-000000000001"
-        ]' \
-    'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags' 
-```
-
-```java
-import org.killbill.billing.client.api.gen.PaymentApi;
-protected PaymentApi paymentApi;
-
-UUID paymentId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
-
-UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-
-Tags result = paymentApi.createPaymentTags(paymentId, 
-                                           ImmutableList.<UUID>of(autoPayOffId), 
-                                           requestOptions);
-```
-
-```ruby
-tag_name = 'TEST'
-
-payment.add_tag(tag_name,
-                user,
-                reason,
-                comment,
-                options)
-```
-
-```python
-paymentApi = killbill.api.PaymentApi()
-tag = ["00000000-0000-0000-0000-000000000002"]
-
-paymentApi.create_payment_tags(payment_id,
-                               tag,
-                               created_by,
-                               api_key,
-                               api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-//First element of the list
-class Tag {
-    org.killbill.billing.client.model.gen.Tag@bd138472
-    tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
-    objectType: PAYMENT
-    objectId: 917992d3-5f1f-4828-9fff-799cc4211aa9
-    tagDefinitionId: 00000000-0000-0000-0000-000000000001
-    tagDefinitionName: AUTO_PAY_OFF
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
-      "objectType":"PAYMENT",
-      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
-      "auditLogs":[]
-   }
-]
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagDef** | string | true | list with tag definition id's to add |
-
-**Returns**
-
-A `201` http status without content.
-
-## Retrieve payment tags [payment]
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/payments/{paymentId}/tags`
-
-> Example Request:
-
-```shell
-curl \
-    -u admin:password \
-    -H 'X-Killbill-ApiKey: bob' \
-    -H 'X-Killbill-ApiSecret: lazar' \
-    -H 'Accept: application/json' \
-    'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags' 
-```
-
-```java
-import org.killbill.billing.client.api.gen.PaymentApi;
-protected PaymentApi paymentApi;
-
-UUID paymentId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
-
-Boolean includedDeleted = false; // Will not include deleted tags
-
-List<Tag> tags = paymentApi.getPaymentTags(paymentId, 
-                                           includedDeleted, 
-                                           AuditLevel.FULL, 
-                                           requestOptions);
-```
-
-```ruby
-included_deleted = false
-audit = 'NONE'
-
-payment.tags(included_deleted,
-             audit,
-             options)
-```
-
-```python
-paymentApi = killbill.api.PaymentApi()
-payment_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
-
-paymentApi.get_payment_tags(payment_id, api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-<
-[
-  {
-    "tagId": "890e3b13-3114-478b-9365-50f1a2682143",
-    "objectType": "PAYMENT",
-    "objectId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
-    "tagDefinitionId": "00000000-0000-0000-0000-000000000001",
-    "tagDefinitionName": "AUTO_PAY_OFF",
-    "auditLogs": []
-  }
-]
-```
-
-```java
-//First element of the list
-class Tag {
-    org.killbill.billing.client.model.gen.Tag@cae768d7
-    tagId: d724f79d-fad1-4758-b35e-d62708450d90
-    objectType: PAYMENT
-    objectId: e659f0f3-745c-46d5-953c-28fe9282fc7d
-    tagDefinitionId: 00000000-0000-0000-0000-000000000001
-    tagDefinitionName: AUTO_PAY_OFF
-    auditLogs: [class AuditLog {
-        changeType: INSERT
-        changeDate: 2012-08-25T00:00:02.000Z
-        objectType: TAG
-        objectId: d724f79d-fad1-4758-b35e-d62708450d90
-        changedBy: Toto
-        reasonCode: i am god
-        comments: no comment
-        userToken: e36f7ba5-fb5b-41c0-b47c-77c48ab37dd9
-        history: null
-    }]
-}
-```
-```ruby
-[
-   {
-      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
-      "objectType":"PAYMENT",
-      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
-      "auditLogs":[]
-   }
-]
-```
-```python
-[{'audit_logs': [],
- 'object_id': '41b6b214-c3f7-40ea-89cd-6a4ecbd9083b',
- 'object_type': 'PAYMENT',
- 'tag_definition_id': '00000000-0000-0000-0000-000000000002',
- 'tag_definition_name': 'AUTO_INVOICING_OFF',
- 'tag_id': '865e0c77-def7-4880-ac80-11c21a5e571d'}]
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **audit** | enum | false | level of audit logs returned |
-| **includedDeleted** | boolean | false | choose true if you want to include deleted tags |
-
-**Returns**
-
-Returns a list of bundle tag objects.
-
-## Remove tags from payment [payment]
-
-**HTTP Request** 
-
-`DELETE http://example.com/1.0/kb/payments/{paymentId}/tags`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X DELETE \
-    -u admin:password \
-    -H 'X-Killbill-ApiKey: bob' \
-    -H 'X-Killbill-ApiSecret: lazar' \
-    -H 'X-Killbill-CreatedBy: demo' \
-    'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags?tagDef=00000000-0000-0000-0000-000000000001' 	
-```
-
-```java
-import org.killbill.billing.client.api.gen.PaymentApi;
-protected PaymentApi paymentApi;
-
-UUID paymentId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
-
-UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
-
-paymentApi.deletePaymentTags(paymentId, 
-                             ImmutableList.<UUID>of(autoPayOffId), 
-                             requestOptions);
-```
-
-```ruby
-tag_name = 'TEST'
-
-payment.remove_tag(tag_name,
-                   user,
-                   reason,
-                   comment,
-                   options)
-```
-
-```python
-paymentApi = killbill.api.PaymentApi()
-payment_id = 'dce5b2a0-0f0f-430b-9427-545ba4be5c7f'
-tag = ["00000000-0000-0000-0000-000000000002"] 
-
-paymentApi.delete_payment_tags(payment_id,
-                               created_by,
-                               api_key,
-                               api_secret,
-                               tag_def=tag)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
-
-**Response**
-
-A `204` http status without content.
-
-## Cancels a scheduled payment attempt retry
+### Cancels a scheduled payment attempt retry
 
 **HTTP Request** 
 
@@ -2634,7 +2330,7 @@ None.
 
 A `204` http status without content.
 
-## Cancels a scheduled payment attempt retry [using external key]
+### Cancels a scheduled payment attempt retry [using external key]
 
 **HTTP Request** 
 
@@ -2707,7 +2403,7 @@ None.
 
 A `204` http status without content.
 
-## Combo api to create a new payment transaction on a existing (or not) account
+### Combo api to create a new payment transaction on a existing (or not) account
 
 New payment transaction type can be: authorization, purchase or credit
 
@@ -2932,7 +2628,9 @@ None.
 Returns a payment object.
 
 
-## Add custom fields to payment [payment]
+## Custom Fields
+
+### Add custom fields to payment [payment]
 
 **HTTP Request** 
 
@@ -3048,7 +2746,7 @@ None.
 
 Returns a custom field object.
 
-## Retrieve payment custom fields [payment]
+### Retrieve payment custom fields [payment]
 
 **HTTP Request** 
 
@@ -3149,7 +2847,7 @@ class CustomField {
 
 Returns a list of custom field objects.
 
-## Modify custom fields to payment [payment]
+### Modify custom fields to payment [payment]
 
 **HTTP Request** 
 
@@ -3241,7 +2939,7 @@ no content
 
 A `204` http status without content.
 
-## Remove custom fields from payment [payment]
+### Remove custom fields from payment [payment]
 
 **HTTP Request** 
 
@@ -3320,7 +3018,316 @@ no content
 
 A `204` http status without content.
 
-## Retrieve payment audit logs with history by id
+## Tags
+
+### Add tags to payment [payment]
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/payments/{paymentId}/tags`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Content-Type: application/json' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    -d '[
+            "00000000-0000-0000-0000-000000000001"
+        ]' \
+    'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags' 
+```
+
+```java
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+UUID paymentId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
+
+UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
+Tags result = paymentApi.createPaymentTags(paymentId, 
+                                           ImmutableList.<UUID>of(autoPayOffId), 
+                                           requestOptions);
+```
+
+```ruby
+tag_name = 'TEST'
+
+payment.add_tag(tag_name,
+                user,
+                reason,
+                comment,
+                options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+tag = ["00000000-0000-0000-0000-000000000002"]
+
+paymentApi.create_payment_tags(payment_id,
+                               tag,
+                               created_by,
+                               api_key,
+                               api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/
+< Content-Type: application/json
+< Content-Length: 0
+```
+
+```java
+//First element of the list
+class Tag {
+    org.killbill.billing.client.model.gen.Tag@bd138472
+    tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
+    objectType: PAYMENT
+    objectId: 917992d3-5f1f-4828-9fff-799cc4211aa9
+    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionName: AUTO_PAY_OFF
+    auditLogs: []
+}
+```
+```ruby
+[
+   {
+      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
+      "objectType":"PAYMENT",
+      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[]
+   }
+]
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **tagDef** | string | true | list with tag definition id's to add |
+
+**Returns**
+
+A `201` http status without content.
+
+### Retrieve payment tags [payment]
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/payments/{paymentId}/tags`
+
+> Example Request:
+
+```shell
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags' 
+```
+
+```java
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+UUID paymentId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
+
+Boolean includedDeleted = false; // Will not include deleted tags
+
+List<Tag> tags = paymentApi.getPaymentTags(paymentId, 
+                                           includedDeleted, 
+                                           AuditLevel.FULL, 
+                                           requestOptions);
+```
+
+```ruby
+included_deleted = false
+audit = 'NONE'
+
+payment.tags(included_deleted,
+             audit,
+             options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
+
+paymentApi.get_payment_tags(payment_id, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+[
+  {
+    "tagId": "890e3b13-3114-478b-9365-50f1a2682143",
+    "objectType": "PAYMENT",
+    "objectId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
+    "tagDefinitionId": "00000000-0000-0000-0000-000000000001",
+    "tagDefinitionName": "AUTO_PAY_OFF",
+    "auditLogs": []
+  }
+]
+```
+
+```java
+//First element of the list
+class Tag {
+    org.killbill.billing.client.model.gen.Tag@cae768d7
+    tagId: d724f79d-fad1-4758-b35e-d62708450d90
+    objectType: PAYMENT
+    objectId: e659f0f3-745c-46d5-953c-28fe9282fc7d
+    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionName: AUTO_PAY_OFF
+    auditLogs: [class AuditLog {
+        changeType: INSERT
+        changeDate: 2012-08-25T00:00:02.000Z
+        objectType: TAG
+        objectId: d724f79d-fad1-4758-b35e-d62708450d90
+        changedBy: Toto
+        reasonCode: i am god
+        comments: no comment
+        userToken: e36f7ba5-fb5b-41c0-b47c-77c48ab37dd9
+        history: null
+    }]
+}
+```
+```ruby
+[
+   {
+      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
+      "objectType":"PAYMENT",
+      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
+      "tagDefinitionName":"TEST",
+      "auditLogs":[]
+   }
+]
+```
+```python
+[{'audit_logs': [],
+ 'object_id': '41b6b214-c3f7-40ea-89cd-6a4ecbd9083b',
+ 'object_type': 'PAYMENT',
+ 'tag_definition_id': '00000000-0000-0000-0000-000000000002',
+ 'tag_definition_name': 'AUTO_INVOICING_OFF',
+ 'tag_id': '865e0c77-def7-4880-ac80-11c21a5e571d'}]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **audit** | enum | false | level of audit logs returned |
+| **includedDeleted** | boolean | false | choose true if you want to include deleted tags |
+
+**Returns**
+
+Returns a list of bundle tag objects.
+
+### Remove tags from payment [payment]
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/payments/{paymentId}/tags`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags?tagDef=00000000-0000-0000-0000-000000000001' 	
+```
+
+```java
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+UUID paymentId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
+
+UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
+paymentApi.deletePaymentTags(paymentId, 
+                             ImmutableList.<UUID>of(autoPayOffId), 
+                             requestOptions);
+```
+
+```ruby
+tag_name = 'TEST'
+
+payment.remove_tag(tag_name,
+                   user,
+                   reason,
+                   comment,
+                   options)
+```
+
+```python
+paymentApi = killbill.api.PaymentApi()
+payment_id = 'dce5b2a0-0f0f-430b-9427-545ba4be5c7f'
+tag = ["00000000-0000-0000-0000-000000000002"] 
+
+paymentApi.delete_payment_tags(payment_id,
+                               created_by,
+                               api_key,
+                               api_secret,
+                               tag_def=tag)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
+
+**Response**
+
+A `204` http status without content.
+
+## Audit Logs
+
+### Retrieve payment audit logs with history by id
 
 **HTTP Request** 
 
@@ -3488,7 +3495,9 @@ None.
     
 Returns a list of account audit logs with history.
 
-## Get payments
+## Pagination/Search
+
+### Get payments
 
 **HTTP Request** 
 
@@ -3788,7 +3797,7 @@ class Payment {
 
 Returns a list with all payments.
 
-## Search payments
+### Search payments
 
 **HTTP Request** 
 

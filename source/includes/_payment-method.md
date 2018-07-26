@@ -21,7 +21,9 @@ The attributes are the following:
 * **`pluginName`** <span style="color:#32A9C7">*[User generated]*</span>: The plugin identifier. All payments operation associated with this payment method will be delegated to the payment plugin associated with this identifier.
 * **`pluginInfo`** <span style="color:#32A9C7">*[User generated]*</span>:  TODO
 
-## Retrieve a payment method by id
+## Payment Methods
+
+### Retrieve a payment method by id
 
 **HTTP Request** 
 
@@ -161,7 +163,7 @@ class PaymentMethod {
 
 Returns a payment method object.
 
-## Retrieve a payment method by external key
+### Retrieve a payment method by external key
 
 **HTTP Request** 
 
@@ -280,7 +282,7 @@ class PaymentMethod {
 
 Returns a payment method object.
 
-## Delete a payment method
+### Delete a payment method
 
 **HTTP Request** 
 
@@ -368,8 +370,9 @@ no content
 A `204` http status without content.
 
 
+## Custom Fields
 
-##  Add custom fields to payment method
+### Add custom fields to payment method
 
 **HTTP Request** 
 
@@ -487,7 +490,7 @@ None.
 
 Returns a custom field object.
 
-##  Retrieve payment method custom fields
+###  Retrieve payment method custom fields
 
 **HTTP Request** 
 
@@ -591,7 +594,7 @@ class CustomField {
 
 Returns a list of custom field objects.
 
-##  Modify custom fields to payment method
+###  Modify custom fields to payment method
 
 **HTTP Request** 
 
@@ -687,7 +690,7 @@ no content
 
 A `204` http status without content.
 
-##  Remove custom fields from payment method
+###  Remove custom fields from payment method
 
 **HTTP Request** 
 
@@ -766,7 +769,9 @@ no content
 A `204` http status without content.
 
 
-## Retrieve payment method audit logs with history by id
+## Audit Logs
+
+### Retrieve payment method audit logs with history by id
 
 **HTTP Request** 
 
@@ -918,7 +923,9 @@ None.
     
 Returns a list of account email audit logs with history.
 
-##  List payment methods
+## Pagination/Search
+
+###  List payment methods
 
 **HTTP Request** 
 
@@ -1046,7 +1053,7 @@ class PaymentMethod {
 
 Returns a list with all payment methods.
 
-##  Search payment methods
+###  Search payment methods
 
 **HTTP Request** 
 
