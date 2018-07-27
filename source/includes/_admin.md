@@ -1,6 +1,19 @@
 # Admin
 
-## Trigger an invoice generation for all parked accounts
+The admin resource offers a set of enpoints of the following nature:
+
+* Administrative apis to fix existing state 
+* Operational apis such as adding hosts in and out of rotation, clearing internal caches, ...
+* Retrieve low level information from the system
+
+## Administrative Apis
+
+### Trigger an invoice generation for all parked accounts
+
+When the system detects an issue invoicing a customer `Account`, it will automatically `PARK` the `Account` as explained in this [documentation](http://docs.killbill.io/0.20/invoice_subsystem.html#_parked_accounts). 
+
+After the issue was corrected -- e.g bug was fixed -- one can get all all the `Account` out of that state by triggering the following endpoint.
+
 
 **HTTP Request** 
 
@@ -76,97 +89,12 @@ no content
 
 A 200 http status without content.
 
-## Get queues entries
+### Update existing paymentTransaction and associated payment state
 
-**HTTP Request** 
+Provides a way to fix the payment state data for a given `Payment`.
+Typically this could happen under a scenario where the call to the third party payment gateway timed-out, and the system is left in an unknwon state.
+Later, after possibly retrieveing third party payment gateway data, one can fix the state in Kill Bill using this endpoint.
 
-`GET http://example.com/1.0/kb/admin/queues`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/octet-stream" \
-    "http://localhost:8080/1.0/kb/admin/queues"
-```
-
-```java
-UUID accountId = UUID.fromString("864c1418-e768-4cd5-a0db-67537144b685");
-String queueName = null;
-String serviceName = null;
-Boolean withHistory = true;
-String minDate = null;
-String maxDate = null;
-Boolean withInProcessing = true;
-Boolean withNotifications = true;
-OutputStream outputStream = null;
-
-
-adminApi.getQueueEntries(accountId,
-                         queueName, 
-                         serviceName, 
-                         withHistory, 
-                         minDate, 
-                         maxDate, 
-                         withInProcessing, 
-                         withBusEvents, 
-                         withNotifications, 
-                         outputStream, 
-                         requestOptions);
-```
-
-```ruby
-account_id = "864c1418-e768-4cd5-a0db-67537144b685"
-KillBillClient::Model::Admin.get_queues_entries(account_id, options)
-```
-
-```python
-adminApi = killbill.api.AdminApi()
-
-adminApi.get_queue_entries(api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/octet-stream
-
-{"busEvents":[],"notifications":[]}
-```
-```java
-{"busEvents":[],"notifications":[]}
-```
-```ruby
-"{\"busEvents\":[],\"notifications\":[]}"
-```
-```python
-"{\"busEvents\":[],\"notifications\":[]}"
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **accountId** | string | false | account id |
-| **queueName** | string | false | queue name |
-| **serviceName** | string | false | service name |
-| **withHistory** | boolean | false | choose true to get history |
-| **minDate** | string | false | minimum date |
-| **maxDate** | string | false | maximun date |
-| **withInProcessing** | boolean | false | choose true to get processing |
-| **withBusEvents** | boolean | false | choose true to get bus events |
-| **withNotifications** | boolean | false |choose true to get notifications |
-
-**Returns**
-
-A 200 http status.
-
-## Update existing paymentTransaction and associated payment state
 
 **HTTP Request** 
 
@@ -264,7 +192,12 @@ None.
 
 A 204 http status without content.
 
-## Invalidates the given Cache if specified, otherwise invalidates all caches
+## Operational Apis
+
+### Invalidates the given Cache if specified, otherwise invalidates all caches
+
+
+Ability to invalidate some/all the caches on a given Kill Bill node/server.
 
 **HTTP Request** 
 
@@ -328,7 +261,10 @@ no content
 
 A 204 http status without content.
 
-## Invalidates Caches per account level
+### Invalidates Caches per account level
+
+Ability to invalidate some/all of the caches associated to a specific `Account` on a given Kill Bill node/server.
+
 
 **HTTP Request** 
 
@@ -393,7 +329,10 @@ no content
 
 A 204 http status without content.
 
-## Invalidates Caches per tenant level
+### Invalidates Caches per tenant level
+
+Ability to invalidate some/all of the caches associated to a specific `Tenant` on a given Kill Bill node/server.
+
 
 **HTTP Request** 
 
@@ -452,7 +391,11 @@ None.
 
 A 204 http status without content.
 
-## Put the host back into rotation
+### Put the host back into rotation
+
+Kill Bill provides some [apis to return the healtcheck](http://docs.killbill.io/0.20/debugging.html#_healthchecks_and_metrics) of a particular server. Such healthcheck is configurable and also extensible to plugins, i.e each plugin can also return its own healthcheck status.
+
+The following endpoint can be used to add a server back into the rotation during a deployment.
 
 **HTTP Request** 
 
@@ -512,7 +455,10 @@ None.
 
 A 204 http status without content.
 
-## Put the host out of rotation
+### Put the host out of rotation
+
+The following endpoint can be used to remove a server back into the rotation during a deployment.
+
 
 **HTTP Request** 
 
@@ -570,3 +516,99 @@ None.
 **Returns**
 
 A 204 http status without content.
+
+## Low Level View Apis
+
+### Get queues entries
+
+Returns low level details about the queued notifications for a given `Account`.
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/admin/queues`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/octet-stream" \
+    "http://localhost:8080/1.0/kb/admin/queues"
+```
+
+```java
+UUID accountId = UUID.fromString("864c1418-e768-4cd5-a0db-67537144b685");
+String queueName = null;
+String serviceName = null;
+Boolean withHistory = true;
+String minDate = null;
+String maxDate = null;
+Boolean withInProcessing = true;
+Boolean withNotifications = true;
+OutputStream outputStream = null;
+
+
+adminApi.getQueueEntries(accountId,
+                         queueName, 
+                         serviceName, 
+                         withHistory, 
+                         minDate, 
+                         maxDate, 
+                         withInProcessing, 
+                         withBusEvents, 
+                         withNotifications, 
+                         outputStream, 
+                         requestOptions);
+```
+
+```ruby
+account_id = "864c1418-e768-4cd5-a0db-67537144b685"
+KillBillClient::Model::Admin.get_queues_entries(account_id, options)
+```
+
+```python
+adminApi = killbill.api.AdminApi()
+
+adminApi.get_queue_entries(api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/octet-stream
+
+{"busEvents":[],"notifications":[]}
+```
+```java
+{"busEvents":[],"notifications":[]}
+```
+```ruby
+"{\"busEvents\":[],\"notifications\":[]}"
+```
+```python
+"{\"busEvents\":[],\"notifications\":[]}"
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ----------- |
+| **accountId** | string | false | account id |
+| **queueName** | string | false | queue name |
+| **serviceName** | string | false | service name |
+| **withHistory** | boolean | false | choose true to get history |
+| **minDate** | string | false | minimum date |
+| **maxDate** | string | false | maximun date |
+| **withInProcessing** | boolean | false | choose true to get processing |
+| **withBusEvents** | boolean | false | choose true to get bus events |
+| **withNotifications** | boolean | false |choose true to get notifications |
+
+**Returns**
+
+A 200 http status.
+
+
