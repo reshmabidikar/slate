@@ -275,7 +275,16 @@ Returns a tenant object.
 
 ## Push Notifications
 
-### Create a push notification
+Push notifications is a convenient way to get notified about events from the system.
+One can register a callback, i.e a valid URL that will be called whenever there is an event dispatched for this tenant.
+Note that this can result in a large number of calls, basically everytime there a state change for one of the `Account`
+in this tenant, such callback would be invoked.
+
+In case the error, the system will retry the callback as defined by the system property `org.killbill.billing.server.notifications.retries`.
+
+Also see push notification documentation [here](http://docs.killbill.io/0.20/push_notifications.html).
+
+### Register a push notification
 
 **HTTP Request** 
 
@@ -294,14 +303,14 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/tenants/registerNotificationCallback?cb=demo"
+    'http://localhost:8080/1.0/kb/tenants/registerNotificationCallback?cb=http://demo/callmeback'
 ```
 
 ```java
 import org.killbill.billing.client.api.gen.TenantApi;
 protected AdminApi tenantApi;
 
-String cb = "demo";
+String cb = "http://demo/callmeback";
 
 TenantKeyValue result = tenantApi.registerPushNotificationCallback(cb, requestOptions);
 ```
@@ -313,7 +322,7 @@ TODO
 ```python
 tenantApi = killbill.api.TenantApi()
 
-tenantApi.register_push_notification_callback(created_by='demo', cb='demo')
+tenantApi.register_push_notification_callback(created_by='demo', cb='http://demo/callmeback')
 ```
 
 > Example Response:
@@ -328,7 +337,7 @@ tenantApi.register_push_notification_callback(created_by='demo', cb='demo')
 ```java
 class TenantKeyValue {
     key: PUSH_NOTIFICATION_CB
-    values: [demo]
+    values: [http://demo/callmeback]
 }
 ```
 ```ruby
@@ -342,13 +351,13 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **cb** | string | true | cb |
+| **cb** | string | true | valid callback url |
 
 **Returns**
 
 A 201 http status without content.
 
-### Retrieve a push notification
+### Retrieve a registered push notification
 
 **HTTP Request** 
 
@@ -392,21 +401,21 @@ tenantApi.get_push_notification_callbacks()
 {
   "key": "PUSH_NOTIFICATION_CB",
   "values": [
-    "demo"
+    "http://demo/callmeback"
   ]
 }
 ```
 ```java
 class TenantKeyValue {
     key: PUSH_NOTIFICATION_CB
-    values: [demo]
+    values: [http://demo/callmeback]
 }
 ```
 ```ruby
 TODO
 ```
 ```python
-{'key': 'PUSH_NOTIFICATION_CB', 'values': ['demo']}
+{'key': 'PUSH_NOTIFICATION_CB', 'values': ['http://demo/callmeback']}
 ```
 
 **Query Parameters**
@@ -417,7 +426,7 @@ None.
 
 Returns a tenant key value object.
 
-### Delete a push notification
+### Delete a registered push notification
 
 **HTTP Request** 
 
@@ -480,6 +489,9 @@ None.
 A 204 http status without content.
 
 ## Configuration
+
+Please refer to our [configuartion guide](http://docs.killbill.io/0.20/userguide_configuration.html) to see what can be confugured in the system.
+Some of the configuration can be overriden at the tenant level to allow for different behaviors. The endpoints below allow to set per-tenant properties.
 
 ### Add a per tenant configuration (system properties)
 
@@ -770,6 +782,10 @@ A 204 http status without content.
 
 ## Plugin Configuration
 
+Plugins also support configuration on a per-tenant level. Please refer to our plugin [configuration manual](http://docs.killbill.io/0.20/plugin_development.html#_plugin_configuration) for more details.
+
+The following endpoints provide the ability to configure plugins on a per-tenant level.
+
 ### Add a per tenant configuration for a plugin
 
 **HTTP Request** 
@@ -1048,6 +1064,10 @@ A 204 http status without content.
 
 ## Payment State Machines
 
+This is a somewhat advanced use case to override the default internal payment state machine within Kill Bill. Please refer to our [payment manual](http://docs.killbill.io/0.20/userguide_payment.html#_payment_states) for more details about payment states.
+
+The endpoints below allow to override such state machine on a per-tenant level.
+
 ### Add a per tenant payment state machine for a plugin
 
 **HTTP Request** 
@@ -1108,22 +1128,7 @@ tenantApi.upload_plugin_payment_state_machine_config(plugin_name, body, created_
 class TenantKeyValue {
     key: PLUGIN_PAYMENT_STATE_MACHINE_noop
     values: [<?xml version="1.0" encoding="UTF-8"?>
-    <!--
-      ~ Copyright 2016 Groupon, Inc
-      ~ Copyright 2016 The Billing Project, LLC
-      ~
-      ~ The Billing Project licenses this file to you under the Apache License, version 2.0
-      ~ (the "License"); you may not use this file except in compliance with the
-      ~ License.  You may obtain a copy of the License at:
-      ~
-      ~    http://www.apache.org/licenses/LICENSE-2.0
-      ~
-      ~ Unless required by applicable law or agreed to in writing, software
-      ~ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-      ~ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
-      ~ License for the specific language governing permissions and limitations
-      ~ under the License.
-      -->
+   
     
     <stateMachineConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                         xsi:noNamespaceSchemaLocation="StateMachineConfig.xsd">
@@ -1409,6 +1414,13 @@ None.
 A 204 http status without content.
 
 ## Tenant Key Values
+
+
+We provide a mechanism to register `{key, value}` pairs for a given tenant. Such functionality
+is used internally by the system to keep track of all the per-tenant configuration, from catalog, system properties, plugin configuration.
+
+However, one can add *user* keys as well to keep track of per-specific mapping information. For example some global setting that would be accessible
+for all plugins could be stored here.
 
 ### Add a per tenant user key/value
 

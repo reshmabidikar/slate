@@ -281,6 +281,8 @@ The current **stable** and **production** ready version of Kill Bill is `0.20.y`
 
 The choice of releasing `0.x.y` and not `1.x.y` is motivated by our desire to add additional features in upcoming releases, and is in no way a statement about code instability.
 
+Also see [here](http://docs.killbill.io/0.20/development.html#_versioning).
+
 ### Client Libraries
 
 Our client libraries contain a `README` section to describe the compatibility with Kill Bill server. For instance, such compatibility mapping can be seen in our java client [here](https://github.com/killbill/killbill-client-java/blob/master/README.md#kill-bill-compatibility).
