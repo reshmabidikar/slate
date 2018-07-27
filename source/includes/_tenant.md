@@ -2,18 +2,18 @@
 
 ## Tenant Resource
 
-The `Tenant` resource represents the the apiKey and apiSecret and it will be used to retrieve the tenantId and validate 
-the user has access to that tenant. So in the end, only a valid user with the right set of permissions will be able 
-to perform an API call against a tenant she has access to.
+Kill Bill has been designed from the group up as a multi-tenant system, that is one where multiple unrelated deployments can be hosted on the same physical system; each one of these deployments comes with its own separate configuration, catalog, plugins, and of course its data set is kept entirely separate from the others. RBAC control allows different users/admin/apps to access zero, one or multiple tenants. This [blog](http://killbill.io/blog/subscription-service-using-kill-bill/) illustrates some interesting use cases. The tenant resource allows the management of such tenants.
 
 The attributes are the following:
 
 * **`tenant_id`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
 * **`external_key`** <span style="color:#32A9C7">*[System or User generated, immutable]*</span>. The external key provided from client.
 * **`api_key`** <span style="color:#32A9C7">*[User generated, immutable]*</span>.  The api key associated with the tenant. 
-* **`api_secret`** <span style="color:#32A9C7">*[User generated, immutable]*</span>.  The api secret associated with the tenant.
+* **`api_secret`** <span style="color:#32A9C7">*[User generated, immutable]*</span>.  The api secret associated with the tenant. Note that the api secret is hashed and cannot be retrieved.
 
-## Create a tenant
+## Tenant
+
+### Create a tenant
 
 **HTTP Request** 
 
@@ -31,7 +31,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d "{ \"apiKey\": \"demo\", \"apiSecret\": \"demo-secret\"}" \
-    "http://localhost:8080/1.0/kb/tenants?useGlobalDefault=false"
+    "http://localhost:8080/1.0/kb/tenants"
 ```
 
 ```java
@@ -110,13 +110,13 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **useGlobalDefault** | boolean | false | choose true if you want use global default |
+| **useGlobalDefault** | boolean | false | Setting the `useGlobalDefault` parameter to `true` can be used for test purpose: This will configure the tenant with a default catalog, and therefore make it easy to quickly start playing with the apis. Note that in order to then upload a new custom catalog, one would need to [invalidate the caches for this tenant](#admin-invalidates-caches-per-tenant-level). |
 
 **Returns**
 
 A 201 http status without content.
 
-## Retrieve a tenant by id
+### Retrieve a tenant by id
 
 **HTTP Request** 
 
@@ -198,7 +198,7 @@ class Tenant {
 
 Returns a tenant object.
 
-## Retrieve a tenant by its API key
+### Retrieve a tenant by its API key
 
 **HTTP Request** 
 
@@ -273,7 +273,18 @@ tenantApi.get_tenant_by_api_key(api_key='bob')
 
 Returns a tenant object.
 
-## Create a push notification
+## Push Notifications
+
+Push notifications is a convenient way to get notified about events from the system.
+One can register a callback, i.e a valid URL that will be called whenever there is an event dispatched for this tenant.
+Note that this can result in a large number of calls, basically everytime there a state change for one of the `Account`
+in this tenant, such callback would be invoked.
+
+In case the error, the system will retry the callback as defined by the system property `org.killbill.billing.server.notifications.retries`.
+
+Also see push notification documentation [here](http://docs.killbill.io/0.20/push_notifications.html).
+
+### Register a push notification
 
 **HTTP Request** 
 
@@ -292,14 +303,14 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/tenants/registerNotificationCallback?cb=demo"
+    'http://localhost:8080/1.0/kb/tenants/registerNotificationCallback?cb=http://demo/callmeback'
 ```
 
 ```java
 import org.killbill.billing.client.api.gen.TenantApi;
 protected AdminApi tenantApi;
 
-String cb = "demo";
+String cb = "http://demo/callmeback";
 
 TenantKeyValue result = tenantApi.registerPushNotificationCallback(cb, requestOptions);
 ```
@@ -311,7 +322,7 @@ TODO
 ```python
 tenantApi = killbill.api.TenantApi()
 
-tenantApi.register_push_notification_callback(created_by='demo', cb='demo')
+tenantApi.register_push_notification_callback(created_by='demo', cb='http://demo/callmeback')
 ```
 
 > Example Response:
@@ -326,7 +337,7 @@ tenantApi.register_push_notification_callback(created_by='demo', cb='demo')
 ```java
 class TenantKeyValue {
     key: PUSH_NOTIFICATION_CB
-    values: [demo]
+    values: [http://demo/callmeback]
 }
 ```
 ```ruby
@@ -340,13 +351,13 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **cb** | string | true | cb |
+| **cb** | string | true | valid callback url |
 
 **Returns**
 
 A 201 http status without content.
 
-## Retrieve a push notification
+### Retrieve a registered push notification
 
 **HTTP Request** 
 
@@ -390,21 +401,21 @@ tenantApi.get_push_notification_callbacks()
 {
   "key": "PUSH_NOTIFICATION_CB",
   "values": [
-    "demo"
+    "http://demo/callmeback"
   ]
 }
 ```
 ```java
 class TenantKeyValue {
     key: PUSH_NOTIFICATION_CB
-    values: [demo]
+    values: [http://demo/callmeback]
 }
 ```
 ```ruby
 TODO
 ```
 ```python
-{'key': 'PUSH_NOTIFICATION_CB', 'values': ['demo']}
+{'key': 'PUSH_NOTIFICATION_CB', 'values': ['http://demo/callmeback']}
 ```
 
 **Query Parameters**
@@ -415,7 +426,7 @@ None.
 
 Returns a tenant key value object.
 
-## Delete a push notification
+### Delete a registered push notification
 
 **HTTP Request** 
 
@@ -477,7 +488,12 @@ None.
 
 A 204 http status without content.
 
-## Add a per tenant configuration (system properties)
+## Configuration
+
+Please refer to our [configuartion guide](http://docs.killbill.io/0.20/userguide_configuration.html) to see what can be confugured in the system.
+Some of the configuration can be overriden at the tenant level to allow for different behaviors. The endpoints below allow to set per-tenant properties.
+
+### Add a per tenant configuration (system properties)
 
 **HTTP Request** 
 
@@ -550,7 +566,7 @@ None.
 
 A 201 http status without content.
 
-## Retrieve a per tenant configuration (system properties)
+### Retrieve a per tenant configuration (system properties)
 
 **HTTP Request** 
 
@@ -619,69 +635,7 @@ None.
 
 Returns a tenant key value object.
 
-## Delete a per tenant configuration (system properties)
-
-**HTTP Request** 
-
-`DELETE http://example.com/1.0/kb/tenants/uploadPerTenantConfig`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X DELETE \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/tenants/uploadPerTenantConfig"
-```
-
-```java
-import org.killbill.billing.client.api.gen.TenantApi;
-protected AdminApi tenantApi;
-
-tenantApi.deletePerTenantConfiguration(requestOptions);
-```
-
-```ruby
-TODO
-```
-
-```python
-tenantApi = killbill.api.TenantApi()
-
-tenantApi.delete_per_tenant_configuration(created_by='demo')
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-A 204 http status without content.
-
-## Retrieve a per tenant key value based on key prefix
+### Retrieve a per tenant key value based on key prefix
 
 **HTTP Request** 
 
@@ -763,7 +717,76 @@ None.
 
 Returns a tenant key value object.
 
-## Add a per tenant configuration for a plugin
+### Delete a per tenant configuration (system properties)
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/tenants/uploadPerTenantConfig`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/tenants/uploadPerTenantConfig"
+```
+
+```java
+import org.killbill.billing.client.api.gen.TenantApi;
+protected AdminApi tenantApi;
+
+tenantApi.deletePerTenantConfiguration(requestOptions);
+```
+
+```ruby
+TODO
+```
+
+```python
+tenantApi = killbill.api.TenantApi()
+
+tenantApi.delete_per_tenant_configuration(created_by='demo')
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+A 204 http status without content.
+
+
+## Plugin Configuration
+
+Plugins also support configuration on a per-tenant level. Please refer to our plugin [configuration manual](http://docs.killbill.io/0.20/plugin_development.html#_plugin_configuration) for more details.
+
+The following endpoints provide the ability to configure plugins on a per-tenant level.
+
+### Add a per tenant configuration for a plugin
 
 **HTTP Request** 
 
@@ -832,25 +855,7 @@ tenantApi.upload_plugin_configuration(plugin_name, body, created_by='demo')
 ```java
 class TenantKeyValue {
     key: PLUGIN_CONFIG_PLUGIN_FOO
-    values: [############################################################################################
-    #                                                                                          #
-    #                   Copyright 2010-2011 Ning, Inc.                                         #
-    #                   Copyright 2015 Groupon, Inc                                            #
-    #                   Copyright 2015 The Billing Project, LLC                                #
-    #                                                                                          #
-    #      The Billing Project licenses this file to you under the Apache License, version 2.0 #
-    #      (the "License"); you may not use this file except in compliance with the            #
-    #      License.  You may obtain a copy of the License at:                                  #
-    #                                                                                          #
-    #          http://www.apache.org/licenses/LICENSE-2.0                                      #
-    #                                                                                          #
-    #      Unless required by applicable law or agreed to in writing, software                 #
-    #      distributed under the License is distributed on an "AS IS" BASIS, WITHOUT           #
-    #      WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the           #
-    #      License for the specific language governing permissions and limitations             #
-    #      under the License.                                                                  #
-    #                                                                                          #
-    ############################################################################################
+    values: 
     
     :my_plugin:
       :test: True
@@ -887,7 +892,7 @@ None.
 
 A 201 http status without content.
 
-## Retrieve a per tenant configuration for a plugin
+### Retrieve a per tenant configuration for a plugin
 
 **HTTP Request** 
 
@@ -944,25 +949,7 @@ tenantApi.get_plugin_configuration(plugin_name)
 ```java
 class TenantKeyValue {
     key: PLUGIN_CONFIG_PLUGIN_FOO
-    values: [############################################################################################
-    #                                                                                          #
-    #                   Copyright 2010-2011 Ning, Inc.                                         #
-    #                   Copyright 2015 Groupon, Inc                                            #
-    #                   Copyright 2015 The Billing Project, LLC                                #
-    #                                                                                          #
-    #      The Billing Project licenses this file to you under the Apache License, version 2.0 #
-    #      (the "License"); you may not use this file except in compliance with the            #
-    #      License.  You may obtain a copy of the License at:                                  #
-    #                                                                                          #
-    #          http://www.apache.org/licenses/LICENSE-2.0                                      #
-    #                                                                                          #
-    #      Unless required by applicable law or agreed to in writing, software                 #
-    #      distributed under the License is distributed on an "AS IS" BASIS, WITHOUT           #
-    #      WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the           #
-    #      License for the specific language governing permissions and limitations             #
-    #      under the License.                                                                  #
-    #                                                                                          #
-    ############################################################################################
+    values: 
     
     :my_plugin:
       :test: True
@@ -999,7 +986,7 @@ None.
 
 Returns a tenant key value object.
 
-## Delete a per tenant configuration for a plugin
+### Delete a per tenant configuration for a plugin
 
 **HTTP Request** 
 
@@ -1075,7 +1062,13 @@ None.
 
 A 204 http status without content.
 
-## Add a per tenant payment state machine for a plugin
+## Payment State Machines
+
+This is a somewhat advanced use case to override the default internal payment state machine within Kill Bill. Please refer to our [payment manual](http://docs.killbill.io/0.20/userguide_payment.html#_payment_states) for more details about payment states.
+
+The endpoints below allow to override such state machine on a per-tenant level.
+
+### Add a per tenant payment state machine for a plugin
 
 **HTTP Request** 
 
@@ -1135,22 +1128,7 @@ tenantApi.upload_plugin_payment_state_machine_config(plugin_name, body, created_
 class TenantKeyValue {
     key: PLUGIN_PAYMENT_STATE_MACHINE_noop
     values: [<?xml version="1.0" encoding="UTF-8"?>
-    <!--
-      ~ Copyright 2016 Groupon, Inc
-      ~ Copyright 2016 The Billing Project, LLC
-      ~
-      ~ The Billing Project licenses this file to you under the Apache License, version 2.0
-      ~ (the "License"); you may not use this file except in compliance with the
-      ~ License.  You may obtain a copy of the License at:
-      ~
-      ~    http://www.apache.org/licenses/LICENSE-2.0
-      ~
-      ~ Unless required by applicable law or agreed to in writing, software
-      ~ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-      ~ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
-      ~ License for the specific language governing permissions and limitations
-      ~ under the License.
-      -->
+   
     
     <stateMachineConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                         xsi:noNamespaceSchemaLocation="StateMachineConfig.xsd">
@@ -1232,7 +1210,7 @@ None.
 
 A 201 http status without content.
 
-## Retrieve a per tenant payment state machine for a plugin
+### Retrieve a per tenant payment state machine for a plugin
 
 **HTTP Request** 
 
@@ -1288,22 +1266,6 @@ tenantApi.get_plugin_payment_state_machine_config(plugin_name)
 class TenantKeyValue {
     key: PLUGIN_PAYMENT_STATE_MACHINE_noop
     values: [<?xml version="1.0" encoding="UTF-8"?>
-    <!--
-      ~ Copyright 2016 Groupon, Inc
-      ~ Copyright 2016 The Billing Project, LLC
-      ~
-      ~ The Billing Project licenses this file to you under the Apache License, version 2.0
-      ~ (the "License"); you may not use this file except in compliance with the
-      ~ License.  You may obtain a copy of the License at:
-      ~
-      ~    http://www.apache.org/licenses/LICENSE-2.0
-      ~
-      ~ Unless required by applicable law or agreed to in writing, software
-      ~ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-      ~ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
-      ~ License for the specific language governing permissions and limitations
-      ~ under the License.
-      -->
     
     <stateMachineConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                         xsi:noNamespaceSchemaLocation="StateMachineConfig.xsd">
@@ -1385,7 +1347,7 @@ None.
 
 Returns a tenant key value object.
 
-## Delete a per tenant payment state machine for a plugin
+### Delete a per tenant payment state machine for a plugin
 
 **HTTP Request** 
 
@@ -1451,7 +1413,16 @@ None.
 
 A 204 http status without content.
 
-## Add a per tenant user key/value
+## Tenant Key Values
+
+
+We provide a mechanism to register `{key, value}` pairs for a given tenant. Such functionality
+is used internally by the system to keep track of all the per-tenant configuration, from catalog, system properties, plugin configuration.
+
+However, one can add *user* keys as well to keep track of per-specific mapping information. For example some global setting that would be accessible
+for all plugins could be stored here.
+
+### Add a per tenant user key/value
 
 **HTTP Request** 
 
@@ -1543,7 +1514,7 @@ None.
 
 A 201 http status without content.
 
-## Retrieve a per tenant user key/value
+### Retrieve a per tenant user key/value
 
 **HTTP Request** 
 
@@ -1624,7 +1595,7 @@ None.
 
 Returns a tenant key value object.
 
-## Delete a per tenant user key/value
+### Delete a per tenant user key/value
 
 **HTTP Request** 
 

@@ -42,8 +42,9 @@ The attributes are the following:
 * **`billingEndDate`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The (billing) end date -- date at which the system ends invoicing.
 * **`billCycleDayLocal`** <span style="color:#32A9C7">*[User or system generated]*</span>: For billing period that are multiple of months -- e.g `MONHTLY` -- this represents the date during the month at which the system triggers invoicing.
 * **`events`** <span style="color:#32A9C7">*[System generated]*</span>: List of subscription events tracking what happened -- e.g `CHANGE_PLAN`.
-* **`priceOverrides`** <span style="color:#32A9C7">*[User generated]*</span>: Catalog price override section used when creating the subscription to adjust default catalog price.
-* **`price`** <span style="color:#32A9C7">*[TODO]*</span>: TODO
+* **`price`** <span style="color:#32A9C7">*[User generated]*</span>: A list of prices, one for each phase associated with the `Plan` matching this subscription.
+* **`priceOverrides`** <span style="color:#32A9C7">*[User generated]*</span>: This is similar to the previous field `price`, but is only filled when the prices attached to the `Plan` were overriden for this specific subscription (price override feature).
+
 
 ## Subscriptions
 
@@ -2078,7 +2079,11 @@ A `204` http status without content.
 
 ## Blocking State
 
+See section [Account Blocing State](#account-blocking-state) for an introduction.
+
 ### Block a subscription
+
+Provides an low level interface to add `BlockingState` event for this subscription. 
 
 **HTTP Request** 
 
@@ -2175,6 +2180,8 @@ A `201` http status without content.
 
 
 ## Custom Fields
+
+Custom fields are `{key, value}` attributes that can be attached to any customer resources, and in particularly on the `Subscription` objects.
 
 ### Add custom fields to subscription
 
@@ -2581,6 +2588,8 @@ no content
 A `204` http status without content.
 
 ## Tags
+
+See section [Account Tags](#account-tags) for an introduction.
 
 ### Add tags to subscription
 

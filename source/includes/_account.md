@@ -2,7 +2,7 @@
 
 ## Account Resource
 
-The `Account` resource represents the customer, and tracks typical information such as name, address, email, ... This is the top level per-customer resource, and all other per-customer data will be linked to this resource -- e.g invoices, payments, ...
+The `Account` resource represents the customer, and tracks typical information such as name, address, email, ... This is the top level per-customer resource, and all other per-customer data will be linked to this resource -- e.g invoices, payments, ... Therefore lots of endpoints are available to manage not only purely account related information -- e.g `name` -- but other per-account data.
 
 The attributes are the following:
 
@@ -758,10 +758,274 @@ no content
 
 A `204` http status without content.
 
+## Email
+
+We offer a few endpoints specifically to manage emails associated with a customer account. The main reason for this separation is to allow having
+several emails for one customer `Account`.
+
+### Add account email
+
+**HTTP Request** 
+
+`POST http://example.com/1.0/kb/accounts/{accountId}/emails`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"email\": \"email@example.com\"}" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
+String email = "email@example.com";
+
+AccountEmail accountEmail = new AccountEmail(accountId,
+                                             email,
+                                             AuditLevel.NONE);
+
+accountApi.addEmail(accountId,
+                    accountEmail,
+                    requestOptions);
+```
+
+```ruby
+account.email = 'email@example.com'
+
+account.add_email(account.email,
+                  user,
+                  reason,
+                  comment,
+                  options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
+body = AccountEmail(account_id=account_id, email='email@example.com')
+
+accountApi.add_email(account_id,
+                     body,
+                     created_by,
+                     api_key,
+                     api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails
+< Content-Type: application/json
+< Content-Length: 0
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+
+**Query Parameters**
+
+None.
+
+**Response**
+
+A `201` http status without content.
+
+### Retrieve an account emails
+
+**HTTP Request** 
+
+`GET http://example.com/1.0/kb/accounts/{accountId}/emails`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("cd026587-c93b-471c-a98d-224c21636fbc");
+
+List<AccountEmail> emails = accountApi.getEmails(accountId, requestOptions);
+```
+
+```ruby
+audit = 'NONE'
+account.emails(audit, options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'c8f51346-562d-429b-8c89-27a0f72009b3'
+
+accountApi.get_emails(account_id, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+   {
+      "accountId":"e4ca38b3-934d-42e8-a292-ffb0af5549f2",
+      "email":"email@example.com"
+   }
+]
+```
+```java
+//First element of the list
+class AccountEmail {
+    org.killbill.billing.client.model.gen.AccountEmail@bdc0f8ad
+    accountId: cd026587-c93b-471c-a98d-224c21636fbc
+    email: email@example.com
+    auditLogs: []
+}
+```
+```ruby
+[
+   {
+      "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "email":"email@example.com"
+   }
+]
+```
+```python
+[
+  {
+    'account_id': 'c8f51346-562d-429b-8c89-27a0f72009b3',
+    'audit_logs': [],
+    'email': 'email@example.com'
+  }
+]
+```
+
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+Returns a list of objects with account id's and their emails.
+
+### Delete email from account
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/accounts/{accountId}/emails/{email}`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/email%40example.com"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
+String email = "email@example.com";
+
+accountApi.removeEmail(accountId, 
+                       email, 
+                       requestOptions);
+```
+
+```ruby
+email = 'email@example.com'
+
+account.remove_email(email,
+                     user,
+                     reason,
+                     comment,
+                     options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
+email = 'email@example.com'
+
+accountApi.remove_email(account_id,
+                        email,
+                        created_by,
+                        api_key,
+                        api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Response**
+
+A `204` http status without content.
 
 ## Bundle
 
+See section [Bundle](#bundle) for details on bundles.
+
 ### Retrieve bundles for account
+
+This endpoint allow to list all (subscription) `Bundle` associated with this account.
 
 **HTTP Request** 
 
@@ -1882,7 +2146,10 @@ Returns a list of account bundle objects.
 
 ## Invoice
 
+See section [Invoice](#invoice) for details on invoices.
+
 ### Retrieve account invoices
+
 
 **HTTP Request** 
 
@@ -2145,6 +2412,8 @@ class Invoice {
 Return a list with invoice objects.
 
 ## Payment 
+
+See section [Payment](#payment) for details on payment.
 
 ### Trigger a payment for all unpaid invoices
 
@@ -3003,6 +3272,8 @@ Returns a payment transaction object.
 
 ## Payment Method
 
+See section [Payment Method](#payment-method) for details on payment method.
+
 ### Add a payment method
 
 
@@ -3412,10 +3683,11 @@ A `204` http status without content.
 
 ## Overdue
 
+The system can be configured to move `Account` through various [overdue](http://docs.killbill.io/0.20/userguide_subscription.html#components-overdue) , a.k.a. dunning state, when invoices are left unpaid. 
+
 ### Retrieve overdue state for account
 
-The system can be configured to move `Account` through various [overdue](http://docs.killbill.io/0.20/userguide_subscription.html#components-overdue) , a.k.a. dunning state, when invoices are left unpaid. This allows to retrieve the current state for an `Account`.
-
+This allows to retrieve the current overdue/dunning state for an `Account`.
 
 **HTTP Request** 
 
@@ -3521,11 +3793,16 @@ Returns a overdue state object.
 
 ## Blocking State
 
-### Block an account
-
 As part of the entitlement features, Kill Bill provides an abstraction to include `BlockingState` events into the per `Account` event stream. The main idea is to allow to modify billing -- e.g pause a specific subscription, all subscriptions, ... -- or the entitlement state -- disable service associated with a given subscription. The [entitlement internal documentation](http://docs.killbill.io/latest/entitlement_subsystem.html) provides some overview of the mechanism. Blocking states are mostly manipulated from inside Kill Bill core, but the functionality is exposed through the API, with the caveat that it is an advanced feature and can lead to unintented behavior if not used properly.
 
+Note that the term `BlockingState` seems to indicate that something will be blocked, and this can certainly be the case, but not necessarily; actually the attribute
+`isBlockChange`, `isBlockEntitlement`, `isBlockBilling` will drive this behavior.
 
+
+### Block an account
+
+
+Add a `BlockingState` event for this account.
 
 **HTTP Request** 
 
@@ -3597,7 +3874,7 @@ accountApi.add_account_blocking_state(account_id,
 < Content-Length: 0
 ```
 ```java
-**TODO**
+TODO
 ```
 ```ruby
 no content
@@ -3759,270 +4036,13 @@ class BlockingState {
 
 Returns a blocking state object
 
-## Email
-
-### Add account email
-
-**HTTP Request** 
-
-`POST http://example.com/1.0/kb/accounts/{accountId}/emails`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X POST \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
-    -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"email\": \"email@example.com\"}" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
-String email = "email@example.com";
-
-AccountEmail accountEmail = new AccountEmail(accountId, 
-                                             email, 
-                                             AuditLevel.NONE);
-
-accountApi.addEmail(accountId, 
-                    accountEmail, 
-                    requestOptions);
-```
-
-```ruby
-account.email = 'email@example.com'
-
-account.add_email(account.email,
-                  user,
-                  reason,
-                  comment,
-                  options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
-body = AccountEmail(account_id=account_id, email='email@example.com')
-
-accountApi.add_email(account_id,
-                     body,
-                     created_by,
-                     api_key,
-                     api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails
-< Content-Type: application/json
-< Content-Length: 0
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-
-**Query Parameters**
-
-None.
-
-**Response**
-
-A `201` http status without content.
-
-### Retrieve an account emails
-
-**HTTP Request** 
-
-`GET http://example.com/1.0/kb/accounts/{accountId}/emails`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("cd026587-c93b-471c-a98d-224c21636fbc");
-
-List<AccountEmail> emails = accountApi.getEmails(accountId, requestOptions);
-```
-
-```ruby
-audit = 'NONE'
-account.emails(audit, options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = 'c8f51346-562d-429b-8c89-27a0f72009b3'
-
-accountApi.get_emails(account_id, api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-   {
-      "accountId":"e4ca38b3-934d-42e8-a292-ffb0af5549f2",
-      "email":"email@example.com"
-   }
-]
-```
-```java
-//First element of the list
-class AccountEmail {
-    org.killbill.billing.client.model.gen.AccountEmail@bdc0f8ad
-    accountId: cd026587-c93b-471c-a98d-224c21636fbc
-    email: email@example.com
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "email":"email@example.com"
-   }
-]
-```
-```python
-[
-  {
-    'account_id': 'c8f51346-562d-429b-8c89-27a0f72009b3',
-    'audit_logs': [],
-    'email': 'email@example.com'
-  }
-]
-```
-
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-Returns a list of objects with account id's and their emails.
-
-### Delete email from account
-
-**HTTP Request** 
-
-`DELETE http://example.com/1.0/kb/accounts/{accountId}/emails/{email}`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X DELETE \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/email%40example.com"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
-String email = "email@example.com";
-
-accountApi.removeEmail(accountId, 
-                       email, 
-                       requestOptions);
-```
-
-```ruby
-email = 'email@example.com'
-
-account.remove_email(email,
-                     user,
-                     reason,
-                     comment,
-                     options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
-email = 'email@example.com'
-
-accountApi.remove_email(account_id,
-                        email,
-                        created_by,
-                        api_key,
-                        api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-None.
-
-**Response**
-
-A `204` http status without content.
-
 ## HA
-
-### List children accounts
 
 When using the [hierarchical account](http://docs.killbill.io/latest/ha.html) feature, this api allows to retrieve
 all children `Account` for a given parent `Account`.
+
+### List children accounts
+
 
 **HTTP Request** 
 
@@ -4284,6 +4304,8 @@ None.
 A `204` http status without content.
 
 ## Custom Fields
+
+Custom fields are `{key, value}` attributes that can be attached to any customer resources, and in particularly on the customer `Account`.
 
 ### Add custom fields to account
 
@@ -4808,6 +4830,27 @@ A `204` http status without content.
 
 
 ## Tags
+
+While custom fields allow to attach `{key, value}` pairs to various objects in the system, single value can also be
+attached to various objects in the system by using tags. Tags come into 2 different fashions:
+
+* `System Tags`: Those are interpreted by the system to change the behavior. Certain tags can only be attached to specific resource types -- e.g `Account`. In order to distinguish them from the user tags, the system tags are uppercase symbols.
+* `User Tags`: Those are **not** interpreted by the system, and can be anything as long as it a lowercase symbol. Foe example `good_customer` could be a tag that can be attached to a customer `Account`.
+
+The apis to manage tags rely on having an existing tag definition and supplying the `tagDefinitionId` in the calls, therefore, for user tags, one should first create a `TagDefinition`.
+
+The following **system** tags, along with their `tagDefinitionId`, and list of object types applicable exist:
+
+* `AUTO_PAY_OFF`: Suspends payments until removed. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000001`.
+* `AUTO_INVOICING_OFF`: Suspends invoicing until removed. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000002`.
+* `OVERDUE_ENFORCEMENT_OFF`: Suspends overdue enforcement behaviour until removed. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000003`.
+* `WRITTEN_OFF`: Indicates that an invoice is written off. No billing or payment effect. Applicable to `INVOICE` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000004`.
+* `MANUAL_PAY`: Indicates that Killbill doesn't process payments for that account (external payments only). Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000005`.
+* `TEST`: Indicates that this is a test account. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000006`.
+* `PARTNER`: Indicates that this is a partner account. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000007`.
+* `AUTO_INVOICING_DRAFT`: Generate account invoices in DRAFT mode. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000008`.
+* `AUTO_INVOICING_REUSE_DRAFT`: Use existing draft invoice if exists. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000009`.
+
 
 ### Add tags to account
 

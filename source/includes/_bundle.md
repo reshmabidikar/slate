@@ -1718,8 +1718,11 @@ Returns a bundle object if a valid account and bundle id's was provided.
 
 ## Blocking State
 
+See section [Account Blocing State](#account-blocking-state) for an introduction.
+
 ### Pause a bundle
 
+Provides an easy interface to pause both billing and entitlement for all subscriptions in the bundle.
 
 **HTTP Request** 
 
@@ -1793,6 +1796,7 @@ A `204` http status without content.
 
 ### Resume a bundle
 
+Provides an easy interface to resume both billing and entitlement for all subscriptions in the bundle.
 
 **HTTP Request** 
 
@@ -1865,6 +1869,8 @@ no content
 A `204` http status without content.
 
 ### Block a bundle
+
+Provides an low level interface to add `BlockingState` event for this bundle. Note that the previous [pause](#bundle-pause-a-bundle) and [resume](#bundle-resume-a-bundle) operations can be achieved using this api.
 
 
 **HTTP Request** 
@@ -1987,6 +1993,8 @@ no content
 A `201` http status without content.
 
 ## Custom Fields
+
+Custom fields are `{key, value}` attributes that can be attached to any customer resources, and in particularly on the `Bundle` objects.
 
 ### Add custom fields to bundle
 
@@ -2372,6 +2380,8 @@ A `204` http status without content.
 
 
 ## Tags
+
+See section [Account Tags](#account-tags) for an introduction.
 
 ### Add tags to bundle
 
