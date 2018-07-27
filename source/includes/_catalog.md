@@ -14,7 +14,9 @@ Also, it is important to understand that the catalog is versionned to provide th
 
 In terms of api, we offer basic CRUD operations, where catalog (versions) are fetched/uploaded using XML. We also offer the ability to retrieve JSON, and have also added support to modify a given catalog version to add new plans - so called *simple plan* - mostly to easy the testing, and provide an easy way to play with the system - KAUI, our admin UI provides a nice integration for that purpose.
 
-## Upload the full catalog as XML
+## Catalog
+
+### Upload the full catalog as XML
 
 **HTTP Request** 
 
@@ -93,7 +95,7 @@ A `201` http status without content.
 
 
 
-## Retrieve the catalog as XML
+### Retrieve the catalog as XML
 
 **HTTP Request** 
 
@@ -936,7 +938,7 @@ catalogApi.get_catalog_xml(api_key, api_secret)
 Returns a catalog in XML format.
 
 
-## Retrieve the catalog as JSON
+### Retrieve the catalog as JSON
 
 **HTTP Request** 
 
@@ -2447,7 +2449,7 @@ class Catalog {
 
 Returns a catalog in JSON format.
 
-## Retrieve a list of catalog versions
+### Retrieve a list of catalog versions
 
 **HTTP Request** 
 
@@ -2514,7 +2516,7 @@ Returns a list with the available catalog versions.
 
 
 
-## Retrieve available base plans
+### Retrieve available base plans
 
 **HTTP Request** 
 
@@ -2666,7 +2668,7 @@ None.
 
 Returns a list with the available base plans.
 
-## Retrieve available add-ons for a given product
+### Retrieve available add-ons for a given product
 
 **HTTP Request** 
 
@@ -2779,7 +2781,7 @@ class PlanDetail {
 
 Returns a list with add-ons for a product.
 
-## Delete all versions for a per tenant catalog
+### Delete all versions for a per tenant catalog
 
 **HTTP Request** 
 
@@ -2842,8 +2844,9 @@ None.
 
 A `204` http status without content.
 
+## Catalog subscription info
 
-## Retrieve phase for a given subscription and date
+### Retrieve phase for a given subscription and date
 
 **HTTP Request** 
 
@@ -2937,7 +2940,7 @@ TODO
 
 Returns a list with phase info.
 
-## Retrieve plan for a given subscription and date
+### Retrieve plan for a given subscription and date
 
 **HTTP Request** 
 
@@ -3094,7 +3097,7 @@ Returns a list with plan info.
 
 
 
-## Retrieve priceList for a given subscription and date
+### Retrieve priceList for a given subscription and date
 
 **HTTP Request** 
 
@@ -3171,7 +3174,7 @@ TODO
 
 Returns a price list.
 
-## Retrieve product for a given subscription and date
+### Retrieve product for a given subscription and date
 
 **HTTP Request** 
 
@@ -3262,7 +3265,9 @@ TODO
 
 Returns a list with the product info.
 
-## Add a simple plan entry in the current version of the catalog
+### Simple Plan
+
+### Add a simple plan entry in the current version of the catalog
 
 **HTTP Request** 
 
