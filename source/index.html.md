@@ -1,5 +1,6 @@
 --- 
 includes:
+  - tenant
   - catalog
   - account
   - payment-method
@@ -7,11 +8,10 @@ includes:
   - bundle
   - invoice
   - credit
-  - invoice-payment
   - payment
   - payment-transaction
+  - invoice-payment
   - admin
-  - tenant
   
 title: Kill Bill 
 
