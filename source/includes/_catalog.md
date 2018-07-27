@@ -2844,9 +2844,11 @@ None.
 
 A `204` http status without content.
 
-## Catalog subscription info
+## Subscription info
 
-### Retrieve phase for a given subscription and date
+### Retrieve the phase for a given subscription and date
+
+This endpoint allows to retrieve catalog information, more specifically information about the current `Phase` associated with a given subscription.
 
 **HTTP Request** 
 
@@ -2940,7 +2942,10 @@ TODO
 
 Returns a list with phase info.
 
-### Retrieve plan for a given subscription and date
+### Retrieve the plan for a given subscription and date
+
+This endpoint allows to retrieve catalog information, more specifically information about the current `Plan` associated with a given subscription.
+
 
 **HTTP Request** 
 
@@ -3097,7 +3102,9 @@ Returns a list with plan info.
 
 
 
-### Retrieve priceList for a given subscription and date
+### Retrieve the priceList for a given subscription and date
+
+This endpoint allows to retrieve catalog information, more specifically information about the current `PriceList` associated with a given subscription.
 
 **HTTP Request** 
 
@@ -3175,6 +3182,8 @@ TODO
 Returns a price list.
 
 ### Retrieve product for a given subscription and date
+
+This endpoint allows to retrieve catalog information, more specifically information about the current `Product` associated with a given subscription.
 
 **HTTP Request** 
 
@@ -3265,9 +3274,25 @@ TODO
 
 Returns a list with the product info.
 
-### Simple Plan
+## Simple Plan
 
-### Add a simple plan entry in the current version of the catalog
+We provide a more basic level of APIs as a quick way to add `Plan` into an **existing version** of the catalog.
+The intent is mostly to help getting started with Kill Bill by abstracting away more complex topics such as alignements, rules, ...
+The functionality is exposed on our admin UI (KAUI) to provide a simple graphical way to configure a simple catalog and get started quickly.
+
+Such plans offer the following limitations:
+
+* In-advance billing
+* Possibility of selecting a $0 `TRIAL` phase
+* One `RECURRING` phase with no fixed price.
+* Ability to specify multiple currencies if needed
+
+Note that, one such catalog has been created, one can retrieve the associated XML, edit it to configure additional aspects and then upload
+a new version of this catalog. So, this functionality can also be a stepping stone for a full catalog configuration.
+
+### Add a simple plan
+
+This adds a (simple) Plan into the current version of the catalog -- associated with the tenant.
 
 **HTTP Request** 
 
