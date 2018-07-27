@@ -400,7 +400,24 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentTransactionApi;
+protected PaymentTransactionApi paymentTransactionApi;
+
+UUID paymentTransactionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
+
+final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+
+CustomFields customFields = new CustomFields();
+customFields.add(new CustomField(null, 
+                                 paymentTransactionId, 
+                                 ObjectType.TRANSACTION, 
+                                 "Test Custom Field", 
+                                 "test_value", 
+                                 EMPTY_AUDIT_LOGS));
+
+PaymentTransactionApi.createTransactionCustomFields(paymentTransactionId, 
+                                                    customFields, 
+                                                    requestOptions);
 ```
 
 ```ruby
@@ -408,7 +425,14 @@ TODO
 ```
 
 ```python
-TODO
+paymentTransactionApi = killbill.api.PaymentTransactionApi()
+body = CustomField(name='Test Custom Field', value='test_value')
+
+paymentTransactionApi.create_transaction_custom_fields(payment_transaction_id,
+                                                       [body],
+                                                       created_by,
+                                                       api_key,
+                                                       api_secret)
 ```
 
 > Example Response:
@@ -434,16 +458,7 @@ class CustomField {
 }
 ```
 ```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"PAYMENT",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
+TODO
 ```
 ```python
 no content
@@ -475,7 +490,14 @@ curl \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentTransactionApi;
+protected PaymentTransactionApi paymentTransactionApi;
+
+UUID paymentTransactionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
+
+List<CustomField> customFields = paymentTransactionApi.getTransactionCustomFields(paymentTransactionId,
+                                                                                  AuditLevel.NONE,
+                                                                                  requestOptions);
 ```
 
 ```ruby
@@ -483,7 +505,9 @@ TODO
 ```
 
 ```python
-TODO
+paymentTransactionApi = killbill.api.PaymentTransactionApi()
+
+paymentTransactionApi.get_transaction_custom_fields(payment_transaction_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -505,13 +529,27 @@ TODO
 ```
 
 ```java
-TODO
+//First element of the list
+class CustomField {
+    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
+    customFieldId: null
+    objectId: cca08349-8b26-41c7-bfcc-2e3cf70a0f28
+    objectType: TRANSACTION
+    name: Test Custom Field
+    value: test_value
+    auditLogs: []
+}
 ```
 ```ruby
 TODO
 ```
 ```python
-TODO
+[{'audit_logs': [],
+ 'custom_field_id': '893e0286-2b48-493b-99af-aac9b172dc75',
+ 'name': 'Test Custom Field',
+ 'object_id': '924bebe7-58e7-40e8-a5ed-192efb59d8ee',
+ 'object_type': 'TRANSACTION',
+ 'value': 'test_value'}]
 ```
 
 **Query Parameters**
@@ -548,43 +586,35 @@ curl -v \
 ```
 
 ```java
-import org.killbill.billing.client.api.gen.PaymentApi;
-protected PaymentApi paymentApi;
+import org.killbill.billing.client.api.gen.PaymentTransactionApi;
+protected PaymentTransactionApi paymentTransactionApi;
 
-UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
+UUID paymentTransactionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
 UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
 
 CustomField customFieldModified = new CustomField();
 customFieldModified.setCustomFieldId(customFieldsId);
 customFieldModified.setValue("NewValue");
 
-paymentApi.modifyPaymentCustomFields(paymentId, 
-                                     customFieldModified, 
-                                     requestOptions);
+paymentTransactionApi.modifyTransactionCustomFields(paymentTransactionId, 
+                                                    customFieldModified, 
+                                                    requestOptions);
 ```
 
 ```ruby
-custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-custom_field.name = 'Test Modify'
-custom_field.value = 'test_modify_value'
-
-payment.modify_custom_field(custom_field,                                                                                            
-                            user, 
-                            reason,
-                            comment, 
-                            options)
+TODO
 ```
 ```python
-paymentApi = killbill.api.PaymentApi()
-payment_id = 'f33e0adc-78df-438a-b920-aaacd7f8597a'
+paymentTransactionApi = killbill.api.PaymentTransactionApi()
+
 custom_field_id = '9913e0f6-b5ef-498b-ac47-60e1626eba8f'
 body = CustomField(custom_field_id=custom_field_id, name='Test Modify', value='test_modify_value')
 
-paymentApi.modify_payment_custom_fields(payment_id,
-                                        [body],
-                                        created_by,
-                                        api_key,
-                                        api_secret)
+paymentTransactionApi.modify_transaction_custom_fields(payment_transaction_id,
+                                                       [body],
+                                                       created_by,
+                                                       api_key,
+                                                       api_secret)
 ```
 > Example Response:
 
@@ -635,7 +665,15 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentTransactionApi;
+protected PaymentTransactionApi paymentTransactionApi;
+
+UUID paymentTransactionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
+UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+
+paymentTransactionApi.deleteTransactionCustomFields(paymentTransactionId, 
+                                                    customFieldsId, 
+                                                    requestOptions);
 ```
 
 ```ruby
@@ -643,7 +681,14 @@ TODO
 ```
 
 ```python
-TODO
+paymentTransactionApi = killbill.api.PaymentTransactionApi()
+
+payment_transaction_id = 'f33e0adc-78df-438a-b920-aaacd7f8597a'
+
+paymentTransactionApi.delete_transaction_custom_fields(payment_transaction_id,
+                                                       created_by,
+                                                       api_key,
+                                                       api_secret)
 ```
 
 > Example Response:
@@ -700,7 +745,16 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentTransactionApi;
+protected PaymentTransactionApi paymentTransactionApi;
+
+UUID paymentTransactionId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
+
+UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
+Tags result = PaymentTransactionApi.createTransactionTags(paymentTransactionId, 
+                                                          ImmutableList.<UUID>of(autoPayOffId), 
+                                                          requestOptions);
 ```
 
 ```ruby
@@ -708,7 +762,15 @@ TODO
 ```
 
 ```python
-TODO
+paymentTransactionApi = killbill.api.PaymentTransactionApi()
+
+tag = ["00000000-0000-0000-0000-000000000002"]
+
+paymentTransactionApi.create_transaction_tags(payment_transaction_id,
+                                              tag,
+                                              created_by,
+                                              api_key,
+                                              api_secret)
 ```
 
 > Example Response:
@@ -722,7 +784,16 @@ TODO
 ```
 
 ```java
-TODO
+//First element of the list
+class Tag {
+    org.killbill.billing.client.model.gen.Tag@bd138472
+    tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
+    objectType: TRANSACTION
+    objectId: 917992d3-5f1f-4828-9fff-799cc4211aa9
+    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionName: AUTO_PAY_OFF
+    auditLogs: []
+}
 ```
 ```ruby
 TODO
@@ -759,7 +830,17 @@ curl \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentTransactionApi;
+protected PaymentTransactionApi paymentTransactionApi;
+
+UUID paymentTransactionId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
+
+Boolean includedDeleted = false; // Will not include deleted tags
+
+List<Tag> tags = paymentTransactionApi.getTransactionTags(paymentTransactionId, 
+                                                          includedDeleted, 
+                                                          AuditLevel.FULL, 
+                                                          requestOptions);
 ```
 
 ```ruby
@@ -767,7 +848,11 @@ TODO
 ```
 
 ```python
-TODO
+paymentTransactionApi = killbill.api.PaymentTransactionApi()
+
+payment_transaction_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
+
+paymentTransactionApi.get_transaction_tags(payment_transaction_id, api_key, api_secret)
 ```
 
 > Example Response:
@@ -789,13 +874,37 @@ TODO
 ```
 
 ```java
-TODO
+//First element of the list
+class Tag {
+    org.killbill.billing.client.model.gen.Tag@cae768d7
+    tagId: d724f79d-fad1-4758-b35e-d62708450d90
+    objectType: TRANSACTION
+    objectId: e659f0f3-745c-46d5-953c-28fe9282fc7d
+    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionName: AUTO_PAY_OFF
+    auditLogs: [class AuditLog {
+        changeType: INSERT
+        changeDate: 2012-08-25T00:00:02.000Z
+        objectType: TAG
+        objectId: d724f79d-fad1-4758-b35e-d62708450d90
+        changedBy: Toto
+        reasonCode: i am god
+        comments: no comment
+        userToken: e36f7ba5-fb5b-41c0-b47c-77c48ab37dd9
+        history: null
+    }]
+}
 ```
 ```ruby
 TODO
 ```
 ```python
-TODO
+[{'audit_logs': [],
+ 'object_id': '41b6b214-c3f7-40ea-89cd-6a4ecbd9083b',
+ 'object_type': 'TRANSACTION',
+ 'tag_definition_id': '00000000-0000-0000-0000-000000000002',
+ 'tag_definition_name': 'AUTO_INVOICING_OFF',
+ 'tag_id': '865e0c77-def7-4880-ac80-11c21a5e571d'}]
 ```
 
 **Query Parameters**
@@ -828,7 +937,16 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentTransactionApi;
+protected PaymentTransactionApi paymentTransactionApi;
+
+UUID paymentTransactionId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
+
+UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+
+paymentTransactionApi.deleteTransactionTags(paymentTransactionId, 
+                                            ImmutableList.<UUID>of(autoPayOffId), 
+                                            requestOptions);
 ```
 
 ```ruby
@@ -836,7 +954,16 @@ TODO
 ```
 
 ```python
-TODO
+paymentTransactionApi = killbill.api.PaymentTransactionApi()
+
+payment_transaction_id = 'dce5b2a0-0f0f-430b-9427-545ba4be5c7f'
+tag = ["00000000-0000-0000-0000-000000000002"] 
+
+paymentTransactionApi.delete_transaction_tags(payment_transaction_id,
+                                              created_by,
+                                              api_key,
+                                              api_secret,
+                                              tag_def=tag)
 ```
 
 > Example Response:
@@ -849,13 +976,13 @@ TODO
 ```
 
 ```java
-TODO
+no content
 ```
 ```ruby
 TODO
 ```
 ```python
-TODO
+no content
 ```
 
 **Query Parameters**
