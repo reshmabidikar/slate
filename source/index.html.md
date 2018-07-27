@@ -10,6 +10,7 @@ includes:
   - invoice-payment
   - payment
   - admin
+  - tenant
   
 title: Kill Bill 
 
