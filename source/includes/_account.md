@@ -3874,7 +3874,7 @@ accountApi.add_account_blocking_state(account_id,
 < Content-Length: 0
 ```
 ```java
-**TODO**
+TODO
 ```
 ```ruby
 no content
@@ -4837,7 +4837,7 @@ attached to various objects in the system by using tags. Tags come into 2 differ
 * `System Tags`: Those are interpreted by the system to change the behavior. Certain tags can only be attached to specific resource types -- e.g `Account`. In order to distinguish them from the user tags, the system tags are uppercase symbols.
 * `User Tags`: Those are **not** interpreted by the system, and can be anything as long as it a lowercase symbol. Foe example `good_customer` could be a tag that can be attached to a customer `Account`.
 
-The apis to manage tags rely on having an existing tag definition and supplying the `tagDefinitionId` in the calls, therefore, for user tags, one should first create a `TagDefinition`. (TODO tagDefinition api)
+The apis to manage tags rely on having an existing tag definition and supplying the `tagDefinitionId` in the calls, therefore, for user tags, one should first create a `TagDefinition`.
 
 The following **system** tags, along with their `tagDefinitionId`, and list of object types applicable exist:
 

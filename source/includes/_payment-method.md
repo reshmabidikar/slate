@@ -19,7 +19,7 @@ The attributes are the following:
 * **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
 * **`isDefault`** <span style="color:#32A9C7">*[User generated]*</span>: Whether this payment method is used for automatic payments in the case of recurring billing.
 * **`pluginName`** <span style="color:#32A9C7">*[User generated]*</span>: The plugin identifier. All payments operation associated with this payment method will be delegated to the payment plugin associated with this identifier.
-* **`pluginInfo`** <span style="color:#32A9C7">*[User generated]*</span>:  TODO
+* **`pluginInfo`** <span style="color:#32A9C7">*[User generated]*</span>:  Plugin specific section.
 
 ## Payment Methods
 

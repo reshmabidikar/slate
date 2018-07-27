@@ -44,8 +44,8 @@ The attributes are the following:
 * **`targetDate`** <span style="color:#32A9C7">*[User or system generated*</span>: Date up to which the account has been invoiced.
 * **`invoiceNumber`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: 
 * **`balance`** <span style="color:#32A9C7">*[System generated]*</span>: The arithemtic sum of all items amounts on this invoice minus the payment amount.
-* **`bundleKeys`** <span style="color:#32A9C7">*[System generated]*</span>: TODO  Do we still need that?
-* **`credits`** <span style="color:#32A9C7">*[See `Credit` below]*</span>: TODO  Why do we return this ?
+* **`bundleKeys`** <span style="color:#32A9C7">*[System generated]*</span>: Comma separated list of bundles invoiced in this `Invoice`. Deprecated.
+* **`credits`** <span style="color:#32A9C7">*[See `Credit` below]*</span>: List of credits associated with thsi Invoice. Deprecated.
 * **`items`** <span style="color:#32A9C7">*[See `InvoiceItem` below]*</span>: The list of invoice items on this invoice
 * **`isParentInvoice`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: In the hierarchical model, whether is invoice is the parent invoice.
 * **`parentInvoiceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: In the hierarchical model, the `ID` of the parent invoice.
@@ -1832,7 +1832,7 @@ invoiceApi.voidInvoice(invoiceId, requestOptions);
 ```
 
 ```ruby
-**TODO**
+TODO
 ```
 
 ```python
@@ -2507,7 +2507,7 @@ InvoicePayments invoicePayments = invoiceApi.getPaymentsForInvoice(invoiceId,
 ```
 
 ```ruby
-**TODO**
+TODO
 ```
 
 ```python
@@ -2639,7 +2639,7 @@ class InvoicePayment {
 }
 ```
 ```ruby
-**TODO**
+TODO
 ```
 ```python
 {'account_id': '8a758318-25fb-46e1-a385-a8f8354ec903',

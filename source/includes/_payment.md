@@ -34,7 +34,7 @@ The attributes are the following:
 * **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span>: The (`Payment`) external key provided from client.
 * **`amount`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: Amount for this transaction.
 * **`currency`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: Currency for this transaction.
-* **`effectiveDate`** <span style="color:#32A9C7">*[User generated, immutable]*</span>  TODO
+* **`effectiveDate`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The effective date of the transaction.
 * **`processedAmount`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The amount processed by the gateway -- will often match the `amount`, but could be different - e.g currency conversion
 * **`processedCurrency`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The currency processed by the gateway -- will often match the `currency`, but could be different - e.g currency conversion
 * **`status`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Transaction status 
