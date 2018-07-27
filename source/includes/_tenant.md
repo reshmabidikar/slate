@@ -2,18 +2,18 @@
 
 ## Tenant Resource
 
-The `Tenant` resource represents the the apiKey and apiSecret and it will be used to retrieve the tenantId and validate 
-the user has access to that tenant. So in the end, only a valid user with the right set of permissions will be able 
-to perform an API call against a tenant she has access to.
+Kill Bill has been designed from the group-up as a multi-tenant system, that is one where multiple unrelated deployments can be hosted on the same physical system; each one of these deployments comes with its own separate configuration, catalog, plugins, and of course its data set is kept entirely separate from the others. RBAC control allows different users/admin/apps to access zero, one or multiple tenants. This [blog](http://killbill.io/blog/subscription-service-using-kill-bill/) illustrates some interesting use cases. The tenant resource allows the management of such tenants.
 
 The attributes are the following:
 
 * **`tenant_id`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
 * **`external_key`** <span style="color:#32A9C7">*[System or User generated, immutable]*</span>. The external key provided from client.
 * **`api_key`** <span style="color:#32A9C7">*[User generated, immutable]*</span>.  The api key associated with the tenant. 
-* **`api_secret`** <span style="color:#32A9C7">*[User generated, immutable]*</span>.  The api secret associated with the tenant.
+* **`api_secret`** <span style="color:#32A9C7">*[User generated, immutable]*</span>.  The api secret associated with the tenant. Note that the api secret is hashed and cannot be retrieved.
 
-## Create a tenant
+## Tenant
+
+### Create a tenant
 
 **HTTP Request** 
 
@@ -116,7 +116,7 @@ no content
 
 A 201 http status without content.
 
-## Retrieve a tenant by id
+### Retrieve a tenant by id
 
 **HTTP Request** 
 
@@ -198,7 +198,7 @@ class Tenant {
 
 Returns a tenant object.
 
-## Retrieve a tenant by its API key
+### Retrieve a tenant by its API key
 
 **HTTP Request** 
 
@@ -273,7 +273,9 @@ tenantApi.get_tenant_by_api_key(api_key='bob')
 
 Returns a tenant object.
 
-## Create a push notification
+## Push Notifications
+
+### Create a push notification
 
 **HTTP Request** 
 
@@ -346,7 +348,7 @@ no content
 
 A 201 http status without content.
 
-## Retrieve a push notification
+### Retrieve a push notification
 
 **HTTP Request** 
 
@@ -415,7 +417,7 @@ None.
 
 Returns a tenant key value object.
 
-## Delete a push notification
+### Delete a push notification
 
 **HTTP Request** 
 
@@ -477,7 +479,9 @@ None.
 
 A 204 http status without content.
 
-## Add a per tenant configuration (system properties)
+## Configuration
+
+### Add a per tenant configuration (system properties)
 
 **HTTP Request** 
 
@@ -550,7 +554,7 @@ None.
 
 A 201 http status without content.
 
-## Retrieve a per tenant configuration (system properties)
+### Retrieve a per tenant configuration (system properties)
 
 **HTTP Request** 
 
@@ -619,69 +623,7 @@ None.
 
 Returns a tenant key value object.
 
-## Delete a per tenant configuration (system properties)
-
-**HTTP Request** 
-
-`DELETE http://example.com/1.0/kb/tenants/uploadPerTenantConfig`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X DELETE \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "X-Killbill-CreatedBy: demo" \
-    -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/tenants/uploadPerTenantConfig"
-```
-
-```java
-import org.killbill.billing.client.api.gen.TenantApi;
-protected AdminApi tenantApi;
-
-tenantApi.deletePerTenantConfiguration(requestOptions);
-```
-
-```ruby
-TODO
-```
-
-```python
-tenantApi = killbill.api.TenantApi()
-
-tenantApi.delete_per_tenant_configuration(created_by='demo')
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-A 204 http status without content.
-
-## Retrieve a per tenant key value based on key prefix
+### Retrieve a per tenant key value based on key prefix
 
 **HTTP Request** 
 
@@ -763,7 +705,72 @@ None.
 
 Returns a tenant key value object.
 
-## Add a per tenant configuration for a plugin
+### Delete a per tenant configuration (system properties)
+
+**HTTP Request** 
+
+`DELETE http://example.com/1.0/kb/tenants/uploadPerTenantConfig`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X DELETE \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://localhost:8080/1.0/kb/tenants/uploadPerTenantConfig"
+```
+
+```java
+import org.killbill.billing.client.api.gen.TenantApi;
+protected AdminApi tenantApi;
+
+tenantApi.deletePerTenantConfiguration(requestOptions);
+```
+
+```ruby
+TODO
+```
+
+```python
+tenantApi = killbill.api.TenantApi()
+
+tenantApi.delete_per_tenant_configuration(created_by='demo')
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+```
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+
+A 204 http status without content.
+
+
+## Plugin Configuration
+
+### Add a per tenant configuration for a plugin
 
 **HTTP Request** 
 
@@ -832,25 +839,7 @@ tenantApi.upload_plugin_configuration(plugin_name, body, created_by='demo')
 ```java
 class TenantKeyValue {
     key: PLUGIN_CONFIG_PLUGIN_FOO
-    values: [############################################################################################
-    #                                                                                          #
-    #                   Copyright 2010-2011 Ning, Inc.                                         #
-    #                   Copyright 2015 Groupon, Inc                                            #
-    #                   Copyright 2015 The Billing Project, LLC                                #
-    #                                                                                          #
-    #      The Billing Project licenses this file to you under the Apache License, version 2.0 #
-    #      (the "License"); you may not use this file except in compliance with the            #
-    #      License.  You may obtain a copy of the License at:                                  #
-    #                                                                                          #
-    #          http://www.apache.org/licenses/LICENSE-2.0                                      #
-    #                                                                                          #
-    #      Unless required by applicable law or agreed to in writing, software                 #
-    #      distributed under the License is distributed on an "AS IS" BASIS, WITHOUT           #
-    #      WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the           #
-    #      License for the specific language governing permissions and limitations             #
-    #      under the License.                                                                  #
-    #                                                                                          #
-    ############################################################################################
+    values: 
     
     :my_plugin:
       :test: True
@@ -887,7 +876,7 @@ None.
 
 A 201 http status without content.
 
-## Retrieve a per tenant configuration for a plugin
+### Retrieve a per tenant configuration for a plugin
 
 **HTTP Request** 
 
@@ -944,25 +933,7 @@ tenantApi.get_plugin_configuration(plugin_name)
 ```java
 class TenantKeyValue {
     key: PLUGIN_CONFIG_PLUGIN_FOO
-    values: [############################################################################################
-    #                                                                                          #
-    #                   Copyright 2010-2011 Ning, Inc.                                         #
-    #                   Copyright 2015 Groupon, Inc                                            #
-    #                   Copyright 2015 The Billing Project, LLC                                #
-    #                                                                                          #
-    #      The Billing Project licenses this file to you under the Apache License, version 2.0 #
-    #      (the "License"); you may not use this file except in compliance with the            #
-    #      License.  You may obtain a copy of the License at:                                  #
-    #                                                                                          #
-    #          http://www.apache.org/licenses/LICENSE-2.0                                      #
-    #                                                                                          #
-    #      Unless required by applicable law or agreed to in writing, software                 #
-    #      distributed under the License is distributed on an "AS IS" BASIS, WITHOUT           #
-    #      WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the           #
-    #      License for the specific language governing permissions and limitations             #
-    #      under the License.                                                                  #
-    #                                                                                          #
-    ############################################################################################
+    values: 
     
     :my_plugin:
       :test: True
@@ -999,7 +970,7 @@ None.
 
 Returns a tenant key value object.
 
-## Delete a per tenant configuration for a plugin
+### Delete a per tenant configuration for a plugin
 
 **HTTP Request** 
 
@@ -1075,7 +1046,9 @@ None.
 
 A 204 http status without content.
 
-## Add a per tenant payment state machine for a plugin
+## Payment State Machines
+
+### Add a per tenant payment state machine for a plugin
 
 **HTTP Request** 
 
@@ -1232,7 +1205,7 @@ None.
 
 A 201 http status without content.
 
-## Retrieve a per tenant payment state machine for a plugin
+### Retrieve a per tenant payment state machine for a plugin
 
 **HTTP Request** 
 
@@ -1288,22 +1261,6 @@ tenantApi.get_plugin_payment_state_machine_config(plugin_name)
 class TenantKeyValue {
     key: PLUGIN_PAYMENT_STATE_MACHINE_noop
     values: [<?xml version="1.0" encoding="UTF-8"?>
-    <!--
-      ~ Copyright 2016 Groupon, Inc
-      ~ Copyright 2016 The Billing Project, LLC
-      ~
-      ~ The Billing Project licenses this file to you under the Apache License, version 2.0
-      ~ (the "License"); you may not use this file except in compliance with the
-      ~ License.  You may obtain a copy of the License at:
-      ~
-      ~    http://www.apache.org/licenses/LICENSE-2.0
-      ~
-      ~ Unless required by applicable law or agreed to in writing, software
-      ~ distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-      ~ WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.  See the
-      ~ License for the specific language governing permissions and limitations
-      ~ under the License.
-      -->
     
     <stateMachineConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                         xsi:noNamespaceSchemaLocation="StateMachineConfig.xsd">
@@ -1385,7 +1342,7 @@ None.
 
 Returns a tenant key value object.
 
-## Delete a per tenant payment state machine for a plugin
+### Delete a per tenant payment state machine for a plugin
 
 **HTTP Request** 
 
@@ -1451,7 +1408,9 @@ None.
 
 A 204 http status without content.
 
-## Add a per tenant user key/value
+## Tenant Key Values
+
+### Add a per tenant user key/value
 
 **HTTP Request** 
 
@@ -1543,7 +1502,7 @@ None.
 
 A 201 http status without content.
 
-## Retrieve a per tenant user key/value
+### Retrieve a per tenant user key/value
 
 **HTTP Request** 
 
@@ -1624,7 +1583,7 @@ None.
 
 Returns a tenant key value object.
 
-## Delete a per tenant user key/value
+### Delete a per tenant user key/value
 
 **HTTP Request** 
 
