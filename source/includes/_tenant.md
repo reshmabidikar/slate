@@ -31,7 +31,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d "{ \"apiKey\": \"demo\", \"apiSecret\": \"demo-secret\"}" \
-    "http://localhost:8080/1.0/kb/tenants?useGlobalDefault=false"
+    "http://localhost:8080/1.0/kb/tenants"
 ```
 
 ```java
@@ -110,7 +110,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **useGlobalDefault** | boolean | false | choose true if you want use global default |
+| **useGlobalDefault** | boolean | false | Setting the `useGlobalDefault` parameter to `true` can be used for test purpose: This will configure the tenant with a default catalog, and therefore make it easy to quickly start playing with the apis. Note that in order to then upload a new custom catalog, one would need to [invalidate the caches for this tenant](#admin-invalidates-caches-per-tenant-level). |
 
 **Returns**
 
