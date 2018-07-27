@@ -9,6 +9,7 @@ includes:
   - credit
   - invoice-payment
   - payment
+  - payment-transaction
   - admin
   - tenant
   
