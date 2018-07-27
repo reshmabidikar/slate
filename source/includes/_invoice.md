@@ -2690,6 +2690,8 @@ Returns a invoice payment object.
 
 ## Custom Fields
 
+Custom fields are `{key, value}` attributes that can be attached to any customer resources, and in particularly on the `Invoice` objects.
+
 ### Add custom fields to invoice
 
 **HTTP Request** 
@@ -3086,6 +3088,8 @@ A `204` http status without content.
 
 
 ## Tags
+
+See section [Account Tags](#account-tags) for an introduction.
 
 ### Add tags to invoice
 

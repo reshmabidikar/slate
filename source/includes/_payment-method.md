@@ -372,6 +372,8 @@ A `204` http status without content.
 
 ## Custom Fields
 
+Custom fields are `{key, value}` attributes that can be attached to any customer resources, and in particularly on the `PaymentMethod` objects.
+
 ### Add custom fields to payment method
 
 **HTTP Request** 

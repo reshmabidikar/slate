@@ -4305,6 +4305,8 @@ A `204` http status without content.
 
 ## Custom Fields
 
+Custom fields are `{key, value}` attributes that can be attached to any customer resources, and in particularly on the customer `Account`.
+
 ### Add custom fields to account
 
 Allow to add custom fields for a given `Account`.
@@ -4828,6 +4830,27 @@ A `204` http status without content.
 
 
 ## Tags
+
+While custom fields allow to attach `{key, value}` pairs to various objects in the system, single value can also be
+attached to various objects in the system by using tags. Tags come into 2 different fashions:
+
+* `System Tags`: Those are interpreted by the system to change the behavior. Certain tags can only be attached to specific resource types -- e.g `Account`. In order to distinguish them from the user tags, the system tags are uppercase symbols.
+* `User Tags`: Those are **not** interpreted by the system, and can be anything as long as it a lowercase symbol. Foe example `good_customer` could be a tag that can be attached to a customer `Account`.
+
+The apis to manage tags rely on having an existing tag definition and supplying the `tagDefinitionId` in the calls, therefore, for user tags, one should first create a `TagDefinition`. (TODO tagDefinition api)
+
+The following **system** tags, along with their `tagDefinitionId`, and list of object types applicable exist:
+
+* `AUTO_PAY_OFF`: Suspends payments until removed. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000001`.
+* `AUTO_INVOICING_OFF`: Suspends invoicing until removed. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000002`.
+* `OVERDUE_ENFORCEMENT_OFF`: Suspends overdue enforcement behaviour until removed. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000003`.
+* `WRITTEN_OFF`: Indicates that an invoice is written off. No billing or payment effect. Applicable to `INVOICE` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000004`.
+* `MANUAL_PAY`: Indicates that Killbill doesn't process payments for that account (external payments only). Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000005`.
+* `TEST`: Indicates that this is a test account. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000006`.
+* `PARTNER`: Indicates that this is a partner account. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000007`.
+* `AUTO_INVOICING_DRAFT`: Generate account invoices in DRAFT mode. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000008`.
+* `AUTO_INVOICING_REUSE_DRAFT`: Use existing draft invoice if exists. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000009`.
+
 
 ### Add tags to account
 

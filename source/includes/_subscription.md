@@ -2078,7 +2078,11 @@ A `204` http status without content.
 
 ## Blocking State
 
+See section [Account Blocing State](#account-blocking-state) for an introduction.
+
 ### Block a subscription
+
+Provides an low level interface to add `BlockingState` event for this subscription. 
 
 **HTTP Request** 
 
@@ -2175,6 +2179,8 @@ A `201` http status without content.
 
 
 ## Custom Fields
+
+Custom fields are `{key, value}` attributes that can be attached to any customer resources, and in particularly on the `Subscription` objects.
 
 ### Add custom fields to subscription
 
@@ -2581,6 +2587,8 @@ no content
 A `204` http status without content.
 
 ## Tags
+
+See section [Account Tags](#account-tags) for an introduction.
 
 ### Add tags to subscription
 
