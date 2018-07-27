@@ -1609,7 +1609,7 @@ no content
 | Name | Type | Required | Description |
 | ---- | ---- | -------- | ----------- |
 | **effectiveFromDate** | string | true | effective at which this change becomes effective | 
-| **forceNewBcdWithPastEffectiveDate** | boolean | true | by default the effective date must be in the future so as to not modify existing invoices. this flag allows to override this behavior. (default: false)| 
+| **forceNewBcdWithPastEffectiveDate** | boolean | false | by default the effective date must be in the future so as to not modify existing invoices. this flag allows to override this behavior. (default: false)| 
 
 **Returns**
 
@@ -2000,8 +2000,8 @@ no content
 | **requestedDate** | string | false | requested date. A null value means immediately. |
 | **entitlementPolicy** | string | false | entitlement policy |
 | **billingPolicy** | string | false | billing policy |
-| **useRequestedDateForBilling** | boolean | true | use requested date for billing (default: false) |
-| **callCompletion** | boolean | true | call completion (default: false)|
+| **useRequestedDateForBilling** | boolean | false | use requested date for billing (default: false) |
+| **callCompletion** | boolean | false | call completion (default: false)|
 | **callTimeoutSec** | long | false | call timeout sec | 
 
 Since we offer the ability to control cancelation date for both entitlement (service) and billing either through policies, dates or null values (now), it is imperative to understand how those parameters work:
