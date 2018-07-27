@@ -26,23 +26,8 @@ The attributes are the following:
 * **`transactions`** <span style="color:#32A9C7">*[See `PaymentTransaction` bellow]*</span>: The list of `PaymentTransaction` associated wtih this payment.
 * **`paymentAttempts`** <span style="color:#32A9C7">*[`PaymentAttempt`]*</span>: The list of payment retries -- only effective when the system has been configured to retry failed transactions.
 
-#### PaymentTransaction
+The attributes for the `PaymentTransaction` are described [here](#payment-transaction-payments-transactions).
 
-* **`transactionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
-* **`transactionExternalKey`** <span style="color:#32A9C7">*[User generated, default transactionId, immutable]*</span>: The external key provided from client.
-* **`paymentId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
-* **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span>: The (`Payment`) external key provided from client.
-* **`amount`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: Amount for this transaction.
-* **`currency`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: Currency for this transaction.
-* **`effectiveDate`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The effective date of the transaction.
-* **`processedAmount`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The amount processed by the gateway -- will often match the `amount`, but could be different - e.g currency conversion
-* **`processedCurrency`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The currency processed by the gateway -- will often match the `currency`, but could be different - e.g currency conversion
-* **`status`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Transaction status 
-* **`gatewayErrorCode`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Error code returned by the payment gateway.
-* **`gatewayErrorMsg`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Error message returned by the payment gateway.
-* **`firstPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Payment gateway reference.
-* **`secondPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: This is typically the `ID` from the actual payment processor, when the gateway is a PSP.
-* **`properties`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: Properties passed during payment operation to be interpreted by the plugin - those are plugin specific.
 
 ## Payments
 

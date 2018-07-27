@@ -1,6 +1,30 @@
 # Payment Transaction
 
-## Payments Transactions
+Payment transactions belon to a [Payment](http://127.0.0.1:4567/#payment-payment-resource) object.
+
+They represent a particular payment operation, and while most operations happen at the `Payment` level, there are a few endpoints
+that work directly at the transaction level.
+
+## Payments Transaction
+
+#### PaymentTransaction
+
+* **`transactionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
+* **`transactionExternalKey`** <span style="color:#32A9C7">*[User generated, default transactionId, immutable]*</span>: The external key provided from client.
+* **`paymentId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
+* **`paymentExternalKey`** <span style="color:#32A9C7">*[User generated, default null, immutable]*</span>: The (`Payment`) external key provided from client.
+* **`amount`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: Amount for this transaction.
+* **`currency`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: Currency for this transaction.
+* **`effectiveDate`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The effective date of the transaction.
+* **`processedAmount`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The amount processed by the gateway -- will often match the `amount`, but could be different - e.g currency conversion
+* **`processedCurrency`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The currency processed by the gateway -- will often match the `currency`, but could be different - e.g currency conversion
+* **`status`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Transaction status 
+* **`gatewayErrorCode`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Error code returned by the payment gateway.
+* **`gatewayErrorMsg`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Error message returned by the payment gateway.
+* **`firstPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Payment gateway reference.
+* **`secondPaymentReferenceId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: This is typically the `ID` from the actual payment processor, when the gateway is a PSP.
+* **`properties`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: Properties passed during payment operation to be interpreted by the plugin - those are plugin specific.
+
 
 ### Retrieve a payment by transaction external key
 
@@ -374,6 +398,8 @@ Returns a payment transaction object.
 
 ## Custom Fields
 
+Custom fields are {key, value} attributes that can be attached to any customer resources, and in particularly on the `PaymentTransaction` objects.
+
 ### Add custom fields to payment transaction
 
 **HTTP Request** 
@@ -721,6 +747,8 @@ no content
 A `204` http status without content.
 
 ## Tags
+
+See section [Account Tags](#account-tags) for an introduction.
 
 ### Add tags to payment transaction
 
