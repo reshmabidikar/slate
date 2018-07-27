@@ -2,7 +2,7 @@
 
 ## Tenant Resource
 
-Kill Bill has been designed from the group-up as a multi-tenant system, that is one where multiple unrelated deployments can be hosted on the same physical system; each one of these deployments comes with its own separate configuration, catalog, plugins, and of course its data set is kept entirely separate from the others. RBAC control allows different users/admin/apps to access zero, one or multiple tenants. This [blog](http://killbill.io/blog/subscription-service-using-kill-bill/) illustrates some interesting use cases. The tenant resource allows the management of such tenants.
+Kill Bill has been designed from the group up as a multi-tenant system, that is one where multiple unrelated deployments can be hosted on the same physical system; each one of these deployments comes with its own separate configuration, catalog, plugins, and of course its data set is kept entirely separate from the others. RBAC control allows different users/admin/apps to access zero, one or multiple tenants. This [blog](http://killbill.io/blog/subscription-service-using-kill-bill/) illustrates some interesting use cases. The tenant resource allows the management of such tenants.
 
 The attributes are the following:
 
