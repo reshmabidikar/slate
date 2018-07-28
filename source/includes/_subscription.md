@@ -2013,10 +2013,10 @@ Since we offer the ability to control cancelation date for both entitlement (ser
 
 So, the common use case would require the following:
 
-* **Immediate cancelation**: This will create a pro-ration credit unless this aligns with the subscription charged through date (`CTD`) -- date up to which it was invoice and deactivate service immediately. In order to achieve this result, one can pass the following parameters: `entitlementPolicy`=`IMMEDIATE` and `billingPolicy`=`IMMEDIATE`; alternatively passing no parameters and therefore a null `requestedDate` would produce the same result.
+* **Immediate cancelation**: This will create a pro-ration credit unless this aligns with the subscription charged through date (`CTD`), that is, the date up to which it was invoiced, and then from an entitlement point of view it will deactivate service immediately. In order to achieve this result, one can pass the following parameters: `entitlementPolicy`=`IMMEDIATE` and `billingPolicy`=`IMMEDIATE`; alternatively passing no parameters and therefore a null `requestedDate` would produce the same result.
 * **EOT cancelation**: This will not create any pro-ration and keep the service active until the end of the period (`CTD`). In order to achieve this result, one can pass the following parameters: `entitlementPolicy`=`END_OF_TERM` and `billingPolicy`=`END_OF_TERM`.
 
-The result for all this complexity is to allow to control entitlement and billing date separately, and also avoid users to have to compute dates to achieve certain behavior by relying on well defined policies.
+The reason for all this complexity is to allow to control entitlement and billing date separately, and also avoid users to have to compute dates to achieve certain behavior by relying on well defined policies.
 
 
 **Returns**
