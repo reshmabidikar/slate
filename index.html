@@ -16540,11 +16540,11 @@ to realign invoicing, let&#39;s say on the 16th. </p>
 <p>So, the common use case would require the following:</p>
 
 <ul>
-<li><strong>Immediate cancelation</strong>: This will create a pro-ration credit unless this aligns with the subscription charged through date (<code>CTD</code>) -- date up to which it was invoice and deactivate service immediately. In order to achieve this result, one can pass the following parameters: <code>entitlementPolicy</code>=<code>IMMEDIATE</code> and <code>billingPolicy</code>=<code>IMMEDIATE</code>; alternatively passing no parameters and therefore a null <code>requestedDate</code> would produce the same result.</li>
+<li><strong>Immediate cancelation</strong>: This will create a pro-ration credit unless this aligns with the subscription charged through date (<code>CTD</code>), that is, the date up to which it was invoiced, and then from an entitlement point of view it will deactivate service immediately. In order to achieve this result, one can pass the following parameters: <code>entitlementPolicy</code>=<code>IMMEDIATE</code> and <code>billingPolicy</code>=<code>IMMEDIATE</code>; alternatively passing no parameters and therefore a null <code>requestedDate</code> would produce the same result.</li>
 <li><strong>EOT cancelation</strong>: This will not create any pro-ration and keep the service active until the end of the period (<code>CTD</code>). In order to achieve this result, one can pass the following parameters: <code>entitlementPolicy</code>=<code>END_OF_TERM</code> and <code>billingPolicy</code>=<code>END_OF_TERM</code>.</li>
 </ul>
 
-<p>The result for all this complexity is to allow to control entitlement and billing date separately, and also avoid users to have to compute dates to achieve certain behavior by relying on well defined policies.</p>
+<p>The reason for all this complexity is to allow to control entitlement and billing date separately, and also avoid users to have to compute dates to achieve certain behavior by relying on well defined policies.</p>
 
 <p><strong>Returns</strong></p>
 
