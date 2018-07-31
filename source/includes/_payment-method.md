@@ -764,7 +764,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- | 
-| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
+| **customField** | string | true | the list of custom field object IDs that should be deleted. |
 
 **Returns**
 
