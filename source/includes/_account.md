@@ -2401,10 +2401,10 @@ class Invoice {
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
 | **startDate** | date | false |  Filter invoices using a start date. |
-| **withItems** | boolean | true | Choose true if you want items info. |
-| **withMigrationInvoices** | boolean | true | Choose true if you want migration invoices |
-| **unpaidInvoicesOnly** | boolean | true | Choose true if you want unpaid invoices only |
-| **includeVoidedInvoices** | boolean | true | Choose true if you want to include voided invoices |
+| **withItems** | boolean | false | Choose true if you want items info. |
+| **withMigrationInvoices** | boolean | false | Choose true if you want migration invoices |
+| **unpaidInvoicesOnly** | boolean | false | Choose true if you want unpaid invoices only |
+| **includeVoidedInvoices** | boolean | false | Choose true if you want to include voided invoices |
 | **audit** | enum | false | level of audit logs returned |
 
 **Returns**
@@ -2513,7 +2513,7 @@ no content
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- | 
 | **paymentMethodId** | string | false | Payment method id. |
-| **externalPayment** | boolean | true | Choose true if you use a external payment method. |
+| **externalPayment** | boolean | false | Choose true if you use a external payment method. |
 | **paymentAmount** | string | false | Total payment amount. |
 | **targetDate** | string | false | Total payment amount. |
 
@@ -3130,7 +3130,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- | 
-| **paymentMethodId** | string | true | payment method id |
+| **paymentMethodId** | string | false | payment method ID to use or use default account payment method ID |
 
 **Returns**
 
@@ -3264,7 +3264,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- | 
-| **paymentMethodId** | string | true | payment method id |
+| **paymentMethodId** | string | false | payment method ID to use or use default account payment method ID |
 
 **Returns**
 
@@ -3399,8 +3399,8 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **isDefault** | boolean | true | Choose true if you want to set new payment as default. |
-| **payAllUnpaidInvoices** | boolean | true | Choose true if you want to pay all unpaid invoices. |
+| **isDefault** | boolean | false | Choose true if you want to set new payment as default. |
+| **payAllUnpaidInvoices** | boolean | false | Choose true if you want to pay all unpaid invoices. |
 
 **Returns**
 
@@ -3508,7 +3508,7 @@ class PaymentMethod {
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **withPluginInfo** | boolean | true | Choose true if you want plugin info. |
+| **withPluginInfo** | boolean | false | Choose true if you want plugin info. |
 
 **Returns**
 
@@ -3592,7 +3592,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **payAllUnpaidInvoices** | boolean | true | Choose true if you want to pay all unpaid invoices. |
+| **payAllUnpaidInvoices** | boolean | false | Choose true if you want to pay all unpaid invoices. |
 
 **Response**
 
@@ -3888,7 +3888,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- | 
-| **requestedDate** | string | true | Requested date for block an account |
+| **requestedDate** | string | false | Requested date for block an account, or if unset default to immediate |
 
 **Returns**
 
@@ -4028,8 +4028,8 @@ class BlockingState {
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- | 
-| **blockingStateTypes** | string | true | blocking state types |
-| **blockingStateSvcs** | string | false | blocking state svcs |
+| **blockingStateTypes** | string | false | filter list for blocking state types |
+| **blockingStateSvcs** | string | false | filter list for blocking state services |
 | **audit** | enum | false | level of audit logs returned |
 
 **Returns**
