@@ -1164,9 +1164,7 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **customField** | string | true | the list of custom field object IDs that should be deleted. |
+None.
 
 **Returns**
 
