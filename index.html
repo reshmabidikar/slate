@@ -23356,7 +23356,22 @@ into account different things to invoice -- e.g recurring items, usage items, fi
 <p><strong>Returns</strong></p>
 
 <p>A <code>204</code> http status without content.</p>
-<h2 id='invoice-dry-run'>Dry-run</h2><h3 id='invoice-generate-a-dryrun-invoice'>Generate a dryRun invoice</h3>
+<h2 id='invoice-dry-run'>Dry-run</h2>
+<p>In some situations, it is necessary to preview what a given customer will be invoiced for before making the changes or to verify what the system will generate at a future date. Kill Bill provides dry-run invoices apis to accomplish such goal.</p>
+
+<p>We provide one dry run api to accomplish several distinct tasks:</p>
+
+<ul>
+<li>Next upcoming invoice: When is the next upcoming invoice for a given customer, and what will such invoice contain -- items, amount, date,... ​?</li>
+<li>Next upcoming invoice associated with a given subscription or bundle: When is the next upcoming invoice associated to a given subscription/bundle, and what will such invoice contain --items, amount, date,... ?</li>
+<li>Given a <code>targetDate</code>, what invoice will the system generate?</li>
+<li>Subscription modifications: Given a change in a subscription -- new subscription, change of plan, cancellation ---, which invoice will the system generate?</li>
+</ul>
+<h3 id='invoice-generate-a-dryrun-invoice'>Generate a dryRun invoice</h3>
+<p>The endpoint below allows to create a dry-run invoice and based on its parameters provide answers to the different questions listed above.
+This endpoint is rather expensive as it creates a full invoice run for the designated <code>Account</code>, but no invoice will be created/persisted
+in the system.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>POST http://example.com/1.0/kb/invoices/dryRun</code></p>
@@ -23581,15 +23596,34 @@ into account different things to invoice -- e.g recurring items, usage items, fi
 <td><strong>accountId</strong></td>
 <td>string</td>
 <td>true</td>
-<td>account id</td>
+<td>the account id</td>
 </tr>
 <tr>
 <td><strong>targetDate</strong></td>
 <td>string</td>
-<td>true</td>
-<td>target date</td>
+<td>false</td>
+<td>the target date when the goal is to create a (dry-run) invoice based on a well defined <code>targetDate</code></td>
 </tr>
 </tbody></table>
+
+<p>The body of the request contains the following important information:</p>
+
+<ul>
+<li><strong>dryRunType</strong> : The type of dry-run operation to run.
+
+<ul>
+<li><code>TARGET_DATE</code>: This must be specified to create a dry-run invoice, associated with a given <code>targetDate</code>; in this scenario the query parameter <code>targetDate</code> must be specified.</li>
+<li><code>UPCOMING_INVOICE</code>: This must be specified to inquire about the next upcoming invoice associated with the account. Specifying either the <code>subscriptionId</code> or <code>bundleId</code> will filter out from the generated invoice other items.</li>
+<li><code>SUBSCRIPTION_ACTION</code>: This allow to preview the would-be generated invoice after a subscription was created, cancelled, downgraded/upgraded. In addition to the <code>dryRunAction</code>, one must also specify the catalog input, for instnace to create a new subscription the <code>productName</code>, <code>productCategory</code>, <code>billingPeriod</code>, <code>priceListName</code> and also the <code>effectiveDate</code> for the operation.</li>
+</ul></li>
+<li><strong>dryRunAction</strong> : This is only used when specifying <code>dryRunType=SUBSCRIPTION_ACTION</code> and can have the following values:
+
+<ul>
+<li><code>START_BILLING</code> : Should be used to preview the effect of a subscription creation </li>
+<li><code>CHANGE</code> : Should be used to preview the effect of a subscription change of <code>Plan</code></li>
+<li><code>STOP_BILLING</code> : Should be used to preview the effect of a subscription cancelation.</li>
+</ul></li>
+</ul>
 
 <p><strong>Response</strong></p>
 
