@@ -2095,7 +2095,21 @@ A `204` http status without content.
 
 ## Dry-run
 
+In some situations, it is necessary to preview what a given customer will be invoiced for before making the changes or to verify what the system will generate at a future date. Kill Bill provides dry-run invoices apis to accomplish such goal.
+
+We provide one dry run api to accomplish several distinct tasks:
+
+* Next upcoming invoice: When is the next upcoming invoice for a given customer, and what will such invoice contain -- items, amount, date,... ​?
+* Next upcoming invoice associated with a given subscription or bundle: When is the next upcoming invoice associated to a given subscription/bundle, and what will such invoice contain --items, amount, date,... ?
+* Given a `targetDate`, what invoice will the system generate?
+* Subscription modifications: Given a change in a subscription -- new subscription, change of plan, cancellation ---, which invoice will the system generate?
+
 ### Generate a dryRun invoice
+
+The endpoint below allows to create a dry-run invoice and based on its parameters provide answers to the different questions listed above.
+This endpoint is rather expensive as it creates a full invoice run for the designated `Account`, but no invoice will be created/persisted
+in the system.
+
 
 **HTTP Request** 
 
@@ -2328,9 +2342,20 @@ class Invoice {
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **accountId** | string | true | account id |
-| **targetDate** | string | true | target date |
+| **accountId** | string | true | the account id |
+| **targetDate** | string | false | the target date when the goal is to create a (dry-run) invoice based on a well defined `targetDate` |
 
+The body of the request contains the following important information:
+
+* **dryRunType** : The type of dry-run operation to run.
+  * `TARGET_DATE`: This must be specified to create a dry-run invoice, associated with a given `targetDate`; in this scenario the query parameter `targetDate` must be specified.
+  * `UPCOMING_INVOICE`: This must be specified to inquire about the next upcoming invoice associated with the account. Specifying either the `subscriptionId` or `bundleId` will filter out from the generated invoice other items.
+  * `SUBSCRIPTION_ACTION`: This allow to preview the would-be generated invoice after a subscription was created, cancelled, downgraded/upgraded. In addition to the `dryRunAction`, one must also specify the catalog input, for instnace to create a new subscription the `productName`, `productCategory`, `billingPeriod`, `priceListName` and also the `effectiveDate` for the operation.
+* **dryRunAction** : This is only used when specifying `dryRunType=SUBSCRIPTION_ACTION` and can have the following values:
+  * `START_BILLING` : Should be used to preview the effect of a subscription creation 
+  * `CHANGE` : Should be used to preview the effect of a subscription change of `Plan`
+  * `STOP_BILLING` : Should be used to preview the effect of a subscription cancelation.
+    
 
 **Response**
 
