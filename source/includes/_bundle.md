@@ -1278,7 +1278,7 @@ class Bundle {
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- | 
-| **includedDeleted** | boolean | true | choose true to include deleted bundles |
+| **includedDeleted** | boolean | false | choose true to include deleted bundles |
 | **audit** | enum | false | level of audit logs returned |
 
 **Returns**
@@ -2372,7 +2372,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- | 
-| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
+| **customField** | string | true | the list of custom field object IDs that should be deleted. |
 
 **Response**
 
@@ -2482,9 +2482,7 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagDef** | string | true | list with tag definition id's to add |
+None.
 
 **Returns**
 
@@ -2685,7 +2683,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
+| **tagDef** | string | true |  the list of tag definition ID identifying the tags that should be removed. |
 
 **Response**
 

@@ -2920,7 +2920,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- | 
-| **customFieldList** | string | true | a list of custom field objects that you want to modify |
+| **customFiel** | string | true | the list of custom field object IDs that should be deleted. |
 
 **Returns**
 
@@ -3105,9 +3105,7 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagDef** | string | true | list with tag definition id's to add |
+None.
 
 **Returns**
 
@@ -3237,6 +3235,12 @@ Returns a list of bundle tag objects.
 **HTTP Request** 
 
 `DELETE http://example.com/1.0/kb/payments/{paymentId}/tags`
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | -----| -------- | ---- | ------------
+| **tagDef** | string | true | the list of tag definition ID identifying the tags that should be removed. |
 
 > Example Request:
 

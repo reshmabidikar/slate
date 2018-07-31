@@ -4762,7 +4762,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields?customField=9913e0f6-b5ef-498b-ac47-60e1626eba8f"
 ```
 
 ```java
@@ -4822,7 +4822,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- | 
-| **customFieldList** | string | true | a list of custom field objects that you want to remove it |
+| **customField** | string | true | the list of custom field object IDs that should be deleted. |
 
 **Response**
 
@@ -4950,9 +4950,7 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagDef** | string | true | list with tag definition id's to add |
+None.
 
 **Returns**
 
@@ -5277,7 +5275,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
+| **tagDef** | string | true |  the list of tag definition ID identifying the tags that should be removed. |
 
 **Response**
 
