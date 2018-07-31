@@ -82,8 +82,11 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **offset** | long | true | offset |
-| **limit** | long | true | limit results |
+| **offset** | long | false | offset for the next pagination call or 0 if not specified |
+| **limit** | long | false | limit results or default to 100 if not specified |
+
+This api behaves like a [pagination api](https://killbill.github.io/slate/#using-kill-bill-apis-pagination) so the pagination headers can be used to paginate over results.
+
 
 **Returns**
 
@@ -321,9 +324,7 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **accountId** | string | true | account id |
+None.
 
 **Returns**
 
@@ -597,9 +598,9 @@ adminApi.get_queue_entries(api_key, api_secret)
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **accountId** | string | false | account id |
-| **queueName** | string | false | queue name |
-| **serviceName** | string | false | service name |
+| **accountId** | string | false | account id or if not specified return across all accounts |
+| **queueName** | string | false | queue name or if not specified return across all queues |
+| **serviceName** | string | false | service name or if not specified return across all services|
 | **withHistory** | boolean | false | choose true to get history |
 | **minDate** | string | false | minimum date |
 | **maxDate** | string | false | maximun date |
