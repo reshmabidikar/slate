@@ -3216,9 +3216,7 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagDef** | string | true | list with tag definition id's to add |
+None.
 
 **Returns**
 
@@ -3417,7 +3415,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
+| **tagDef** | string | true |  the list of tag definition ID identifying the tags that should be removed. |
 
 **Response**
 
