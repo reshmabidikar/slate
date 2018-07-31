@@ -8498,25 +8498,25 @@ several emails for one customer <code>Account</code>.</p>
 <tr>
 <td><strong>withItems</strong></td>
 <td>boolean</td>
-<td>true</td>
+<td>false</td>
 <td>Choose true if you want items info.</td>
 </tr>
 <tr>
 <td><strong>withMigrationInvoices</strong></td>
 <td>boolean</td>
-<td>true</td>
+<td>false</td>
 <td>Choose true if you want migration invoices</td>
 </tr>
 <tr>
 <td><strong>unpaidInvoicesOnly</strong></td>
 <td>boolean</td>
-<td>true</td>
+<td>false</td>
 <td>Choose true if you want unpaid invoices only</td>
 </tr>
 <tr>
 <td><strong>includeVoidedInvoices</strong></td>
 <td>boolean</td>
-<td>true</td>
+<td>false</td>
 <td>Choose true if you want to include voided invoices</td>
 </tr>
 <tr>
@@ -8625,7 +8625,7 @@ several emails for one customer <code>Account</code>.</p>
 <tr>
 <td><strong>externalPayment</strong></td>
 <td>boolean</td>
-<td>true</td>
+<td>false</td>
 <td>Choose true if you use a external payment method.</td>
 </tr>
 <tr>
@@ -9250,8 +9250,8 @@ communicating with the payment gateway.</p>
 <tr>
 <td><strong>paymentMethodId</strong></td>
 <td>string</td>
-<td>true</td>
-<td>payment method id</td>
+<td>false</td>
+<td>payment method ID to use or use default account payment method ID</td>
 </tr>
 </tbody></table>
 
@@ -9378,8 +9378,8 @@ communicating with the payment gateway.</p>
 <tr>
 <td><strong>paymentMethodId</strong></td>
 <td>string</td>
-<td>true</td>
-<td>payment method id</td>
+<td>false</td>
+<td>payment method ID to use or use default account payment method ID</td>
 </tr>
 </tbody></table>
 
@@ -9503,13 +9503,13 @@ communicating with the payment gateway.</p>
 <tr>
 <td><strong>isDefault</strong></td>
 <td>boolean</td>
-<td>true</td>
+<td>false</td>
 <td>Choose true if you want to set new payment as default.</td>
 </tr>
 <tr>
 <td><strong>payAllUnpaidInvoices</strong></td>
 <td>boolean</td>
-<td>true</td>
+<td>false</td>
 <td>Choose true if you want to pay all unpaid invoices.</td>
 </tr>
 </tbody></table>
@@ -9612,7 +9612,7 @@ communicating with the payment gateway.</p>
 <tr>
 <td><strong>withPluginInfo</strong></td>
 <td>boolean</td>
-<td>true</td>
+<td>false</td>
 <td>Choose true if you want plugin info.</td>
 </tr>
 </tbody></table>
@@ -9690,7 +9690,7 @@ communicating with the payment gateway.</p>
 <tr>
 <td><strong>payAllUnpaidInvoices</strong></td>
 <td>boolean</td>
-<td>true</td>
+<td>false</td>
 <td>Choose true if you want to pay all unpaid invoices.</td>
 </tr>
 </tbody></table>
@@ -9933,8 +9933,8 @@ communicating with the payment gateway.</p>
 <tr>
 <td><strong>requestedDate</strong></td>
 <td>string</td>
-<td>true</td>
-<td>Requested date for block an account</td>
+<td>false</td>
+<td>Requested date for block an account, or if unset default to immediate</td>
 </tr>
 </tbody></table>
 
@@ -10067,14 +10067,14 @@ communicating with the payment gateway.</p>
 <tr>
 <td><strong>blockingStateTypes</strong></td>
 <td>string</td>
-<td>true</td>
-<td>blocking state types</td>
+<td>false</td>
+<td>filter list for blocking state types</td>
 </tr>
 <tr>
 <td><strong>blockingStateSvcs</strong></td>
 <td>string</td>
 <td>false</td>
-<td>blocking state svcs</td>
+<td>filter list for blocking state services</td>
 </tr>
 <tr>
 <td><strong>audit</strong></td>
@@ -10744,7 +10744,7 @@ Assuming there were custom fields attached to various subscriptions, invoices, p
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"</span>
+    <span class="s2">"http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields?customField=9913e0f6-b5ef-498b-ac47-60e1626eba8f"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.AccountApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">AccountApi</span> <span class="n">accountApi</span><span class="o">;</span>
 
@@ -10793,10 +10793,10 @@ Assuming there were custom fields attached to various subscriptions, invoices, p
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>customFieldList</strong></td>
+<td><strong>customField</strong></td>
 <td>string</td>
 <td>true</td>
-<td>a list of custom field objects that you want to remove it</td>
+<td>the list of custom field object IDs that should be deleted.</td>
 </tr>
 </tbody></table>
 
@@ -10908,21 +10908,7 @@ attached to various objects in the system by using tags. Tags come into 2 differ
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>tagDef</strong></td>
-<td>string</td>
-<td>true</td>
-<td>list with tag definition id&#39;s to add</td>
-</tr>
-</tbody></table>
+<p>None.</p>
 
 <p><strong>Returns</strong></p>
 
@@ -11236,7 +11222,7 @@ Assuming there were tagged subscriptions, invoices, payments, ... for this speci
 <td><strong>tagDef</strong></td>
 <td>string</td>
 <td>true</td>
-<td>list with tag definition id&#39;s that you want to remove it</td>
+<td>the list of tag definition ID identifying the tags that should be removed.</td>
 </tr>
 </tbody></table>
 
@@ -13978,21 +13964,7 @@ based on custom business rules. Additional information can be found in our <a hr
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>customFieldList</strong></td>
-<td>string</td>
-<td>true</td>
-<td>a list of custom field objects that you want to modify</td>
-</tr>
-</tbody></table>
+<p>None.</p>
 
 <p><strong>Returns</strong></p>
 
@@ -14058,10 +14030,10 @@ based on custom business rules. Additional information can be found in our <a hr
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>customFieldList</strong></td>
+<td><strong>customField</strong></td>
 <td>string</td>
 <td>true</td>
-<td>a list of custom field objects that you want to remove it</td>
+<td>the list of custom field object IDs that should be deleted.</td>
 </tr>
 </tbody></table>
 
@@ -16961,21 +16933,7 @@ to realign invoicing, let&#39;s say on the 16th. </p>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>customFieldList</strong></td>
-<td>string</td>
-<td>true</td>
-<td>a list of custom field objects that you want to modify</td>
-</tr>
-</tbody></table>
+<p>None.</p>
 
 <p><strong>Returns</strong></p>
 
@@ -17041,10 +16999,10 @@ to realign invoicing, let&#39;s say on the 16th. </p>
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>customFieldList</strong></td>
+<td><strong>customField</strong></td>
 <td>string</td>
 <td>true</td>
-<td>a list of custom field objects that you want to remove it</td>
+<td>the list of custom field object IDs that should be deleted.</td>
 </tr>
 </tbody></table>
 
@@ -17130,21 +17088,7 @@ to realign invoicing, let&#39;s say on the 16th. </p>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>tagDef</strong></td>
-<td>string</td>
-<td>true</td>
-<td>list with tag definition id&#39;s to add</td>
-</tr>
-</tbody></table>
+<p>None.</p>
 
 <p><strong>Returns</strong></p>
 
@@ -17261,6 +17205,24 @@ to realign invoicing, let&#39;s say on the 16th. </p>
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>DELETE http://example.com/1.0/kb/subscriptions/{subscriptionId}/tags</code></p>
+
+<p><strong>Query Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>tagDef</strong></td>
+<td>string</td>
+<td>true</td>
+<td>the list of tag definition ID identifying the tags that should be removed.</td>
+</tr>
+</tbody></table>
 
 <blockquote>
 <p>Example Request:</p>
@@ -18591,7 +18553,7 @@ created.</p>
 <tr>
 <td><strong>includedDeleted</strong></td>
 <td>boolean</td>
-<td>true</td>
+<td>false</td>
 <td>choose true to include deleted bundles</td>
 </tr>
 <tr>
@@ -19585,10 +19547,10 @@ created.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>customFieldList</strong></td>
+<td><strong>customField</strong></td>
 <td>string</td>
 <td>true</td>
-<td>a list of custom field objects that you want to remove it</td>
+<td>the list of custom field object IDs that should be deleted.</td>
 </tr>
 </tbody></table>
 
@@ -19678,21 +19640,7 @@ created.</p>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>tagDef</strong></td>
-<td>string</td>
-<td>true</td>
-<td>list with tag definition id&#39;s to add</td>
-</tr>
-</tbody></table>
+<p>None.</p>
 
 <p><strong>Returns</strong></p>
 
@@ -19883,7 +19831,7 @@ created.</p>
 <td><strong>tagDef</strong></td>
 <td>string</td>
 <td>true</td>
-<td>list with tag definition id&#39;s that you want to remove it</td>
+<td>the list of tag definition ID identifying the tags that should be removed.</td>
 </tr>
 </tbody></table>
 
@@ -24394,21 +24342,7 @@ in the system.</p>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>tagDef</strong></td>
-<td>string</td>
-<td>true</td>
-<td>list with tag definition id&#39;s to add</td>
-</tr>
-</tbody></table>
+<p>None.</p>
 
 <p><strong>Returns</strong></p>
 
@@ -24596,7 +24530,7 @@ in the system.</p>
 <td><strong>tagDef</strong></td>
 <td>string</td>
 <td>true</td>
-<td>list with tag definition id&#39;s that you want to remove it</td>
+<td>the list of tag definition ID identifying the tags that should be removed.</td>
 </tr>
 </tbody></table>
 
@@ -29326,21 +29260,7 @@ through the <code>InvoicePayment</code> relashionship.</p>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>customFieldList</strong></td>
-<td>string</td>
-<td>true</td>
-<td>a list of custom field objects that you want to modify</td>
-</tr>
-</tbody></table>
+<p>None.</p>
 
 <p><strong>Returns</strong></p>
 
@@ -29406,10 +29326,10 @@ through the <code>InvoicePayment</code> relashionship.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>customFieldList</strong></td>
+<td><strong>customField</strong></td>
 <td>string</td>
 <td>true</td>
-<td>a list of custom field objects that you want to remove it</td>
+<td>the list of custom field object IDs that should be deleted.</td>
 </tr>
 </tbody></table>
 
@@ -29495,21 +29415,7 @@ through the <code>InvoicePayment</code> relashionship.</p>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>tagDef</strong></td>
-<td>string</td>
-<td>true</td>
-<td>list with tag definition id&#39;s to add</td>
-</tr>
-</tbody></table>
+<p>None.</p>
 
 <p><strong>Returns</strong></p>
 
@@ -29634,6 +29540,24 @@ through the <code>InvoicePayment</code> relashionship.</p>
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>DELETE http://example.com/1.0/kb/payments/{paymentId}/tags</code></p>
+
+<p><strong>Query Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>tagDef</strong></td>
+<td>string</td>
+<td>true</td>
+<td>the list of tag definition ID identifying the tags that should be removed.</td>
+</tr>
+</tbody></table>
 
 <blockquote>
 <p>Example Request:</p>
@@ -31089,21 +31013,7 @@ that work directly at the transaction level.</p>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>customFieldList</strong></td>
-<td>string</td>
-<td>true</td>
-<td>a list of custom field objects that you want to modify</td>
-</tr>
-</tbody></table>
+<p>None.</p>
 
 <p><strong>Returns</strong></p>
 
@@ -31164,10 +31074,10 @@ that work directly at the transaction level.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>customFieldList</strong></td>
+<td><strong>customField</strong></td>
 <td>string</td>
 <td>true</td>
-<td>a list of custom field objects that you want to remove it</td>
+<td>the list of custom field object IDs that should be deleted.</td>
 </tr>
 </tbody></table>
 
@@ -31239,21 +31149,7 @@ that work directly at the transaction level.</p>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>tagDef</strong></td>
-<td>string</td>
-<td>true</td>
-<td>list with tag definition id&#39;s to add</td>
-</tr>
-</tbody></table>
+<p>None.</p>
 
 <p><strong>Returns</strong></p>
 
@@ -31365,6 +31261,24 @@ that work directly at the transaction level.</p>
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>DELETE http://example.com/1.0/kb/paymentTransactions/{transactionId}/tags</code></p>
+
+<p><strong>Query Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>tagDef</strong></td>
+<td>string</td>
+<td>true</td>
+<td>the list of tag definition ID identifying the tags that should be removed.</td>
+</tr>
+</tbody></table>
 
 <blockquote>
 <p>Example Request:</p>
@@ -32478,21 +32392,7 @@ that work directly at the transaction level.</p>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>customFieldList</strong></td>
-<td>string</td>
-<td>true</td>
-<td>a list of custom field objects that you want to modify</td>
-</tr>
-</tbody></table>
+<p>None.</p>
 
 <p><strong>Returns</strong></p>
 
@@ -32560,10 +32460,10 @@ that work directly at the transaction level.</p>
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>customFieldList</strong></td>
+<td><strong>customField</strong></td>
 <td>string</td>
 <td>true</td>
-<td>a list of custom field objects that you want to remove it</td>
+<td>the list of custom field object IDs that should be deleted.</td>
 </tr>
 </tbody></table>
 
@@ -32650,21 +32550,7 @@ that work directly at the transaction level.</p>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>tagDef</strong></td>
-<td>string</td>
-<td>true</td>
-<td>list with tag definition id&#39;s to add</td>
-</tr>
-</tbody></table>
+<p>None.</p>
 
 <p><strong>Returns</strong></p>
 
@@ -32852,7 +32738,7 @@ that work directly at the transaction level.</p>
 <td><strong>tagDef</strong></td>
 <td>string</td>
 <td>true</td>
-<td>list with tag definition id&#39;s that you want to remove it</td>
+<td>the list of tag definition ID identifying the tags that should be removed.</td>
 </tr>
 </tbody></table>
 
@@ -32931,16 +32817,18 @@ that work directly at the transaction level.</p>
 <tr>
 <td><strong>offset</strong></td>
 <td>long</td>
-<td>true</td>
-<td>offset</td>
+<td>false</td>
+<td>offset for the next pagination call or 0 if not specified</td>
 </tr>
 <tr>
 <td><strong>limit</strong></td>
 <td>long</td>
-<td>true</td>
-<td>limit results</td>
+<td>false</td>
+<td>limit results or default to 100 if not specified</td>
 </tr>
 </tbody></table>
+
+<p>This api behaves like a <a href="https://killbill.github.io/slate/#using-kill-bill-apis-pagination">pagination api</a> so the pagination headers can be used to paginate over results.</p>
 
 <p><strong>Returns</strong></p>
 
@@ -33128,21 +33016,7 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>accountId</strong></td>
-<td>string</td>
-<td>true</td>
-<td>account id</td>
-</tr>
-</tbody></table>
+<p>None.</p>
 
 <p><strong>Returns</strong></p>
 
@@ -33346,19 +33220,19 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
 <td><strong>accountId</strong></td>
 <td>string</td>
 <td>false</td>
-<td>account id</td>
+<td>account id or if not specified return across all accounts</td>
 </tr>
 <tr>
 <td><strong>queueName</strong></td>
 <td>string</td>
 <td>false</td>
-<td>queue name</td>
+<td>queue name or if not specified return across all queues</td>
 </tr>
 <tr>
 <td><strong>serviceName</strong></td>
 <td>string</td>
 <td>false</td>
-<td>service name</td>
+<td>service name or if not specified return across all services</td>
 </tr>
 <tr>
 <td><strong>withHistory</strong></td>
