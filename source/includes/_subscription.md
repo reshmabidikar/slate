@@ -2611,7 +2611,12 @@ A `204` http status without content.
 
 ## Tags
 
+
 See section [Account Tags](#account-tags) for an introduction.
+
+The are no `system` tags applicable for an `Subscription`.
+
+Let's assume there is an existing `user` tagDefintion already created with `tagDefinitionId`=`353752dd-9041-4450-b782-a8bb03a923c8`.
 
 ### Add tags to subscription
 
@@ -2630,7 +2635,7 @@ curl -v \
     -H "Content-Type: application/json" \
     -H "X-Killbill-CreatedBy: demo" \
     -d '[
-            "00000000-0000-0000-0000-000000000001"
+            "353752dd-9041-4450-b782-a8bb03a923c8"
         ]' \
   'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags' 
 ```
@@ -2640,15 +2645,15 @@ import org.killbill.billing.client.api.gen.SubscriptionApi;
 protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
-UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 Tags result = subscriptionApi.createSubscriptionTags(subscriptionId, 
-                                                     ImmutableList.<UUID>of(autoPayOffId), 
+                                                     ImmutableList.<UUID>of(tagDefinitionId), 
                                                      requestOptions);
 ```
 
 ```ruby
-tag_name = 'TEST'
+tag_name = 'foo'
 
 subscription.add_tag(tag_name,
                      user,
@@ -2660,7 +2665,7 @@ subscription.add_tag(tag_name,
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
 subscription_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
-tag = ["00000000-0000-0000-0000-000000000002"]
+tag = ["353752dd-9041-4450-b782-a8bb03a923c8"]
 
 subscriptionApi.create_subscription_tags(subscription_id,
                                          tag,
@@ -2685,8 +2690,8 @@ class Tag {
     tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
     objectType: SUBSCRIPTION
     objectId: 917992d3-5f1f-4828-9fff-799cc4211aa9
-    tagDefinitionId: 00000000-0000-0000-0000-000000000001
-    tagDefinitionName: AUTO_PAY_OFF
+    tagDefinitionId: 353752dd-9041-4450-b782-a8bb03a923c8
+    tagDefinitionName: foo
     auditLogs: []
 }
 ```
@@ -2696,8 +2701,8 @@ class Tag {
       "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
       "objectType":"SUBSCRIPTION",
       "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
+      "tagDefinitionId":"353752dd-9041-4450-b782-a8bb03a923c8",
+      "tagDefinitionName":"foo",
       "auditLogs":[]
    }
 ]
@@ -2774,8 +2779,8 @@ subscriptionApi.get_subscription_tags(subscription_id,
         "tagId":"d0513754-56a9-4694-abb1-3ac46c72e861",
         "objectType":"SUBSCRIPTION",
         "objectId":"77e23878-8b9d-403b-bf31-93003e125712",
-        "tagDefinitionId":"00000000-0000-0000-0000-000000000001",
-        "tagDefinitionName":"AUTO_PAY_OFF",
+        "tagDefinitionId":"353752dd-9041-4450-b782-a8bb03a923c8",
+        "tagDefinitionName":"foo",
         "auditLogs":[]
     }
 ]
@@ -2788,8 +2793,8 @@ class Tag {
     tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
     objectType: SUBSCRIPTION
     objectId: 917992d3-5f1f-4828-9fff-799cc4211aa9
-    tagDefinitionId: 00000000-0000-0000-0000-000000000001
-    tagDefinitionName: AUTO_PAY_OFF
+    tagDefinitionId: 353752dd-9041-4450-b782-a8bb03a923c8
+    tagDefinitionName: foo
     auditLogs: []
 }
 ```
@@ -2799,8 +2804,8 @@ class Tag {
       "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
       "objectType":"SUBSCRIPTION",
       "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
+      "tagDefinitionId":"353752dd-9041-4450-b782-a8bb03a923c8",
+      "tagDefinitionName":"foo",
       "auditLogs":[]
    }
 ]
@@ -2809,8 +2814,8 @@ class Tag {
 [{'audit_logs': [],
  'object_id': 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa',
  'object_type': 'SUBSCRIPTION',
- 'tag_definition_id': '00000000-0000-0000-0000-000000000002',
- 'tag_definition_name': 'AUTO_INVOICING_OFF',
+ 'tag_definition_id': '353752dd-9041-4450-b782-a8bb03a923c8',
+ 'tag_definition_name': 'foo',
  'tag_id': 'a1fd0122-1ec8-4bc3-b71e-ab2a76ae5957'}]
 ```
 
@@ -2846,7 +2851,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "X-Killbill-CreatedBy: demo" \
-    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags?tagDef=00000000-0000-0000-0000-000000000001' 	
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags?tagDef=353752dd-9041-4450-b782-a8bb03a923c8' 	
 ```
 
 ```java
@@ -2855,15 +2860,15 @@ protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
 
-UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 subscriptionApi.deleteSubscriptionTags(subscriptionId, 
-                                       ImmutableList.<UUID>of(autoPayOffId), 
+                                       ImmutableList.<UUID>of(tagDefinitionId), 
                                        requestOptions);
 ```
 
 ```ruby
-tag_name = 'TEST'
+tag_name = 'foo'
 
 subscription.remove_tag(tag_name,
                         user,
@@ -2875,7 +2880,7 @@ subscription.remove_tag(tag_name,
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
 subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
-tag = ["00000000-0000-0000-0000-000000000002"]
+tag = ["353752dd-9041-4450-b782-a8bb03a923c8"]
 
 subscriptionApi.delete_subscription_tags(subscription_id,
                                          created_by,

@@ -1046,8 +1046,8 @@ class PaymentMethod {
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- | 
-| **offset** | long | true | offset |
-| **limit** | long | true | limit search items |
+| **offset** | long | false | offset |
+| **limit** | long | false | limit search items |
 
 **Returns**
 
@@ -1194,9 +1194,8 @@ class PaymentMethod {
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ---- | ------------
-| **searchKey** | string | true | What you want to find? |
-| **offset** | long | true | offset |
-| **limit** | long | true | limit search items |
+| **offset** | long | false | offset |
+| **limit** | long | false | limit search items |
 
 **Returns**
 

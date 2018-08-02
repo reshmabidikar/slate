@@ -2383,6 +2383,10 @@ A `204` http status without content.
 
 See section [Account Tags](#account-tags) for an introduction.
 
+The are no `system` tags applicable for a `Bundle`.
+
+Let's assume there is an existing `user` tagDefintion already created with `tagDefinitionId`=`353752dd-9041-4450-b782-a8bb03a923c8`.
+
 ### Add tags to bundle
 
 **HTTP Request** 
@@ -2402,7 +2406,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ \"00000000-0000-0000-0000-000000000002\"]" \
+    -d "[ \"353752dd-9041-4450-b782-a8bb03a923c8\"]" \
     "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags"
 ```
 
@@ -2412,15 +2416,15 @@ protected BundleApi bundleApi;
 
 UUID bundleId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
 
-UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 Tags result = bundleApi.createBundleTags(bundleId, 
-                                         ImmutableList.<UUID>of(autoPayOffId), 
+                                         ImmutableList.<UUID>of(tagDefinitionId), 
                                          requestOptions);
 ```
 
 ```ruby
-tag_name = 'TEST'
+tag_name = 'foo'
 
 bundle.add_tag(tag_name,
                user,
@@ -2432,7 +2436,7 @@ bundle.add_tag(tag_name,
 ```python
 bundleApi = killbill.api.BundleApi()
 bundle_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
-tag = ["00000000-0000-0000-0000-000000000002"]
+tag = ["353752dd-9041-4450-b782-a8bb03a923c8"]
 
 bundleApi.create_bundle_tags(bundle_id, 
                              tag, 
@@ -2457,8 +2461,8 @@ class Tag {
     tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
     objectType: BUNDLE
     objectId: 917992d3-5f1f-4828-9fff-799cc4211aa9
-    tagDefinitionId: 00000000-0000-0000-0000-000000000001
-    tagDefinitionName: AUTO_PAY_OFF
+    tagDefinitionId: 353752dd-9041-4450-b782-a8bb03a923c8
+    tagDefinitionName: foo
     auditLogs: []
 }
 ```
@@ -2468,8 +2472,8 @@ class Tag {
       "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
       "objectType":"BUNDLE",
       "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
+      "tagDefinitionId":"353752dd-9041-4450-b782-a8bb03a923c8",
+      "tagDefinitionName":"foo",
       "auditLogs":[
 
       ]
@@ -2545,8 +2549,8 @@ bundleApi.get_bundle_tags(bundle_id, api_key, api_secret)
     "tagId": "e054c84a-0518-4611-92a8-53e849f0affd",
     "objectType": "BUNDLE",
     "objectId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
-    "tagDefinitionId": "00000000-0000-0000-0000-000000000002",
-    "tagDefinitionName": "AUTO_INVOICING_OFF",
+    "tagDefinitionId": "353752dd-9041-4450-b782-a8bb03a923c8",
+    "tagDefinitionName": "foo",
     "auditLogs": []
   }
 ]
@@ -2558,8 +2562,8 @@ class Tag {
     tagId: d724f79d-fad1-4758-b35e-d62708450d90
     objectType: BUNDLE
     objectId: e659f0f3-745c-46d5-953c-28fe9282fc7d
-    tagDefinitionId: 00000000-0000-0000-0000-000000000001
-    tagDefinitionName: AUTO_PAY_OFF
+    tagDefinitionId: 353752dd-9041-4450-b782-a8bb03a923c8
+    tagDefinitionName: foo
     auditLogs: [class AuditLog {
         changeType: INSERT
         changeDate: 2012-08-25T00:00:02.000Z
@@ -2579,8 +2583,8 @@ class Tag {
       "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
       "objectType":"BUNDLE",
       "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
+      "tagDefinitionId":"353752dd-9041-4450-b782-a8bb03a923c8",
+      "tagDefinitionName":"foo",
       "auditLogs":[
 
       ]
@@ -2591,8 +2595,8 @@ class Tag {
 [{'audit_logs': [],
  'object_id': '3e94fccf-0f37-40aa-90a4-122a4f381ebc',
  'object_type': 'BUNDLE',
- 'tag_definition_id': '00000000-0000-0000-0000-000000000002',
- 'tag_definition_name': 'AUTO_INVOICING_OFF',
+ 'tag_definition_id': '353752dd-9041-4450-b782-a8bb03a923c8',
+ 'tag_definition_name': 'foo',
  'tag_id': 'fc7fab6e-751c-4dd3-b7fa-e93a66e42822'}]
 ```
 
@@ -2624,7 +2628,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags?tagDef=00000000-0000-0000-0000-000000000002"
+    "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags?tagDef=353752dd-9041-4450-b782-a8bb03a923c8"
 ```
 
 ```java
@@ -2633,15 +2637,15 @@ protected BundleApi bundleApi;
 
 UUID bundleId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
 
-UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 bundleApi.deleteBundleTags(bundleId, 
-                           ImmutableList.<UUID>of(autoPayOffId), 
+                           ImmutableList.<UUID>of(tagDefinitionId), 
                            requestOptions);
 ```
 
 ```ruby
-tag_name = 'TEST'
+tag_name = 'foo'
 
 bundle.remove_tag(tag_name,
                   user,
@@ -2653,7 +2657,7 @@ bundle.remove_tag(tag_name,
 ```python
 bundleApi = killbill.api.BundleApi()
 bundle_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
-tag = ["00000000-0000-0000-0000-000000000002"]
+tag = ["353752dd-9041-4450-b782-a8bb03a923c8"]
 
 bundleApi.delete_bundle_tags(bundle_id, 
                              created_by, 

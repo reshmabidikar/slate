@@ -1254,6 +1254,10 @@ A `204` http status without content.
 
 See section [Account Tags](#account-tags) for an introduction.
 
+The are no `system` tags applicable for an `InvoicePayment`.
+
+Let's assume there is an existing `user` tagDefintion already created with `tagDefinitionId`=`353752dd-9041-4450-b782-a8bb03a923c8`.
+
 ### Add tags to payment
 
 **HTTP Request** 
@@ -1271,7 +1275,7 @@ curl -v \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
     -d '[
-            "00000000-0000-0000-0000-000000000001"
+            "353752dd-9041-4450-b782-a8bb03a923c8"
         ]' \
     'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/tags' 
 ```
@@ -1282,15 +1286,15 @@ protected InvoicePaymentApi invoicePaymentApi;
 
 UUID paymentId = UUID.fromString("45d6f4c5-21be-49b1-99c5-7b0c3c985bf0");
 
-UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 Tags result = invoicePaymentApi.createInvoicePaymentTags(paymentId, 
-                                                         ImmutableList.<UUID>of(autoPayOffId), 
+                                                         ImmutableList.<UUID>of(tagDefinitionId), 
                                                          requestOptions);
 ```
 
 ```ruby
-tag_name = 'TEST'
+tag_name = 'foo'
 
 invoice_payment.add_tag(tag_name,
                         user,
@@ -1302,7 +1306,7 @@ invoice_payment.add_tag(tag_name,
 ```python
 invoicePaymentApi = killbill.api.InvoicePaymentApi()
 payment_id = '8d85a8e8-c94b-438f-aac1-e8cb436b2c05'
-tag = ["00000000-0000-0000-0000-000000000002"]
+tag = ["353752dd-9041-4450-b782-a8bb03a923c8"]
 
 invoicePaymentApi.create_invoice_payment_tags(payment_id,
                                               tag,
@@ -1328,8 +1332,8 @@ class Tag {
     tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
     objectType: INVOICE_PAYMENT
     objectId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-    tagDefinitionId: 00000000-0000-0000-0000-000000000001
-    tagDefinitionName: AUTO_PAY_OFF
+    tagDefinitionId: 353752dd-9041-4450-b782-a8bb03a923c8
+    tagDefinitionName: foo
     auditLogs: []
 }
 ```
@@ -1339,8 +1343,8 @@ class Tag {
       "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
       "objectType":"INVOICE_PAYMENT",
       "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
+      "tagDefinitionId":"353752dd-9041-4450-b782-a8bb03a923c8",
+      "tagDefinitionName":"foo",
       "auditLogs":[]
    }
 ]
@@ -1415,8 +1419,8 @@ invoicePaymentApi.get_invoice_payment_tags(payment_id, api_key, api_secret)
     "tagId": "e7f68cab-3b9a-4150-909a-5f1c17f1fb2b",
     "objectType": "PAYMENT",
     "objectId": "cc7fcd4d-e701-4679-9741-41289103db83",
-    "tagDefinitionId": "00000000-0000-0000-0000-000000000001",
-    "tagDefinitionName": "AUTO_PAY_OFF",
+    "tagDefinitionId": "353752dd-9041-4450-b782-a8bb03a923c8",
+    "tagDefinitionName": "foo",
     "auditLogs": []
   }
 ]
@@ -1429,8 +1433,8 @@ class Tag {
     tagId: d724f79d-fad1-4758-b35e-d62708450d90
     objectType: INVOICE_PAYMENT
     objectId: e659f0f3-745c-46d5-953c-28fe9282fc7d
-    tagDefinitionId: 00000000-0000-0000-0000-000000000001
-    tagDefinitionName: AUTO_PAY_OFF
+    tagDefinitionId: 353752dd-9041-4450-b782-a8bb03a923c8
+    tagDefinitionName: foo
     auditLogs: [class AuditLog {
         changeType: INSERT
         changeDate: 2012-08-25T00:00:02.000Z
@@ -1450,8 +1454,8 @@ class Tag {
       "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
       "objectType":"INVOICE_PAYMENT",
       "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
+      "tagDefinitionId":"353752dd-9041-4450-b782-a8bb03a923c8",
+      "tagDefinitionName":"foo",
       "auditLogs":[]
    }
 ]
@@ -1460,8 +1464,8 @@ class Tag {
 [{'audit_logs': [],
  'object_id': '2a1ffd2c-0de1-4f5c-b2a9-27d8deebe596',
  'object_type': 'PAYMENT',
- 'tag_definition_id': '00000000-0000-0000-0000-000000000002',
- 'tag_definition_name': 'AUTO_INVOICING_OFF',
+ 'tag_definition_id': '353752dd-9041-4450-b782-a8bb03a923c8',
+ 'tag_definition_name': 'foo',
  'tag_id': '864ee6aa-1439-4037-8f65-aa114739f09f'}]
 ```
 

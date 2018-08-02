@@ -748,6 +748,10 @@ A `204` http status without content.
 
 See section [Account Tags](#account-tags) for an introduction.
 
+The are no `system` tags applicable for an `PaymentTransaction`.
+
+Let's assume there is an existing `user` tagDefintion already created with `tagDefinitionId`=`353752dd-9041-4450-b782-a8bb03a923c8`.
+
 ### Add tags to payment transaction
 
 **HTTP Request** 
@@ -765,7 +769,7 @@ curl -v \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
     -d '[
-            "00000000-0000-0000-0000-000000000001"
+            "353752dd-9041-4450-b782-a8bb03a923c8"
         ]' \
     'http://127.0.0.1:8080/1.0/kb/paymentTransactions/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags' 
 ```
@@ -776,10 +780,10 @@ protected PaymentTransactionApi paymentTransactionApi;
 
 UUID paymentTransactionId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
 
-UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 Tags result = PaymentTransactionApi.createTransactionTags(paymentTransactionId, 
-                                                          ImmutableList.<UUID>of(autoPayOffId), 
+                                                          ImmutableList.<UUID>of(tagDefinitionId), 
                                                           requestOptions);
 ```
 
@@ -790,7 +794,7 @@ TODO
 ```python
 paymentTransactionApi = killbill.api.PaymentTransactionApi()
 
-tag = ["00000000-0000-0000-0000-000000000002"]
+tag = ["353752dd-9041-4450-b782-a8bb03a923c8"]
 
 paymentTransactionApi.create_transaction_tags(payment_transaction_id,
                                               tag,
@@ -816,7 +820,7 @@ class Tag {
     tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
     objectType: TRANSACTION
     objectId: 917992d3-5f1f-4828-9fff-799cc4211aa9
-    tagDefinitionId: 00000000-0000-0000-0000-000000000001
+    tagDefinitionId: 353752dd-9041-4450-b782-a8bb03a923c8
     tagDefinitionName: AUTO_PAY_OFF
     auditLogs: []
 }
@@ -890,8 +894,8 @@ paymentTransactionApi.get_transaction_tags(payment_transaction_id, api_key, api_
     "tagId": "890e3b13-3114-478b-9365-50f1a2682143",
     "objectType": "TRANSACTION",
     "objectId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
-    "tagDefinitionId": "00000000-0000-0000-0000-000000000001",
-    "tagDefinitionName": "AUTO_PAY_OFF",
+    "tagDefinitionId": "353752dd-9041-4450-b782-a8bb03a923c8",
+    "tagDefinitionName": "foo",
     "auditLogs": []
   }
 ]
@@ -904,8 +908,8 @@ class Tag {
     tagId: d724f79d-fad1-4758-b35e-d62708450d90
     objectType: TRANSACTION
     objectId: e659f0f3-745c-46d5-953c-28fe9282fc7d
-    tagDefinitionId: 00000000-0000-0000-0000-000000000001
-    tagDefinitionName: AUTO_PAY_OFF
+    tagDefinitionId: 353752dd-9041-4450-b782-a8bb03a923c8
+    tagDefinitionName: foo
     auditLogs: [class AuditLog {
         changeType: INSERT
         changeDate: 2012-08-25T00:00:02.000Z
@@ -926,8 +930,8 @@ TODO
 [{'audit_logs': [],
  'object_id': '41b6b214-c3f7-40ea-89cd-6a4ecbd9083b',
  'object_type': 'TRANSACTION',
- 'tag_definition_id': '00000000-0000-0000-0000-000000000002',
- 'tag_definition_name': 'AUTO_INVOICING_OFF',
+ 'tag_definition_id': '353752dd-9041-4450-b782-a8bb03a923c8',
+ 'tag_definition_name': 'foo',
  'tag_id': '865e0c77-def7-4880-ac80-11c21a5e571d'}]
 ```
 
@@ -963,7 +967,7 @@ curl -v \
     -H 'X-Killbill-ApiKey: bob' \
     -H 'X-Killbill-ApiSecret: lazar' \
     -H 'X-Killbill-CreatedBy: demo' \
-    'http://127.0.0.1:8080/1.0/kb/paymentTransactions/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags?tagDef=00000000-0000-0000-0000-000000000001' 	
+    'http://127.0.0.1:8080/1.0/kb/paymentTransactions/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags?tagDef=353752dd-9041-4450-b782-a8bb03a923c8' 	
 ```
 
 ```java
@@ -972,10 +976,10 @@ protected PaymentTransactionApi paymentTransactionApi;
 
 UUID paymentTransactionId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
 
-UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 paymentTransactionApi.deleteTransactionTags(paymentTransactionId, 
-                                            ImmutableList.<UUID>of(autoPayOffId), 
+                                            ImmutableList.<UUID>of(tagDefinitionId), 
                                             requestOptions);
 ```
 
@@ -987,7 +991,7 @@ TODO
 paymentTransactionApi = killbill.api.PaymentTransactionApi()
 
 payment_transaction_id = 'dce5b2a0-0f0f-430b-9427-545ba4be5c7f'
-tag = ["00000000-0000-0000-0000-000000000002"] 
+tag = ["353752dd-9041-4450-b782-a8bb03a923c8"] 
 
 paymentTransactionApi.delete_transaction_tags(payment_transaction_id,
                                               created_by,

@@ -3116,7 +3116,11 @@ A `204` http status without content.
 
 See section [Account Tags](#account-tags) for an introduction.
 
+The only `system` tag applicable for an `Invoice` is `WRITTEN_OFF` (`00000000-0000-0000-0000-000000000004`), which as it's name indicates, is used to write off an unpaid invoice, bringing its balance to $0.
+
 ### Add tags to invoice
+
+
 
 **HTTP Request** 
 
@@ -3135,7 +3139,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ \"00000000-0000-0000-0000-000000000002\"]" \
+    -d "[ \"00000000-0000-0000-0000-000000000004\"]" \
     "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags"	
 ```
 
@@ -3145,10 +3149,10 @@ protected InvoiceApi invoiceApi;
 
 UUID invoiceId = UUID.fromString("45d6f4c5-21be-49b1-99c5-7b0c3c985bf0");
 
-UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
+UUID writtenOffId = UUID.fromString("00000000-0000-0000-0000-000000000004");
 
 Tags result = invoiceApi.createInvoiceTags(invoiceId, 
-                                           ImmutableList.<UUID>of(autoPayOffId), 
+                                           ImmutableList.<UUID>of(writtenOffId), 
                                            requestOptions);
 ```
 
@@ -3165,7 +3169,7 @@ invoice.add_tag(tag_name,
 ```python
 invoiceApi = killbill.api.InvoiceApi()
 invoice_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
-tag = ["00000000-0000-0000-0000-000000000002"]
+tag = ["00000000-0000-0000-0000-000000000004"]
 
 invoiceApi.create_invoice_tags(invoice_id, 
                                tag, 
@@ -3190,8 +3194,8 @@ class Tag {
     tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
     objectType: INVOICE
     objectId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-    tagDefinitionId: 00000000-0000-0000-0000-000000000001
-    tagDefinitionName: AUTO_PAY_OFF
+    tagDefinitionId: 00000000-0000-0000-0000-000000000004
+    tagDefinitionName: WRITTEN_OFF
     auditLogs: []
 }
 ```
@@ -3201,8 +3205,8 @@ class Tag {
       "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
       "objectType":"INVOICE",
       "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000006",
-      "tagDefinitionName":"TEST",
+      "tagDefinitionId":"00000000-0000-0000-0000-000000000004",
+      "tagDefinitionName":"WRITTEN_OFF",
       "auditLogs":[
 
       ]
