@@ -14284,13 +14284,13 @@ based on custom business rules. Additional information can be found in our <a hr
 <tr>
 <td><strong>offset</strong></td>
 <td>long</td>
-<td>true</td>
+<td>false</td>
 <td>offset</td>
 </tr>
 <tr>
 <td><strong>limit</strong></td>
 <td>long</td>
-<td>true</td>
+<td>false</td>
 <td>limit search items</td>
 </tr>
 </tbody></table>
@@ -14427,21 +14427,15 @@ based on custom business rules. Additional information can be found in our <a hr
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>searchKey</strong></td>
-<td>string</td>
-<td>true</td>
-<td>What you want to find?</td>
-</tr>
-<tr>
 <td><strong>offset</strong></td>
 <td>long</td>
-<td>true</td>
+<td>false</td>
 <td>offset</td>
 </tr>
 <tr>
 <td><strong>limit</strong></td>
 <td>long</td>
-<td>true</td>
+<td>false</td>
 <td>limit search items</td>
 </tr>
 </tbody></table>
@@ -17011,6 +17005,10 @@ to realign invoicing, let&#39;s say on the 16th. </p>
 <p>A <code>204</code> http status without content.</p>
 <h2 id='subscription-tags'>Tags</h2>
 <p>See section <a href="#account-tags">Account Tags</a> for an introduction.</p>
+
+<p>The are no <code>system</code> tags applicable for an <code>Subscription</code>.</p>
+
+<p>Let&#39;s assume there is an existing <code>user</code> tagDefintion already created with <code>tagDefinitionId</code>=<code>353752dd-9041-4450-b782-a8bb03a923c8</code>.</p>
 <h3 id='subscription-add-tags-to-subscription'>Add tags to subscription</h3>
 <p><strong>HTTP Request</strong> </p>
 
@@ -17027,19 +17025,19 @@ to realign invoicing, let&#39;s say on the 16th. </p>
     -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -d <span class="s1">'[
-            "00000000-0000-0000-0000-000000000001"
+            "353752dd-9041-4450-b782-a8bb03a923c8"
         ]'</span> <span class="se">\</span>
   <span class="s1">'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags'</span> 
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.SubscriptionApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">SubscriptionApi</span> <span class="n">subscriptionApi</span><span class="o">;</span>
 
 <span class="n">UUID</span> <span class="n">subscriptionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"1bb4b638-3886-4f73-90a5-89eb6d1bcf7f"</span><span class="o">);</span>
-<span class="n">UUID</span> <span class="n">autoPayOffId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"00000000-0000-0000-0000-000000000001"</span><span class="o">);</span>
+<span class="n">UUID</span> <span class="n">tagDefinitionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="o">);</span>
 
 <span class="n">Tags</span> <span class="n">result</span> <span class="o">=</span> <span class="n">subscriptionApi</span><span class="o">.</span><span class="na">createSubscriptionTags</span><span class="o">(</span><span class="n">subscriptionId</span><span class="o">,</span> 
-                                                     <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">autoPayOffId</span><span class="o">),</span> 
+                                                     <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">tagDefinitionId</span><span class="o">),</span> 
                                                      <span class="n">requestOptions</span><span class="o">);</span>
-</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'TEST'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'foo'</span>
 
 <span class="n">subscription</span><span class="p">.</span><span class="nf">add_tag</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span>
                      <span class="n">user</span><span class="p">,</span>
@@ -17048,7 +17046,7 @@ to realign invoicing, let&#39;s say on the 16th. </p>
                      <span class="n">options</span><span class="p">)</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">subscriptionApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">SubscriptionApi</span><span class="p">()</span>
 <span class="n">subscription_id</span> <span class="o">=</span> <span class="s">'28af3cb9-275b-4ac4-a55d-a0536e479069'</span>
-<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"00000000-0000-0000-0000-000000000002"</span><span class="p">]</span>
+<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">]</span>
 
 <span class="n">subscriptionApi</span><span class="o">.</span><span class="n">create_subscription_tags</span><span class="p">(</span><span class="n">subscription_id</span><span class="p">,</span>
                                          <span class="n">tag</span><span class="p">,</span>
@@ -17070,8 +17068,8 @@ to realign invoicing, let&#39;s say on the 16th. </p>
     <span class="nl">tagId:</span> <span class="mi">1</span><span class="n">bb4b638</span><span class="o">-</span><span class="mi">3886</span><span class="o">-</span><span class="mi">4</span><span class="n">f73</span><span class="o">-</span><span class="mi">90</span><span class="n">a5</span><span class="o">-</span><span class="mi">89</span><span class="n">eb6d1bcf7f</span>
     <span class="nl">objectType:</span> <span class="n">SUBSCRIPTION</span>
     <span class="nl">objectId:</span> <span class="mi">917992</span><span class="n">d3</span><span class="o">-</span><span class="mi">5</span><span class="n">f1f</span><span class="o">-</span><span class="mi">4828</span><span class="o">-</span><span class="mi">9</span><span class="n">fff</span><span class="o">-</span><span class="mi">799</span><span class="n">cc4211aa9</span>
-    <span class="nl">tagDefinitionId:</span> <span class="mo">00000000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">000000000001</span>
-    <span class="nl">tagDefinitionName:</span> <span class="n">AUTO_PAY_OFF</span>
+    <span class="nl">tagDefinitionId:</span> <span class="mi">353752</span><span class="n">dd</span><span class="o">-</span><span class="mi">9041</span><span class="o">-</span><span class="mi">4450</span><span class="o">-</span><span class="n">b782</span><span class="o">-</span><span class="n">a8bb03a923c8</span>
+    <span class="nl">tagDefinitionName:</span> <span class="n">foo</span>
     <span class="nl">auditLogs:</span> <span class="o">[]</span>
 <span class="o">}</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="p">[</span>
@@ -17079,8 +17077,8 @@ to realign invoicing, let&#39;s say on the 16th. </p>
       <span class="s2">"tagId"</span><span class="ss">:"a46cfeb6-e175-42db-be62-7f117326ab4e"</span><span class="p">,</span>
       <span class="s2">"objectType"</span><span class="ss">:"SUBSCRIPTION"</span><span class="p">,</span>
       <span class="s2">"objectId"</span><span class="ss">:"28af3cb9-275b-4ac4-a55d-a0536e479069"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionId"</span><span class="ss">:"00000000-0000-0000-0000-000000000006"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionName"</span><span class="ss">:"TEST"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionId"</span><span class="ss">:"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionName"</span><span class="ss">:"foo"</span><span class="p">,</span>
       <span class="s2">"auditLogs"</span><span class="ss">:[]</span>
    <span class="p">}</span>
 <span class="p">]</span>
@@ -17142,8 +17140,8 @@ to realign invoicing, let&#39;s say on the 16th. </p>
         <span class="s2">"tagId"</span>:<span class="s2">"d0513754-56a9-4694-abb1-3ac46c72e861"</span>,
         <span class="s2">"objectType"</span>:<span class="s2">"SUBSCRIPTION"</span>,
         <span class="s2">"objectId"</span>:<span class="s2">"77e23878-8b9d-403b-bf31-93003e125712"</span>,
-        <span class="s2">"tagDefinitionId"</span>:<span class="s2">"00000000-0000-0000-0000-000000000001"</span>,
-        <span class="s2">"tagDefinitionName"</span>:<span class="s2">"AUTO_PAY_OFF"</span>,
+        <span class="s2">"tagDefinitionId"</span>:<span class="s2">"353752dd-9041-4450-b782-a8bb03a923c8"</span>,
+        <span class="s2">"tagDefinitionName"</span>:<span class="s2">"foo"</span>,
         <span class="s2">"auditLogs"</span>:[]
     <span class="o">}</span>
 <span class="o">]</span>
@@ -17153,8 +17151,8 @@ to realign invoicing, let&#39;s say on the 16th. </p>
     <span class="nl">tagId:</span> <span class="mi">1</span><span class="n">bb4b638</span><span class="o">-</span><span class="mi">3886</span><span class="o">-</span><span class="mi">4</span><span class="n">f73</span><span class="o">-</span><span class="mi">90</span><span class="n">a5</span><span class="o">-</span><span class="mi">89</span><span class="n">eb6d1bcf7f</span>
     <span class="nl">objectType:</span> <span class="n">SUBSCRIPTION</span>
     <span class="nl">objectId:</span> <span class="mi">917992</span><span class="n">d3</span><span class="o">-</span><span class="mi">5</span><span class="n">f1f</span><span class="o">-</span><span class="mi">4828</span><span class="o">-</span><span class="mi">9</span><span class="n">fff</span><span class="o">-</span><span class="mi">799</span><span class="n">cc4211aa9</span>
-    <span class="nl">tagDefinitionId:</span> <span class="mo">00000000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">000000000001</span>
-    <span class="nl">tagDefinitionName:</span> <span class="n">AUTO_PAY_OFF</span>
+    <span class="nl">tagDefinitionId:</span> <span class="mi">353752</span><span class="n">dd</span><span class="o">-</span><span class="mi">9041</span><span class="o">-</span><span class="mi">4450</span><span class="o">-</span><span class="n">b782</span><span class="o">-</span><span class="n">a8bb03a923c8</span>
+    <span class="nl">tagDefinitionName:</span> <span class="n">foo</span>
     <span class="nl">auditLogs:</span> <span class="o">[]</span>
 <span class="o">}</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="p">[</span>
@@ -17162,16 +17160,16 @@ to realign invoicing, let&#39;s say on the 16th. </p>
       <span class="s2">"tagId"</span><span class="ss">:"a46cfeb6-e175-42db-be62-7f117326ab4e"</span><span class="p">,</span>
       <span class="s2">"objectType"</span><span class="ss">:"SUBSCRIPTION"</span><span class="p">,</span>
       <span class="s2">"objectId"</span><span class="ss">:"28af3cb9-275b-4ac4-a55d-a0536e479069"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionId"</span><span class="ss">:"00000000-0000-0000-0000-000000000006"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionName"</span><span class="ss">:"TEST"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionId"</span><span class="ss">:"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionName"</span><span class="ss">:"foo"</span><span class="p">,</span>
       <span class="s2">"auditLogs"</span><span class="ss">:[]</span>
    <span class="p">}</span>
 <span class="p">]</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="p">[{</span><span class="s">'audit_logs'</span><span class="p">:</span> <span class="p">[],</span>
  <span class="s">'object_id'</span><span class="p">:</span> <span class="s">'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'</span><span class="p">,</span>
  <span class="s">'object_type'</span><span class="p">:</span> <span class="s">'SUBSCRIPTION'</span><span class="p">,</span>
- <span class="s">'tag_definition_id'</span><span class="p">:</span> <span class="s">'00000000-0000-0000-0000-000000000002'</span><span class="p">,</span>
- <span class="s">'tag_definition_name'</span><span class="p">:</span> <span class="s">'AUTO_INVOICING_OFF'</span><span class="p">,</span>
+ <span class="s">'tag_definition_id'</span><span class="p">:</span> <span class="s">'353752dd-9041-4450-b782-a8bb03a923c8'</span><span class="p">,</span>
+ <span class="s">'tag_definition_name'</span><span class="p">:</span> <span class="s">'foo'</span><span class="p">,</span>
  <span class="s">'tag_id'</span><span class="p">:</span> <span class="s">'a1fd0122-1ec8-4bc3-b71e-ab2a76ae5957'</span><span class="p">}]</span>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
@@ -17233,18 +17231,18 @@ to realign invoicing, let&#39;s say on the 16th. </p>
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
-    <span class="s1">'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags?tagDef=00000000-0000-0000-0000-000000000001'</span>  
+    <span class="s1">'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/tags?tagDef=353752dd-9041-4450-b782-a8bb03a923c8'</span>  
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.SubscriptionApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">SubscriptionApi</span> <span class="n">subscriptionApi</span><span class="o">;</span>
 
 <span class="n">UUID</span> <span class="n">subscriptionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"1bb4b638-3886-4f73-90a5-89eb6d1bcf7f"</span><span class="o">);</span>
 
-<span class="n">UUID</span> <span class="n">autoPayOffId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"00000000-0000-0000-0000-000000000001"</span><span class="o">);</span>
+<span class="n">UUID</span> <span class="n">tagDefinitionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="o">);</span>
 
 <span class="n">subscriptionApi</span><span class="o">.</span><span class="na">deleteSubscriptionTags</span><span class="o">(</span><span class="n">subscriptionId</span><span class="o">,</span> 
-                                       <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">autoPayOffId</span><span class="o">),</span> 
+                                       <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">tagDefinitionId</span><span class="o">),</span> 
                                        <span class="n">requestOptions</span><span class="o">);</span>
-</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'TEST'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'foo'</span>
 
 <span class="n">subscription</span><span class="p">.</span><span class="nf">remove_tag</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span>
                         <span class="n">user</span><span class="p">,</span>
@@ -17253,7 +17251,7 @@ to realign invoicing, let&#39;s say on the 16th. </p>
                         <span class="n">options</span><span class="p">)</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">subscriptionApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">SubscriptionApi</span><span class="p">()</span>
 <span class="n">subscription_id</span> <span class="o">=</span> <span class="s">'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'</span>
-<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"00000000-0000-0000-0000-000000000002"</span><span class="p">]</span>
+<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">]</span>
 
 <span class="n">subscriptionApi</span><span class="o">.</span><span class="n">delete_subscription_tags</span><span class="p">(</span><span class="n">subscription_id</span><span class="p">,</span>
                                          <span class="n">created_by</span><span class="p">,</span>
@@ -19559,6 +19557,10 @@ created.</p>
 <p>A <code>204</code> http status without content.</p>
 <h2 id='bundle-tags'>Tags</h2>
 <p>See section <a href="#account-tags">Account Tags</a> for an introduction.</p>
+
+<p>The are no <code>system</code> tags applicable for a <code>Bundle</code>.</p>
+
+<p>Let&#39;s assume there is an existing <code>user</code> tagDefintion already created with <code>tagDefinitionId</code>=<code>353752dd-9041-4450-b782-a8bb03a923c8</code>.</p>
 <h3 id='bundle-add-tags-to-bundle'>Add tags to bundle</h3>
 <p><strong>HTTP Request</strong> </p>
 
@@ -19577,19 +19579,19 @@ created.</p>
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    -d <span class="s2">"[ </span><span class="se">\"</span><span class="s2">00000000-0000-0000-0000-000000000002</span><span class="se">\"</span><span class="s2">]"</span> <span class="se">\</span>
+    -d <span class="s2">"[ </span><span class="se">\"</span><span class="s2">353752dd-9041-4450-b782-a8bb03a923c8</span><span class="se">\"</span><span class="s2">]"</span> <span class="se">\</span>
     <span class="s2">"http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.BundleApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">BundleApi</span> <span class="n">bundleApi</span><span class="o">;</span>
 
 <span class="n">UUID</span> <span class="n">bundleId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"917992d3-5f1f-4828-9fff-799cc4211aa9"</span><span class="o">);</span>
 
-<span class="n">UUID</span> <span class="n">autoPayOffId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"00000000-0000-0000-0000-000000000001"</span><span class="o">);</span>
+<span class="n">UUID</span> <span class="n">tagDefinitionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="o">);</span>
 
 <span class="n">Tags</span> <span class="n">result</span> <span class="o">=</span> <span class="n">bundleApi</span><span class="o">.</span><span class="na">createBundleTags</span><span class="o">(</span><span class="n">bundleId</span><span class="o">,</span> 
-                                         <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">autoPayOffId</span><span class="o">),</span> 
+                                         <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">tagDefinitionId</span><span class="o">),</span> 
                                          <span class="n">requestOptions</span><span class="o">);</span>
-</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'TEST'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'foo'</span>
 
 <span class="n">bundle</span><span class="p">.</span><span class="nf">add_tag</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span>
                <span class="n">user</span><span class="p">,</span>
@@ -19598,7 +19600,7 @@ created.</p>
                <span class="n">options</span><span class="p">)</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">bundleApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">BundleApi</span><span class="p">()</span>
 <span class="n">bundle_id</span> <span class="o">=</span> <span class="s">'28af3cb9-275b-4ac4-a55d-a0536e479069'</span>
-<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"00000000-0000-0000-0000-000000000002"</span><span class="p">]</span>
+<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">]</span>
 
 <span class="n">bundleApi</span><span class="o">.</span><span class="n">create_bundle_tags</span><span class="p">(</span><span class="n">bundle_id</span><span class="p">,</span> 
                              <span class="n">tag</span><span class="p">,</span> 
@@ -19620,8 +19622,8 @@ created.</p>
     <span class="nl">tagId:</span> <span class="mi">1</span><span class="n">bb4b638</span><span class="o">-</span><span class="mi">3886</span><span class="o">-</span><span class="mi">4</span><span class="n">f73</span><span class="o">-</span><span class="mi">90</span><span class="n">a5</span><span class="o">-</span><span class="mi">89</span><span class="n">eb6d1bcf7f</span>
     <span class="nl">objectType:</span> <span class="n">BUNDLE</span>
     <span class="nl">objectId:</span> <span class="mi">917992</span><span class="n">d3</span><span class="o">-</span><span class="mi">5</span><span class="n">f1f</span><span class="o">-</span><span class="mi">4828</span><span class="o">-</span><span class="mi">9</span><span class="n">fff</span><span class="o">-</span><span class="mi">799</span><span class="n">cc4211aa9</span>
-    <span class="nl">tagDefinitionId:</span> <span class="mo">00000000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">000000000001</span>
-    <span class="nl">tagDefinitionName:</span> <span class="n">AUTO_PAY_OFF</span>
+    <span class="nl">tagDefinitionId:</span> <span class="mi">353752</span><span class="n">dd</span><span class="o">-</span><span class="mi">9041</span><span class="o">-</span><span class="mi">4450</span><span class="o">-</span><span class="n">b782</span><span class="o">-</span><span class="n">a8bb03a923c8</span>
+    <span class="nl">tagDefinitionName:</span> <span class="n">foo</span>
     <span class="nl">auditLogs:</span> <span class="o">[]</span>
 <span class="o">}</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="p">[</span>
@@ -19629,8 +19631,8 @@ created.</p>
       <span class="s2">"tagId"</span><span class="ss">:"a46cfeb6-e175-42db-be62-7f117326ab4e"</span><span class="p">,</span>
       <span class="s2">"objectType"</span><span class="ss">:"BUNDLE"</span><span class="p">,</span>
       <span class="s2">"objectId"</span><span class="ss">:"28af3cb9-275b-4ac4-a55d-a0536e479069"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionId"</span><span class="ss">:"00000000-0000-0000-0000-000000000006"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionName"</span><span class="ss">:"TEST"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionId"</span><span class="ss">:"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionName"</span><span class="ss">:"foo"</span><span class="p">,</span>
       <span class="s2">"auditLogs"</span><span class="p">:[</span>
 
       <span class="p">]</span>
@@ -19692,8 +19694,8 @@ created.</p>
     <span class="s2">"tagId"</span>: <span class="s2">"e054c84a-0518-4611-92a8-53e849f0affd"</span>,
     <span class="s2">"objectType"</span>: <span class="s2">"BUNDLE"</span>,
     <span class="s2">"objectId"</span>: <span class="s2">"2cd2f4b5-a1c0-42a7-924f-64c7b791332d"</span>,
-    <span class="s2">"tagDefinitionId"</span>: <span class="s2">"00000000-0000-0000-0000-000000000002"</span>,
-    <span class="s2">"tagDefinitionName"</span>: <span class="s2">"AUTO_INVOICING_OFF"</span>,
+    <span class="s2">"tagDefinitionId"</span>: <span class="s2">"353752dd-9041-4450-b782-a8bb03a923c8"</span>,
+    <span class="s2">"tagDefinitionName"</span>: <span class="s2">"foo"</span>,
     <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
   <span class="o">}</span>
 <span class="o">]</span>
@@ -19703,8 +19705,8 @@ created.</p>
     <span class="nl">tagId:</span> <span class="n">d724f79d</span><span class="o">-</span><span class="n">fad1</span><span class="o">-</span><span class="mi">4758</span><span class="o">-</span><span class="n">b35e</span><span class="o">-</span><span class="n">d62708450d90</span>
     <span class="nl">objectType:</span> <span class="n">BUNDLE</span>
     <span class="nl">objectId:</span> <span class="n">e659f0f3</span><span class="o">-</span><span class="mi">745</span><span class="n">c</span><span class="o">-</span><span class="mi">46</span><span class="n">d5</span><span class="o">-</span><span class="mi">953</span><span class="n">c</span><span class="o">-</span><span class="mi">28</span><span class="n">fe9282fc7d</span>
-    <span class="nl">tagDefinitionId:</span> <span class="mo">00000000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">000000000001</span>
-    <span class="nl">tagDefinitionName:</span> <span class="n">AUTO_PAY_OFF</span>
+    <span class="nl">tagDefinitionId:</span> <span class="mi">353752</span><span class="n">dd</span><span class="o">-</span><span class="mi">9041</span><span class="o">-</span><span class="mi">4450</span><span class="o">-</span><span class="n">b782</span><span class="o">-</span><span class="n">a8bb03a923c8</span>
+    <span class="nl">tagDefinitionName:</span> <span class="n">foo</span>
     <span class="nl">auditLogs:</span> <span class="o">[</span><span class="kd">class</span> <span class="nc">AuditLog</span> <span class="o">{</span>
         <span class="nl">changeType:</span> <span class="n">INSERT</span>
         <span class="nl">changeDate:</span> <span class="mi">2012</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">25</span><span class="nl">T00:</span><span class="mo">00</span><span class="o">:</span><span class="mf">02.000</span><span class="n">Z</span>
@@ -19722,8 +19724,8 @@ created.</p>
       <span class="s2">"tagId"</span><span class="ss">:"a46cfeb6-e175-42db-be62-7f117326ab4e"</span><span class="p">,</span>
       <span class="s2">"objectType"</span><span class="ss">:"BUNDLE"</span><span class="p">,</span>
       <span class="s2">"objectId"</span><span class="ss">:"28af3cb9-275b-4ac4-a55d-a0536e479069"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionId"</span><span class="ss">:"00000000-0000-0000-0000-000000000006"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionName"</span><span class="ss">:"TEST"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionId"</span><span class="ss">:"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionName"</span><span class="ss">:"foo"</span><span class="p">,</span>
       <span class="s2">"auditLogs"</span><span class="p">:[</span>
 
       <span class="p">]</span>
@@ -19732,8 +19734,8 @@ created.</p>
 </code></pre><pre class="highlight python tab-python"><code><span class="p">[{</span><span class="s">'audit_logs'</span><span class="p">:</span> <span class="p">[],</span>
  <span class="s">'object_id'</span><span class="p">:</span> <span class="s">'3e94fccf-0f37-40aa-90a4-122a4f381ebc'</span><span class="p">,</span>
  <span class="s">'object_type'</span><span class="p">:</span> <span class="s">'BUNDLE'</span><span class="p">,</span>
- <span class="s">'tag_definition_id'</span><span class="p">:</span> <span class="s">'00000000-0000-0000-0000-000000000002'</span><span class="p">,</span>
- <span class="s">'tag_definition_name'</span><span class="p">:</span> <span class="s">'AUTO_INVOICING_OFF'</span><span class="p">,</span>
+ <span class="s">'tag_definition_id'</span><span class="p">:</span> <span class="s">'353752dd-9041-4450-b782-a8bb03a923c8'</span><span class="p">,</span>
+ <span class="s">'tag_definition_name'</span><span class="p">:</span> <span class="s">'foo'</span><span class="p">,</span>
  <span class="s">'tag_id'</span><span class="p">:</span> <span class="s">'fc7fab6e-751c-4dd3-b7fa-e93a66e42822'</span><span class="p">}]</span>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
@@ -19779,18 +19781,18 @@ created.</p>
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags?tagDef=00000000-0000-0000-0000-000000000002"</span>
+    <span class="s2">"http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags?tagDef=353752dd-9041-4450-b782-a8bb03a923c8"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.BundleApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">BundleApi</span> <span class="n">bundleApi</span><span class="o">;</span>
 
 <span class="n">UUID</span> <span class="n">bundleId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"917992d3-5f1f-4828-9fff-799cc4211aa9"</span><span class="o">);</span>
 
-<span class="n">UUID</span> <span class="n">autoPayOffId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"00000000-0000-0000-0000-000000000001"</span><span class="o">);</span>
+<span class="n">UUID</span> <span class="n">tagDefinitionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="o">);</span>
 
 <span class="n">bundleApi</span><span class="o">.</span><span class="na">deleteBundleTags</span><span class="o">(</span><span class="n">bundleId</span><span class="o">,</span> 
-                           <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">autoPayOffId</span><span class="o">),</span> 
+                           <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">tagDefinitionId</span><span class="o">),</span> 
                            <span class="n">requestOptions</span><span class="o">);</span>
-</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'TEST'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'foo'</span>
 
 <span class="n">bundle</span><span class="p">.</span><span class="nf">remove_tag</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span>
                   <span class="n">user</span><span class="p">,</span>
@@ -19799,7 +19801,7 @@ created.</p>
                   <span class="n">options</span><span class="p">)</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">bundleApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">BundleApi</span><span class="p">()</span>
 <span class="n">bundle_id</span> <span class="o">=</span> <span class="s">'28af3cb9-275b-4ac4-a55d-a0536e479069'</span>
-<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"00000000-0000-0000-0000-000000000002"</span><span class="p">]</span>
+<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">]</span>
 
 <span class="n">bundleApi</span><span class="o">.</span><span class="n">delete_bundle_tags</span><span class="p">(</span><span class="n">bundle_id</span><span class="p">,</span> 
                              <span class="n">created_by</span><span class="p">,</span> 
@@ -24261,6 +24263,8 @@ in the system.</p>
 <p>A <code>204</code> http status without content.</p>
 <h2 id='invoice-tags'>Tags</h2>
 <p>See section <a href="#account-tags">Account Tags</a> for an introduction.</p>
+
+<p>The only <code>system</code> tag applicable for an <code>Invoice</code> is <code>WRITTEN_OFF</code> (<code>00000000-0000-0000-0000-000000000004</code>), which as it&#39;s name indicates, is used to write off an unpaid invoice, bringing its balance to $0.</p>
 <h3 id='invoice-add-tags-to-invoice'>Add tags to invoice</h3>
 <p><strong>HTTP Request</strong> </p>
 
@@ -24279,17 +24283,17 @@ in the system.</p>
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    -d <span class="s2">"[ </span><span class="se">\"</span><span class="s2">00000000-0000-0000-0000-000000000002</span><span class="se">\"</span><span class="s2">]"</span> <span class="se">\</span>
+    -d <span class="s2">"[ </span><span class="se">\"</span><span class="s2">00000000-0000-0000-0000-000000000004</span><span class="se">\"</span><span class="s2">]"</span> <span class="se">\</span>
     <span class="s2">"http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags"</span>   
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
 <span class="n">UUID</span> <span class="n">invoiceId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"45d6f4c5-21be-49b1-99c5-7b0c3c985bf0"</span><span class="o">);</span>
 
-<span class="n">UUID</span> <span class="n">autoPayOffId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"00000000-0000-0000-0000-000000000001"</span><span class="o">);</span>
+<span class="n">UUID</span> <span class="n">writtenOffId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"00000000-0000-0000-0000-000000000004"</span><span class="o">);</span>
 
 <span class="n">Tags</span> <span class="n">result</span> <span class="o">=</span> <span class="n">invoiceApi</span><span class="o">.</span><span class="na">createInvoiceTags</span><span class="o">(</span><span class="n">invoiceId</span><span class="o">,</span> 
-                                           <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">autoPayOffId</span><span class="o">),</span> 
+                                           <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">writtenOffId</span><span class="o">),</span> 
                                            <span class="n">requestOptions</span><span class="o">);</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'TEST'</span>
 
@@ -24300,7 +24304,7 @@ in the system.</p>
                <span class="n">options</span><span class="p">)</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">invoiceApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">InvoiceApi</span><span class="p">()</span>
 <span class="n">invoice_id</span> <span class="o">=</span> <span class="s">'28af3cb9-275b-4ac4-a55d-a0536e479069'</span>
-<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"00000000-0000-0000-0000-000000000002"</span><span class="p">]</span>
+<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"00000000-0000-0000-0000-000000000004"</span><span class="p">]</span>
 
 <span class="n">invoiceApi</span><span class="o">.</span><span class="n">create_invoice_tags</span><span class="p">(</span><span class="n">invoice_id</span><span class="p">,</span> 
                                <span class="n">tag</span><span class="p">,</span> 
@@ -24322,8 +24326,8 @@ in the system.</p>
     <span class="nl">tagId:</span> <span class="mi">1</span><span class="n">bb4b638</span><span class="o">-</span><span class="mi">3886</span><span class="o">-</span><span class="mi">4</span><span class="n">f73</span><span class="o">-</span><span class="mi">90</span><span class="n">a5</span><span class="o">-</span><span class="mi">89</span><span class="n">eb6d1bcf7f</span>
     <span class="nl">objectType:</span> <span class="n">INVOICE</span>
     <span class="nl">objectId:</span> <span class="mi">45</span><span class="n">d6f4c5</span><span class="o">-</span><span class="mi">21</span><span class="n">be</span><span class="o">-</span><span class="mi">49</span><span class="n">b1</span><span class="o">-</span><span class="mi">99</span><span class="n">c5</span><span class="o">-</span><span class="mi">7</span><span class="n">b0c3c985bf0</span>
-    <span class="nl">tagDefinitionId:</span> <span class="mo">00000000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">000000000001</span>
-    <span class="nl">tagDefinitionName:</span> <span class="n">AUTO_PAY_OFF</span>
+    <span class="nl">tagDefinitionId:</span> <span class="mo">00000000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">000000000004</span>
+    <span class="nl">tagDefinitionName:</span> <span class="n">WRITTEN_OFF</span>
     <span class="nl">auditLogs:</span> <span class="o">[]</span>
 <span class="o">}</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="p">[</span>
@@ -24331,8 +24335,8 @@ in the system.</p>
       <span class="s2">"tagId"</span><span class="ss">:"a46cfeb6-e175-42db-be62-7f117326ab4e"</span><span class="p">,</span>
       <span class="s2">"objectType"</span><span class="ss">:"INVOICE"</span><span class="p">,</span>
       <span class="s2">"objectId"</span><span class="ss">:"28af3cb9-275b-4ac4-a55d-a0536e479069"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionId"</span><span class="ss">:"00000000-0000-0000-0000-000000000006"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionName"</span><span class="ss">:"TEST"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionId"</span><span class="ss">:"00000000-0000-0000-0000-000000000004"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionName"</span><span class="ss">:"WRITTEN_OFF"</span><span class="p">,</span>
       <span class="s2">"auditLogs"</span><span class="p">:[</span>
 
       <span class="p">]</span>
@@ -29338,6 +29342,10 @@ through the <code>InvoicePayment</code> relashionship.</p>
 <p>A <code>204</code> http status without content.</p>
 <h2 id='payment-tags'>Tags</h2>
 <p>See section <a href="#account-tags">Account Tags</a> for an introduction.</p>
+
+<p>The are no <code>system</code> tags applicable for a <code>Bundle</code>.</p>
+
+<p>Let&#39;s assume there is an existing <code>user</code> tagDefintion already created with <code>tagDefinitionId</code>=<code>353752dd-9041-4450-b782-a8bb03a923c8</code>.</p>
 <h3 id='payment-add-tags-to-payment-payment'>Add tags to payment [payment]</h3>
 <p><strong>HTTP Request</strong> </p>
 
@@ -29354,7 +29362,7 @@ through the <code>InvoicePayment</code> relashionship.</p>
     -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
     -H <span class="s1">'X-Killbill-CreatedBy: demo'</span> <span class="se">\</span>
     -d <span class="s1">'[
-            "00000000-0000-0000-0000-000000000001"
+            "353752dd-9041-4450-b782-a8bb03a923c8"
         ]'</span> <span class="se">\</span>
     <span class="s1">'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags'</span> 
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.PaymentApi</span><span class="o">;</span>
@@ -29362,12 +29370,12 @@ through the <code>InvoicePayment</code> relashionship.</p>
 
 <span class="n">UUID</span> <span class="n">paymentId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"917992d3-5f1f-4828-9fff-799cc4211aa9"</span><span class="o">);</span>
 
-<span class="n">UUID</span> <span class="n">autoPayOffId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"00000000-0000-0000-0000-000000000001"</span><span class="o">);</span>
+<span class="n">UUID</span> <span class="n">tagDefinitionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="o">);</span>
 
 <span class="n">Tags</span> <span class="n">result</span> <span class="o">=</span> <span class="n">paymentApi</span><span class="o">.</span><span class="na">createPaymentTags</span><span class="o">(</span><span class="n">paymentId</span><span class="o">,</span> 
-                                           <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">autoPayOffId</span><span class="o">),</span> 
+                                           <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">tagDefinitionId</span><span class="o">),</span> 
                                            <span class="n">requestOptions</span><span class="o">);</span>
-</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'TEST'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'foo'</span>
 
 <span class="n">payment</span><span class="p">.</span><span class="nf">add_tag</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span>
                 <span class="n">user</span><span class="p">,</span>
@@ -29375,7 +29383,7 @@ through the <code>InvoicePayment</code> relashionship.</p>
                 <span class="n">comment</span><span class="p">,</span>
                 <span class="n">options</span><span class="p">)</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">paymentApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">PaymentApi</span><span class="p">()</span>
-<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"00000000-0000-0000-0000-000000000002"</span><span class="p">]</span>
+<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">]</span>
 
 <span class="n">paymentApi</span><span class="o">.</span><span class="n">create_payment_tags</span><span class="p">(</span><span class="n">payment_id</span><span class="p">,</span>
                                <span class="n">tag</span><span class="p">,</span>
@@ -29397,8 +29405,8 @@ through the <code>InvoicePayment</code> relashionship.</p>
     <span class="nl">tagId:</span> <span class="mi">1</span><span class="n">bb4b638</span><span class="o">-</span><span class="mi">3886</span><span class="o">-</span><span class="mi">4</span><span class="n">f73</span><span class="o">-</span><span class="mi">90</span><span class="n">a5</span><span class="o">-</span><span class="mi">89</span><span class="n">eb6d1bcf7f</span>
     <span class="nl">objectType:</span> <span class="n">PAYMENT</span>
     <span class="nl">objectId:</span> <span class="mi">917992</span><span class="n">d3</span><span class="o">-</span><span class="mi">5</span><span class="n">f1f</span><span class="o">-</span><span class="mi">4828</span><span class="o">-</span><span class="mi">9</span><span class="n">fff</span><span class="o">-</span><span class="mi">799</span><span class="n">cc4211aa9</span>
-    <span class="nl">tagDefinitionId:</span> <span class="mo">00000000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">000000000001</span>
-    <span class="nl">tagDefinitionName:</span> <span class="n">AUTO_PAY_OFF</span>
+    <span class="nl">tagDefinitionId:</span> <span class="mi">353752</span><span class="n">dd</span><span class="o">-</span><span class="mi">9041</span><span class="o">-</span><span class="mi">4450</span><span class="o">-</span><span class="n">b782</span><span class="o">-</span><span class="n">a8bb03a923c8</span>
+    <span class="nl">tagDefinitionName:</span> <span class="n">foo</span>
     <span class="nl">auditLogs:</span> <span class="o">[]</span>
 <span class="o">}</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="p">[</span>
@@ -29406,8 +29414,8 @@ through the <code>InvoicePayment</code> relashionship.</p>
       <span class="s2">"tagId"</span><span class="ss">:"a46cfeb6-e175-42db-be62-7f117326ab4e"</span><span class="p">,</span>
       <span class="s2">"objectType"</span><span class="ss">:"PAYMENT"</span><span class="p">,</span>
       <span class="s2">"objectId"</span><span class="ss">:"28af3cb9-275b-4ac4-a55d-a0536e479069"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionId"</span><span class="ss">:"00000000-0000-0000-0000-000000000006"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionName"</span><span class="ss">:"TEST"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionId"</span><span class="ss">:"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionName"</span><span class="ss">:"foo"</span><span class="p">,</span>
       <span class="s2">"auditLogs"</span><span class="ss">:[]</span>
    <span class="p">}</span>
 <span class="p">]</span>
@@ -29467,8 +29475,8 @@ through the <code>InvoicePayment</code> relashionship.</p>
     <span class="s2">"tagId"</span>: <span class="s2">"890e3b13-3114-478b-9365-50f1a2682143"</span>,
     <span class="s2">"objectType"</span>: <span class="s2">"PAYMENT"</span>,
     <span class="s2">"objectId"</span>: <span class="s2">"8fe697d4-2c25-482c-aa45-f6cd5a48186d"</span>,
-    <span class="s2">"tagDefinitionId"</span>: <span class="s2">"00000000-0000-0000-0000-000000000001"</span>,
-    <span class="s2">"tagDefinitionName"</span>: <span class="s2">"AUTO_PAY_OFF"</span>,
+    <span class="s2">"tagDefinitionId"</span>: <span class="s2">"353752dd-9041-4450-b782-a8bb03a923c8"</span>,
+    <span class="s2">"tagDefinitionName"</span>: <span class="s2">"foo"</span>,
     <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
   <span class="o">}</span>
 <span class="o">]</span>
@@ -29478,8 +29486,8 @@ through the <code>InvoicePayment</code> relashionship.</p>
     <span class="nl">tagId:</span> <span class="n">d724f79d</span><span class="o">-</span><span class="n">fad1</span><span class="o">-</span><span class="mi">4758</span><span class="o">-</span><span class="n">b35e</span><span class="o">-</span><span class="n">d62708450d90</span>
     <span class="nl">objectType:</span> <span class="n">PAYMENT</span>
     <span class="nl">objectId:</span> <span class="n">e659f0f3</span><span class="o">-</span><span class="mi">745</span><span class="n">c</span><span class="o">-</span><span class="mi">46</span><span class="n">d5</span><span class="o">-</span><span class="mi">953</span><span class="n">c</span><span class="o">-</span><span class="mi">28</span><span class="n">fe9282fc7d</span>
-    <span class="nl">tagDefinitionId:</span> <span class="mo">00000000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">000000000001</span>
-    <span class="nl">tagDefinitionName:</span> <span class="n">AUTO_PAY_OFF</span>
+    <span class="nl">tagDefinitionId:</span> <span class="mi">353752</span><span class="n">dd</span><span class="o">-</span><span class="mi">9041</span><span class="o">-</span><span class="mi">4450</span><span class="o">-</span><span class="n">b782</span><span class="o">-</span><span class="n">a8bb03a923c8</span>
+    <span class="nl">tagDefinitionName:</span> <span class="n">foo</span>
     <span class="nl">auditLogs:</span> <span class="o">[</span><span class="kd">class</span> <span class="nc">AuditLog</span> <span class="o">{</span>
         <span class="nl">changeType:</span> <span class="n">INSERT</span>
         <span class="nl">changeDate:</span> <span class="mi">2012</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">25</span><span class="nl">T00:</span><span class="mo">00</span><span class="o">:</span><span class="mf">02.000</span><span class="n">Z</span>
@@ -29497,16 +29505,16 @@ through the <code>InvoicePayment</code> relashionship.</p>
       <span class="s2">"tagId"</span><span class="ss">:"a46cfeb6-e175-42db-be62-7f117326ab4e"</span><span class="p">,</span>
       <span class="s2">"objectType"</span><span class="ss">:"PAYMENT"</span><span class="p">,</span>
       <span class="s2">"objectId"</span><span class="ss">:"28af3cb9-275b-4ac4-a55d-a0536e479069"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionId"</span><span class="ss">:"00000000-0000-0000-0000-000000000006"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionName"</span><span class="ss">:"TEST"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionId"</span><span class="ss">:"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionName"</span><span class="ss">:"foo"</span><span class="p">,</span>
       <span class="s2">"auditLogs"</span><span class="ss">:[]</span>
    <span class="p">}</span>
 <span class="p">]</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="p">[{</span><span class="s">'audit_logs'</span><span class="p">:</span> <span class="p">[],</span>
  <span class="s">'object_id'</span><span class="p">:</span> <span class="s">'41b6b214-c3f7-40ea-89cd-6a4ecbd9083b'</span><span class="p">,</span>
  <span class="s">'object_type'</span><span class="p">:</span> <span class="s">'PAYMENT'</span><span class="p">,</span>
- <span class="s">'tag_definition_id'</span><span class="p">:</span> <span class="s">'00000000-0000-0000-0000-000000000002'</span><span class="p">,</span>
- <span class="s">'tag_definition_name'</span><span class="p">:</span> <span class="s">'AUTO_INVOICING_OFF'</span><span class="p">,</span>
+ <span class="s">'tag_definition_id'</span><span class="p">:</span> <span class="s">'353752dd-9041-4450-b782-a8bb03a923c8'</span><span class="p">,</span>
+ <span class="s">'tag_definition_name'</span><span class="p">:</span> <span class="s">'foo'</span><span class="p">,</span>
  <span class="s">'tag_id'</span><span class="p">:</span> <span class="s">'865e0c77-def7-4880-ac80-11c21a5e571d'</span><span class="p">}]</span>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
@@ -29568,16 +29576,16 @@ through the <code>InvoicePayment</code> relashionship.</p>
     -H <span class="s1">'X-Killbill-ApiKey: bob'</span> <span class="se">\</span>
     -H <span class="s1">'X-Killbill-ApiSecret: lazar'</span> <span class="se">\</span>
     -H <span class="s1">'X-Killbill-CreatedBy: demo'</span> <span class="se">\</span>
-    <span class="s1">'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags?tagDef=00000000-0000-0000-0000-000000000001'</span>   
+    <span class="s1">'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags?tagDef=353752dd-9041-4450-b782-a8bb03a923c8'</span>   
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.PaymentApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">PaymentApi</span> <span class="n">paymentApi</span><span class="o">;</span>
 
 <span class="n">UUID</span> <span class="n">paymentId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"e659f0f3-745c-46d5-953c-28fe9282fc7d"</span><span class="o">);</span>
 
-<span class="n">UUID</span> <span class="n">autoPayOffId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"00000000-0000-0000-0000-000000000001"</span><span class="o">);</span>
+<span class="n">UUID</span> <span class="n">tagDefinitionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="o">);</span>
 
 <span class="n">paymentApi</span><span class="o">.</span><span class="na">deletePaymentTags</span><span class="o">(</span><span class="n">paymentId</span><span class="o">,</span> 
-                             <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">autoPayOffId</span><span class="o">),</span> 
+                             <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">tagDefinitionId</span><span class="o">),</span> 
                              <span class="n">requestOptions</span><span class="o">);</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'TEST'</span>
 
@@ -29588,7 +29596,7 @@ through the <code>InvoicePayment</code> relashionship.</p>
                    <span class="n">options</span><span class="p">)</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">paymentApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">PaymentApi</span><span class="p">()</span>
 <span class="n">payment_id</span> <span class="o">=</span> <span class="s">'dce5b2a0-0f0f-430b-9427-545ba4be5c7f'</span>
-<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"00000000-0000-0000-0000-000000000002"</span><span class="p">]</span> 
+<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">]</span> 
 
 <span class="n">paymentApi</span><span class="o">.</span><span class="n">delete_payment_tags</span><span class="p">(</span><span class="n">payment_id</span><span class="p">,</span>
                                <span class="n">created_by</span><span class="p">,</span>
@@ -31086,6 +31094,10 @@ that work directly at the transaction level.</p>
 <p>A <code>204</code> http status without content.</p>
 <h2 id='payment-transaction-tags'>Tags</h2>
 <p>See section <a href="#account-tags">Account Tags</a> for an introduction.</p>
+
+<p>The are no <code>system</code> tags applicable for an <code>PaymentTransaction</code>.</p>
+
+<p>Let&#39;s assume there is an existing <code>user</code> tagDefintion already created with <code>tagDefinitionId</code>=<code>353752dd-9041-4450-b782-a8bb03a923c8</code>.</p>
 <h3 id='payment-transaction-add-tags-to-payment-transaction'>Add tags to payment transaction</h3>
 <p><strong>HTTP Request</strong> </p>
 
@@ -31102,7 +31114,7 @@ that work directly at the transaction level.</p>
     -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
     -H <span class="s1">'X-Killbill-CreatedBy: demo'</span> <span class="se">\</span>
     -d <span class="s1">'[
-            "00000000-0000-0000-0000-000000000001"
+            "353752dd-9041-4450-b782-a8bb03a923c8"
         ]'</span> <span class="se">\</span>
     <span class="s1">'http://127.0.0.1:8080/1.0/kb/paymentTransactions/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags'</span> 
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.PaymentTransactionApi</span><span class="o">;</span>
@@ -31110,15 +31122,15 @@ that work directly at the transaction level.</p>
 
 <span class="n">UUID</span> <span class="n">paymentTransactionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"917992d3-5f1f-4828-9fff-799cc4211aa9"</span><span class="o">);</span>
 
-<span class="n">UUID</span> <span class="n">autoPayOffId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"00000000-0000-0000-0000-000000000001"</span><span class="o">);</span>
+<span class="n">UUID</span> <span class="n">tagDefinitionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="o">);</span>
 
 <span class="n">Tags</span> <span class="n">result</span> <span class="o">=</span> <span class="n">PaymentTransactionApi</span><span class="o">.</span><span class="na">createTransactionTags</span><span class="o">(</span><span class="n">paymentTransactionId</span><span class="o">,</span> 
-                                                          <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">autoPayOffId</span><span class="o">),</span> 
+                                                          <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">tagDefinitionId</span><span class="o">),</span> 
                                                           <span class="n">requestOptions</span><span class="o">);</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="no">TODO</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">paymentTransactionApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">PaymentTransactionApi</span><span class="p">()</span>
 
-<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"00000000-0000-0000-0000-000000000002"</span><span class="p">]</span>
+<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">]</span>
 
 <span class="n">paymentTransactionApi</span><span class="o">.</span><span class="n">create_transaction_tags</span><span class="p">(</span><span class="n">payment_transaction_id</span><span class="p">,</span>
                                               <span class="n">tag</span><span class="p">,</span>
@@ -31140,7 +31152,7 @@ that work directly at the transaction level.</p>
     <span class="nl">tagId:</span> <span class="mi">1</span><span class="n">bb4b638</span><span class="o">-</span><span class="mi">3886</span><span class="o">-</span><span class="mi">4</span><span class="n">f73</span><span class="o">-</span><span class="mi">90</span><span class="n">a5</span><span class="o">-</span><span class="mi">89</span><span class="n">eb6d1bcf7f</span>
     <span class="nl">objectType:</span> <span class="n">TRANSACTION</span>
     <span class="nl">objectId:</span> <span class="mi">917992</span><span class="n">d3</span><span class="o">-</span><span class="mi">5</span><span class="n">f1f</span><span class="o">-</span><span class="mi">4828</span><span class="o">-</span><span class="mi">9</span><span class="n">fff</span><span class="o">-</span><span class="mi">799</span><span class="n">cc4211aa9</span>
-    <span class="nl">tagDefinitionId:</span> <span class="mo">00000000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">000000000001</span>
+    <span class="nl">tagDefinitionId:</span> <span class="mi">353752</span><span class="n">dd</span><span class="o">-</span><span class="mi">9041</span><span class="o">-</span><span class="mi">4450</span><span class="o">-</span><span class="n">b782</span><span class="o">-</span><span class="n">a8bb03a923c8</span>
     <span class="nl">tagDefinitionName:</span> <span class="n">AUTO_PAY_OFF</span>
     <span class="nl">auditLogs:</span> <span class="o">[]</span>
 <span class="o">}</span>
@@ -31197,8 +31209,8 @@ that work directly at the transaction level.</p>
     <span class="s2">"tagId"</span>: <span class="s2">"890e3b13-3114-478b-9365-50f1a2682143"</span>,
     <span class="s2">"objectType"</span>: <span class="s2">"TRANSACTION"</span>,
     <span class="s2">"objectId"</span>: <span class="s2">"8fe697d4-2c25-482c-aa45-f6cd5a48186d"</span>,
-    <span class="s2">"tagDefinitionId"</span>: <span class="s2">"00000000-0000-0000-0000-000000000001"</span>,
-    <span class="s2">"tagDefinitionName"</span>: <span class="s2">"AUTO_PAY_OFF"</span>,
+    <span class="s2">"tagDefinitionId"</span>: <span class="s2">"353752dd-9041-4450-b782-a8bb03a923c8"</span>,
+    <span class="s2">"tagDefinitionName"</span>: <span class="s2">"foo"</span>,
     <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
   <span class="o">}</span>
 <span class="o">]</span>
@@ -31208,8 +31220,8 @@ that work directly at the transaction level.</p>
     <span class="nl">tagId:</span> <span class="n">d724f79d</span><span class="o">-</span><span class="n">fad1</span><span class="o">-</span><span class="mi">4758</span><span class="o">-</span><span class="n">b35e</span><span class="o">-</span><span class="n">d62708450d90</span>
     <span class="nl">objectType:</span> <span class="n">TRANSACTION</span>
     <span class="nl">objectId:</span> <span class="n">e659f0f3</span><span class="o">-</span><span class="mi">745</span><span class="n">c</span><span class="o">-</span><span class="mi">46</span><span class="n">d5</span><span class="o">-</span><span class="mi">953</span><span class="n">c</span><span class="o">-</span><span class="mi">28</span><span class="n">fe9282fc7d</span>
-    <span class="nl">tagDefinitionId:</span> <span class="mo">00000000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">000000000001</span>
-    <span class="nl">tagDefinitionName:</span> <span class="n">AUTO_PAY_OFF</span>
+    <span class="nl">tagDefinitionId:</span> <span class="mi">353752</span><span class="n">dd</span><span class="o">-</span><span class="mi">9041</span><span class="o">-</span><span class="mi">4450</span><span class="o">-</span><span class="n">b782</span><span class="o">-</span><span class="n">a8bb03a923c8</span>
+    <span class="nl">tagDefinitionName:</span> <span class="n">foo</span>
     <span class="nl">auditLogs:</span> <span class="o">[</span><span class="kd">class</span> <span class="nc">AuditLog</span> <span class="o">{</span>
         <span class="nl">changeType:</span> <span class="n">INSERT</span>
         <span class="nl">changeDate:</span> <span class="mi">2012</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">25</span><span class="nl">T00:</span><span class="mo">00</span><span class="o">:</span><span class="mf">02.000</span><span class="n">Z</span>
@@ -31226,8 +31238,8 @@ that work directly at the transaction level.</p>
 </code></pre><pre class="highlight python tab-python"><code><span class="p">[{</span><span class="s">'audit_logs'</span><span class="p">:</span> <span class="p">[],</span>
  <span class="s">'object_id'</span><span class="p">:</span> <span class="s">'41b6b214-c3f7-40ea-89cd-6a4ecbd9083b'</span><span class="p">,</span>
  <span class="s">'object_type'</span><span class="p">:</span> <span class="s">'TRANSACTION'</span><span class="p">,</span>
- <span class="s">'tag_definition_id'</span><span class="p">:</span> <span class="s">'00000000-0000-0000-0000-000000000002'</span><span class="p">,</span>
- <span class="s">'tag_definition_name'</span><span class="p">:</span> <span class="s">'AUTO_INVOICING_OFF'</span><span class="p">,</span>
+ <span class="s">'tag_definition_id'</span><span class="p">:</span> <span class="s">'353752dd-9041-4450-b782-a8bb03a923c8'</span><span class="p">,</span>
+ <span class="s">'tag_definition_name'</span><span class="p">:</span> <span class="s">'foo'</span><span class="p">,</span>
  <span class="s">'tag_id'</span><span class="p">:</span> <span class="s">'865e0c77-def7-4880-ac80-11c21a5e571d'</span><span class="p">}]</span>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
@@ -31289,22 +31301,22 @@ that work directly at the transaction level.</p>
     -H <span class="s1">'X-Killbill-ApiKey: bob'</span> <span class="se">\</span>
     -H <span class="s1">'X-Killbill-ApiSecret: lazar'</span> <span class="se">\</span>
     -H <span class="s1">'X-Killbill-CreatedBy: demo'</span> <span class="se">\</span>
-    <span class="s1">'http://127.0.0.1:8080/1.0/kb/paymentTransactions/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags?tagDef=00000000-0000-0000-0000-000000000001'</span>    
+    <span class="s1">'http://127.0.0.1:8080/1.0/kb/paymentTransactions/8fe697d4-2c25-482c-aa45-f6cd5a48186d/tags?tagDef=353752dd-9041-4450-b782-a8bb03a923c8'</span>    
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.PaymentTransactionApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">PaymentTransactionApi</span> <span class="n">paymentTransactionApi</span><span class="o">;</span>
 
 <span class="n">UUID</span> <span class="n">paymentTransactionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"e659f0f3-745c-46d5-953c-28fe9282fc7d"</span><span class="o">);</span>
 
-<span class="n">UUID</span> <span class="n">autoPayOffId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"00000000-0000-0000-0000-000000000001"</span><span class="o">);</span>
+<span class="n">UUID</span> <span class="n">tagDefinitionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="o">);</span>
 
 <span class="n">paymentTransactionApi</span><span class="o">.</span><span class="na">deleteTransactionTags</span><span class="o">(</span><span class="n">paymentTransactionId</span><span class="o">,</span> 
-                                            <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">autoPayOffId</span><span class="o">),</span> 
+                                            <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">tagDefinitionId</span><span class="o">),</span> 
                                             <span class="n">requestOptions</span><span class="o">);</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="no">TODO</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">paymentTransactionApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">PaymentTransactionApi</span><span class="p">()</span>
 
 <span class="n">payment_transaction_id</span> <span class="o">=</span> <span class="s">'dce5b2a0-0f0f-430b-9427-545ba4be5c7f'</span>
-<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"00000000-0000-0000-0000-000000000002"</span><span class="p">]</span> 
+<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">]</span> 
 
 <span class="n">paymentTransactionApi</span><span class="o">.</span><span class="n">delete_transaction_tags</span><span class="p">(</span><span class="n">payment_transaction_id</span><span class="p">,</span>
                                               <span class="n">created_by</span><span class="p">,</span>
@@ -32472,6 +32484,10 @@ that work directly at the transaction level.</p>
 <p>A <code>204</code> http status without content.</p>
 <h2 id='invoice-payment-tags'>Tags</h2>
 <p>See section <a href="#account-tags">Account Tags</a> for an introduction.</p>
+
+<p>The are no <code>system</code> tags applicable for an <code>InvoicePayment</code>.</p>
+
+<p>Let&#39;s assume there is an existing <code>user</code> tagDefintion already created with <code>tagDefinitionId</code>=<code>353752dd-9041-4450-b782-a8bb03a923c8</code>.</p>
 <h3 id='invoice-payment-add-tags-to-payment'>Add tags to payment</h3>
 <p><strong>HTTP Request</strong> </p>
 
@@ -32488,7 +32504,7 @@ that work directly at the transaction level.</p>
     -H <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
     -H <span class="s1">'X-Killbill-CreatedBy: demo'</span> <span class="se">\</span>
     -d <span class="s1">'[
-            "00000000-0000-0000-0000-000000000001"
+            "353752dd-9041-4450-b782-a8bb03a923c8"
         ]'</span> <span class="se">\</span>
     <span class="s1">'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/tags'</span> 
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoicePaymentApi</span><span class="o">;</span>
@@ -32496,12 +32512,12 @@ that work directly at the transaction level.</p>
 
 <span class="n">UUID</span> <span class="n">paymentId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"45d6f4c5-21be-49b1-99c5-7b0c3c985bf0"</span><span class="o">);</span>
 
-<span class="n">UUID</span> <span class="n">autoPayOffId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"00000000-0000-0000-0000-000000000001"</span><span class="o">);</span>
+<span class="n">UUID</span> <span class="n">tagDefinitionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="o">);</span>
 
 <span class="n">Tags</span> <span class="n">result</span> <span class="o">=</span> <span class="n">invoicePaymentApi</span><span class="o">.</span><span class="na">createInvoicePaymentTags</span><span class="o">(</span><span class="n">paymentId</span><span class="o">,</span> 
-                                                         <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">autoPayOffId</span><span class="o">),</span> 
+                                                         <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">tagDefinitionId</span><span class="o">),</span> 
                                                          <span class="n">requestOptions</span><span class="o">);</span>
-</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'TEST'</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'foo'</span>
 
 <span class="n">invoice_payment</span><span class="p">.</span><span class="nf">add_tag</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span>
                         <span class="n">user</span><span class="p">,</span>
@@ -32510,7 +32526,7 @@ that work directly at the transaction level.</p>
                         <span class="n">options</span><span class="p">)</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">invoicePaymentApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="o">.</span><span class="n">api</span><span class="o">.</span><span class="n">InvoicePaymentApi</span><span class="p">()</span>
 <span class="n">payment_id</span> <span class="o">=</span> <span class="s">'8d85a8e8-c94b-438f-aac1-e8cb436b2c05'</span>
-<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"00000000-0000-0000-0000-000000000002"</span><span class="p">]</span>
+<span class="n">tag</span> <span class="o">=</span> <span class="p">[</span><span class="s">"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">]</span>
 
 <span class="n">invoicePaymentApi</span><span class="o">.</span><span class="n">create_invoice_payment_tags</span><span class="p">(</span><span class="n">payment_id</span><span class="p">,</span>
                                               <span class="n">tag</span><span class="p">,</span>
@@ -32532,8 +32548,8 @@ that work directly at the transaction level.</p>
     <span class="nl">tagId:</span> <span class="mi">1</span><span class="n">bb4b638</span><span class="o">-</span><span class="mi">3886</span><span class="o">-</span><span class="mi">4</span><span class="n">f73</span><span class="o">-</span><span class="mi">90</span><span class="n">a5</span><span class="o">-</span><span class="mi">89</span><span class="n">eb6d1bcf7f</span>
     <span class="nl">objectType:</span> <span class="n">INVOICE_PAYMENT</span>
     <span class="nl">objectId:</span> <span class="mi">45</span><span class="n">d6f4c5</span><span class="o">-</span><span class="mi">21</span><span class="n">be</span><span class="o">-</span><span class="mi">49</span><span class="n">b1</span><span class="o">-</span><span class="mi">99</span><span class="n">c5</span><span class="o">-</span><span class="mi">7</span><span class="n">b0c3c985bf0</span>
-    <span class="nl">tagDefinitionId:</span> <span class="mo">00000000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">000000000001</span>
-    <span class="nl">tagDefinitionName:</span> <span class="n">AUTO_PAY_OFF</span>
+    <span class="nl">tagDefinitionId:</span> <span class="mi">353752</span><span class="n">dd</span><span class="o">-</span><span class="mi">9041</span><span class="o">-</span><span class="mi">4450</span><span class="o">-</span><span class="n">b782</span><span class="o">-</span><span class="n">a8bb03a923c8</span>
+    <span class="nl">tagDefinitionName:</span> <span class="n">foo</span>
     <span class="nl">auditLogs:</span> <span class="o">[]</span>
 <span class="o">}</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="p">[</span>
@@ -32541,8 +32557,8 @@ that work directly at the transaction level.</p>
       <span class="s2">"tagId"</span><span class="ss">:"a46cfeb6-e175-42db-be62-7f117326ab4e"</span><span class="p">,</span>
       <span class="s2">"objectType"</span><span class="ss">:"INVOICE_PAYMENT"</span><span class="p">,</span>
       <span class="s2">"objectId"</span><span class="ss">:"28af3cb9-275b-4ac4-a55d-a0536e479069"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionId"</span><span class="ss">:"00000000-0000-0000-0000-000000000006"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionName"</span><span class="ss">:"TEST"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionId"</span><span class="ss">:"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionName"</span><span class="ss">:"foo"</span><span class="p">,</span>
       <span class="s2">"auditLogs"</span><span class="ss">:[]</span>
    <span class="p">}</span>
 <span class="p">]</span>
@@ -32602,8 +32618,8 @@ that work directly at the transaction level.</p>
     <span class="s2">"tagId"</span>: <span class="s2">"e7f68cab-3b9a-4150-909a-5f1c17f1fb2b"</span>,
     <span class="s2">"objectType"</span>: <span class="s2">"PAYMENT"</span>,
     <span class="s2">"objectId"</span>: <span class="s2">"cc7fcd4d-e701-4679-9741-41289103db83"</span>,
-    <span class="s2">"tagDefinitionId"</span>: <span class="s2">"00000000-0000-0000-0000-000000000001"</span>,
-    <span class="s2">"tagDefinitionName"</span>: <span class="s2">"AUTO_PAY_OFF"</span>,
+    <span class="s2">"tagDefinitionId"</span>: <span class="s2">"353752dd-9041-4450-b782-a8bb03a923c8"</span>,
+    <span class="s2">"tagDefinitionName"</span>: <span class="s2">"foo"</span>,
     <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
   <span class="o">}</span>
 <span class="o">]</span>
@@ -32613,8 +32629,8 @@ that work directly at the transaction level.</p>
     <span class="nl">tagId:</span> <span class="n">d724f79d</span><span class="o">-</span><span class="n">fad1</span><span class="o">-</span><span class="mi">4758</span><span class="o">-</span><span class="n">b35e</span><span class="o">-</span><span class="n">d62708450d90</span>
     <span class="nl">objectType:</span> <span class="n">INVOICE_PAYMENT</span>
     <span class="nl">objectId:</span> <span class="n">e659f0f3</span><span class="o">-</span><span class="mi">745</span><span class="n">c</span><span class="o">-</span><span class="mi">46</span><span class="n">d5</span><span class="o">-</span><span class="mi">953</span><span class="n">c</span><span class="o">-</span><span class="mi">28</span><span class="n">fe9282fc7d</span>
-    <span class="nl">tagDefinitionId:</span> <span class="mo">00000000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">0000</span><span class="o">-</span><span class="mo">000000000001</span>
-    <span class="nl">tagDefinitionName:</span> <span class="n">AUTO_PAY_OFF</span>
+    <span class="nl">tagDefinitionId:</span> <span class="mi">353752</span><span class="n">dd</span><span class="o">-</span><span class="mi">9041</span><span class="o">-</span><span class="mi">4450</span><span class="o">-</span><span class="n">b782</span><span class="o">-</span><span class="n">a8bb03a923c8</span>
+    <span class="nl">tagDefinitionName:</span> <span class="n">foo</span>
     <span class="nl">auditLogs:</span> <span class="o">[</span><span class="kd">class</span> <span class="nc">AuditLog</span> <span class="o">{</span>
         <span class="nl">changeType:</span> <span class="n">INSERT</span>
         <span class="nl">changeDate:</span> <span class="mi">2012</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">25</span><span class="nl">T00:</span><span class="mo">00</span><span class="o">:</span><span class="mf">02.000</span><span class="n">Z</span>
@@ -32632,16 +32648,16 @@ that work directly at the transaction level.</p>
       <span class="s2">"tagId"</span><span class="ss">:"a46cfeb6-e175-42db-be62-7f117326ab4e"</span><span class="p">,</span>
       <span class="s2">"objectType"</span><span class="ss">:"INVOICE_PAYMENT"</span><span class="p">,</span>
       <span class="s2">"objectId"</span><span class="ss">:"28af3cb9-275b-4ac4-a55d-a0536e479069"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionId"</span><span class="ss">:"00000000-0000-0000-0000-000000000006"</span><span class="p">,</span>
-      <span class="s2">"tagDefinitionName"</span><span class="ss">:"TEST"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionId"</span><span class="ss">:"353752dd-9041-4450-b782-a8bb03a923c8"</span><span class="p">,</span>
+      <span class="s2">"tagDefinitionName"</span><span class="ss">:"foo"</span><span class="p">,</span>
       <span class="s2">"auditLogs"</span><span class="ss">:[]</span>
    <span class="p">}</span>
 <span class="p">]</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="p">[{</span><span class="s">'audit_logs'</span><span class="p">:</span> <span class="p">[],</span>
  <span class="s">'object_id'</span><span class="p">:</span> <span class="s">'2a1ffd2c-0de1-4f5c-b2a9-27d8deebe596'</span><span class="p">,</span>
  <span class="s">'object_type'</span><span class="p">:</span> <span class="s">'PAYMENT'</span><span class="p">,</span>
- <span class="s">'tag_definition_id'</span><span class="p">:</span> <span class="s">'00000000-0000-0000-0000-000000000002'</span><span class="p">,</span>
- <span class="s">'tag_definition_name'</span><span class="p">:</span> <span class="s">'AUTO_INVOICING_OFF'</span><span class="p">,</span>
+ <span class="s">'tag_definition_id'</span><span class="p">:</span> <span class="s">'353752dd-9041-4450-b782-a8bb03a923c8'</span><span class="p">,</span>
+ <span class="s">'tag_definition_name'</span><span class="p">:</span> <span class="s">'foo'</span><span class="p">,</span>
  <span class="s">'tag_id'</span><span class="p">:</span> <span class="s">'864ee6aa-1439-4037-8f65-aa114739f09f'</span><span class="p">}]</span>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
