@@ -1234,6 +1234,28 @@
               </ul>
           </li>
           <li>
+            <a href="#tag-definition" class="toc-h1 toc-link" data-title="Tag Definition">Tag Definition</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#tag-definition-tag-definition-resource" class="toc-h2 toc-link" data-title="Tag Definition Resource">Tag Definition Resource</a>
+                  </li>
+                  <li>
+                    <a href="#tag-definition-tag-definition" class="toc-h2 toc-link" data-title="Tag Definition">Tag Definition</a>
+                        <ul class="toc-list-h3">
+                              <li>
+                                <a href="#tag-definition-create-a-tag-definition" class="toc-h3 toc-link" data-title="Tag Definition">Create a tag definition</a>
+                              </li>
+                              <li>
+                                <a href="#tag-definition-retrieve-a-tag-definition-by-its-id" class="toc-h3 toc-link" data-title="Tag Definition">Retrieve a tag definition by its ID</a>
+                              </li>
+                              <li>
+                                <a href="#tag-definition-delete-a-tag-definition" class="toc-h3 toc-link" data-title="Tag Definition">Delete a tag definition</a>
+                              </li>
+                        </ul>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#admin" class="toc-h1 toc-link" data-title="Admin">Admin</a>
               <ul class="toc-list-h2">
                   <li>
@@ -10809,7 +10831,7 @@ attached to various objects in the system by using tags. Tags come into 2 differ
 
 <ul>
 <li><code>System Tags</code>: Those are interpreted by the system to change the behavior. Certain tags can only be attached to specific resource types -- e.g <code>Account</code>. In order to distinguish them from the user tags, the system tags are uppercase symbols.</li>
-<li><code>User Tags</code>: Those are <strong>not</strong> interpreted by the system, and can be anything as long as it a lowercase symbol. Foe example <code>good_customer</code> could be a tag that can be attached to a customer <code>Account</code>.</li>
+<li><code>User Tags</code>: Those are <strong>not</strong> interpreted by the system, and can be anything as long as it a lowercase symbol. Foe example <code>good_customer</code> could be a tag that can be attached to a customer <code>Account</code>. </li>
 </ul>
 
 <p>The apis to manage tags rely on having an existing tag definition and supplying the <code>tagDefinitionId</code> in the calls, therefore, for user tags, one should first create a <code>TagDefinition</code>.</p>
@@ -10827,6 +10849,8 @@ attached to various objects in the system by using tags. Tags come into 2 differ
 <li><code>AUTO_INVOICING_DRAFT</code>: Generate account invoices in DRAFT mode. Applicable to <code>ACCOUNT</code> only. <code>tagDefinitionId</code>=<code>00000000-0000-0000-0000-000000000008</code>.</li>
 <li><code>AUTO_INVOICING_REUSE_DRAFT</code>: Use existing draft invoice if exists. Applicable to <code>ACCOUNT</code> only. <code>tagDefinitionId</code>=<code>00000000-0000-0000-0000-000000000009</code>.</li>
 </ul>
+
+<p>For user tags, one must first create the tag definition. See section <a href="#tag-definition">Tag definition</a> to accomplish this.</p>
 <h3 id='account-add-tags-to-account'>Add tags to account</h3>
 <p><strong>HTTP Request</strong> </p>
 
@@ -32761,6 +32785,129 @@ that work directly at the transaction level.</p>
 <p><strong>Returns</strong></p>
 
 <p>A <code>204</code> http status without content.</p>
+<h1 id='tag-definition'>Tag Definition</h1><h2 id='tag-definition-tag-definition-resource'>Tag Definition Resource</h2>
+<p>Each tag is associated to a specific tag definition, the tag definition being the schema/template and the tag the instance of it. Please refer to the section <a href="https://killbill.github.io/slate/#account-tags">AccountTags</a> for an overview about tags. The system already provides some <code>System tag definitions</code> that can be used to add tags to a particular object. However, when using <code>User Tags</code>, ome must first create the associated tag definition.</p>
+
+<p>Creating, listing, deleting such tag defintions is the purpose of the apis below.</p>
+<h2 id='tag-definition-tag-definition'>Tag Definition</h2><h3 id='tag-definition-create-a-tag-definition'>Create a tag definition</h3>
+<p><strong>HTTP Request</strong> </p>
+
+<p><code>POST http://example.com/1.0/kb/tagDefinitions</code></p>
+
+<blockquote>
+<p>Example Request:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -v <span class="se">\</span>
+    -X POST <span class="se">\</span>
+    -u admin:password <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+    -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+    -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
+     -d <span class="s1">'{ "name": "good_customer", "description": "a good customer", "applicableObjectTypes": ["ACCOUNT"]}'</span> <span class="se">\</span>
+    <span class="s2">"http://localhost:8080/1.0/kb/tagDefinitions"</span>
+</code></pre><pre class="highlight java tab-java"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight python tab-python"><code>
+</code></pre>
+<blockquote>
+<p>Example Response:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="c"># Subset of headers returned when specifying -v curl option</span>
+&lt; HTTP/1.1 201 
+&lt; Location: http://localhost:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f
+&lt; Content-Type: application/json
+&lt; Content-Length: 0
+</code></pre><pre class="highlight java tab-java"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
+</code></pre>
+<p><strong>Returns</strong></p>
+
+<p>A 201 http status without content.</p>
+<h3 id='tag-definition-retrieve-a-tag-definition-by-its-id'>Retrieve a tag definition by its ID</h3>
+<p><strong>HTTP Request</strong> </p>
+
+<p><code>GET http://example.com/1.0/kb/tagDefinitions/{tagDefinitionId}</code></p>
+
+<blockquote>
+<p>Example Request:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -v <span class="se">\</span>
+    -u admin:password <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+    -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
+    <span class="s2">"http://localhost:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f"</span>
+</code></pre><pre class="highlight java tab-java"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight python tab-python"><code></code></pre>
+<blockquote>
+<p>Example Response:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="o">{</span>
+  <span class="s2">"id"</span>: <span class="s2">"93f2bc59-e18d-4a5e-a645-9386c76fc03f"</span>,
+  <span class="s2">"isControlTag"</span>: <span class="nb">false</span>,
+  <span class="s2">"name"</span>: <span class="s2">"good_customer"</span>,
+  <span class="s2">"description"</span>: <span class="s2">"a good customer"</span>,
+  <span class="s2">"applicableObjectTypes"</span>: <span class="o">[</span>
+    <span class="s2">"ACCOUNT"</span>
+  <span class="o">]</span>,
+  <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
+<span class="o">}</span>
+</code></pre><pre class="highlight java tab-java"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight python tab-python"><code></code></pre>
+<p><strong>Query Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>audit</strong></td>
+<td>string</td>
+<td>false</td>
+<td>whether or not to return associated audit logs</td>
+</tr>
+</tbody></table>
+
+<p><strong>Returns</strong></p>
+
+<p>Returns a tag definition object.</p>
+<h3 id='tag-definition-delete-a-tag-definition'>Delete a tag definition</h3>
+<p><strong>HTTP Request</strong> </p>
+
+<p><code>DELETE http://example.com/1.0/kb/tagDefinitions/{tagDefinitionId}</code></p>
+
+<blockquote>
+<p>Example Request:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -v <span class="se">\</span>
+    -X DELETE <span class="se">\</span>
+    -u admin:password <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+    -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
+    <span class="s2">"http://localhost:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f"</span>
+</code></pre><pre class="highlight java tab-java"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight python tab-python"><code></code></pre>
+<blockquote>
+<p>Example Response:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="c"># Subset of headers returned when specifying -v curl option</span>
+&lt; HTTP/1.1 204 
+&lt; Content-Type: application/json
+
+</code></pre><pre class="highlight java tab-java"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight python tab-python"><code></code></pre>
+<p><strong>Query Parameters</strong></p>
+
+<p>None.</p>
+
+<p><strong>Returns</strong></p>
+
+<p>A 204 http status without content.</p>
 <h1 id='admin'>Admin</h1>
 <p>The admin resource offers a set of enpoints of the following nature:</p>
 
