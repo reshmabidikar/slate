@@ -4835,7 +4835,7 @@ While custom fields allow to attach `{key, value}` pairs to various objects in t
 attached to various objects in the system by using tags. Tags come into 2 different fashions:
 
 * `System Tags`: Those are interpreted by the system to change the behavior. Certain tags can only be attached to specific resource types -- e.g `Account`. In order to distinguish them from the user tags, the system tags are uppercase symbols.
-* `User Tags`: Those are **not** interpreted by the system, and can be anything as long as it a lowercase symbol. Foe example `good_customer` could be a tag that can be attached to a customer `Account`.
+* `User Tags`: Those are **not** interpreted by the system, and can be anything as long as it a lowercase symbol. Foe example `good_customer` could be a tag that can be attached to a customer `Account`. 
 
 The apis to manage tags rely on having an existing tag definition and supplying the `tagDefinitionId` in the calls, therefore, for user tags, one should first create a `TagDefinition`.
 
@@ -4850,6 +4850,9 @@ The following **system** tags, along with their `tagDefinitionId`, and list of o
 * `PARTNER`: Indicates that this is a partner account. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000007`.
 * `AUTO_INVOICING_DRAFT`: Generate account invoices in DRAFT mode. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000008`.
 * `AUTO_INVOICING_REUSE_DRAFT`: Use existing draft invoice if exists. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000009`.
+
+
+For user tags, one must first create the tag definition. See section [Tag definition](#tag-definition) to accomplish this.
 
 
 ### Add tags to account

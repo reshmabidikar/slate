@@ -11,6 +11,7 @@ includes:
   - payment
   - payment-transaction
   - invoice-payment
+  - tag-definition
   - admin
   
 title: Kill Bill 
