@@ -37,6 +37,8 @@ The attributes are the following:
 
 Create a new customer `Account`.
 
+Note that none of these fields are mantatory when creating the `Account`. This allows to create shell accounts, simply for the purpose of having a valid `accountId` and create state around it -- e.g payments,... This can also be useful to ensure none of the PII data is in the system.
+
 **HTTP Request** 
 
 `POST http://127.0.0.1:8080/1.0/kb/accounts` 
@@ -647,7 +649,7 @@ no content
 no content
 ```
 
-Note that the following fields are not updatable, they can only be set once when creating the original `Account`:  `externalKey`, `currency`, timeZone`, `referenceTime`. In addition the `billCycleDayLocal` can be updated but only **once**, that is one can create an `Account` without specifying the `billCycleDayLocal` and later update its value; this, in particular allows the system to update its value to a good default, that is one that will avoid leading pro-rations, when creating the first subscription.
+Note that the following fields are not updatable, they can only be set once when creating the original `Account`:  `externalKey`, `currency`, `timeZone`, `referenceTime`. In addition the `billCycleDayLocal` can be updated but only **once**, that is one can create an `Account` without specifying the `billCycleDayLocal` and later update its value; this, in particular allows the system to update its value to a good default, that is one that will avoid leading pro-rations, when creating the first subscription.
 
 
 
@@ -4412,7 +4414,6 @@ class CustomField {
 no content
 ```
 
-Note that none of these fields are mantatory when creating the `Account`. This allows to create shell accounts, simply for the purpose of having a valid `accountId` and create state around it -- e.g payments, .. 
 
 **Query Parameters**
 
