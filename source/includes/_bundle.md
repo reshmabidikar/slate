@@ -1709,7 +1709,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **requestedDate** | string | false | requested date for transfer a bundle |
+| **requestedDate** | string | false | requested date for the transfer of the bundle |
 
 **Returns**
 
