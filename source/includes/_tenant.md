@@ -237,7 +237,13 @@ tenantApi.get_tenant_by_api_key(api_key='bob')
 > Example Response:
 
 ```shell
-
+{
+  "tenantId": "6907712e-e940-4033-8695-36894db128d3",
+  "externalKey": "1532546166-326384",
+  "apiKey": "bob",
+  "apiSecret": null,
+  "auditLogs": []
+}
 ```
 ```java
 {
@@ -277,7 +283,7 @@ Returns a tenant object.
 
 Push notifications is a convenient way to get notified about events from the system.
 One can register a callback, i.e a valid URL that will be called whenever there is an event dispatched for this tenant.
-Note that this can result in a large number of calls, basically everytime there a state change for one of the `Account`
+Note that this can result in a large number of calls, basically everytime there is a state change for one of the `Account`
 in this tenant, such callback would be invoked.
 
 In case the error, the system will retry the callback as defined by the system property `org.killbill.billing.server.notifications.retries`.
@@ -499,6 +505,9 @@ Some of the configuration can be overriden at the tenant level to allow for diff
 
 `POST http://example.com/1.0/kb/tenants/uploadPerTenantConfig`
 
+For example, in order to disable the invoice safety bound mechanism on a per-tenant level, one could overwrite the per-tenant system property `org.killbill.invoice.sanitySafetyBoundEnabled` to false.
+
+
 > Example Request:
 
 ```shell
@@ -512,7 +521,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "\"tenant_config\"" \
+    -d "{"org.killbill.invoice.sanitySafetyBoundEnabled":"false"}" \
     "http://localhost:8080/1.0/kb/tenants/uploadPerTenantConfig"
 ```
 
@@ -520,7 +529,7 @@ curl -v \
 import org.killbill.billing.client.api.gen.TenantApi;
 protected AdminApi tenantApi;
 
-String body = "demo";
+String body = "{"org.killbill.invoice.sanitySafetyBoundEnabled":"false"}";
 
 TenantKeyValue result = tenantApi.uploadPerTenantConfiguration(body, requestOptions);
 ```
@@ -531,7 +540,7 @@ TODO
 
 ```python
 tenantApi = killbill.api.TenantApi()
-body = "tenant_config"
+body = '{"org.killbill.invoice.sanitySafetyBoundEnabled":"false"}'
 
 tenantApi.upload_per_tenant_configuration(body, created_by='demo')
 ```
@@ -548,7 +557,9 @@ tenantApi.upload_per_tenant_configuration(body, created_by='demo')
 ```java
 class TenantKeyValue {
     key: PER_TENANT_CONFIG
-    values: [demo]
+    values: [
+    "{org.killbill.invoice.sanitySafetyBoundEnabled:false}"
+  ]
 }
 ```
 ```ruby
@@ -573,6 +584,13 @@ A 201 http status without content.
 `GET http://example.com/1.0/kb/tenants/uploadPerTenantConfig`
 
 > Example Request:
+
+curl  \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/tenants/uploadPerTenantConfig"
 
 ```shell
 curl -v \
@@ -610,21 +628,25 @@ tenantApi.get_per_tenant_configuration()
 {
   "key": "PER_TENANT_CONFIG",
   "values": [
-    "\"tenant_config\""
+    "{org.killbill.invoice.sanitySafetyBoundEnabled:false}"
   ]
 }
 ```
 ```java
 class TenantKeyValue {
     key: PER_TENANT_CONFIG
-    values: [demo]
+    values: [
+    "{org.killbill.invoice.sanitySafetyBoundEnabled:false}"
+  ]
 }
 ```
 ```ruby
 TODO
 ```
 ```python
-{'key': 'PER_TENANT_CONFIG', 'values': ['tenant_config']}
+{'key': 'PER_TENANT_CONFIG', 'values': [
+    "{org.killbill.invoice.sanitySafetyBoundEnabled:false}"
+  ]}
 ```
 
 **Query Parameters**
@@ -641,7 +663,12 @@ Returns a tenant key value object.
 
 `GET http://example.com/1.0/kb/tenants/uploadPerTenantConfig/{keyPrefix}/search`
 
+The search api allows to search for existing keys based on prefix. So, for instance we can use the prefix `PER_TENANT` and expect
+to see the result for our previous key `PER_TENANT_CONFIG`.
+
 > Example Request:
+
+
 
 ```shell
 curl -v \
@@ -649,20 +676,20 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/tenants/uploadPerTenantConfig/PER_TENANT_CONFIG/search"
+    "http://localhost:8080/1.0/kb/tenants/uploadPerTenantConfig/PER_TENANT/search"
 ```
 
 ```java
 import org.killbill.billing.client.api.gen.TenantApi;
 protected AdminApi tenantApi;
 
-String keyPrefix = "PER_TENANT_CONFIG";
+String keyPrefix = "PER_TENANT";
 
 TenantKeyValue result = tenantApi.getAllPluginConfiguration(keyPrefix, requestOptions);
 ```
 
 ```ruby
-key_prefix = "PER_TENANT_CONFIG"
+key_prefix = "PER_TENANT"
 
 KillBillClient::Model::Tenant.search_tenant_config(key_prefix, options)
 ```
@@ -680,33 +707,28 @@ tenantApi.get_all_plugin_configuration(key_prefix='tenant_config')
 < HTTP/1.1 200 OK
 < Content-Type: application/json
 
-[
-  {
-    "key": "PER_TENANT_CONFIG",
-    "values": [
-      "tenant_config"
-    ]
-  }
-]
+{
+  "key": "PER_TENANT_CONFIG",
+  "values": [
+    "{org.killbill.invoice.sanitySafetyBoundEnabled:false}"
+  ]
+}
 ```
 ```java
 class TenantKeyValue {
     key: PER_TENANT_CONFIG
-    values: [demo]
+    values: [
+    "{org.killbill.invoice.sanitySafetyBoundEnabled:false}"
+  ]
 }
 ```
 ```ruby
-[
-   {
-      "key":"PER_TENANT_CONFIG",
-      "values":[
-         "tenant_config"
-      ]
-   }
-]
+TODO
 ```
 ```python
-{'key': 'PER_TENANT_CONFIG', 'values': ['tenant_config']}
+{'key': 'PER_TENANT_CONFIG', 'values': [
+    "{org.killbill.invoice.sanitySafetyBoundEnabled:false}"
+  ]}
 ```
 
 **Query Parameters**
@@ -784,11 +806,20 @@ A 204 http status without content.
 
 Plugins also support configuration on a per-tenant level. Please refer to our plugin [configuration manual](http://docs.killbill.io/0.20/plugin_development.html#_plugin_configuration) for more details.
 
+An example for using such per-tenant properties is to to configure a payment plugin with different api keys,
+one set of keys for each tenant. This allows for a true multi-tenant deployment where plugins have different configuration
+based on the tenant in which they operate.
+
+Upon adding/deleting new per-tenant plugin configuration, the system will generate a `TENANT_CONFIG_CHANGE`/`TENANT_CONFIG_DELETION` event, and such event can be handled in the plugin to refresh its configuration. In multi-node scenarios, events will be dispatched on each node, that is, on each plugin instance so they end up with a consistent view. A lot of the logic to handle configuration update has been implemented in our plugin frameworks, see [ruby framework](https://github.com/killbill/killbill-plugin-framework-ruby) and [java framework](https://github.com/killbill/killbill-plugin-framework-java).
+
+
 The following endpoints provide the ability to configure plugins on a per-tenant level.
 
 ### Add a per tenant configuration for a plugin
 
 **HTTP Request** 
+
+
 
 `POST http://example.com/1.0/kb/tenants/uploadPluginConfig/{pluginName}`
 
@@ -1072,6 +1103,9 @@ The endpoints below allow to override such state machine on a per-tenant level.
 
 **HTTP Request** 
 
+Let's say we want to overwite the default Kill Bill payment state machine for the payment plugin `demo_plugin`, and assuming
+a valid payment state machine xml file in `SimplePaymentStates.xml`.
+
 `POST http://example.com/1.0/kb/tenants/uploadPluginPaymentStateMachineConfig/{pluginName}`
 
 > Example Request:
@@ -1087,6 +1121,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
+	-d '@SimplePaymentStates.xml' \
     "http://localhost:8080/1.0/kb/tenants/uploadPluginPaymentStateMachineConfig/demo_plugin"
 ```
 
@@ -1110,7 +1145,7 @@ TODO
 tenantApi = killbill.api.TenantApi()
 
 plugin_name = 'demo_plugin'
-body = 'demo_plugin'
+body = 'SimplePaymentStates.xml'
 
 tenantApi.upload_plugin_payment_state_machine_config(plugin_name, body, created_by='demo')
 ```
@@ -1257,9 +1292,71 @@ tenantApi.get_plugin_payment_state_machine_config(plugin_name)
 
 {
   "key": "PLUGIN_PAYMENT_STATE_MACHINE_demo_plugin",
-  "values": [
-    ""
-  ]
+  "values": [<?xml version="1.0" encoding="UTF-8"?>
+    
+    <stateMachineConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                        xsi:noNamespaceSchemaLocation="StateMachineConfig.xsd">
+    
+        <stateMachines>
+            <stateMachine name="BIG_BANG">
+                <states>
+                    <state name="BIG_BANG_INIT"/>
+                </states>
+                <transitions>
+                    <transition>
+                        <initialState>BIG_BANG_INIT</initialState>
+                        <operation>OP_DUMMY</operation>
+                        <operationResult>SUCCESS</operationResult>
+                        <finalState>BIG_BANG_INIT</finalState>
+                    </transition>
+                </transitions>
+                <operations>
+                    <operation name="OP_DUMMY"/>
+                </operations>
+            </stateMachine>
+            <stateMachine name="AUTHORIZE">
+                <states>
+                    <state name="AUTH_INIT"/>
+                    <state name="AUTH_SUCCESS"/>
+                    <state name="AUTH_FAILED"/>
+                    <state name="AUTH_ERRORED"/>
+                </states>
+                <transitions>
+                    <transition>
+                        <initialState>AUTH_INIT</initialState>
+                        <operation>OP_AUTHORIZE</operation>
+                        <operationResult>SUCCESS</operationResult>
+                        <finalState>AUTH_SUCCESS</finalState>
+                    </transition>
+                    <transition>
+                        <initialState>AUTH_INIT</initialState>
+                        <operation>OP_AUTHORIZE</operation>
+                        <operationResult>FAILURE</operationResult>
+                        <finalState>AUTH_FAILED</finalState>
+                    </transition>
+                    <transition>
+                        <initialState>AUTH_INIT</initialState>
+                        <operation>OP_AUTHORIZE</operation>
+                        <operationResult>EXCEPTION</operationResult>
+                        <finalState>AUTH_ERRORED</finalState>
+                    </transition>
+                </transitions>
+                <operations>
+                    <operation name="OP_AUTHORIZE"/>
+                </operations>
+            </stateMachine>
+        </stateMachines>
+    
+        <linkStateMachines>
+            <linkStateMachine>
+                <initialStateMachine>BIG_BANG</initialStateMachine>
+                <initialState>BIG_BANG_INIT</initialState>
+                <finalStateMachine>AUTHORIZE</finalStateMachine>
+                <finalState>AUTH_INIT</finalState>
+            </linkStateMachine>
+        </linkStateMachines>
+    </stateMachineConfig>
+    ]
 }
 ```
 ```java
