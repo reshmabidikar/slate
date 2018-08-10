@@ -88,7 +88,7 @@ LocalDate billingDate = null;
 Boolean renameKeyIfExistsAndUnused = null; 
 Boolean migrated = null;
 Integer bcd = null;
-Boolean callCompletion true
+Boolean callCompletion = true;
 long DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC = 10;
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
 
@@ -311,8 +311,8 @@ no content
 | **renameKeyIfExistsAndUnused** | boolean | false | rename external key if exists and unused (default: true) |
 | **migrated** | boolean | false | choose true if is migrated (default: false) |
 | **bcd** | integer | false | Override the bill cycle day for this subscription. |
-| **callCompletion** | boolean | false | call completion (default: false)|
-| **callTimeoutSec** | long | false | call timeout sec |
+| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
+| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
 
 **Returns**
 
@@ -541,8 +541,8 @@ no content
 | **billingDate** | string | false | the date at which the billing starts A null date means right now. |
 | **renameKeyIfExistsAndUnused** | boolean | false | rename key if exists and unused (default: true) |
 | **migrated** | boolean | false | choose true if is migrated (default: false) |
-| **callCompletion** | boolean | false | call completion (default: false)|
-| **callTimeoutSec** | long | false | call timeout sec | 
+| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
+| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
 
 **Returns**
 
@@ -1125,8 +1125,8 @@ no content
 | **billingDate** | string | false | the date at which the billing starts A null date means right now. |
 | **renameKeyIfExistsAndUnused** | boolean | false | Rename key if exists and unused (default: true) |
 | **migrated** | boolean | false | choose true if is migrated (default: false) |
-| **callCompletion** | boolean | false | call completion (default: false)|
-| **callTimeoutSec** | long | false | call timeout sec | 
+| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
+| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
 
 **Returns**
 
@@ -1534,7 +1534,7 @@ curl -v \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Content-Type: application/json" \
     -H "X-Killbill-CreatedBy: demo" \
-    -d '{ "billCycleDayLocal": 10 }' \
+    -d '{ "billCycleDayLocal": 16 }' \
     'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/bcd' 
 ```
 
@@ -1608,7 +1608,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | ---- | -------- | ----------- |
-| **effectiveFromDate** | string | true | effective at which this change becomes effective | 
+| **effectiveFromDate** | string | true | effective at which this change becomes effective, a null value means immediate | 
 | **forceNewBcdWithPastEffectiveDate** | boolean | false | by default the effective date must be in the future so as to not modify existing invoices. this flag allows to override this behavior. (default: false)| 
 
 **Returns**
@@ -1617,6 +1617,9 @@ A `204` http status without content.
 
 
 ### Change subscription plan
+
+
+Ability to upgrade/downgrade a given subscription to a new `Plan`.
 
 **HTTP Request** 
 
@@ -1826,8 +1829,8 @@ no content
 | ---- | ---- | -------- | ----------- |
 | **billingPolicy** | string | false | billing policy that will be used to make this change effective -- e.g `END_OF_TERM` would ensure there is no pro-ratin. |
 | **requestedDate** | string | false | the date at which this change should become effective. This date is only used if no billingPolicy was specified. A null date makes it an immediate change. |
-| **callCompletion** | boolean | false | call completion (default: false)|
-| **callTimeoutSec** | long | false | call timeout sec |
+| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
+| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
 
 **Returns**
 
@@ -2001,8 +2004,8 @@ no content
 | **entitlementPolicy** | string | false | entitlement policy |
 | **billingPolicy** | string | false | billing policy |
 | **useRequestedDateForBilling** | boolean | false | use requested date for billing (default: false) |
-| **callCompletion** | boolean | false | call completion (default: false)|
-| **callTimeoutSec** | long | false | call timeout sec | 
+| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
+| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
 
 Since we offer the ability to control cancelation date for both entitlement (service) and billing either through policies, dates or null values (now), it is imperative to understand how those parameters work:
 
