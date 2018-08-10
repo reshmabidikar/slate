@@ -12,7 +12,7 @@ In practice, Kill Bill offers a powerful configuration, which goes beyond the de
 Also, it is important to understand that the catalog is versionned to provide the ability to deprecate old products, add new ones, or change prices for existing products. The catalog configuration is stored on a per tenant basis, meaning that 2 tenants may have completely different catalogs.
 
 
-In terms of api, we offer basic CRUD operations, where catalog (versions) are fetched/uploaded using XML. We also offer the ability to retrieve JSON, and have also added support to modify a given catalog version to add new plans - so called *simple plan* - mostly to easy the testing, and provide an easy way to play with the system - KAUI, our admin UI provides a nice integration for that purpose.
+In terms of api, we offer basic CRUD operations, where catalog (versions) are fetched/uploaded using XML. We also offer the ability to retrieve JSON, and have also added support to modify a given catalog version to add new plans - so called *simple plan* - mostly to ease the testing, and provide a way to play with the system - KAUI, our admin UI provides a nice integration for that purpose.
 
 ## Catalog
 
@@ -3282,10 +3282,9 @@ The functionality is exposed on our admin UI (KAUI) to provide a simple graphica
 
 Such plans offer the following limitations:
 
-* In-advance billing
-* Possibility of selecting a $0 `TRIAL` phase
-* One `RECURRING` phase with no fixed price.
-* Ability to specify multiple currencies if needed
+* In-advance billing only
+* Limited to one `RECURRING` phase  and an optional $0 `TRIAL` phase
+* No suport for fixed price
 
 Note that, one such catalog has been created, one can retrieve the associated XML, edit it to configure additional aspects and then upload
 a new version of this catalog. So, this functionality can also be a stepping stone for a full catalog configuration.
