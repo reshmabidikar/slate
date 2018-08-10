@@ -318,7 +318,7 @@ no content
 
 Returns a subscription object.
 
-### Create an subscription with addOn products
+### Create a subscription with addOn products
 
 **HTTP Request**
 
@@ -1834,7 +1834,7 @@ no content
 A `204` http status without content.
 
 
-### Undo a pending change plan on an subscription
+### Undo a pending change plan on a subscription
 
 This endpoint allows to undo a pending change of `Plan` for a given subscription.
 
@@ -2024,7 +2024,7 @@ The reason for all this complexity is to allow to control entitlement and billin
 A `204` http status without content.
 
 
-### Un-cancel an subscription
+### Un-cancel a subscription
 
 This endpoint allows to undo a pending cancelation for a given subscription.
 
