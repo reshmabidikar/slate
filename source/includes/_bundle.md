@@ -25,7 +25,7 @@ Retrieves the details information for the `Bundle` using its `bundleId`.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/bundles/{bundleId}`
+`GET http://127.0.0.1:8080/1.0/kb/bundles/{bundleId}`
 
 > Example Request:
 
@@ -665,7 +665,7 @@ Returns a bundle object if a valid identifier was provided.
 
 Retrieves the details information for the `Bundle` using its `externalKey`.
 
-`GET http://example.com/1.0/kb/bundles`
+`GET http://127.0.0.1:8080/1.0/kb/bundles`
 
 > Example Request:
 
@@ -1292,7 +1292,7 @@ Returns a bundle object if a valid external key was provided.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/bundles/{bundleId}/renameKey`
+`PUT http://127.0.0.1:8080/1.0/kb/bundles/{bundleId}/renameKey`
 
 > Example Request:
 
@@ -1371,7 +1371,7 @@ The new account_id should be set in this object
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/bundles/{bundleId}`
+`POST http://127.0.0.1:8080/1.0/kb/bundles/{bundleId}`
 
 > Example Request:
 
@@ -1726,7 +1726,7 @@ Provides an easy interface to pause both billing and entitlement for all subscri
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/bundles/{bundleId}/pause`
+`PUT http://127.0.0.1:8080/1.0/kb/bundles/{bundleId}/pause`
 
 > Example Request:
 
@@ -1800,7 +1800,7 @@ Provides an easy interface to resume both billing and entitlement for all subscr
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/bundles/{bundleId}/resume`
+`PUT http://127.0.0.1:8080/1.0/kb/bundles/{bundleId}/resume`
 
 > Example Request:
 
@@ -1875,7 +1875,7 @@ Provides an low level interface to add `BlockingState` event for this bundle. No
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/bundles/{bundleId}/block`
+`POST http://127.0.0.1:8080/1.0/kb/bundles/{bundleId}/block`
 
 > Example Request:
 
@@ -2000,7 +2000,7 @@ Custom fields are `{key, value}` attributes that can be attached to any customer
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/bundles/{bundleId}/customFields`
+`POST http://127.0.0.1:8080/1.0/kb/bundles/{bundleId}/customFields`
 
 > Example Request:
 
@@ -2111,7 +2111,7 @@ Returns a custom field object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/bundles/{bundleId}/customFields`
+`GET http://127.0.0.1:8080/1.0/kb/bundles/{bundleId}/customFields`
 
 > Example Request:
 
@@ -2213,7 +2213,7 @@ Returns a list of custom field objects.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/bundles/{bundleId}/customFields`
+`PUT http://127.0.0.1:8080/1.0/kb/bundles/{bundleId}/customFields`
 
 
 > Example Request:
@@ -2303,7 +2303,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/bundles/{bundleId}/customFields`
+`DELETE http://127.0.0.1:8080/1.0/kb/bundles/{bundleId}/customFields`
 
 > Example Request:
 
@@ -2391,7 +2391,7 @@ Let's assume there is an existing `user` tagDefintion already created with `tagD
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/bundles/{bundleId}/tags`
+`POST http://127.0.0.1:8080/1.0/kb/bundles/{bundleId}/tags`
 
 > Example Request:
 
@@ -2496,7 +2496,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/bundles/{bundleId}/tags`
+`GET http://127.0.0.1:8080/1.0/kb/bundles/{bundleId}/tags`
 
 > Example Request:
 
@@ -2615,7 +2615,7 @@ Returns a list of bundle tag objects.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/bundles/{bundleId}/tags`
+`DELETE http://127.0.0.1:8080/1.0/kb/bundles/{bundleId}/tags`
 
 > Example Request:
 
@@ -2699,7 +2699,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/bundles/pagination`
+`GET http://127.0.0.1:8080/1.0/kb/bundles/pagination`
 
 > Example Request:
 
@@ -3502,7 +3502,7 @@ Returns a list with all bundles.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/bundles/search/{searchKey}`
+`GET http://127.0.0.1:8080/1.0/kb/bundles/search/{searchKey}`
 
 > Example Request:
 

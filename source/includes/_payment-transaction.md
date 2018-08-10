@@ -30,7 +30,7 @@ that work directly at the transaction level.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/paymentTransactions`
+`GET http://127.0.0.1:8080/1.0/kb/paymentTransactions`
 
 > Example Request:
 
@@ -124,7 +124,7 @@ Returns a payment transaction object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/paymentTransactions/{transactionId}`
+`GET http://127.0.0.1:8080/1.0/kb/paymentTransactions/{transactionId}`
 
 > Example Request:
 
@@ -217,7 +217,7 @@ Returns a payment transaction object.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/paymentTransactions/{transactionId}`
+`POST http://127.0.0.1:8080/1.0/kb/paymentTransactions/{transactionId}`
 
 > Example Request:
 
@@ -277,7 +277,7 @@ A 201 http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/paymentTransactions/{transactionId}/auditLogsWithHistory`
+`GET http://127.0.0.1:8080/1.0/kb/paymentTransactions/{transactionId}/auditLogsWithHistory`
 
 > Example Request:
 
@@ -404,7 +404,7 @@ Custom fields are {key, value} attributes that can be attached to any customer r
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/paymentTransactions/{transactionId}/customFields`
+`POST http://127.0.0.1:8080/1.0/kb/paymentTransactions/{transactionId}/customFields`
 
 > Example Request:
 
@@ -502,7 +502,7 @@ Returns a custom field object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/paymentTransactions/{transactionId}/customFields`
+`GET http://127.0.0.1:8080/1.0/kb/paymentTransactions/{transactionId}/customFields`
 
 > Example Request:
 
@@ -592,7 +592,7 @@ Returns a list of custom field objects.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/paymentTransactions/{transactionId}/customFields`
+`PUT http://127.0.0.1:8080/1.0/kb/paymentTransactions/{transactionId}/customFields`
 
 > Example Request:
 
@@ -674,7 +674,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/paymentTransactions/{transactionId}/customFields`
+`DELETE http://127.0.0.1:8080/1.0/kb/paymentTransactions/{transactionId}/customFields`
 
 > Example Request:
 
@@ -756,7 +756,7 @@ Let's assume there is an existing `user` tagDefintion already created with `tagD
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/paymentTransactions/{transactionId}/tags`
+`POST http://127.0.0.1:8080/1.0/kb/paymentTransactions/{transactionId}/tags`
 
 > Example Request:
 
@@ -844,7 +844,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/paymentTransactions/{transactionId}/tags`
+`GET http://127.0.0.1:8080/1.0/kb/paymentTransactions/{transactionId}/tags`
 
 > Example Request:
 
@@ -950,7 +950,7 @@ Returns a list of bundle tag objects.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/paymentTransactions/{transactionId}/tags`
+`DELETE http://127.0.0.1:8080/1.0/kb/paymentTransactions/{transactionId}/tags`
 
 **Query Parameters**
 

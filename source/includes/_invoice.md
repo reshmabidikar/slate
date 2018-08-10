@@ -81,9 +81,12 @@ The attributes are the following:
 
 ### Trigger an invoice generation
 
+
+This will create an invoice run for the associated `Account`. This may result in the creation of a new `Invoice` if there was anything to invoice for, or nothing, if the account was up to date.
+
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices`
+`POST http://127.0.0.1:8080/1.0/kb/invoices`
 
 > Example Request:
 
@@ -191,7 +194,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/migration/{accountId}`
+`POST http://127.0.0.1:8080/1.0/kb/invoices/migration/{accountId}`
 
 > Example Request:
 
@@ -295,7 +298,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/charges/{accountId}`
+`POST http://127.0.0.1:8080/1.0/kb/invoices/charges/{accountId}`
 
 > Example Request:
 
@@ -473,7 +476,7 @@ Returns a invoice object.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/taxes/{accountId}`
+`POST http://127.0.0.1:8080/1.0/kb/invoices/taxes/{accountId}`
 
 > Example Request:
 
@@ -653,7 +656,7 @@ Returns a invoice object.
 
 **HTTP Request**
 
-`GET http://example.com/1.0/kb/invoices/{invoiceId}`
+`GET http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}`
 
 > Example Request:
 
@@ -843,7 +846,7 @@ Returns a invoice object.
 
 **HTTP Request**
 
-`GET http://example.com/1.0/kb/invoices/byNumber/{invoiceNumber`
+`GET http://127.0.0.1:8080/1.0/kb/invoices/byNumber/{invoiceNumber`
 
 > Example Request:
 
@@ -1054,7 +1057,7 @@ Returns a invoice object.
 
 **HTTP Request**
 
-`GET http://example.com/1.0/kb/invoices/byItemId/{itemId}`
+`GET http://127.0.0.1:8080/1.0/kb/invoices/byItemId/{itemId}`
 
 > Example Request:
 
@@ -1279,7 +1282,7 @@ Returns a invoice object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/invoices/{invoiceId}/html`
+`GET http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/html`
 
 > Example Request:
 
@@ -1355,7 +1358,7 @@ invoiceApi.get_invoice_as_html(invoice_id, api_key, api_secret)
                 <td>companyAddress</td>
                 <td />
                 <td />
-                <td>john@example.com</td>
+                <td>john@127.0.0.1:8080</td>
             </tr>
             <tr>
                 <td>companyCityProvincePostalCode</td>
@@ -1728,7 +1731,7 @@ Returns a invoice rendered as HTML.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/invoices/{invoiceId}/commitInvoice`
+`PUT http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/commitInvoice`
 
 > Example Request:
 
@@ -1804,7 +1807,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/invoices/{invoiceId}/voidInvoice`
+`PUT http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/voidInvoice`
 
 > Example Request:
 
@@ -1874,7 +1877,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/{invoiceId}`
+`POST http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}`
 
 > Example Request:
 
@@ -2019,7 +2022,7 @@ Returns a invoice object.
 
 **HTTP Request**
 
-`DELETE http://example.com/1.0/kb/invoices/{invoiceId}/{invoiceItemId}/cba`
+`DELETE http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/{invoiceItemId}/cba`
 
 > Example Request:
 
@@ -2113,7 +2116,7 @@ in the system.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/dryRun`
+`POST http://127.0.0.1:8080/1.0/kb/invoices/dryRun`
 
 > Example Request:
 
@@ -2368,7 +2371,7 @@ Returns a invoice object.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/{invoiceId}/payments`
+`POST http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/payments`
 
 > Example Request:
 
@@ -2503,7 +2506,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/invoices/{invoiceId}/payments`
+`GET http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/payments`
 
 > Example Request:
 
@@ -2721,7 +2724,7 @@ Custom fields are `{key, value}` attributes that can be attached to any customer
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
+`POST http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/customFields`
 
 > Example Request:
 
@@ -2835,7 +2838,7 @@ Returns a custom field object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
+`GET http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/customFields`
 
 > Example Request:
 
@@ -2939,7 +2942,7 @@ Returns a list of custom field objects.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
+`PUT http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/customFields`
 
 
 > Example Request:
@@ -3033,7 +3036,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/invoices/{invoiceId}/customFields`
+`DELETE http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/customFields`
 
 > Example Request:
 
@@ -3124,7 +3127,7 @@ The only `system` tag applicable for an `Invoice` is `WRITTEN_OFF` (`00000000-00
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/{invoiceId}/tags`
+`POST http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/tags`
 
 > Example Request:
 
@@ -3230,7 +3233,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/invoices/{invoiceId}/tags`
+`GET http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/tags`
 
 > Example Request:
 
@@ -3349,7 +3352,7 @@ Returns a list of invoice tag objects.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/invoices/{invoiceId}/tags`
+`DELETE http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/tags`
 
 > Example Request:
 
@@ -3432,7 +3435,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/catalogTranslation/{locale}`
+`POST http://127.0.0.1:8080/1.0/kb/invoices/catalogTranslation/{locale}`
 
 > Example Request:
 
@@ -3514,7 +3517,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/invoices/catalogTranslation/{locale}`
+`GET http://127.0.0.1:8080/1.0/kb/invoices/catalogTranslation/{locale}`
 
 > Example Request:
 
@@ -3578,7 +3581,7 @@ A `200` http status without content.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/translation/{locale}`
+`POST http://127.0.0.1:8080/1.0/kb/invoices/translation/{locale}`
 
 > Example Request:
 
@@ -3677,7 +3680,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/invoices/translation/{locale}`
+`GET http://127.0.0.1:8080/1.0/kb/invoices/translation/{locale}`
 
 > Example Request:
 
@@ -3762,7 +3765,7 @@ A `200` http status without content.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/manualPayTemplate`
+`POST http://127.0.0.1:8080/1.0/kb/invoices/manualPayTemplate`
 
 > Example Request:
 
@@ -3997,7 +4000,7 @@ Returns a invoice template.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/invoices/manualPayTemplate`
+`GET http://127.0.0.1:8080/1.0/kb/invoices/manualPayTemplate`
 
 > Example Request:
 
@@ -4368,7 +4371,7 @@ Returns a invoice template.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoices/template`
+`POST http://127.0.0.1:8080/1.0/kb/invoices/template`
 
 > Example Request:
 
@@ -4603,7 +4606,7 @@ Returns a invoice template.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/invoices/template`
+`GET http://127.0.0.1:8080/1.0/kb/invoices/template`
 
 > Example Request:
 
@@ -4977,7 +4980,7 @@ Returns a invoice template.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/invoices/pagination`
+`GET http://127.0.0.1:8080/1.0/kb/invoices/pagination`
 
 > Example Request:
 
@@ -5281,7 +5284,7 @@ Returns a list with all invoices.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/invoices/search/{searchKey}`
+`GET http://127.0.0.1:8080/1.0/kb/invoices/search/{searchKey}`
 
 > Example Request:
 

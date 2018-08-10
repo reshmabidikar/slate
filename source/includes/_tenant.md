@@ -17,7 +17,7 @@ The attributes are the following:
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/tenants`
+`POST http://127.0.0.1:8080/1.0/kb/tenants`
 
 > Example Request:
 
@@ -120,7 +120,7 @@ A 201 http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/tenants/{tenantId}`
+`GET http://127.0.0.1:8080/1.0/kb/tenants/{tenantId}`
 
 > Example Request:
 
@@ -202,7 +202,7 @@ Returns a tenant object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/tenants`
+`GET http://127.0.0.1:8080/1.0/kb/tenants`
 
 > Example Request:
 
@@ -294,7 +294,7 @@ Also see push notification documentation [here](http://docs.killbill.io/0.20/pus
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/tenants/registerNotificationCallback`
+`POST http://127.0.0.1:8080/1.0/kb/tenants/registerNotificationCallback`
 
 > Example Request:
 
@@ -367,7 +367,7 @@ A 201 http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/tenants/registerNotificationCallback`
+`GET http://127.0.0.1:8080/1.0/kb/tenants/registerNotificationCallback`
 
 > Example Request:
 
@@ -436,7 +436,7 @@ Returns a tenant key value object.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/tenants/registerNotificationCallback`
+`DELETE http://127.0.0.1:8080/1.0/kb/tenants/registerNotificationCallback`
 
 > Example Request:
 
@@ -503,7 +503,7 @@ Some of the configuration can be overriden at the tenant level to allow for diff
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/tenants/uploadPerTenantConfig`
+`POST http://127.0.0.1:8080/1.0/kb/tenants/uploadPerTenantConfig`
 
 For example, in order to disable the invoice safety bound mechanism on a per-tenant level, one could overwrite the per-tenant system property `org.killbill.invoice.sanitySafetyBoundEnabled` to false.
 
@@ -581,7 +581,7 @@ A 201 http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/tenants/uploadPerTenantConfig`
+`GET http://127.0.0.1:8080/1.0/kb/tenants/uploadPerTenantConfig`
 
 > Example Request:
 
@@ -661,7 +661,7 @@ Returns a tenant key value object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/tenants/uploadPerTenantConfig/{keyPrefix}/search`
+`GET http://127.0.0.1:8080/1.0/kb/tenants/uploadPerTenantConfig/{keyPrefix}/search`
 
 The search api allows to search for existing keys based on prefix. So, for instance we can use the prefix `PER_TENANT` and expect
 to see the result for our previous key `PER_TENANT_CONFIG`.
@@ -743,7 +743,7 @@ Returns a tenant key value object.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/tenants/uploadPerTenantConfig`
+`DELETE http://127.0.0.1:8080/1.0/kb/tenants/uploadPerTenantConfig`
 
 > Example Request:
 
@@ -821,7 +821,7 @@ The following endpoints provide the ability to configure plugins on a per-tenant
 
 
 
-`POST http://example.com/1.0/kb/tenants/uploadPluginConfig/{pluginName}`
+`POST http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginConfig/{pluginName}`
 
 > Example Request:
 
@@ -927,7 +927,7 @@ A 201 http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/tenants/uploadPluginConfig/{pluginName}`
+`GET http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginConfig/{pluginName}`
 
 > Example Request:
 
@@ -1021,7 +1021,7 @@ Returns a tenant key value object.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/tenants/uploadPluginConfig/{pluginName}`
+`DELETE http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginConfig/{pluginName}`
 
 > Example Request:
 
@@ -1106,7 +1106,7 @@ The endpoints below allow to override such state machine on a per-tenant level.
 Let's say we want to overwite the default Kill Bill payment state machine for the payment plugin `demo_plugin`, and assuming
 a valid payment state machine xml file in `SimplePaymentStates.xml`.
 
-`POST http://example.com/1.0/kb/tenants/uploadPluginPaymentStateMachineConfig/{pluginName}`
+`POST http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginPaymentStateMachineConfig/{pluginName}`
 
 > Example Request:
 
@@ -1249,7 +1249,7 @@ A 201 http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/tenants/uploadPluginPaymentStateMachineConfig/{pluginName}`
+`GET http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginPaymentStateMachineConfig/{pluginName}`
 
 > Example Request:
 
@@ -1448,7 +1448,7 @@ Returns a tenant key value object.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/tenants/uploadPluginPaymentStateMachineConfig/{pluginName}`
+`DELETE http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginPaymentStateMachineConfig/{pluginName}`
 
 > Example Request:
 
@@ -1523,7 +1523,7 @@ for all plugins could be stored here.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/tenants/userKeyValue/{keyName}`
+`POST http://127.0.0.1:8080/1.0/kb/tenants/userKeyValue/{keyName}`
 
 > Example Request:
 
@@ -1615,7 +1615,7 @@ A 201 http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/tenants/userKeyValue/{keyName}`
+`GET http://127.0.0.1:8080/1.0/kb/tenants/userKeyValue/{keyName}`
 
 > Example Request:
 
@@ -1696,7 +1696,7 @@ Returns a tenant key value object.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/tenants/userKeyValue/{keyName}`
+`DELETE http://127.0.0.1:8080/1.0/kb/tenants/userKeyValue/{keyName}`
 
 > Example Request:
 

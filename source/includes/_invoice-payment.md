@@ -30,7 +30,7 @@ The attributes are the following:
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/invoicePayments/{paymentId}`
+`GET http://127.0.0.1:8080/1.0/kb/invoicePayments/{paymentId}`
 
 > Example Request:
 
@@ -263,7 +263,7 @@ Returns a invoice payment object.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoicePayments/{paymentId}/refunds`
+`POST http://127.0.0.1:8080/1.0/kb/invoicePayments/{paymentId}/refunds`
 
 > Example Request:
 
@@ -462,7 +462,7 @@ Returns a invoice payment object.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoicePayments/{paymentId}/chargebacks`
+`POST http://127.0.0.1:8080/1.0/kb/invoicePayments/{paymentId}/chargebacks`
 
 > Example Request:
 
@@ -637,7 +637,7 @@ Returns a invoice payment object.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/invoicePayments/{paymentId}`
+`PUT http://127.0.0.1:8080/1.0/kb/invoicePayments/{paymentId}`
 
 > Example Request:
 
@@ -724,7 +724,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoicePayments/{paymentId}/chargebackReversals`
+`POST http://127.0.0.1:8080/1.0/kb/invoicePayments/{paymentId}/chargebackReversals`
 
 > Example Request:
 
@@ -865,7 +865,7 @@ Custom fields are `{key, value}` attributes that can be attached to any customer
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoicePayments/{paymentId}/customFields`
+`POST http://127.0.0.1:8080/1.0/kb/invoicePayments/{paymentId}/customFields`
 
 > Example Request:
 
@@ -980,7 +980,7 @@ Returns a custom field object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/invoicePayments/{paymentId}/customFields`
+`GET http://127.0.0.1:8080/1.0/kb/invoicePayments/{paymentId}/customFields`
 
 > Example Request:
 
@@ -1082,7 +1082,7 @@ Returns a list of custom field objects.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/invoicePayments/{paymentId}/customFields`
+`PUT http://127.0.0.1:8080/1.0/kb/invoicePayments/{paymentId}/customFields`
 
 > Example Request:
 
@@ -1174,7 +1174,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/invoicePayments/{paymentId}/customFields`
+`DELETE http://127.0.0.1:8080/1.0/kb/invoicePayments/{paymentId}/customFields`
 
 > Example Request:
 
@@ -1262,7 +1262,7 @@ Let's assume there is an existing `user` tagDefintion already created with `tagD
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/invoicePayments/{paymentId}/tags`
+`POST http://127.0.0.1:8080/1.0/kb/invoicePayments/{paymentId}/tags`
 
 > Example Request:
 
@@ -1365,7 +1365,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/invoicePayments/{paymentId}/tags`
+`GET http://127.0.0.1:8080/1.0/kb/invoicePayments/{paymentId}/tags`
 
 > Example Request:
 
@@ -1484,7 +1484,7 @@ Returns a list of invoice payment tag objects.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/invoicePayments/{paymentId}/tags`
+`DELETE http://127.0.0.1:8080/1.0/kb/invoicePayments/{paymentId}/tags`
 
 > Example Request:
 

@@ -25,7 +25,7 @@ The attributes are the following:
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/credits`
+`POST http://127.0.0.1:8080/1.0/kb/credits`
 
 > Example Request:
 
@@ -144,7 +144,7 @@ Returns a credit object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/credits/{creditId}`
+`GET http://127.0.0.1:8080/1.0/kb/credits/{creditId}`
 
 > Example Request:
 
