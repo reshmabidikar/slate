@@ -155,7 +155,7 @@ class PaymentMethod {
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **includedDeleted** | boolean | true | choose true to include deleted payment methods |
+| **includedDeleted** | boolean | false | choose true to include deleted payment methods |
 | **audit** | enum | false | level of audit logs returned |
 | **withPluginInfo** | boolean | false | choose true if you want plugin info |
 
@@ -274,7 +274,7 @@ class PaymentMethod {
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
 | **externalKey** | string | true | external key from payment method |
-| **includedDeleted** | boolean | true | choose true to include deleted payment methods |
+| **includedDeleted** | boolean | false | choose true to include deleted payment methods |
 | **audit** | enum | false | level of audit logs returned |
 | **withPluginInfo** | boolean | false | choose true if you want plugin info |
 
@@ -362,8 +362,8 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **deleteDefaultPmWithAutoPayOff** | boolean | true | choose true to delete default payment method with auto pay off|
-| **forceDefaultPmDeletion** | boolean | true | choose true to force default payment method deletion |
+| **deleteDefaultPmWithAutoPayOff** | boolean | false | choose true to delete default payment method with auto pay off|
+| **forceDefaultPmDeletion** | boolean | false | choose true to force default payment method deletion |
 
 **Returns**
 
