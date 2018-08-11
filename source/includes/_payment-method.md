@@ -27,7 +27,7 @@ The attributes are the following:
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/paymentMethods/{paymentMethodId}`
+`GET http://127.0.0.1:8080/1.0/kb/paymentMethods/{paymentMethodId}`
 
 > Example Request:
 
@@ -155,7 +155,7 @@ class PaymentMethod {
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **includedDeleted** | boolean | true | choose true to include deleted payment methods |
+| **includedDeleted** | boolean | false | choose true to include deleted payment methods |
 | **audit** | enum | false | level of audit logs returned |
 | **withPluginInfo** | boolean | false | choose true if you want plugin info |
 
@@ -167,7 +167,7 @@ Returns a payment method object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/paymentMethods`
+`GET http://127.0.0.1:8080/1.0/kb/paymentMethods`
 
 > Example Request:
 
@@ -274,7 +274,7 @@ class PaymentMethod {
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
 | **externalKey** | string | true | external key from payment method |
-| **includedDeleted** | boolean | true | choose true to include deleted payment methods |
+| **includedDeleted** | boolean | false | choose true to include deleted payment methods |
 | **audit** | enum | false | level of audit logs returned |
 | **withPluginInfo** | boolean | false | choose true if you want plugin info |
 
@@ -286,7 +286,7 @@ Returns a payment method object.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/paymentMethods/{paymentMethodId}`
+`DELETE http://127.0.0.1:8080/1.0/kb/paymentMethods/{paymentMethodId}`
 
 > Example Request:
 
@@ -362,8 +362,8 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **deleteDefaultPmWithAutoPayOff** | boolean | true | choose true to delete default payment method with auto pay off|
-| **forceDefaultPmDeletion** | boolean | true | choose true to force default payment method deletion |
+| **deleteDefaultPmWithAutoPayOff** | boolean | false | choose true to delete default payment method with auto pay off|
+| **forceDefaultPmDeletion** | boolean | false | choose true to force default payment method deletion |
 
 **Returns**
 
@@ -378,7 +378,7 @@ Custom fields are `{key, value}` attributes that can be attached to any customer
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/paymentMethods/{paymentMethodId}/customFields`
+`POST http://127.0.0.1:8080/1.0/kb/paymentMethods/{paymentMethodId}/customFields`
 
 > Example Request:
 
@@ -496,7 +496,7 @@ Returns a custom field object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/paymentMethods/{paymentMethodId}/customFields`
+`GET http://127.0.0.1:8080/1.0/kb/paymentMethods/{paymentMethodId}/customFields`
 
 > Example Request:
 
@@ -600,7 +600,7 @@ Returns a list of custom field objects.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/paymentMethods/{paymentMethodId}/customFields`
+`PUT http://127.0.0.1:8080/1.0/kb/paymentMethods/{paymentMethodId}/customFields`
 
 > Example Request:
 
@@ -694,7 +694,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/paymentMethods/{paymentMethodId}/customFields`
+`DELETE http://127.0.0.1:8080/1.0/kb/paymentMethods/{paymentMethodId}/customFields`
 
 > Example Request:
 
@@ -775,7 +775,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/paymentMethods/{paymentMethodId}/auditLogsWithHistory`
+`GET http://127.0.0.1:8080/1.0/kb/paymentMethods/{paymentMethodId}/auditLogsWithHistory`
 
 > Example Request:
 
@@ -893,7 +893,7 @@ class AuditLog {
          "accountRecordId":525,
          "tenantRecordId":842,
          "accountId":"1ced5fc2-b032-4969-a38b-d4db9ab5368f",
-         "email":"email@example.com",
+         "email":"email@laposte.com",
          "isActive":true,
          "tableName":"ACCOUNT_EMAIL",
          "historyTableName":"ACCOUNT_EMAIL_HISTORY"
@@ -929,7 +929,7 @@ Returns a list of account email audit logs with history.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/paymentMethods/pagination`
+`GET http://127.0.0.1:8080/1.0/kb/paymentMethods/pagination`
 
 > Example Request:
 
@@ -1057,7 +1057,7 @@ Returns a list with all payment methods.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/paymentMethods/search/{searchKey}`
+`GET http://127.0.0.1:8080/1.0/kb/paymentMethods/search/{searchKey}`
 
 > Example Request:
 

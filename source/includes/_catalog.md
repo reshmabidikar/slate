@@ -12,7 +12,7 @@ In practice, Kill Bill offers a powerful configuration, which goes beyond the de
 Also, it is important to understand that the catalog is versionned to provide the ability to deprecate old products, add new ones, or change prices for existing products. The catalog configuration is stored on a per tenant basis, meaning that 2 tenants may have completely different catalogs.
 
 
-In terms of api, we offer basic CRUD operations, where catalog (versions) are fetched/uploaded using XML. We also offer the ability to retrieve JSON, and have also added support to modify a given catalog version to add new plans - so called *simple plan* - mostly to easy the testing, and provide an easy way to play with the system - KAUI, our admin UI provides a nice integration for that purpose.
+In terms of api, we offer basic CRUD operations, where catalog (versions) are fetched/uploaded using XML. We also offer the ability to retrieve JSON, and have also added support to modify a given catalog version to add new plans - so called *simple plan* - mostly to ease the testing, and provide a way to play with the system - KAUI, our admin UI provides a nice integration for that purpose.
 
 ## Catalog
 
@@ -20,7 +20,7 @@ In terms of api, we offer basic CRUD operations, where catalog (versions) are fe
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/catalog/xml`
+`POST http://127.0.0.1:8080/1.0/kb/catalog/xml`
 
 > Example Request:
 
@@ -99,7 +99,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/catalog/xml`
+`GET http://127.0.0.1:8080/1.0/kb/catalog/xml`
 
 > Example Request:
 
@@ -942,7 +942,7 @@ Returns a catalog in XML format.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/catalog`
+`GET http://127.0.0.1:8080/1.0/kb/catalog`
 
 > Example Request:
 
@@ -2453,7 +2453,7 @@ Returns a catalog in JSON format.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/catalog/versions`
+`GET http://127.0.0.1:8080/1.0/kb/catalog/versions`
 
 > Example Request:
 
@@ -2520,7 +2520,7 @@ Returns a list with the available catalog versions.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/catalog/availableBasePlans`
+`GET http://127.0.0.1:8080/1.0/kb/catalog/availableBasePlans`
 
 > Example Request:
 
@@ -2672,7 +2672,7 @@ Returns a list with the available base plans.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/catalog/availableAddons`
+`GET http://127.0.0.1:8080/1.0/kb/catalog/availableAddons`
 
 > Example Request:
 
@@ -2785,7 +2785,7 @@ Returns a list with add-ons for a product.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/catalog`
+`DELETE http://127.0.0.1:8080/1.0/kb/catalog`
 
 > Example Request:
 
@@ -2852,7 +2852,7 @@ This endpoint allows to retrieve catalog information, more specifically informat
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/catalog/phase`
+`GET http://127.0.0.1:8080/1.0/kb/catalog/phase`
 
 > Example Request:
 
@@ -2949,7 +2949,7 @@ This endpoint allows to retrieve catalog information, more specifically informat
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/catalog/plan`
+`GET http://127.0.0.1:8080/1.0/kb/catalog/plan`
 
 > Example Request:
 
@@ -3108,7 +3108,7 @@ This endpoint allows to retrieve catalog information, more specifically informat
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/catalog/priceList`
+`GET http://127.0.0.1:8080/1.0/kb/catalog/priceList`
 
 > Example Request:
 
@@ -3187,7 +3187,7 @@ This endpoint allows to retrieve catalog information, more specifically informat
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/catalog/product`
+`GET http://127.0.0.1:8080/1.0/kb/catalog/product`
 
 > Example Request:
 
@@ -3282,10 +3282,9 @@ The functionality is exposed on our admin UI (KAUI) to provide a simple graphica
 
 Such plans offer the following limitations:
 
-* In-advance billing
-* Possibility of selecting a $0 `TRIAL` phase
-* One `RECURRING` phase with no fixed price.
-* Ability to specify multiple currencies if needed
+* In-advance billing only
+* Limited to one `RECURRING` phase  and an optional $0 `TRIAL` phase
+* No suport for fixed price
 
 Note that, one such catalog has been created, one can retrieve the associated XML, edit it to configure additional aspects and then upload
 a new version of this catalog. So, this functionality can also be a stepping stone for a full catalog configuration.
@@ -3296,7 +3295,7 @@ This adds a (simple) Plan into the current version of the catalog -- associated 
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/catalog/simplePlan`
+`POST http://127.0.0.1:8080/1.0/kb/catalog/simplePlan`
 
 > Example Request:
 

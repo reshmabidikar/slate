@@ -37,9 +37,11 @@ The attributes are the following:
 
 Create a new customer `Account`.
 
+Note that none of these fields are mantatory when creating the `Account`. This allows to create shell accounts, simply for the purpose of having a valid `accountId` and create state around it -- e.g payments,... This can also be useful to ensure none of the PII data is in the system.
+
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts` 
+`POST http://127.0.0.1:8080/1.0/kb/accounts` 
 
 > Example Request:
 
@@ -54,7 +56,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"name\": \"John Doe\", \"email\": \"john@example.com\", \"currency\": \"USD\"}" \
+    -d "{ \"name\": \"John Doe\", \"email\": \"john@laposte.com\", \"currency\": \"USD\"}" \
     "http://localhost:8080/1.0/kb/accounts" 
 ```
 ```java
@@ -63,7 +65,7 @@ protected AccountApi accountApi;
 
 Account body = new Account();
 body.setName("John Doe");
-body.setEmail("john@example.com");
+body.setEmail("john@laposte.com");
 body.setCurrency(Currency.USD);
 
 Account result = accountApi.createAccount(body, requestOptions);
@@ -71,7 +73,7 @@ Account result = accountApi.createAccount(body, requestOptions);
 ```ruby
 account = KillBillClient::Model::Account.new
 account.name = "John Doe"
-account.email = "john@example.com"
+account.email = "john@laposte.com"
 account.currency = "USD"
 
 account.create(user, reason, comment, options)
@@ -80,7 +82,7 @@ account.create(user, reason, comment, options)
 accountApi = killbill.api.AccountApi()
 created_by = 'example'
 body = Account(name='John Doe', 
-               email='john@example.com', 
+               email='john@laposte.com', 
                currency='USD')
 
 accountApi.create_account(body, 
@@ -104,7 +106,7 @@ class Account {
     name: John Doe
     firstNameLength: null
     externalKey: e1342e5c-db2a-4439-b52c-8597fde4390f
-    email: john@example.com
+    email: john@laposte.com
     billCycleDayLocal: 0
     currency: USD
     parentAccountId: null
@@ -134,7 +136,7 @@ class Account {
    "accountId":"87dccc88-f504-493e-a05f-9b4a702c3add",
    "name":"John Doe",
    "externalKey":"87dccc88-f504-493e-a05f-9b4a702c3add",
-   "email":"john@example.com",
+   "email":"john@laposte.com",
    "billCycleDayLocal":0,
    "currency":"USD",
    "isPaymentDelegatedToParent":false,
@@ -162,7 +164,7 @@ Retrieves the details information for the `Account` using its `accountId`.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}`
 
 > Example Request:
 
@@ -219,7 +221,7 @@ accountApi.get_account(account_id, api_key, api_secret)
   "name": "John Doe",
   "firstNameLength": null,
   "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-  "email": "john@example.com",
+  "email": "john@laposte.com",
   "billCycleDayLocal": 0,
   "currency": "USD",
   "parentAccountId": null,
@@ -251,7 +253,7 @@ class Account {
     name: John Doe
     firstNameLength: null
     externalKey: 864c1418-e768-4cd5-a0db-67537144b685
-    email: john@example.com
+    email: john@laposte.com
     billCycleDayLocal: 0
     currency: USD
     parentAccountId: null
@@ -281,7 +283,7 @@ class Account {
    "name":"John Doe",
    "firstNameLength":null,
    "externalKey":"e8877928-0226-488d-9272-07a5e66d897f",
-   "email":"john@example.com",
+   "email":"john@laposte.com",
    "billCycleDayLocal":0,
    "currency":"USD",
    "parentAccountId":null,
@@ -357,7 +359,7 @@ Retrieves the details information for the `Account` using its `externalKey`.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts`
+`GET http://127.0.0.1:8080/1.0/kb/accounts`
 
 > Example Request:
 
@@ -416,7 +418,7 @@ accountApi.get_account(external_key, api_key, api_secret)
   "name": "John Doe",
   "firstNameLength": null,
   "externalKey": "example_external_key",
-  "email": "john@example.com",
+  "email": "john@laposte.com",
   "billCycleDayLocal": 0,
   "currency": "USD",
   "parentAccountId": null,
@@ -447,7 +449,7 @@ class Account {
     name: John Doe
     firstNameLength: null
     externalKey: example_external_key
-    email: john@example.com
+    email: john@laposte.com
     billCycleDayLocal: 0
     currency: USD
     parentAccountId: null
@@ -477,7 +479,7 @@ class Account {
    "name":"John Doe",
    "firstNameLength":null,
    "externalKey":"example_external_key",
-   "email":"john@example.com",
+   "email":"john@laposte.com",
    "billCycleDayLocal":0,
    "currency":"USD",
    "parentAccountId":null,
@@ -549,7 +551,7 @@ Returns an account object if a valid external key was provided.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/accounts/{accountId}`
+`PUT http://127.0.0.1:8080/1.0/kb/accounts/{accountId}`
 
 > Example Request:
 
@@ -647,7 +649,7 @@ no content
 no content
 ```
 
-Note that the following fields are not updatable, they can only be set once when creating the original `Account`:  `externalKey`, `currency`, timeZone`, `referenceTime`. In addition the `billCycleDayLocal` can be updated but only **once**, that is one can create an `Account` without specifying the `billCycleDayLocal` and later update its value; this, in particular allows the system to update its value to a good default, that is one that will avoid leading pro-rations, when creating the first subscription.
+Note that the following fields are not updatable, they can only be set once when creating the original `Account`:  `externalKey`, `currency`, `timeZone`, `referenceTime`. In addition the `billCycleDayLocal` can be updated but only **once**, that is one can create an `Account` without specifying the `billCycleDayLocal` and later update its value; this, in particular allows the system to update its value to a good default, that is one that will avoid leading pro-rations, when creating the first subscription.
 
 
 
@@ -669,7 +671,7 @@ This endpoint can be used when no other state change will occur on this `Account
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/accounts/{accountId}`
+`DELETE http://127.0.0.1:8080/1.0/kb/accounts/{accountId}`
 
 > Example Request:
 
@@ -767,7 +769,7 @@ several emails for one customer `Account`.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts/{accountId}/emails`
+`POST http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/emails`
 
 > Example Request:
 
@@ -782,7 +784,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"email\": \"email@example.com\"}" \
+    -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"email\": \"email@laposte.com\"}" \
     "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
 ```
 
@@ -791,7 +793,7 @@ import org.killbill.billing.client.api.gen.AccountApi;
 protected AccountApi accountApi;
 
 UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
-String email = "email@example.com";
+String email = "email@laposte.com";
 
 AccountEmail accountEmail = new AccountEmail(accountId,
                                              email,
@@ -803,7 +805,7 @@ accountApi.addEmail(accountId,
 ```
 
 ```ruby
-account.email = 'email@example.com'
+account.email = 'email@laposte.com'
 
 account.add_email(account.email,
                   user,
@@ -815,7 +817,7 @@ account.add_email(account.email,
 ```python
 accountApi = killbill.api.AccountApi()
 account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
-body = AccountEmail(account_id=account_id, email='email@example.com')
+body = AccountEmail(account_id=account_id, email='email@laposte.com')
 
 accountApi.add_email(account_id,
                      body,
@@ -856,7 +858,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/emails`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/emails`
 
 > Example Request:
 
@@ -900,7 +902,7 @@ accountApi.get_emails(account_id, api_key, api_secret)
 [
    {
       "accountId":"e4ca38b3-934d-42e8-a292-ffb0af5549f2",
-      "email":"email@example.com"
+      "email":"email@laposte.com"
    }
 ]
 ```
@@ -909,7 +911,7 @@ accountApi.get_emails(account_id, api_key, api_secret)
 class AccountEmail {
     org.killbill.billing.client.model.gen.AccountEmail@bdc0f8ad
     accountId: cd026587-c93b-471c-a98d-224c21636fbc
-    email: email@example.com
+    email: email@laposte.com
     auditLogs: []
 }
 ```
@@ -917,7 +919,7 @@ class AccountEmail {
 [
    {
       "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "email":"email@example.com"
+      "email":"email@laposte.com"
    }
 ]
 ```
@@ -926,7 +928,7 @@ class AccountEmail {
   {
     'account_id': 'c8f51346-562d-429b-8c89-27a0f72009b3',
     'audit_logs': [],
-    'email': 'email@example.com'
+    'email': 'email@laposte.com'
   }
 ]
 ```
@@ -944,7 +946,7 @@ Returns a list of objects with account id's and their emails.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/accounts/{accountId}/emails/{email}`
+`DELETE http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/emails/{email}`
 
 > Example Request:
 
@@ -957,7 +959,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/email%40example.com"
+    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/email%40127.0.0.1:8080"
 ```
 
 ```java
@@ -965,7 +967,7 @@ import org.killbill.billing.client.api.gen.AccountApi;
 protected AccountApi accountApi;
 
 UUID accountId = UUID.fromString("873c26ef-a3fa-4942-b2f5-549b51f20b1a");
-String email = "email@example.com";
+String email = "email@laposte.com";
 
 accountApi.removeEmail(accountId, 
                        email, 
@@ -973,7 +975,7 @@ accountApi.removeEmail(accountId,
 ```
 
 ```ruby
-email = 'email@example.com'
+email = 'email@laposte.com'
 
 account.remove_email(email,
                      user,
@@ -985,7 +987,7 @@ account.remove_email(email,
 ```python
 accountApi = killbill.api.AccountApi()
 account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
-email = 'email@example.com'
+email = 'email@laposte.com'
 
 accountApi.remove_email(account_id,
                         email,
@@ -1029,7 +1031,7 @@ This endpoint allow to list all (subscription) `Bundle` associated with this acc
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/bundles`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/bundles`
 
 > Example Request:
 
@@ -2153,7 +2155,7 @@ See section [Invoice](#invoice) for details on invoices.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/invoices`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/invoices`
 
 > Example Request:
 
@@ -2421,7 +2423,7 @@ This call allows to make a series of payment calls, one against each unpaid invo
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts/{accountId}/invoicePayments`
+`POST http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/invoicePayments`
 
 > Example Request:
 
@@ -2525,7 +2527,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/invoicePayments`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/invoicePayments`
 
 > Example Request:
 
@@ -2734,7 +2736,7 @@ Return a list of invoice payments objects.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/payments`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/payments`
 
 > Example Request:
 
@@ -2947,7 +2949,7 @@ communicating with the payment gateway.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts/{accountId}/payments`
+`POST http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/payments`
 
 > Example Request:
 
@@ -3140,7 +3142,7 @@ Returns a payment transaction object.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts/payments`
+`POST http://127.0.0.1:8080/1.0/kb/accounts/payments`
 
 > Example Request:
 
@@ -3281,7 +3283,7 @@ Add a [Payment method](http://docs.killbill.io/0.20/userguide_subscription.html#
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts/{accountId}/paymentMethods`
+`POST http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/paymentMethods`
 
 > Example Request:
 
@@ -3410,7 +3412,7 @@ Returns a payment method object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/paymentMethods`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/paymentMethods`
 
 > Example Request:
 
@@ -3518,7 +3520,7 @@ Returns a list of payment method objects.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/accounts/{accountId}/paymentMethods/{paymentMethodId}/setDefault`
+`PUT http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/paymentMethods/{paymentMethodId}/setDefault`
 
 > Example Request:
 
@@ -3604,7 +3606,7 @@ This endpoint is for a rare use cases where information for a particular payment
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/accounts/{accountId}/paymentMethods/refresh`
+`PUT http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/paymentMethods/refresh`
 
 > Example Request:
 
@@ -3691,7 +3693,7 @@ This allows to retrieve the current overdue/dunning state for an `Account`.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/overdue`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/overdue`
 
 > Example Request:
 
@@ -3806,7 +3808,7 @@ Add a `BlockingState` event for this account.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts/{accountId}/block`
+`POST http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/block`
 
 > Example Request:
 
@@ -3901,7 +3903,7 @@ Retrieves the `BlockingState` assocaited to a given resource.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/block`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/block`
 
 > Example Request:
 
@@ -4046,7 +4048,7 @@ all children `Account` for a given parent `Account`.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/children`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/children`
 
 > Example Request:
 
@@ -4106,7 +4108,7 @@ accountApi.get_children_accounts(account_id, api_key, api_secret)
       "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
       "name":"John Doe",
       "externalKey":"1522172592-516014",
-      "email":"John@example.com",
+      "email":"John@laposte.com",
       "billCycleDayLocal":0,
       "currency":"USD",
       "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
@@ -4162,7 +4164,7 @@ class Account {
       "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
       "name":"John Doe",
       "externalKey":"1522172592-516014",
-      "email":"John@example.com",
+      "email":"John@laposte.com",
       "billCycleDayLocal":0,
       "currency":"USD",
       "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
@@ -4236,7 +4238,7 @@ In the context of the Hierarchical Account feature, this allows to move the pote
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/accounts/{childAccountId}/transferCredit`
+`PUT http://127.0.0.1:8080/1.0/kb/accounts/{childAccountId}/transferCredit`
 
 > Example Request:
 
@@ -4313,7 +4315,7 @@ Allow to add custom fields for a given `Account`.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts/{accountId}/customFields`
+`POST http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/customFields`
 
 > Example Request:
 
@@ -4412,7 +4414,6 @@ class CustomField {
 no content
 ```
 
-Note that none of these fields are mantatory when creating the `Account`. This allows to create shell accounts, simply for the purpose of having a valid `accountId` and create state around it -- e.g payments, .. 
 
 **Query Parameters**
 
@@ -4429,7 +4430,7 @@ Assuming there were custom fields attached to various subscriptions, invoices, p
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/allCustomFields`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/allCustomFields`
 
 > Example Request:
 
@@ -4553,7 +4554,7 @@ Returns a list of custom fields objects
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/customFields`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/customFields`
 
 > Example Request:
 
@@ -4659,7 +4660,7 @@ Returns a list of custom field objects.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/accounts/{accountId}/customFields`
+`PUT http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/customFields`
 
 
 > Example Request:
@@ -4749,7 +4750,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/accounts/{accountId}/customField`
+`DELETE http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/customField`
 
 > Example Request:
 
@@ -4859,7 +4860,7 @@ For user tags, one must first create the tag definition. See section [Tag defini
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/accounts/{accountId}/tags`
+`POST http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/tags`
 
 > Example Request:
 
@@ -4969,7 +4970,7 @@ Assuming there were tagged subscriptions, invoices, payments, ... for this speci
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/allTags`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/allTags`
 
 > Example Request:
 
@@ -5083,7 +5084,7 @@ Returns a list of tag objects
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/tags`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/tags`
 
 > Example Request:
 
@@ -5208,7 +5209,7 @@ Returns a list of account tag objects.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/accounts/{accountId}/tags`
+`DELETE http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/tags`
 
 > Example Request:
 
@@ -5290,7 +5291,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/auditLogs`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/auditLogs`
 
 > Example Request:
 
@@ -5449,7 +5450,7 @@ Returns a list of account audit logs.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/auditLogsWithHistory`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/auditLogsWithHistory`
 
 > Example Request:
 
@@ -5508,7 +5509,7 @@ account.audit_logs_with_history(options)
       "accountRecordId": 120,
       "tenantRecordId": 101,
       "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "email": "john@example.com",
+      "email": "john@laposte.com",
       "name": "John Doe",
       "firstNameLength": null,
       "currency": "USD",
@@ -5550,7 +5551,7 @@ account.audit_logs_with_history(options)
       "accountRecordId": 120,
       "tenantRecordId": 101,
       "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "email": "john@example.com",
+      "email": "john@laposte.com",
       "name": "Another Name",
       "firstNameLength": null,
       "currency": "USD",
@@ -5592,7 +5593,7 @@ account.audit_logs_with_history(options)
       "accountRecordId": 120,
       "tenantRecordId": 101,
       "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "email": "john@example.com",
+      "email": "john@laposte.com",
       "name": "John Doe",
       "firstNameLength": null,
       "currency": "USD",
@@ -5735,7 +5736,7 @@ Returns a list of account audit logs with history.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/emails/{accountEmailId}/auditLogsWithHistory`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/emails/{accountEmailId}/auditLogsWithHistory`
 
 > Example Request:
 
@@ -5802,7 +5803,7 @@ account.email_audit_logs_with_history(account_email_id, options)
       "accountRecordId": 120,
       "tenantRecordId": 101,
       "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "email": "email@example.com",
+      "email": "email@laposte.com",
       "isActive": true,
       "tableName": "ACCOUNT_EMAIL",
       "historyTableName": "ACCOUNT_EMAIL_HISTORY"
@@ -5851,7 +5852,7 @@ class AuditLog {
          "accountRecordId":525,
          "tenantRecordId":842,
          "accountId":"1ced5fc2-b032-4969-a38b-d4db9ab5368f",
-         "email":"email@example.com",
+         "email":"email@laposte.com",
          "isActive":true,
          "tableName":"ACCOUNT_EMAIL",
          "historyTableName":"ACCOUNT_EMAIL_HISTORY"
@@ -5890,7 +5891,7 @@ This api allows to retrieve the chronological set of things that occurred on a g
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/{accountId}/timeline `
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/timeline `
 
 > Example Request:
 
@@ -5945,7 +5946,7 @@ accountApi.get_account_timeline(account_id, api_key, api_secret)
     "name": "John Doe",
     "firstNameLength": null,
     "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "email": "john@example.com",
+    "email": "john@laposte.com",
     "billCycleDayLocal": 0,
     "currency": "USD",
     "parentAccountId": null,
@@ -7027,7 +7028,7 @@ Returns a list of account tag objects.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/pagination`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/pagination`
 
 > Example Request:
 
@@ -7087,7 +7088,7 @@ accountApi.get_accounts(api_key, api_secret)
     "name": "John Doe",
     "firstNameLength": null,
     "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "email": "john@example.com",
+    "email": "john@laposte.com",
     "billCycleDayLocal": 0,
     "currency": "USD",
     "parentAccountId": null,
@@ -7150,7 +7151,7 @@ class Account {
       "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
       "name":"John Doe",
       "externalKey":"1522172592-516014",
-      "email":"John@example.com",
+      "email":"John@laposte.com",
       "billCycleDayLocal":0,
       "currency":"USD",
       "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
@@ -7241,7 +7242,7 @@ Returns a list with all accounts.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/accounts/search/{searchKey}`
+`GET http://127.0.0.1:8080/1.0/kb/accounts/search/{searchKey}`
 
 > Example Request:
 
@@ -7307,7 +7308,7 @@ accountApi.search_accounts(search_key, api_key, api_secret)
     "name": "John Doe",
     "firstNameLength": null,
     "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "email": "john@example.com",
+    "email": "john@laposte.com",
     "billCycleDayLocal": 0,
     "currency": "USD",
     "parentAccountId": null,
@@ -7370,7 +7371,7 @@ class Account {
       "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
       "name":"John Doe",
       "externalKey":"1522172592-516014",
-      "email":"John@example.com",
+      "email":"John@laposte.com",
       "billCycleDayLocal":0,
       "currency":"USD",
       "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",

@@ -3,7 +3,7 @@
 ## Credit Resource
 
 The `Credit` resource represents the credits created on behalf of the customer `Account`. Credits are tracked inside invoices, as a specical kind of
-of invoice item. The credits are visible at the level of the `Account`, i.e account credit, and those will automatically be consumed by the system on
+invoice item. The credits are visible at the level of the `Account`, i.e account credit, and those will automatically be consumed by the system on
 subsequent invoices to bring the balance to zero -- or reduce the balance if there is not enough credit to pay the full amount.
 
 The attributes are the following:
@@ -23,9 +23,11 @@ The attributes are the following:
 
 ### Create a credit
 
+This will result in the creation of a new `Invoice`.
+
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/credits`
+`POST http://127.0.0.1:8080/1.0/kb/credits`
 
 > Example Request:
 
@@ -134,7 +136,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **autoCommit** | boolean | true | auto commit |
+| **autoCommit** | boolean | false | whether to resulting invoice should be `COMMITTED`. Deafult is `false` |
 
 **Returns**
 
@@ -144,7 +146,7 @@ Returns a credit object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/credits/{creditId}`
+`GET http://127.0.0.1:8080/1.0/kb/credits/{creditId}`
 
 > Example Request:
 

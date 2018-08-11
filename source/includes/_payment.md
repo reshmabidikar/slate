@@ -35,7 +35,7 @@ The attributes for the `PaymentTransaction` are described [here](#payment-transa
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/payments/{paymentId}`
+`POST http://127.0.0.1:8080/1.0/kb/payments/{paymentId}`
 
 > Example Request:
 
@@ -235,7 +235,7 @@ Returns a payment object.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/payments`
+`POST http://127.0.0.1:8080/1.0/kb/payments`
 
 > Example Request:
 
@@ -449,7 +449,7 @@ Returns a payment object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/payments/{paymentId}`
+`GET http://127.0.0.1:8080/1.0/kb/payments/{paymentId}`
 
 > Example Request:
 
@@ -711,7 +711,7 @@ Returns a payment object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/payments`
+`GET http://127.0.0.1:8080/1.0/kb/payments`
 
 > Example Request:
 
@@ -993,7 +993,7 @@ Returns a payment object.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/payments/{paymentId}`
+`PUT http://127.0.0.1:8080/1.0/kb/payments/{paymentId}`
 
 > Example Request:
 
@@ -1113,7 +1113,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/payments`
+`PUT http://127.0.0.1:8080/1.0/kb/payments`
 
 > Example Request:
 
@@ -1231,7 +1231,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/payments/{paymentId}`
+`DELETE http://127.0.0.1:8080/1.0/kb/payments/{paymentId}`
 
 > Example Request:
 
@@ -1329,7 +1329,7 @@ Returns a payment transaction object.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/payments`
+`DELETE http://127.0.0.1:8080/1.0/kb/payments`
 
 > Example Request:
 
@@ -1427,7 +1427,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/payments/{paymentId}/chargebacks`
+`POST http://127.0.0.1:8080/1.0/kb/payments/{paymentId}/chargebacks`
 
 > Example Request:
 
@@ -1553,7 +1553,7 @@ Returns a payment object.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/payments/chargebacks`
+`POST http://127.0.0.1:8080/1.0/kb/payments/chargebacks`
 
 > Example Request:
 
@@ -1678,7 +1678,7 @@ Returns a payment object.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/payments/{paymentId}/chargebackReversals`
+`POST http://127.0.0.1:8080/1.0/kb/payments/{paymentId}/chargebackReversals`
 
 > Example Request:
 
@@ -1809,7 +1809,7 @@ Returns a payment object.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/payments/chargebackReversals`
+`POST http://127.0.0.1:8080/1.0/kb/payments/chargebackReversals`
 
 > Example Request:
 
@@ -1938,7 +1938,7 @@ Returns a payment object.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/payments/{paymentId}/refunds`
+`POST http://127.0.0.1:8080/1.0/kb/payments/{paymentId}/refunds`
 
 > Example Request:
 
@@ -2133,7 +2133,7 @@ Returns a payment object.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/payments/refunds`
+`POST http://127.0.0.1:8080/1.0/kb/payments/refunds`
 
 > Example Request:
 
@@ -2253,7 +2253,7 @@ Returns a payment object.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/payments/{paymentTransactionId}/cancelScheduledPaymentTransaction`
+`DELETE http://127.0.0.1:8080/1.0/kb/payments/{paymentTransactionId}/cancelScheduledPaymentTransaction`
 
 > Example Request:
 
@@ -2319,7 +2319,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/payments/cancelScheduledPaymentTransaction`
+`DELETE http://127.0.0.1:8080/1.0/kb/payments/cancelScheduledPaymentTransaction`
 
 > Example Request:
 
@@ -2394,7 +2394,7 @@ New payment transaction type can be: authorization, purchase or credit
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/payments/combo`
+`POST http://127.0.0.1:8080/1.0/kb/payments/combo`
 
 > Example Request:
 
@@ -2621,7 +2621,7 @@ Custom fields are `{key, value}` attributes that can be attached to any customer
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/payments/{paymentId}/customFields`
+`POST http://127.0.0.1:8080/1.0/kb/payments/{paymentId}/customFields`
 
 > Example Request:
 
@@ -2737,7 +2737,7 @@ Returns a custom field object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/payments/{paymentId}/customFields`
+`GET http://127.0.0.1:8080/1.0/kb/payments/{paymentId}/customFields`
 
 > Example Request:
 
@@ -2838,7 +2838,7 @@ Returns a list of custom field objects.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/payments/{paymentId}/customFields`
+`PUT http://127.0.0.1:8080/1.0/kb/payments/{paymentId}/customFields`
 
 > Example Request:
 
@@ -2928,7 +2928,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/payments/{paymentId}/customFields`
+`DELETE http://127.0.0.1:8080/1.0/kb/payments/{paymentId}/customFields`
 
 > Example Request:
 
@@ -3015,7 +3015,7 @@ Let's assume there is an existing `user` tagDefintion already created with `tagD
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/payments/{paymentId}/tags`
+`POST http://127.0.0.1:8080/1.0/kb/payments/{paymentId}/tags`
 
 > Example Request:
 
@@ -3117,7 +3117,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/payments/{paymentId}/tags`
+`GET http://127.0.0.1:8080/1.0/kb/payments/{paymentId}/tags`
 
 > Example Request:
 
@@ -3236,7 +3236,7 @@ Returns a list of bundle tag objects.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/payments/{paymentId}/tags`
+`DELETE http://127.0.0.1:8080/1.0/kb/payments/{paymentId}/tags`
 
 **Query Parameters**
 
@@ -3326,7 +3326,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/payments/{paymentId}/auditLogsWithHistory`
+`GET http://127.0.0.1:8080/1.0/kb/payments/{paymentId}/auditLogsWithHistory`
 
 > Example Request:
 
@@ -3496,7 +3496,7 @@ Returns a list of account audit logs with history.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/payments/pagination`
+`GET http://127.0.0.1:8080/1.0/kb/payments/pagination`
 
 > Example Request:
 
@@ -3796,7 +3796,7 @@ Returns a list with all payments.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/payments/search/{searchKey}`
+`GET http://127.0.0.1:8080/1.0/kb/payments/search/{searchKey}`
 
 > Example Request:
 

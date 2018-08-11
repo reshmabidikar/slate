@@ -52,7 +52,7 @@ The attributes are the following:
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/subscriptions`
+`POST http://127.0.0.1:8080/1.0/kb/subscriptions`
 
 > Example Request:
 
@@ -88,7 +88,7 @@ LocalDate billingDate = null;
 Boolean renameKeyIfExistsAndUnused = null; 
 Boolean migrated = null;
 Integer bcd = null;
-Boolean callCompletion true
+Boolean callCompletion = true;
 long DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC = 10;
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
 
@@ -311,18 +311,18 @@ no content
 | **renameKeyIfExistsAndUnused** | boolean | false | rename external key if exists and unused (default: true) |
 | **migrated** | boolean | false | choose true if is migrated (default: false) |
 | **bcd** | integer | false | Override the bill cycle day for this subscription. |
-| **callCompletion** | boolean | false | call completion (default: false)|
-| **callTimeoutSec** | long | false | call timeout sec |
+| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
+| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
 
 **Returns**
 
 Returns a subscription object.
 
-### Create an subscription with addOn products
+### Create a subscription with addOn products
 
 **HTTP Request**
 
-`POST http://example.com/1.0/kb/subscriptions/createSubscriptionWithAddOns`
+`POST http://127.0.0.1:8080/1.0/kb/subscriptions/createSubscriptionWithAddOns`
 
 > Example Request:
 
@@ -541,8 +541,8 @@ no content
 | **billingDate** | string | false | the date at which the billing starts A null date means right now. |
 | **renameKeyIfExistsAndUnused** | boolean | false | rename key if exists and unused (default: true) |
 | **migrated** | boolean | false | choose true if is migrated (default: false) |
-| **callCompletion** | boolean | false | call completion (default: false)|
-| **callTimeoutSec** | long | false | call timeout sec | 
+| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
+| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
 
 **Returns**
 
@@ -553,7 +553,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/subscriptions/createSubscriptionsWithAddOns`
+`POST http://127.0.0.1:8080/1.0/kb/subscriptions/createSubscriptionsWithAddOns`
 
 > Example Request:
 
@@ -1125,8 +1125,8 @@ no content
 | **billingDate** | string | false | the date at which the billing starts A null date means right now. |
 | **renameKeyIfExistsAndUnused** | boolean | false | Rename key if exists and unused (default: true) |
 | **migrated** | boolean | false | choose true if is migrated (default: false) |
-| **callCompletion** | boolean | false | call completion (default: false)|
-| **callTimeoutSec** | long | false | call timeout sec | 
+| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
+| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
 
 **Returns**
 
@@ -1137,7 +1137,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/subscriptions/{subscriptionId}`
+`GET http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}`
 
 > Example Request:
 
@@ -1522,7 +1522,7 @@ to realign invoicing, let's say on the 16th.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/subscriptions/{subscriptionId}/bcd`
+`PUT http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/bcd`
 
 > Example Request:
 
@@ -1534,7 +1534,7 @@ curl -v \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Content-Type: application/json" \
     -H "X-Killbill-CreatedBy: demo" \
-    -d '{ "billCycleDayLocal": 10 }' \
+    -d '{ "billCycleDayLocal": 16 }' \
     'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/bcd' 
 ```
 
@@ -1608,7 +1608,7 @@ no content
 
 | Name | Type | Required | Description |
 | ---- | ---- | -------- | ----------- |
-| **effectiveFromDate** | string | true | effective at which this change becomes effective | 
+| **effectiveFromDate** | string | true | effective at which this change becomes effective, a null value means immediate | 
 | **forceNewBcdWithPastEffectiveDate** | boolean | false | by default the effective date must be in the future so as to not modify existing invoices. this flag allows to override this behavior. (default: false)| 
 
 **Returns**
@@ -1618,9 +1618,12 @@ A `204` http status without content.
 
 ### Change subscription plan
 
+
+Ability to upgrade/downgrade a given subscription to a new `Plan`.
+
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/subscriptions/{subscriptionId}`
+`PUT http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}`
 
 > Example Request:
 
@@ -1826,21 +1829,21 @@ no content
 | ---- | ---- | -------- | ----------- |
 | **billingPolicy** | string | false | billing policy that will be used to make this change effective -- e.g `END_OF_TERM` would ensure there is no pro-ratin. |
 | **requestedDate** | string | false | the date at which this change should become effective. This date is only used if no billingPolicy was specified. A null date makes it an immediate change. |
-| **callCompletion** | boolean | false | call completion (default: false)|
-| **callTimeoutSec** | long | false | call timeout sec |
+| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
+| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
 
 **Returns**
 
 A `204` http status without content.
 
 
-### Undo a pending change plan on an subscription
+### Undo a pending change plan on a subscription
 
 This endpoint allows to undo a pending change of `Plan` for a given subscription.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/subscriptions/{subscriptionId}/undoChangePlan`
+`PUT http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/undoChangePlan`
 
 > Example Request:
 
@@ -1916,7 +1919,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/subscriptions/{subscriptionId}`
+`DELETE http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}`
 
 > Example Request:
 
@@ -2001,8 +2004,8 @@ no content
 | **entitlementPolicy** | string | false | entitlement policy |
 | **billingPolicy** | string | false | billing policy |
 | **useRequestedDateForBilling** | boolean | false | use requested date for billing (default: false) |
-| **callCompletion** | boolean | false | call completion (default: false)|
-| **callTimeoutSec** | long | false | call timeout sec | 
+| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
+| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
 
 Since we offer the ability to control cancelation date for both entitlement (service) and billing either through policies, dates or null values (now), it is imperative to understand how those parameters work:
 
@@ -2024,13 +2027,13 @@ The reason for all this complexity is to allow to control entitlement and billin
 A `204` http status without content.
 
 
-### Un-cancel an subscription
+### Un-cancel a subscription
 
 This endpoint allows to undo a pending cancelation for a given subscription.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/subscriptions/{subscriptionId}/uncancel`
+`PUT http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/uncancel`
 
 > Example Request:
 
@@ -2111,7 +2114,7 @@ Provides an low level interface to add `BlockingState` event for this subscripti
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/subscriptions/{subscriptionId}/block`
+`POST http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/block`
 
 > Example Request:
 
@@ -2211,7 +2214,7 @@ Custom fields are `{key, value}` attributes that can be attached to any customer
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/subscriptions/{subscriptionId}/customFields`
+`POST http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/customFields`
 
 > Example Request:
 
@@ -2330,7 +2333,7 @@ Returns a custom field object.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/subscriptions/{subscriptionId}/customFields`
+`GET http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/customFields`
 
 > Example Request:
 
@@ -2437,7 +2440,7 @@ Returns a list of custom field objects.
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/subscriptions/{subscriptionId}/customFields`
+`PUT http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/customFields`
 
 > Example Request:
 
@@ -2533,7 +2536,7 @@ A `204` http status without content.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/subscriptions/{subscriptionId}/customFields`
+`DELETE http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/customFields`
 
 > Example Request:
 
@@ -2622,7 +2625,7 @@ Let's assume there is an existing `user` tagDefintion already created with `tagD
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/subscriptions/{subscriptionId}/tags`
+`POST http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/tags`
 
 > Example Request:
 
@@ -2723,7 +2726,7 @@ A `201` http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/subscriptions/{subscriptionId}/tags`
+`GET http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/tags`
 
 > Example Request:
 
@@ -2834,7 +2837,7 @@ Returns a list of bundle tag objects.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/subscriptions/{subscriptionId}/tags`
+`DELETE http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/tags`
 
 **Query Parameters**
 

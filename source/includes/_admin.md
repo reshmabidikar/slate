@@ -17,7 +17,7 @@ After the issue was corrected -- e.g bug was fixed -- one can get all all the `A
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/admin/invoices`
+`POST http://127.0.0.1:8080/1.0/kb/admin/invoices`
 
 > Example Request:
 
@@ -101,7 +101,7 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/admin/payments/{paymentId}/transactions/{paymentTransactionId}`
+`PUT http://127.0.0.1:8080/1.0/kb/admin/payments/{paymentId}/transactions/{paymentTransactionId}`
 
 > Example Request:
 
@@ -204,7 +204,7 @@ Ability to invalidate some/all the caches on a given Kill Bill node/server.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/admin/cache`
+`DELETE http://127.0.0.1:8080/1.0/kb/admin/cache`
 
 > Example Request:
 
@@ -271,7 +271,7 @@ Ability to invalidate some/all of the caches associated to a specific `Account` 
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/admin/cache/accounts/{accountId}`
+`DELETE http://127.0.0.1:8080/1.0/kb/admin/cache/accounts/{accountId}`
 
 > Example Request:
 
@@ -337,7 +337,7 @@ Ability to invalidate some/all of the caches associated to a specific `Tenant` o
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/admin/cache/tenants`
+`DELETE http://127.0.0.1:8080/1.0/kb/admin/cache/tenants`
 
 > Example Request:
 
@@ -400,7 +400,7 @@ The following endpoint can be used to add a server back into the rotation during
 
 **HTTP Request** 
 
-`PUT http://example.com/1.0/kb/admin/healthcheck`
+`PUT http://127.0.0.1:8080/1.0/kb/admin/healthcheck`
 
 > Example Request:
 
@@ -463,7 +463,7 @@ The following endpoint can be used to remove a server back into the rotation dur
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/admin/healthcheck`
+`DELETE http://127.0.0.1:8080/1.0/kb/admin/healthcheck`
 
 > Example Request:
 
@@ -526,7 +526,7 @@ Returns low level details about the queued notifications for a given `Account`.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/admin/queues`
+`GET http://127.0.0.1:8080/1.0/kb/admin/queues`
 
 > Example Request:
 

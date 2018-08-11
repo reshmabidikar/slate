@@ -15,7 +15,7 @@ Creating, listing, deleting such tag defintions is the purpose of the apis below
 
 **HTTP Request** 
 
-`POST http://example.com/1.0/kb/tagDefinitions`
+`POST http://127.0.0.1:8080/1.0/kb/tagDefinitions`
 
 > Example Request:
 
@@ -71,7 +71,7 @@ A 201 http status without content.
 
 **HTTP Request** 
 
-`GET http://example.com/1.0/kb/tagDefinitions/{tagDefinitionId}`
+`GET http://127.0.0.1:8080/1.0/kb/tagDefinitions/{tagDefinitionId}`
 
 > Example Request:
 
@@ -129,7 +129,7 @@ Returns a tag definition object.
 
 **HTTP Request** 
 
-`DELETE http://example.com/1.0/kb/tagDefinitions/{tagDefinitionId}`
+`DELETE http://127.0.0.1:8080/1.0/kb/tagDefinitions/{tagDefinitionId}`
 
 > Example Request:
 
