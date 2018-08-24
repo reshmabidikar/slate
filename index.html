@@ -1349,29 +1349,58 @@ While Kill Bill supports `https` protocol, all example rely on standard http sch
 -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
 -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
 ...
-</code></pre><pre class="highlight java tab-java"><code><span class="c1">// Initialization of the KillBillClient instance</span>
-<span class="n">KillBillHttpClient</span> <span class="n">killBillHttpClient</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KillBillHttpClient</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"http://%s:%d"</span><span class="o">,</span> <span class="s">"127.0.0.1"</span><span class="o">,</span> <span class="mi">8080</span><span class="o">),</span>
-                                            <span class="n">username</span><span class="o">,</span>
-                                            <span class="n">password</span><span class="o">,</span>
-                                            <span class="n">apiKey</span><span class="o">,</span>
-                                            <span class="n">apiSecret</span><span class="o">,</span>
-                                            <span class="kc">null</span><span class="o">,</span>
-                                            <span class="kc">null</span><span class="o">,</span>
-                                            <span class="n">DEFAULT_CONNECT_TIMEOUT_SEC</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">,</span>
-                                            <span class="n">DEFAULT_READ_TIMEOUT_SEC</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">,</span>
-                                            <span class="n">DEFAULT_REQUEST_TIMEOUT_SEC</span> <span class="o">*</span> <span class="mi">1000</span><span class="o">);</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="n">KillBillHttpClient</span> <span class="n">killBillHttpClient</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KillBillHttpClient</span><span class="o">(</span><span class="n">String</span><span class="o">.</span><span class="na">format</span><span class="o">(</span><span class="s">"http://%s:%d"</span><span class="o">,</span> <span class="s">"127.0.0.1"</span><span class="o">,</span> <span class="mi">8080</span><span class="o">),</span>
+                                                               <span class="n">username</span><span class="o">,</span>
+                                                               <span class="n">password</span><span class="o">,</span>
+                                                               <span class="n">apiKey</span><span class="o">,</span>
+                                                               <span class="n">apiSecret</span><span class="o">,</span>
+                                                               <span class="kc">null</span><span class="o">,</span>
+                                                               <span class="kc">null</span><span class="o">,</span>
+                                                               <span class="mi">1000</span><span class="o">,</span>
+                                                               <span class="mi">5000</span><span class="o">,</span>
+                                                               <span class="mi">5000</span><span class="o">);</span>
 
-<span class="n">KillBillClient</span> <span class="n">killBillClient</span> <span class="o">=</span> <span class="k">new</span> <span class="n">KillBillClient</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">AccountApi</span> <span class="n">accountApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AccountApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">AdminApi</span> <span class="n">adminApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">AdminApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">BundleApi</span> <span class="n">bundleApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BundleApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">CatalogApi</span> <span class="n">catalogApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CatalogApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">CreditApi</span> <span class="n">creditApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CreditApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">CustomFieldApi</span> <span class="n">customFieldApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CustomFieldApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">ExportApi</span> <span class="n">exportApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ExportApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">InvoiceApi</span> <span class="n">invoiceApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InvoiceApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">InvoiceItemApi</span> <span class="n">invoiceItemApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InvoiceItemApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">InvoicePaymentApi</span> <span class="n">invoicePaymentApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">InvoicePaymentApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">NodesInfoApi</span> <span class="n">nodesInfoApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">NodesInfoApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">OverdueApi</span> <span class="n">overdueApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">OverdueApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">PaymentApi</span> <span class="n">paymentApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PaymentApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">PaymentGatewayApi</span> <span class="n">paymentGatewayApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PaymentGatewayApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">PaymentMethodApi</span> <span class="n">paymentMethodApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PaymentMethodApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">PaymentTransactionApi</span> <span class="n">paymentTransactionApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PaymentTransactionApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">PluginInfoApi</span> <span class="n">pluginInfoApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">PluginInfoApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">SecurityApi</span> <span class="n">securityApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SecurityApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">SubscriptionApi</span> <span class="n">subscriptionApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SubscriptionApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">TagApi</span> <span class="n">tagApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TagApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">TagDefinitionApi</span> <span class="n">tagDefinitionApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TagDefinitionApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">TenantApi</span> <span class="n">tenantApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">TenantApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
+<span class="n">UsageApi</span> <span class="n">usageApi</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UsageApi</span><span class="o">(</span><span class="n">killBillHttpClient</span><span class="o">);</span>
 
 <span class="c1">// Request Options example</span>
-<span class="kd">protected</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">createdBy</span> <span class="o">=</span> <span class="s">"me"</span><span class="o">;</span>
-<span class="kd">protected</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">reason</span> <span class="o">=</span> <span class="s">"Going through my first tutorial"</span><span class="o">;</span>
-<span class="kd">protected</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">String</span> <span class="n">comment</span> <span class="o">=</span> <span class="s">"I like it!"</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">createdBy</span> <span class="o">=</span> <span class="s">"me"</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">reason</span> <span class="o">=</span> <span class="s">"Going through my first tutorial"</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">comment</span> <span class="o">=</span> <span class="s">"I like it!"</span><span class="o">;</span>
+
+<span class="n">String</span> <span class="n">apiKey</span> <span class="o">=</span> <span class="s">"bob"</span><span class="o">;</span>
+<span class="n">String</span> <span class="n">apiSecret</span> <span class="o">=</span> <span class="s">"lazar"</span><span class="o">;</span>
+
+
 <span class="n">RequestOptions</span> <span class="n">requestOptions</span> <span class="o">=</span> <span class="n">RequestOptions</span><span class="o">.</span><span class="na">builder</span><span class="o">()</span>
-                                                      <span class="o">.</span><span class="na">withCreatedBy</span><span class="o">(</span><span class="n">createdBy</span><span class="o">)</span>
-                                                      <span class="o">.</span><span class="na">withReason</span><span class="o">(</span><span class="n">reason</span><span class="o">)</span>
-                                                      <span class="o">.</span><span class="na">withComment</span><span class="o">(</span><span class="n">comment</span><span class="o">)</span>
-                                                      <span class="o">.</span><span class="na">withQueryParams</span><span class="o">(</span><span class="n">queryParams</span><span class="o">).</span><span class="na">build</span><span class="o">();</span>
+                                              <span class="o">.</span><span class="na">withCreatedBy</span><span class="o">(</span><span class="n">createdBy</span><span class="o">)</span>
+                                              <span class="o">.</span><span class="na">withReason</span><span class="o">(</span><span class="n">reason</span><span class="o">)</span>
+                                              <span class="o">.</span><span class="na">withComment</span><span class="o">(</span><span class="n">comment</span><span class="o">)</span>
+                                              <span class="o">.</span><span class="na">withQueryParams</span><span class="o">(</span><span class="n">queryParams</span><span class="o">)</span>
+                                              <span class="o">.</span><span class="na">withTenantApiKey</span><span class="o">(</span><span class="n">apiKey</span><span class="o">)</span>
+                                              <span class="o">.</span><span class="na">withTenantApiKey</span><span class="o">(</span><span class="n">apiSecret</span><span class="o">)</span>
+                                              <span class="o">.</span><span class="na">build</span><span class="o">();</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'killbill_client'</span>
 
 <span class="no">KillBillClient</span><span class="p">.</span><span class="nf">url</span> <span class="o">=</span> <span class="s1">'http://127.0.0.1:8080'</span>
