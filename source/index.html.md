@@ -87,31 +87,62 @@ curl \
 -H "X-Killbill-ApiSecret: lazar" \
 ...
 ```
+
 ```java
-// Initialization of the KillBillClient instance
 KillBillHttpClient killBillHttpClient = new KillBillHttpClient(String.format("http://%s:%d", "127.0.0.1", 8080),
-                                            username,
-                                            password,
-                                            apiKey,
-                                            apiSecret,
-                                            null,
-                                            null,
-                                            DEFAULT_CONNECT_TIMEOUT_SEC * 1000,
-                                            DEFAULT_READ_TIMEOUT_SEC * 1000,
-                                            DEFAULT_REQUEST_TIMEOUT_SEC * 1000);
-                                            
-KillBillClient killBillClient = new KillBillClient(killBillHttpClient);
+                                                               username,
+                                                               password,
+                                                               apiKey,
+                                                               apiSecret,
+                                                               null,
+                                                               null,
+                                                               1000,
+                                                               5000,
+                                                               5000);
+
+AccountApi accountApi = new AccountApi(killBillHttpClient);
+AdminApi adminApi = new AdminApi(killBillHttpClient);
+BundleApi bundleApi = new BundleApi(killBillHttpClient);
+CatalogApi catalogApi = new CatalogApi(killBillHttpClient);
+CreditApi creditApi = new CreditApi(killBillHttpClient);
+CustomFieldApi customFieldApi = new CustomFieldApi(killBillHttpClient);
+ExportApi exportApi = new ExportApi(killBillHttpClient);
+InvoiceApi invoiceApi = new InvoiceApi(killBillHttpClient);
+InvoiceItemApi invoiceItemApi = new InvoiceItemApi(killBillHttpClient);
+InvoicePaymentApi invoicePaymentApi = new InvoicePaymentApi(killBillHttpClient);
+NodesInfoApi nodesInfoApi = new NodesInfoApi(killBillHttpClient);
+OverdueApi overdueApi = new OverdueApi(killBillHttpClient);
+PaymentApi paymentApi = new PaymentApi(killBillHttpClient);
+PaymentGatewayApi paymentGatewayApi = new PaymentGatewayApi(killBillHttpClient);
+PaymentMethodApi paymentMethodApi = new PaymentMethodApi(killBillHttpClient);
+PaymentTransactionApi paymentTransactionApi = new PaymentTransactionApi(killBillHttpClient);
+PluginInfoApi pluginInfoApi = new PluginInfoApi(killBillHttpClient);
+SecurityApi securityApi = new SecurityApi(killBillHttpClient);
+SubscriptionApi subscriptionApi = new SubscriptionApi(killBillHttpClient);
+TagApi tagApi = new TagApi(killBillHttpClient);
+TagDefinitionApi tagDefinitionApi = new TagDefinitionApi(killBillHttpClient);
+TenantApi tenantApi = new TenantApi(killBillHttpClient);
+UsageApi usageApi = new UsageApi(killBillHttpClient);
 
 // Request Options example
-protected static final String createdBy = "me";
-protected static final String reason = "Going through my first tutorial";
-protected static final String comment = "I like it!";
+String createdBy = "me";
+String reason = "Going through my first tutorial";
+String comment = "I like it!";
+
+String apiKey = "bob";
+String apiSecret = "lazar";
+
+
 RequestOptions requestOptions = RequestOptions.builder()
-                                                      .withCreatedBy(createdBy)
-                                                      .withReason(reason)
-                                                      .withComment(comment)
-                                                      .withQueryParams(queryParams).build();
+                                              .withCreatedBy(createdBy)
+                                              .withReason(reason)
+                                              .withComment(comment)
+                                              .withQueryParams(queryParams)
+                                              .withTenantApiKey(apiKey)
+                                              .withTenantApiKey(apiSecret)
+                                              .build();
 ```
+
 
 ```ruby
 require 'killbill_client'
