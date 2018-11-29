@@ -11,6 +11,7 @@ includes:
   - payment
   - payment-transaction
   - invoice-payment
+  - usage
   - tag-definition
   - admin
   
