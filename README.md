@@ -14,7 +14,7 @@ The setup is described in the original [slate repo](https://github.com/lord/slat
 
 ## Edit and Syntax
 
-The main file to edit is the [index.html.rd](https://github.com/killbill/slate/blob/master/source/index.html.md), and the following is a summary of the [markdown syntax for slate](https://github.com/lord/slate/wiki/Markdown-Syntax).
+The main file to edit is the [index.html.md](https://github.com/killbill/slate/blob/master/source/index.html.md), and the following is a summary of the [markdown syntax for slate](https://github.com/lord/slate/wiki/Markdown-Syntax).
 
 
 ## Publishing

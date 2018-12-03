@@ -3797,9 +3797,21 @@ Returns a overdue state object.
 
 As part of the entitlement features, Kill Bill provides an abstraction to include `BlockingState` events into the per `Account` event stream. The main idea is to allow to modify billing -- e.g pause a specific subscription, all subscriptions, ... -- or the entitlement state -- disable service associated with a given subscription. The [entitlement internal documentation](http://docs.killbill.io/latest/entitlement_subsystem.html) provides some overview of the mechanism. Blocking states are mostly manipulated from inside Kill Bill core, but the functionality is exposed through the API, with the caveat that it is an advanced feature and can lead to unintented behavior if not used properly.
 
-Note that the term `BlockingState` seems to indicate that something will be blocked, and this can certainly be the case, but not necessarily; actually the attribute
-`isBlockChange`, `isBlockEntitlement`, `isBlockBilling` will drive this behavior.
+Note that the term `BlockingState` seems to indicate that something will be blocked, and this can certainly be the case, but not necessarily; actually the attributes
+`isBlockChange`, `isBlockEntitlement`, `isBlockBilling` will drive this behavior. These flags are always considered on a per blocking state `service`, regardless of the state name. For instance, consider the following two scenarii:
 
+* Scenario 1
+  * T1: Service A, State S1, isBlockBilling=true, isBlockEntitlement=false
+  * T2: Service A, State S1, isBlockBilling=false, isBlockEntitlement=true
+  * T3: Service A, State S2, isBlockBilling=false, isBlockEntitlement=false
+  * T4: Service A, State S2, isBlockBilling=false, isBlockEntitlement=false
+* Scenario 2
+  * T1: Service A, State S1, isBlockBilling=true, isBlockEntitlement=false
+  * T2: Service B, State S1, isBlockBilling=false, isBlockEntitlement=true
+  * T3: Service A, State S2, isBlockBilling=false, isBlockEntitlement=false
+  * T4: Service B, State S2, isBlockBilling=false, isBlockEntitlement=false
+
+In Scenario 1, billing is blocked between T1 and T2, while entitlement is blocked between T2 and T3. In Scenario 2 however, billing is blocked between T1 and T3, while entitlement is blocked between T2 and T4.
 
 ### Block an account
 
@@ -3828,7 +3840,26 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("864c1418-e768-4cd5-a0db-67537144b685");
+
+BlockingState blockingState = new BlockingState();
+blockingState.setStateName("STATE1");
+blockingState.setService("ServiceStateService");
+blockingState.setIsBlockChange(false);
+blockingState.setIsBlockBilling(false);
+blockingState.setIsBlockEntitlement(false);
+
+LocalDate requestedDate = new LocalDate("2013-08-01");
+Map<String, String> pluginProperty = ImmutableMap.<String, String>of();
+
+BlockingStates result = accountApi.addAccountBlockingState(accountId,
+                                                           blockingState,
+                                                           requestedDate,
+                                                           pluginProperty,
+                                                           requestOptions);
 ```
 
 ```ruby
@@ -3876,7 +3907,18 @@ accountApi.add_account_blocking_state(account_id,
 < Content-Length: 0
 ```
 ```java
-TODO
+[class BlockingState {
+    org.killbill.billing.client.model.gen.BlockingState@be808444
+    blockedId: 864c1418-e768-4cd5-a0db-67537144b685
+    stateName: STATE1
+    service: ServiceStateService
+    isBlockChange: false
+    isBlockEntitlement: false
+    isBlockBilling: false
+    effectiveDate: 2013-08-01T00:00:01.000Z
+    type: ACCOUNT
+    auditLogs: []
+}]
 ```
 ```ruby
 no content

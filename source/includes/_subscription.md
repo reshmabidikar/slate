@@ -2137,7 +2137,26 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("161692a4-c293-410c-a92f-939c5e3dcba7");
+
+BlockingState blockingState = new BlockingState();
+blockingState.setStateName("STATE1");
+blockingState.setService("ServiceStateService");
+blockingState.setIsBlockChange(false);
+blockingState.setIsBlockBilling(false);
+blockingState.setIsBlockEntitlement(false);
+
+LocalDate requestedDate = new LocalDate("2013-08-01");
+Map<String, String> pluginProperty = ImmutableMap.<String, String>of();
+
+BlockingStates result = subscriptionApi.addSubscriptionBlockingState(subscriptionId,
+                                                                     blockingState,
+                                                                     requestedDate,
+                                                                     pluginProperty,
+                                                                     requestOptions);
 ```
 
 ```ruby
@@ -2187,7 +2206,31 @@ subscriptionApi.add_subscription_blocking_state(subscription_id,
 < Location: http://127.0.0.1:8080/1.0/kb/accounts/581d86fc-7cfc-46f2-b6d4-4dbc1d98beb3/block?blockingStateTypes=SUBSCRIPTION
 < Content-Length: 0
 ```
-
+```java
+[class BlockingState {
+    org.killbill.billing.client.model.gen.BlockingState@bf898dea
+    blockedId: 161692a4-c293-410c-a92f-939c5e3dcba7
+    stateName: ENT_STARTED
+    service: entitlement-service
+    isBlockChange: false
+    isBlockEntitlement: false
+    isBlockBilling: false
+    effectiveDate: 2012-04-25T00:03:42.000Z
+    type: SUBSCRIPTION
+    auditLogs: []
+}, class BlockingState {
+    org.killbill.billing.client.model.gen.BlockingState@fd3732d8
+    blockedId: 161692a4-c293-410c-a92f-939c5e3dcba7
+    stateName: STATE1
+    service: ServiceStateService
+    isBlockChange: false
+    isBlockEntitlement: false
+    isBlockBilling: false
+    effectiveDate: 2013-08-01T00:03:42.000Z
+    type: SUBSCRIPTION
+    auditLogs: []
+}]
+```
 ```ruby
 no content
 ```
