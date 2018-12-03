@@ -4,6 +4,8 @@
 
 When invoicing usage-based subscriptions, you need to record usage data into Kill Bill. Note that Kill Bill is not designed to be a metering system, i.e. it shouldn't contain all data points. Instead, it expects that you record a usage summary on a daily basis (1 API call per subscription per day). For a telco company for instance, instead of recording all phone calls, only record the number of minutes effectively used at the end of the day for that day.
 
+For more information, see our [catalog usage documentation](http://docs.killbill.io/latest/userguide_subscription.html#components-catalog-usage) and our [invoice usage documentation](http://docs.killbill.io/latest/userguide_subscription.html#components-invoicing-usage).
+
 Recording and retrieve usage data points is the purpose of the APIs below.
 
 
