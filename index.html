@@ -1234,6 +1234,28 @@
               </ul>
           </li>
           <li>
+            <a href="#usage" class="toc-h1 toc-link" data-title="Usage">Usage</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#usage-usage-resource" class="toc-h2 toc-link" data-title="Usage Resource">Usage Resource</a>
+                  </li>
+                  <li>
+                    <a href="#usage-usage" class="toc-h2 toc-link" data-title="Usage">Usage</a>
+                        <ul class="toc-list-h3">
+                              <li>
+                                <a href="#usage-record-usage-for-a-subscription" class="toc-h3 toc-link" data-title="Usage">Record usage for a subscription</a>
+                              </li>
+                              <li>
+                                <a href="#usage-retrieve-usage-for-a-subscription-and-unit-type" class="toc-h3 toc-link" data-title="Usage">Retrieve usage for a subscription and unit type</a>
+                              </li>
+                              <li>
+                                <a href="#usage-retrieve-usage-for-a-subscription" class="toc-h3 toc-link" data-title="Usage">Retrieve usage for a subscription</a>
+                              </li>
+                        </ul>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#tag-definition" class="toc-h1 toc-link" data-title="Tag Definition">Tag Definition</a>
               <ul class="toc-list-h2">
                   <li>
@@ -9996,8 +10018,29 @@ communicating with the payment gateway.</p>
 <h2 id='account-blocking-state'>Blocking State</h2>
 <p>As part of the entitlement features, Kill Bill provides an abstraction to include <code>BlockingState</code> events into the per <code>Account</code> event stream. The main idea is to allow to modify billing -- e.g pause a specific subscription, all subscriptions, ... -- or the entitlement state -- disable service associated with a given subscription. The <a href="http://docs.killbill.io/latest/entitlement_subsystem.html">entitlement internal documentation</a> provides some overview of the mechanism. Blocking states are mostly manipulated from inside Kill Bill core, but the functionality is exposed through the API, with the caveat that it is an advanced feature and can lead to unintented behavior if not used properly.</p>
 
-<p>Note that the term <code>BlockingState</code> seems to indicate that something will be blocked, and this can certainly be the case, but not necessarily; actually the attribute
-<code>isBlockChange</code>, <code>isBlockEntitlement</code>, <code>isBlockBilling</code> will drive this behavior.</p>
+<p>Note that the term <code>BlockingState</code> seems to indicate that something will be blocked, and this can certainly be the case, but not necessarily; actually the attributes
+<code>isBlockChange</code>, <code>isBlockEntitlement</code>, <code>isBlockBilling</code> will drive this behavior. These flags are always considered on a per blocking state <code>service</code>, regardless of the state name. For instance, consider the following two scenarii:</p>
+
+<ul>
+<li>Scenario 1
+
+<ul>
+<li>T1: Service A, State S1, isBlockBilling=true, isBlockEntitlement=false</li>
+<li>T2: Service A, State S1, isBlockBilling=false, isBlockEntitlement=true</li>
+<li>T3: Service A, State S2, isBlockBilling=false, isBlockEntitlement=false</li>
+<li>T4: Service A, State S2, isBlockBilling=false, isBlockEntitlement=false</li>
+</ul></li>
+<li>Scenario 2
+
+<ul>
+<li>T1: Service A, State S1, isBlockBilling=true, isBlockEntitlement=false</li>
+<li>T2: Service B, State S1, isBlockBilling=false, isBlockEntitlement=true</li>
+<li>T3: Service A, State S2, isBlockBilling=false, isBlockEntitlement=false</li>
+<li>T4: Service B, State S2, isBlockBilling=false, isBlockEntitlement=false</li>
+</ul></li>
+</ul>
+
+<p>In Scenario 1, billing is blocked between T1 and T2, while entitlement is blocked between T2 and T3. In Scenario 2 however, billing is blocked between T1 and T3, while entitlement is blocked between T2 and T4.</p>
 <h3 id='account-block-an-account'>Block an account</h3>
 <p>Add a <code>BlockingState</code> event for this account.</p>
 
@@ -10020,7 +10063,26 @@ communicating with the payment gateway.</p>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
     -d <span class="s2">"{ </span><span class="se">\"</span><span class="s2">stateName</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">STATE1</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">service</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">ServiceStateService</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">isBlockChange</span><span class="se">\"</span><span class="s2">: false, </span><span class="se">\"</span><span class="s2">isBlockEntitlement</span><span class="se">\"</span><span class="s2">: false, </span><span class="se">\"</span><span class="s2">isBlockBilling</span><span class="se">\"</span><span class="s2">: false, </span><span class="se">\"</span><span class="s2">effectiveDate</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">2018-07-17T21:17:28.842Z</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">type</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">ACCOUNT</span><span class="se">\"</span><span class="s2"> }"</span> <span class="se">\</span>
     <span class="s2">"http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block"</span>
-</code></pre><pre class="highlight java tab-java"><code><span class="n">TODO</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.AccountApi</span><span class="o">;</span>
+<span class="kd">protected</span> <span class="n">AccountApi</span> <span class="n">accountApi</span><span class="o">;</span>
+
+<span class="n">UUID</span> <span class="n">accountId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"864c1418-e768-4cd5-a0db-67537144b685"</span><span class="o">);</span>
+
+<span class="n">BlockingState</span> <span class="n">blockingState</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BlockingState</span><span class="o">();</span>
+<span class="n">blockingState</span><span class="o">.</span><span class="na">setStateName</span><span class="o">(</span><span class="s">"STATE1"</span><span class="o">);</span>
+<span class="n">blockingState</span><span class="o">.</span><span class="na">setService</span><span class="o">(</span><span class="s">"ServiceStateService"</span><span class="o">);</span>
+<span class="n">blockingState</span><span class="o">.</span><span class="na">setIsBlockChange</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+<span class="n">blockingState</span><span class="o">.</span><span class="na">setIsBlockBilling</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+<span class="n">blockingState</span><span class="o">.</span><span class="na">setIsBlockEntitlement</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+
+<span class="n">LocalDate</span> <span class="n">requestedDate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LocalDate</span><span class="o">(</span><span class="s">"2013-08-01"</span><span class="o">);</span>
+<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">pluginProperty</span> <span class="o">=</span> <span class="n">ImmutableMap</span><span class="o">.&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span><span class="n">of</span><span class="o">();</span>
+
+<span class="n">BlockingStates</span> <span class="n">result</span> <span class="o">=</span> <span class="n">accountApi</span><span class="o">.</span><span class="na">addAccountBlockingState</span><span class="o">(</span><span class="n">accountId</span><span class="o">,</span>
+                                                           <span class="n">blockingState</span><span class="o">,</span>
+                                                           <span class="n">requestedDate</span><span class="o">,</span>
+                                                           <span class="n">pluginProperty</span><span class="o">,</span>
+                                                           <span class="n">requestOptions</span><span class="o">);</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">state_name</span> <span class="o">=</span> <span class="s2">"STATE1"</span>
 <span class="n">service</span> <span class="o">=</span> <span class="s2">"ServiceStateService"</span>
 <span class="n">block_change</span> <span class="o">=</span> <span class="kp">false</span>
@@ -10059,7 +10121,18 @@ communicating with the payment gateway.</p>
 &lt; HTTP/1.1 201 Created
 &lt; Location: http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block?blockingStateTypes<span class="o">=</span>ACCOUNT
 &lt; Content-Length: 0
-</code></pre><pre class="highlight java tab-java"><code><span class="n">TODO</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="o">[</span><span class="kd">class</span> <span class="nc">BlockingState</span> <span class="o">{</span>
+    <span class="n">org</span><span class="o">.</span><span class="na">killbill</span><span class="o">.</span><span class="na">billing</span><span class="o">.</span><span class="na">client</span><span class="o">.</span><span class="na">model</span><span class="o">.</span><span class="na">gen</span><span class="o">.</span><span class="na">BlockingState</span><span class="nd">@be808444</span>
+    <span class="nl">blockedId:</span> <span class="mi">864</span><span class="n">c1418</span><span class="o">-</span><span class="n">e768</span><span class="o">-</span><span class="mi">4</span><span class="n">cd5</span><span class="o">-</span><span class="n">a0db</span><span class="o">-</span><span class="mi">67537144</span><span class="n">b685</span>
+    <span class="nl">stateName:</span> <span class="n">STATE1</span>
+    <span class="nl">service:</span> <span class="n">ServiceStateService</span>
+    <span class="nl">isBlockChange:</span> <span class="kc">false</span>
+    <span class="nl">isBlockEntitlement:</span> <span class="kc">false</span>
+    <span class="nl">isBlockBilling:</span> <span class="kc">false</span>
+    <span class="nl">effectiveDate:</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mo">01</span><span class="nl">T00:</span><span class="mo">00</span><span class="o">:</span><span class="mf">01.000</span><span class="n">Z</span>
+    <span class="nl">type:</span> <span class="n">ACCOUNT</span>
+    <span class="nl">auditLogs:</span> <span class="o">[]</span>
+<span class="o">}]</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
@@ -16742,7 +16815,26 @@ to realign invoicing, let&#39;s say on the 16th. </p>
             "isBlockBilling": false
     }'</span> <span class="se">\</span>
     <span class="s1">'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712/block'</span> 
-</code></pre><pre class="highlight java tab-java"><code><span class="n">TODO</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.SubscriptionApi</span><span class="o">;</span>
+<span class="kd">protected</span> <span class="n">SubscriptionApi</span> <span class="n">subscriptionApi</span><span class="o">;</span>
+
+<span class="n">UUID</span> <span class="n">subscriptionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"161692a4-c293-410c-a92f-939c5e3dcba7"</span><span class="o">);</span>
+
+<span class="n">BlockingState</span> <span class="n">blockingState</span> <span class="o">=</span> <span class="k">new</span> <span class="n">BlockingState</span><span class="o">();</span>
+<span class="n">blockingState</span><span class="o">.</span><span class="na">setStateName</span><span class="o">(</span><span class="s">"STATE1"</span><span class="o">);</span>
+<span class="n">blockingState</span><span class="o">.</span><span class="na">setService</span><span class="o">(</span><span class="s">"ServiceStateService"</span><span class="o">);</span>
+<span class="n">blockingState</span><span class="o">.</span><span class="na">setIsBlockChange</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+<span class="n">blockingState</span><span class="o">.</span><span class="na">setIsBlockBilling</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+<span class="n">blockingState</span><span class="o">.</span><span class="na">setIsBlockEntitlement</span><span class="o">(</span><span class="kc">false</span><span class="o">);</span>
+
+<span class="n">LocalDate</span> <span class="n">requestedDate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LocalDate</span><span class="o">(</span><span class="s">"2013-08-01"</span><span class="o">);</span>
+<span class="n">Map</span><span class="o">&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span> <span class="n">pluginProperty</span> <span class="o">=</span> <span class="n">ImmutableMap</span><span class="o">.&lt;</span><span class="n">String</span><span class="o">,</span> <span class="n">String</span><span class="o">&gt;</span><span class="n">of</span><span class="o">();</span>
+
+<span class="n">BlockingStates</span> <span class="n">result</span> <span class="o">=</span> <span class="n">subscriptionApi</span><span class="o">.</span><span class="na">addSubscriptionBlockingState</span><span class="o">(</span><span class="n">subscriptionId</span><span class="o">,</span>
+                                                                     <span class="n">blockingState</span><span class="o">,</span>
+                                                                     <span class="n">requestedDate</span><span class="o">,</span>
+                                                                     <span class="n">pluginProperty</span><span class="o">,</span>
+                                                                     <span class="n">requestOptions</span><span class="o">);</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">subscription</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">Subscription</span><span class="p">.</span><span class="nf">new</span>
 <span class="n">subscription</span><span class="p">.</span><span class="nf">subscription_id</span> <span class="o">=</span> <span class="s2">"161692a4-c293-410c-a92f-939c5e3dcba7"</span>
 
@@ -16784,6 +16876,29 @@ to realign invoicing, let&#39;s say on the 16th. </p>
 &lt; Content-Type: application/json
 &lt; Location: http://127.0.0.1:8080/1.0/kb/accounts/581d86fc-7cfc-46f2-b6d4-4dbc1d98beb3/block?blockingStateTypes<span class="o">=</span>SUBSCRIPTION
 &lt; Content-Length: 0
+</code></pre><pre class="highlight java tab-java"><code><span class="o">[</span><span class="kd">class</span> <span class="nc">BlockingState</span> <span class="o">{</span>
+    <span class="n">org</span><span class="o">.</span><span class="na">killbill</span><span class="o">.</span><span class="na">billing</span><span class="o">.</span><span class="na">client</span><span class="o">.</span><span class="na">model</span><span class="o">.</span><span class="na">gen</span><span class="o">.</span><span class="na">BlockingState</span><span class="nd">@bf898dea</span>
+    <span class="nl">blockedId:</span> <span class="mi">161692</span><span class="n">a4</span><span class="o">-</span><span class="n">c293</span><span class="o">-</span><span class="mi">410</span><span class="n">c</span><span class="o">-</span><span class="n">a92f</span><span class="o">-</span><span class="mi">939</span><span class="n">c5e3dcba7</span>
+    <span class="nl">stateName:</span> <span class="n">ENT_STARTED</span>
+    <span class="nl">service:</span> <span class="n">entitlement</span><span class="o">-</span><span class="n">service</span>
+    <span class="nl">isBlockChange:</span> <span class="kc">false</span>
+    <span class="nl">isBlockEntitlement:</span> <span class="kc">false</span>
+    <span class="nl">isBlockBilling:</span> <span class="kc">false</span>
+    <span class="nl">effectiveDate:</span> <span class="mi">2012</span><span class="o">-</span><span class="mo">04</span><span class="o">-</span><span class="mi">25</span><span class="nl">T00:</span><span class="mo">03</span><span class="o">:</span><span class="mf">42.000</span><span class="n">Z</span>
+    <span class="nl">type:</span> <span class="n">SUBSCRIPTION</span>
+    <span class="nl">auditLogs:</span> <span class="o">[]</span>
+<span class="o">},</span> <span class="kd">class</span> <span class="nc">BlockingState</span> <span class="o">{</span>
+    <span class="n">org</span><span class="o">.</span><span class="na">killbill</span><span class="o">.</span><span class="na">billing</span><span class="o">.</span><span class="na">client</span><span class="o">.</span><span class="na">model</span><span class="o">.</span><span class="na">gen</span><span class="o">.</span><span class="na">BlockingState</span><span class="nd">@fd3732d8</span>
+    <span class="nl">blockedId:</span> <span class="mi">161692</span><span class="n">a4</span><span class="o">-</span><span class="n">c293</span><span class="o">-</span><span class="mi">410</span><span class="n">c</span><span class="o">-</span><span class="n">a92f</span><span class="o">-</span><span class="mi">939</span><span class="n">c5e3dcba7</span>
+    <span class="nl">stateName:</span> <span class="n">STATE1</span>
+    <span class="nl">service:</span> <span class="n">ServiceStateService</span>
+    <span class="nl">isBlockChange:</span> <span class="kc">false</span>
+    <span class="nl">isBlockEntitlement:</span> <span class="kc">false</span>
+    <span class="nl">isBlockBilling:</span> <span class="kc">false</span>
+    <span class="nl">effectiveDate:</span> <span class="mi">2013</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mo">01</span><span class="nl">T00:</span><span class="mo">03</span><span class="o">:</span><span class="mf">42.000</span><span class="n">Z</span>
+    <span class="nl">type:</span> <span class="n">SUBSCRIPTION</span>
+    <span class="nl">auditLogs:</span> <span class="o">[]</span>
+<span class="o">}]</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
@@ -32921,6 +33036,284 @@ that work directly at the transaction level.</p>
 <p><strong>Returns</strong></p>
 
 <p>A <code>204</code> http status without content.</p>
+<h1 id='usage'>Usage</h1><h2 id='usage-usage-resource'>Usage Resource</h2>
+<p>When invoicing usage-based subscriptions, you need to record usage data into Kill Bill. Note that Kill Bill is not designed to be a metering system, i.e. it shouldn&#39;t contain all data points. Instead, it expects that you record a usage summary on a daily basis (1 API call per subscription per day). For a telco company for instance, instead of recording all phone calls, only record the number of minutes effectively used at the end of the day for that day.</p>
+
+<p>For more information, see our <a href="http://docs.killbill.io/latest/userguide_subscription.html#components-catalog-usage">catalog usage documentation</a> and our <a href="http://docs.killbill.io/latest/userguide_subscription.html#components-invoicing-usage">invoice usage documentation</a>.</p>
+
+<p>Recording and retrieve usage data points is the purpose of the APIs below.</p>
+<h2 id='usage-usage'>Usage</h2><h3 id='usage-record-usage-for-a-subscription'>Record usage for a subscription</h3>
+<p><strong>HTTP Request</strong></p>
+
+<p><code>POST http://127.0.0.1:8080/1.0/kb/usages</code></p>
+
+<blockquote>
+<p>Example Request:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -v <span class="se">\</span>
+    -X POST <span class="se">\</span>
+    -u admin:password <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+    -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+    -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
+     -d <span class="s1">'{"subscriptionId":"365987b2-5443-47e4-a467-c8962fc6995c","unitUsageRecords":[{"unitType":"chocolate-videos","usageRecords":[{"recordDate":"2013-03-14","amount":1}]}]}'</span> <span class="se">\</span>
+    <span class="s2">"http://localhost:8080/1.0/kb/usages"</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.UsageApi</span><span class="o">;</span>
+<span class="kd">protected</span> <span class="n">UsageApi</span> <span class="n">usageApi</span><span class="o">;</span>
+
+<span class="n">UUID</span> <span class="n">subscriptionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"365987b2-5443-47e4-a467-c8962fc6995c"</span><span class="o">);</span>
+
+<span class="n">UsageRecord</span> <span class="n">usageRecord1</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UsageRecord</span><span class="o">();</span>
+<span class="n">usageRecord1</span><span class="o">.</span><span class="na">setAmount</span><span class="o">(</span><span class="mi">1L</span><span class="o">);</span>
+<span class="n">usageRecord1</span><span class="o">.</span><span class="na">setRecordDate</span><span class="o">(</span><span class="k">new</span> <span class="n">LocalDate</span><span class="o">(</span><span class="s">"2013-03-14"</span><span class="o">));</span>
+
+<span class="n">UnitUsageRecord</span> <span class="n">unitUsageRecord</span> <span class="o">=</span> <span class="k">new</span> <span class="n">UnitUsageRecord</span><span class="o">();</span>
+<span class="n">unitUsageRecord</span><span class="o">.</span><span class="na">setUnitType</span><span class="o">(</span><span class="s">"chocolate-videos"</span><span class="o">);</span>
+<span class="n">unitUsageRecord</span><span class="o">.</span><span class="na">setUsageRecords</span><span class="o">(</span><span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UsageRecord</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">usageRecord1</span><span class="o">));</span>
+
+<span class="n">SubscriptionUsageRecord</span> <span class="n">usage</span> <span class="o">=</span> <span class="k">new</span> <span class="n">SubscriptionUsageRecord</span><span class="o">();</span>
+<span class="n">usage</span><span class="o">.</span><span class="na">setSubscriptionId</span><span class="o">(</span><span class="n">subscriptionId</span><span class="o">);</span>
+<span class="n">usage</span><span class="o">.</span><span class="na">setUnitUsageRecords</span><span class="o">(</span><span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UnitUsageRecord</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">unitUsageRecord</span><span class="o">));</span>
+
+<span class="n">usageApi</span><span class="o">.</span><span class="na">recordUsage</span><span class="o">(</span><span class="n">usage</span><span class="o">,</span>
+                     <span class="n">requestOptions</span><span class="o">);</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">usage_record</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">UsageRecordAttributes</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">usage_record</span><span class="p">.</span><span class="nf">amount</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">usage_record</span><span class="p">.</span><span class="nf">record_date</span> <span class="o">=</span> <span class="s2">"2013-03-14"</span>
+
+<span class="n">unit_usage_record</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">UnitUsageRecordAttributes</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">unit_usage_record</span><span class="p">.</span><span class="nf">unit_type</span> <span class="o">=</span> <span class="s2">"chocolate-videos"</span>
+<span class="n">unit_usage_record</span><span class="p">.</span><span class="nf">usage_records</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">unit_usage_record</span><span class="p">.</span><span class="nf">usage_records</span> <span class="o">&lt;&lt;</span> <span class="n">usage_record</span>
+
+<span class="n">result</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">UsageRecord</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">result</span><span class="p">.</span><span class="nf">subscription_id</span> <span class="o">=</span> <span class="s2">"365987b2-5443-47e4-a467-c8962fc6995c"</span>
+<span class="n">result</span><span class="p">.</span><span class="nf">unit_usage_records</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="n">result</span><span class="p">.</span><span class="nf">unit_usage_records</span> <span class="o">&lt;&lt;</span> <span class="n">unit_usage_record</span>
+
+<span class="n">result</span><span class="p">.</span><span class="nf">create</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="kp">nil</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">TODO</span>
+</code></pre>
+<blockquote>
+<p>Example Response:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="c"># Subset of headers returned when specifying -v curl option</span>
+&lt; HTTP/1.1 201
+&lt; Content-Type: application/json
+&lt; Content-Length: 0
+</code></pre><pre class="highlight java tab-java"><code><span class="n">no</span> <span class="n">content</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">no</span> <span class="n">content</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
+</code></pre>
+<p><strong>Returns</strong></p>
+
+<p>A 201 http status without content.</p>
+<h3 id='usage-retrieve-usage-for-a-subscription-and-unit-type'>Retrieve usage for a subscription and unit type</h3>
+<p><strong>HTTP Request</strong></p>
+
+<p><code>GET http://127.0.0.1:8080/1.0/kb/usages/{subscriptionId}/{unitType}</code></p>
+
+<blockquote>
+<p>Example Request:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -v <span class="se">\</span>
+    -u admin:password <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+    -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
+    <span class="s2">"http://localhost:8080/1.0/kb/usages/365987b2-5443-47e4-a467-c8962fc6995c/chocolate-videos?startDate=2012-08-25&amp;endDate=2013-08-26"</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.UsageApi</span><span class="o">;</span>
+<span class="kd">protected</span> <span class="n">UsageApi</span> <span class="n">usageApi</span><span class="o">;</span>
+
+<span class="n">UUID</span> <span class="n">subscriptionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"365987b2-5443-47e4-a467-c8962fc6995c"</span><span class="o">);</span>
+
+<span class="n">String</span> <span class="n">unitType</span> <span class="o">=</span> <span class="s">"chocolate-videos"</span><span class="o">;</span>
+<span class="n">LocalDate</span> <span class="n">startDate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LocalDate</span><span class="o">(</span><span class="s">"2012-08-25"</span><span class="o">);</span>
+<span class="n">LocalDate</span> <span class="n">endDate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LocalDate</span><span class="o">(</span><span class="s">"2013-08-26"</span><span class="o">);</span>
+
+<span class="n">RolledUpUsage</span> <span class="n">retrievedUsage</span> <span class="o">=</span> <span class="n">usageApi</span><span class="o">.</span><span class="na">getUsage</span><span class="o">(</span><span class="n">subscriptionId</span><span class="o">,</span>
+                                                 <span class="n">unitType</span><span class="o">,</span>
+                                                 <span class="n">startDate</span><span class="o">,</span>
+                                                 <span class="n">endDate</span><span class="o">,</span>
+                                                 <span class="n">requestOptions</span><span class="o">);</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">subscription_id</span> <span class="o">=</span> <span class="s2">"365987b2-5443-47e4-a467-c8962fc6995c"</span>
+<span class="n">start_date</span> <span class="o">=</span> <span class="s2">"2012-08-25"</span>
+<span class="n">end_date_</span> <span class="o">=</span> <span class="s2">"2013-08-26"</span>
+<span class="n">unit_type</span> <span class="o">=</span> <span class="s2">"chocolate-videos"</span>
+
+<span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">RolledUpUsage</span><span class="p">.</span><span class="nf">find_by_subscription_id_and_type</span><span class="p">(</span><span class="n">subscription_id</span><span class="p">,</span>
+                                                                      <span class="n">start_date</span><span class="p">,</span>
+                                                                      <span class="n">end_date</span><span class="p">,</span>
+                                                                      <span class="n">unit_type</span><span class="p">,</span>
+                                                                      <span class="n">options</span><span class="p">)</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">TODO</span>
+</code></pre>
+<blockquote>
+<p>Example Response:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="o">{</span>
+  <span class="s2">"subscriptionId"</span>: <span class="s2">"365987b2-5443-47e4-a467-c8962fc6995c"</span>,
+  <span class="s2">"startDate"</span>: <span class="s2">"2012-08-25"</span>,
+  <span class="s2">"endDate"</span>: <span class="s2">"2013-08-26"</span>,
+  <span class="s2">"rolledUpUnits"</span>: <span class="o">[</span>
+    <span class="o">{</span>
+      <span class="s2">"unitType"</span>: <span class="s2">"chocolate-videos"</span>,
+      <span class="s2">"amount"</span>: 1
+    <span class="o">}</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="kd">class</span> <span class="nc">RolledUpUsage</span> <span class="o">{</span>
+    <span class="nl">subscriptionId:</span> <span class="mi">365987</span><span class="n">b2</span><span class="o">-</span><span class="mi">5443</span><span class="o">-</span><span class="mi">47</span><span class="n">e4</span><span class="o">-</span><span class="n">a467</span><span class="o">-</span><span class="n">c8962fc6995c</span>
+    <span class="nl">startDate:</span> <span class="mi">2012</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">25</span>
+    <span class="nl">endDate:</span> <span class="mi">2012</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">26</span>
+    <span class="nl">rolledUpUnits:</span> <span class="o">[</span><span class="kd">class</span> <span class="nc">RolledUpUnit</span> <span class="o">{</span>
+        <span class="nl">unitType:</span> <span class="n">chocolate</span><span class="o">-</span><span class="n">videos</span>
+        <span class="nl">amount:</span> <span class="mi">1</span>
+    <span class="o">}]</span>
+<span class="o">}</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="p">{</span>
+  <span class="s2">"subscriptionId"</span><span class="p">:</span> <span class="s2">"365987b2-5443-47e4-a467-c8962fc6995c"</span><span class="p">,</span>
+  <span class="s2">"startDate"</span><span class="p">:</span> <span class="s2">"2012-08-25"</span><span class="p">,</span>
+  <span class="s2">"endDate"</span><span class="p">:</span> <span class="s2">"2013-08-26"</span><span class="p">,</span>
+  <span class="s2">"rolledUpUnits"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">"unitType"</span><span class="p">:</span> <span class="s2">"chocolate-videos"</span><span class="p">,</span>
+      <span class="s2">"amount"</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">TODO</span>
+</code></pre>
+<p><strong>Query Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>startDate</strong></td>
+<td>date</td>
+<td>true</td>
+<td>Oldest data point to retrieve</td>
+</tr>
+<tr>
+<td><strong>endDate</strong></td>
+<td>date</td>
+<td>true</td>
+<td>Newest data point to retrieve (exclusive)</td>
+</tr>
+</tbody></table>
+
+<p><strong>Returns</strong></p>
+
+<p>Returns recorded data points for the specified period and unit type.</p>
+<h3 id='usage-retrieve-usage-for-a-subscription'>Retrieve usage for a subscription</h3>
+<p><strong>HTTP Request</strong></p>
+
+<p><code>GET http://127.0.0.1:8080/1.0/kb/usages/{subscriptionId}</code></p>
+
+<blockquote>
+<p>Example Request:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -v <span class="se">\</span>
+    -u admin:password <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+    -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
+    <span class="s2">"http://localhost:8080/1.0/kb/usages/365987b2-5443-47e4-a467-c8962fc6995c?startDate=2012-08-25&amp;endDate=2013-08-26"</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.UsageApi</span><span class="o">;</span>
+<span class="kd">protected</span> <span class="n">UsageApi</span> <span class="n">usageApi</span><span class="o">;</span>
+
+<span class="n">UUID</span> <span class="n">subscriptionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"365987b2-5443-47e4-a467-c8962fc6995c"</span><span class="o">);</span>
+
+<span class="n">LocalDate</span> <span class="n">startDate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LocalDate</span><span class="o">(</span><span class="s">"2012-08-25"</span><span class="o">);</span>
+<span class="n">LocalDate</span> <span class="n">endDate</span> <span class="o">=</span> <span class="k">new</span> <span class="n">LocalDate</span><span class="o">(</span><span class="s">"2013-08-26"</span><span class="o">);</span>
+
+<span class="n">RolledUpUsage</span> <span class="n">retrievedUsage</span> <span class="o">=</span> <span class="n">usageApi</span><span class="o">.</span><span class="na">getAllUsage</span><span class="o">(</span><span class="n">subscriptionId</span><span class="o">,</span>
+                                                    <span class="n">startDate</span><span class="o">,</span>
+                                                    <span class="n">endDate</span><span class="o">,</span>
+                                                    <span class="n">requestOptions</span><span class="o">);</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">subscription_id</span> <span class="o">=</span> <span class="s2">"365987b2-5443-47e4-a467-c8962fc6995c"</span>
+<span class="n">start_date</span> <span class="o">=</span> <span class="s2">"2012-08-25"</span>
+<span class="n">end_date</span> <span class="o">=</span> <span class="o">=</span> <span class="s2">"2013-08-26"</span>
+
+<span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">RolledUpUsage</span><span class="p">.</span><span class="nf">find_by_subscription_id</span><span class="p">(</span><span class="n">subscription_id</span><span class="p">,</span>
+                                                             <span class="n">start_date</span><span class="p">,</span>
+                                                             <span class="n">end_date</span><span class="p">,</span>
+                                                             <span class="n">options</span><span class="p">)</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">TODO</span>
+</code></pre>
+<blockquote>
+<p>Example Response:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="o">{</span>
+  <span class="s2">"subscriptionId"</span>: <span class="s2">"365987b2-5443-47e4-a467-c8962fc6995c"</span>,
+  <span class="s2">"startDate"</span>: <span class="s2">"2012-08-25"</span>,
+  <span class="s2">"endDate"</span>: <span class="s2">"2013-08-26"</span>,
+  <span class="s2">"rolledUpUnits"</span>: <span class="o">[</span>
+    <span class="o">{</span>
+      <span class="s2">"unitType"</span>: <span class="s2">"chocolate-videos"</span>,
+      <span class="s2">"amount"</span>: 1
+    <span class="o">}</span>
+  <span class="o">]</span>
+<span class="o">}</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="kd">class</span> <span class="nc">RolledUpUsage</span> <span class="o">{</span>
+    <span class="nl">subscriptionId:</span> <span class="mi">365987</span><span class="n">b2</span><span class="o">-</span><span class="mi">5443</span><span class="o">-</span><span class="mi">47</span><span class="n">e4</span><span class="o">-</span><span class="n">a467</span><span class="o">-</span><span class="n">c8962fc6995c</span>
+    <span class="nl">startDate:</span> <span class="mi">2012</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">25</span>
+    <span class="nl">endDate:</span> <span class="mi">2012</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">26</span>
+    <span class="nl">rolledUpUnits:</span> <span class="o">[</span><span class="kd">class</span> <span class="nc">RolledUpUnit</span> <span class="o">{</span>
+        <span class="nl">unitType:</span> <span class="n">chocolate</span><span class="o">-</span><span class="n">videos</span>
+        <span class="nl">amount:</span> <span class="mi">1</span>
+    <span class="o">}]</span>
+<span class="o">}</span>
+</code></pre><pre class="highlight ruby tab-ruby"><code><span class="p">{</span>
+  <span class="s2">"subscriptionId"</span><span class="p">:</span> <span class="s2">"365987b2-5443-47e4-a467-c8962fc6995c"</span><span class="p">,</span>
+  <span class="s2">"startDate"</span><span class="p">:</span> <span class="s2">"2012-08-25"</span><span class="p">,</span>
+  <span class="s2">"endDate"</span><span class="p">:</span> <span class="s2">"2013-08-26"</span><span class="p">,</span>
+  <span class="s2">"rolledUpUnits"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="s2">"unitType"</span><span class="p">:</span> <span class="s2">"chocolate-videos"</span><span class="p">,</span>
+      <span class="s2">"amount"</span><span class="p">:</span> <span class="mi">1</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span>
+</code></pre><pre class="highlight python tab-python"><code><span class="n">TODO</span>
+</code></pre>
+<p><strong>Query Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>startDate</strong></td>
+<td>date</td>
+<td>true</td>
+<td>Oldest data point to retrieve</td>
+</tr>
+<tr>
+<td><strong>endDate</strong></td>
+<td>date</td>
+<td>true</td>
+<td>Newest data point to retrieve (exclusive)</td>
+</tr>
+</tbody></table>
+
+<p><strong>Returns</strong></p>
+
+<p>Returns recorded data points for the specified period.</p>
 <h1 id='tag-definition'>Tag Definition</h1><h2 id='tag-definition-tag-definition-resource'>Tag Definition Resource</h2>
 <p>Each tag is associated to a specific tag definition, the tag definition being the schema/template and the tag the instance of it. Please refer to the section <a href="https://killbill.github.io/slate/#account-tags">AccountTags</a> for an overview about tags. The system already provides some <code>System tag definitions</code> that can be used to add tags to a particular object. However, when using <code>User Tags</code>, ome must first create the associated tag definition.</p>
 
