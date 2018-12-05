@@ -1636,7 +1636,6 @@ curl -v \
     -H "Content-Type: application/json" \
     -H "X-Killbill-CreatedBy: demo" \
     -d '{ 
-            "accountId": "581d86fc-7cfc-46f2-b6d4-4dbc1d98beb3",
             "productName": "Sports", 
             "billingPeriod": "MONTHLY", 
             "priceList": "DEFAULT"
@@ -1649,15 +1648,17 @@ import org.killbill.billing.client.api.gen.SubscriptionApi;
 protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
-UUID accountId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
 
 Subscription newInput = new Subscription();
-newInput.setAccountId(accountId);
 newInput.setSubscriptionId(subscriptionId);
+
+// Specify the product, billing period and price list
 newInput.setProductName("Shotgun");
-newInput.setProductCategory(ProductCategory.BASE);
 newInput.setBillingPeriod(BillingPeriod.MONTHLY);
 newInput.setPriceList("DEFAULT");
+
+// Alternatively, you can specify the plan name
+newInput.setPlanName("shotgun-monthly");
 
 LocalDate requestedDate = null;
 
