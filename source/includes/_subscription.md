@@ -2964,3 +2964,166 @@ no content
 **Response**
 
 A `204` http status without content.
+
+
+## Audit Logs
+
+### Retrieve subscription audit logs with history by subscription id
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/auditLogsWithHistory`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/subscriptions/70b6856e-6938-495f-9ae9-0a8ec0571c37/auditLogsWithHistory"
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2019-02-22T22:38:10.000Z",
+    "objectType": "SUBSCRIPTION",
+    "objectId": "70b6856e-6938-495f-9ae9-0a8ec0571c37",
+    "changedBy": "admin",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "1f03e074-dea1-45c5-aee3-c9464886f476",
+    "history": {
+      "id": null,
+      "createdDate": "2019-02-22T22:38:10.000Z",
+      "updatedDate": "2019-02-22T22:38:10.000Z",
+      "recordId": 465,
+      "accountRecordId": 10,
+      "tenantRecordId": 1,
+      "bundleId": "d1b329c7-7dcf-466c-aaca-47bff304dab0",
+      "category": "BASE",
+      "startDate": "2019-02-22T22:38:10.000Z",
+      "bundleStartDate": "2019-02-22T22:38:10.000Z",
+      "chargedThroughDate": null,
+      "migrated": false,
+      "tableName": "SUBSCRIPTIONS",
+      "historyTableName": "SUBSCRIPTION_HISTORY"
+    }
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2019-02-22T22:38:10.000Z",
+    "objectType": "SUBSCRIPTION",
+    "objectId": "70b6856e-6938-495f-9ae9-0a8ec0571c37",
+    "changedBy": "SubscriptionBaseTransition",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "1f03e074-dea1-45c5-aee3-c9464886f476",
+    "history": {
+      "id": null,
+      "createdDate": "2019-02-22T22:38:10.000Z",
+      "updatedDate": "2019-02-22T22:38:10.000Z",
+      "recordId": 465,
+      "accountRecordId": 10,
+      "tenantRecordId": 1,
+      "bundleId": "d1b329c7-7dcf-466c-aaca-47bff304dab0",
+      "category": "BASE",
+      "startDate": "2019-02-22T22:38:10.000Z",
+      "bundleStartDate": "2019-02-22T22:38:10.000Z",
+      "chargedThroughDate": "2019-03-22T23:35:14.000Z",
+      "migrated": false,
+      "tableName": "SUBSCRIPTIONS",
+      "historyTableName": "SUBSCRIPTION_HISTORY"
+    }
+  }
+]
+
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of subscription audit logs with history.
+
+
+
+### Retrieve subscription event audit logs with history by subscription event id
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/subscriptions/events/{subscriptionEventId}/auditLogsWithHistory`
+
+The id of subscription event is the one comes from the [timeline api](#account-retrieve-account-timeline).
+
+
+> Example Request:
+
+```shell
+curl  \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/subscriptions/events/9a1c85d5-beba-40c8-9268-f73e09c24007/auditLogsWithHistory"
+```
+> Example Response:
+
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2019-02-22T22:38:10.000Z",
+    "objectType": "SUBSCRIPTION_EVENT",
+    "objectId": "9a1c85d5-beba-40c8-9268-f73e09c24007",
+    "changedBy": "admin",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "1f03e074-dea1-45c5-aee3-c9464886f476",
+    "history": {
+      "id": null,
+      "createdDate": "2019-02-22T22:38:10.000Z",
+      "updatedDate": "2019-02-22T22:38:10.000Z",
+      "recordId": 1358,
+      "accountRecordId": 10,
+      "tenantRecordId": 1,
+      "totalOrdering": 0,
+      "eventType": "API_USER",
+      "userType": "CREATE",
+      "effectiveDate": "2019-02-22T22:38:10.000Z",
+      "subscriptionId": "70b6856e-6938-495f-9ae9-0a8ec0571c37",
+      "planName": "foo-monthly",
+      "phaseName": "foo-monthly-evergreen",
+      "priceListName": "DEFAULT",
+      "billingCycleDayLocal": 0,
+      "isActive": true,
+      "tableName": "SUBSCRIPTION_EVENTS",
+      "historyTableName": "SUBSCRIPTION_EVENT_HISTORY",
+      "active": true
+    }
+  }
+]
+```
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of subscription event audit logs with history.
+
