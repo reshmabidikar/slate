@@ -4985,6 +4985,253 @@ None.
 Returns a invoice template.
 
 
+## Audit Logs
+
+### Retrieve invoice audit logs with history by invoice id
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/auditLogsWithHistory`
+
+> Example Request:
+
+```shell
+curl \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/invoices/d456a9b3-7e48-4f56-b387-1d65a492e75e/auditLogsWithHistory"
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2019-02-22T22:38:10.000Z",
+    "objectType": "INVOICE",
+    "objectId": "d456a9b3-7e48-4f56-b387-1d65a492e75e",
+    "changedBy": "SubscriptionBaseTransition",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "1f03e074-dea1-45c5-aee3-c9464886f476",
+    "history": {
+      "id": null,
+      "createdDate": "2019-02-22T22:38:10.000Z",
+      "updatedDate": null,
+      "recordId": 2121,
+      "accountRecordId": 10,
+      "tenantRecordId": 1,
+      "accountId": "7b3e14b1-6e76-46d3-bbfd-5a16e5b5eca2",
+      "invoiceNumber": null,
+      "invoiceDate": "2019-02-22",
+      "targetDate": "2019-02-22",
+      "currency": "USD",
+      "migrated": false,
+      "status": "COMMITTED",
+      "invoiceItems": [],
+      "invoicePayments": [],
+      "processedCurrency": "USD",
+      "parentInvoice": null,
+      "isWrittenOff": false,
+      "writtenOff": false,
+      "tableName": "INVOICES",
+      "historyTableName": "INVOICE_HISTORY"
+    }
+  }
+]
+
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of invoice audit logs with history.
+
+
+### Retrieve invoice item audit logs with history by invoice item id
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/invoiceItems/{invoiceItemId}/auditLogsWithHistory`
+
+> Example Request:
+
+```shell
+curl \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/invoiceItems/b45ef2ac-e4b7-4e79-89d8-1c2e95838300/auditLogsWithHistory"
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2019-02-22T22:38:10.000Z",
+    "objectType": "INVOICE_ITEM",
+    "objectId": "b45ef2ac-e4b7-4e79-89d8-1c2e95838300",
+    "changedBy": "SubscriptionBaseTransition",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "1f03e074-dea1-45c5-aee3-c9464886f476",
+    "history": {
+      "id": null,
+      "createdDate": "2019-02-22T22:38:10.000Z",
+      "updatedDate": null,
+      "recordId": 2698,
+      "accountRecordId": 10,
+      "tenantRecordId": 1,
+      "type": "RECURRING",
+      "invoiceId": "d456a9b3-7e48-4f56-b387-1d65a492e75e",
+      "accountId": "7b3e14b1-6e76-46d3-bbfd-5a16e5b5eca2",
+      "childAccountId": null,
+      "bundleId": "d1b329c7-7dcf-466c-aaca-47bff304dab0",
+      "subscriptionId": "70b6856e-6938-495f-9ae9-0a8ec0571c37",
+      "description": "foo-monthly-evergreen",
+      "productName": "Foo",
+      "planName": "foo-monthly",
+      "phaseName": "foo-monthly-evergreen",
+      "usageName": null,
+      "startDate": "2019-02-22",
+      "endDate": "2019-03-22",
+      "amount": 10,
+      "rate": 10,
+      "currency": "USD",
+      "linkedItemId": null,
+      "quantity": null,
+      "itemDetails": null,
+      "tableName": "INVOICE_ITEMS",
+      "historyTableName": "INVOICE_ITEM_HISTORY"
+    }
+  }
+]
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of invoice item audit logs with history.
+
+
+
+### Retrieve invoice payment audit logs with history by invoice payment id
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/invoicePayments/{invoicePaymentId}/auditLogsWithHistory`
+
+> Example Request:
+
+```shell
+curl \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/invoicePayments/5eedf918-b418-4d14-8dba-51c977a3f700/auditLogsWithHistory"
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2019-02-22T23:23:21.000Z",
+    "objectType": "INVOICE_PAYMENT",
+    "objectId": "5eedf918-b418-4d14-8dba-51c977a3f700",
+    "changedBy": "admin",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "39b3f8a2-d782-41cd-adcd-460b5f560192",
+    "history": {
+      "id": null,
+      "createdDate": "2019-02-22T23:23:21.000Z",
+      "updatedDate": null,
+      "recordId": 219,
+      "accountRecordId": 10,
+      "tenantRecordId": 1,
+      "type": "ATTEMPT",
+      "invoiceId": "d456a9b3-7e48-4f56-b387-1d65a492e75e",
+      "paymentId": null,
+      "paymentDate": "2019-02-22T23:23:21.000Z",
+      "amount": 10,
+      "currency": "USD",
+      "processedCurrency": "USD",
+      "paymentCookieId": "4d83dd1b-b053-4a4d-99de-9a9e6e0405af",
+      "linkedInvoicePaymentId": null,
+      "success": false,
+      "tableName": "INVOICE_PAYMENTS",
+      "historyTableName": "INVOICE_PAYMENT_HISTORY"
+    }
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2019-02-22T23:23:21.000Z",
+    "objectType": "INVOICE_PAYMENT",
+    "objectId": "5eedf918-b418-4d14-8dba-51c977a3f700",
+    "changedBy": "admin",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "39b3f8a2-d782-41cd-adcd-460b5f560192",
+    "history": {
+      "id": null,
+      "createdDate": "2019-02-22T23:23:21.000Z",
+      "updatedDate": null,
+      "recordId": 219,
+      "accountRecordId": 10,
+      "tenantRecordId": 1,
+      "type": "ATTEMPT",
+      "invoiceId": "d456a9b3-7e48-4f56-b387-1d65a492e75e",
+      "paymentId": "3ac3de91-0d94-463d-8286-8060846f229d",
+      "paymentDate": "2019-02-22T23:23:21.000Z",
+      "amount": 10,
+      "currency": "USD",
+      "processedCurrency": "USD",
+      "paymentCookieId": "4d83dd1b-b053-4a4d-99de-9a9e6e0405af",
+      "linkedInvoicePaymentId": null,
+      "success": true,
+      "tableName": "INVOICE_PAYMENTS",
+      "historyTableName": "INVOICE_PAYMENT_HISTORY"
+    }
+  }
+]
+
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of invoice payment audit logs with history.
+
+
+
+
 ## Pagination/Search
 
 ### List invoices
