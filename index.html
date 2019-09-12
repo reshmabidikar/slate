@@ -14997,6 +14997,8 @@ generation. Aside from the billing aspect -- invoice generation --, Kill Bill al
 </tr>
 </tbody></table>
 
+<p>When creating an add-on subscription, you need to specify the associated bundle in the body, either via its id or via its external key (but not both).</p>
+
 <p><strong>Returns</strong></p>
 
 <p>Returns a subscription object.</p>
@@ -16334,7 +16336,6 @@ to realign invoicing, let&#39;s say on the 16th. </p>
     -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -d <span class="s1">'{ 
-            "accountId": "581d86fc-7cfc-46f2-b6d4-4dbc1d98beb3",
             "productName": "Sports", 
             "billingPeriod": "MONTHLY", 
             "priceList": "DEFAULT"
@@ -16344,15 +16345,17 @@ to realign invoicing, let&#39;s say on the 16th. </p>
 <span class="kd">protected</span> <span class="n">SubscriptionApi</span> <span class="n">subscriptionApi</span><span class="o">;</span>
 
 <span class="n">UUID</span> <span class="n">subscriptionId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"905a0636-ab63-40c0-acd4-b461b6808b5d"</span><span class="o">);</span>
-<span class="n">UUID</span> <span class="n">accountId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"905a0636-ab63-40c0-acd4-b461b6808b5d"</span><span class="o">);</span>
 
 <span class="n">Subscription</span> <span class="n">newInput</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Subscription</span><span class="o">();</span>
-<span class="n">newInput</span><span class="o">.</span><span class="na">setAccountId</span><span class="o">(</span><span class="n">accountId</span><span class="o">);</span>
 <span class="n">newInput</span><span class="o">.</span><span class="na">setSubscriptionId</span><span class="o">(</span><span class="n">subscriptionId</span><span class="o">);</span>
+
+<span class="c1">// Specify the product, billing period and price list</span>
 <span class="n">newInput</span><span class="o">.</span><span class="na">setProductName</span><span class="o">(</span><span class="s">"Shotgun"</span><span class="o">);</span>
-<span class="n">newInput</span><span class="o">.</span><span class="na">setProductCategory</span><span class="o">(</span><span class="n">ProductCategory</span><span class="o">.</span><span class="na">BASE</span><span class="o">);</span>
 <span class="n">newInput</span><span class="o">.</span><span class="na">setBillingPeriod</span><span class="o">(</span><span class="n">BillingPeriod</span><span class="o">.</span><span class="na">MONTHLY</span><span class="o">);</span>
 <span class="n">newInput</span><span class="o">.</span><span class="na">setPriceList</span><span class="o">(</span><span class="s">"DEFAULT"</span><span class="o">);</span>
+
+<span class="c1">// Alternatively, you can specify the plan name</span>
+<span class="n">newInput</span><span class="o">.</span><span class="na">setPlanName</span><span class="o">(</span><span class="s">"shotgun-monthly"</span><span class="o">);</span>
 
 <span class="n">LocalDate</span> <span class="n">requestedDate</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
 
@@ -21560,9 +21563,13 @@ to add credit or create charges against the <code>Account</code>. Invoices can a
 there are existing active subscriptions for the <code>Account</code>. In the later case, the <code>targetDate</code> will determine up to which point to invoice,
 and the billing mode <code>IN_ADVANCE</code> versus <code>IN_ARREAR</code> will determine which period to charge for.</p>
 
-<p>An invoice can be in <code>DRAFT</code> status, in which case it is open to receive additional items, and it is not taken into account by the rest for the system
-when computing the account balance, overdue status, ... A <code>COMMITTED</code> invoice on the other hand  becomes immutable, and its balance is reflected at the <code>Account</code> level.
-Payments can only happen against <code>COMMITTED</code> invoices.</p>
+<p>For each invoice, there is a corresponding status:</p>
+
+<ul>
+<li>An invoice can be in <code>DRAFT</code> status, in which case it is open to receive additional items, and it is not taken into account by the rest for the system when computing the account balance, overdue status, ...</li>
+<li>A <code>COMMITTED</code> invoice on the other hand  becomes immutable, and its balance is reflected at the <code>Account</code> level. Payments can only happen against <code>COMMITTED</code> invoices.</li>
+<li>An invoice can also be in <code>VOID</code> status, in which case it is ignored by the rest of the system. We offer a <a href="https://killbill.github.io/slate/#invoice-perform-the-action-of-voiding-an-invoice">void api</a> to transition a <code>DRAFT</code> or <code>COMMITTED</code> invoice into <code>VOID</code> status. The operation is only available if there are no succesful payments against such invoice, therefore one would first need to refund existing succesful payments -- if any -- prior voiding the invoice.</li>
+</ul>
 
 <p>An invoice contains a list of <code>InvoiceItem</code>. The system will always invoice at the <code>Account</code> level, and will therefore create as many items on a given
 invoice as there are things to invoice. Given an active <code>Subscription</code>, one could see multiple items for that subscription on one given invoice to take
