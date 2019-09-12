@@ -7,9 +7,11 @@ to add credit or create charges against the `Account`. Invoices can also be auto
 there are existing active subscriptions for the `Account`. In the later case, the `targetDate` will determine up to which point to invoice,
 and the billing mode `IN_ADVANCE` versus `IN_ARREAR` will determine which period to charge for.
 
-An invoice can be in `DRAFT` status, in which case it is open to receive additional items, and it is not taken into account by the rest for the system
-when computing the account balance, overdue status, ... A `COMMITTED` invoice on the other hand  becomes immutable, and its balance is reflected at the `Account` level.
-Payments can only happen against `COMMITTED` invoices.
+For each invoice, there is a corresponding status:
+
+* An invoice can be in `DRAFT` status, in which case it is open to receive additional items, and it is not taken into account by the rest for the system when computing the account balance, overdue status, ...
+* A `COMMITTED` invoice on the other hand  becomes immutable, and its balance is reflected at the `Account` level. Payments can only happen against `COMMITTED` invoices.
+* An invoice can also be in `VOID` status, in which case it is ignored by the rest of the system. We offer a [void api](https://killbill.github.io/slate/#invoice-perform-the-action-of-voiding-an-invoice) to transition a `DRAFT` or `COMMITTED` invoice into `VOID` status. The operation is only available if there are no succesful payments against such invoice, therefore one would first need to refund existing succesful payments -- if any -- prior voiding the invoice.
 
 An invoice contains a list of `InvoiceItem`. The system will always invoice at the `Account` level, and will therefore create as many items on a given
 invoice as there are things to invoice. Given an active `Subscription`, one could see multiple items for that subscription on one given invoice to take
