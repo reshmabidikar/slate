@@ -823,7 +823,12 @@ The following endpoints provide the ability to configure plugins on a per-tenant
 
 `POST http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginConfig/{pluginName}`
 
+The configuration uploaded is plugin dependent but typically we see key/value properties,
+or well formatted yml.
+
+
 > Example Request:
+
 
 ```shell
 curl -v \
@@ -831,12 +836,12 @@ curl -v \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
-    -H "Content-Type: application/json" \
+    -H "Content-Type: text/plain" \
     -H "Accept: application/json" \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "tenant_config"
+    -d @./config.properties \
     "http://localhost:8080/1.0/kb/tenants/uploadPluginConfig/demo_plugin"
 ```
 
