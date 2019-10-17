@@ -30,7 +30,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"apiKey\": \"demo\", \"apiSecret\": \"demo-secret\"}" \
+    -d '{ "apiKey": "bob", "apiSecret": "lazar"}' \
     "http://localhost:8080/1.0/kb/tenants"
 ```
 
@@ -99,7 +99,7 @@ class Tenant {
 {
    "tenantId":"ab5981c2-de14-43d6-a35b-a2ed0b28c746",
    "externalKey":"demo_external_key",
-   "apiKey":"demo_api_key"
+   "apiKey":"bob
 }
 ```
 ```python
@@ -159,7 +159,7 @@ tenant.get_tenant(tenant_id='3d90ec45-c640-4fd7-abde-798bc582513b')
 {
   "tenantId": "6907712e-e940-4033-8695-36894db128d3",
   "externalKey": "1532546166-326384",
-  "apiKey": "test-api-key1532546166-326384",
+  "apiKey": "bob",
   "apiSecret": null,
   "auditLogs": []
 }
@@ -168,7 +168,7 @@ tenant.get_tenant(tenant_id='3d90ec45-c640-4fd7-abde-798bc582513b')
 class Tenant {
   "tenantId": "6907712e-e940-4033-8695-36894db128d3",
   "externalKey": "1532546166-326384",
-  "apiKey": "test-api-key1532546166-326384",
+  "apiKey": "bob",
   "apiSecret": null,
   "auditLogs": []
 }
@@ -177,7 +177,7 @@ class Tenant {
 {
    "tenantId":"ab5981c2-de14-43d6-a35b-a2ed0b28c746",
    "externalKey":"demo_external_key",
-   "apiKey":"demo_api_key"
+   "apiKey":"bob"
 }
 ```
 ```python
@@ -258,7 +258,7 @@ tenantApi.get_tenant_by_api_key(api_key='bob')
 {
    "tenantId":"ab5981c2-de14-43d6-a35b-a2ed0b28c746",
    "externalKey":"demo_external_key",
-   "apiKey":"demo_api_key"
+   "apiKey":"bob"
 }
 ```
 ```python
