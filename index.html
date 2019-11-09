@@ -1673,7 +1673,7 @@ Known plugin for KB version 0.20.1
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    -d <span class="s2">"{ </span><span class="se">\"</span><span class="s2">apiKey</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">demo</span><span class="se">\"</span><span class="s2">, </span><span class="se">\"</span><span class="s2">apiSecret</span><span class="se">\"</span><span class="s2">: </span><span class="se">\"</span><span class="s2">demo-secret</span><span class="se">\"</span><span class="s2">}"</span> <span class="se">\</span>
+    -d <span class="s1">'{ "apiKey": "bob", "apiSecret": "lazar"}'</span> <span class="se">\</span>
     <span class="s2">"http://localhost:8080/1.0/kb/tenants"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.TenantApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">AdminApi</span> <span class="n">tenantApi</span><span class="o">;</span>
@@ -1728,9 +1728,9 @@ Known plugin for KB version 0.20.1
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="p">{</span>
    <span class="s2">"tenantId"</span><span class="ss">:"ab5981c2-de14-43d6-a35b-a2ed0b28c746"</span><span class="p">,</span>
    <span class="s2">"externalKey"</span><span class="ss">:"demo_external_key"</span><span class="p">,</span>
-   <span class="s2">"apiKey"</span><span class="ss">:"demo_api_key"</span>
-<span class="p">}</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
+   <span class="s2">"apiKey"</span><span class="ss">:"bob
+}
+</span></code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
@@ -1785,21 +1785,21 @@ Known plugin for KB version 0.20.1
 <pre class="highlight shell tab-shell"><code><span class="o">{</span>
   <span class="s2">"tenantId"</span>: <span class="s2">"6907712e-e940-4033-8695-36894db128d3"</span>,
   <span class="s2">"externalKey"</span>: <span class="s2">"1532546166-326384"</span>,
-  <span class="s2">"apiKey"</span>: <span class="s2">"test-api-key1532546166-326384"</span>,
+  <span class="s2">"apiKey"</span>: <span class="s2">"bob"</span>,
   <span class="s2">"apiSecret"</span>: null,
   <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
 <span class="o">}</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kd">class</span> <span class="nc">Tenant</span> <span class="o">{</span>
   <span class="s">"tenantId"</span><span class="o">:</span> <span class="s">"6907712e-e940-4033-8695-36894db128d3"</span><span class="o">,</span>
   <span class="s">"externalKey"</span><span class="o">:</span> <span class="s">"1532546166-326384"</span><span class="o">,</span>
-  <span class="s">"apiKey"</span><span class="o">:</span> <span class="s">"test-api-key1532546166-326384"</span><span class="o">,</span>
+  <span class="s">"apiKey"</span><span class="o">:</span> <span class="s">"bob"</span><span class="o">,</span>
   <span class="s">"apiSecret"</span><span class="o">:</span> <span class="kc">null</span><span class="o">,</span>
   <span class="s">"auditLogs"</span><span class="o">:</span> <span class="o">[]</span>
 <span class="o">}</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="p">{</span>
    <span class="s2">"tenantId"</span><span class="ss">:"ab5981c2-de14-43d6-a35b-a2ed0b28c746"</span><span class="p">,</span>
    <span class="s2">"externalKey"</span><span class="ss">:"demo_external_key"</span><span class="p">,</span>
-   <span class="s2">"apiKey"</span><span class="ss">:"demo_api_key"</span>
+   <span class="s2">"apiKey"</span><span class="ss">:"bob"</span>
 <span class="p">}</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="p">{</span><span class="s">'api_key'</span><span class="p">:</span> <span class="s">'udwg'</span><span class="p">,</span>
  <span class="s">'api_secret'</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
@@ -1873,7 +1873,7 @@ Known plugin for KB version 0.20.1
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="p">{</span>
    <span class="s2">"tenantId"</span><span class="ss">:"ab5981c2-de14-43d6-a35b-a2ed0b28c746"</span><span class="p">,</span>
    <span class="s2">"externalKey"</span><span class="ss">:"demo_external_key"</span><span class="p">,</span>
-   <span class="s2">"apiKey"</span><span class="ss">:"demo_api_key"</span>
+   <span class="s2">"apiKey"</span><span class="ss">:"bob"</span>
 <span class="p">}</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="p">{</span><span class="s">'api_key'</span><span class="p">:</span> <span class="s">'bob'</span><span class="p">,</span>
  <span class="s">'api_secret'</span><span class="p">:</span> <span class="bp">None</span><span class="p">,</span>
@@ -2311,6 +2311,9 @@ based on the tenant in which they operate.</p>
 
 <p><code>POST http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginConfig/{pluginName}</code></p>
 
+<p>The configuration uploaded is plugin dependent but typically we see key/value properties,
+or well formatted yml.</p>
+
 <blockquote>
 <p>Example Request:</p>
 </blockquote>
@@ -2319,12 +2322,12 @@ based on the tenant in which they operate.</p>
     -u admin:password <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
-    -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+    -H <span class="s2">"Content-Type: text/plain"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    -d <span class="s2">"tenant_config"</span>
+    -d @./config.properties <span class="se">\</span>
     <span class="s2">"http://localhost:8080/1.0/kb/tenants/uploadPluginConfig/demo_plugin"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.TenantApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">AdminApi</span> <span class="n">tenantApi</span><span class="o">;</span>
