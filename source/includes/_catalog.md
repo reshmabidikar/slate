@@ -3310,7 +3310,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"planId\": \"basic-annual\", \"productName\": \"Basic\", \"productCategory\": \"BASE\", \"currency\": \"USD\", \"amount\": 1000, \"billingPeriod\": \"ANNUAL\", \"trialLength\": 0, \"trialTimeUnit\": \"UNLIMITED\"}"	
+    -d '{ "planId": "basic-annual", "productName": "Basic", "productCategory": "BASE", "currency": "USD", "amount": 1000, "billingPeriod": "ANNUAL", "trialLength": 0, "trialTimeUnit": "UNLIMITED"}' \
     "http://localhost:8080/1.0/kb/catalog/simplePlan"
 ```
 
