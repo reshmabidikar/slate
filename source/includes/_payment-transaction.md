@@ -232,7 +232,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[{\"paymentId\": \"e8edd4c6-2f85-4375-95f3-e78ca4d85b82\", \"status\": \"SUCCESS\"}]" \
+    -d '[{"paymentId": "e8edd4c6-2f85-4375-95f3-e78ca4d85b82", "status": "SUCCESS"}]' \
     "http://localhost:8080/1.0/kb/paymentTransactions/07655b3c-7f17-4172-b193-ece48e5741ad"
 ```
 

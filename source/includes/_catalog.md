@@ -34,8 +34,8 @@ curl -v \
     -H "Accept: application/json" \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \"
-    -d "<?xml version="1.0" encoding="UTF-8" standalone="yes"?><catalog> ..."
+    -H "X-Killbill-Comment: demo" \
+    -d '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><catalog> ...' \
     "http://localhost:8080/1.0/kb/catalog/xml"
 ```
 

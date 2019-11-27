@@ -42,7 +42,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"creditAmount\": 50.0, \"currency\": \"USD\", \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"description\": \"example\"}" \
+    -d '{ "creditAmount": 50.0, "currency": "USD", "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "description": "example"}' \
     "http://localhost:8080/1.0/kb/credits?autoCommit=false"	
 ```
 
