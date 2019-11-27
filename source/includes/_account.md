@@ -56,7 +56,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"name\": \"John Doe\", \"email\": \"john@laposte.com\", \"currency\": \"USD\"}" \
+    -d '{ "name": "John Doe", "email": "john@laposte.com", "currency": "USD"}' \
     "http://localhost:8080/1.0/kb/accounts" 
 ```
 ```java
@@ -566,7 +566,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"name\": \"Another Name\"}" \
+    -d '{ "name": "Another Name"}' \
     "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d"	
 ```
 
@@ -784,7 +784,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"email\": \"email@laposte.com\"}" \
+    -d '{ "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "email": "email@laposte.com"}' \
     "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
 ```
 
@@ -2964,7 +2964,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"transactionType\": \"AUTHORIZE\", \"amount\": 0}" \
+    -d '{ "transactionType": "AUTHORIZE", "amount": 0}' \
     "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments?paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947"
 ```
 
@@ -3157,7 +3157,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"transactionType\": \"AUTHORIZE\", \"amount\": 0}" \
+    -d '{ "transactionType": "AUTHORIZE", "amount": 0}' \
     "http://localhost:8080/1.0/kb/accounts/payments?externalKey=2ad52f53-85ae-408a-9879-32a7e59dd03d&paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947"
 ```
 
@@ -3298,7 +3298,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"isDefault\": false, \"pluginName\": \"__EXTERNAL_PAYMENT__\"}" \
+    -d '{ "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "isDefault": false, "pluginName": "__EXTERNAL_PAYMENT__"}' \
     "http://localhost:8080/1.0/kb/accounts/8785164f-b5d7-4da1-9495-33f5105e8d80/paymentMethods"	
 ```
 
@@ -3835,7 +3835,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"stateName\": \"STATE1\", \"service\": \"ServiceStateService\", \"isBlockChange\": false, \"isBlockEntitlement\": false, \"isBlockBilling\": false, \"effectiveDate\": \"2018-07-17T21:17:28.842Z\", \"type\": \"ACCOUNT\" }" \
+    -d '{ "stateName": "STATE1", "service": "ServiceStateService", "isBlockChange": false, "isBlockEntitlement": false, "isBlockBilling": false, "effectiveDate": "2018-07-17T21:17:28.842Z", "type": "ACCOUNT" }' \
     "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block"
 ```
 
@@ -4372,7 +4372,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ { \"objectType\": \"ACCOUNT\", \"name\": \"Test Custom Field\", \"value\": \"demo_test_value\" }]" \
+    -d '[ { "objectType": "ACCOUNT", "name": "Test Custom Field", "value": "demo_test_value" }] \
     "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
 ```
 
@@ -4718,7 +4718,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ { \"customFieldId\": \"48e24ca0-1cfe-41c3-85e7-0ff0d51679fe\", \"objectId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"objectType\": \"ACCOUNT\", \"name\": \"Test Custom Field\", \"value\": \"test_modify_value\", \"auditLogs\": [] }]" \
+    -d '[ { "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe", "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "objectType": "ACCOUNT", "name": "Test Custom Field", "value": "test_modify_value", "auditLogs": [] }]' \
     "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
 ```
 
@@ -4914,10 +4914,10 @@ curl -v \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill"-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ \"00000000-0000-0000-0000-000000000002\"]" \
+    -d '[ "00000000-0000-0000-0000-000000000002"]' \
     "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags"
 ```
 
