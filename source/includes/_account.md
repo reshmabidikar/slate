@@ -2174,14 +2174,14 @@ protected AccountApi accountApi;
 
 UUID accountId = UUID.fromString("d3a82897-ae72-4a2e-9bca-e3c1fe087f84");
 LocalDate startDate = null;
-Boolean withItems = true; // Will fetch invoice items as well
+LocalDate endDate = null;
 Boolean withMigrationInvoices = false; // Will not fetch migrated invoice - if any
 Boolean unpaidInvoicesOnly = false; // Will not restrict to unpaid invoices
 Boolean includeVoidedInvoices = false; // Will not include void invoices
 
 Invoices invoices = accountApi.getInvoicesForAccount(accountId,
                                                      startDate, 
-                                                     withItems, 
+                                                     endDate,
                                                      withMigrationInvoices, 
                                                      unpaidInvoicesOnly, 
                                                      includeVoidedInvoices, 
@@ -2403,7 +2403,7 @@ class Invoice {
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
 | **startDate** | date | false |  Filter invoices using a start date. |
-| **withItems** | boolean | false | Choose true if you want items info. |
+| **endDate** | date | false | Filter invoices using a end date. |
 | **withMigrationInvoices** | boolean | false | Choose true if you want migration invoices |
 | **unpaidInvoicesOnly** | boolean | false | Choose true if you want unpaid invoices only |
 | **includeVoidedInvoices** | boolean | false | Choose true if you want to include voided invoices |
