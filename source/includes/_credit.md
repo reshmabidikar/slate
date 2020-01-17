@@ -6,17 +6,7 @@ The `Credit` resource represents the credits created on behalf of the customer `
 invoice item. The credits are visible at the level of the `Account`, i.e account credit, and those will automatically be consumed by the system on
 subsequent invoices to bring the balance to zero -- or reduce the balance if there is not enough credit to pay the full amount.
 
-The attributes are the following:
-
-* **`creditId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
-* **`invoiceId`** <span style="color:#32A9C7">*[System or User generated, immutable]*</span>. If the `ID` is specified during creation, the credit will go against a specific invoice, provided this invoice has not yet been `COMMITTED`.
-* **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>. The `ID` allocated by Kill Bill upon creation.
-* **`creditAmount`** <span style="color:#32A9C7">*[User generated]*</span>. 
-* **`currency`** <span style="color:#32A9C7">*[User generated]*</span>
-* **`invoiceNumber`** <span style="color:#32A9C7">*[System generated, immutable]*</span>
-* **`effectiveDate`** <span style="color:#32A9C7">*[User generated]*</span>
-* **`description`** <span style="color:#32A9C7">*[User generated]*</span>
-* **`itemDetails`** <span style="color:#32A9C7">*[User or system generated]*</span>
+See section [Invoice Resource](#invoice) for the description of the `InvoiceItem` attributes.
 
 
 ## Credit
@@ -42,8 +32,8 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d '{ "creditAmount": 50.0, "currency": "USD", "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "description": "example"}' \
-    "http://localhost:8080/1.0/kb/credits?autoCommit=false"	
+    -d '[{"amount": 50.0, "currency": "USD", "accountId": "1f979085-1765-471b-878a-5f640db4d831", "description": "example"}]' \
+    "http://localhost:8080/1.0/kb/credits?autoCommit=true"
 ```
 
 ```java
@@ -52,25 +42,23 @@ protected CreditApi creditApi;
 
 UUID accountId = UUID.fromString("864c1418-e768-4cd5-a0db-67537144b685");
 
-Credit credit = new Credit();
+Credit credit = new InvoiceItem();
 credit.setAccountId(accountId);
-credit.setCreditAmount(BigDecimal.ONE);
+credit.setAmount(BigDecimal.ONE);
 credit.setDescription("description");
-credit.setItemDetails("itemDetails");
 
-Boolean autoCommit = false;
+Boolean autoCommit = true;
 Map<String, String> pluginProperty = null;
 
-creditApi.createCredit(credit, 
-                       autoCommit,
-                       pluginProperty,
-                       requestOptions);
+final InvoiceItems credits = new InvoiceItems();
+credits.add(credit);
+InvoiceItems createdCredits = creditApi.createCredits(credits, false, NULL_PLUGIN_PROPERTIES, requestOptions);
 ```
 
 ```ruby
 credit_item                 = KillBillClient::Model::Credit.new()
 credit_item.account_id      = 'da3769a8-58c4-4dc0-b4e8-7b534e349624'
-credit_item.credit_amount   = 50.0
+credit_item.amount          = 50.0
 credit_item.currency        = 'USD'
 credit_item.description     = 'description'
 
@@ -86,20 +74,18 @@ credit_item.create(auto_commit,
 ```python
 creditApi = killbill.api.CreditApi()
 body = Credit(account_id=account_id, 
-              credit_amount=50.0, 
+              amount=50.0, 
               currency='USD', 
               description='example')
 
-creditApi.create_credit(body, created_by, api_key, api_secret)
+creditApi.create_credits([body], created_by, api_key, api_secret)
 ```
 
 > Example Response:
 
 ```shell
-    < HTTP/1.1 201 Created
-    < Location: http://localhost:8080/1.0/kb/credits/c8bfa9d1-76e5-4a42-92d0-b106c0902c16
-< Content-Type: application/json
-< Content-Length: 0
+    < HTTP/1.1 200 OK
+[{"invoiceItemId":"2a7746a3-abad-42d9-9f54-fe50c0b18802","invoiceId":"e3caf986-8909-4677-afd4-ba03deeae8f0","linkedInvoiceItemId":null,"accountId":"1f979085-1765-471b-878a-5f640db4d831","childAccountId":null,"bundleId":null,"subscriptionId":null,"productName":null,"planName":null,"phaseName":null,"usageName":null,"prettyProductName":null,"prettyPlanName":null,"prettyPhaseName":null,"prettyUsageName":null,"itemType":"CREDIT_ADJ","description":"example","startDate":"2020-01-17","endDate":"2020-01-17","amount":50.00,"rate":null,"currency":"USD","quantity":null,"itemDetails":null,"catalogEffectiveDate":null,"childItems":null,"auditLogs":[]}]
 ```
 ```java
 class Credit {
@@ -119,7 +105,7 @@ class Credit {
 ```ruby
 {
    "creditId":"fd5669a8-68c1-8dl0-m4e8-8y535e349324"
-   "creditAmount":50.0,
+   "amount":50.0,
    "currency":"USD",
    "invoiceId":"c57e1a2b-1a6b-4053-be2c-cc5fad2b5cbf",
    "invoiceNumber":"1285",
@@ -146,7 +132,7 @@ Returns a credit object.
 
 **HTTP Request** 
 
-`GET http://127.0.0.1:8080/1.0/kb/credits/{creditId}`
+`GET http://127.0.0.1:8080/1.0/kb/credits/{invoiceItemId}`
 
 > Example Request:
 
@@ -187,8 +173,8 @@ creditApi.get_credit(credit_id, api_key, api_secret)
 < Content-Type: application/json
 
 {
-  "creditId": "c8bfa9d1-76e5-4a42-92d0-b106c0902c16",
-  "creditAmount": 50,
+  "invoiceItemId": "c8bfa9d1-76e5-4a42-92d0-b106c0902c16",
+  "amount": 50,
   "currency": "USD",
   "invoiceId": "903e55d3-8072-47f1-80fc-32857dbdbcc5",
   "invoiceNumber": "310",
@@ -201,9 +187,9 @@ creditApi.get_credit(credit_id, api_key, api_secret)
 ```
 ```java
 class Credit {
-    org.killbill.billing.client.model.gen.Credit@a32400a5
-    creditId: d2edf4c0-9929-4e2f-b3a9-feb9bd9d60ba
-    creditAmount: 1.00
+    org.killbill.billing.client.model.gen.InvoiceItem@a32400a5
+    invoiceItemId: d2edf4c0-9929-4e2f-b3a9-feb9bd9d60ba
+    amount: 1.00
     currency: USD
     invoiceId: 41c87837-ec1d-4095-8d20-a56e6237cb0c
     invoiceNumber: 3
@@ -216,8 +202,8 @@ class Credit {
 ```
 ```ruby
 {
-   "creditId":"fd5669a8-68c1-8dl0-m4e8-8y535e349324"
-   "creditAmount":50.0,
+   "invoiceItemId":"fd5669a8-68c1-8dl0-m4e8-8y535e349324"
+   "amount":50.0,
    "currency":"USD",
    "invoiceId":"c57e1a2b-1a6b-4053-be2c-cc5fad2b5cbf",
    "invoiceNumber":"1285",
@@ -227,9 +213,9 @@ class Credit {
 }
 ```
 ```python
-{'credit_id' : 'fd5669a8-68c1-8dl0-m4e8-8y535e349328'
+{'invoice_item_id' : 'fd5669a8-68c1-8dl0-m4e8-8y535e349328'
  'account_id': 'da3769a8-58c4-4dc0-b4e8-7b534e349624',
- 'credit_amount': 50.0,
+ 'amount': 50.0,
  'currency': 'USD',
  'description': 'example',
  'effective_date': datetime.datetime(2018, 5, 3, 15, 53, 44, tzinfo=tzutc()),,
