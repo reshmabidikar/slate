@@ -1521,6 +1521,275 @@ class Subscription {
 Returns a subscription object.
 
 
+
+
+
+### Retrieve a subscription by key
+
+**HTTP Request**
+
+`GET http://127.0.0.1:8080/1.0/kb/subscriptions/`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    'http://localhost:8080/1.0/kb/subscriptions?externalKey=somethingSpecial'
+```
+
+```java
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+String externalKey = "somethingSpecial";
+Subscription objFromJson = subscriptionApi.getSubscriptionByKey(externalKey, requestOptions);
+```
+
+```ruby
+external_key = "somethingSpecial"
+KillBillClient::Model::Subscription.find_by_external_key(external_key, options)
+```
+
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+external_key = 'somethingSpecial'
+subscriptionApi.get_subscription_by_key(external_key, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+<
+{
+  "accountId": "1f979085-1765-471b-878a-5f640db4d831",
+  "bundleId": "8815e8c0-afab-41b9-b793-cb8fef2382e4",
+  "bundleExternalKey": "8815e8c0-afab-41b9-b793-cb8fef2382e4",
+  "subscriptionId": "8e5c5339-1cad-46c6-ab18-3d5ddc1b2414",
+  "externalKey": "somethingSpecial",
+  "startDate": "2020-01-08",
+  "productName": "Pistol",
+  "productCategory": "BASE",
+  "billingPeriod": "MONTHLY",
+  "phaseType": "EVERGREEN",
+  "priceList": "notrial",
+  "planName": "pistol-monthly-notrial",
+  "state": "ACTIVE",
+  "sourceType": "NATIVE",
+  "cancelledDate": null,
+  "chargedThroughDate": "2020-05-08",
+  "billingStartDate": "2020-01-08",
+  "billingEndDate": null,
+  "billCycleDayLocal": 8,
+  "events": [
+    {
+      "eventId": "1d24928e-790d-4dc9-8a88-c4eaa56de392",
+      "billingPeriod": "MONTHLY",
+      "effectiveDate": "2020-01-08",
+      "plan": "pistol-monthly-notrial",
+      "product": "Pistol",
+      "priceList": "notrial",
+      "eventType": "START_ENTITLEMENT",
+      "isBlockedBilling": false,
+      "isBlockedEntitlement": false,
+      "serviceName": "entitlement-service",
+      "serviceStateName": "ENT_STARTED",
+      "phase": "pistol-monthly-notrial-evergreen",
+      "auditLogs": []
+    },
+    {
+      "eventId": "3aaa3239-2bc6-4f04-977b-fce5de098af8",
+      "billingPeriod": "MONTHLY",
+      "effectiveDate": "2020-01-08",
+      "plan": "pistol-monthly-notrial",
+      "product": "Pistol",
+      "priceList": "notrial",
+      "eventType": "START_BILLING",
+      "isBlockedBilling": false,
+      "isBlockedEntitlement": false,
+      "serviceName": "billing-service",
+      "serviceStateName": "START_BILLING",
+      "phase": "pistol-monthly-notrial-evergreen",
+      "auditLogs": []
+    }
+  ],
+  "priceOverrides": null,
+  "prices": [
+    {
+      "planName": "pistol-monthly-notrial",
+      "phaseName": "pistol-monthly-notrial-evergreen",
+      "phaseType": "EVERGREEN",
+      "fixedPrice": null,
+      "recurringPrice": 19.95,
+      "usagePrices": []
+    }
+  ],
+  "auditLogs": []
+}
+```
+```ruby
+{
+   "accountId":"0cdaeca7-4984-47dc-b245-7c32627f26cd",
+   "bundleId":"d1f4ca8d-be47-4e64-84ce-f697b42d4182",
+   "subscriptionId":"161692a4-c293-410c-a92f-939c5e3dcba7",
+   "externalKey":"somethingSpecial",
+   "bundleExternalKey":"a4f4ca8d-3447-4e64-84ce-6697b42d419c",
+   "startDate":"2013-08-01",
+   "productName":"Basic",
+   "productCategory":"BASE",
+   "billingPeriod":"MONTHLY",
+   "phaseType":"EVERGREEN",
+   "priceList":"DEFAULT",
+   "planName":"basic-monthly-in-advance",
+   "state":"ACTIVE",
+   "sourceType":"NATIVE",
+   "chargedThroughDate":"2013-09-01",
+   "billingStartDate":"2013-08-01",
+   "billCycleDayLocal":1,
+   "events":[
+      {
+         "eventId":"dda11bf3-f74a-4c42-83e1-0f43a41389af",
+         "billingPeriod":"MONTHLY",
+         "effectiveDate":"2013-08-01",
+         "plan":"basic-monthly-in-advance",
+         "product":"Basic",
+         "priceList":"DEFAULT",
+         "eventType":"START_ENTITLEMENT",
+         "isBlockedBilling":false,
+         "isBlockedEntitlement":false,
+         "serviceName":"entitlement-service",
+         "serviceStateName":"ENT_STARTED",
+         "phase":"basic-monthly-in-advance-evergreen",
+         "auditLogs":[]
+      },
+      {
+         "eventId":"6901117c-4ce0-4eb6-8642-380823490fae",
+         "billingPeriod":"MONTHLY",
+         "effectiveDate":"2013-08-01",
+         "plan":"basic-monthly-in-advance",
+         "product":"Basic",
+         "priceList":"DEFAULT",
+         "eventType":"START_BILLING",
+         "isBlockedBilling":false,
+         "isBlockedEntitlement":false,
+         "serviceName":"billing-service",
+         "serviceStateName":"START_BILLING",
+         "phase":"basic-monthly-in-advance-evergreen",
+         "auditLogs":[]
+      }
+   ],
+   "prices":[
+      {
+         "planName":"basic-monthly-in-advance",
+         "phaseName":"asic-monthly-in-advance-trial",
+         "phaseType":"TRIAL",
+         "fixedPrice":0,
+         "recurringPrice":null,
+         "usagePrices":[]
+      },
+      {
+         "planName":"basic-monthly-in-advance",
+         "phaseName":"basic-monthly-in-advance-evergreen",
+         "phaseType":"EVERGREEN",
+         "fixedPrice":null,
+         "recurringPrice":500.0,
+         "usagePrices":[]
+      }
+   ],
+   "auditLogs":[]
+}
+```
+```python
+{'account_id': '3b1a5a67-f0ac-475c-9aad-735d309f0c1f',
+ 'audit_logs': [],
+ 'bill_cycle_day_local': 13,
+ 'billing_end_date': None,
+ 'billing_period': 'MONTHLY',
+ 'billing_start_date': datetime.date(2018, 5, 14),
+ 'bundle_id': 'e5590623-ccd4-4a8a-be26-008ce7c02b3b',
+ 'cancelled_date': None,
+ 'charged_through_date': None,
+ 'events': [{'audit_logs': [],
+             'billing_period': 'MONTHLY',
+             'effective_date': datetime.date(2018, 5, 14),
+             'event_id': '46335d3d-8234-49c3-af1a-dcf8cd354ef3',
+             'event_type': 'START_ENTITLEMENT',
+             'is_blocked_billing': False,
+             'is_blocked_entitlement': False,
+             'phase': 'standard-monthly-trial',
+             'plan': 'standard-monthly',
+             'price_list': 'DEFAULT',
+             'product': 'Standard',
+             'service_name': 'entitlement-service',
+             'service_state_name': 'ENT_STARTED'},
+            {'audit_logs': [],
+             'billing_period': 'MONTHLY',
+             'effective_date': datetime.date(2018, 5, 14),
+             'event_id': 'a14d6512-7479-46e0-b72b-81dff575d1d4',
+             'event_type': 'START_BILLING',
+             'is_blocked_billing': False,
+             'is_blocked_entitlement': False,
+             'phase': 'standard-monthly-trial',
+             'plan': 'standard-monthly',
+             'price_list': 'DEFAULT',
+             'product': 'Standard',
+             'service_name': 'billing-service',
+             'service_state_name': 'START_BILLING'},
+            {'audit_logs': [],
+             'billing_period': 'MONTHLY',
+             'effective_date': datetime.date(2018, 6, 13),
+             'event_id': '27408c65-46b8-4bc9-a7ee-c80d6e5fb9b5',
+             'event_type': 'PHASE',
+             'is_blocked_billing': False,
+             'is_blocked_entitlement': False,
+             'phase': 'standard-monthly-evergreen',
+             'plan': 'standard-monthly',
+             'price_list': 'DEFAULT',
+             'product': 'Standard',
+             'service_name': 'entitlement+billing-service',
+             'service_state_name': 'PHASE'}],
+ 'external_key': 'somethingSpecial',
+ 'phase_type': 'TRIAL',
+ 'plan_name': 'standard-monthly',
+ 'price_list': 'DEFAULT',
+ 'prices': [{'fixed_price': 0.0,
+              'phase_name': 'standard-monthly-trial',
+              'phase_type': 'TRIAL',
+              'plan_name': 'standard-monthly',
+              'recurring_price': None,
+              'usage_prices': []},
+             {'fixed_price': None,
+              'phase_name': 'standard-monthly-evergreen',
+              'phase_type': 'EVERGREEN',
+              'plan_name': 'standard-monthly',
+              'recurring_price': 100.0,
+              'usage_prices': []}],
+ 'product_category': 'BASE',
+ 'product_name': 'Standard',
+ 'source_type': 'NATIVE',
+ 'start_date': datetime.date(2018, 5, 14),
+ 'state': 'ACTIVE',
+ 'subscription_id': '4aab9b96-c2e7-4641-a6d9-db984969201e'}
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| **externalKey** | String | true | the subscription external key |
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Returns a subscription object.
+
+
 ### Update the BCD associated to a subscription
 
 This allows to change the Bill Cycle Date, BCD, for a given subscription.
