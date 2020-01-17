@@ -26,7 +26,8 @@ The attributes are the following:
 * **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
 * **`bundleId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
 * **`subscriptionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
-* **`externalKey`** <span style="color:#32A9C7">*[User generated]*</span>: The (`Bundle`) external key provided from client.
+* **`externalKey`** <span style="color:#32A9C7">*[User generated]*</span>: The `Subscription` external key provided from client.
+* **`bundleExternalKey`** <span style="color:#32A9C7">*[User generated]*</span>: The `Bundle` external key provided from client.
 * **`startDate`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The (entitlement) start date -- when the service starts.
 * **`productName`** <span style="color:#32A9C7">*[User generated]*</span>: The name of the active product catalog.
 * **`productCategory`** <span style="color:#32A9C7">*[User generated]*</span>: The product category, either `BASE`, `ADD_ON` or `STANDALONE`.
@@ -148,6 +149,7 @@ class Subscription {
     bundleId: eac6eecf-2060-434a-b472-170f80a7591c
     subscriptionId: a74081ee-d7bb-4387-a1df-34e962e37699
     externalKey: somethingSpecial
+    bundleExternalKey: somethingAlsoSpecial
     startDate: 2012-04-25
     productName: Shotgun
     productCategory: BASE
@@ -233,6 +235,7 @@ class Subscription {
    "bundleId":"f3dea847-1567-467a-8373-838dfdcf6afc",
    "subscriptionId":"ee508b5b-46b8-42a7-8988-16c0470de4ae",
    "externalKey":"f3dea847-1567-467a-8373-838dfdcf6afc",
+   "bundleExternalKey":"addea847-1467-167a-1373-988dfdcf7acc",
    "startDate":"2013-08-01",
    "productName":"Basic",
    "productCategory":"BASE",
@@ -339,7 +342,8 @@ curl -v \
     -d '[
           {
             "accountId": "581d86fc-7cfc-46f2-b6d4-4dbc1d98beb3",
-            "externalKey": "base",
+            "externalKey": "something",
+            "bundleExternalKey": "somethingAlso",
             "productName": "Sports",
             "productCategory": "BASE",
             "billingPeriod": "MONTHLY",
@@ -1188,6 +1192,7 @@ subscriptionApi.get_subscription(subscription_id, api_key, api_secret)
     "bundleId":"3b7a754c-4fe3-49a4-a56c-c8f56fc4116c",
     "subscriptionId":"d4a919f4-7459-494f-85e5-af8880f63e90",
     "externalKey":"somethingSpecial",
+    "bundleExternalKey":"somethingSpecialAlso",
     "startDate":"2018-07-19",
     "productName":"Super",
     "productCategory":"BASE",
@@ -1281,6 +1286,7 @@ class Subscription {
     bundleId: 603db1e6-299e-4b8b-9dfc-beecccca39b2
     subscriptionId: b0f8f527-78c6-4fef-8fb2-53c9ed60a714
     externalKey: 99999
+    bundleExternalKey: 88888
     startDate: 2012-04-25
     productName: Shotgun
     productCategory: BASE
@@ -1366,6 +1372,7 @@ class Subscription {
    "bundleId":"d1f4ca8d-be47-4e64-84ce-f697b42d4182",
    "subscriptionId":"161692a4-c293-410c-a92f-939c5e3dcba7",
    "externalKey":"d1f4ca8d-be47-4e64-84ce-f697b42d4182",
+   "bundleExternalKey":"a4f4ca8d-3447-4e64-84ce-6697b42d419c",
    "startDate":"2013-08-01",
    "productName":"Basic",
    "productCategory":"BASE",
@@ -1727,6 +1734,7 @@ no content
    "bundleId":"b0b9da5f-6844-417b-ac97-d7e8df07c26a",
    "subscriptionId":"97278000-72fd-45d7-9b67-e44690bdb074",
    "externalKey":"986c5d4e-b322-4d71-ad24-e3bf6e38734a-452347",
+   "bundleExternalKey":"765c5d4e-b322-4d71-6544-e3bf6e38734a-cd2347",
    "startDate":"2013-08-01",
    "productName":"Super",
    "productCategory":"BASE",
