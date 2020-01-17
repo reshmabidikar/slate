@@ -7,9 +7,11 @@ to add credit or create charges against the `Account`. Invoices can also be auto
 there are existing active subscriptions for the `Account`. In the later case, the `targetDate` will determine up to which point to invoice,
 and the billing mode `IN_ADVANCE` versus `IN_ARREAR` will determine which period to charge for.
 
-An invoice can be in `DRAFT` status, in which case it is open to receive additional items, and it is not taken into account by the rest for the system
-when computing the account balance, overdue status, ... A `COMMITTED` invoice on the other hand  becomes immutable, and its balance is reflected at the `Account` level.
-Payments can only happen against `COMMITTED` invoices.
+For each invoice, there is a corresponding status:
+
+* An invoice can be in `DRAFT` status, in which case it is open to receive additional items, and it is not taken into account by the rest for the system when computing the account balance, overdue status, ...
+* A `COMMITTED` invoice on the other hand  becomes immutable, and its balance is reflected at the `Account` level. Payments can only happen against `COMMITTED` invoices.
+* An invoice can also be in `VOID` status, in which case it is ignored by the rest of the system. We offer a [void api](https://killbill.github.io/slate/#invoice-perform-the-action-of-voiding-an-invoice) to transition a `DRAFT` or `COMMITTED` invoice into `VOID` status. The operation is only available if there are no succesful payments against such invoice, therefore one would first need to refund existing succesful payments -- if any -- prior voiding the invoice.
 
 An invoice contains a list of `InvoiceItem`. The system will always invoice at the `Account` level, and will therefore create as many items on a given
 invoice as there are things to invoice. Given an active `Subscription`, one could see multiple items for that subscription on one given invoice to take
@@ -211,7 +213,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ { \"invoiceItemId\": \"f38505c9-d673-4f0b-b7d4-9125cac2a567\", \"invoiceId\": \"f38505c9-d673-4f0b-b7d4-9125cac2a567\", \"linkedInvoiceItemId\": \"f38505c9-d673-4f0b-b7d4-9125cac2a567\", \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"itemType\": \"EXTERNAL_CHARGE\", \"amount\": 10, \"rate\": 0, \"currency\": \"USD\" }]" \
+    -d '[ { "invoiceItemId": "f38505c9-d673-4f0b-b7d4-9125cac2a567", "invoiceId": "f38505c9-d673-4f0b-b7d4-9125cac2a567", "linkedInvoiceItemId": "f38505c9-d673-4f0b-b7d4-9125cac2a567", "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "itemType": "EXTERNAL_CHARGE", "amount": 10, "rate": 0, "currency": "USD" }]' \
     "http://localhost:8080/1.0/kb/invoices/migration/2ad52f53-85ae-408a-9879-32a7e59dd03d"	
 ```
 
@@ -317,7 +319,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ { \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"description\": \"My charge\", \"amount\": 50, \"currency\": \"USD\" }]"	\
+    -d '[ { "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "description": "My charge", "amount": 50, "currency": "USD" }]'	\
     "http://localhost:8080/1.0/kb/invoices/charges/2ad52f53-85ae-408a-9879-32a7e59dd03d"
 ```
 
@@ -498,7 +500,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ { \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"amount\": 50, \"currency\": \"USD\" }]" \
+    -d '[ { "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "amount": 50, "currency": "USD" }]' \
     "http://localhost:8080/1.0/kb/invoices/taxes/2ad52f53-85ae-408a-9879-32a7e59dd03d"
 ```
 
@@ -1899,7 +1901,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"invoiceItemId\": \"903e55d3-8072-47f1-80fc-32857dbdbcc5\", \"invoiceId\": \"903e55d3-8072-47f1-80fc-32857dbdbcc5\", \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"description\": \"Free adjustment: good customer\", \"amount\": 50, \"currency\": \"USD\"}" \
+    -d '{ "invoiceItemId": "903e55d3-8072-47f1-80fc-32857dbdbcc5", "invoiceId": "903e55d3-8072-47f1-80fc-32857dbdbcc5", "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "description": "Free adjustment: good customer", "amount": 50, "currency": "USD"}' \
     "http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5"	
 ```
 
@@ -2138,7 +2140,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"dryRunType\": \"UPCOMING_INVOICE\"}" \
+    -d '{ "dryRunType": "UPCOMING_INVOICE"}' \
     "http://localhost:8080/1.0/kb/invoices/dryRun?accountId=2ad52f53-85ae-408a-9879-32a7e59dd03d" 	
 ```
 
@@ -2393,7 +2395,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"accountId\": \"2ad52f53-85ae-408a-9879-32a7e59dd03d\", \"purchasedAmount\": 50, \"targetInvoiceId\": \"903e55d3-8072-47f1-80fc-32857dbdbcc5\"}" \
+    -d '{ "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "purchasedAmount": 50, "targetInvoiceId": "903e55d3-8072-47f1-80fc-32857dbdbcc5"}' \
     "http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5/payments?externalPayment=false"	
 ```
 
@@ -2746,7 +2748,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ { \"objectType\": \"INVOICE\", \"name\": \"Test Custom Field\", \"value\": \"demo_test_value\" }]" \
+    -d '[ { "objectType": "INVOICE", "name": "Test Custom Field", "value": "demo_test_value" }]' \
     "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"	
 ```
 
@@ -2965,7 +2967,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ { \"customFieldId\": \"349de10f-4bb1-4e1a-93f6-11b745200bf5\", \"objectId\": \"2cd2f4b5-a1c0-42a7-924f-64c7b791332d\", \"objectType\": \"INVOICE\", \"name\": \"Test Custom Field\", \"value\": \"test_modify_value\", \"auditLogs\": [] }]" \
+    -d '[ { "customFieldId": "349de10f-4bb1-4e1a-93f6-11b745200bf5", "objectId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d", "objectType": "INVOICE", "name": "Test Custom Field", "value": "test_modify_value", "auditLogs": [] }]' \
     "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"	
 ```
 
@@ -3149,7 +3151,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ \"00000000-0000-0000-0000-000000000004\"]" \
+    -d '[ "00000000-0000-0000-0000-000000000004"]' \
     "http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags"	
 ```
 
@@ -3459,7 +3461,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "\"sports-monthly = Voiture Sport\"" \
+    -d '"sports-monthly = Voiture Sport"' \
     "http://localhost:8080/1.0/kb/invoices/catalogTranslation/fr_FR"
 ```
 
@@ -3791,7 +3793,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "\"Some_HTML_String\"" \
+    -d '"Some_HTML_String"' \
     "http://localhost:8080/1.0/kb/invoices/manualPayTemplate?deleteIfExists=false"	
 ```
 

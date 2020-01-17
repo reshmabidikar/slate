@@ -1307,7 +1307,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"bundleId\": \"2cd2f4b5-a1c0-42a7-924f-64c7b791332d\", \"externalKey\": \"another_external_key\"}" \
+    -d '{ "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d", "externalKey": "another_external_key"}' \
     "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/renameKey"
 ```
 ```java
@@ -1386,7 +1386,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"accountId\": \"8785164f-b5d7-4da1-9495-33f5105e8d80\", \"bundleId\": \"2cd2f4b5-a1c0-42a7-924f-64c7b791332d\"}" \
+    -d '{ "accountId": "8785164f-b5d7-4da1-9495-33f5105e8d80", "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d"}' \
     "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d"
 ```
 ```java
@@ -1890,7 +1890,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "{ \"stateName\": \"STATE1\", \"service\": \"ServiceStateService\", \"isBlockChange\": false, \"isBlockEntitlement\": false, \"isBlockBilling\": false, \"effectiveDate\": \"2018-07-17T21:17:28.842Z\", \"type\": \"SUBSCRIPTION\" }" \
+    -d '{ "stateName": "STATE1", "service": "ServiceStateService", "isBlockChange": false, "isBlockEntitlement": false, "isBlockBilling": false, "effectiveDate": "2018-07-17T21:17:28.842Z", "type": "SUBSCRIPTION" }' \
     "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/block"
 ```
 ```java
@@ -2015,7 +2015,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ { \"objectType\": \"BUNDLE\", \"name\": \"Test Custom Field\", \"value\": \"demo_test_value\" }]" \
+    -d '[ { "objectType": "BUNDLE", "name": "Test Custom Field", "value": "demo_test_value" }]' \
     "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"
 ```
 
@@ -2229,7 +2229,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ { \"customFieldId\": \"349de10f-4bb1-4e1a-93f6-11b745200bf5\", \"objectId\": \"2cd2f4b5-a1c0-42a7-924f-64c7b791332d\", \"objectType\": \"BUNDLE\", \"name\": \"Test Custom Field\", \"value\": \"test_modify_value\", \"auditLogs\": [] }]" \
+    -d '[ { "customFieldId": "349de10f-4bb1-4e1a-93f6-11b745200bf5", "objectId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d", "objectType": "BUNDLE", "name": "Test Custom Field", "value": "test_modify_value", "auditLogs": [] }]' \
     "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"
 ```
 
@@ -2406,7 +2406,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "[ \"353752dd-9041-4450-b782-a8bb03a923c8\"]" \
+    -d '[ "353752dd-9041-4450-b782-a8bb03a923c8"]' \
     "http://localhost:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags"
 ```
 

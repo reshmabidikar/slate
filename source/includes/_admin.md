@@ -586,12 +586,12 @@ adminApi.get_queue_entries(api_key, api_secret)
 ```
 ```java
 {"busEvents":[],"notifications":[]}
-```
+```"
 ```ruby
-"{\"busEvents\":[],\"notifications\":[]}"
+{"busEvents":[],"notifications":[]}
 ```
 ```python
-"{\"busEvents\":[],\"notifications\":[]}"
+{"busEvents":[],"notifications":[]}
 ```
 
 **Query Parameters**

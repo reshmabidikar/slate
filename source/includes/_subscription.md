@@ -314,6 +314,8 @@ no content
 | **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
 | **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
 
+When creating an add-on subscription, you need to specify the associated bundle in the body, either via its id or via its external key (but not both).
+
 **Returns**
 
 Returns a subscription object.
