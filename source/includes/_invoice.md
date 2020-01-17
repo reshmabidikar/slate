@@ -683,11 +683,9 @@ import org.killbill.billing.client.api.gen.InvoiceApi;
 protected InvoiceApi invoiceApi;
 
 UUID invoiceId = UUID.fromString("922a83f4-ae08-4732-9dd9-35e13c332393");
-Boolean withItems = true; // Will fetch invoice items
 Boolean withChildrenItems = false; //  Will include children items
 
 Invoice invoiceWithItems = invoiceApi.getInvoice(invoiceId, 
-                                                 withItems, 
                                                  withChildrenItems, 
                                                  AuditLevel.NONE, 
                                                  requestOptions);
@@ -843,7 +841,6 @@ class Invoice {
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **withItems** | boolean | false | choose true if you want to include items |
 | **withChildrenItems** | boolean | false | choose true if you want to include children items |
 | **audit** | enum | false | level of audit logs returned |
 
@@ -873,11 +870,9 @@ import org.killbill.billing.client.api.gen.InvoiceApi;
 protected InvoiceApi invoiceApi;
 
 Integer invoiceNumber = 1;
-Boolean withItems = true; // Will fetch invoice items
 Boolean withChildrenItems = false; //  Will include children items
 
 Invoice invoiceByNumber = invoiceApi.getInvoiceByNumber(invoiceNumber, 
-                                                        withItems, 
                                                         withChildrenItems, 
                                                         AuditLevel.FULL, 
                                                         requestOptions);
@@ -1054,7 +1049,6 @@ class Invoice {
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **withItems** | boolean | false | choose true if you want to include items |
 | **withChildrenItems** | boolean | false | choose true if you want to include children items date |
 | **audit** | enum | false | level of audit logs returned |
 
@@ -1084,11 +1078,9 @@ import org.killbill.billing.client.api.gen.InvoiceApi;
 protected InvoiceApi invoiceApi;
 
 UUID invoiceItemId = UUID.fromString("111732ad-196d-423f-8ccd-de44109dc944")
-Boolean withItems = true; // Will fetch invoice items
 Boolean withChildrenItems = false; //  Will include children items
 
 Invoice invoiceByItemId = invoiceApi.getInvoiceByItemId(invoiceItemId, 
-                                                        withItems, 
                                                         withChildrenItems, 
                                                         AuditLevel.NONE, 
                                                         requestOptions);
@@ -1275,7 +1267,6 @@ class Invoice {
 
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
-| **withItems** | boolean | false | choose true if you want to include items |
 | **withChildrenItems** | boolean | false | choose true if you want to include children items date |
 | **audit** | enum | false | level of audit logs returned |
 
@@ -5259,11 +5250,8 @@ protected InvoiceApi invoiceApi;
 
 Long offset = 0L;
 Long limit = 1L;
-Boolean withItems = false; // Will not fetch invoice items
-
 Invoices result = invoiceApi.getInvoices(offset, 
                                          limit, 
-                                         withItems, 
                                          AuditLevel.NONE, 
                                          requestOptions);
 ```
@@ -5533,7 +5521,6 @@ class Invoice {
 | ---- | -----| -------- | ----------- | 
 | **offset** | long | true | offset |
 | **limit** | long | true | limit search items |
-| **withItems** | boolean | false | choose true if you want to include items |
 | **audit** | enum | false | level of audit logs returned |
 
 **Returns**
@@ -5565,12 +5552,10 @@ String searchKey = "1a49101b-305e-4b4d-8403-7377596407b6";
 
 Long offset = 0L;
 Long limit = 1L;
-Boolean withItems = false; // Will not fetch invoice items
 
 invoiceApi.searchInvoices(searchKey, 
                           offset,
                           limit, 
-                          withItems,
                           requestOptions);
 ```
 
@@ -5722,7 +5707,6 @@ class Invoice {
 | ---- | -----| -------- | ----------- | 
 | **offset** | long | true | offset |
 | **limit** | long | true | limit search items |
-| **withItems** | boolean | false | choose true if you want to include items |
 | **audit** | enum | false | level of audit logs returned |
 
 **Returns**
