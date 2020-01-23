@@ -2403,7 +2403,7 @@ class Invoice {
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
 | **startDate** | date | false |  Filter invoices using a start date. |
-| **endDate** | date | false | Filter invoices using a end date. |
+| **endDate** | date | false | Filter invoices using an end date. |
 | **withMigrationInvoices** | boolean | false | Choose true if you want migration invoices |
 | **unpaidInvoicesOnly** | boolean | false | Choose true if you want unpaid invoices only |
 | **includeVoidedInvoices** | boolean | false | Choose true if you want to include voided invoices |
@@ -5937,7 +5937,7 @@ See section [Account Blocking State](#account-blocking-state) for an introductio
 
 > Example Request:
 
-In the example provided, we are using a system-generated event, namely the `START_ENTITLEMENT`; such event id, can be obtained
+In the example provided, we are using a system-generated event, namely the `START_ENTITLEMENT`; such event id can be obtained
 by fetching the [timeline api](#account-retrieve-account-timeline).
 
 

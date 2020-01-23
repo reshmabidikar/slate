@@ -85,7 +85,37 @@ creditApi.create_credits([body], created_by, api_key, api_secret)
 
 ```shell
     < HTTP/1.1 200 OK
-[{"invoiceItemId":"2a7746a3-abad-42d9-9f54-fe50c0b18802","invoiceId":"e3caf986-8909-4677-afd4-ba03deeae8f0","linkedInvoiceItemId":null,"accountId":"1f979085-1765-471b-878a-5f640db4d831","childAccountId":null,"bundleId":null,"subscriptionId":null,"productName":null,"planName":null,"phaseName":null,"usageName":null,"prettyProductName":null,"prettyPlanName":null,"prettyPhaseName":null,"prettyUsageName":null,"itemType":"CREDIT_ADJ","description":"example","startDate":"2020-01-17","endDate":"2020-01-17","amount":50.00,"rate":null,"currency":"USD","quantity":null,"itemDetails":null,"catalogEffectiveDate":null,"childItems":null,"auditLogs":[]}]
+[
+  {
+    "invoiceItemId": "2a7746a3-abad-42d9-9f54-fe50c0b18802",
+    "invoiceId": "e3caf986-8909-4677-afd4-ba03deeae8f0",
+    "linkedInvoiceItemId": null,
+    "accountId": "1f979085-1765-471b-878a-5f640db4d831",
+    "childAccountId": null,
+    "bundleId": null,
+    "subscriptionId": null,
+    "productName": null,
+    "planName": null,
+    "phaseName": null,
+    "usageName": null,
+    "prettyProductName": null,
+    "prettyPlanName": null,
+    "prettyPhaseName": null,
+    "prettyUsageName": null,
+    "itemType": "CREDIT_ADJ",
+    "description": "example",
+    "startDate": "2020-01-17",
+    "endDate": "2020-01-17",
+    "amount": 50,
+    "rate": null,
+    "currency": "USD",
+    "quantity": null,
+    "itemDetails": null,
+    "catalogEffectiveDate": null,
+    "childItems": null,
+    "auditLogs": []
+  }
+]
 ```
 ```java
 class Credit {

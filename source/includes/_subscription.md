@@ -1192,7 +1192,7 @@ subscriptionApi.get_subscription(subscription_id, api_key, api_secret)
     "bundleId":"3b7a754c-4fe3-49a4-a56c-c8f56fc4116c",
     "subscriptionId":"d4a919f4-7459-494f-85e5-af8880f63e90",
     "externalKey":"somethingSpecial",
-    "bundleExternalKey":"somethingSpecialAlso",
+    "bundleExternalKey":"somethingAlsoSpecial",
     "startDate":"2018-07-19",
     "productName":"Super",
     "productCategory":"BASE",
@@ -1519,9 +1519,6 @@ class Subscription {
 **Returns**
 
 Returns a subscription object.
-
-
-
 
 
 ### Retrieve a subscription by key
