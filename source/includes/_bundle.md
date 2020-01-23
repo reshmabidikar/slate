@@ -1718,7 +1718,7 @@ Returns a bundle object if a valid account and bundle id's was provided.
 
 ## Blocking State
 
-See section [Account Blocing State](#account-blocking-state) for an introduction.
+See section [Account Blocking State](#account-blocking-state) for an introduction.
 
 ### Pause a bundle
 
@@ -2692,6 +2692,95 @@ no content
 **Response**
 
 A `204` http status without content.
+
+
+## Audit Logs
+
+### Retrieve bundle audit logs with history by bundle id
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/bundles/{bundleId}/auditLogsWithHistory`
+
+> Example Request:
+
+```shell
+curl \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/bundles/d1b329c7-7dcf-466c-aaca-47bff304dab0/auditLogsWithHistory"
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2019-02-22T22:38:10.000Z",
+    "objectType": "BUNDLE",
+    "objectId": "d1b329c7-7dcf-466c-aaca-47bff304dab0",
+    "changedBy": "admin",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "1f03e074-dea1-45c5-aee3-c9464886f476",
+    "history": {
+      "id": null,
+      "createdDate": "2019-02-22T22:38:10.000Z",
+      "updatedDate": "2019-02-22T22:38:10.000Z",
+      "recordId": 316,
+      "accountRecordId": 10,
+      "tenantRecordId": 1,
+      "externalKey": "d1b329c7-7dcf-466c-aaca-47bff304dab0",
+      "accountId": "7b3e14b1-6e76-46d3-bbfd-5a16e5b5eca2",
+      "lastSysUpdateDate": "2019-02-22T22:38:10.000Z",
+      "originalCreatedDate": "2019-02-22T22:38:10.000Z",
+      "tableName": "BUNDLES",
+      "historyTableName": "BUNDLE_HISTORY"
+    }
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2019-02-22T22:38:10.000Z",
+    "objectType": "BUNDLE",
+    "objectId": "d1b329c7-7dcf-466c-aaca-47bff304dab0",
+    "changedBy": "SubscriptionBaseTransition",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "1f03e074-dea1-45c5-aee3-c9464886f476",
+    "history": {
+      "id": null,
+      "createdDate": "2019-02-22T22:38:10.000Z",
+      "updatedDate": "2019-02-22T22:38:10.000Z",
+      "recordId": 316,
+      "accountRecordId": 10,
+      "tenantRecordId": 1,
+      "externalKey": "d1b329c7-7dcf-466c-aaca-47bff304dab0",
+      "accountId": "7b3e14b1-6e76-46d3-bbfd-5a16e5b5eca2",
+      "lastSysUpdateDate": "2019-02-22T22:38:10.000Z",
+      "originalCreatedDate": "2019-02-22T22:38:10.000Z",
+      "tableName": "BUNDLES",
+      "historyTableName": "BUNDLE_HISTORY"
+    }
+  }
+]
+
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of bundle audit logs with history.
+
+
+
 
 ## Pagination/Search
 

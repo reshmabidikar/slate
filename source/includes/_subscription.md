@@ -26,7 +26,8 @@ The attributes are the following:
 * **`accountId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
 * **`bundleId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
 * **`subscriptionId`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The `ID` allocated by Kill Bill upon creation.
-* **`externalKey`** <span style="color:#32A9C7">*[User generated]*</span>: The (`Bundle`) external key provided from client.
+* **`externalKey`** <span style="color:#32A9C7">*[User generated]*</span>: The `Subscription` external key provided from client.
+* **`bundleExternalKey`** <span style="color:#32A9C7">*[User generated]*</span>: The `Bundle` external key provided from client.
 * **`startDate`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The (entitlement) start date -- when the service starts.
 * **`productName`** <span style="color:#32A9C7">*[User generated]*</span>: The name of the active product catalog.
 * **`productCategory`** <span style="color:#32A9C7">*[User generated]*</span>: The product category, either `BASE`, `ADD_ON` or `STANDALONE`.
@@ -148,6 +149,7 @@ class Subscription {
     bundleId: eac6eecf-2060-434a-b472-170f80a7591c
     subscriptionId: a74081ee-d7bb-4387-a1df-34e962e37699
     externalKey: somethingSpecial
+    bundleExternalKey: somethingAlsoSpecial
     startDate: 2012-04-25
     productName: Shotgun
     productCategory: BASE
@@ -233,6 +235,7 @@ class Subscription {
    "bundleId":"f3dea847-1567-467a-8373-838dfdcf6afc",
    "subscriptionId":"ee508b5b-46b8-42a7-8988-16c0470de4ae",
    "externalKey":"f3dea847-1567-467a-8373-838dfdcf6afc",
+   "bundleExternalKey":"addea847-1467-167a-1373-988dfdcf7acc",
    "startDate":"2013-08-01",
    "productName":"Basic",
    "productCategory":"BASE",
@@ -339,7 +342,8 @@ curl -v \
     -d '[
           {
             "accountId": "581d86fc-7cfc-46f2-b6d4-4dbc1d98beb3",
-            "externalKey": "base",
+            "externalKey": "something",
+            "bundleExternalKey": "somethingAlso",
             "productName": "Sports",
             "productCategory": "BASE",
             "billingPeriod": "MONTHLY",
@@ -1188,6 +1192,7 @@ subscriptionApi.get_subscription(subscription_id, api_key, api_secret)
     "bundleId":"3b7a754c-4fe3-49a4-a56c-c8f56fc4116c",
     "subscriptionId":"d4a919f4-7459-494f-85e5-af8880f63e90",
     "externalKey":"somethingSpecial",
+    "bundleExternalKey":"somethingAlsoSpecial",
     "startDate":"2018-07-19",
     "productName":"Super",
     "productCategory":"BASE",
@@ -1281,6 +1286,7 @@ class Subscription {
     bundleId: 603db1e6-299e-4b8b-9dfc-beecccca39b2
     subscriptionId: b0f8f527-78c6-4fef-8fb2-53c9ed60a714
     externalKey: 99999
+    bundleExternalKey: 88888
     startDate: 2012-04-25
     productName: Shotgun
     productCategory: BASE
@@ -1366,6 +1372,7 @@ class Subscription {
    "bundleId":"d1f4ca8d-be47-4e64-84ce-f697b42d4182",
    "subscriptionId":"161692a4-c293-410c-a92f-939c5e3dcba7",
    "externalKey":"d1f4ca8d-be47-4e64-84ce-f697b42d4182",
+   "bundleExternalKey":"a4f4ca8d-3447-4e64-84ce-6697b42d419c",
    "startDate":"2013-08-01",
    "productName":"Basic",
    "productCategory":"BASE",
@@ -1507,6 +1514,272 @@ class Subscription {
 
 | Name | Type | Required | Description |
 | ---- | ---- | -------- | ----------- |
+| **audit** | enum | false | level of audit logs returned |
+
+**Returns**
+
+Returns a subscription object.
+
+
+### Retrieve a subscription by key
+
+**HTTP Request**
+
+`GET http://127.0.0.1:8080/1.0/kb/subscriptions/`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    'http://localhost:8080/1.0/kb/subscriptions?externalKey=somethingSpecial'
+```
+
+```java
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+String externalKey = "somethingSpecial";
+Subscription objFromJson = subscriptionApi.getSubscriptionByKey(externalKey, requestOptions);
+```
+
+```ruby
+external_key = "somethingSpecial"
+KillBillClient::Model::Subscription.find_by_external_key(external_key, options)
+```
+
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+external_key = 'somethingSpecial'
+subscriptionApi.get_subscription_by_key(external_key, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+<
+{
+  "accountId": "1f979085-1765-471b-878a-5f640db4d831",
+  "bundleId": "8815e8c0-afab-41b9-b793-cb8fef2382e4",
+  "bundleExternalKey": "8815e8c0-afab-41b9-b793-cb8fef2382e4",
+  "subscriptionId": "8e5c5339-1cad-46c6-ab18-3d5ddc1b2414",
+  "externalKey": "somethingSpecial",
+  "startDate": "2020-01-08",
+  "productName": "Pistol",
+  "productCategory": "BASE",
+  "billingPeriod": "MONTHLY",
+  "phaseType": "EVERGREEN",
+  "priceList": "notrial",
+  "planName": "pistol-monthly-notrial",
+  "state": "ACTIVE",
+  "sourceType": "NATIVE",
+  "cancelledDate": null,
+  "chargedThroughDate": "2020-05-08",
+  "billingStartDate": "2020-01-08",
+  "billingEndDate": null,
+  "billCycleDayLocal": 8,
+  "events": [
+    {
+      "eventId": "1d24928e-790d-4dc9-8a88-c4eaa56de392",
+      "billingPeriod": "MONTHLY",
+      "effectiveDate": "2020-01-08",
+      "plan": "pistol-monthly-notrial",
+      "product": "Pistol",
+      "priceList": "notrial",
+      "eventType": "START_ENTITLEMENT",
+      "isBlockedBilling": false,
+      "isBlockedEntitlement": false,
+      "serviceName": "entitlement-service",
+      "serviceStateName": "ENT_STARTED",
+      "phase": "pistol-monthly-notrial-evergreen",
+      "auditLogs": []
+    },
+    {
+      "eventId": "3aaa3239-2bc6-4f04-977b-fce5de098af8",
+      "billingPeriod": "MONTHLY",
+      "effectiveDate": "2020-01-08",
+      "plan": "pistol-monthly-notrial",
+      "product": "Pistol",
+      "priceList": "notrial",
+      "eventType": "START_BILLING",
+      "isBlockedBilling": false,
+      "isBlockedEntitlement": false,
+      "serviceName": "billing-service",
+      "serviceStateName": "START_BILLING",
+      "phase": "pistol-monthly-notrial-evergreen",
+      "auditLogs": []
+    }
+  ],
+  "priceOverrides": null,
+  "prices": [
+    {
+      "planName": "pistol-monthly-notrial",
+      "phaseName": "pistol-monthly-notrial-evergreen",
+      "phaseType": "EVERGREEN",
+      "fixedPrice": null,
+      "recurringPrice": 19.95,
+      "usagePrices": []
+    }
+  ],
+  "auditLogs": []
+}
+```
+```ruby
+{
+   "accountId":"0cdaeca7-4984-47dc-b245-7c32627f26cd",
+   "bundleId":"d1f4ca8d-be47-4e64-84ce-f697b42d4182",
+   "subscriptionId":"161692a4-c293-410c-a92f-939c5e3dcba7",
+   "externalKey":"somethingSpecial",
+   "bundleExternalKey":"a4f4ca8d-3447-4e64-84ce-6697b42d419c",
+   "startDate":"2013-08-01",
+   "productName":"Basic",
+   "productCategory":"BASE",
+   "billingPeriod":"MONTHLY",
+   "phaseType":"EVERGREEN",
+   "priceList":"DEFAULT",
+   "planName":"basic-monthly-in-advance",
+   "state":"ACTIVE",
+   "sourceType":"NATIVE",
+   "chargedThroughDate":"2013-09-01",
+   "billingStartDate":"2013-08-01",
+   "billCycleDayLocal":1,
+   "events":[
+      {
+         "eventId":"dda11bf3-f74a-4c42-83e1-0f43a41389af",
+         "billingPeriod":"MONTHLY",
+         "effectiveDate":"2013-08-01",
+         "plan":"basic-monthly-in-advance",
+         "product":"Basic",
+         "priceList":"DEFAULT",
+         "eventType":"START_ENTITLEMENT",
+         "isBlockedBilling":false,
+         "isBlockedEntitlement":false,
+         "serviceName":"entitlement-service",
+         "serviceStateName":"ENT_STARTED",
+         "phase":"basic-monthly-in-advance-evergreen",
+         "auditLogs":[]
+      },
+      {
+         "eventId":"6901117c-4ce0-4eb6-8642-380823490fae",
+         "billingPeriod":"MONTHLY",
+         "effectiveDate":"2013-08-01",
+         "plan":"basic-monthly-in-advance",
+         "product":"Basic",
+         "priceList":"DEFAULT",
+         "eventType":"START_BILLING",
+         "isBlockedBilling":false,
+         "isBlockedEntitlement":false,
+         "serviceName":"billing-service",
+         "serviceStateName":"START_BILLING",
+         "phase":"basic-monthly-in-advance-evergreen",
+         "auditLogs":[]
+      }
+   ],
+   "prices":[
+      {
+         "planName":"basic-monthly-in-advance",
+         "phaseName":"asic-monthly-in-advance-trial",
+         "phaseType":"TRIAL",
+         "fixedPrice":0,
+         "recurringPrice":null,
+         "usagePrices":[]
+      },
+      {
+         "planName":"basic-monthly-in-advance",
+         "phaseName":"basic-monthly-in-advance-evergreen",
+         "phaseType":"EVERGREEN",
+         "fixedPrice":null,
+         "recurringPrice":500.0,
+         "usagePrices":[]
+      }
+   ],
+   "auditLogs":[]
+}
+```
+```python
+{'account_id': '3b1a5a67-f0ac-475c-9aad-735d309f0c1f',
+ 'audit_logs': [],
+ 'bill_cycle_day_local': 13,
+ 'billing_end_date': None,
+ 'billing_period': 'MONTHLY',
+ 'billing_start_date': datetime.date(2018, 5, 14),
+ 'bundle_id': 'e5590623-ccd4-4a8a-be26-008ce7c02b3b',
+ 'cancelled_date': None,
+ 'charged_through_date': None,
+ 'events': [{'audit_logs': [],
+             'billing_period': 'MONTHLY',
+             'effective_date': datetime.date(2018, 5, 14),
+             'event_id': '46335d3d-8234-49c3-af1a-dcf8cd354ef3',
+             'event_type': 'START_ENTITLEMENT',
+             'is_blocked_billing': False,
+             'is_blocked_entitlement': False,
+             'phase': 'standard-monthly-trial',
+             'plan': 'standard-monthly',
+             'price_list': 'DEFAULT',
+             'product': 'Standard',
+             'service_name': 'entitlement-service',
+             'service_state_name': 'ENT_STARTED'},
+            {'audit_logs': [],
+             'billing_period': 'MONTHLY',
+             'effective_date': datetime.date(2018, 5, 14),
+             'event_id': 'a14d6512-7479-46e0-b72b-81dff575d1d4',
+             'event_type': 'START_BILLING',
+             'is_blocked_billing': False,
+             'is_blocked_entitlement': False,
+             'phase': 'standard-monthly-trial',
+             'plan': 'standard-monthly',
+             'price_list': 'DEFAULT',
+             'product': 'Standard',
+             'service_name': 'billing-service',
+             'service_state_name': 'START_BILLING'},
+            {'audit_logs': [],
+             'billing_period': 'MONTHLY',
+             'effective_date': datetime.date(2018, 6, 13),
+             'event_id': '27408c65-46b8-4bc9-a7ee-c80d6e5fb9b5',
+             'event_type': 'PHASE',
+             'is_blocked_billing': False,
+             'is_blocked_entitlement': False,
+             'phase': 'standard-monthly-evergreen',
+             'plan': 'standard-monthly',
+             'price_list': 'DEFAULT',
+             'product': 'Standard',
+             'service_name': 'entitlement+billing-service',
+             'service_state_name': 'PHASE'}],
+ 'external_key': 'somethingSpecial',
+ 'phase_type': 'TRIAL',
+ 'plan_name': 'standard-monthly',
+ 'price_list': 'DEFAULT',
+ 'prices': [{'fixed_price': 0.0,
+              'phase_name': 'standard-monthly-trial',
+              'phase_type': 'TRIAL',
+              'plan_name': 'standard-monthly',
+              'recurring_price': None,
+              'usage_prices': []},
+             {'fixed_price': None,
+              'phase_name': 'standard-monthly-evergreen',
+              'phase_type': 'EVERGREEN',
+              'plan_name': 'standard-monthly',
+              'recurring_price': 100.0,
+              'usage_prices': []}],
+ 'product_category': 'BASE',
+ 'product_name': 'Standard',
+ 'source_type': 'NATIVE',
+ 'start_date': datetime.date(2018, 5, 14),
+ 'state': 'ACTIVE',
+ 'subscription_id': '4aab9b96-c2e7-4641-a6d9-db984969201e'}
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Description |
+| ---- | ---- | -------- | ----------- |
+| **externalKey** | String | true | the subscription external key |
 | **audit** | enum | false | level of audit logs returned |
 
 **Returns**
@@ -1727,6 +2000,7 @@ no content
    "bundleId":"b0b9da5f-6844-417b-ac97-d7e8df07c26a",
    "subscriptionId":"97278000-72fd-45d7-9b67-e44690bdb074",
    "externalKey":"986c5d4e-b322-4d71-ad24-e3bf6e38734a-452347",
+   "bundleExternalKey":"765c5d4e-b322-4d71-6544-e3bf6e38734a-cd2347",
    "startDate":"2013-08-01",
    "productName":"Super",
    "productCategory":"BASE",
@@ -2966,3 +3240,166 @@ no content
 **Response**
 
 A `204` http status without content.
+
+
+## Audit Logs
+
+### Retrieve subscription audit logs with history by subscription id
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/auditLogsWithHistory`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/subscriptions/70b6856e-6938-495f-9ae9-0a8ec0571c37/auditLogsWithHistory"
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2019-02-22T22:38:10.000Z",
+    "objectType": "SUBSCRIPTION",
+    "objectId": "70b6856e-6938-495f-9ae9-0a8ec0571c37",
+    "changedBy": "admin",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "1f03e074-dea1-45c5-aee3-c9464886f476",
+    "history": {
+      "id": null,
+      "createdDate": "2019-02-22T22:38:10.000Z",
+      "updatedDate": "2019-02-22T22:38:10.000Z",
+      "recordId": 465,
+      "accountRecordId": 10,
+      "tenantRecordId": 1,
+      "bundleId": "d1b329c7-7dcf-466c-aaca-47bff304dab0",
+      "category": "BASE",
+      "startDate": "2019-02-22T22:38:10.000Z",
+      "bundleStartDate": "2019-02-22T22:38:10.000Z",
+      "chargedThroughDate": null,
+      "migrated": false,
+      "tableName": "SUBSCRIPTIONS",
+      "historyTableName": "SUBSCRIPTION_HISTORY"
+    }
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2019-02-22T22:38:10.000Z",
+    "objectType": "SUBSCRIPTION",
+    "objectId": "70b6856e-6938-495f-9ae9-0a8ec0571c37",
+    "changedBy": "SubscriptionBaseTransition",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "1f03e074-dea1-45c5-aee3-c9464886f476",
+    "history": {
+      "id": null,
+      "createdDate": "2019-02-22T22:38:10.000Z",
+      "updatedDate": "2019-02-22T22:38:10.000Z",
+      "recordId": 465,
+      "accountRecordId": 10,
+      "tenantRecordId": 1,
+      "bundleId": "d1b329c7-7dcf-466c-aaca-47bff304dab0",
+      "category": "BASE",
+      "startDate": "2019-02-22T22:38:10.000Z",
+      "bundleStartDate": "2019-02-22T22:38:10.000Z",
+      "chargedThroughDate": "2019-03-22T23:35:14.000Z",
+      "migrated": false,
+      "tableName": "SUBSCRIPTIONS",
+      "historyTableName": "SUBSCRIPTION_HISTORY"
+    }
+  }
+]
+
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of subscription audit logs with history.
+
+
+
+### Retrieve subscription event audit logs with history by subscription event id
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/subscriptions/events/{subscriptionEventId}/auditLogsWithHistory`
+
+The id of subscription event is the one comes from the [timeline api](#account-retrieve-account-timeline).
+
+
+> Example Request:
+
+```shell
+curl  \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/subscriptions/events/9a1c85d5-beba-40c8-9268-f73e09c24007/auditLogsWithHistory"
+```
+> Example Response:
+
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2019-02-22T22:38:10.000Z",
+    "objectType": "SUBSCRIPTION_EVENT",
+    "objectId": "9a1c85d5-beba-40c8-9268-f73e09c24007",
+    "changedBy": "admin",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "1f03e074-dea1-45c5-aee3-c9464886f476",
+    "history": {
+      "id": null,
+      "createdDate": "2019-02-22T22:38:10.000Z",
+      "updatedDate": "2019-02-22T22:38:10.000Z",
+      "recordId": 1358,
+      "accountRecordId": 10,
+      "tenantRecordId": 1,
+      "totalOrdering": 0,
+      "eventType": "API_USER",
+      "userType": "CREATE",
+      "effectiveDate": "2019-02-22T22:38:10.000Z",
+      "subscriptionId": "70b6856e-6938-495f-9ae9-0a8ec0571c37",
+      "planName": "foo-monthly",
+      "phaseName": "foo-monthly-evergreen",
+      "priceListName": "DEFAULT",
+      "billingCycleDayLocal": 0,
+      "isActive": true,
+      "tableName": "SUBSCRIPTION_EVENTS",
+      "historyTableName": "SUBSCRIPTION_EVENT_HISTORY",
+      "active": true
+    }
+  }
+]
+```
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of subscription event audit logs with history.
+

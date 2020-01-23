@@ -12,6 +12,8 @@ includes:
   - payment-transaction
   - invoice-payment
   - usage
+  - custom-field
+  - tag
   - tag-definition
   - admin
   

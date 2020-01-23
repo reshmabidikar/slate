@@ -2174,14 +2174,14 @@ protected AccountApi accountApi;
 
 UUID accountId = UUID.fromString("d3a82897-ae72-4a2e-9bca-e3c1fe087f84");
 LocalDate startDate = null;
-Boolean withItems = true; // Will fetch invoice items as well
+LocalDate endDate = null;
 Boolean withMigrationInvoices = false; // Will not fetch migrated invoice - if any
 Boolean unpaidInvoicesOnly = false; // Will not restrict to unpaid invoices
 Boolean includeVoidedInvoices = false; // Will not include void invoices
 
 Invoices invoices = accountApi.getInvoicesForAccount(accountId,
                                                      startDate, 
-                                                     withItems, 
+                                                     endDate,
                                                      withMigrationInvoices, 
                                                      unpaidInvoicesOnly, 
                                                      includeVoidedInvoices, 
@@ -2403,7 +2403,7 @@ class Invoice {
 | Name | Type | Required | Description |
 | ---- | -----| -------- | ----------- |
 | **startDate** | date | false |  Filter invoices using a start date. |
-| **withItems** | boolean | false | Choose true if you want items info. |
+| **endDate** | date | false | Filter invoices using an end date. |
 | **withMigrationInvoices** | boolean | false | Choose true if you want migration invoices |
 | **unpaidInvoicesOnly** | boolean | false | Choose true if you want unpaid invoices only |
 | **includeVoidedInvoices** | boolean | false | Choose true if you want to include voided invoices |
@@ -5924,6 +5924,80 @@ None.
     
 Returns a list of account email audit logs with history.
 
+
+
+### Retrieve blocking state audit logs with history by blocking state id
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/accounts/block/{blockingId}/auditLogsWithHistory`
+
+See section [Account Blocking State](#account-blocking-state) for an introduction on blocking states. 
+
+
+> Example Request:
+
+In the example provided, we are using a system-generated event, namely the `START_ENTITLEMENT`; such event id can be obtained
+by fetching the [timeline api](#account-retrieve-account-timeline).
+
+
+```shell
+curl  \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://localhost:8080/1.0/kb/accounts/block/763fd113-1b9b-4d0d-be01-6ee56d3879f5/auditLogsWithHistory"
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2019-02-22T22:38:10.000Z",
+    "objectType": "BLOCKING_STATES",
+    "objectId": "763fd113-1b9b-4d0d-be01-6ee56d3879f5",
+    "changedBy": "admin",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "1f03e074-dea1-45c5-aee3-c9464886f476",
+    "history": {
+      "id": null,
+      "createdDate": "2019-02-22T22:38:10.000Z",
+      "updatedDate": "2019-02-22T22:38:10.000Z",
+      "recordId": 1326,
+      "accountRecordId": 10,
+      "tenantRecordId": 1,
+      "blockableId": "70b6856e-6938-495f-9ae9-0a8ec0571c37",
+      "type": "SUBSCRIPTION",
+      "state": "ENT_STARTED",
+      "service": "entitlement-service",
+      "blockChange": false,
+      "blockEntitlement": false,
+      "blockBilling": false,
+      "effectiveDate": "2019-02-22T22:38:10.000Z",
+      "isActive": true,
+      "tableName": "BLOCKING_STATES",
+      "historyTableName": "BLOCKING_STATES",
+      "active": true
+    }
+  }
+]
+
+```
+
+**Query Parameters**
+
+None.
+
+**Returns**
+    
+Returns a list of blocking state audit logs with history.
 
 
 ### Retrieve account timeline
