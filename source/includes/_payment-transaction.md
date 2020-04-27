@@ -1,6 +1,6 @@
 # Payment Transaction
 
-Payment transactions belon to a [Payment](http://127.0.0.1:4567/#payment-payment-resource) object.
+Payment transactions belong to a [Payment](https://killbill.github.io/slate/#payment-payment-resource) object.
 
 They represent a particular payment operation, and while most operations happen at the `Payment` level, there are a few endpoints
 that work directly at the transaction level.
