@@ -142,7 +142,7 @@ RequestOptions requestOptions = RequestOptions.builder()
                                               .withComment(comment)
                                               .withQueryParams(queryParams)
                                               .withTenantApiKey(apiKey)
-                                              .withTenantApiKey(apiSecret)
+                                              .withTenantApiSecret(apiSecret)
                                               .build();
 ```
 
