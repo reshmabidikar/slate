@@ -1,15 +1,25 @@
 # Tag Definition
 
+These APIs manage a tag definition resource object, which provides the definition for a user-defined tag.
+
 ## Tag Definition Resource
 
+Each tag is associated with a specific tag definition. A tag definition is a schema/template, and a tag the instance of it. Please refer to the section [AccountTags](https://killbill.github.io/slate/#account-tags) for an overview about tags. The system provides some `System tag definitions` that can be used to add tags to a particular object. However, when using `User Tags`, ome must first create the associated tag definition.
 
-Each tag is associated to a specific tag definition, the tag definition being the schema/template and the tag the instance of it. Please refer to the section [AccountTags](https://killbill.github.io/slate/#account-tags) for an overview about tags. The system already provides some `System tag definitions` that can be used to add tags to a particular object. However, when using `User Tags`, ome must first create the associated tag definition.
+This resource includes the following attributes:
 
-Creating, listing, deleting such tag defintions is the purpose of the apis below.
+* **`name`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The name of the tag definition.
+* **`description`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: A description of the tag definition.
+* **`applicableObjectTypes`** *[User generated]*: An array giving the name(s) of resource types that can be given this tag.
+
+
+The APIs described below provide the ability to create, retrieve, and delete tag definitions, and also to access their associated audit logs.
 
 
 
 ## Tag Definition
+
+This endpoint is used to create a new tag definition.
 
 ### Create a tag definition
 
@@ -65,9 +75,11 @@ no content
 
 **Returns**
 
-A 201 http status without content.
+A 201 http status without content indicates success.
 
 ### Retrieve a tag definition by its ID
+
+This endpoint is used to retrieve an existing tag definition.
 
 **HTTP Request** 
 
