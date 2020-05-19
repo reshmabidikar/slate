@@ -30,7 +30,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-     -d '{"subscriptionId":"365987b2-5443-47e4-a467-c8962fc6995c","unitUsageRecords":[{"unitType":"chocolate-videos","usageRecords":[{"recordDate":"2013-03-14","amount":1}]}]}' \
+     -d '{"subscriptionId":"365987b2-5443-47e4-a467-c8962fc6995c", "trackingId": "my-unique-tracking-id", "unitUsageRecords":[{"unitType":"chocolate-videos","usageRecords":[{"recordDate":"2013-03-14","amount":1}]}]}' \
     "http://localhost:8080/1.0/kb/usages"
 ```
 
