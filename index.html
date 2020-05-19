@@ -33929,7 +33929,7 @@ that work directly at the transaction level.</p>
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-     -d <span class="s1">'{"subscriptionId":"365987b2-5443-47e4-a467-c8962fc6995c","unitUsageRecords":[{"unitType":"chocolate-videos","usageRecords":[{"recordDate":"2013-03-14","amount":1}]}]}'</span> <span class="se">\</span>
+     -d <span class="s1">'{"subscriptionId":"365987b2-5443-47e4-a467-c8962fc6995c", "trackingId": "my-unique-tracking-id", "unitUsageRecords":[{"unitType":"chocolate-videos","usageRecords":[{"recordDate":"2013-03-14","amount":1}]}]}'</span> <span class="se">\</span>
     <span class="s2">"http://localhost:8080/1.0/kb/usages"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.UsageApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">UsageApi</span> <span class="n">usageApi</span><span class="o">;</span>
