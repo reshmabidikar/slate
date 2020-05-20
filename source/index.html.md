@@ -315,7 +315,7 @@ The version for all these dependencies is managed in the parent [pom.xml](https:
 
 The current **stable** and **production** ready version of Kill Bill is `0.22.y`. You should use the latest relased (`y`) version as it may contain critical bug fixes.
 
-* Any bug fixes will result in a new version identified by incrementing the `patch` number (`y`). We guarantee compatibility of these versions with those immediately preceding them. Each version will be accompanied by release notes on github - e.g [0.22.1 release notes](https://github.com/killbill/killbill/releases/tag/killbill-0.22.1).
+* Any bug fixes will result in a new version identified by incrementing the `patch` number (`y`). We guarantee compatibility of these versions with those immediately preceding them. Each version will be accompanied by release notes on github - e.g [0.22.8 release notes](https://github.com/killbill/killbill/releases/tag/killbill-0.22.8).
 * New development may happen in parallel. This may lead to the release of development versions. Such versions are not yet deemed stable, and will not be supportetd on the public mailing list.
 
 The choice of releasing `0.x.y` and not `1.x.y` is motivated by our desire to add additional features in upcoming releases, and is in no way a statement about code instability.
@@ -343,31 +343,26 @@ We also keep a global repository for all plugins [here](https://github.com/killb
 
 ```
 
-# Look up version dependencies matching Kill Bill release 0.20.1:
-> kpm info  --version=0.20.1
+# Look up version dependencies matching Kill Bill release 0.22.8:
+> kpm info  --version=0.22.8
 
-Fetching info for version 0.20.1...
-Dependencies for version 0.20.1
-  killbill 0.20.1
-  killbill-oss-parent 0.142.3
-  killbill-api 0.52.0
-  killbill-plugin-api 0.25.0
-  killbill-commons 0.22.1
-  killbill-platform 0.38.1
-
-
-Known plugin for KB version 0.20.1
-  adyen 0.7.0
-  analytics 6.0.0
-  avatax 0.6.1
-  email-notifications 0.5.0
-  kpm 1.3.0
-  litle 5.0.0
-  payment_bridge 0.1.0
-  paypal 6.0.0
-  payment-test 6.0.0
-  stripe 6.0.0
+Fetching info for version 0.22.8...
+Dependencies for version 0.22.8
+  killbill 0.22.8
+  killbill-oss-parent 0.143.60
+  killbill-api 0.53.17
+  killbill-plugin-api 0.26.4
+  killbill-commons 0.23.11
+  killbill-platform 0.39.15
+  
+Known plugins for KB version 0.22.8
+  analytics 7.0.8
+  avatax 0.7.0
+  email-notifications 0.6.1
+  payment-test 7.0.4
+  stripe 7.0.4
   ...
+  
 ```
 
 
