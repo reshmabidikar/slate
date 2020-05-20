@@ -33,19 +33,22 @@ search: true
 
 ## Introduction 
 
-Kill Bill offers a set of HTTP apis, commonly called REST apis, that rely on HTTP verbs `POST`, `GET`, `PUT`, `DELETE` to match CRUD operations, and that use HTTP response codes to indicate errors. These apis allow to manage Kill Bill resources -- e.g `Account` -- through the use of JSON input and output.
+Kill Bill offers a set of HTTP APIs, commonly called REST APIs, that use the HTTP verbs `POST`, `GET`, `PUT`, `DELETE` to invoke Create, Read, Update and Delete (CRUD) operations, and that use HTTP response codes to indicate errors. These APIs enable the management of Kill Bill resources -- e.g `Account` -- through the use of JSON input and output.
 
-Kill Bill also offers a set of [java apis](https://github.com/killbill/killbill-api/tree/master/src/main/java/org/killbill/billing) that can be used by plugins to make requests, and a set of [java plugin api](https://github.com/killbill/killbill-plugin-api) for Kill Bill core to interact with the plugins. Such apis are beyond the scope of this documentation.
+Kill Bill also offers a set of [java APIs](https://github.com/killbill/killbill-api/tree/master/src/main/java/org/killbill/billing) that can be used by plugins to make requests, and a set of [java plugin APIs](https://github.com/killbill/killbill-plugin-api) for Kill Bill core to interact with the plugins. These apis are beyond the scope of this documentation.
 
 > API client libraries
 
-```
+
 Official libraries for the Kill Bill API are available in several languages,
-including java, php, python, ruby, Node, and go. Community-supported libraries
-such as .NET are also available. In the following documentation, we assume 
-you have a Kill Bill server instance running on `127.0.0.1` on port `8080`.
-While Kill Bill supports `https` protocol, all example rely on standard http scheme.
-```
+including Java, Php, Python, Ruby, Node, and Go. Community-supported libraries
+such as .NET are also available. Note that code examples for Curl, Java, Ruby and Python are shown in the right-hand column of this document.
+
+In the following documentation, we assume 
+you have a Kill Bill server instance running on `127.0.0.1` on port `8080`. It is straightforward to substitute a different IP address or port number if necessary.
+
+Kill Bill supports the `https` protocol, but here all examples are shown using `http`.
+
 
 ```java
 //
@@ -59,14 +62,14 @@ While Kill Bill supports `https` protocol, all example rely on standard http sch
 #
 ```
 
-The description of the api in this documentation is limited to the most common use cases and does not include advanced features that we have crafted over the years from all the use cases we have seen from our users.
+The description of the API in this documentation is limited to the most common use cases and does not include advanced features that we have crafted over the years from all the use cases we have seen from our users.
 
-For questions about api use, or to report bugs, you can subscribe to the [Kill Bill user mailing list](https://groups.google.com/forum/#!forum/killbilling-users).
+For questions about API use, or to report bugs, you can subscribe to the [Kill Bill user mailing list](https://groups.google.com/forum/#!forum/killbilling-users).
 
 
 ## Authentication and RBAC
 
-In order to make apis calls, one needs to authenticate each request by passing an HTTP `Authorization` header and respect the HTTP Basic authentication scheme.
+In order to make API calls, one needs to authenticate each request by passing an HTTP `Authorization` header and by following the HTTP Basic authentication scheme.
 
 
 Depending on how the system has been configured, the authentication mechanism can happen using different options -- some or all at the same time:
@@ -80,6 +83,16 @@ Depending on how the system has been configured, the authentication mechanism ca
 
 
 ## Multi-Tenancy
+
+Kill Bill has been designed from the ground up to run multiple logical instances on the same set of servers and databases. This allows different customer data sets to be cleanly separated. Another common use case is to configure both a production tenant and a test tenant, the latter being used for test requests during deployment and for sanity after deployment.
+
+Each API call requires the tenant being used to be identified, through the use of 2 HTTP headers:
+
+* **`X-Killbill-ApiKey`**: The API key associated with the tenant. This value is stored in clear in the database.
+* **`X-Killbill-ApiSecret`**: The API secret associated with the tenant. This value is hashed and stored along with the `salt` in the database
+
+<aside class="notice">Note: You can control the number of hash iterations through the system property `org.killbill.security.shiroNbHashIterations` whose default value is set to `200000`. If your security requirements are met through other means, you can set this value to `1` to avoid wasting CPU cycles and greatly improve latency. Changing the value on an existing system requires re-hashing the keys.</aside>
+
 
 > Specifying the basic authentication headers and multi-tenancy headers:
 
@@ -203,26 +216,17 @@ exampleApi.create(body,
 ```
 
 
-Kill Bill has been designed from the ground up to run multiple logical instances on the same set of servers and database. This allows for instance to cleanly separate different customer data sets. Another common use case is to configure both a production tenant and a test tenant, the later being used for test requests during deployment and for sanity after deployment.
-
-Each api call requires to identify the tenant being used, through the use of 2 http headers:
-
-* **`X-Killbill-ApiKey`**: The api key associated with the tenant. This info is stored in clear in the database.
-* **`X-Killbill-ApiSecret`**: The api secret associated with the tenant. This info is hashed and stored along with the `salt` in the database
-
-<aside class="notice">Note: You can control the number of hash iterations through the system property `org.killbill.security.shiroNbHashIterations` whose default value is set to `200000`. If your security requirements are met through other means, you can set this value to `1` to avoid wasting CPU cycles and greatly improve latency. Changing the value on an existing system requires re-hashing the keys.</aside>
-
 ## Resource IDs and External Keys
 
-When creating a new resource, there are 2 IDS associated with it: Kill Bill will allocate a unique ID, and the user of the api will also be able to associate its own unique key, also called `external key`. The external key is used for 2 scenarios:
+When a new resource is created, there are 2 IDS associated with it. Kill Bill will allocate a unique ID, and the user of the API will also be able to associate its own unique key, called the `external key`. The external key is used for 2 scenarios:
 
-* **ID Mapping**: Typically one can pass an external key to create a mapping between the ID generated by Kill Bill and a known key for this resource
-* **Idempotency**: Kill Bill ensures that such external key is unique, and so in the eventuality of an api call that times out, one can safely retry with the same external key and the second request would only succeed if the first one did not complete. This ensures idempotency of the call. Such external key must be unique per tenant and across all resources.
+* **ID Mapping**: Typically an external key can be passed to create a mapping between the ID generated by Kill Bill and a known key for this resource
+* **Idempotency**: Kill Bill ensures that each external key is unique, so if an API call times out, it can be safely retried with the same external key. The second request would only succeed if the first one did not complete. This ensures idempotency of the call, since the external key is unique per tenant and across all resources.
 
 
 ## Pagination
 
-Besides the traditional CRUD apis associated with each resource, we also offer pagination apis to allow listing per-tenant resources -- e.g all `Account` in a given tenant. Such apis will allow to pass an `offset` and a `limit`, provided as query parameters, to allow the listing of all resources of a given type, on a page by page basis. In addition to the json list, each response will also include the following http headers:
+Besides the traditional CRUD APIs associated with each resource, we also offer pagination APIs to allow the listing of per-tenant resources, such as all `Account`s for a given tenant. These APIs include an `offset` and a `limit`, provided as query parameters, to allow the listing of all resources of a given type, on a page by page basis. In addition to the json list, each response will also include the following http headers:
 
 
 * **`X-Killbill-Pagination-CurrentOffset`** : The offest of the first record in the returned list
@@ -233,7 +237,7 @@ Besides the traditional CRUD apis associated with each resource, we also offer p
 
 ## Audit and History
 
-Every api in Kill Bill that creates, or modifies state will create an audit log record to track *who* made the change. In addition, we also allow to specify *why* this change was made. Such information is passed for every `POST`, `PUT`, `DELETE` request and relies on special HTTP headers:
+Every api in Kill Bill that creates, or modifies state will create an audit log record to track *who* made the change. In addition, we also allow the record to specify *why* this change was made. This information is passed for every `POST`, `PUT`, and `DELETE` request and relies on special HTTP headers:
 
 * **`X-Killbill-CreatedBy`** : Mandatory header to track who made the change.
 * **`X-Killbill-Reason`** : Optional header to track the reason; typically one would use a special reason code -- e.g *COURTESY_REFUND*.
@@ -288,9 +292,9 @@ TODO  Api does not exist ;-(
 }  
 ```
 
-Every api that retrieves information, whether associated to a specific resource, or for a list of resources -- pagination -- will allow to return audit logs. 
+Every API that retrieves information, whether associated with a specific resource, or with a list of resources,  may return audit logs. 
 
-Audit and history information associated to a given resource is always stored atomically to ensure that if state was changed, such audit and history information exists and is accurate.
+Audit and history information associated with a given resource is always stored atomically to ensure that if the state is changed, such audit and history information exists and is accurate.
 
 ## Versioning
 
@@ -299,71 +303,66 @@ Audit and history information associated to a given resource is always stored at
 
 Kill Bill software is composed of many different repositories, all of them hosted on our [github account](https://github.com/killbill).
 
-The Kill Bill server version, or simply Kill Bill version, is the one from the [killbill](https://github.com/killbill/killbill) repository, and more specifically since we are using `maven` to build, this is indicated in the corresponding `pom.xml`. This repository depends on a few others, each of those having their own versions:
+The Kill Bill server version, or simply Kill Bill version, is the one from the [killbill](https://github.com/killbill/killbill) repository, and more specifically since we are using `maven` to build, this is indicated in the corresponding `pom.xml`. This repository depends on a few others, each having their own versions:
 
 * `killbill-api`: APIs used by plugins to communicate with Kill Bill core
-* `killbill-plugin-api`: SPIs used by Kill Bill core to communicate with plugins
+* `killbill-plugin-api`: APIs used by Kill Bill core to communicate with plugins
 * `killbill-commons`: Common code across modules
 * `killbill-platform`: Platform related code such as OSGI framework, webapp pieces
 * `killbill-client`: Java client, only used for integration tests inside killbill repository.
 
 The version for all these dependencies is managed in the parent [pom.xml](https://github.com/killbill/killbill-oss-parent/blob/master/pom.xml). So in particular, for a given Kill Bill version, you can look up the version of the parent `pom.xml` and from there access all the dependencies.
 
-The current **stable** and **production** ready version of Kill Bill is `0.20.y`. You should use latest relased (`y`) version as it may contain critical bug fixes.
+The current **stable** and **production** ready version of Kill Bill is `0.22.y`. You should use the latest relased (`y`) version as it may contain critical bug fixes.
 
-* Any bug fixes will result in a new version by incrementing the `patch` number and we guarantee compatibility with previous `0.20.y`. Such version will be accompanied by release notes on github - e.g [0.20.1 release notes](https://github.com/killbill/killbill/releases/tag/killbill-0.20.1).
-* New development may happen in parallel, and could result in `0.21.y` release; such releases are deemed unstable, and will not be supportetd on the public mailing list.
+* Any bug fixes will result in a new version identified by incrementing the `patch` number (`y`). We guarantee compatibility of these versions with those immediately preceding them. Each version will be accompanied by release notes on github - e.g [0.22.8 release notes](https://github.com/killbill/killbill/releases/tag/killbill-0.22.8).
+* New development may happen in parallel. This may lead to the release of development versions. Such versions are not yet deemed stable, and will not be supportetd on the public mailing list.
 
 The choice of releasing `0.x.y` and not `1.x.y` is motivated by our desire to add additional features in upcoming releases, and is in no way a statement about code instability.
 
-Also see [here](http://docs.killbill.io/0.20/development.html#_versioning).
+More information on Kill Bill versions can be found [here](http://docs.killbill.io/0.22/development.html#_versioning).
 
 ### Client Libraries
 
-Our client libraries contain a `README` section to describe the compatibility with Kill Bill server. For instance, such compatibility mapping can be seen in our java client [here](https://github.com/killbill/killbill-client-java/blob/master/README.md#kill-bill-compatibility).
+Our client libraries contain a `README` section to describe their compatibility with the Kill Bill server. For instance, such compatibility mapping can be seen in our java client [here](https://github.com/killbill/killbill-client-java/blob/master/README.md#kill-bill-compatibility).
 
 
 ### Plugins
 
-Each plugin also has its own versionning, and we also keep a `README` with the mapping section. For example, such section for the adyen payment plugin can be found [here](https://github.com/killbill/killbill-adyen-plugin/blob/master/README.md#kill-bill-compatibility).
+Each plugin also has its own version, and we also keep a `README` with the mapping section. For example, such a section for the adyen payment plugin can be found [here](https://github.com/killbill/killbill-adyen-plugin/blob/master/README.md#kill-bill-compatibility).
 
-However, we keep a global repository for all plugins [here](https://github.com/killbill/killbill-cloud/blob/master/kpm/lib/kpm/plugins_directory.yml); the simple file-based approach, is somewhat an internal implementation, which bring us to our next topic, `KPM`.
+We also keep a global repository for all plugins [here](https://github.com/killbill/killbill-cloud/blob/master/kpm/lib/kpm/plugins_directory.yml). The simple file-based approach is an internal implementation. This brings us to our next topic, `KPM`.
 
 
 
 
 ### KPM
 
-`KPM`, Kill Bill Package Manager provides among [other things](https://github.com/killbill/killbill-cloud/tree/master/kpm) to retrieve version mapping for dependencies and plugins -- see section on the right side.
+`KPM`, The Kill Bill Package Manager, provides among [other things](https://github.com/killbill/killbill-cloud/tree/master/kpm) the ability to retrieve version mapping for dependencies and plugins -- see the example on the right side.
 
 
 ```
 
-# Look up version dependencies matching Kill Bill release 0.20.1:
-> kpm info  --version=0.20.1
+# Look up version dependencies matching Kill Bill release 0.22.8:
+> kpm info  --version=0.22.8
 
-Fetching info for version 0.20.1...
-Dependencies for version 0.20.1
-  killbill 0.20.1
-  killbill-oss-parent 0.142.3
-  killbill-api 0.52.0
-  killbill-plugin-api 0.25.0
-  killbill-commons 0.22.1
-  killbill-platform 0.38.1
-
-
-Known plugin for KB version 0.20.1
-  adyen 0.7.0
-  analytics 6.0.0
-  avatax 0.6.1
-  email-notifications 0.5.0
-  kpm 1.3.0
-  litle 5.0.0
-  payment_bridge 0.1.0
-  paypal 6.0.0
-  payment-test 6.0.0
-  stripe 6.0.0
+Fetching info for version 0.22.8...
+Dependencies for version 0.22.8
+  killbill 0.22.8
+  killbill-oss-parent 0.143.60
+  killbill-api 0.53.17
+  killbill-plugin-api 0.26.4
+  killbill-commons 0.23.11
+  killbill-platform 0.39.15
+  
+Known plugins for KB version 0.22.8
+  analytics 7.0.8
+  avatax 0.7.0
+  email-notifications 0.6.1
+  payment-test 7.0.4
+  stripe 7.0.4
   ...
+  
 ```
 
 
@@ -372,9 +371,9 @@ Known plugin for KB version 0.20.1
 
 Kill Bill relies on HTTP response codes to indicate the success or failure of an API request:
 
-* **`2xx`** status indicate success
-* **`4xx`** status often indicate a client side error -- e.g missing madatory API field
-* **`5xx`** status indicate an error with Kill Bill's servers or third party system -- e.g payment gateway returns 5xx.
+* **`2xx`** status indicates success
+* **`4xx`** status often indicates a client side error -- e.g missing madatory API field
+* **`5xx`** status indicates an error with Kill Bill's servers or third party system -- e.g payment gateway returns 5xx.
 
 
 ```
@@ -404,5 +403,5 @@ In addition to these error codes, the system will often return some json to prov
 
 ## Additional Resources
 
-Our main documentation is hosted on [here](http://docs.killbill.io).
+Our main documentation is found [here](http://docs.killbill.io).
 
