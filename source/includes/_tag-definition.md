@@ -4,11 +4,11 @@ These APIs manage a tag definition resource object, which provides the definitio
 
 ## Tag Definition Resource
 
-Each tag is associated with a specific tag definition. A tag definition is a schema or template, and a tag is an instance of it. Please refer to the section [AccountTags](https://killbill.github.io/slate/#account-tags) for an overview of tags. The system provides some `System tag definitions` that can be used to add tags to a particular object. Users may define their own tags; however, when using `User Tags`, ome must first create the associated tag definition.
+Each tag is associated with a specific tag definition. A tag definition is a schema or template, and a tag is an instance of it. Please refer to the section [AccountTags](https://killbill.github.io/slate/#account-tags) for an overview of tags. The system provides some `System tag definitions` that can be used to add tags to a particular object. Users may define their own tags; however, when using `User Tags`, one must first create the associated tag definition.
 
 The tag definition resource includes the following attributes:
 * **`id`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: The id for the resource, in UUID format.
-* **`isControlTag`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Indicates if this is a control tag (true or fasle).
+* **`isControlTag`** <span style="color:#32A9C7">*[System generated, immutable]*</span>: Indicates if this is a control tag (true or false).
 * **`name`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: The name of the tag definition.
 * **`description`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: A description of the tag definition.
 * **`applicableObjectTypes`** <span style="color:#32A9C7">*[User generated, immutable]*</span>: An array giving the name(s) of resource types that can be given this tag.
@@ -41,8 +41,8 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-     -d '{ "name": "good_customer", "description": "a good customer", "applicableObjectTypes": ["ACCOUNT"]}' \
-    "http://localhost:8080/1.0/kb/tagDefinitions"
+    -d '{ "name": "good_customer", "description": "a good customer", "applicableObjectTypes": ["ACCOUNT"]}' \
+    "http://127.0.0.1:8080/1.0/kb/tagDefinitions"
 ```
 
 
@@ -62,7 +62,7 @@ curl -v \
 ```shell
 # Subset of headers returned when specifying -v curl option
 < HTTP/1.1 201 
-< Location: http://localhost:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f
+< Location: http://127.0.0.1:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f
 < Content-Type: application/json
 < Content-Length: 0
 ```
@@ -100,7 +100,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/tagDefinitions"
+    "http://127.0.0.1:8080/1.0/kb/tagDefinitions"
 ```
 
 ```java
@@ -116,14 +116,14 @@ curl -v \
 
 ```shell
 {
-  "id": "93f2bc59-e18d-4a5e-a645-9386c76fc03f",
-  "isControlTag": false,
-  "name": "good_customer",
-  "description": "a good customer",
-  "applicableObjectTypes": [
-    "ACCOUNT"
-  ],
-  "auditLogs": []
+    "id": "93f2bc59-e18d-4a5e-a645-9386c76fc03f",
+    "isControlTag": false,
+    "name": "good_customer",
+    "description": "a good customer",
+    "applicableObjectTypes": [
+      "ACCOUNT"
+    ],
+    "auditLogs": []
 },
 {
     "id": "00000000-0000-0000-0000-000000000001",
@@ -134,7 +134,7 @@ curl -v \
       "ACCOUNT"
     ],
     "auditLogs": []
-  },
+},
  ...
  
 ```
@@ -172,7 +172,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f"
+    "http://127.0.0.1:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f"
 ```
 
 ```java
@@ -188,14 +188,14 @@ curl -v \
 
 ```shell
 {
-  "id": "93f2bc59-e18d-4a5e-a645-9386c76fc03f",
-  "isControlTag": false,
-  "name": "good_customer",
-  "description": "a good customer",
-  "applicableObjectTypes": [
-    "ACCOUNT"
-  ],
-  "auditLogs": []
+    "id": "93f2bc59-e18d-4a5e-a645-9386c76fc03f",
+    "isControlTag": false,
+    "name": "good_customer",
+    "description": "a good customer",
+    "applicableObjectTypes": [
+      "ACCOUNT"
+    ],
+    "auditLogs": []
 }
 ```
 ```java
@@ -236,7 +236,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f"
+    "http://127.0.0.1:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f"
 ```
 
 ```java
@@ -290,7 +290,7 @@ curl \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/tagDefinitions/92991586-df8a-4d8d-9d55-61172c52fa45/auditLogsWithHistory"
+    "http://127.0.0.1:8080/1.0/kb/tagDefinitions/92991586-df8a-4d8d-9d55-61172c52fa45/auditLogsWithHistory"
 ```
 > Example Response:
 
