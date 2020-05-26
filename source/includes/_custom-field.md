@@ -59,7 +59,7 @@ curl  \
 
 [
   {
-    "tagId": "13fe6f2c-91af-4635-aa9c-52e04d99b5ec",
+    "customFieldId": "13fe6f2c-91af-4635-aa9c-52e04d99b5ec",
     "objectType": "ACCOUNT",
     "objectId": "212211f8-a264-4ddf-b609-709ae652aec4",
     "name": "importance",
@@ -112,7 +112,7 @@ curl  \
 
 [
   {
-    "tagId": "13fe6f2c-91af-4635-aa9c-52e04d99b5ec",
+    "customFieldId": "13fe6f2c-91af-4635-aa9c-52e04d99b5ec",
     "objectType": "ACCOUNT",
     "objectId": "212211f8-a264-4ddf-b609-709ae652aec4",
     "name": "importance",
@@ -168,7 +168,7 @@ curl  \
 
 [
   {
-    "tagId": "13fe6f2c-91af-4635-aa9c-52e04d99b5ec",
+    "customFieldId": "13fe6f2c-91af-4635-aa9c-52e04d99b5ec",
     "objectType": "ACCOUNT",
     "objectId": "212211f8-a264-4ddf-b609-709ae652aec4",
     "name": "importance",
