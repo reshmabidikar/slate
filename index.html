@@ -1299,9 +1299,17 @@
               <ul class="toc-list-h2">
                   <li>
                     <a href="#custom-field-custom-field-resource" class="toc-h2 toc-link" data-title="Custom Field  Resource">Custom Field  Resource</a>
-                  </li>
-                  <li>
-                    <a href="#custom-field-custom-field" class="toc-h2 toc-link" data-title="Custom Field">Custom Field</a>
+                        <ul class="toc-list-h3">
+                              <li>
+                                <a href="#custom-field-list-all-custom-fields" class="toc-h3 toc-link" data-title="Custom Field">List all custom fields</a>
+                              </li>
+                              <li>
+                                <a href="#custom-field-search-custom-fields-by-id" class="toc-h3 toc-link" data-title="Custom Field">Search custom fields by ID</a>
+                              </li>
+                              <li>
+                                <a href="#custom-field-search-custom-fields-by-resource-type-name-and-optional-value" class="toc-h3 toc-link" data-title="Custom Field">Search custom fields by resource type, name, and optional value</a>
+                              </li>
+                        </ul>
                   </li>
                   <li>
                     <a href="#custom-field-audit-logs" class="toc-h2 toc-link" data-title="Audit Logs">Audit Logs</a>
@@ -1318,15 +1326,15 @@
               <ul class="toc-list-h2">
                   <li>
                     <a href="#tag-tag-resource" class="toc-h2 toc-link" data-title="Tag  Resource">Tag  Resource</a>
-                  </li>
-                  <li>
-                    <a href="#tag-tag" class="toc-h2 toc-link" data-title="Tag">Tag</a>
-                  </li>
-                  <li>
-                    <a href="#tag-audit-logs" class="toc-h2 toc-link" data-title="Audit Logs">Audit Logs</a>
                         <ul class="toc-list-h3">
                               <li>
-                                <a href="#tag-retrieve-tag-audit-logs-with-history-by-tag-id" class="toc-h3 toc-link" data-title="Tag">Retrieve tag audit logs with history by tag id</a>
+                                <a href="#tag-list-all-tags" class="toc-h3 toc-link" data-title="Tag">List all tags</a>
+                              </li>
+                              <li>
+                                <a href="#tag-search-tags" class="toc-h3 toc-link" data-title="Tag">Search tags</a>
+                              </li>
+                              <li>
+                                <a href="#tag-retrieve-tag-audit-logs" class="toc-h3 toc-link" data-title="Tag">Retrieve tag audit logs</a>
                               </li>
                         </ul>
                   </li>
@@ -1343,6 +1351,9 @@
                         <ul class="toc-list-h3">
                               <li>
                                 <a href="#tag-definition-create-a-tag-definition" class="toc-h3 toc-link" data-title="Tag Definition">Create a tag definition</a>
+                              </li>
+                              <li>
+                                <a href="#tag-definition-list-tag-definitions" class="toc-h3 toc-link" data-title="Tag Definition">List tag definitions</a>
                               </li>
                               <li>
                                 <a href="#tag-definition-retrieve-a-tag-definition-by-its-id" class="toc-h3 toc-link" data-title="Tag Definition">Retrieve a tag definition by its ID</a>
@@ -1412,30 +1423,34 @@
       <div class="dark-box"></div>
       <div class="content">
         <h1 id='using-kill-bill-apis'>Using Kill Bill APIs</h1><h2 id='using-kill-bill-apis-introduction'>Introduction</h2>
-<p>Kill Bill offers a set of HTTP apis, commonly called REST apis, that rely on HTTP verbs <code>POST</code>, <code>GET</code>, <code>PUT</code>, <code>DELETE</code> to match CRUD operations, and that use HTTP response codes to indicate errors. These apis allow to manage Kill Bill resources -- e.g <code>Account</code> -- through the use of JSON input and output.</p>
+<p>Kill Bill offers a set of HTTP APIs, commonly called REST APIs, that use the HTTP verbs <code>POST</code>, <code>GET</code>, <code>PUT</code>, <code>DELETE</code> to invoke Create, Read, Update and Delete (CRUD) operations, and that use HTTP response codes to indicate errors. These APIs enable the management of Kill Bill resources -- e.g <code>Account</code> -- through the use of JSON input and output.</p>
 
-<p>Kill Bill also offers a set of <a href="https://github.com/killbill/killbill-api/tree/master/src/main/java/org/killbill/billing">java apis</a> that can be used by plugins to make requests, and a set of <a href="https://github.com/killbill/killbill-plugin-api">java plugin api</a> for Kill Bill core to interact with the plugins. Such apis are beyond the scope of this documentation.</p>
+<p>Kill Bill also offers a set of <a href="https://github.com/killbill/killbill-api/tree/master/src/main/java/org/killbill/billing">java APIs</a> that can be used by plugins to make requests, and a set of <a href="https://github.com/killbill/killbill-plugin-api">java plugin APIs</a> for Kill Bill core to interact with the plugins. These apis are beyond the scope of this documentation.</p>
 
 <blockquote>
 <p>API client libraries</p>
 </blockquote>
-<pre class="highlight plaintext"><code>Official libraries for the Kill Bill API are available in several languages,
-including java, php, python, ruby, Node, and go. Community-supported libraries
-such as .NET are also available. In the following documentation, we assume 
-you have a Kill Bill server instance running on `127.0.0.1` on port `8080`.
-While Kill Bill supports `https` protocol, all example rely on standard http scheme.
-</code></pre><pre class="highlight java tab-java"><code><span class="c1">//</span>
+
+<p>Official libraries for the Kill Bill API are available in several languages,
+including Java, Php, Python, Ruby, Node, and Go. Community-supported libraries
+such as .NET are also available. Note that code examples for Curl, Java, Ruby and Python are shown in the right-hand column of this document.</p>
+
+<p>In the following documentation, we assume 
+you have a Kill Bill server instance running on <code>127.0.0.1</code> on port <code>8080</code>. It is straightforward to substitute a different IP address or port number if necessary.</p>
+
+<p>Kill Bill supports the <code>https</code> protocol, but here all examples are shown using <code>http</code>.</p>
+<pre class="highlight java tab-java"><code><span class="c1">//</span>
 <span class="c1">// You can find the java client on github: https://github.com/killbill/killbill-client-java</span>
 <span class="c1">//</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="c1">#</span>
 <span class="c1"># You can find the ruby client on github: https://github.com/killbill/killbill-client-ruby</span>
 <span class="c1">#</span>
 </code></pre>
-<p>The description of the api in this documentation is limited to the most common use cases and does not include advanced features that we have crafted over the years from all the use cases we have seen from our users.</p>
+<p>The description of the API in this documentation is limited to the most common use cases and does not include advanced features that we have crafted over the years from all the use cases we have seen from our users.</p>
 
-<p>For questions about api use, or to report bugs, you can subscribe to the <a href="https://groups.google.com/forum/#!forum/killbilling-users">Kill Bill user mailing list</a>.</p>
+<p>For questions about API use, or to report bugs, you can subscribe to the <a href="https://groups.google.com/forum/#!forum/killbilling-users">Kill Bill user mailing list</a>.</p>
 <h2 id='using-kill-bill-apis-authentication-and-rbac'>Authentication and RBAC</h2>
-<p>In order to make apis calls, one needs to authenticate each request by passing an HTTP <code>Authorization</code> header and respect the HTTP Basic authentication scheme.</p>
+<p>In order to make API calls, one needs to authenticate each request by passing an HTTP <code>Authorization</code> header and by following the HTTP Basic authentication scheme.</p>
 
 <p>Depending on how the system has been configured, the authentication mechanism can happen using different options -- some or all at the same time:</p>
 
@@ -1448,6 +1463,17 @@ While Kill Bill supports `https` protocol, all example rely on standard http sch
 
 <p>The system also supports configuring roles and permissions, to restrict user access to certain resources and operations. The permissions are quite granular and are defined <a href="https://github.com/killbill/killbill-api/blob/master/src/main/java/org/killbill/billing/security/Permission.java#L19">here</a></p>
 <h2 id='using-kill-bill-apis-multi-tenancy'>Multi-Tenancy</h2>
+<p>Kill Bill has been designed from the ground up to run multiple logical instances on the same set of servers and databases. This allows different customer data sets to be cleanly separated. Another common use case is to configure both a production tenant and a test tenant, the latter being used for test requests during deployment and for sanity after deployment.</p>
+
+<p>Each API call requires the tenant being used to be identified, through the use of 2 HTTP headers:</p>
+
+<ul>
+<li><strong><code>X-Killbill-ApiKey</code></strong>: The API key associated with the tenant. This value is stored in clear in the database.</li>
+<li><strong><code>X-Killbill-ApiSecret</code></strong>: The API secret associated with the tenant. This value is hashed and stored along with the <code>salt</code> in the database</li>
+</ul>
+
+<aside class="notice">Note: You can control the number of hash iterations through the system property `org.killbill.security.shiroNbHashIterations` whose default value is set to `200000`. If your security requirements are met through other means, you can set this value to `1` to avoid wasting CPU cycles and greatly improve latency. Changing the value on an existing system requires re-hashing the keys.</aside>
+
 <blockquote>
 <p>Specifying the basic authentication headers and multi-tenancy headers:</p>
 </blockquote>
@@ -1557,26 +1583,15 @@ While Kill Bill supports `https` protocol, all example rely on standard http sch
                   <span class="n">created_by</span><span class="p">,</span> 
                   <span class="n">api_key</span><span class="p">,</span> 
                   <span class="n">api_secret</span><span class="p">)</span>
-</code></pre>
-<p>Kill Bill has been designed from the ground up to run multiple logical instances on the same set of servers and database. This allows for instance to cleanly separate different customer data sets. Another common use case is to configure both a production tenant and a test tenant, the later being used for test requests during deployment and for sanity after deployment.</p>
-
-<p>Each api call requires to identify the tenant being used, through the use of 2 http headers:</p>
+</code></pre><h2 id='using-kill-bill-apis-resource-ids-and-external-keys'>Resource IDs and External Keys</h2>
+<p>When a new resource is created, there are 2 IDS associated with it. Kill Bill will allocate a unique ID, and the user of the API will also be able to associate its own unique key, called the <code>external key</code>. The external key is used for 2 scenarios:</p>
 
 <ul>
-<li><strong><code>X-Killbill-ApiKey</code></strong>: The api key associated with the tenant. This info is stored in clear in the database.</li>
-<li><strong><code>X-Killbill-ApiSecret</code></strong>: The api secret associated with the tenant. This info is hashed and stored along with the <code>salt</code> in the database</li>
-</ul>
-
-<aside class="notice">Note: You can control the number of hash iterations through the system property `org.killbill.security.shiroNbHashIterations` whose default value is set to `200000`. If your security requirements are met through other means, you can set this value to `1` to avoid wasting CPU cycles and greatly improve latency. Changing the value on an existing system requires re-hashing the keys.</aside>
-<h2 id='using-kill-bill-apis-resource-ids-and-external-keys'>Resource IDs and External Keys</h2>
-<p>When creating a new resource, there are 2 IDS associated with it: Kill Bill will allocate a unique ID, and the user of the api will also be able to associate its own unique key, also called <code>external key</code>. The external key is used for 2 scenarios:</p>
-
-<ul>
-<li><strong>ID Mapping</strong>: Typically one can pass an external key to create a mapping between the ID generated by Kill Bill and a known key for this resource</li>
-<li><strong>Idempotency</strong>: Kill Bill ensures that such external key is unique, and so in the eventuality of an api call that times out, one can safely retry with the same external key and the second request would only succeed if the first one did not complete. This ensures idempotency of the call. Such external key must be unique per tenant and across all resources.</li>
+<li><strong>ID Mapping</strong>: Typically an external key can be passed to create a mapping between the ID generated by Kill Bill and a known key for this resource</li>
+<li><strong>Idempotency</strong>: Kill Bill ensures that each external key is unique, so if an API call times out, it can be safely retried with the same external key. The second request would only succeed if the first one did not complete. This ensures idempotency of the call, since the external key is unique per tenant and across all resources.</li>
 </ul>
 <h2 id='using-kill-bill-apis-pagination'>Pagination</h2>
-<p>Besides the traditional CRUD apis associated with each resource, we also offer pagination apis to allow listing per-tenant resources -- e.g all <code>Account</code> in a given tenant. Such apis will allow to pass an <code>offset</code> and a <code>limit</code>, provided as query parameters, to allow the listing of all resources of a given type, on a page by page basis. In addition to the json list, each response will also include the following http headers:</p>
+<p>Besides the traditional CRUD APIs associated with each resource, we also offer pagination APIs to allow the listing of per-tenant resources, such as all <code>Account</code>s for a given tenant. These APIs include an <code>offset</code> and a <code>limit</code>, provided as query parameters, to allow the listing of all resources of a given type, on a page by page basis. In addition to the json list, each response will also include the following http headers:</p>
 
 <ul>
 <li><strong><code>X-Killbill-Pagination-CurrentOffset</code></strong> : The offest of the first record in the returned list</li>
@@ -1585,7 +1600,7 @@ While Kill Bill supports `https` protocol, all example rely on standard http sch
 <li><strong><code>X-Killbill-Pagination-NextPageUri</code></strong> : The uri that can be used to retrieve the next page.</li>
 </ul>
 <h2 id='using-kill-bill-apis-audit-and-history'>Audit and History</h2>
-<p>Every api in Kill Bill that creates, or modifies state will create an audit log record to track <em>who</em> made the change. In addition, we also allow to specify <em>why</em> this change was made. Such information is passed for every <code>POST</code>, <code>PUT</code>, <code>DELETE</code> request and relies on special HTTP headers:</p>
+<p>Every api in Kill Bill that creates, or modifies state will create an audit log record to track <em>who</em> made the change. In addition, we also allow the record to specify <em>why</em> this change was made. This information is passed for every <code>POST</code>, <code>PUT</code>, and <code>DELETE</code> request and relies on special HTTP headers:</p>
 
 <ul>
 <li><strong><code>X-Killbill-CreatedBy</code></strong> : Mandatory header to track who made the change.</li>
@@ -1636,17 +1651,17 @@ While Kill Bill supports `https` protocol, all example rely on standard http sch
   ]
 }  
 </code></pre>
-<p>Every api that retrieves information, whether associated to a specific resource, or for a list of resources -- pagination -- will allow to return audit logs. </p>
+<p>Every API that retrieves information, whether associated with a specific resource, or with a list of resources,  may return audit logs. </p>
 
-<p>Audit and history information associated to a given resource is always stored atomically to ensure that if state was changed, such audit and history information exists and is accurate.</p>
+<p>Audit and history information associated with a given resource is always stored atomically to ensure that if the state is changed, such audit and history information exists and is accurate.</p>
 <h2 id='using-kill-bill-apis-versioning'>Versioning</h2><h3 id='using-kill-bill-apis-kill-bill-server'>Kill Bill Server</h3>
 <p>Kill Bill software is composed of many different repositories, all of them hosted on our <a href="https://github.com/killbill">github account</a>.</p>
 
-<p>The Kill Bill server version, or simply Kill Bill version, is the one from the <a href="https://github.com/killbill/killbill">killbill</a> repository, and more specifically since we are using <code>maven</code> to build, this is indicated in the corresponding <code>pom.xml</code>. This repository depends on a few others, each of those having their own versions:</p>
+<p>The Kill Bill server version, or simply Kill Bill version, is the one from the <a href="https://github.com/killbill/killbill">killbill</a> repository, and more specifically since we are using <code>maven</code> to build, this is indicated in the corresponding <code>pom.xml</code>. This repository depends on a few others, each having their own versions:</p>
 
 <ul>
 <li><code>killbill-api</code>: APIs used by plugins to communicate with Kill Bill core</li>
-<li><code>killbill-plugin-api</code>: SPIs used by Kill Bill core to communicate with plugins</li>
+<li><code>killbill-plugin-api</code>: APIs used by Kill Bill core to communicate with plugins</li>
 <li><code>killbill-commons</code>: Common code across modules</li>
 <li><code>killbill-platform</code>: Platform related code such as OSGI framework, webapp pieces</li>
 <li><code>killbill-client</code>: Java client, only used for integration tests inside killbill repository.</li>
@@ -1654,57 +1669,52 @@ While Kill Bill supports `https` protocol, all example rely on standard http sch
 
 <p>The version for all these dependencies is managed in the parent <a href="https://github.com/killbill/killbill-oss-parent/blob/master/pom.xml">pom.xml</a>. So in particular, for a given Kill Bill version, you can look up the version of the parent <code>pom.xml</code> and from there access all the dependencies.</p>
 
-<p>The current <strong>stable</strong> and <strong>production</strong> ready version of Kill Bill is <code>0.20.y</code>. You should use latest relased (<code>y</code>) version as it may contain critical bug fixes.</p>
+<p>The current <strong>stable</strong> and <strong>production</strong> ready version of Kill Bill is <code>0.22.y</code>. You should use the latest relased (<code>y</code>) version as it may contain critical bug fixes.</p>
 
 <ul>
-<li>Any bug fixes will result in a new version by incrementing the <code>patch</code> number and we guarantee compatibility with previous <code>0.20.y</code>. Such version will be accompanied by release notes on github - e.g <a href="https://github.com/killbill/killbill/releases/tag/killbill-0.20.1">0.20.1 release notes</a>.</li>
-<li>New development may happen in parallel, and could result in <code>0.21.y</code> release; such releases are deemed unstable, and will not be supportetd on the public mailing list.</li>
+<li>Any bug fixes will result in a new version identified by incrementing the <code>patch</code> number (<code>y</code>). We guarantee compatibility of these versions with those immediately preceding them. Each version will be accompanied by release notes on github - e.g <a href="https://github.com/killbill/killbill/releases/tag/killbill-0.22.8">0.22.8 release notes</a>.</li>
+<li>New development may happen in parallel. This may lead to the release of development versions. Such versions are not yet deemed stable, and will not be supportetd on the public mailing list.</li>
 </ul>
 
 <p>The choice of releasing <code>0.x.y</code> and not <code>1.x.y</code> is motivated by our desire to add additional features in upcoming releases, and is in no way a statement about code instability.</p>
 
-<p>Also see <a href="http://docs.killbill.io/0.20/development.html#_versioning">here</a>.</p>
+<p>More information on Kill Bill versions can be found <a href="http://docs.killbill.io/0.22/development.html#_versioning">here</a>.</p>
 <h3 id='using-kill-bill-apis-client-libraries'>Client Libraries</h3>
-<p>Our client libraries contain a <code>README</code> section to describe the compatibility with Kill Bill server. For instance, such compatibility mapping can be seen in our java client <a href="https://github.com/killbill/killbill-client-java/blob/master/README.md#kill-bill-compatibility">here</a>.</p>
+<p>Our client libraries contain a <code>README</code> section to describe their compatibility with the Kill Bill server. For instance, such compatibility mapping can be seen in our java client <a href="https://github.com/killbill/killbill-client-java/blob/master/README.md#kill-bill-compatibility">here</a>.</p>
 <h3 id='using-kill-bill-apis-plugins'>Plugins</h3>
-<p>Each plugin also has its own versionning, and we also keep a <code>README</code> with the mapping section. For example, such section for the adyen payment plugin can be found <a href="https://github.com/killbill/killbill-adyen-plugin/blob/master/README.md#kill-bill-compatibility">here</a>.</p>
+<p>Each plugin also has its own version, and we also keep a <code>README</code> with the mapping section. For example, such a section for the adyen payment plugin can be found <a href="https://github.com/killbill/killbill-adyen-plugin/blob/master/README.md#kill-bill-compatibility">here</a>.</p>
 
-<p>However, we keep a global repository for all plugins <a href="https://github.com/killbill/killbill-cloud/blob/master/kpm/lib/kpm/plugins_directory.yml">here</a>; the simple file-based approach, is somewhat an internal implementation, which bring us to our next topic, <code>KPM</code>.</p>
+<p>We also keep a global repository for all plugins <a href="https://github.com/killbill/killbill-cloud/blob/master/kpm/lib/kpm/plugins_directory.yml">here</a>. The simple file-based approach is an internal implementation. This brings us to our next topic, <code>KPM</code>.</p>
 <h3 id='using-kill-bill-apis-kpm'>KPM</h3>
-<p><code>KPM</code>, Kill Bill Package Manager provides among <a href="https://github.com/killbill/killbill-cloud/tree/master/kpm">other things</a> to retrieve version mapping for dependencies and plugins -- see section on the right side.</p>
+<p><code>KPM</code>, The Kill Bill Package Manager, provides among <a href="https://github.com/killbill/killbill-cloud/tree/master/kpm">other things</a> the ability to retrieve version mapping for dependencies and plugins -- see the example on the right side.</p>
 <pre class="highlight plaintext"><code>
-# Look up version dependencies matching Kill Bill release 0.20.1:
-&gt; kpm info  --version=0.20.1
+# Look up version dependencies matching Kill Bill release 0.22.8:
+&gt; kpm info  --version=0.22.8
 
-Fetching info for version 0.20.1...
-Dependencies for version 0.20.1
-  killbill 0.20.1
-  killbill-oss-parent 0.142.3
-  killbill-api 0.52.0
-  killbill-plugin-api 0.25.0
-  killbill-commons 0.22.1
-  killbill-platform 0.38.1
+Fetching info for version 0.22.8...
+Dependencies for version 0.22.8
+  killbill 0.22.8
+  killbill-oss-parent 0.143.60
+  killbill-api 0.53.17
+  killbill-plugin-api 0.26.4
+  killbill-commons 0.23.11
+  killbill-platform 0.39.15
 
-
-Known plugin for KB version 0.20.1
-  adyen 0.7.0
-  analytics 6.0.0
-  avatax 0.6.1
-  email-notifications 0.5.0
-  kpm 1.3.0
-  litle 5.0.0
-  payment_bridge 0.1.0
-  paypal 6.0.0
-  payment-test 6.0.0
-  stripe 6.0.0
+Known plugins for KB version 0.22.8
+  analytics 7.0.8
+  avatax 0.7.0
+  email-notifications 0.6.1
+  payment-test 7.0.4
+  stripe 7.0.4
   ...
+
 </code></pre><h2 id='using-kill-bill-apis-errors'>Errors</h2>
 <p>Kill Bill relies on HTTP response codes to indicate the success or failure of an API request:</p>
 
 <ul>
-<li><strong><code>2xx</code></strong> status indicate success</li>
-<li><strong><code>4xx</code></strong> status often indicate a client side error -- e.g missing madatory API field</li>
-<li><strong><code>5xx</code></strong> status indicate an error with Kill Bill&#39;s servers or third party system -- e.g payment gateway returns 5xx.</li>
+<li><strong><code>2xx</code></strong> status indicates success</li>
+<li><strong><code>4xx</code></strong> status often indicates a client side error -- e.g missing madatory API field</li>
+<li><strong><code>5xx</code></strong> status indicates an error with Kill Bill&#39;s servers or third party system -- e.g payment gateway returns 5xx.</li>
 </ul>
 <pre class="highlight plaintext"><code>HTTP status code summary:
 200 - OK: A response body may be returned.
@@ -1730,7 +1740,7 @@ Known plugin for KB version 0.20.1
 <li><strong><code>cause</code></strong> : An optional stack trace.</li>
 </ul>
 <h2 id='using-kill-bill-apis-additional-resources'>Additional Resources</h2>
-<p>Our main documentation is hosted on <a href="http://docs.killbill.io">here</a>.</p>
+<p>Our main documentation is found <a href="http://docs.killbill.io">here</a>.</p>
 <h1 id='tenant'>Tenant</h1><h2 id='tenant-tenant-resource'>Tenant Resource</h2>
 <p>Kill Bill has been designed from the group up as a multi-tenant system, that is one where multiple unrelated deployments can be hosted on the same physical system; each one of these deployments comes with its own separate configuration, catalog, plugins, and of course its data set is kept entirely separate from the others. RBAC control allows different users/admin/apps to access zero, one or multiple tenants. This <a href="http://killbill.io/blog/subscription-service-using-kill-bill/">blog</a> illustrates some interesting use cases. The tenant resource allows the management of such tenants.</p>
 
@@ -34183,9 +34193,299 @@ that work directly at the transaction level.</p>
 <p><strong>Returns</strong></p>
 
 <p>Returns recorded data points for the specified period.</p>
-<h1 id='custom-field'>Custom Field</h1><h2 id='custom-field-custom-field-resource'>Custom Field  Resource</h2><h2 id='custom-field-custom-field'>Custom Field</h2>
-<p>Each resource provides a set of apis for the creation/modification/deletion/retrieval of custom fields, so there is not CRUD custom field api under this resource.</p>
-<h2 id='custom-field-audit-logs'>Audit Logs</h2><h3 id='custom-field-retrieve-custom-field-audit-logs-with-history-by-custom-field-id'>Retrieve custom field audit logs with history by custom field id</h3>
+<h1 id='custom-field'>Custom Field</h1>
+<p>A custom field is an attribute (key-value pair) that may be attached to almost any resource.</p>
+
+<p>This section provides APIs to list all custom fields, search for a specific custom field, and retrieve custom field audit logs. Searching may be based on the custom field id or on its name, value, or resource type. In addition, each resource provides APIs for the applicable CRUD operations: creation, retrieval, updating, and deletion. </p>
+<h2 id='custom-field-custom-field-resource'>Custom Field  Resource</h2>
+<p>A tag resource is associated with a tag definition and attached to another specific resource. The resource object has the following attributes:</p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Generated by</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>customFieldId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for this custom field</td>
+</tr>
+<tr>
+<td><strong>objectType</strong></td>
+<td>string</td>
+<td>user</td>
+<td>Type of the object this tag is attached to (e.g. &quot;ACCOUNT&quot;)</td>
+</tr>
+<tr>
+<td><strong>objectID</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for the object</td>
+</tr>
+<tr>
+<td><strong>name</strong></td>
+<td>string</td>
+<td>user</td>
+<td>name of the custom field</td>
+</tr>
+<tr>
+<td><strong>value</strong></td>
+<td>string</td>
+<td>user</td>
+<td>value of the custom field</td>
+</tr>
+<tr>
+<td><strong>auditLogs</strong></td>
+<td>array</td>
+<td>system</td>
+<td>array of audit log records for this custom field</td>
+</tr>
+</tbody></table>
+<h3 id='custom-field-list-all-custom-fields'>List all custom fields</h3>
+<p>Retrieves a list of all custom fields (name and value) with their associated resources and optional audit logs</p>
+
+<p><strong>HTTP Request</strong></p>
+
+<p><code>GET http://127.0.0.1:8080/1.0/kb/customFields/pagination</code></p>
+
+<p><strong>Query Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>offset</strong></td>
+<td>integer</td>
+<td>false</td>
+<td>0</td>
+<td>starting item in the list</td>
+</tr>
+<tr>
+<td><strong>limit</strong></td>
+<td>integer</td>
+<td>false</td>
+<td>100</td>
+<td>number of items to return</td>
+</tr>
+<tr>
+<td><strong>audit</strong></td>
+<td>string</td>
+<td>false</td>
+<td>&quot;NONE&quot;</td>
+<td>&quot;NONE&quot;, &quot;MINIMAL&quot;, or &quot;FULL&quot;</td>
+</tr>
+</tbody></table>
+
+<p><strong>Returns</strong></p>
+
+<p>Returns a list of records for all custom fields</p>
+
+<blockquote>
+<p>Example Request:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl  <span class="se">\</span>
+    -u admin:password <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+    -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/customFields/pagination"</span>
+
+</code></pre>
+<blockquote>
+<p>Example Response:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="c"># Subset of headers returned when specifying -v curl option</span>
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: application/json
+
+<span class="o">[</span>
+  <span class="o">{</span>
+    <span class="s2">"customFieldId"</span>: <span class="s2">"13fe6f2c-91af-4635-aa9c-52e04d99b5ec"</span>,
+    <span class="s2">"objectType"</span>: <span class="s2">"ACCOUNT"</span>,
+    <span class="s2">"objectId"</span>: <span class="s2">"212211f8-a264-4ddf-b609-709ae652aec4"</span>,
+    <span class="s2">"name"</span>: <span class="s2">"importance"</span>,
+    <span class="s2">"value"</span>: <span class="s2">"high"</span>,
+    <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
+  <span class="o">}</span>
+<span class="o">]</span>
+</code></pre><h3 id='custom-field-search-custom-fields-by-id'>Search custom fields by ID</h3>
+<p>Searches for a specific custom field by its ID</p>
+
+<p><strong>HTTP Request</strong></p>
+
+<p><code>GET http://127.0.0.1:8080/1.0/kb/customField/search/{customFieldId}</code></p>
+
+<p><strong>Query Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>offset</strong></td>
+<td>integer</td>
+<td>false</td>
+<td>0</td>
+<td>starting item in the list</td>
+</tr>
+<tr>
+<td><strong>limit</strong></td>
+<td>integer</td>
+<td>false</td>
+<td>100</td>
+<td>number of items to return</td>
+</tr>
+<tr>
+<td><strong>audit</strong></td>
+<td>string</td>
+<td>false</td>
+<td>&quot;NONE&quot;</td>
+<td>&quot;NONE&quot;, &quot;MINIMAL&quot;, or &quot;FULL&quot;</td>
+</tr>
+</tbody></table>
+
+<p><strong>Returns</strong></p>
+
+<p>Returns the record for the specified custom field, if it exists</p>
+
+<blockquote>
+<p>Example Request:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl  <span class="se">\</span>
+    -u admin:password <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+    -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/customFields/search/13fe6f2c-91af-4635-aa9c-52e04d99b5ec"</span>
+
+</code></pre>
+<blockquote>
+<p>Example Response:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="c"># Subset of headers returned when specifying -v curl option</span>
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: application/json
+
+<span class="o">[</span>
+  <span class="o">{</span>
+    <span class="s2">"customFieldId"</span>: <span class="s2">"13fe6f2c-91af-4635-aa9c-52e04d99b5ec"</span>,
+    <span class="s2">"objectType"</span>: <span class="s2">"ACCOUNT"</span>,
+    <span class="s2">"objectId"</span>: <span class="s2">"212211f8-a264-4ddf-b609-709ae652aec4"</span>,
+    <span class="s2">"name"</span>: <span class="s2">"importance"</span>,
+    <span class="s2">"value"</span>: <span class="s2">"high"</span>,
+    <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
+  <span class="o">}</span>
+<span class="o">]</span>
+</code></pre><h3 id='custom-field-search-custom-fields-by-resource-type-name-and-optional-value'>Search custom fields by resource type, name, and optional value</h3>
+<p>Searches for a specific custom field by its resource type, name, and optional value</p>
+
+<p><strong>HTTP Request</strong></p>
+
+<p><code>GET http://127.0.0.1:8080/1.0/kb/customField/search</code></p>
+
+<p><strong>Query Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>objectType</strong></td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>type of resource to search (e.g., &quot;ACCOUNT&quot;)</td>
+</tr>
+<tr>
+<td><strong>fieldName</strong></td>
+<td>string</td>
+<td>true</td>
+<td>none</td>
+<td>name of the custom field to search for</td>
+</tr>
+<tr>
+<td><strong>fieldValue</strong></td>
+<td>string</td>
+<td>false</td>
+<td>any value</td>
+<td>value of the custom field to search for</td>
+</tr>
+<tr>
+<td><strong>offset</strong></td>
+<td>integer</td>
+<td>false</td>
+<td>0</td>
+<td>starting item in the list</td>
+</tr>
+<tr>
+<td><strong>limit</strong></td>
+<td>integer</td>
+<td>false</td>
+<td>100</td>
+<td>number of items to return</td>
+</tr>
+<tr>
+<td><strong>audit</strong></td>
+<td>string</td>
+<td>false</td>
+<td>&quot;NONE&quot;</td>
+<td>&quot;NONE&quot;, &quot;MINIMAL&quot;, or &quot;FULL&quot;</td>
+</tr>
+</tbody></table>
+
+<p><strong>Returns</strong></p>
+
+<p>Returns the record for the specified custom field, if it exists</p>
+
+<blockquote>
+<p>Example Request:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl  <span class="se">\</span>
+    -u admin:password <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+    -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/customFields/search?objectType=ACCOUNT&amp;fieldName=importance"</span>
+
+</code></pre>
+<blockquote>
+<p>Example Response:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="c"># Subset of headers returned when specifying -v curl option</span>
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: application/json
+
+<span class="o">[</span>
+  <span class="o">{</span>
+    <span class="s2">"customFieldId"</span>: <span class="s2">"13fe6f2c-91af-4635-aa9c-52e04d99b5ec"</span>,
+    <span class="s2">"objectType"</span>: <span class="s2">"ACCOUNT"</span>,
+    <span class="s2">"objectId"</span>: <span class="s2">"212211f8-a264-4ddf-b609-709ae652aec4"</span>,
+    <span class="s2">"name"</span>: <span class="s2">"importance"</span>,
+    <span class="s2">"value"</span>: <span class="s2">"high"</span>,
+    <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
+  <span class="o">}</span>
+<span class="o">]</span>
+</code></pre><h2 id='custom-field-audit-logs'>Audit Logs</h2><h3 id='custom-field-retrieve-custom-field-audit-logs-with-history-by-custom-field-id'>Retrieve custom field audit logs with history by custom field id</h3>
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/customFields/{customFieldId}/auditLogsWithHistory</code></p>
@@ -34293,14 +34593,106 @@ that work directly at the transaction level.</p>
 <p><strong>Returns</strong></p>
 
 <p>Returns a list of custom field logs with history.</p>
-<h1 id='tag'>Tag</h1><h2 id='tag-tag-resource'>Tag  Resource</h2>
-<p>Please refer to the section <a href="https://killbill.github.io/slate/#account-tags">AccountTags</a> for an overview about tags.</p>
-<h2 id='tag-tag'>Tag</h2>
-<p>Each resource provides a set of apis for the creation/modification/deletion/retrieval of tags, so there is not CRUD tag api under this resource.</p>
-<h2 id='tag-audit-logs'>Audit Logs</h2><h3 id='tag-retrieve-tag-audit-logs-with-history-by-tag-id'>Retrieve tag audit logs with history by tag id</h3>
-<p><strong>HTTP Request</strong> </p>
+<h1 id='tag'>Tag</h1>
+<p>A tag is a label that may be attached to almost any resource. There are two categories of tags: <code>System Tags</code> and <code>User Tags</code>.</p>
 
-<p><code>GET http://127.0.0.1:8080/1.0/kb/tags/{tagId}/auditLogsWithHistory</code></p>
+<p>Kill Bill provides a small set of predefined <code>System Tags</code> that affect the behavior of the system. For example, <code>AUTO_PAY_OFF</code> prevents the system from initiating automatic payment of an invoice. <code>System Tags</code> may be attached only to specific resource types, and most (including <code>AUTO_PAY_OFF</code>) apply only to <code>Accounts</code>.</p>
+
+<p><code>User Tags</code> are defined by the user for any desired purpose and are not interpreted by the system. <code>User Tags</code> must be defined using the <code>Tag Definition</code> APIs below. These tags may be attached to almost any resource type.</p>
+
+<p>This section provides APIs to list all tags, search for a specific tag, and retrieve tag audit logs. In addition, each resource provides APIs for the applicable CRUD operations: creation, retrieval, and deletion. </p>
+<h2 id='tag-tag-resource'>Tag  Resource</h2>
+<p>A tag resource is associated with a tag definition and attached to another specific resource. The resource object has the following attributes:</p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Generated by</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>tagId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for this specific tag</td>
+</tr>
+<tr>
+<td><strong>objectType</strong></td>
+<td>string</td>
+<td>user</td>
+<td>Type of the object this tag is attached to (e.g. &quot;ACCOUNT&quot;)</td>
+</tr>
+<tr>
+<td><strong>objectID</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for the object</td>
+</tr>
+<tr>
+<td><strong>tagDefinitionId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for the tag definition</td>
+</tr>
+<tr>
+<td><strong>tagDefinitionName</strong></td>
+<td>string</td>
+<td>user</td>
+<td>name for the tag definition</td>
+</tr>
+<tr>
+<td><strong>auditLogs</strong></td>
+<td>array</td>
+<td>system</td>
+<td>array of audit log records for this tag</td>
+</tr>
+</tbody></table>
+<h3 id='tag-list-all-tags'>List all tags</h3>
+<p>Retrieves a list of all tags with their associated resources and tag definitions</p>
+
+<p><strong>HTTP Request</strong></p>
+
+<p><code>GET http://127.0.0.1:8080/1.0/kb/tags/pagination</code></p>
+
+<p><strong>Query Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>offset</strong></td>
+<td>integer</td>
+<td>false</td>
+<td>0</td>
+<td>starting item in the list</td>
+</tr>
+<tr>
+<td><strong>limit</strong></td>
+<td>integer</td>
+<td>false</td>
+<td>100</td>
+<td>number of items to return</td>
+</tr>
+<tr>
+<td><strong>audit</strong></td>
+<td>string</td>
+<td>false</td>
+<td>&quot;NONE&quot;</td>
+<td>&quot;NONE&quot;, &quot;MINIMAL&quot;, or &quot;FULL&quot;</td>
+</tr>
+</tbody></table>
+
+<p><strong>Returns</strong></p>
+
+<p>Returns a list of records for all tags</p>
 
 <blockquote>
 <p>Example Request:</p>
@@ -34310,7 +34702,123 @@ that work directly at the transaction level.</p>
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/tags/26e22dbf7-a493-4402-b1e3-4bec54c39f31/auditLogsWithHistory"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/tags/pagination"</span>
+
+</code></pre>
+<blockquote>
+<p>Example Response:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="c"># Subset of headers returned when specifying -v curl option</span>
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: application/json
+
+<span class="o">[</span>
+  <span class="o">{</span>
+    <span class="s2">"tagId"</span>: <span class="s2">"13fe6f2c-91af-4635-aa9c-52e04d99b5ec"</span>,
+    <span class="s2">"objectType"</span>: <span class="s2">"ACCOUNT"</span>,
+    <span class="s2">"objectId"</span>: <span class="s2">"212211f8-a264-4ddf-b609-709ae652aec4"</span>,
+    <span class="s2">"tagDefinitionId"</span>: <span class="s2">"1ac0218e-0d2b-4c65-841f-cff8af92a100"</span>,
+    <span class="s2">"tagDefinitionName"</span>: <span class="s2">"sleepy"</span>,
+    <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
+  <span class="o">}</span>
+<span class="o">]</span>
+</code></pre><h3 id='tag-search-tags'>Search tags</h3>
+<p>Searches for a specific tag</p>
+
+<p><strong>HTTP Request</strong></p>
+
+<p><code>GET http://127.0.0.1:8080/1.0/kb/tags/search/{tagId}</code></p>
+
+<p><strong>Query Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>offset</strong></td>
+<td>integer</td>
+<td>false</td>
+<td>0</td>
+<td>starting item in the list</td>
+</tr>
+<tr>
+<td><strong>limit</strong></td>
+<td>integer</td>
+<td>false</td>
+<td>100</td>
+<td>number of items to return</td>
+</tr>
+<tr>
+<td><strong>audit</strong></td>
+<td>string</td>
+<td>false</td>
+<td>&quot;NONE&quot;</td>
+<td>&quot;NONE&quot;, &quot;MINIMAL&quot;, or &quot;FULL&quot;</td>
+</tr>
+</tbody></table>
+
+<p><strong>Returns</strong></p>
+
+<p>Returns the record for the specified tag, if it exists</p>
+
+<blockquote>
+<p>Example Request:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl  <span class="se">\</span>
+    -u admin:password <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+    -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/tags/search/13fe6f2c-91af-4635-aa9c-52e04d99b5ec"</span>
+
+</code></pre>
+<blockquote>
+<p>Example Response:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="c"># Subset of headers returned when specifying -v curl option</span>
+&lt; HTTP/1.1 200 OK
+&lt; Content-Type: application/json
+
+<span class="o">[</span>
+  <span class="o">{</span>
+    <span class="s2">"tagId"</span>: <span class="s2">"13fe6f2c-91af-4635-aa9c-52e04d99b5ec"</span>,
+    <span class="s2">"objectType"</span>: <span class="s2">"ACCOUNT"</span>,
+    <span class="s2">"objectId"</span>: <span class="s2">"212211f8-a264-4ddf-b609-709ae652aec4"</span>,
+    <span class="s2">"tagDefinitionId"</span>: <span class="s2">"1ac0218e-0d2b-4c65-841f-cff8af92a100"</span>,
+    <span class="s2">"tagDefinitionName"</span>: <span class="s2">"sleepy"</span>,
+    <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
+  <span class="o">}</span>
+<span class="o">]</span>
+</code></pre><h3 id='tag-retrieve-tag-audit-logs'>Retrieve tag audit logs</h3>
+<p>Retrieves audit logs with history for a specific tag</p>
+
+<p><strong>HTTP Request</strong> </p>
+
+<p><code>GET http://127.0.0.1:8080/1.0/kb/tags/{tagId}/auditLogsWithHistory</code></p>
+
+<p><strong>Query Parameters</strong></p>
+
+<p>None.</p>
+
+<p><strong>Returns</strong></p>
+
+<p>Returns a list of tag audit logs with history.</p>
+
+<blockquote>
+<p>Example Request:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl  <span class="se">\</span>
+    -u admin:password <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+    -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/tags/26e22dbf7-a493-4402-b1e3-4bec54c39f31/auditLogsWithHistory"</span>
 
 </code></pre>
 <blockquote>
@@ -34347,19 +34855,22 @@ that work directly at the transaction level.</p>
   <span class="o">}</span>
 <span class="o">]</span>
 
-</code></pre>
-<p><strong>Query Parameters</strong></p>
+</code></pre><h1 id='tag-definition'>Tag Definition</h1>
+<p>These APIs manage a tag definition resource object, which provides the definition for a user-defined tag.</p>
+<h2 id='tag-definition-tag-definition-resource'>Tag Definition Resource</h2>
+<p>Each tag is associated with a specific tag definition. A tag definition is a schema or template, and a tag is an instance of it. Please refer to the section <a href="https://killbill.github.io/slate/#account-tags">AccountTags</a> for an overview of tags. The system provides some <code>System tag definitions</code> that can be used to add tags to a particular object. Users may define their own tags; however, when using <code>User Tags</code>, one must first create the associated tag definition.</p>
 
-<p>None.</p>
+<p>The tag definition resource includes the following attributes:
+* <strong><code>id</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: The id for the resource, in UUID format.
+* <strong><code>isControlTag</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: Indicates if this is a control tag (true or false).
+* <strong><code>name</code></strong> <span style="color:#32A9C7"><em>[User generated, immutable]</em></span>: The name of the tag definition.
+* <strong><code>description</code></strong> <span style="color:#32A9C7"><em>[User generated, immutable]</em></span>: A description of the tag definition.
+* <strong><code>applicableObjectTypes</code></strong> <span style="color:#32A9C7"><em>[User generated, immutable]</em></span>: An array giving the name(s) of resource types that can be given this tag.</p>
 
-<p><strong>Returns</strong></p>
-
-<p>Returns a list of tag audit logs with history.</p>
-<h1 id='tag-definition'>Tag Definition</h1><h2 id='tag-definition-tag-definition-resource'>Tag Definition Resource</h2>
-<p>Each tag is associated to a specific tag definition, the tag definition being the schema/template and the tag the instance of it. Please refer to the section <a href="https://killbill.github.io/slate/#account-tags">AccountTags</a> for an overview about tags. The system already provides some <code>System tag definitions</code> that can be used to add tags to a particular object. However, when using <code>User Tags</code>, ome must first create the associated tag definition.</p>
-
-<p>Creating, listing, deleting such tag defintions is the purpose of the apis below.</p>
-<h2 id='tag-definition-tag-definition'>Tag Definition</h2><h3 id='tag-definition-create-a-tag-definition'>Create a tag definition</h3>
+<p>The APIs described below provide the ability to create, retrieve, and delete tag definitions, and also to access their associated audit logs.</p>
+<h2 id='tag-definition-tag-definition'>Tag Definition</h2>
+<p>This endpoint is used to create a new tag definition.</p>
+<h3 id='tag-definition-create-a-tag-definition'>Create a tag definition</h3>
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>POST http://127.0.0.1:8080/1.0/kb/tagDefinitions</code></p>
@@ -34377,8 +34888,8 @@ that work directly at the transaction level.</p>
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-     -d <span class="s1">'{ "name": "good_customer", "description": "a good customer", "applicableObjectTypes": ["ACCOUNT"]}'</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/tagDefinitions"</span>
+    -d <span class="s1">'{ "name": "good_customer", "description": "a good customer", "applicableObjectTypes": ["ACCOUNT"]}'</span> <span class="se">\</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/tagDefinitions"</span>
 </code></pre><pre class="highlight java tab-java"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight python tab-python"><code>
 </code></pre>
 <blockquote>
@@ -34386,15 +34897,87 @@ that work directly at the transaction level.</p>
 </blockquote>
 <pre class="highlight shell tab-shell"><code><span class="c"># Subset of headers returned when specifying -v curl option</span>
 &lt; HTTP/1.1 201 
-&lt; Location: http://localhost:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f
+&lt; Location: http://127.0.0.1:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f
 &lt; Content-Type: application/json
 &lt; Content-Length: 0
 </code></pre><pre class="highlight java tab-java"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
 <p><strong>Returns</strong></p>
 
-<p>A 201 http status without content.</p>
+<p>Returns a status code of 201 without content to indicate success.</p>
+
+<p><strong>Notes</strong></p>
+
+<p>The <code>id</code> attribute is a string in UUID random format generated by the system. The <code>isControlTag</code> attribute will always be false.</p>
+
+<p>The <code>CreatedBy</code> header may not be empty.</p>
+<h3 id='tag-definition-list-tag-definitions'>List tag definitions</h3>
+<p>This endpoint is used to obtain a list of all tag definitions for this customer</p>
+
+<p><strong>HTTP Request</strong></p>
+
+<p><code>GET http://127.0.0.1:8080/1.0/kb/tagDefinitions</code></p>
+
+<blockquote>
+<p>Example Request:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -v <span class="se">\</span>
+    -u admin:password <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+    -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/tagDefinitions"</span>
+</code></pre><pre class="highlight java tab-java"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight python tab-python"><code></code></pre>
+<blockquote>
+<p>Example Response:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="o">{</span>
+    <span class="s2">"id"</span>: <span class="s2">"93f2bc59-e18d-4a5e-a645-9386c76fc03f"</span>,
+    <span class="s2">"isControlTag"</span>: <span class="nb">false</span>,
+    <span class="s2">"name"</span>: <span class="s2">"good_customer"</span>,
+    <span class="s2">"description"</span>: <span class="s2">"a good customer"</span>,
+    <span class="s2">"applicableObjectTypes"</span>: <span class="o">[</span>
+      <span class="s2">"ACCOUNT"</span>
+    <span class="o">]</span>,
+    <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
+<span class="o">}</span>,
+<span class="o">{</span>
+    <span class="s2">"id"</span>: <span class="s2">"00000000-0000-0000-0000-000000000001"</span>,
+    <span class="s2">"isControlTag"</span>: <span class="nb">true</span>,
+    <span class="s2">"name"</span>: <span class="s2">"AUTO_PAY_OFF"</span>,
+    <span class="s2">"description"</span>: <span class="s2">"Suspends payments until removed."</span>,
+    <span class="s2">"applicableObjectTypes"</span>: <span class="o">[</span>
+      <span class="s2">"ACCOUNT"</span>
+    <span class="o">]</span>,
+    <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
+<span class="o">}</span>,
+ ...
+
+</code></pre><pre class="highlight java tab-java"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight python tab-python"><code></code></pre>
+<p><strong>Query Parameters</strong></p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Required</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>audit</strong></td>
+<td>string</td>
+<td>false</td>
+<td>what audit log information to return (NONE, MINIMAL, FULL). Default NONE.</td>
+</tr>
+</tbody></table>
+
+<p><strong>Returns</strong></p>
+
+<p>Returns a list of tag definition objects and a status code of 200 to indicate success.</p>
 <h3 id='tag-definition-retrieve-a-tag-definition-by-its-id'>Retrieve a tag definition by its ID</h3>
+<p>This endpoint is used to retrieve an existing tag definition.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/tagDefinitions/{tagDefinitionId}</code></p>
@@ -34407,20 +34990,20 @@ that work directly at the transaction level.</p>
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f"</span>
 </code></pre><pre class="highlight java tab-java"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight python tab-python"><code></code></pre>
 <blockquote>
 <p>Example Response:</p>
 </blockquote>
 <pre class="highlight shell tab-shell"><code><span class="o">{</span>
-  <span class="s2">"id"</span>: <span class="s2">"93f2bc59-e18d-4a5e-a645-9386c76fc03f"</span>,
-  <span class="s2">"isControlTag"</span>: <span class="nb">false</span>,
-  <span class="s2">"name"</span>: <span class="s2">"good_customer"</span>,
-  <span class="s2">"description"</span>: <span class="s2">"a good customer"</span>,
-  <span class="s2">"applicableObjectTypes"</span>: <span class="o">[</span>
-    <span class="s2">"ACCOUNT"</span>
-  <span class="o">]</span>,
-  <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
+    <span class="s2">"id"</span>: <span class="s2">"93f2bc59-e18d-4a5e-a645-9386c76fc03f"</span>,
+    <span class="s2">"isControlTag"</span>: <span class="nb">false</span>,
+    <span class="s2">"name"</span>: <span class="s2">"good_customer"</span>,
+    <span class="s2">"description"</span>: <span class="s2">"a good customer"</span>,
+    <span class="s2">"applicableObjectTypes"</span>: <span class="o">[</span>
+      <span class="s2">"ACCOUNT"</span>
+    <span class="o">]</span>,
+    <span class="s2">"auditLogs"</span>: <span class="o">[]</span>
 <span class="o">}</span>
 </code></pre><pre class="highlight java tab-java"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight python tab-python"><code></code></pre>
 <p><strong>Query Parameters</strong></p>
@@ -34437,14 +35020,16 @@ that work directly at the transaction level.</p>
 <td><strong>audit</strong></td>
 <td>string</td>
 <td>false</td>
-<td>whether or not to return associated audit logs</td>
+<td>what audit log information to return (NONE, MINIMAL, FULL). Default NONE.</td>
 </tr>
 </tbody></table>
 
 <p><strong>Returns</strong></p>
 
-<p>Returns a tag definition object.</p>
+<p>Returns a tag definition object and a status code of 200 to indicate success.</p>
 <h3 id='tag-definition-delete-a-tag-definition'>Delete a tag definition</h3>
+<p>This endpoint is used to delete a tag definition.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>DELETE http://127.0.0.1:8080/1.0/kb/tagDefinitions/{tagDefinitionId}</code></p>
@@ -34461,7 +35046,7 @@ that work directly at the transaction level.</p>
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/tagDefinitions/93f2bc59-e18d-4a5e-a645-9386c76fc03f"</span>
 </code></pre><pre class="highlight java tab-java"><code></code></pre><pre class="highlight ruby tab-ruby"><code></code></pre><pre class="highlight python tab-python"><code></code></pre>
 <blockquote>
 <p>Example Response:</p>
@@ -34477,8 +35062,10 @@ that work directly at the transaction level.</p>
 
 <p><strong>Returns</strong></p>
 
-<p>A 204 http status without content.</p>
+<p>Returns a status code of 204 without content to indicate success.</p>
 <h2 id='tag-definition-audit-logs'>Audit Logs</h2><h3 id='tag-definition-retrieve-tag-definition-audit-logs-with-history-by-tag-definition-id'>Retrieve tag definition audit logs with history by tag definition id</h3>
+<p>This endpoint is used to retrieve the full set of audit logs for a specified tag definition</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/tagDefinitions/{tagDefinitionId}/auditLogsWithHistory</code></p>
@@ -34491,7 +35078,7 @@ that work directly at the transaction level.</p>
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/tagDefinitions/92991586-df8a-4d8d-9d55-61172c52fa45/auditLogsWithHistory"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/tagDefinitions/92991586-df8a-4d8d-9d55-61172c52fa45/auditLogsWithHistory"</span>
 </code></pre>
 <blockquote>
 <p>Example Response:</p>
@@ -34534,7 +35121,7 @@ that work directly at the transaction level.</p>
 
 <p><strong>Returns</strong></p>
 
-<p>Returns a list of tag definition audit logs with history.</p>
+<p>Returns a list of tag definition audit logs with a status code of 200 to indicate success.</p>
 <h1 id='admin'>Admin</h1>
 <p>The admin resource offers a set of enpoints of the following nature:</p>
 
