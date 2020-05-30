@@ -12,12 +12,12 @@ The attributes contained in the account resource are the following:
 | ---- | -----| -------- | ------------ |
 | **accountId** | string | system | UUID for this account |
 | **externalKey** | string | user | Optional external key provided by the client |
-| **referenceTime** | string | system | date and time this account was created |
+| **referenceTime** | string | system | ISO date and time this account was created |
 | **parentAccountId** | string | user | UUID for the parent account, if any, if the [hierarchical accounts (HA) model](http://docs.killbill.io/latest/ha.html) is used |
 | **isPaymentDelegatedToParent** | boolean | user | For the hierarchical model, indicates whether the parent account, if any, is handling payments for this account |
 | **currency** | string | user | The default currency for the customer |
 | **billCycleDayLocal** | integer | system or user | The default day of the month to bill customers for subscriptions with an `ACCOUNT` [billing alignment](http://docs.killbill.io/latest/userguide_subscription.html#_billing_alignment_rules) and a billing period that is a multiple of one month. |
-| **paymentMethodId** | string | user | The default payment method used by the system to make recuring payments |
+| **paymentMethodId** | string | user | UUID for he default payment method used by the system to make recuring payments |
 | **name** | string | user | name of the account |
 | **firstNameLength** | integer | user | length of the first name (first part of **name**) |
 | **company** | string | user | customer's company name |
@@ -26,30 +26,24 @@ The attributes contained in the account resource are the following:
 | **city** | string | user | customer's city |
 | **state** | string | user | customer's state, if any |
 | **postalCode** | string | user | customer's postal code, if any |
-| **country** | string | user | customer's country identifier |
-| **locale** | string | user | locale code for customer language |
+| **country** | string | user | customer's ISO country identifier |
+| **locale** | string | user | ISO locale code for customer language |
 | **timeZone** | string | user | descriptor for the customer's time zone. Used by the system to make any required transformation from `DateTime` to `LocalDate` |
 | **phone** | string | user | phone contact number to reach the customer |
 | **email** | string | user | The contact email to reach the customer |
 | **notes** | string | user | Additonal notes about the customer, usually set by the customer service department |
 | **isMigrated** | boolean | user | indicates whether this account has been migrated from another account |
-| **accountCBA** | integer | system | The account credit |
-| **accountBalance** | integer | system | The account balance |
+| **accountCBA** | integer | system | The account credit, if any |
+| **accountBalance** | integer | system | The account balance, minus the credit, if any |
 | **auditLogs** | array | system | array of audit log records for this tag |
 
 
 
-
-
-
-
-## Account
+## CRUD Account Endpoints
 
 ### Create an Account 
 
 Create a new customer `Account`.
-
-Note that none of these fields are mantatory when creating the `Account`. This allows to create shell accounts, simply for the purpose of having a valid `accountId` and create state around it -- e.g payments,... This can also be useful to ensure none of the PII data is in the system.
 
 **HTTP Request** 
 
@@ -69,7 +63,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '{ "name": "John Doe", "email": "john@laposte.com", "currency": "USD"}' \
-    "http://localhost:8080/1.0/kb/accounts" 
+    "http://127.0.0.1:8080/1.0/kb/accounts" 
 ```
 ```java
 import org.killbill.billing.client.api.gen.AccountApi;
@@ -188,7 +182,7 @@ A `201` status is returned if the call succeeds, along with a `Location` header 
 
 ### Retrieve an Account by its ID
 
-Retrieves the details information for the `Account` using its `accountId`.
+Retrieves the full resource object for an `Account` using its `accountId`.
 
 
 **HTTP Request** 
@@ -203,7 +197,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d" 
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d" 
 ```
 
 ```java
@@ -371,19 +365,19 @@ class Account {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
+| Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ---- | ------------
-| **accountWithBalance** | boolean | false | if true, returns `accountBalance` info |
-| **accountWithBalanceAndCBA** | boolean | false | if true, returns `accountBalance` and `accountCBA` info |
-| **audit** | enum | false | level of audit logs returned |
+| **accountWithBalance** | boolean | false | false | if true, returns `accountBalance` info |
+| **accountWithBalanceAndCBA** | boolean | false | false | if true, returns `accountBalance` and `accountCBA` info |
+| **audit** | string | false | "NONE" | "NONE", "MINIMAL", or "FULL" |
 
 **Returns**
 
-Returns an account object if a valid identifier was provided.
+Returns an account object in the response body, and a status code of 200, if a valid identifier was provided.
 
 ### Retrieve an Account by its external key
 
-Retrieves the details information for the `Account` using its `externalKey`.
+Retrieves the resource object for an `Account` using its `externalKey`. The 'externalKey' is passed as a query parameter.
 
 
 **HTTP Request** 
@@ -398,7 +392,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts?externalKey=2ad52f53-85ae-408a-9879-32a7e59dd03d"
+    "http://127.0.0.1:8080/1.0/kb/accounts?externalKey=2ad52f53-85ae-408a-9879-32a7e59dd03d"
 ```
 
 ```java
@@ -566,17 +560,25 @@ class Account {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
+| Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ---- | ------------
-| **accountWithBalance** | boolean | false | if true, returns `accountBalance` info |
-| **accountWithBalanceAndCBA** | boolean | false | if true, returns `accountBalance` and `accountCBA` info |
-| **audit** | enum | false | level of audit logs returned |
+| **externalKey** | string | true | none | the external key to be used for retrieval |
+| **accountWithBalance** | boolean | false | false | if true, returns `accountBalance` info |
+| **accountWithBalanceAndCBA** | boolean | false | false | if true, returns `accountBalance` and `accountCBA` info |
+| **audit** | string | false | "NONE" | "NONE", "MINIMAL", or "FULL" |
 
 **Returns**
 
-Returns an account object if a valid external key was provided.
+Returns an account object in the response body, and a status code of 200, if a valid identifier was provided.
 
 ### Update an Account
+
+Updates selected attributes in an account object. Note that the following fields are not updatable; they can only be set once when creating the original `Account`:  `externalKey`, `currency`, `timeZone`, `referenceTime`. In addition the `billCycleDayLocal` can be updated but only **once**, that is one can create an `Account` without specifying the `billCycleDayLocal` and later update its value; this, in particular allows the system to update its value to a good default, that is one that will avoid leading prorations, when creating the first subscription. Also, the audit logs cannot be changed.
+
+The updates are passed in the request body, as an object that need only contain the attributes to be changed. Any attribute omitted from the request body will remain unchanged.
+
+If the boolean query parameter **treatNullAsReset** is `true`, any attribute specified as `null` in the request will be reset to its default value. If the parameter is `false`, any attribute specified as `null` in the request will remain unchanged.
+
 
 **HTTP Request** 
 
@@ -596,7 +598,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '{ "name": "Another Name"}' \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d"	
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d"	
 ```
 
 ```java
@@ -684,17 +686,17 @@ Note that the following fields are not updatable, they can only be set once when
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **treatNullAsReset** | boolean | false | If set to true, any null value will be set to `null`. If set to false, any null value will be ignored.|
+| Name | Type | Required | Default |Description |
+| ---- | -----| -------- | ----------- | ----- | 
+| **treatNullAsReset** | boolean | false | false | If set to true, any null value will be set to `null`. If set to false, any null value will be ignored.|
 
 **Returns**
 
-A `204` http status without content.
+A `204` http status without content if the request succeeds.
 
 ### Close account
 
-This endpoint can be used when no other state change will occur on this `Account` to bring it to a stable state. Depending on the value of the query parameters it will potentially cancel all active subscriptions, write-off unpaid invoices, ... This endpoint is not about account deletion - we provide no support to remove state through apis; such deletion operations if really needed would have to happen at the database level and are not encouraged  -- and can be tricky to get right.
+This endpoint can be used when no other state change will occur on this `Account` to bring it to a stable state. Depending on the value of the query parameters it will potentially cancel all active subscriptions, write-off unpaid invoices, etc. This endpoint is not for account deletion. We provide no support to remove state through apis; such deletion operations if really needed would have to happen at the database level and are not encouraged. They can be tricky to get right.
 
 
 
@@ -713,7 +715,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/8785164f-b5d7-4da1-9495-33f5105e8d80"
+    "http://127.0.0.1:8080/1.0/kb/accounts/8785164f-b5d7-4da1-9495-33f5105e8d80"
 ```
 
 ```java
