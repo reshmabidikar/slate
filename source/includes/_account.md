@@ -17,7 +17,7 @@ The attributes contained in the account resource are the following:
 | **isPaymentDelegatedToParent** | boolean | user | For the hierarchical model, indicates whether the parent account, if any, is handling payments for this account |
 | **currency** | string | user | The default currency for the customer |
 | **billCycleDayLocal** | integer | system or user | The default day of the month to bill customers for subscriptions with an `ACCOUNT` [billing alignment](http://docs.killbill.io/latest/userguide_subscription.html#_billing_alignment_rules) and a billing period that is a multiple of one month. |
-| **paymentMethodId** | string | user | UUID for he default payment method used by the system to make recuring payments |
+| **paymentMethodId** | string | user | UUID for the default payment method used by the system to make recuring payments |
 | **name** | string | user | name of the account |
 | **firstNameLength** | integer | user | length of the first name (first part of **name**) |
 | **company** | string | user | customer's company name |
@@ -803,6 +803,8 @@ These endpoints allow you to list all accounts or to search for a specific accou
 
 ### List accounts
 
+Retrieve a list of all account records.
+
 **HTTP Request** 
 
 `GET http://127.0.0.1:8080/1.0/kb/accounts/pagination`
@@ -1015,14 +1017,212 @@ class Account {
 
 If successful, returns a list with all accounts and a status code of 200.
 
+### Search accounts
+
+Search for an account by a specified search string. The search string is compared to the following attributes: `name', 'email`, and 'externalKey`. The operation returns all account records in which the search string matches all or part of one of these attributes.
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/accounts/search/{searchKey}`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://127.0.0.1:8080/1.0/kb/accounts/search/John%20Doe"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+String searchKey = "John-1"
+Long offset = 0L;
+Long limit = 1L;
+Boolean accountWithBalance = false; // Will not include account balance
+Boolean accountWithBalanceAndCBA = false; // Will not include account balance and CBA info
+
+List<Account> accountsByKey = accountApi.searchAccounts(searchKey, 
+                                                        offset,
+                                                        limit,
+                                                        accountWithBalance,
+                                                        accountWithBalanceAndCBA,
+                                                        requestOptions);
+```
+
+```ruby
+search_key = 'example'
+offset = 0
+limit = 100
+with_balance = false
+with_balance_and_cba = false
+
+account.find_in_batches_by_search_key(search_key,
+                                      offset,
+                                      limit,
+                                      with_balance,
+                                      with_balance_and_cba,
+                                      options)
+```
+
+```python
+accountApi = killbill.api.AccountApi()
+search_key = 'John-1'
+
+accountApi.search_accounts(search_key, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "name": "John Doe",
+    "firstNameLength": null,
+    "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "email": "john@laposte.com",
+    "billCycleDayLocal": 0,
+    "currency": "USD",
+    "parentAccountId": null,
+    "isPaymentDelegatedToParent": false,
+    "paymentMethodId": null,
+    "referenceTime": "2018-07-17T15:02:45.000Z",
+    "timeZone": "UTC",
+    "address1": null,
+    "address2": null,
+    "postalCode": null,
+    "company": null,
+    "city": null,
+    "state": null,
+    "country": null,
+    "locale": null,
+    "phone": null,
+    "notes": null,
+    "isMigrated": null,
+    "accountBalance": null,
+    "accountCBA": null,
+    "auditLogs": []
+  }
+]
+```
+```java
+//First element of the list
+class Account {
+    org.killbill.billing.client.model.gen.Account@24e22684
+    accountId: 80a454f3-182f-4621-812e-533d23e54cb9
+    name: John-1
+    firstNameLength: 4
+    externalKey: 94a664a3-eea5-43fb-8788-9d3129a2c95c
+    email: 33b2e@cc77b
+    billCycleDayLocal: 0
+    currency: USD
+    parentAccountId: null
+    isPaymentDelegatedToParent: false
+    paymentMethodId: null
+    referenceTime: 2012-08-25T00:00:02.000Z
+    timeZone: UTC
+    address1: 12 rue des ecoles
+    address2: Poitier
+    postalCode: 44 567
+    company: Renault
+    city: Quelque part
+    state: Poitou
+    country: France
+    locale: fr
+    phone: 81 53 26 56
+    notes: notes
+    isMigrated: false
+    accountBalance: null
+    accountCBA: null
+    auditLogs: []
+}
+```
+```ruby
+[
+   {
+      "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
+      "name":"John Doe",
+      "externalKey":"1522172592-516014",
+      "email":"John@laposte.com",
+      "billCycleDayLocal":0,
+      "currency":"USD",
+      "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
+      "isPaymentDelegatedToParent":true,
+      "timeZone":"UTC",
+      "address1":"7, yoyo road",
+      "address2":"Apt 5",
+      "postalCode":"94105",
+      "company":"Unemployed",
+      "city":"San Francisco",
+      "state":"California",
+      "country":"US",
+      "locale":"fr_FR",
+      "auditLogs":[]
+   }
+]
+```
+```python
+[{'account_balance': None,
+ 'account_cba': None,
+ 'account_id': 'c41bf53b-c6a8-48de-8012-b755e51d5d3e',
+ 'address1': None,
+ 'address2': None,
+ 'audit_logs': [],
+ 'bill_cycle_day_local': 0,
+ 'city': None,
+ 'company': None,
+ 'country': 'USA',
+ 'currency': 'USD',
+ 'email': None,
+ 'external_key': 'njisdn',
+ 'first_name_length': None,
+ 'is_migrated': False,
+ 'is_notified_for_invoices': False,
+ 'is_payment_delegated_to_parent': False,
+ 'locale': None,
+ 'name': 'John-1',
+ 'notes': None,
+ 'parent_account_id': None,
+ 'payment_method_id': None,
+ 'phone': None,
+ 'postal_code': None,
+ 'reference_time': datetime.datetime(2018, 5, 4, 19, 44, 24, tzinfo=tzutc()),
+ 'state': 'CA',
+ 'time_zone': 'UTC'}]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ---- | ------------
+| **searchKey** | string | true | none | What you want to find? |
+| **offset** | long | false | 0 | offset |
+| **limit** | long | false | 100 | limit search items |
+| **accountWithBalance** | boolean | false | false | if true, returns `accountBalance` info |
+| **accountWithBalanceAndCBA** | boolean | false | false | if true, returns `accountBalance` and `accountCBA` info |
+
+**Response**
+
+Returns a status code of 200 and a list of accounts that contain a match for the specified search key.
 
 
 ## Email
 
-We offer a few endpoints specifically to manage emails associated with a customer account. The main reason for this separation is to allow having
-several emails for one customer `Account`.
+These endpoints manage emails associated with a customer account. It is possible to have
+several emails for one customer `account`.
 
 ### Add account email
+
+Add an email to an `account`. Existing emails are undisturbed.
 
 **HTTP Request** 
 
@@ -1042,7 +1242,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '{ "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "email": "email@laposte.com"}' \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
 ```
 
 ```java
@@ -1088,7 +1288,7 @@ accountApi.add_email(account_id,
 ```shell
 # Subset of headers returned when specifying -v curl option
 < HTTP/1.1 201 Created
-< Location: http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails
+< Location: http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails
 < Content-Type: application/json
 < Content-Length: 0
 ```
@@ -1101,7 +1301,9 @@ no content
 ```python
 no content
 ```
+**Request Body**
 
+The request body identifies a subset of the `account` attributes as a JSON string. The attributes required are `accountId` and `email` (the email to be added). 'accountId` is required in the body even though it is given in the path. No other attributes should be included.
 
 **Query Parameters**
 
@@ -1109,9 +1311,11 @@ None.
 
 **Response**
 
-A `201` http status without content.
+If the operation succeeds it returns  a status code of 201 and an empty response body.
 
-### Retrieve an account emails
+### Retrieve account emails
+
+Retrieves all emails for an account
 
 **HTTP Request** 
 
@@ -1125,7 +1329,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails"
 ```
 
 ```java
@@ -1195,11 +1399,13 @@ class AccountEmail {
 
 None.
 
-**Returns**
+**Response Body**
 
-Returns a list of objects with account id's and their emails.
+If successful, returns a list of objects with account id's and their emails.
 
-### Delete email from account
+### Delete email
+
+Deletes an email from an account
 
 **HTTP Request** 
 
@@ -1216,7 +1422,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/email%40127.0.0.1:8080"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/email%40127.0.0.1:8080"
 ```
 
 ```java
@@ -1276,7 +1482,7 @@ None.
 
 **Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty response body.
 
 ## Bundle
 
@@ -7395,200 +7601,3 @@ class AccountTimeline {
 Returns a list of account tag objects.
 
 
-## Pagination/Search
-
-
-### Search accounts
-
-**HTTP Request** 
-
-`GET http://127.0.0.1:8080/1.0/kb/accounts/search/{searchKey}`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/search/John%20Doe"
-```
-
-```java
-import org.killbill.billing.client.api.gen.AccountApi;
-protected AccountApi accountApi;
-
-String searchKey = "John-1"
-Long offset = 0L;
-Long limit = 1L;
-Boolean accountWithBalance = false; // Will not include account balance
-Boolean accountWithBalanceAndCBA = false; // Will not include account balance and CBA info
-
-List<Account> accountsByKey = accountApi.searchAccounts(searchKey, 
-                                                        offset,
-                                                        limit,
-                                                        accountWithBalance,
-                                                        accountWithBalanceAndCBA,
-                                                        requestOptions);
-```
-
-```ruby
-search_key = 'example'
-offset = 0
-limit = 100
-with_balance = false
-with_balance_and_cba = false
-
-account.find_in_batches_by_search_key(search_key,
-                                      offset,
-                                      limit,
-                                      with_balance,
-                                      with_balance_and_cba,
-                                      options)
-```
-
-```python
-accountApi = killbill.api.AccountApi()
-search_key = 'John-1'
-
-accountApi.search_accounts(search_key, api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  {
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "name": "John Doe",
-    "firstNameLength": null,
-    "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "email": "john@laposte.com",
-    "billCycleDayLocal": 0,
-    "currency": "USD",
-    "parentAccountId": null,
-    "isPaymentDelegatedToParent": false,
-    "paymentMethodId": null,
-    "referenceTime": "2018-07-17T15:02:45.000Z",
-    "timeZone": "UTC",
-    "address1": null,
-    "address2": null,
-    "postalCode": null,
-    "company": null,
-    "city": null,
-    "state": null,
-    "country": null,
-    "locale": null,
-    "phone": null,
-    "notes": null,
-    "isMigrated": null,
-    "accountBalance": null,
-    "accountCBA": null,
-    "auditLogs": []
-  }
-]
-```
-```java
-//First element of the list
-class Account {
-    org.killbill.billing.client.model.gen.Account@24e22684
-    accountId: 80a454f3-182f-4621-812e-533d23e54cb9
-    name: John-1
-    firstNameLength: 4
-    externalKey: 94a664a3-eea5-43fb-8788-9d3129a2c95c
-    email: 33b2e@cc77b
-    billCycleDayLocal: 0
-    currency: USD
-    parentAccountId: null
-    isPaymentDelegatedToParent: false
-    paymentMethodId: null
-    referenceTime: 2012-08-25T00:00:02.000Z
-    timeZone: UTC
-    address1: 12 rue des ecoles
-    address2: Poitier
-    postalCode: 44 567
-    company: Renault
-    city: Quelque part
-    state: Poitou
-    country: France
-    locale: fr
-    phone: 81 53 26 56
-    notes: notes
-    isMigrated: false
-    accountBalance: null
-    accountCBA: null
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
-      "name":"John Doe",
-      "externalKey":"1522172592-516014",
-      "email":"John@laposte.com",
-      "billCycleDayLocal":0,
-      "currency":"USD",
-      "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
-      "isPaymentDelegatedToParent":true,
-      "timeZone":"UTC",
-      "address1":"7, yoyo road",
-      "address2":"Apt 5",
-      "postalCode":"94105",
-      "company":"Unemployed",
-      "city":"San Francisco",
-      "state":"California",
-      "country":"US",
-      "locale":"fr_FR",
-      "auditLogs":[]
-   }
-]
-```
-```python
-[{'account_balance': None,
- 'account_cba': None,
- 'account_id': 'c41bf53b-c6a8-48de-8012-b755e51d5d3e',
- 'address1': None,
- 'address2': None,
- 'audit_logs': [],
- 'bill_cycle_day_local': 0,
- 'city': None,
- 'company': None,
- 'country': 'USA',
- 'currency': 'USD',
- 'email': None,
- 'external_key': 'njisdn',
- 'first_name_length': None,
- 'is_migrated': False,
- 'is_notified_for_invoices': False,
- 'is_payment_delegated_to_parent': False,
- 'locale': None,
- 'name': 'John-1',
- 'notes': None,
- 'parent_account_id': None,
- 'payment_method_id': None,
- 'phone': None,
- 'postal_code': None,
- 'reference_time': datetime.datetime(2018, 5, 4, 19, 44, 24, tzinfo=tzutc()),
- 'state': 'CA',
- 'time_zone': 'UTC'}]
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **searchKey** | string | true | What you want to find? |
-| **offset** | long | true | offset |
-| **limit** | long | true | limit search items |
-| **accountWithBalance** | boolean | false | if true, returns `accountBalance` info |
-| **accountWithBalanceAndCBA** | boolean | false | if true, returns `accountBalance` and `accountCBA` info |
-
-**Returns**
-
-Return a list with accounts matched with the search key entered.
