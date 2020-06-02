@@ -15,31 +15,31 @@ The attributes contained in the account resource are the following:
 | **referenceTime** | string | system | ISO date and time this account was created |
 | **parentAccountId** | string | user | UUID for the parent account, if any, if the [hierarchical accounts (HA) model](http://docs.killbill.io/latest/ha.html) is used |
 | **isPaymentDelegatedToParent** | boolean | user | For the hierarchical model, indicates whether the parent account, if any, is handling payments for this account |
-| **currency** | string | user | The default currency for the customer |
-| **billCycleDayLocal** | integer | system or user | The default day of the month to bill customers for subscriptions with an `ACCOUNT` [billing alignment](http://docs.killbill.io/latest/userguide_subscription.html#_billing_alignment_rules) and a billing period that is a multiple of one month. |
-| **paymentMethodId** | string | user | UUID for the default payment method used by the system to make recuring payments |
-| **name** | string | user | name of the account |
-| **firstNameLength** | integer | user | length of the first name (first part of **name**) |
-| **company** | string | user | customer's company name |
-| **address1** | string | user | address line 1 |
-| **address2** | string | user | address line 2 |
-| **city** | string | user | customer's city |
-| **state** | string | user | customer's state, if any |
-| **postalCode** | string | user | customer's postal code, if any |
-| **country** | string | user | customer's ISO country identifier |
+| **currency** | string | user | Default currency for the customer |
+| **billCycleDayLocal** | integer | system or user | Default day of the month to bill customers for subscriptions with an `ACCOUNT` [billing alignment](http://docs.killbill.io/latest/userguide_subscription.html#_billing_alignment_rules) and a billing period that is a multiple of one month. |
+| **paymentMethodId** | string | user | UUID for the default payment method used by the system to make recurring payments |
+| **name** | string | user | Name of the account |
+| **firstNameLength** | integer | user | Length of the first name (first part of **name**) |
+| **company** | string | user | Customer's company name |
+| **address1** | string | user | Address line 1 |
+| **address2** | string | user | Address line 2 |
+| **city** | string | user | Customer's city |
+| **state** | string | user | Customer's state, if any |
+| **postalCode** | string | user | Customer's postal code, if any |
+| **country** | string | user | Customer's ISO country identifier |
 | **locale** | string | user | ISO locale code for customer language |
-| **timeZone** | string | user | descriptor for the customer's time zone. Used by the system to make any required transformation from `DateTime` to `LocalDate` |
-| **phone** | string | user | phone contact number to reach the customer |
-| **email** | string | user | The contact email to reach the customer |
+| **timeZone** | string | user | Descriptor for the customer's time zone. Used by the system to make any required transformation from `DateTime` to `LocalDate` |
+| **phone** | string | user | Phone contact number to reach the customer |
+| **email** | string | user | Contact email to reach the customer |
 | **notes** | string | user | Additonal notes about the customer, usually set by the customer service department |
-| **isMigrated** | boolean | user | indicates whether this account has been migrated from another account |
-| **accountCBA** | integer | system | The account credit, if any |
-| **accountBalance** | integer | system | The account balance, minus the credit, if any |
-| **auditLogs** | array | system | array of audit log records for this tag |
+| **isMigrated** | boolean | user | Indicates whether this account has been migrated from another system |
+| **accountCBA** | integer | system | Account credit, if any |
+| **accountBalance** | integer | system | Account balance, if any |
+| **auditLogs** | array | system | Array of audit log records for this account |
 
+A list of valid **timeZone** strings is given at [timezone strings](https://github.com/rails/rails/blob/23b4aa505d04731c7890e19e8f8996869526f5b3/activesupport/lib/active_support/values/time_zone.rb#L31-L183)
 
-
-## CRUD Account Endpoints
+## Accounts
 
 ### Create an Account 
 
@@ -161,15 +161,15 @@ The body of the request is a JSON string specifying any attributes of the resour
 
 | Attribute | Default |
 | ---- | ----- |
-| **accountId** | system generated UUID |
-| **externalKey** | copy of **accountId** |
+| **accountId** | System generated UUID |
+| **externalKey** | Copy of **accountId** |
 | **billCycleDayLocal** | 0 |
 | **isPaymentDelegatedToParent** | false |
 | **referenceTime** | ISO time-date code for the current time in the specified timezone |
 | **timeZone** | "UTC" |
 | all others | null |
 
-All attributes are optional, so it is possible to quickly create a shell account for test purposes or so its attributes can be filled in later. This also ensures the initial account contains no PII. Note, however, that the `currency` attribute must have a non-null value, which can be added later, for invoicing to work properly.
+All attributes are optional, so it is possible to quickly create a shell account. THis account could be used for test purposes, or so its attributes can be filled in later. This also ensures the initial account contains no PII. Note, however, that the `currency` attribute must have a non-null value, which can be added later, for invoicing to work properly.
 
 A few fields are not updatable; they can only be set once when creating the original `Account`. These include  `externalKey`, `currency`, `timeZone`, and `referenceTime`. In addition the `billCycleDayLocal` can be updated but only **once**, that is one can create an `Account` without specifying the `billCycleDayLocal` and later update its value; this, in particular allows the system to update its value to a good default, that is one that will avoid leading prorations, when creating the first subscription.
 
@@ -371,8 +371,8 @@ class Account {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ---- | ------------
-| **accountWithBalance** | boolean | false | false | if true, returns `accountBalance` info |
-| **accountWithBalanceAndCBA** | boolean | false | false | if true, returns `accountBalance` and `accountCBA` info |
+| **accountWithBalance** | boolean | false | false | If true, returns `accountBalance` info |
+| **accountWithBalanceAndCBA** | boolean | false | false | If true, returns `accountBalance` and `accountCBA` info |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 **Response**
@@ -381,7 +381,7 @@ Returns an account object in the response body, and a status code of 200, if a v
 
 ### Retrieve an Account by its external key
 
-Retrieves the resource object for an `Account` using its `externalKey`. The 'externalKey' is passed as a query parameter.
+Retrieves the resource object for an `Account` using its `externalKey`. The `externalKey` is passed as a query parameter.
 
 
 **HTTP Request** 
@@ -566,9 +566,9 @@ class Account {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ---- | ------------
-| **externalKey** | string | true | none | the external key to be used for retrieval |
-| **accountWithBalance** | boolean | false | false | if true, returns `accountBalance` info |
-| **accountWithBalanceAndCBA** | boolean | false | false | if true, returns `accountBalance` and `accountCBA` info |
+| **externalKey** | string | true | none | External key to be used for retrieval |
+| **accountWithBalance** | boolean | false | false | If true, returns `accountBalance` info |
+| **accountWithBalanceAndCBA** | boolean | false | false | i\If true, returns `accountBalance` and `accountCBA` info |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 **Response**
@@ -579,7 +579,7 @@ Returns an account object in the response body, and a status code of 200, if a v
 
 Updates selected attributes in an account object. Note that the following fields are not updatable; they can only be set once when creating the original `Account`:  `externalKey`, `currency`, `timeZone`, and `referenceTime`. In addition, the `billCycleDayLocal` can be updated but only **once**, that is, one can create an `Account` without specifying the `billCycleDayLocal` and later update its value. This, allows the system to update its value to a good default, that is one that will avoid leading prorations, when creating the first subscription. Also, the audit logs cannot be changed.
 
-The updates are passed in the request body, as an object that need only contain the attributes to be changed. Any attribute omitted from the request body will remain unchanged.
+The updates are passed in the request body, as an object that only needs to contain the attributes to be changed. Any attribute omitted from the request body will remain unchanged.
 
 If the boolean query parameter **treatNullAsReset** is `true`, any attribute specified as `null` in the request will be reset to its default value. If the parameter is `false`, any attribute specified as `null` in the request will remain unchanged.
 
@@ -893,7 +893,7 @@ accountApi.get_accounts(api_key, api_secret)
 ]
 ```
 ```java
-//First element of the list
+// First element of the list
 class Account {
     org.killbill.billing.client.model.gen.Account@f0247489
     accountId: 80e54c79-ca2b-4c82-920b-07822683e605
@@ -1019,7 +1019,7 @@ If successful, returns a list with all accounts and a status code of 200.
 
 ### Search accounts
 
-Search for an account by a specified search string. The search string is compared to the following attributes: `name', 'email`, and 'externalKey`. The operation returns all account records in which the search string matches all or part of one of these attributes.
+Search for an account by a specified search string. The search string is compared to the following attributes: `accountId`, `name`, `email`, `companyName`, and `externalKey`. The operation returns all account records in which the search string matches all or part of one of these attributes.
 
 **HTTP Request** 
 
@@ -1115,7 +1115,7 @@ accountApi.search_accounts(search_key, api_key, api_secret)
 ]
 ```
 ```java
-//First element of the list
+// First element of the list
 class Account {
     org.killbill.billing.client.model.gen.Account@24e22684
     accountId: 80a454f3-182f-4621-812e-533d23e54cb9
@@ -1204,11 +1204,11 @@ class Account {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ---- | ------------
-| **searchKey** | string | true | none | What you want to find? |
-| **offset** | long | false | 0 | offset |
-| **limit** | long | false | 100 | limit search items |
-| **accountWithBalance** | boolean | false | false | if true, returns `accountBalance` info |
-| **accountWithBalanceAndCBA** | boolean | false | false | if true, returns `accountBalance` and `accountCBA` info |
+| **searchKey** | string | true | none | What you want to find |
+| **offset** | long | false | 0 | Offset to start this page |
+| **limit** | long | false | 100 | Number of items to return on this page |
+| **accountWithBalance** | boolean | false | false | If true, returns `accountBalance` info |
+| **accountWithBalanceAndCBA** | boolean | false | false | If true, returns `accountBalance` and `accountCBA` info |
 
 **Response**
 
@@ -1303,7 +1303,7 @@ no content
 ```
 **Request Body**
 
-The request body identifies a subset of the `account` attributes as a JSON string. The attributes required are `accountId` and `email` (the email to be added). 'accountId` is required in the body even though it is given in the path. No other attributes should be included.
+The request body identifies a subset of the `account` attributes as a JSON string. The attributes required are `accountId` and `email` (the email to be added). `accountId` is required in the body even though it is given in the path. No other attributes should be included.
 
 **Query Parameters**
 
@@ -1311,7 +1311,7 @@ None.
 
 **Response**
 
-If the operation succeeds it returns  a status code of 201 and an empty response body.
+If the operation succeeds it returns a status code of 201 and an empty response body.
 
 ### Retrieve account emails
 
