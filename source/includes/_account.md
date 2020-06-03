@@ -37,6 +37,8 @@ The attributes contained in the account resource are the following:
 | **accountBalance** | integer | system | Account balance, if any |
 | **auditLogs** | array | system | Array of audit log records for this account |
 
+The **name** is usually the personal name of the account owner. We recommend that this be entered so that the first word is an acceptable short form for the complete name, such as "first name" in most English-speaking cultures. In this case the value **firstNameLength** enables your code to extract this part of the name for informal greetings.For information on name formats in various countries see [Personal Names around the World](https://www.w3.org/International/questions/qa-personal-names) by the W3C.
+
 A list of valid **timeZone** strings is given at [timezone strings](https://github.com/rails/rails/blob/23b4aa505d04731c7890e19e8f8996869526f5b3/activesupport/lib/active_support/values/time_zone.rb#L31-L183)
 
 ## Accounts
@@ -169,7 +171,7 @@ The body of the request is a JSON string specifying any attributes of the resour
 | **timeZone** | "UTC" |
 | all others | null |
 
-All attributes are optional, so it is possible to quickly create a shell account. THis account could be used for test purposes, or so its attributes can be filled in later. This also ensures the initial account contains no PII. Note, however, that the `currency` attribute must have a non-null value, which can be added later, for invoicing to work properly.
+All attributes are optional, so it is possible to quickly create a shell account. This account could be used for test purposes, or so its attributes can be filled in later. This also ensures the initial account contains no PII. Note, however, that the `currency` attribute must have a non-null value, which can be added later, for invoicing to work properly.
 
 A few fields are not updatable; they can only be set once when creating the original `Account`. These include  `externalKey`, `currency`, `timeZone`, and `referenceTime`. In addition the `billCycleDayLocal` can be updated but only **once**, that is one can create an `Account` without specifying the `billCycleDayLocal` and later update its value; this, in particular allows the system to update its value to a good default, that is one that will avoid leading prorations, when creating the first subscription.
 
@@ -568,7 +570,7 @@ class Account {
 | ---- | -----| -------- | ---- | ------------
 | **externalKey** | string | true | none | External key to be used for retrieval |
 | **accountWithBalance** | boolean | false | false | If true, returns `accountBalance` info |
-| **accountWithBalanceAndCBA** | boolean | false | false | i\If true, returns `accountBalance` and `accountCBA` info |
+| **accountWithBalanceAndCBA** | boolean | false | false | If true, returns `accountBalance` and `accountCBA` info |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 **Response**
