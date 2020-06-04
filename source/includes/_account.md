@@ -37,7 +37,7 @@ The attributes contained in the account resource are the following:
 | **accountBalance** | integer | system | Account balance, if any |
 | **auditLogs** | array | system | Array of audit log records for this account |
 
-The **name** is usually the personal name of the account owner. We recommend that this be entered so that the first word is an acceptable short form for the complete name, such as "first name" in most English-speaking cultures. In this case the value **firstNameLength** enables your code to extract this part of the name for informal greetings.For information on name formats in various countries see [Personal Names around the World](https://www.w3.org/International/questions/qa-personal-names) by the W3C.
+The **name** is usually the personal name of the account owner. We recommend that this be entered so that the first word is an acceptable short form for the complete name, such as "first name" in most English-speaking cultures. In this case the value **firstNameLength** enables your code to extract this part of the name for informal greetings. For information on name formats in various countries see [Personal Names around the World](https://www.w3.org/International/questions/qa-personal-names) by the W3C.
 
 A list of valid **timeZone** strings is given at [timezone strings](https://github.com/rails/rails/blob/23b4aa505d04731c7890e19e8f8996869526f5b3/activesupport/lib/active_support/values/time_zone.rb#L31-L183)
 
