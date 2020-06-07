@@ -30,7 +30,7 @@ The attributes contained in the account resource are the following:
 | **locale** | string | user | ISO locale code for customer language |
 | **timeZone** | string | user | Descriptor for the customer's time zone. Used by the system to make any required transformation from `DateTime` to `LocalDate` |
 | **phone** | string | user | Phone contact number to reach the customer |
-| **email** | string | user | Contact email to reach the customer |
+| **email** | string | user | Primary email to reach the customer |
 | **notes** | string | user | Additonal notes about the customer, usually set by the customer service department |
 | **isMigrated** | boolean | user | Indicates whether this account has been migrated from another system |
 | **accountCBA** | integer | system | Account credit, if any |
@@ -1219,12 +1219,12 @@ Returns a status code of 200 and a list of accounts that contain a match for the
 
 ## Email
 
-These endpoints manage emails associated with a customer account. It is possible to have
-several emails for one customer `account`.
+These endpoints manage emails associated with a customer account. **These are secondary emails, distinct from the `email` attribute in the `account` object.** It is possible to have
+several such emails for one customer account.
 
 ### Add account email
 
-Add an email to an `account`. Existing emails are undisturbed.
+Add an email to an account. Existing emails are undisturbed.
 
 **HTTP Request** 
 
@@ -1488,11 +1488,11 @@ If successful, returns a status code of 204 and an empty response body.
 
 ## Bundle
 
-See section [Bundle](#bundle) for details on bundles.
+This endpoint provides an API to list the Bundles associated with this account. A Bundle is a set of Subscriptions. See [Bundle](#bundle) for details on Bundles.
 
 ### Retrieve bundles for account
 
-This endpoint allow to list all (subscription) `Bundle` associated with this account.
+This endpoint is used to list all `Bundle`s associated with this account.
 
 **HTTP Request** 
 
@@ -1506,7 +1506,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/bundles" 
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/bundles" 
 ```
 
 ```java
@@ -2601,22 +2601,23 @@ class Bundle {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **externalKey** | string | false | bundle external key |
-| **bundlesFilter** | string | false | bundles filter |
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | -------- | ----------- | 
+| **externalKey** | string | false | omit | bundle external key |
+| **bundlesFilter** | string | false | omit | bundles filter |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 **Returns**
 
-Returns a list of account bundle objects.
+If successful, returns a status code of 200 and a list of account bundle objects.
 
 ## Invoice
 
-See section [Invoice](#invoice) for details on invoices.
+This endpoint provides an API to list the Invoices associated with this account. See section [Invoice](#invoice) for details on invoices.
 
 ### Retrieve account invoices
 
+List the Invoices associated with this account.
 
 **HTTP Request** 
 
@@ -2630,7 +2631,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoices"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoices"
 ```
 
 ```java
@@ -2865,18 +2866,18 @@ class Invoice {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **startDate** | date | false |  Filter invoices using a start date. |
-| **endDate** | date | false | Filter invoices using an end date. |
-| **withMigrationInvoices** | boolean | false | Choose true if you want migration invoices |
-| **unpaidInvoicesOnly** | boolean | false | Choose true if you want unpaid invoices only |
-| **includeVoidedInvoices** | boolean | false | Choose true if you want to include voided invoices |
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **startDate** | date | false | omit | Filter invoices using a start date. |
+| **endDate** | date | false | omit | Filter invoices using an end date. |
+| **withMigrationInvoices** | boolean | false | false | Choose true if you want migration invoices |
+| **unpaidInvoicesOnly** | boolean | false | false | Choose true if you want unpaid invoices only |
+| **includeVoidedInvoices** | boolean | false | false | Choose true if you want to include voided invoices |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 **Returns**
 
-Return a list with invoice objects.
+If successful, returns a status of 200 and a list of invoice objects for this account.
 
 ## Payment 
 
