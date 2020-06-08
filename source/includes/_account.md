@@ -2868,24 +2868,26 @@ class Invoice {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
-| **startDate** | date | false | omit | Filter invoices using a start date. |
-| **endDate** | date | false | omit | Filter invoices using an end date. |
-| **withMigrationInvoices** | boolean | false | false | Choose true if you want migration invoices |
-| **unpaidInvoicesOnly** | boolean | false | false | Choose true if you want unpaid invoices only |
-| **includeVoidedInvoices** | boolean | false | false | Choose true if you want to include voided invoices |
+| **startDate** | date | false | omit | Filter invoices using a start date |
+| **endDate** | date | false | omit | Filter invoices using an end date |
+| **withMigrationInvoices** | boolean | false | false | Choose true to include migration invoices |
+| **unpaidInvoicesOnly** | boolean | false | false | Choose true to include unpaid invoices only |
+| **includeVoidedInvoices** | boolean | false | false | Choose true to include voided invoices |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 **Returns**
 
 If successful, returns a status of 200 and a list of invoice objects for this account.
 
+
+
 ## Payment 
 
-See section [Payment](#payment) for details on payment.
+These endpoints are used to make or manage payments associated with this account. See section [Payment](#payment) for details on payments.
 
 ### Trigger a payment for all unpaid invoices
 
-This call allows to make a series of payment calls, one against each unpaid invoice using a specific payment method.
+Initiate payments for any unpaid invoices. This API allows you to make a series of payment calls, one against each unpaid invoice, using a specific payment method.
 
 **HTTP Request** 
 
@@ -2904,7 +2906,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments?paymentMethodId=f835c556-0694-4883-b4c1-d1b6e308409b"	
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments?paymentMethodId=f835c556-0694-4883-b4c1-d1b6e308409b"	
 ```
 
 ```java
@@ -2978,18 +2980,20 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **paymentMethodId** | string | false | Payment method id. |
-| **externalPayment** | boolean | false | Choose true if you use a external payment method. |
-| **paymentAmount** | string | false | Total payment amount. |
-| **targetDate** | string | false | Total payment amount. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **paymentMethodId** | string | false | default payment method | Payment method id if default not used |
+| **externalPayment** | boolean | false | false | Choose true if you use a external payment method. |
+| **paymentAmount** | string | false | total balance |Total payment amount |
+| **targetDate** | string | false | omit | Date for which payment should be made |
 
 **Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 ### Retrieve account invoice payments
+
+Retrieve a list of payments made against invoices for this account.
 
 **HTTP Request** 
 
@@ -3003,7 +3007,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments"	
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments"	
 ```
 
 ```java
@@ -3188,17 +3192,20 @@ class InvoicePayment {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **audit** | enum | false | level of audit logs returned |
-| **withPluginInfo** | boolean | false | Choose true if you want plugin info. |
-| **withAttempts** | boolean | false | Choose true if you want payment attempts. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
+| **withPluginInfo** | boolean | false | false | Choose true if you want plugin info included |
+| **withAttempts** | boolean | false | false | Choose true if you want payment attempts included |
 
 **Returns**
 
-Return a list of invoice payments objects.
+If successful, returns a status code of 200 and a list of invoice payment objects.
 
 ### Retrieve account payments
+
+Retrieve a list of payments made for this account. Payments are listed independent of any invoice.
+
 
 **HTTP Request** 
 
@@ -3212,7 +3219,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments"	
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments"	
 ```
 
 ```java
@@ -3396,20 +3403,20 @@ class Payment {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **audit** | enum | false | level of audit logs returned |
-| **withPluginInfo** | boolean | false | choose true if you want plugin info |
-| **withAttempts** | boolean | false | choose true if you want payment attempts |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
+| **withPluginInfo** | boolean | false | false | Choose true if you want plugin info included |
+| **withAttempts** | boolean | false | false | Choose true if you want payment attempts included |
 
 **Returns**
 
-Returns a list of all account payments object.
+If successful, returns a status code of 200 and a list of account payment objects.
 
 ### Trigger a payment (authorization, purchase or credit)
 
-This api is part of the raw payment apis, unreleated to subscriptions and invoices. It simply allows
-to make a trigger a payment transaction against a particular payment gateway through Kill Bill core and the plugin
+This endpoint is part of the raw payment APIs, unreleated to subscriptions and invoices. It simply triggers
+a payment transaction against a particular payment gateway through the Kill Bill core and through the plugin
 communicating with the payment gateway.
 
 
@@ -3431,7 +3438,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '{ "transactionType": "AUTHORIZE", "amount": 0}' \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments?paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments?paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947"
 ```
 
 ```java
@@ -3593,18 +3600,23 @@ class Payment {
 no content
 ```
 
+**Request Body**
+
+The request body is a JSON string representing the payment transaction. See section [Payment Transactions](#paymenttransactions) for details on payment transactions.
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **paymentMethodId** | string | false | payment method ID to use or use default account payment method ID |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **paymentMethodId** | string | false | default payment method | payment method ID to use, if not default method |
+| **controlPluginName** | array of strings | false | none | list of control plugins, if any |
+| **pluginProperty** | array of strings | false | none |list of plugin properties, if any |
 
-**Returns**
+**Response**
 
-Returns a payment transaction object.
+If successful, returns a status code of 200 and a payment transaction object.
 
-### Trigger a payment using the account external key (authorization, purchase or credit)
+### Trigger a payment (authorization, purchase or credit) using the account external key 
 
 **HTTP Request** 
 
