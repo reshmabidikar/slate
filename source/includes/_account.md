@@ -1492,7 +1492,7 @@ This endpoint provides an API to list the Bundles associated with this account. 
 
 ### Retrieve bundles for account
 
-This endpoint is used to list all `Bundle`s associated with this account.
+This endpoint is used to list all `Bundle`s associated with this account. It is possible to limit the list to a specific Bundle external key, or to a list of Bundle Ids.
 
 **HTTP Request** 
 
@@ -2603,13 +2603,13 @@ class Bundle {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | -------- | ----------- | 
-| **externalKey** | string | false | omit | bundle external key |
-| **bundlesFilter** | string | false | omit | bundles filter |
+| **externalKey** | string | false | omit | bundle external key; return only bundles with this key |
+| **bundlesFilter** | string | false | omit | comma separated list of bundle ids to return, if found |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 **Returns**
 
-If successful, returns a status code of 200 and a list of account bundle objects.
+If successful, returns a status code of 200 and a list of bundle objects.
 
 ## Invoice
 
@@ -2875,7 +2875,7 @@ class Invoice {
 | **includeVoidedInvoices** | boolean | false | false | Choose true to include voided invoices |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
+**Response**
 
 If successful, returns a status of 200 and a list of invoice objects for this account.
 
@@ -3194,9 +3194,10 @@ class InvoicePayment {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
+| **withPluginInfo** | boolean | false | false | Choose true to include plugin info |
+| **withAttempts** | boolean | false | false | Choose true to include payment attempts |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
-| **withPluginInfo** | boolean | false | false | Choose true if you want plugin info included |
-| **withAttempts** | boolean | false | false | Choose true if you want payment attempts included |
+
 
 **Returns**
 
@@ -3405,19 +3406,19 @@ class Payment {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
+| **withPluginInfo** | boolean | false | false | Choose true to include plugin info |
+| **withAttempts** | boolean | false | false | Choose true to include payment attempts |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
-| **withPluginInfo** | boolean | false | false | Choose true if you want plugin info included |
-| **withAttempts** | boolean | false | false | Choose true if you want payment attempts included |
 
-**Returns**
+**Response**
 
-If successful, returns a status code of 200 and a list of account payment objects.
+If successful, returns a status code of 200 and a list of payment objects.
 
 ### Trigger a payment (authorization, purchase or credit)
 
 This endpoint is part of the raw payment APIs, unreleated to subscriptions and invoices. It simply triggers
 a payment transaction against a particular payment gateway through the Kill Bill core and through the plugin
-communicating with the payment gateway.
+communicating with the payment gateway. The transaction could be an authorization, a purchase, or a credit.
 
 
 **HTTP Request** 
@@ -3602,7 +3603,7 @@ no content
 
 **Request Body**
 
-The request body is a JSON string representing the payment transaction. See section [Payment Transactions](#paymenttransactions) for details on payment transactions.
+The request body is a JSON string representing the payment transaction. See section [Payment Transaction](#payment-transaction) for details on payment transactions.
 
 **Query Parameters**
 
@@ -3614,9 +3615,11 @@ The request body is a JSON string representing the payment transaction. See sect
 
 **Response**
 
-If successful, returns a status code of 200 and a payment transaction object.
+If successful, returns a status code of 200 and a payment object including the new transaction.
 
 ### Trigger a payment (authorization, purchase or credit) using the account external key 
+
+This endpoint performs the same actions as the previous one, but the account is authorized by its external key. 
 
 **HTTP Request** 
 
@@ -3636,7 +3639,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '{ "transactionType": "AUTHORIZE", "amount": 0}' \
-    "http://localhost:8080/1.0/kb/accounts/payments?externalKey=2ad52f53-85ae-408a-9879-32a7e59dd03d&paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947"
+    "http://127.0.0.1:8080/1.0/kb/accounts/payments?externalKey=2ad52f53-85ae-408a-9879-32a7e59dd03d&paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947"
 ```
 
 ```java
@@ -3739,25 +3742,30 @@ accountApi.process_payment_by_external_key(body,
 no content
 ```
 
+**Request Body**
+
+The request body is a JSON string representing the payment transaction. See section [Payment Transaction](#payment-transaction) for details on payment transactions.
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **paymentMethodId** | string | false | payment method ID to use or use default account payment method ID |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **externalKey** | string | true | none | the account external key |
+| **paymentMethodId** | string | false | default payment method | payment method ID to use, if not default method |
+| **controlPluginName** | array of strings | false | none | list of control plugins, if any |
+| **pluginProperty** | array of strings | false | none |list of plugin properties, if any |
 
-**Returns**
+**Response**
 
-Returns a payment transaction object.
+If successful, returns a status code of 200 and a payment object including the new transaction.
 
 ## Payment Method
 
-See section [Payment Method](#payment-method) for details on payment method.
+These endpoints allow you to manage the payment methods for an account. See section [Payment Method](#payment-method) for details on payment methods.
 
 ### Add a payment method
 
-
-Add a [Payment method](http://docs.killbill.io/0.20/userguide_subscription.html#_payment_methods) for a gives `Account`.
+Add a payment method for a given `Account`. The payment method is represented by a plugin that must already be registered with KillBill.
 
 **HTTP Request** 
 
@@ -3777,7 +3785,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '{ "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "isDefault": false, "pluginName": "__EXTERNAL_PAYMENT__"}' \
-    "http://localhost:8080/1.0/kb/accounts/8785164f-b5d7-4da1-9495-33f5105e8d80/paymentMethods"	
+    "http://127.0.0.1:8080/1.0/kb/accounts/8785164f-b5d7-4da1-9495-33f5105e8d80/paymentMethods"	
 ```
 
 ```java
@@ -3877,16 +3885,20 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **isDefault** | boolean | false | Choose true if you want to set new payment as default. |
-| **payAllUnpaidInvoices** | boolean | false | Choose true if you want to pay all unpaid invoices. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **isDefault** | boolean | false | false | Choose true to set new payment as default. |
+| **payAllUnpaidInvoices** | boolean | false | false | Choose true to pay all unpaid invoices. |
+| **controlPluginName** | array of strings | false | none | list of control plugins, if any |
+| **pluginProperty** | array of strings | false | none |list of plugin properties, if any |
 
-**Returns**
+**Response**
 
-Returns a payment method object.
+If successful, returns a status code of 201 and a payment method object.
 
 ### Retrieve account payment methods
+
+This API retrieves a list of the payment methods that are associated with this account.
 
 **HTTP Request** 
 
@@ -3900,7 +3912,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods"
 ```
 
 ```java
@@ -3986,15 +3998,21 @@ class PaymentMethod {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **withPluginInfo** | boolean | false | Choose true if you want plugin info. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **withPluginInfo** | boolean | false | false | Choose true to include plugin info. |
+| **includedDeleted** | boolean | false | false | Coose true to include deleted payment methods |
+| **pluginProperty** | array of strings | false | none |list of plugin properties, if any |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
 
-Returns a list of payment method objects.
+**Response**
+
+If successful, returns a status code of 200 and a list of payment method objects.
 
 ### Set the default payment method
+
+This API chooses an existing payment method to be the default payment method.
 
 **HTTP Request** 
 
@@ -4013,7 +4031,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/f835c556-0694-4883-b4c1-d1b6e308409b/setDefault"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/f835c556-0694-4883-b4c1-d1b6e308409b/setDefault"
 ```
 
 ```java
@@ -4070,17 +4088,19 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
 | **payAllUnpaidInvoices** | boolean | false | Choose true if you want to pay all unpaid invoices. |
+| **pluginProperty** | array of strings | false | none |list of plugin properties, if any |
+
 
 **Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 ### Refresh account payment methods
 
-This endpoint is for a rare use cases where information for a particular payment method is stored inside the third party gateway, and both Kill Bill core and its payment plugin need to have their view updated.
+This endpoint is for a rare use case where information for a particular payment method is stored inside the third party gateway, and both Kill Bill core and its payment plugin need to have their view updated.
 
 **HTTP Request** 
 
@@ -4099,7 +4119,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/refresh"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/refresh"
 ```
 
 ```java
@@ -4154,11 +4174,14 @@ no content
 
 **Query Parameters**
 
-None.
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **PluginName** | array of strings | false | none | list of plugins, if any |
+| **pluginProperty** | array of strings | false | none |list of plugin properties, if any |
 
 **Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 
 ## Overdue
