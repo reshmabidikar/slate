@@ -4186,11 +4186,11 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Overdue
 
-The system can be configured to move `Account` through various [overdue](http://docs.killbill.io/0.20/userguide_subscription.html#components-overdue) , a.k.a. dunning state, when invoices are left unpaid. 
+The system can be configured to move an `Account` through various [overdue](http://docs.killbill.io/0.20/userguide_subscription.html#components-overdue) (a.k.a. dunning) states when invoices are left unpaid. 
 
 ### Retrieve overdue state for account
 
-This allows to retrieve the current overdue/dunning state for an `Account`.
+Retrieve the current overdue/dunning state for an `Account`.
 
 **HTTP Request** 
 
@@ -4204,7 +4204,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/overdue"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/overdue"
 ```
 
 ```java
@@ -4291,15 +4291,15 @@ None.
 
 **Returns**
 
-Returns a overdue state object.
+If successful, returns a status code of 200 and an overdue state object.
 
 
 ## Blocking State
 
-As part of the entitlement features, Kill Bill provides an abstraction to include `BlockingState` events into the per `Account` event stream. The main idea is to allow to modify billing -- e.g pause a specific subscription, all subscriptions, ... -- or the entitlement state -- disable service associated with a given subscription. The [entitlement internal documentation](http://docs.killbill.io/latest/entitlement_subsystem.html) provides some overview of the mechanism. Blocking states are mostly manipulated from inside Kill Bill core, but the functionality is exposed through the API, with the caveat that it is an advanced feature and can lead to unintented behavior if not used properly.
+As part of the entitlement features, Kill Bill provides an abstraction to include `BlockingState` events into the per `Account` event stream. The main idea is to allow billing to be modified, such as by pausing a specific subscription or all subscriptions, and to allow modification of the entitlement state, such as by disabling the service associated with a given subscription. The [entitlement internal documentation](http://docs.killbill.io/latest/entitlement_subsystem.html) provides some overview of the mechanism. Blocking states are mostly manipulated from inside Kill Bill core, but the functionality is exposed through the API, with the caveat that it is an advanced feature and can lead to unintented behavior if not used properly.
 
 Note that the term `BlockingState` seems to indicate that something will be blocked, and this can certainly be the case, but not necessarily; actually the attributes
-`isBlockChange`, `isBlockEntitlement`, `isBlockBilling` will drive this behavior. These flags are always considered on a per blocking state `service`, regardless of the state name. For instance, consider the following two scenarii:
+`isBlockChange`, `isBlockEntitlement`, `isBlockBilling` will drive this behavior. These flags are always considered on a per blocking state `service`, regardless of the state name. For instance, consider the following two scenarios:
 
 * Scenario 1
   * T1: Service A, State S1, isBlockBilling=true, isBlockEntitlement=false
@@ -4315,7 +4315,6 @@ Note that the term `BlockingState` seems to indicate that something will be bloc
 In Scenario 1, billing is blocked between T1 and T2, while entitlement is blocked between T2 and T3. In Scenario 2 however, billing is blocked between T1 and T3, while entitlement is blocked between T2 and T4.
 
 ### Block an account
-
 
 Add a `BlockingState` event for this account.
 
@@ -4337,7 +4336,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '{ "stateName": "STATE1", "service": "ServiceStateService", "isBlockChange": false, "isBlockEntitlement": false, "isBlockBilling": false, "effectiveDate": "2018-07-17T21:17:28.842Z", "type": "ACCOUNT" }' \
-    "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block"
+    "http://127.0.0.1:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block"
 ```
 
 ```java
@@ -4427,22 +4426,24 @@ no content
 ```python
 no content
 ```
-
+**Request Body**
+A JSON string representing the blocking state object to be added. For details on this resource see [blocking state](#blocking-state).
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
+| Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ----------- | 
-| **requestedDate** | string | false | Requested date for block an account, or if unset default to immediate |
+| **requestedDate** | string | false | block immediately | Requested date to block an account |
+| **pluginProperty** | array of strings | false | none |list of plugin properties, if any |
 
-**Returns**
+**Response**
 
-A `201` http status without content.
+If successful, returns a status code of 201 and a blocking state object
 
 ### Retrieve blocking states for account
 
-Retrieves the `BlockingState` assocaited to a given resource.
-`BlockingState` can be set at the `Account`, `Bundle` or `Subscription`.
+Retrieves the `BlockingState` associated with a given resource.
+`BlockingState` can be set at the `Account`, `Bundle` or `Subscription` level.
 
 **HTTP Request** 
 
@@ -4456,7 +4457,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block?blockingStateTypes=ACCOUNT"
+    "http://127.0.0.1:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block?blockingStateTypes=ACCOUNT"
 ```
 
 ```java
@@ -4571,22 +4572,22 @@ class BlockingState {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **blockingStateTypes** | string | false | filter list for blocking state types |
-| **blockingStateSvcs** | string | false | filter list for blocking state services |
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **blockingStateTypes** | array of strings | false | none |  blocking state types to retrieve: "SUBSCRIPTION", "SUBSCRIPTION_BUNDLE", "ACCOUNT" |
+| **blockingStateSvcs** | array of strings | false | none | filter list for blocking state services |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
+**Response**
 
-Returns a blocking state object
+If successful, returns a status code of 200 and a blocking state object
 
-## HA
+## Hierarchical Accounts
 
-When using the [hierarchical account](http://docs.killbill.io/latest/ha.html) feature, this api allows to retrieve
-all children `Account` for a given parent `Account`.
+When using the [hierarchical account](http://docs.killbill.io/latest/ha.html) feature, this API allows you to retrieve
+all the child `Accounts` for a given parent `Account`.
 
-### List children accounts
+### List child accounts
 
 
 **HTTP Request** 
@@ -4601,7 +4602,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/children"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/children"
 ```
 
 ```java
@@ -4764,19 +4765,19 @@ class Account {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **accountWithBalance** | boolean | false | if true, returns `accountBalance` info |
-| **accountWithBalanceAndCBA** | boolean | false | if true, returns `accountBalance` and `accountCBA` info |
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **accountWithBalance** | boolean | false | false | if true, returns `accountBalance` info |
+| **accountWithBalanceAndCBA** | boolean | false | false | if true, returns `accountBalance` and `accountCBA` info |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
+**Response**
 
-Returns a list of children account objects.
+If successful, returns a status code of 200 and a list of child account objects.
 
 ### Transfer a given child credit to the parent level
 
-In the context of the Hierarchical Account feature, this allows to move the potential child credit at the parent level.
+In the context of the Hierarchical Account feature, this allows moving the potential child credit to the parent level.
 
 
 **HTTP Request** 
@@ -4796,7 +4797,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/transferCredit"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/transferCredit"
 ```
 
 ```java
@@ -4844,17 +4845,17 @@ no content
 
 None.
 
-**Returns**
+**Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 ## Custom Fields
 
-Custom fields are `{key, value}` attributes that can be attached to any customer resources, and in particularly on the customer `Account`.
+Custom fields are `{key, value}` attributes that can be attached to any customer resource. In particular they can be added to the customer `Account`. For details on Custom Fields see [Custon Fields](#custom-fields).
 
 ### Add custom fields to account
 
-Allow to add custom fields for a given `Account`.
+Add custom fields to a given `Account`.
 
 **HTTP Request** 
 
@@ -4874,7 +4875,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '[ { "objectType": "ACCOUNT", "name": "Test Custom Field", "value": "demo_test_value" }] \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
 ```
 
 ```java
@@ -4957,19 +4958,22 @@ class CustomField {
 no content
 ```
 
+**Request Body**
+
+A JSON string representing the custom field object to be added.
 
 **Query Parameters**
 
 None.
 
-**Returns**
+**Response**
 
-Returns a custom field object.
+If successful, returns a status code of 200 and a list of custom field objects.
 
 ### Retrieve all custom fields
 
-Retrieves the custom fields attached to various resources owned by the `Account`.
-Assuming there were custom fields attached to various subscriptions, invoices, payments, ... for this specific account, this endpoint would allow to retrieve them all or potentially filter them by type -- e.g `Subscription`.
+Retrieves all custom fields attached to various resources owned by the `Account`.
+Assuming there were custom fields attached to various subscriptions, invoices, payments, etc., for this specific account, this endpoint would allow you to retrieve them all, or potentially to filter them by type, e.g `Subscription`.
 
 **HTTP Request** 
 
@@ -4983,7 +4987,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allCustomFields"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allCustomFields"
 ```
 
 ```java
@@ -5084,16 +5088,18 @@ class CustomField {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **objectType** | string | false | choose type of object (e.g. `ACCOUNT`, `BUNDLE`, `SUBSCRIPTION`) |
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **objectType** | string | false | omit | type of object (`ACCOUNT`, `BUNDLE`, or `SUBSCRIPTION`) |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
+**Response**
     
-Returns a list of custom fields objects
+If successful, returns a status code of 200 and a list of custom field objects
 
 ### Retrieve account custom fields
+
+Retrieve the custom fields associated with an account
 
 **HTTP Request** 
 
@@ -5191,15 +5197,19 @@ class CustomField {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **objectType** | string | false | omit | type of object (19 choices) |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
 
-Returns a list of custom field objects.
+**Response**
+    
+If successful, returns a status code of 200 and a list of custom field objects
 
-### Modify custom fields to account
+### Modify custom fields for an account
+
+Modify the custom fields associated with an acount.
 
 **HTTP Request** 
 
@@ -5280,6 +5290,9 @@ no content
 ```python
 no content
 ```
+**Requst Body**
+
+A JSON string representing a list of custom fields to substitute for the existing ones.
 
 **Query Parameters**
 
@@ -5287,9 +5300,11 @@ None.
 
 **Returns**
 
-A `204` http status without content.
+If successful, a status code of 204 and an empty body.
 
 ### Remove custom fields from account
+
+Remove a specified set of custom fields from the account
 
 **HTTP Request** 
 
@@ -5306,7 +5321,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields?customField=9913e0f6-b5ef-498b-ac47-60e1626eba8f"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields?customField=9913e0f6-b5ef-498b-ac47-60e1626eba8f"
 ```
 
 ```java
@@ -5364,13 +5379,13 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **customField** | string | true | the list of custom field object IDs that should be deleted. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **customField** | string | true | none | comma separated list of custom field object IDs that should be deleted. |
 
 **Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 
 ## Tags
