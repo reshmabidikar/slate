@@ -2601,8 +2601,8 @@ class Bundle {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | -------- | ----------- | 
-| **externalKey** | string | false | omit | Bundle external key; return only bundles with this key. If omitted, return all bundles |
-| **bundlesFilter** | string | false | omit | Comma separated list of bundle ids to return, if found. If omitted, return all bundles |
+| **externalKey** | string | false | return all bundles | Bundle external key; if present, return only bundles with this key. |
+| **bundlesFilter** | string | false | return all bundles | Comma separated list of bundle ids to return, if found. |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 **Returns**
@@ -2866,8 +2866,8 @@ class Invoice {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
-| **startDate** | date | false | omit | Filter invoices using a start date. If omitted, return all start dates. |
-| **endDate** | date | false | omit | Filter invoices using an end date. If omitted, return all end dates |
+| **startDate** | date | false | no starting date | Return only invoices issued since this date. |
+| **endDate** | date | false | no ending date | Return only invoices issued up to this date. |
 | **withMigrationInvoices** | boolean | false | false | Choose true to include migration invoices |
 | **unpaidInvoicesOnly** | boolean | false | false | Choose true to include unpaid invoices only |
 | **includeVoidedInvoices** | boolean | false | false | Choose true to include voided invoices |
@@ -3752,8 +3752,8 @@ The request body is a JSON string representing the payment transaction. See sect
 | ---- | -----| -------- | ------- | ----------- |
 | **externalKey** | string | true | none | the account external key |
 | **paymentMethodId** | string | false | default payment method | payment method ID to use, if not default method |
-| **controlPluginName** | array of strings | false | omit | list of control plugins, if any |
-| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
+| **controlPluginName** | array of strings | false | empty list | list of control plugins, if any |
+| **pluginProperty** | array of strings | false | empty list |list of plugin properties, if any |
 
 **Response**
 
@@ -3889,8 +3889,8 @@ no content
 | ---- | -----| -------- | ------- | ----------- |
 | **isDefault** | boolean | false | false | Choose true to set new payment as default. |
 | **payAllUnpaidInvoices** | boolean | false | false | Choose true to pay all unpaid invoices. |
-| **controlPluginName** | array of strings | false | omit | list of control plugins, if any |
-| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
+| **controlPluginName** | array of strings | false | empty list | list of control plugins, if any |
+| **pluginProperty** | array of strings | false | empty list |list of plugin properties, if any |
 
 **Response**
 
@@ -4001,8 +4001,8 @@ class PaymentMethod {
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **withPluginInfo** | boolean | false | false | Choose true to include plugin info. |
-| **includedDeleted** | boolean | false | false | Coose true to include deleted payment methods |
-| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
+| **includedDeleted** | boolean | false | false | Choose true to include deleted payment methods |
+| **pluginProperty** | array of strings | false | empty list | list of plugin properties, if any |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 
@@ -4091,7 +4091,7 @@ no content
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **payAllUnpaidInvoices** | boolean | false | false | Choose true to pay all unpaid invoices |
-| **pluginProperty** | array of strings | false | omit | List of plugin properties, if any |
+| **pluginProperty** | array of strings | false | empty list | List of plugin properties, if any |
 
 
 **Response**
@@ -4176,8 +4176,8 @@ no content
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
-| **PluginName** | array of strings | false | omit | list of plugins, if any |
-| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
+| **PluginName** | array of strings | false | empty list | List of plugins, if any |
+| **pluginProperty** | array of strings | false | empty list | List of plugin properties, if any |
 
 **Response**
 
@@ -4427,14 +4427,15 @@ no content
 no content
 ```
 **Request Body**
+
 A JSON string representing the blocking state object to be added. For details on this resource see [blocking state](#blocking-state).
 
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ----------- | 
+| ---- | -----| -------- | ------- | ----------- | 
 | **requestedDate** | string | false | block immediately | Requested date to block an account |
-| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
+| **pluginProperty** | array of strings | false | empty list | List of plugin properties, if any |
 
 **Response**
 
@@ -5860,7 +5861,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Audit Logs
 
-Audit logs provide a record of events that occur involving various specific resources.
+Audit logs provide a record of events that occur involving various specific resources. For details on audit logs see [Audit and History](https://killbill.github.io/slate/#using-kill-bill-apis-audit-and-history).
 
 ### Retrieve audit logs
 
@@ -7670,7 +7671,6 @@ class AccountTimeline {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
-| **parallel** | boolean | false | false | parallel |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 
