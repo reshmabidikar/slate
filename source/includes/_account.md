@@ -30,7 +30,7 @@ The attributes contained in the account resource are the following:
 | **locale** | string | user | ISO locale code for customer language |
 | **timeZone** | string | user | Descriptor for the customer's time zone. Used by the system to make any required transformation from `DateTime` to `LocalDate` |
 | **phone** | string | user | Phone contact number to reach the customer |
-| **email** | string | user | Contact email to reach the customer |
+| **email** | string | user | Primary email to reach the customer |
 | **notes** | string | user | Additonal notes about the customer, usually set by the customer service department |
 | **isMigrated** | boolean | user | Indicates whether this account has been migrated from another system |
 | **accountCBA** | integer | system | Account credit, if any |
@@ -39,7 +39,9 @@ The attributes contained in the account resource are the following:
 
 The **name** is usually the personal name of the account owner. We recommend that this be entered so that the first word is an acceptable short form for the complete name, such as "first name" in most English-speaking cultures. In this case the value **firstNameLength** enables your code to extract this part of the name for informal greetings. For information on name formats in various countries see [Personal Names around the World](https://www.w3.org/International/questions/qa-personal-names) by the W3C.
 
-A list of valid **timeZone** strings is given at [timezone strings](https://github.com/rails/rails/blob/23b4aa505d04731c7890e19e8f8996869526f5b3/activesupport/lib/active_support/values/time_zone.rb#L31-L183)
+A list of valid **timeZone** strings is given at [timezone strings](https://github.com/rails/rails/blob/23b4aa505d04731c7890e19e8f8996869526f5b3/activesupport/lib/active_support/values/time_zone.rb#L31-L183).
+
+For information about migrating accounts from a previous system see the [Migration Guide](http://docs.killbill.io/latest/migration_guide.html).
 
 ## Accounts
 
@@ -184,7 +186,7 @@ none
 
 **Response**
 
-A `201` status is returned if the call succeeds, along with a `Location` header giving the URL for the account object, including the generated `accountId`.
+IF successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL for the account object, including the generated `accountId`.
 
 ### Retrieve an Account by its ID
 
@@ -379,11 +381,11 @@ class Account {
 
 **Response**
 
-Returns an account object in the response body, and a status code of 200, if a valid identifier was provided.
+If successful, returns a status code of 200 and an account object in the response body.
 
 ### Retrieve an Account by its external key
 
-Retrieves the resource object for an `Account` using its `externalKey`. The `externalKey` is passed as a query parameter.
+Retrieves the resource object for an `Account` using its `externalKey` as an identifier.
 
 
 **HTTP Request** 
@@ -575,7 +577,7 @@ class Account {
 
 **Response**
 
-Returns an account object in the response body, and a status code of 200, if a valid identifier was provided.
+If successful, returns a status code of 200 and an account object in the response body.
 
 ### Update an Account
 
@@ -686,19 +688,16 @@ no content
 no content
 ```
 
-Note that the following fields are not updatable, they can only be set once when creating the original `Account`:  `externalKey`, `currency`, `timeZone`, and `referenceTime`. In addition the `billCycleDayLocal` can be updated but only **once**, that is one can create an `Account` without specifying the `billCycleDayLocal` and later update its value. This, allows the system to update its value to a good default, that is one that will avoid leading prorations, when creating the first subscription.
-
-
 
 **Query Parameters**
 
-| Name | Type | Required | Default |Description |
+| Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ----------- | ----- | 
-| **treatNullAsReset** | boolean | false | false | If set to true, any null value will be set to `null`. If set to false, any null value will be ignored.|
+| **treatNullAsReset** | boolean | false | false | If true, any attribute with a null value in the request body will be set to `null`. If false, any attribute with a null value in the request body will be unchanged.|
 
 **Response**
 
-Returns a `204` http status without content if the request succeeds.
+If successful, returns a status code of 204 and an empty body..
 
 ### Close account
 
@@ -795,8 +794,7 @@ no content
 
 **Response**
 
-Returns a `204` status without content if the call succeeds.
-
+IF successful, eturns a status code of 204 and an empty body.
 
 ## List and Search
 
@@ -1010,18 +1008,18 @@ class Account {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **offset** | long | true | false | offset |
-| **limit** | long | true | false | limit search items |
-| **accountWithBalance** | boolean | false | false | if true, returns `accountBalance` info |
-| **accountWithBalanceAndCBA** | boolean | false | false | if true, returns `accountBalance` and `accountCBA` info |
+| **offset** | long | false | 0 | Starting index for items listed |
+| **limit** | long | false | 100 | Maximum number of items to be listed |
+| **accountWithBalance** | boolean | false | false | If true, returns `accountBalance` info |
+| **accountWithBalanceAndCBA** | boolean | false | false | If true, returns `accountBalance` and `accountCBA` info |
 
 **Response**
 
-If successful, returns a list with all accounts and a status code of 200.
+If successful, returns a status code of 200 and a list of all accounts.
 
 ### Search accounts
 
-Search for an account by a specified search string. The search string is compared to the following attributes: `accountId`, `name`, `email`, `companyName`, and `externalKey`. The operation returns all account records in which the search string matches all or part of one of these attributes.
+Search for an account by a specified search string. The search string is compared to the following attributes: `accountId`, `name`, `email`, `companyName`, and `externalKey`. The operation returns all account records in which the search string matches all or part of any one of these attributes.
 
 **HTTP Request** 
 
@@ -1207,24 +1205,24 @@ class Account {
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ---- | ------------
 | **searchKey** | string | true | none | What you want to find |
-| **offset** | long | false | 0 | Offset to start this page |
-| **limit** | long | false | 100 | Number of items to return on this page |
+| **offset** | long | false | 0 | Starting index for items listed |
+| **limit** | long | false | 100 | Maximum number of items to return on this page |
 | **accountWithBalance** | boolean | false | false | If true, returns `accountBalance` info |
 | **accountWithBalanceAndCBA** | boolean | false | false | If true, returns `accountBalance` and `accountCBA` info |
 
 **Response**
 
-Returns a status code of 200 and a list of accounts that contain a match for the specified search key.
+If successful, returns a status code of 200 and a list of accounts that contain a match for the specified search key.
 
 
 ## Email
 
-These endpoints manage emails associated with a customer account. It is possible to have
-several emails for one customer `account`.
+These endpoints manage emails associated with a customer account. **These are secondary emails, distinct from the `email` attribute in the `account` object.** It is possible to have
+several such emails for one customer account.
 
 ### Add account email
 
-Add an email to an `account`. Existing emails are undisturbed.
+Add an email to an account. Existing emails are undisturbed.
 
 **HTTP Request** 
 
@@ -1313,7 +1311,7 @@ None.
 
 **Response**
 
-If the operation succeeds it returns a status code of 201 and an empty response body.
+If successful, returns a status code of 201 and an empty response body.
 
 ### Retrieve account emails
 
@@ -1403,7 +1401,7 @@ None.
 
 **Response Body**
 
-If successful, returns a list of objects with account id's and their emails.
+If successful, returns a status code of 200 and a list of objects giving the account id and the emails. Note that this is not the full object for each email, and does not include the email ID. This can be obtained only from the account audit log.
 
 ### Delete email
 
@@ -1488,11 +1486,11 @@ If successful, returns a status code of 204 and an empty response body.
 
 ## Bundle
 
-See section [Bundle](#bundle) for details on bundles.
+This endpoint provides an API to list the Bundles associated with this account. A Bundle is a set of Subscriptions and related information. See [Bundle](#bundle) for details on Bundles.
 
 ### Retrieve bundles for account
 
-This endpoint allow to list all (subscription) `Bundle` associated with this account.
+This endpoint is used to list all `Bundles` associated with this account. It is possible to limit the list to a specific Bundle external key, or to a list of Bundle Ids.
 
 **HTTP Request** 
 
@@ -1506,7 +1504,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/bundles" 
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/bundles" 
 ```
 
 ```java
@@ -2601,22 +2599,23 @@ class Bundle {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **externalKey** | string | false | bundle external key |
-| **bundlesFilter** | string | false | bundles filter |
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | -------- | ----------- | 
+| **externalKey** | string | false | return all bundles | Bundle external key; if present, return only bundles with this key. |
+| **bundlesFilter** | string | false | return all bundles | Comma separated list of bundle ids to return, if found. |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 **Returns**
 
-Returns a list of account bundle objects.
+If successful, returns a status code of 200 and a list of bundle objects.
 
 ## Invoice
 
-See section [Invoice](#invoice) for details on invoices.
+This endpoint provides an API to list the Invoices associated with this account. See section [Invoice](#invoice) for details on invoices.
 
 ### Retrieve account invoices
 
+List the Invoices associated with this account.
 
 **HTTP Request** 
 
@@ -2630,7 +2629,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoices"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoices"
 ```
 
 ```java
@@ -2865,26 +2864,30 @@ class Invoice {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **startDate** | date | false |  Filter invoices using a start date. |
-| **endDate** | date | false | Filter invoices using an end date. |
-| **withMigrationInvoices** | boolean | false | Choose true if you want migration invoices |
-| **unpaidInvoicesOnly** | boolean | false | Choose true if you want unpaid invoices only |
-| **includeVoidedInvoices** | boolean | false | Choose true if you want to include voided invoices |
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **startDate** | date | false | no starting date | Return only invoices issued since this date. |
+| **endDate** | date | false | no ending date | Return only invoices issued up to this date. |
+| **withMigrationInvoices** | boolean | false | false | Choose true to include migration invoices |
+| **unpaidInvoicesOnly** | boolean | false | false | Choose true to include unpaid invoices only |
+| **includeVoidedInvoices** | boolean | false | false | Choose true to include voided invoices |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
+For information about migration and migration invoices, see the [Migration Guide](http://docs.killbill.io/latest/migration_guide.html).
 
-Return a list with invoice objects.
+**Response**
+
+If successful, returns a status of 200 and a list of invoice objects for this account.
+
+
 
 ## Payment 
 
-See section [Payment](#payment) for details on payment.
+These endpoints are used to make or manage payments associated with this account. See section [Payment](#payment) for details on payments.
 
 ### Trigger a payment for all unpaid invoices
 
-This call allows to make a series of payment calls, one against each unpaid invoice using a specific payment method.
+Initiate payments for any unpaid invoices. This API allows you to make a series of payment calls, one against each unpaid invoice, using a specific payment method.
 
 **HTTP Request** 
 
@@ -2903,7 +2906,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments?paymentMethodId=f835c556-0694-4883-b4c1-d1b6e308409b"	
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments?paymentMethodId=f835c556-0694-4883-b4c1-d1b6e308409b"	
 ```
 
 ```java
@@ -2977,18 +2980,20 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **paymentMethodId** | string | false | Payment method id. |
-| **externalPayment** | boolean | false | Choose true if you use a external payment method. |
-| **paymentAmount** | string | false | Total payment amount. |
-| **targetDate** | string | false | Total payment amount. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **paymentMethodId** | string | false | default payment method | Payment method id |
+| **externalPayment** | boolean | false | false | Choose true if you use a external payment method. |
+| **paymentAmount** | string | false | total balance |Total payment amount |
+| **targetDate** | string | false | current date | Date for which payment should be made |
 
 **Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 ### Retrieve account invoice payments
+
+Retrieve a list of payments made against invoices for this account.
 
 **HTTP Request** 
 
@@ -3002,7 +3007,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments"	
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/invoicePayments"	
 ```
 
 ```java
@@ -3187,17 +3192,21 @@ class InvoicePayment {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **audit** | enum | false | level of audit logs returned |
-| **withPluginInfo** | boolean | false | Choose true if you want plugin info. |
-| **withAttempts** | boolean | false | Choose true if you want payment attempts. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **withPluginInfo** | boolean | false | false | Choose true to include plugin info |
+| **withAttempts** | boolean | false | false | Choose true to include payment attempts |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
+
 
 **Returns**
 
-Return a list of invoice payments objects.
+If successful, returns a status code of 200 and a list of invoice payment objects.
 
 ### Retrieve account payments
+
+Retrieve a list of payments made for this account. Payments are listed independent of any invoice.
+
 
 **HTTP Request** 
 
@@ -3211,7 +3220,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments"	
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments"	
 ```
 
 ```java
@@ -3395,21 +3404,21 @@ class Payment {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **audit** | enum | false | level of audit logs returned |
-| **withPluginInfo** | boolean | false | choose true if you want plugin info |
-| **withAttempts** | boolean | false | choose true if you want payment attempts |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **withPluginInfo** | boolean | false | false | Choose true to include plugin info |
+| **withAttempts** | boolean | false | false | Choose true to include payment attempts |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
+**Response**
 
-Returns a list of all account payments object.
+If successful, returns a status code of 200 and a list of payment objects.
 
 ### Trigger a payment (authorization, purchase or credit)
 
-This api is part of the raw payment apis, unreleated to subscriptions and invoices. It simply allows
-to make a trigger a payment transaction against a particular payment gateway through Kill Bill core and the plugin
-communicating with the payment gateway.
+This endpoint is part of the raw payment APIs, unreleated to subscriptions and invoices. It simply triggers
+a payment transaction against a particular payment gateway through the Kill Bill core and through the plugin
+communicating with the payment gateway. The transaction could be an authorization, a purchase, or a credit.
 
 
 **HTTP Request** 
@@ -3430,7 +3439,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '{ "transactionType": "AUTHORIZE", "amount": 0}' \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments?paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/payments?paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947"
 ```
 
 ```java
@@ -3592,18 +3601,25 @@ class Payment {
 no content
 ```
 
+**Request Body**
+
+The request body is a JSON string representing the payment transaction. See section [Payment Transaction](#payment-transaction) for details on payment transactions.
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **paymentMethodId** | string | false | payment method ID to use or use default account payment method ID |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **paymentMethodId** | string | false | default payment method | payment method ID to use, if not default method |
+| **controlPluginName** | array of strings | false | omit | list of control plugins, if any |
+| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
 
-**Returns**
+**Response**
 
-Returns a payment transaction object.
+If successful, returns a status code of 200 and a payment object including the new transaction.
 
-### Trigger a payment using the account external key (authorization, purchase or credit)
+### Trigger a payment (authorization, purchase or credit) using the account external key 
+
+This endpoint performs the same actions as the previous one, but the account is identified by its external key. 
 
 **HTTP Request** 
 
@@ -3623,7 +3639,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '{ "transactionType": "AUTHORIZE", "amount": 0}' \
-    "http://localhost:8080/1.0/kb/accounts/payments?externalKey=2ad52f53-85ae-408a-9879-32a7e59dd03d&paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947"
+    "http://127.0.0.1:8080/1.0/kb/accounts/payments?externalKey=2ad52f53-85ae-408a-9879-32a7e59dd03d&paymentMethodId=c02fa9b0-ae95-42ae-9010-bc11cb160947"
 ```
 
 ```java
@@ -3726,25 +3742,30 @@ accountApi.process_payment_by_external_key(body,
 no content
 ```
 
+**Request Body**
+
+The request body is a JSON string representing the payment transaction. See section [Payment Transaction](#payment-transaction) for details on payment transactions.
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **paymentMethodId** | string | false | payment method ID to use or use default account payment method ID |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **externalKey** | string | true | none | the account external key |
+| **paymentMethodId** | string | false | default payment method | payment method ID to use, if not default method |
+| **controlPluginName** | array of strings | false | empty list | list of control plugins, if any |
+| **pluginProperty** | array of strings | false | empty list |list of plugin properties, if any |
 
-**Returns**
+**Response**
 
-Returns a payment transaction object.
+If successful, returns a status code of 200 and a payment object including the new transaction.
 
 ## Payment Method
 
-See section [Payment Method](#payment-method) for details on payment method.
+These endpoints allow you to manage the payment methods for an account. See section [Payment Method](#payment-method) for details on payment methods.
 
 ### Add a payment method
 
-
-Add a [Payment method](http://docs.killbill.io/0.20/userguide_subscription.html#_payment_methods) for a gives `Account`.
+Add a payment method for a given `Account`. The payment method is represented by a plugin that must already be registered with KillBill.
 
 **HTTP Request** 
 
@@ -3764,7 +3785,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '{ "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "isDefault": false, "pluginName": "__EXTERNAL_PAYMENT__"}' \
-    "http://localhost:8080/1.0/kb/accounts/8785164f-b5d7-4da1-9495-33f5105e8d80/paymentMethods"	
+    "http://127.0.0.1:8080/1.0/kb/accounts/8785164f-b5d7-4da1-9495-33f5105e8d80/paymentMethods"	
 ```
 
 ```java
@@ -3864,16 +3885,20 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **isDefault** | boolean | false | Choose true if you want to set new payment as default. |
-| **payAllUnpaidInvoices** | boolean | false | Choose true if you want to pay all unpaid invoices. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **isDefault** | boolean | false | false | Choose true to set new payment as default. |
+| **payAllUnpaidInvoices** | boolean | false | false | Choose true to pay all unpaid invoices. |
+| **controlPluginName** | array of strings | false | empty list | list of control plugins, if any |
+| **pluginProperty** | array of strings | false | empty list |list of plugin properties, if any |
 
-**Returns**
+**Response**
 
-Returns a payment method object.
+If successful, returns a status code of 201 and a payment method object.
 
 ### Retrieve account payment methods
+
+This API retrieves a list of the payment methods that are associated with this account.
 
 **HTTP Request** 
 
@@ -3887,7 +3912,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods"
 ```
 
 ```java
@@ -3973,15 +3998,21 @@ class PaymentMethod {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **withPluginInfo** | boolean | false | Choose true if you want plugin info. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **withPluginInfo** | boolean | false | false | Choose true to include plugin info. |
+| **includedDeleted** | boolean | false | false | Choose true to include deleted payment methods |
+| **pluginProperty** | array of strings | false | empty list | list of plugin properties, if any |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
 
-Returns a list of payment method objects.
+**Response**
+
+If successful, returns a status code of 200 and a list of payment method objects.
 
 ### Set the default payment method
+
+This API sets an existing payment method to be the default payment method.
 
 **HTTP Request** 
 
@@ -4000,7 +4031,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/f835c556-0694-4883-b4c1-d1b6e308409b/setDefault"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/f835c556-0694-4883-b4c1-d1b6e308409b/setDefault"
 ```
 
 ```java
@@ -4057,17 +4088,19 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **payAllUnpaidInvoices** | boolean | false | Choose true if you want to pay all unpaid invoices. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **payAllUnpaidInvoices** | boolean | false | false | Choose true to pay all unpaid invoices |
+| **pluginProperty** | array of strings | false | empty list | List of plugin properties, if any |
+
 
 **Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 ### Refresh account payment methods
 
-This endpoint is for a rare use cases where information for a particular payment method is stored inside the third party gateway, and both Kill Bill core and its payment plugin need to have their view updated.
+This endpoint is for a rare use case where information for a particular payment method is stored inside the third party gateway, and both Kill Bill core and its payment plugin need to have their view updated.
 
 **HTTP Request** 
 
@@ -4086,7 +4119,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/refresh"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/paymentMethods/refresh"
 ```
 
 ```java
@@ -4141,20 +4174,23 @@ no content
 
 **Query Parameters**
 
-None.
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **PluginName** | array of strings | false | empty list | List of plugins, if any |
+| **pluginProperty** | array of strings | false | empty list | List of plugin properties, if any |
 
 **Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 
 ## Overdue
 
-The system can be configured to move `Account` through various [overdue](http://docs.killbill.io/0.20/userguide_subscription.html#components-overdue) , a.k.a. dunning state, when invoices are left unpaid. 
+The system can be configured to move an `Account` through various [overdue](http://docs.killbill.io/latest/userguide_subscription.html#components-overdue) (a.k.a. dunning) states when invoices are left unpaid. 
 
 ### Retrieve overdue state for account
 
-This allows to retrieve the current overdue/dunning state for an `Account`.
+Retrieve the current overdue/dunning state for an `Account`.
 
 **HTTP Request** 
 
@@ -4168,7 +4204,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/overdue"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/overdue"
 ```
 
 ```java
@@ -4255,15 +4291,15 @@ None.
 
 **Returns**
 
-Returns a overdue state object.
+If successful, returns a status code of 200 and an overdue state object.
 
 
 ## Blocking State
 
-As part of the entitlement features, Kill Bill provides an abstraction to include `BlockingState` events into the per `Account` event stream. The main idea is to allow to modify billing -- e.g pause a specific subscription, all subscriptions, ... -- or the entitlement state -- disable service associated with a given subscription. The [entitlement internal documentation](http://docs.killbill.io/latest/entitlement_subsystem.html) provides some overview of the mechanism. Blocking states are mostly manipulated from inside Kill Bill core, but the functionality is exposed through the API, with the caveat that it is an advanced feature and can lead to unintented behavior if not used properly.
+As part of the entitlement features, Kill Bill provides an abstraction to include `BlockingState` events into the per `Account` event stream. The main idea is to allow billing to be modified, such as by pausing a specific subscription or all subscriptions, and to allow modification of the entitlement state, such as by disabling the service associated with a given subscription. The [entitlement internal documentation](http://docs.killbill.io/latest/entitlement_subsystem.html) provides some overview of the mechanism. Blocking states are mostly manipulated from inside Kill Bill core, but the functionality is exposed through the API, with the caveat that it is an advanced feature and can lead to unintented behavior if not used properly.
 
 Note that the term `BlockingState` seems to indicate that something will be blocked, and this can certainly be the case, but not necessarily; actually the attributes
-`isBlockChange`, `isBlockEntitlement`, `isBlockBilling` will drive this behavior. These flags are always considered on a per blocking state `service`, regardless of the state name. For instance, consider the following two scenarii:
+`isBlockChange`, `isBlockEntitlement`, `isBlockBilling` will drive this behavior. These flags are always considered on a per blocking state `service`, regardless of the state name. For instance, consider the following two scenarios:
 
 * Scenario 1
   * T1: Service A, State S1, isBlockBilling=true, isBlockEntitlement=false
@@ -4279,7 +4315,6 @@ Note that the term `BlockingState` seems to indicate that something will be bloc
 In Scenario 1, billing is blocked between T1 and T2, while entitlement is blocked between T2 and T3. In Scenario 2 however, billing is blocked between T1 and T3, while entitlement is blocked between T2 and T4.
 
 ### Block an account
-
 
 Add a `BlockingState` event for this account.
 
@@ -4301,7 +4336,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '{ "stateName": "STATE1", "service": "ServiceStateService", "isBlockChange": false, "isBlockEntitlement": false, "isBlockBilling": false, "effectiveDate": "2018-07-17T21:17:28.842Z", "type": "ACCOUNT" }' \
-    "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block"
+    "http://127.0.0.1:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block"
 ```
 
 ```java
@@ -4391,22 +4426,25 @@ no content
 ```python
 no content
 ```
+**Request Body**
 
+A JSON string representing the blocking state object to be added. For details on this resource see [blocking state](#blocking-state).
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **requestedDate** | string | false | Requested date for block an account, or if unset default to immediate |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **requestedDate** | string | false | block immediately | Requested date to block an account |
+| **pluginProperty** | array of strings | false | empty list | List of plugin properties, if any |
 
-**Returns**
+**Response**
 
-A `201` http status without content.
+If successful, returns a status code of 201 and a blocking state object.
 
 ### Retrieve blocking states for account
 
-Retrieves the `BlockingState` assocaited to a given resource.
-`BlockingState` can be set at the `Account`, `Bundle` or `Subscription`.
+Retrieves the `BlockingState` associated with a given resource.
+`BlockingState` can be set at the `Account`, `Bundle` or `Subscription` level.
 
 **HTTP Request** 
 
@@ -4420,7 +4458,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block?blockingStateTypes=ACCOUNT"
+    "http://127.0.0.1:8080/1.0/kb/accounts/10483c3a-3394-4667-8519-0d849e9a8ec2/block?blockingStateTypes=ACCOUNT"
 ```
 
 ```java
@@ -4535,22 +4573,22 @@ class BlockingState {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **blockingStateTypes** | string | false | filter list for blocking state types |
-| **blockingStateSvcs** | string | false | filter list for blocking state services |
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **blockingStateTypes** | array of strings | false | retrieve all |  blocking state types to retrieve: "SUBSCRIPTION", "SUBSCRIPTION_BUNDLE", "ACCOUNT" |
+| **blockingStateSvcs** | array of strings | false | retrieve all | filter list for blocking state services |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
+**Response**
 
-Returns a blocking state object
+If successful, returns a status code of 200 and a blocking state object.
 
-## HA
+## Hierarchical Accounts
 
-When using the [hierarchical account](http://docs.killbill.io/latest/ha.html) feature, this api allows to retrieve
-all children `Account` for a given parent `Account`.
+When using the [hierarchical account](http://docs.killbill.io/latest/ha.html) feature, this API allows you to retrieve
+all the child `Accounts` for a given parent `Account`.
 
-### List children accounts
+### List child accounts
 
 
 **HTTP Request** 
@@ -4565,7 +4603,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/children"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/children"
 ```
 
 ```java
@@ -4728,19 +4766,19 @@ class Account {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **accountWithBalance** | boolean | false | if true, returns `accountBalance` info |
-| **accountWithBalanceAndCBA** | boolean | false | if true, returns `accountBalance` and `accountCBA` info |
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **accountWithBalance** | boolean | false | false | if true, returns `accountBalance` info |
+| **accountWithBalanceAndCBA** | boolean | false | false | if true, returns `accountBalance` and `accountCBA` info |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
+**Response**
 
-Returns a list of children account objects.
+If successful, returns a status code of 200 and a list of child account objects.
 
 ### Transfer a given child credit to the parent level
 
-In the context of the Hierarchical Account feature, this allows to move the potential child credit at the parent level.
+In the context of the Hierarchical Account feature, this allows moving the potential child credit to the parent level.
 
 
 **HTTP Request** 
@@ -4760,7 +4798,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/transferCredit"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/transferCredit"
 ```
 
 ```java
@@ -4808,17 +4846,17 @@ no content
 
 None.
 
-**Returns**
+**Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 ## Custom Fields
 
-Custom fields are `{key, value}` attributes that can be attached to any customer resources, and in particularly on the customer `Account`.
+Custom fields are `{key, value}` attributes that can be attached to any customer resource. In particular they can be added to the customer `Account`. For details on Custom Fields see [Custom Field](#custom-field).
 
 ### Add custom fields to account
 
-Allow to add custom fields for a given `Account`.
+Add custom fields to a given `Account`.
 
 **HTTP Request** 
 
@@ -4838,7 +4876,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '[ { "objectType": "ACCOUNT", "name": "Test Custom Field", "value": "demo_test_value" }] \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
 ```
 
 ```java
@@ -4921,19 +4959,22 @@ class CustomField {
 no content
 ```
 
+**Request Body**
+
+A JSON string representing the custom field object to be added.
 
 **Query Parameters**
 
 None.
 
-**Returns**
+**Response**
 
-Returns a custom field object.
+If successful, returns a status code of 200 and a list of custom field objects.
 
 ### Retrieve all custom fields
 
-Retrieves the custom fields attached to various resources owned by the `Account`.
-Assuming there were custom fields attached to various subscriptions, invoices, payments, ... for this specific account, this endpoint would allow to retrieve them all or potentially filter them by type -- e.g `Subscription`.
+Retrieves all custom fields attached to various resources owned by the `Account`.
+This endpoint allows you to retrieve all custom fields, or to filter them by type, e.g `Subscription`.
 
 **HTTP Request** 
 
@@ -4947,7 +4988,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allCustomFields"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allCustomFields"
 ```
 
 ```java
@@ -5048,16 +5089,21 @@ class CustomField {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **objectType** | string | false | choose type of object (e.g. `ACCOUNT`, `BUNDLE`, `SUBSCRIPTION`) |
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **objectType** | string | false | retrieve all | type of object |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
+Possible values for **objectType** are ACCOUNT, ACCOUNT_EMAIL, BLOCKING_STATES, BUNDLE, CUSTOM_FIELD, INVOICE, PAYMENT, TRANSACTION, INVOICE_ITEM, INVOICE_PAYMENT, SUBSCRIPTION, SUBSCRIPTION_EVENT, SERVICE_BROADCAST, PAYMENT_ATTEMPT, PAYMENT_METHOD, TAG, TAG_DEFINITION, TENANT, or TENANT_KVS.
+
+
+**Response**
     
-Returns a list of custom fields objects
+If successful, returns a status code of 200 and a list of custom field objects
 
 ### Retrieve account custom fields
+
+Retrieve the custom fields associated with an account
 
 **HTTP Request** 
 
@@ -5155,15 +5201,18 @@ class CustomField {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
 
-Returns a list of custom field objects.
+**Response**
+    
+If successful, returns a status code of 200 and a list of custom field objects
 
-### Modify custom fields to account
+### Modify custom fields for an account
+
+Modify the custom fields associated with an acount.
 
 **HTTP Request** 
 
@@ -5244,6 +5293,9 @@ no content
 ```python
 no content
 ```
+**Requst Body**
+
+A JSON string representing a list of custom fields to substitute for the existing ones.
 
 **Query Parameters**
 
@@ -5251,9 +5303,11 @@ None.
 
 **Returns**
 
-A `204` http status without content.
+If successful, a status code of 204 and an empty body.
 
 ### Remove custom fields from account
+
+Remove a specified set of custom fields from the account
 
 **HTTP Request** 
 
@@ -5270,7 +5324,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields?customField=9913e0f6-b5ef-498b-ac47-60e1626eba8f"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields?customField=9913e0f6-b5ef-498b-ac47-60e1626eba8f"
 ```
 
 ```java
@@ -5328,42 +5382,46 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **customField** | string | true | the list of custom field object IDs that should be deleted. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **customField** | string | true | none | Comma separated list of custom field object IDs that should be deleted. |
 
 **Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 
 ## Tags
 
-While custom fields allow to attach `{key, value}` pairs to various objects in the system, single value can also be
-attached to various objects in the system by using tags. Tags come into 2 different fashions:
+While custom fields allow you to attach `{key, value}` pairs to various objects in the system, single values can also be
+attached to various objects in the system by using tags. Tags come in 2 different categories:
 
-* `System Tags`: Those are interpreted by the system to change the behavior. Certain tags can only be attached to specific resource types -- e.g `Account`. In order to distinguish them from the user tags, the system tags are uppercase symbols.
-* `User Tags`: Those are **not** interpreted by the system, and can be anything as long as it a lowercase symbol. Foe example `good_customer` could be a tag that can be attached to a customer `Account`. 
+* `System Tags`: These are interpreted by the system to change its behavior. Certain tags can only be attached to specific resource types -- e.g `Account`. In order to distinguish them from the user tags, the system tags are uppercase symbols.
+* `User Tags`: These are **not** interpreted by the system and can be anything as long as it a lowercase symbol. Foe example, `good_customer` could be a tag that can be attached to a customer `Account`. 
 
-The apis to manage tags rely on having an existing tag definition and supplying the `tagDefinitionId` in the calls, therefore, for user tags, one should first create a `TagDefinition`.
+The APIs to manage tags rely on having an existing tag definition and supplying the `tagDefinitionId` in the calls. Therefore, for user tags, one should first create a `TagDefinition`.
 
-The following **system** tags, along with their `tagDefinitionId`, and list of object types applicable exist:
+The following **system** tags have been defined:
 
-* `AUTO_PAY_OFF`: Suspends payments until removed. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000001`.
-* `AUTO_INVOICING_OFF`: Suspends invoicing until removed. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000002`.
-* `OVERDUE_ENFORCEMENT_OFF`: Suspends overdue enforcement behaviour until removed. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000003`.
-* `WRITTEN_OFF`: Indicates that an invoice is written off. No billing or payment effect. Applicable to `INVOICE` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000004`.
-* `MANUAL_PAY`: Indicates that Killbill doesn't process payments for that account (external payments only). Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000005`.
-* `TEST`: Indicates that this is a test account. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000006`.
-* `PARTNER`: Indicates that this is a partner account. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000007`.
-* `AUTO_INVOICING_DRAFT`: Generate account invoices in DRAFT mode. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000008`.
-* `AUTO_INVOICING_REUSE_DRAFT`: Use existing draft invoice if exists. Applicable to `ACCOUNT` only. `tagDefinitionId`=`00000000-0000-0000-0000-000000000009`.
+| Tag | tagDefinitionId | Object type | Description |
+| --- | --------------- | ----------- | ----------- |
+| `AUTO_PAY_OFF` | `00000000-0000-0000-0000-000000000001` | `ACCOUNT` | Suspends payments until removed. |
+| `AUTO_INVOICING_OFF` | `00000000-0000-0000-0000-000000000002` | `ACCOUNT` | Suspends invoicing until removed. |
+| `OVERDUE_ENFORCEMENT_OFF` | `00000000-0000-0000-0000-000000000003` | `ACCOUNT` | Suspends overdue enforcement behaviour until removed. |
+| `WRITTEN_OFF` | `00000000-0000-0000-0000-000000000004` | `INVOICE` | Indicates that an invoice is written off. This has no effect on billing or payment. |
+| `MANUAL_PAY` | `00000000-0000-0000-0000-000000000005` | `ACCOUNT` | Indicates that Killbill doesn't process payments for this account. That is, the account uses external payments only. |
+| `TEST` | `00000000-0000-0000-0000-000000000006` | `ACCOUNT` | Indicates that this is a test account. |
+| `PARTNER` | `00000000-0000-0000-0000-000000000007` | `ACCOUNT` | Indicates that this is a partner account. |
+| `AUTO_INVOICING_DRAFT` | `00000000-0000-0000-0000-000000000008` | `ACCOUNT` | Generate account invoices in DRAFT mode. |
+| `AUTO_INVOICING_REUSE_DRAFT` | `00000000-0000-0000-0000-000000000009` | `ACCOUNT` | Use existing draft invoice if exists. |
 
 
-For user tags, one must first create the tag definition. See section [Tag definition](#tag-definition) to accomplish this.
+To create user tags, one must first create the tag definitions. For instructions see section [Tag definition](#tag-definition).
 
 
 ### Add tags to account
+
+This API adds one or more tags to an account. The tag definitions must already exist.
 
 **HTTP Request** 
 
@@ -5383,7 +5441,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '[ "00000000-0000-0000-0000-000000000002"]' \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags"
 ```
 
 ```java
@@ -5425,7 +5483,7 @@ accountApi.create_account_tags(account_id,
 ```shell
 # Subset of headers returned when specifying -v curl option
 < HTTP/1.1 201 Created
-< Location: http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags
+< Location: http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags
 < Content-Type: application/json
 < Content-Length: 0
 ```
@@ -5459,20 +5517,23 @@ class Tag {
 no content
 ```
 
+**Request Body**
+
+A JSON array containing one or more strings to be added as user tags.
+
 **Query Parameters**
 
 None.
 
 **Returns**
 
-A `201` http status without content.
+If successful, returns a status code of 201 and an empty body.
 
 
-### Retrieve all account tags
+### Retrieve all tags
 
 
-Retrieves the tags attached to various resources owned by the `Account`.
-Assuming there were tagged subscriptions, invoices, payments, ... for this specific account, this endpoint would allow to retrieve them all or potentially filter them by type -- e.g `Subscription`.
+Retrieves all tags attached to resources owned by this `Account`. This API allows you to retrieve all tags, or only tags attached to a specified resource type. 
 
 
 **HTTP Request** 
@@ -5487,7 +5548,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allTags"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/allTags"
 ```
 
 ```java
@@ -5577,17 +5638,21 @@ class Tag {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **objectType** | string | false | choose type of object (e.g. `ACCOUNT`, `BUNDLE`, `SUBSCRIPTION`) |
-| **includedDeleted** | boolean | true | choose true to include deleted tags |
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **objectType** | string | false | all object types | choose type of object |
+| **includedDeleted** | boolean | false | false | choose true to include deleted tags |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
+Possible values for **objectType** are ACCOUNT, ACCOUNT_EMAIL, BLOCKING_STATES, BUNDLE, CUSTOM_FIELD, INVOICE, PAYMENT, TRANSACTION, INVOICE_ITEM, INVOICE_PAYMENT, SUBSCRIPTION, SUBSCRIPTION_EVENT, SERVICE_BROADCAST, PAYMENT_ATTEMPT, PAYMENT_METHOD, TAG, TAG_DEFINITION, TENANT, or TENANT_KVS.
+
+**Response**
     
-Returns a list of tag objects
+If successful, returns a status code of 200 and a list of tag objects.
 
 ### Retrieve account tags
+
+Retrieve all tags attached to this account itself.
 
 **HTTP Request** 
 
@@ -5601,7 +5666,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags"
 ```
 
 ```java
@@ -5703,16 +5768,18 @@ class Tag {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **audit** | enum | false | level of audit logs returned |
-| **includedDeleted** | boolean | false | choose true if you want to include deleted tags |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ------------ |
+| **includedDeleted** | boolean | false | false | choose true to include deleted tags |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
-
-Returns a list of account tag objects.
+**Response**
+    
+If successful, returns a status code of 200 and a list of tag objects.
 
 ### Remove tags from account
+
+This API removes a list of tags attached to an account.
 
 **HTTP Request** 
 
@@ -5729,7 +5796,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags"
 ```
 
 ```java
@@ -5784,17 +5851,21 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagDef** | string | true |  the list of tag definition ID identifying the tags that should be removed. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ------------ |
+| **tagDef** | array of string | true | none | List of tag definition IDs identifying the tags that should be removed. |
 
 **Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 ## Audit Logs
 
-### Retrieve audit logs by account id
+Audit logs provide a record of events that occur involving various specific resources. For details on audit logs see [Audit and History](https://killbill.github.io/slate/#using-kill-bill-apis-audit-and-history).
+
+### Retrieve audit logs
+
+Retrieve a list of audit log records showing events that occurred involving changes to any resource associated with the specified account. History information (a copy of the full resource object) is not included.
 
 **HTTP Request** 
 
@@ -5808,7 +5879,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/auditLogs"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/auditLogs"
 ```
 
 ```java
@@ -5949,11 +6020,14 @@ class AuditLog {
 
 None.
 
-**Returns**
+**Response**
     
-Returns a list of account audit logs.
+If successful, returns a status code of 200 and a list of audit logs.
 
-### Retrieve account audit logs with history by account id
+### Retrieve account audit logs with history
+
+Retrieve a list of audit log records showing events that occurred involving changes to the specified account itself. History information (a copy of the full account object) is included with each record.
+
 
 **HTTP Request** 
 
@@ -5967,7 +6041,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/auditLogsWithHistory"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/auditLogsWithHistory"
 ```
 
 ```java
@@ -6231,15 +6305,15 @@ class AuditLog {
 
 None.
 
-**Returns**
+**Response**
     
-Returns a list of account audit logs with history.
+If successful, returns a status code of 200 and a list of audit logs.
 
 
+### Retrieve account email audit logs with history
 
+Retrieve a list of audit log records showing events that occurred involving changes to a specified account email. History information (a copy of the full email object) is included with each record.
 
-
-### Retrieve account email audit logs with history by id
 
 **HTTP Request** 
 
@@ -6253,7 +6327,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/aa2a5614-88d9-4ec3-a042-a4771bd66670/auditLogsWithHistory"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails/aa2a5614-88d9-4ec3-a042-a4771bd66670/auditLogsWithHistory"
 ```
 
 ```java
@@ -6385,19 +6459,21 @@ class AuditLog {
 
 None.
 
-**Returns**
+**Response**
     
-Returns a list of account email audit logs with history.
+If successful, returns a status code of 200 and a list of account email audit records, including history (copies of the complete record).
 
 
 
-### Retrieve blocking state audit logs with history by blocking state id
+### Retrieve blocking state audit logs with history
+
+Retrieves the audit logs for a specific blocking state, given the blocking state id. History records (blocking state objects) are included.
 
 **HTTP Request** 
 
 `GET http://127.0.0.1:8080/1.0/kb/accounts/block/{blockingId}/auditLogsWithHistory`
 
-See section [Account Blocking State](#account-blocking-state) for an introduction on blocking states. 
+See section [Account Blocking State](#account-blocking-state) for an introduction to blocking states. 
 
 
 > Example Request:
@@ -6412,7 +6488,7 @@ curl  \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/block/763fd113-1b9b-4d0d-be01-6ee56d3879f5/auditLogsWithHistory"
+    "http://127.0.0.1:8080/1.0/kb/accounts/block/763fd113-1b9b-4d0d-be01-6ee56d3879f5/auditLogsWithHistory"
 ```
 > Example Response:
 
@@ -6460,15 +6536,15 @@ curl  \
 
 None.
 
-**Returns**
+**Response**
     
-Returns a list of blocking state audit logs with history.
+If successful, returns a status code of 200 and a list of blocking state audit logs with history.
 
 
 ### Retrieve account timeline
 
 
-This api allows to retrieve the chronological set of things that occurred on a given `Account`.
+This API retrieves the chronological set of events that occurred concerning a specific `Account`.
 
 **HTTP Request** 
 
@@ -6482,7 +6558,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/timeline"
+    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/timeline"
 ```
 
 ```java
@@ -7593,13 +7669,12 @@ class AccountTimeline {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **audit** | enum | false | level of audit logs returned |
-| **parallel** | boolean | false | parallel |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
 
-Returns a list of account tag objects.
+**Response**
 
+If successful, returns a status code of 200 and a complete account record including: the account object; bundles with subscriptions and timelines giving all events; invoices; and payments including payment attempts.
 
