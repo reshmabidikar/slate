@@ -1,22 +1,31 @@
 # Catalog
 
+The `Catalog` is at the heart of the KillBill subscription and billing systems. It provides complete current information on products available, subscription plans, billing options, and much more. Each tenant has a single Catalog, but different tenants may have completely different Catalogs.
+
+The Catalog for a given tenant may be updated to new versions from time to time. This provides the ability to deprecate old products, add new ones, or change prices for existing products. Older versions remain available in case they are needed.
+
+For a full discussion of the KillBill catalog, see the [Catalog](http://docs.killbill.io/latest/userguide_subscription.html#components-catalog) section in the [Subscription Guide](http://docs.killbill.io/latest/userguide_subscription.html).
+
+The `Catalog` API offers basic CRUD operations, where catalog (versions) are fetched/uploaded using XML. We also offer the ability to retrieve JSON, and have also added support to modify a given catalog version to add new plans. In particular, the *simple plan* - provides a way to ease testing and to play with the system. KAUI, our admin UI, provides a nice integration for that purpose.
+
+
 ## Catalog Resource
 
-The `Catalog` is at the heart of the billing system, it captures the core configuration of the billing system. At a very high level, configuring the catalog is about defining the inventory available:
+At a very high level, the Catalog consists of the following main components:
 
 * **`Products`** : List of products available - e.g *Gold* product.
-* **`Plans`** : List of plans available for each product - e.g *gold-monthly*, monthly subscription for the *Gold* product.
+* **`Plans`** : List of subscription plans available for each product - e.g *gold-monthly*, monthly subscription for the *Gold* product.
+* **`Rules`** : Business rules for subscriptions - e.g. when certain changes should take effect.
+* **`Price Lists`** : Lists of applicable Plans.
 
-In practice, Kill Bill offers a powerful configuration, which goes beyond the definition of the inventory and includes rules for customizing the invoice generation. Please refer to our [Billing Manual](http://docs.killbill.io/latest/userguide_subscription.html#components-catalog) for more details.
+Full details about the elements of a Catalog are given in the links cited above. The Catalog is maintained as an XML file.
 
-Also, it is important to understand that the catalog is versionned to provide the ability to deprecate old products, add new ones, or change prices for existing products. The catalog configuration is stored on a per tenant basis, meaning that 2 tenants may have completely different catalogs.
-
-
-In terms of api, we offer basic CRUD operations, where catalog (versions) are fetched/uploaded using XML. We also offer the ability to retrieve JSON, and have also added support to modify a given catalog version to add new plans - so called *simple plan* - mostly to ease the testing, and provide a way to play with the system - KAUI, our admin UI provides a nice integration for that purpose.
 
 ## Catalog
 
-### Upload the full catalog as XML
+### Upload a catalog as XML
+
+This endpoint uploads a complete catalog in XML format. This becomes the current version of the Catalog for this Tenant.
 
 **HTTP Request** 
 
@@ -36,7 +45,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><catalog> ...' \
-    "http://localhost:8080/1.0/kb/catalog/xml"
+    "http://127.0.0.1:8080/1.0/kb/catalog/xml"
 ```
 
 ```java
@@ -89,13 +98,15 @@ no content
 
 None.
 
-**Returns**
+**Response**
 
-A `201` http status without content.
+If successful, returns a status code of 201 and an empty body.
 
 
 
 ### Retrieve the catalog as XML
+
+This endpoint retrieves the Catalog for a specified date in XML format.
 
 **HTTP Request** 
 
@@ -929,16 +940,18 @@ catalogApi.get_catalog_xml(api_key, api_secret)
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **requestedDate** | string | false | requested date |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **requestedDate** | string | false | current date | requested date |
 
-**Returns**
+**Response**
 
-Returns a catalog in XML format.
+If successful, returns a status code of 200 and the catalog for the requested date in XML format.
 
 
 ### Retrieve the catalog as JSON
+
+This endpoint retrieves the current Catalog for a Tenant in JSON format.
 
 **HTTP Request** 
 
@@ -952,7 +965,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/catalog"	
+    "http://127.0.0.1:8080/1.0/kb/catalog"	
 ```
 
 ```java
@@ -2413,7 +2426,8 @@ class Catalog {
                           'pretty_name': 'standard-monthly'}],
                'pretty_name': 'Standard',
                'type': 'BASE'},
-              {'available': [],
+
+{'available': [],
                'included': [],
                'name': 'Sports',
                'plans': [{'billing_period': 'MONTHLY',
@@ -2441,15 +2455,17 @@ class Catalog {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **requestedDate** | string | false | requested date |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **requestedDate** | string | false | current date | requested date |
 
-**Returns**
+**Response**
 
-Returns a catalog in JSON format.
+if successful, returns a status code of 200 and the full catalog for the requested date in JSON format.
 
 ### Retrieve a list of catalog versions
+
+Return a list of the effective dates for all available catalogs.
 
 **HTTP Request** 
 
@@ -2463,7 +2479,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "accept: application/json" \
-    "http://localhost:8080/1.0/kb/catalog/versions"
+    "http://127.0.0.1:8080/1.0/kb/catalog/versions"
 ```
 
 ```java
@@ -2510,13 +2526,15 @@ catalogApi.get_catalog_versions(api_key, api_secret)
 
 None.
 
-**Returns**
+**Response**
 
-Returns a list with the available catalog versions.
+If successful, returns a status code of 200 and a comma-separated list of ISO date strings giving the effective date for each available catalog version.
 
 
 
 ### Retrieve available base plans
+
+Returns a list of available base plan objects. Each object specifies a `product`, a `plan`, an applicable `priceList`, and pricing information for the final phase of the plan.
 
 **HTTP Request** 
 
@@ -2530,7 +2548,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://localhost:8080/1.0/kb/catalog/availableBasePlans"	
+    "http://127.0.0.1:8080/1.0/kb/catalog/availableBasePlans"	
 ```
 
 ```java
@@ -2664,9 +2682,9 @@ class PlanDetail {
 
 None.
 
-**Returns**
+**Response**
 
-Returns a list with the available base plans.
+If successful, returns a status code of 200 and a list with the available base plans.
 
 ### Retrieve available add-ons for a given product
 
