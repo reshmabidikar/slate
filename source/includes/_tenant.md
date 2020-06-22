@@ -2,7 +2,7 @@
 
 ## Tenant Resource
 
-Kill Bill has been designed from the ground up as a multi-tenant system, that is, one where multiple unrelated deployments can be hosted on the same physical system. Each deployment has its own separate configuration, catalog, and plugins, and of course its data set is kept entirely separate from the others. RBAC control allows different users/admin/apps to access zero, one or multiple tenants. This [blog](http://killbill.io/blog/subscription-service-using-kill-bill/) illustrates some interesting use cases. The `Tenant` resource allows the management of such tenants.
+Kill Bill has been designed from the ground up as a multi-tenant system, that is, one where multiple unrelated deployments can be hosted on the same physical system. Each deployment has its own separate configuration, catalog, and plugins, and of course its data set is kept entirely separate from the others. RBAC control allows different users/admin/apps to access zero, one or multiple tenants. This [blog](https://killbill.io/blog/subscription-service-using-kill-bill/) illustrates some interesting use cases. The `Tenant` resource allows the management of such tenants.
 
 The attributes of the `Tenant` resource object are the following:
 
@@ -22,7 +22,7 @@ These endpoints manage information that is maintained at the tenant level. Unles
 
 ### Create a tenant
 
-This API creates a new tenant.
+This API creates a new tenant. NOTE: If you create a tenant using this API, it will *not* be recognized immediately by KAUI because KAUI will be unable to retrieve the `apiSecret`. To fix this, you should "create" the same tenant separately after logging into KAUI. This will *not* create another tenant, but it will synchronize KAUI with the one already created.
 
 **HTTP Request** 
 
@@ -304,7 +304,7 @@ in this tenant, the callback will be invoked.
 
 In case of error, the system will retry the callback as defined by the system property `org.killbill.billing.server.notifications.retries`.
 
-See push notification documentation [here](http://docs.killbill.io/latest/push_notifications.html) for further information.
+See push notification documentation [here](https://docs.killbill.io/latest/push_notifications.html) for further information.
 
 ### Register a push notification
 
@@ -882,7 +882,7 @@ If successful, returns a status code of 200 and a tenant key value object contai
 
 ## System Properties Configuration
 
-These endpoints allow setting of some system properties on a per-tenant basis. Please refer to our [configuartion guide](http://docs.killbill.io/latest/userguide_configuration.html) to see what can be configured in the system.
+These endpoints allow setting of some system properties on a per-tenant basis. Please refer to our [configuartion guide](https://docs.killbill.io/latest/userguide_configuration.html) to see what can be configured in the system.
 Some of the configuration can be overriden at the tenant level to allow for different behaviors.
 
 Note that this is actually a special case of per-tenant key-value pairs; the key is "PER_TENANT_CONFIG" and the value is a comma-separated list of system properties with their values.
@@ -1112,7 +1112,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Plugin Configuration
 
-Plugins also support configuration on a per-tenant level. Please refer to our [plugin configuration manual](http://docs.killbill.io/latest/plugin_development.html#_plugin_configuration) for more details.
+Plugins also support configuration on a per-tenant level. Please refer to our [plugin configuration manual](https://docs.killbill.io/latest/plugin_development.html#_plugin_configuration) for more details.
 
 An example of the use of such per-tenant properties is to configure a payment plugin with different API keys,
 one set of keys for each tenant. This allows for a true multi-tenant deployment where plugins have different configuration
@@ -1411,7 +1411,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Payment State Machines
 
-This is a somewhat advanced use case to override the default internal payment state machine within Kill Bill. Please refer to our [payment manual](http://docs.killbill.io/latest/userguide_payment.html#_payment_states) for more details about payment states.
+This is a somewhat advanced use case to override the default internal payment state machine within Kill Bill. Please refer to our [payment manual](https://docs.killbill.io/latest/userguide_payment.html#_payment_states) for more details about payment states.
 
 The endpoints below allow you to override such state machines on a per-tenant level.
 
