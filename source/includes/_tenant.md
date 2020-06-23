@@ -705,7 +705,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 200 and a tenant key value object. The key value object includes the key name and a list containing the value, if any, or a comma-separated list of values. For example:
+If successful, returns a status code of 200 and a tenant key value object. The key value object includes the key name and a JSON array containing the value, if any, or a comma-separated list of values. For example:
 
 {
   "key": "MYKEY",
