@@ -1,12 +1,21 @@
 # Catalog
 
-The `Catalog` is at the heart of the KillBill subscription and billing systems. It provides complete current information on products available, subscription plans, billing options, and much more. Each tenant has a single Catalog, but different tenants may have completely different Catalogs.
+The `Catalog` is at the heart of the Kill Bill subscription and billing systems. It provides complete current information on products available, subscription plans, billing options, and much more. Each tenant has a single Catalog, but different tenants may have completely different Catalogs.
 
 The Catalog for a given tenant may be updated to new versions from time to time. This provides the ability to deprecate old products, add new ones, or change prices for existing products. Older versions remain available in case they are needed.
 
-For a full discussion of the KillBill catalog, see the [Catalog](http://docs.killbill.io/latest/userguide_subscription.html#components-catalog) section in the [Subscription Guide](http://docs.killbill.io/latest/userguide_subscription.html).
+Catalogs are not intended to be greatly changed once they are loaded, but we do provide support to modify a given catalog version to add new plans. In particular, the *simple plan* provides a way to ease testing and to play with the system. KAUI, our admin UI, provides the ability to add a simple plan.
 
-The `Catalog` API offers basic CRUD operations, allowing you to upload, retrieve and delete catalog versions in XML format. We also offer the ability to retrieve a catalog in JSON format, and have added support to modify a given catalog version to add new plans. In particular, the *simple plan* provides a way to ease testing and to play with the system. KAUI, our admin UI, provides a nice integration for that purpose.
+A tenant has several options for setting up their catalog. you can choose the option that best meets your needs.
+
+1. Use the default Kill Bill catalog unchanged. This is available to you automatically.
+2. Use the default catalog, and add the *simple plan* or other new plans to it.
+3. Write your own complete catalog as an XML file and upload it.
+4. Write a custom Catalog plugin. This is only for advanced users with special needs.
+
+For a full discussion of the KillBill catalog, see the [Catalog](https://docs.killbill.io/latest/userguide_subscription.html#components-catalog) section in the [Subscription Guide](https://docs.killbill.io/latest/userguide_subscription.html).
+
+The `Catalog` API offers basic CRUD operations, allowing you to upload, retrieve and delete catalog versions. 
 
 
 ## Catalog Resource
@@ -106,7 +115,7 @@ If successful, returns a status code of 201 and an empty body.
 
 ### Retrieve the catalog as XML
 
-This endpoint retrieves the Catalog for a specified date in XML format. If there are multiple versions, the latest catalog with an effective date not later than the requested date is returned.
+This endpoint retrieves the Catalog for a specified date in XML format. If there are multiple versions, the latest version with an effective date not later than the requested date is returned. If the effective date for all versions is greater than the requested date, the earliest version is returned.
 
 **HTTP Request** 
 
@@ -951,7 +960,7 @@ If successful, returns a status code of 200 and the catalog for the requested da
 
 ### Retrieve the catalog as JSON
 
-This endpoint retrieves the Catalog for a requested date in JSON format.
+This endpoint retrieves the Catalog for a requested date in JSON format. If there are multiple versions, the latest version with an effective date not later than the requested date is returned. If the effective date for all versions is greater than the requested date, the earliest version is returned.
 
 **HTTP Request** 
 
@@ -2465,7 +2474,7 @@ if successful, returns a status code of 200 and the full catalog for the request
 
 ### Retrieve a list of catalog versions
 
-Return a list of the effective dates for all available catalogs.
+Return a list of the effective dates for all available catalogs versions for this tenant.
 
 **HTTP Request** 
 
@@ -2869,7 +2878,7 @@ If successful, returna a status code of 204 and an empty body.
 
 ## Subscription info
 
-These endpoints return information concerning a particular subscription.
+These endpoints return information concerning a particular subscription. They select from the catalog only the items (such as plan, phase, or products) that currently apply to the specified subscription.
 
 ### Retrieve the phase for a given subscription and date
 
