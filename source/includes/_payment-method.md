@@ -280,7 +280,7 @@ class PaymentMethod {
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ----------- |
+| ---- | -----| -------- | ------- | ----------- |
 | **externalKey** | string | true | none | external key from payment method |
 | **includedDeleted** | boolean | false | false choose true to include deleted payment methods |
 | **withPluginInfo** | boolean | false | choose true to include plugin info |
