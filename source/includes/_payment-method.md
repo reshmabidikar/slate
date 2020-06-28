@@ -4,7 +4,7 @@
 
 The `Payment Method` resource represents the payment methods associated with a customer `Account`. There are often two parts to this resource:
 
-* The core Kill Bill attributes shown below, which are fairly minimalistic and mostly track the associated payment plugin that is used to interract with the payment gateway.
+* The core Kill Bill attributes shown below, which are limited and mostly track the associated payment plugin that is used to interract with the payment gateway.
 * The plugin attributes, which are plugin specific and payment method specific -- credit card, ACH, bitcoin, etc. In the case of a credit card for instance, the plugin would keep track of things like `name`, `address`, `last4`, and `token`. Not only are such attributes dependent on the payment method, but they are also dependent on the third party payment gateway, and on the tokenization model.
 
 
@@ -160,15 +160,16 @@ class PaymentMethod {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **includedDeleted** | boolean | false | choose true to include deleted payment methods |
-| **audit** | enum | false | level of audit logs returned |
-| **withPluginInfo** | boolean | false | choose true if you want plugin info |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **includedDeleted** | boolean | false | false | choose true to include deleted payment methods |
+| **withPluginInfo** | boolean | false | false | choose true to include plugin info |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
 
-Returns a payment method object.
+**Response**
+
+If successful, returns a status code of 200 and a payment method object.
 
 ### Retrieve a payment method by external key
 
@@ -278,18 +279,21 @@ class PaymentMethod {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
+| Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ----------- |
-| **externalKey** | string | true | external key from payment method |
-| **includedDeleted** | boolean | false | choose true to include deleted payment methods |
-| **audit** | enum | false | level of audit logs returned |
-| **withPluginInfo** | boolean | false | choose true if you want plugin info |
+| **externalKey** | string | true | none | external key from payment method |
+| **includedDeleted** | boolean | false | false choose true to include deleted payment methods |
+| **withPluginInfo** | boolean | false | choose true to include plugin info |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
 
-Returns a payment method object.
+**Response**
+
+If successful, returns a status code of 200 and a payment method object.
 
 ### Delete a payment method
+
+This API deletes a payment method. The default payment method will not be deleted, unless required by the query parameters.
 
 **HTTP Request** 
 
@@ -367,21 +371,318 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **deleteDefaultPmWithAutoPayOff** | boolean | false | choose true to delete default payment method with auto pay off|
-| **forceDefaultPmDeletion** | boolean | false | choose true to force default payment method deletion |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **deleteDefaultPmWithAutoPayOff** | boolean | false | false | choose true to delete default payment method with auto pay off |
+| **forceDefaultPmDeletion** | boolean | false | false | choose true to force default payment method deletion |
 
-**Returns**
+**Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
+
+
+## List and Search
+
+These endpoints provide the ability to list and search for payment methods
+
+###  List payment methods
+
+List all payment methods stored for the accounts maintained by this tenant
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/paymentMethods/pagination`
+
+> Example Request:
+
+```shell
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/paymentMethods/pagination' 
+```
+
+```java
+import org.killbill.billing.client.api.gen.PaymentMethodApi;
+protected PaymentMethodApi paymentMethodApi;
+
+Long offset = 0L;
+Long limit = 1L;
+String pluginName = null;
+Boolean withPluginInfo = false;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+
+PaymentMethods allPaymentMethods = paymentMethodApi.getPaymentMethods(offset,
+                                                                      limit,
+                                                                      pluginName,
+                                                                      withPluginInfo
+                                                                      NULL_PLUGIN_PROPERTIES,
+                                                                      AuditLevel.NONE,
+                                                                      requestOptions);
+```
+
+```ruby
+offset = 0
+limit = 100
+
+payment_method.find_in_batches(offset,
+                               limit,
+                               options)
+```
+
+```python
+paymentMethodApi = killbill.api.PaymentMethodApi()
+
+paymentMethodApi.get_payment_methods(api_key, api_secret)
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+[
+  {
+    "paymentMethodId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
+    "externalKey": "coolPaymentMethod",
+    "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
+    "isDefault": false,
+    "pluginName": "__EXTERNAL_PAYMENT__",
+    "pluginInfo": null,
+    "auditLogs": []
+  },
+  {
+    "paymentMethodId": "dc89832d-18a3-42fd-b3be-cac074fddb36",
+    "externalKey": "paypal",
+    "accountId": "ca15adc4-1061-4e54-a9a0-15e773b3b154",
+    "isDefault": false,
+    "pluginName": "killbill-paypal-express",
+    "pluginInfo": null,
+    "auditLogs": []
+  }
+]
+```
+
+```java
+//First element of the list
+class PaymentMethod {
+    org.killbill.billing.client.model.gen.PaymentMethod@3b058e2d
+    paymentMethodId: 98420efb-142f-4437-9a93-817ded413313
+    externalKey: e78ae144-8727-46f4-8cf2-63636813f232
+    accountId: 73f59eee-abec-4d3f-ab62-21dba663bd25
+    isDefault: true
+    pluginName: noop
+    pluginInfo: null
+    auditLogs: []
+}
+```
+```ruby
+[
+  {
+     "paymentMethodId":"6a0bf13e-d57f-4f79-84bd-3690135f1923",
+     "externalKey":"unknown",
+     "accountId":"f9c4801f-0daa-4c46-bea0-59490d07fc5e",
+     "isDefault":false,
+     "pluginName":"__EXTERNAL_PAYMENT__",
+     "pluginInfo":{
+        "properties":[]
+     },
+     "auditLogs":[]
+  }
+]
+```
+```python
+[{'account_id': '5d82791d-c47f-4c4b-be11-b68233656b96',
+ 'audit_logs': [],
+ 'external_key': 'unknown',
+ 'is_default': False,
+ 'payment_method_id': '06955087-e191-4da5-99c9-e712b21f6aa6',
+ 'plugin_info': None,
+ 'plugin_name': '__EXTERNAL_PAYMENT__'}]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **offset** | long | false | 0 | offset |
+| **limit** | long | false | 100 | limit search items |
+| **withPluginInfo** | boolean | false | false | Choose true to include plugin info |
+| **pluginName** | string | false | all plugins | If present, return information for only this plugin |
+| **pluginProperties** | array of strings | false | no properties | properties for this plugin |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
+
+
+**Response**
+
+If successful, returns a status code of 200 and a list of payment method objects.
+
+###  Search payment methods
+
+THis API searches all payment methods for a specified search string. The search string is given as a path parameter.
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/paymentMethods/search/{searchKey}`
+
+> Example Request:
+
+```shell
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/paymentMethods/search/coolPaymentMethod' 
+```
+
+```java
+import org.killbill.billing.client.api.gen.PaymentMethodApi;
+protected PaymentMethodApi paymentMethodApi;
+
+String searchKey = "4365";
+Long offset = 0L;
+Long limit = 100L;
+String pluginName = null;
+Boolean withPluginInfo = true;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+List<PaymentMethod> results = paymentMethodApi.searchPaymentMethods(searchKey, 
+                                                                    offset, 
+                                                                    limit, 
+                                                                    pluginName, 
+                                                                    withPluginInfo, 
+                                                                    NULL_PLUGIN_PROPERTIES,  
+                                                                    AuditLevel.NONE,  
+                                                                    requestOptions);
+```
+
+```ruby
+search_key = 'example'
+offset = 0
+limit = 100
+
+payment_method.find_in_batches_by_search_key(search_key,
+                                             offset,
+                                             limit,
+                                             options)
+```
+
+```python
+paymentMethodApi = killbill.api.PaymentMethodApi()
+search_key = '__EXTERNAL_PAYMENT__'
+
+paymentMethodApi.search_payment_methods(search_key, api_key, api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+<
+[
+  {
+    "paymentMethodId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
+    "externalKey": "coolPaymentMethod",
+    "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
+    "isDefault": false,
+    "pluginName": "__EXTERNAL_PAYMENT__",
+    "pluginInfo": null,
+    "auditLogs": []
+  }
+]
+```
+
+```java
+//First element of the list
+class PaymentMethod {
+    org.killbill.billing.client.model.gen.PaymentMethod@6b40b41a
+    paymentMethodId: 62c434f7-41fe-497d-8fb0-c35bb6706180
+    externalKey: 4ac4162a-ae9c-48ca-bb43-8a4bcd6c2717
+    accountId: a6941a79-8b7b-4da7-99e0-bffc3d549f87
+    isDefault: true
+    pluginName: noop
+    pluginInfo: class PaymentMethodPluginDetail {
+        externalPaymentMethodId: 9ddcce2d-b65f-4e08-8006-1395e47ba97a
+        isDefaultPaymentMethod: false
+        properties: [class PluginProperty {
+            key: CC_NAME
+            value: Bozo
+            isUpdatable: false
+        }, class PluginProperty {
+            key: CC_CITY
+            value: SF
+            isUpdatable: false
+        }, class PluginProperty {
+            key: CC_LAST_4
+            value: 4365
+            isUpdatable: false
+        }, class PluginProperty {
+            key: CC_STATE
+            value: CA
+            isUpdatable: false
+        }, class PluginProperty {
+            key: CC_COUNTRY
+            value: Zimbawe
+            isUpdatable: false
+        }]
+    }
+    auditLogs: []
+}
+```
+```ruby
+[
+  {
+     "paymentMethodId":"6a0bf13e-d57f-4f79-84bd-3690135f1923",
+     "externalKey":"unknown",
+     "accountId":"f9c4801f-0daa-4c46-bea0-59490d07fc5e",
+     "isDefault":false,
+     "pluginName":"__EXTERNAL_PAYMENT__",
+     "pluginInfo":{
+        "properties":[]
+     },
+     "auditLogs":[]
+  }
+]
+```
+```python
+[{'account_id': '81d8b04d-dee1-49bf-bc73-48219df21af9',
+ 'audit_logs': [],
+ 'external_key': 'unknown',
+ 'is_default': False,
+ 'payment_method_id': 'bcecaf3f-16c7-4d65-aed0-b08cc5e34a6b',
+ 'plugin_info': None,
+ 'plugin_name': '__EXTERNAL_PAYMENT__'}]
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **offset** | long | false | 0 | offset |
+| **limit** | long | false | 100 | limit search items |
+| **withPluginInfo** | boolean | false | false | Choose true to include plugin info |
+| **pluginName** | string | false | all plugins | If present, return information for only this plugin |
+| **pluginProperties** | array of strings | false | no properties | properties for this plugin |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
+
+**Response**
+
+If successful, returns a status code of 200 and a list of payment method objects that match the search key.
+
 
 
 ## Custom Fields
 
-Custom fields are `{key, value}` attributes that can be attached to any customer resources, and in particularly on the `PaymentMethod` objects.
+Custom fields are `{key, value}` attributes that can be attached to any customer resources. These endpoints manage custom fields associated with `PaymentMethod` objects.
 
-### Add custom fields to payment method
+### Add custom fields to a payment method
+
+Adds one or more custom fields to a payment method object. Existing custom fields are not disturbed.
 
 **HTTP Request** 
 
@@ -490,16 +791,29 @@ class CustomField {
 ```python
 no content
 ```
+**Request Body**
+
+A list of objects givingp the name and value of the custom field, or fields, to be added. For example:
+
+[
+  {
+    "name": "CF1",
+    "value": "123"
+  }
+]
+
 
 **Query Parameters**
 
 None.
 
-**Returns**
+**Response**
 
-Returns a custom field object.
+If successful, returns a status code of 201 and an empty body.
 
 ###  Retrieve payment method custom fields
+
+Returns any custom field objects associated with the specified payment method
 
 **HTTP Request** 
 
@@ -593,17 +907,20 @@ class CustomField {
  'value': 'test_value'}]
 ```
 
+
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-**Returns**
+**Response**
 
-Returns a list of custom field objects.
+If successful, returns a status code of 200 and a (possibly empty) list of custom field objects.
 
 ###  Modify custom fields to payment method
+
+Modifies the value of one or more existing custom fields for a payment object
 
 **HTTP Request** 
 
@@ -689,15 +1006,29 @@ no content
 no content
 ```
 
+**Request Body**
+
+A list of objects givingp the id and the new value for the custom field, or fields, to be modified. For example:
+
+[
+  {
+    "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f",
+    "value": "123"
+  }
+]
+
+
 **Query Parameters**
 
 None.
 
-**Returns**
+**Response**
 
-A `204` http status without content.
+If successful, a status code of 204 and an empty body.
 
 ###  Remove custom fields from payment method
+
+Delete one or more custom fields from a payment method
 
 **HTTP Request** 
 
@@ -767,13 +1098,13 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **customField** | string | true | the list of custom field object IDs that should be deleted. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **customField** | string | true | none | the list of custom field object IDs that should be deleted. |
 
-**Returns**
+**Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 
 ## Audit Logs
@@ -928,282 +1259,5 @@ None.
 
 **Returns**
     
-Returns a list of account email audit logs with history.
+If successful, returns a status code of 200 and a list of payment method audit logs with history.
 
-## Pagination/Search
-
-###  List payment methods
-
-**HTTP Request** 
-
-`GET http://127.0.0.1:8080/1.0/kb/paymentMethods/pagination`
-
-> Example Request:
-
-```shell
-curl \
-    -u admin:password \
-    -H 'X-Killbill-ApiKey: bob' \
-    -H 'X-Killbill-ApiSecret: lazar' \
-    -H 'Accept: application/json' \
-    'http://127.0.0.1:8080/1.0/kb/paymentMethods/pagination' 
-```
-
-```java
-import org.killbill.billing.client.api.gen.PaymentMethodApi;
-protected PaymentMethodApi paymentMethodApi;
-
-Long offset = 0L;
-Long limit = 1L;
-String pluginName = null;
-Boolean withPluginInfo = false;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
-
-
-PaymentMethods allPaymentMethods = paymentMethodApi.getPaymentMethods(offset,
-                                                                      limit,
-                                                                      pluginName,
-                                                                      withPluginInfo
-                                                                      NULL_PLUGIN_PROPERTIES,
-                                                                      AuditLevel.NONE,
-                                                                      requestOptions);
-```
-
-```ruby
-offset = 0
-limit = 100
-
-payment_method.find_in_batches(offset,
-                               limit,
-                               options)
-```
-
-```python
-paymentMethodApi = killbill.api.PaymentMethodApi()
-
-paymentMethodApi.get_payment_methods(api_key, api_secret)
-```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-<
-[
-  {
-    "paymentMethodId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
-    "externalKey": "coolPaymentMethod",
-    "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
-    "isDefault": false,
-    "pluginName": "__EXTERNAL_PAYMENT__",
-    "pluginInfo": null,
-    "auditLogs": []
-  },
-  {
-    "paymentMethodId": "dc89832d-18a3-42fd-b3be-cac074fddb36",
-    "externalKey": "paypal",
-    "accountId": "ca15adc4-1061-4e54-a9a0-15e773b3b154",
-    "isDefault": false,
-    "pluginName": "killbill-paypal-express",
-    "pluginInfo": null,
-    "auditLogs": []
-  }
-]
-```
-
-```java
-//First element of the list
-class PaymentMethod {
-    org.killbill.billing.client.model.gen.PaymentMethod@3b058e2d
-    paymentMethodId: 98420efb-142f-4437-9a93-817ded413313
-    externalKey: e78ae144-8727-46f4-8cf2-63636813f232
-    accountId: 73f59eee-abec-4d3f-ab62-21dba663bd25
-    isDefault: true
-    pluginName: noop
-    pluginInfo: null
-    auditLogs: []
-}
-```
-```ruby
-[
-  {
-     "paymentMethodId":"6a0bf13e-d57f-4f79-84bd-3690135f1923",
-     "externalKey":"unknown",
-     "accountId":"f9c4801f-0daa-4c46-bea0-59490d07fc5e",
-     "isDefault":false,
-     "pluginName":"__EXTERNAL_PAYMENT__",
-     "pluginInfo":{
-        "properties":[]
-     },
-     "auditLogs":[]
-  }
-]
-```
-```python
-[{'account_id': '5d82791d-c47f-4c4b-be11-b68233656b96',
- 'audit_logs': [],
- 'external_key': 'unknown',
- 'is_default': False,
- 'payment_method_id': '06955087-e191-4da5-99c9-e712b21f6aa6',
- 'plugin_info': None,
- 'plugin_name': '__EXTERNAL_PAYMENT__'}]
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **offset** | long | false | offset |
-| **limit** | long | false | limit search items |
-
-**Returns**
-
-Returns a list with all payment methods.
-
-###  Search payment methods
-
-**HTTP Request** 
-
-`GET http://127.0.0.1:8080/1.0/kb/paymentMethods/search/{searchKey}`
-
-> Example Request:
-
-```shell
-curl \
-    -u admin:password \
-    -H 'X-Killbill-ApiKey: bob' \
-    -H 'X-Killbill-ApiSecret: lazar' \
-    -H 'Accept: application/json' \
-    'http://127.0.0.1:8080/1.0/kb/paymentMethods/search/coolPaymentMethod' 
-```
-
-```java
-import org.killbill.billing.client.api.gen.PaymentMethodApi;
-protected PaymentMethodApi paymentMethodApi;
-
-String searchKey = "4365";
-Long offset = 0L;
-Long limit = 100L;
-String pluginName = null;
-Boolean withPluginInfo = true;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
-
-List<PaymentMethod> results = paymentMethodApi.searchPaymentMethods(searchKey, 
-                                                                    offset, 
-                                                                    limit, 
-                                                                    pluginName, 
-                                                                    withPluginInfo, 
-                                                                    NULL_PLUGIN_PROPERTIES,  
-                                                                    AuditLevel.NONE,  
-                                                                    requestOptions);
-```
-
-```ruby
-search_key = 'example'
-offset = 0
-limit = 100
-
-payment_method.find_in_batches_by_search_key(search_key,
-                                             offset,
-                                             limit,
-                                             options)
-```
-
-```python
-paymentMethodApi = killbill.api.PaymentMethodApi()
-search_key = '__EXTERNAL_PAYMENT__'
-
-paymentMethodApi.search_payment_methods(search_key, api_key, api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-<
-[
-  {
-    "paymentMethodId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
-    "externalKey": "coolPaymentMethod",
-    "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
-    "isDefault": false,
-    "pluginName": "__EXTERNAL_PAYMENT__",
-    "pluginInfo": null,
-    "auditLogs": []
-  }
-]
-```
-
-```java
-//First element of the list
-class PaymentMethod {
-    org.killbill.billing.client.model.gen.PaymentMethod@6b40b41a
-    paymentMethodId: 62c434f7-41fe-497d-8fb0-c35bb6706180
-    externalKey: 4ac4162a-ae9c-48ca-bb43-8a4bcd6c2717
-    accountId: a6941a79-8b7b-4da7-99e0-bffc3d549f87
-    isDefault: true
-    pluginName: noop
-    pluginInfo: class PaymentMethodPluginDetail {
-        externalPaymentMethodId: 9ddcce2d-b65f-4e08-8006-1395e47ba97a
-        isDefaultPaymentMethod: false
-        properties: [class PluginProperty {
-            key: CC_NAME
-            value: Bozo
-            isUpdatable: false
-        }, class PluginProperty {
-            key: CC_CITY
-            value: SF
-            isUpdatable: false
-        }, class PluginProperty {
-            key: CC_LAST_4
-            value: 4365
-            isUpdatable: false
-        }, class PluginProperty {
-            key: CC_STATE
-            value: CA
-            isUpdatable: false
-        }, class PluginProperty {
-            key: CC_COUNTRY
-            value: Zimbawe
-            isUpdatable: false
-        }]
-    }
-    auditLogs: []
-}
-```
-```ruby
-[
-  {
-     "paymentMethodId":"6a0bf13e-d57f-4f79-84bd-3690135f1923",
-     "externalKey":"unknown",
-     "accountId":"f9c4801f-0daa-4c46-bea0-59490d07fc5e",
-     "isDefault":false,
-     "pluginName":"__EXTERNAL_PAYMENT__",
-     "pluginInfo":{
-        "properties":[]
-     },
-     "auditLogs":[]
-  }
-]
-```
-```python
-[{'account_id': '81d8b04d-dee1-49bf-bc73-48219df21af9',
- 'audit_logs': [],
- 'external_key': 'unknown',
- 'is_default': False,
- 'payment_method_id': 'bcecaf3f-16c7-4d65-aed0-b08cc5e34a6b',
- 'plugin_info': None,
- 'plugin_name': '__EXTERNAL_PAYMENT__'}]
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **offset** | long | false | offset |
-| **limit** | long | false | limit search items |
-
-**Returns**
-
-Return a list with payment methods matched with the search key entered.
