@@ -20,13 +20,15 @@ The Kill Bill attributes are the following:
 | **externalKey** | string | user | Optional external key provided by the client |
 | **accountId** | string | system | UUID for the associated account |
 | **isDefault** | boolean | user | Indicates whether this is the default payment method |
-| **pluginName** | string | user | Name of the associated plugin. All payment operations associated with this payment method will be delegated to the payment plugin associated with this identifier. |
+| **pluginName** | string | user | Name of the associated plugin. 
 | **pluginInfo** | string | user | Plugin specific information, as required. |
+
+All payment operations associated with this payment method will be delegated to the plugin specified by **pluginName**. |
 
 
 ## Payment Methods
 
-Basic operations to retrieve, list, search and delete payment methods. These endpoints do *not* support direct creation or update of payment methods.
+Basic operations to retrieve, list, search and delete payment methods. Creating a new payment method requires registering a new plugin. To add an existing plugin to an account see xxx
 
 ### Retrieve a payment method by id
 
@@ -53,7 +55,7 @@ protected PaymentMethodApi paymentMethodApi;
 
 UUID paymentMethodId = UUID.fromString("3c449da6-7ec4-4c74-813f-f5055739a0b9");
 Boolean includedDeleted = false; // Will not include deleted
-Boolean withPluginInfo = true; // Will not reflect plugin info
+Boolean withPluginInfo = true; // Will include plugin info
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 PaymentMethod paymentMethodJson = paymentMethodApi.getPaymentMethod(paymentMethodId, 
@@ -162,14 +164,17 @@ class PaymentMethod {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
-| **includedDeleted** | boolean | false | false | choose true to include deleted payment methods |
-| **withPluginInfo** | boolean | false | false | choose true to include plugin info |
-| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
+| **includedDeleted** | boolean | no | false | If true, include deleted payment methods |
+| **withPluginInfo** | boolean | no | false | If true, include plugin info |
+| **audit** | string | yes | "NONE" | Level of audit information to return |
+
+If **withPluginInfo** is set to true, attributes for the active plugin are returned. These are plugin-dependent (see discussion above).
+Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 
 **Response**
 
-If successful, returns a status code of 200 and a payment method object.
+If successful, returns a status code of 200 and a payment method resource object.
 
 ### Retrieve a payment method by external key
 
@@ -281,19 +286,22 @@ class PaymentMethod {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
-| **externalKey** | string | true | none | external key from payment method |
-| **includedDeleted** | boolean | false | false choose true to include deleted payment methods |
-| **withPluginInfo** | boolean | false | choose true to include plugin info |
-| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
+| **externalKey** | string | yes | none | External key |
+| **includedDeleted** | boolean | no | false | If true, include deleted payment methods |
+| **withPluginInfo** | boolean | no | false | If true, include plugin info |
+| **audit** | string | yes | "NONE" | Level of audit information to return |
+
+If **withPluginInfo** is set to true, attributes for the active plugin are returned. These are plugin-dependent (see discussion above).
+Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 
 **Response**
 
-If successful, returns a status code of 200 and a payment method object.
+If successful, returns a status code of 200 and a payment method resource object.
 
 ### Delete a payment method
 
-This API deletes a payment method. The default payment method will not be deleted, unless required by the query parameters.
+This API deletes a payment method. The default payment method may not be deleted, depending on the query parameters.
 
 **HTTP Request** 
 
@@ -373,17 +381,19 @@ no content
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
-| **deleteDefaultPmWithAutoPayOff** | boolean | false | false | choose true to delete default payment method with auto pay off |
-| **forceDefaultPmDeletion** | boolean | false | false | choose true to force default payment method deletion |
+| **deleteDefaultPmWithAutoPayOff** | boolean | no | false | if true, delete default payment method only if AUTO_PAY_OFF is set |
+| **forceDefaultPmDeletion** | boolean | no | false | if true, force default payment method deletion |
+
+The query parameters determine the behavior if the payment method specified is the default method. If **forceDefaultPmDeletion** is true, the payment method will be deleted unconditionally. If **deleteDefaultPmWithAutoPayOff** is true, the payment method will be deleted only if AUTO_PAY_OFF is set (true). If neither parameter is true, the default payment method will not be deleted. 
 
 **Response**
 
-If successful, returns a status code of 204 and an empty body.
+If successful, returns a status code of 204 and an empty body. If the payment method is the default and cannot be deleted, an error code of 500 and a suitable message will be returned.
 
 
 ## List and Search
 
-These endpoints provide the ability to list and search for payment methods
+These endpoints provide the ability to list and search for payment methods for a specific tenant
 
 ###  List payment methods
 
@@ -508,21 +518,25 @@ class PaymentMethod {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **offset** | long | false | 0 | offset |
-| **limit** | long | false | 100 | limit search items |
-| **withPluginInfo** | boolean | false | false | Choose true to include plugin info |
-| **pluginName** | string | false | all plugins | If present, return information for only this plugin |
-| **pluginProperties** | array of strings | false | no properties | properties for this plugin |
-| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
+| **offset** | long | no | 0 | Starting position in list |
+| **limit** | long | no | 100 | Max number of items to return |
+| **withPluginInfo** | boolean | no | false | If true, include plugin info |
+| **pluginName** | string | no | all plugins | If present, list only payment methods that use this plugin |
+| **pluginProperties** | array of strings | no | no properties | return these properties for this plugin |
+| **audit** | string | no | "NONE" | Level of audit information to return |
+
+If **withPluginInfo** is set to true, attributes for each payment method's plugin are returned. These are plugin-dependent (see discussion above). If **pluginName** is given, list only payment methods that use this plugin, and return only the attributes specified by **pluginProperties**.
+Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+
 
 
 **Response**
 
-If successful, returns a status code of 200 and a list of payment method objects.
+If successful, returns a status code of 200 and a list of payment method resource objects.
 
 ###  Search payment methods
 
-THis API searches all payment methods for a specified search string. The search string is given as a path parameter.
+This API searches all payment methods for a specified search string. The search string is given as a path parameter.
 
 **HTTP Request** 
 
@@ -663,22 +677,25 @@ class PaymentMethod {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **offset** | long | false | 0 | offset |
-| **limit** | long | false | 100 | limit search items |
-| **withPluginInfo** | boolean | false | false | Choose true to include plugin info |
-| **pluginName** | string | false | all plugins | If present, return information for only this plugin |
-| **pluginProperties** | array of strings | false | no properties | properties for this plugin |
-| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
+| **offset** | long | no | 0 | Starting position in list |
+| **limit** | long | no | 100 | Max number of items to return |
+| **withPluginInfo** | boolean | no | false | If true, include plugin info |
+| **pluginName** | string | no | all plugins | If present, list only payment methods that use this plugin |
+| **pluginProperties** | array of strings | no | no properties | return these properties for this plugin |
+| **audit** | string | no | "NONE" | Level of audit information to return |
+
+If **withPluginInfo** is set to true, attributes for each payment method's plugin are returned. These are plugin-dependent (see discussion above). If **pluginName** is given, list only payment methods that use this plugin, and return only the attributes specified by **pluginProperties**.
+Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 **Response**
 
-If successful, returns a status code of 200 and a list of payment method objects that match the search key.
+If successful, returns a status code of 200 and a list of payment method resource objects that match the search key.
 
 
 
 ## Custom Fields
 
-Custom fields are `{key, value}` attributes that can be attached to any customer resources. These endpoints manage custom fields associated with `PaymentMethod` objects.
+`Custom fields` are `{key, value}` attributes that can be attached to any customer resources. For more on custom fields see [Custom Fields](#custom-fields). These endpoints manage custom fields associated with `PaymentMethod` objects.
 
 ### Add custom fields to a payment method
 
@@ -793,7 +810,7 @@ no content
 ```
 **Request Body**
 
-A list of objects givingp the name and value of the custom field, or fields, to be added. For example:
+A list of objects giving the name and value of the custom field, or fields, to be added. For example:
 
 [
   {
@@ -912,15 +929,17 @@ class CustomField {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
+| **audit** | string | no | "NONE" | Level of audit information to return |
+
+Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 **Response**
 
 If successful, returns a status code of 200 and a (possibly empty) list of custom field objects.
 
-###  Modify custom fields to payment method
+###  Modify custom fields for payment method
 
-Modifies the value of one or more existing custom fields for a payment object
+Modifies the value of one or more existing custom fields associated with a payment object
 
 **HTTP Request** 
 
@@ -1008,13 +1027,13 @@ no content
 
 **Request Body**
 
-A list of objects givingp the id and the new value for the custom field, or fields, to be modified. For example:
+A list of objects giving the id and the new value for the custom field, or fields, to be modified. For example:
 
-[
-  {
-    "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f",
-    "value": "123"
-  }
+[  
+  {  
+    "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f",  
+    "value": "123"  
+  }  
 ]
 
 
@@ -1100,7 +1119,7 @@ no content
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **customField** | string | true | none | the list of custom field object IDs that should be deleted. |
+| **customField** | string | yes | none | the list of custom field object IDs that should be deleted. |
 
 **Response**
 
@@ -1108,6 +1127,8 @@ If successful, returns a status code of 204 and an empty body.
 
 
 ## Audit Logs
+
+This endpoint enables access to payment method audit logs. For more on audit logs see the Audit and History section under Using Kill Bill APIs.
 
 ### Retrieve payment method audit logs with history by id
 
