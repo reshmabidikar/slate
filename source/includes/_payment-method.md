@@ -384,7 +384,7 @@ no content
 | **deleteDefaultPmWithAutoPayOff** | boolean | no | false | if true, delete default payment method only if AUTO_PAY_OFF is set |
 | **forceDefaultPmDeletion** | boolean | no | false | if true, force default payment method deletion |
 
-The query parameters determine the behavior if the payment method specified is the default method. If **forceDefaultPmDeletion** is true, the payment method will be deleted unconditionally. If **deleteDefaultPmWithAutoPayOff** is true, the payment method will be deleted only if AUTO_PAY_OFF is set (true). If neither parameter is true, the default payment method will not be deleted. 
+The query parameters determine the behavior if the payment method specified is the default method. If **forceDefaultPmDeletion** is true, the payment method will be deleted unconditionally. If **deleteDefaultPmWithAutoPayOff** is true, the payment method will be deleted, and AUTO_PAY_OFF will be set. If neither parameter is true, the default payment method will not be deleted. 
 
 **Response**
 
