@@ -28,7 +28,7 @@ All payment operations associated with this payment method will be delegated to 
 
 ## Payment Methods
 
-Basic operations to retrieve, list, search and delete payment methods. Creating a new payment method requires registering a new plugin. To add an existing plugin to an account see xxx
+Basic operations to retrieve, list, search and delete payment methods. Creating a new payment method requires registering a new plugin.
 
 ### Retrieve a payment method by id
 
