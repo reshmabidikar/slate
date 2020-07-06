@@ -5,7 +5,7 @@
 The `Payment Method` resource represents the payment methods associated with a customer `Account`. There are often two parts to this resource:
 
 * The core Kill Bill attributes shown below, which are limited and mostly track the associated payment plugin that is used to interract with the payment gateway.
-* The plugin attributes, which are plugin specific and payment method specific -- credit card, ACH, bitcoin, etc. In the case of a credit card for instance, the plugin would keep track of things like `name`, `address`, `last4`, and `token`. Not only are such attributes dependent on the payment method, but they are also dependent on the third party payment gateway, and on the tokenization model.
+* The plugin attributes, which are plugin specific and (customer) payment method specific -- credit card, ACH, bitcoin, etc. In the case of a credit card for instance, the plugin would keep track of things like `name`, `address`, `last4`, and `token`. Not only are such attributes dependent on the payment method, but they are also dependent on the third party payment gateway, and on the tokenization model.
 
 
 Kill Bill also supports a more advanced use case for payment routing, where the choice of the payment gateway is decided at run time
@@ -28,7 +28,9 @@ All payment operations associated with this payment method will be delegated to 
 
 ## Payment Methods
 
-Basic operations to retrieve, list, search and delete payment methods. Creating a new payment method requires registering a new plugin.
+Basic operations to retrieve, list, search and delete payment methods.
+
+Note that the creation of a payment method relies on an operation listed under the [Account resource](https://killbill.github.io/slate/#account-add-a-payment-method). The creation of a Kill Bill PaymentMethod is always associated to a given Account and it identifies (pluginName attribute) the payment plugin that will be used by the system when a payment is made. 
 
 ### Retrieve a payment method by id
 
@@ -384,7 +386,7 @@ no content
 | **deleteDefaultPmWithAutoPayOff** | boolean | no | false | if true, delete default payment method only if AUTO_PAY_OFF is set |
 | **forceDefaultPmDeletion** | boolean | no | false | if true, force default payment method deletion |
 
-The query parameters determine the behavior if the payment method specified is the default method. If **forceDefaultPmDeletion** is true, the payment method will be deleted unconditionally. If **deleteDefaultPmWithAutoPayOff** is true, the payment method will be deleted, and AUTO_PAY_OFF will be set. If neither parameter is true, the default payment method will not be deleted. 
+The query parameters determine the behavior if the payment method specified is the default method: If **forceDefaultPmDeletion** is true, the payment method will be deleted unconditionally. If **deleteDefaultPmWithAutoPayOff** is true, the payment method will also be deleted, and AUTO_PAY_OFF will be set (if not already). If neither parameter is true, the default payment method will not be deleted (the call will fail). 
 
 **Response**
 
