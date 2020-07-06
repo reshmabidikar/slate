@@ -23,7 +23,7 @@ The Kill Bill attributes are the following:
 | **pluginName** | string | user | Name of the associated plugin. 
 | **pluginInfo** | string | user | Plugin specific information, as required. |
 
-All payment operations associated with this payment method will be delegated to the plugin specified by **pluginName**. |
+All payment operations associated with this payment method will be delegated to the plugin specified by **pluginName**.
 
 
 ## Payment Methods
