@@ -1,10 +1,10 @@
 # Catalog
 
-The `Catalog` is at the heart of the Kill Bill subscription and billing systems. It provides complete current information on products available, subscription plans, billing options, and much more. Each tenant has a single Catalog, but different tenants may have completely different Catalogs.
+The `Catalog` is at the heart of the Kill Bill subscription and billing systems. It provides complete current information on products available, subscription plans, billing options, and much more. Each tenant has a single catalog, but different tenants may have completely different catalogs.
 
-The Catalog for a given tenant may be updated to new versions from time to time. This provides the ability to deprecate old products, add new ones, or change prices for existing products. Older versions remain available in case they are needed.
+The catalog for a given tenant may be updated to new versions from time to time. This provides the ability to deprecate old products, add new ones, or change prices for existing products. Older versions remain available in case they are needed. If a new version is uploaded, existing subscriptions are still based on their original versions, but new subscriptions must use the new version.
 
-Catalogs are not intended to be greatly changed once they are loaded, but we do provide support to modify a given catalog version to add new plans. In particular, the *simple plan* provides a way to ease testing and to play with the system. KAUI, our admin UI, provides the ability to add a simple plan.
+KAUI, our admin UI, provides the ability to upload a *simple plan*. The *simple plan* provides a way to ease testing and to play with the system. .
 
 A tenant has several options for setting up their catalog. you can choose the option that best meets your needs.
 
@@ -103,6 +103,10 @@ no content
 no content
 ```
 
+**Request Body**
+
+Contains the complete catalog in XML format
+
 **Query Parameters**
 
 None.
@@ -116,6 +120,13 @@ If successful, returns a status code of 201 and an empty body.
 ### Retrieve the catalog as XML
 
 This endpoint retrieves the Catalog for a specified date in XML format. If there are multiple versions, the latest version with an effective date not later than the requested date is returned. If the effective date for all versions is greater than the requested date, the earliest version is returned.
+
+For example, suppose there are two versions of the catalog, the current version dated 2020-01-01 (Jan. 1, 2020) and a previous version dated 2019-01-01. Then
+
+* A request with no effective date would retrieve the current version
+* A request with an effective date of 2020-01-01 or later would retrieve the current version
+* A request with an effective date of 2019-01-01 or later, but before 2020-01-01, would retrieve the previous version
+* A request with an effective date earlier than 2019-01-01 would retrieve the previous version, as it is the earliest version available.
 
 **HTTP Request** 
 
@@ -960,7 +971,7 @@ If successful, returns a status code of 200 and the catalog for the requested da
 
 ### Retrieve the catalog as JSON
 
-This endpoint retrieves the Catalog for a requested date in JSON format. If there are multiple versions, the latest version with an effective date not later than the requested date is returned. If the effective date for all versions is greater than the requested date, the earliest version is returned.
+This endpoint retrieves the Catalog for a requested date in JSON format. If there are multiple versions, the latest version with an effective date not later than the requested date is returned. If the effective date for all versions is greater than the requested date, the earliest version is returned. See the previous endpoint for examples.
 
 **HTTP Request** 
 
@@ -2811,7 +2822,7 @@ class PlanDetail {
 
 If successful, returns a status code of 200 and a list of objects representing available add-on products.
 
-### Delete all versions for a per tenant catalog
+### Delete all versions of a per tenant catalog
 
 Delete all per-tenant catalog versions. The tenant reverts to the system default catalog.
 
@@ -2872,7 +2883,7 @@ no content
 
 None.
 
-**Returns**
+**Response**
 
 If successful, returna a status code of 204 and an empty body.
 
@@ -2978,7 +2989,7 @@ If successful, returns a status code of 200 and a record for the current phase.
 
 ### Retrieve the plan for a given subscription and date
 
-This API returns information about the current `Plan` associated with a given subscription. The record returned includes the plan name  and information for each phase of the plan.
+This API returns information about the current `Plan` associated with a given subscription. The record returned includes the plan name and information for each phase of the plan.
 
 
 **HTTP Request** 
@@ -3314,18 +3325,18 @@ We provide a more basic level of APIs as a quick way to add a `Plan` into an **e
 The intent is mostly to help getting started with Kill Bill by abstracting away more complex topics such as alignements, rules, ...
 The functionality is exposed on our admin UI (KAUI) to provide a simple graphical way to configure a simple catalog and get started quickly.
 
-Such plans offer the following limitations:
+A simple plan has the following limitations:
 
 * In-advance billing only
 * Limited to one `RECURRING` phase  and an optional $0 `TRIAL` phase
 * No suport for fixed price
 
-Note that, one such catalog has been created, one can retrieve the associated XML, edit it to configure additional aspects and then upload
-a new version of this catalog. So, this functionality can also be a stepping stone for a full catalog configuration.
+Once a simple plan has been uploaded, one can retrieve the associated XML, edit it to configure additional aspects, and then upload
+a new version of this catalog. So, this functionality can also be a stepping stone to a full catalog configuration.
 
 ### Add a simple plan
 
-This adds a (simple) Plan into the current version of the Catalog associated with the tenant.
+Add a (simple) Plan into the current version of the Catalog associated with the tenant.
 
 **HTTP Request** 
 
@@ -3419,27 +3430,27 @@ no content
 no content
 ```
 
-**Query Parameters**
-
-None.
 
 **Request Body**
 
-Provides the content for the plan in JSON form. This should be very simple. For example:
+Provides the content for the plan in JSON form. This should be very simple. Note that the "planId" becomes the `planName` attribute. For example:
 
 {
-  "productName": "string",
+  "planId": "newplan",
+  "productName": "myitem",
   "productCategory": "BASE",
-  "currency": "AED",
+  "currency": "USD",
   "amount": 0,
   "billingPeriod": "DAILY",
   "trialLength": 0,
   "trialTimeUnit": "DAYS",
-  "availableBaseProducts": [
-    "string"
-  ]
+  "availableBaseProducts": []
 }
 
-**Returns**
+**Query Parameters**
+
+None.
+
+**Response**
 
 If successful, returns a status code of 201 and an empty body.
