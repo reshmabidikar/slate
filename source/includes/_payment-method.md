@@ -5,7 +5,7 @@
 The `Payment Method` resource represents the payment methods associated with a customer `Account`. There are two parts to the state associated with this resource, a first generic set of attributes kept by Kill Bill core subsystem, and another set of attributes kept at the (payment) plugin level.
 
 * The core Kill Bill attributes shown below mostly track the associated payment plugin that is used to interract with the payment gateway.
-* The plugin attributes are typically the details about such customer payment method: In the case of a credit card for instance, the plugin would keep track of things like `name`, `address`, `last4`, and `token`. Not only are such attributes dependent on the payment method, but they are also dependent on the third party payment gateway, and on the tokenization model, which is why they are kept by the plugin (internal tables), and not by Kill Bill core payment subsystem.
+* The plugin attributes are typically the details about such customer payment method: In the case of a credit card for instance, the plugin would keep track of things like `name`, `address`, `last4`, and `token`. Not only are such attributes dependent on the payment method, but they are also dependent on the third party payment gateway, and on the tokenization model, which is why they are kept by the plugin (internal tables), and not by the Kill Bill core payment subsystem.
 
 
 Kill Bill also supports a more advanced use case for payment routing, where the choice of the payment gateway is decided at run time
@@ -30,7 +30,7 @@ All payment operations associated with this payment method will be delegated to 
 
 Basic operations to retrieve, list, search and delete payment methods.
 
-Note that the creation of a payment method relies on an operation listed under the [Account resource](https://killbill.github.io/slate/#account-add-a-payment-method). The creation of a Kill Bill PaymentMethod is always associated to a given `Account` and it identifies (through its `pluginName` attribute) the payment plugin that will be used by the system when a payment is made. 
+Note that the creation of a payment method relies on an operation listed under the [Account resource](https://killbill.github.io/slate/#account-add-a-payment-method). The creation of a Kill Bill PaymentMethod is always associated with a given `Account` and it identifies (through its `pluginName` attribute) the payment plugin that will be used by the system when a payment is made. 
 
 ### Retrieve a payment method by id
 
