@@ -9,9 +9,6 @@ Subscriptions are created by specifying a `Plan` from the catalog, and an effect
 
 For most use cases, those two views are one and the same; the customer gets invoiced for what she consumes.
 
-Subscriptions can be in one of the following states:
-
-
 Please refer to our [subscription manual](http://docs.killbill.io/latest/userguide_subscription.html) for more details.
 
 ## Subscription Resource
@@ -39,13 +36,16 @@ The `Subscription` resource represents a subscription. The attributes contained 
 | **billingStartDate** | date | user | Date on which the system starts invoicing |
 | **billingEndDate** | date | user | Date on which the system ends invoicing |
 | **billCycleDayLocal** | integer | user or system | Day of the month on which invoices are generated, if applicable (see notes below) |
-| **events** | list | system | list of subscrition events tracking what happened, e.g., CHANGE_PLAN |
+| **events** | list | system | list of subscription events tracking what happened (see notes below) |
 | **price** | list | user | list of prices, one for each phase in the plan |
-| **priceOverrides** | list of prices if this subscription has price overrides |
+| **priceOverrides** | list | user | list of prices if this subscription has price overrides |
 
 **productCategory**: possible values are BASE, ADD_ON, or STANDALONE
+
 **billingPeriod**: possible values are DAILY, WEEKLY, BIWEEKLY, THIRTY_DAYS, SIXTY_DAYS, NINETY_DAYS, MONTHLY, BIMESTRIAL (bimonthly), QUARTERLY, TRIANNUAL, BIANNUAL, ANNUAL, BIENNIAL, or NO_BILLING_PERIOD
+
 **phaseType**: possible values are: TRIAL, DISCOUNT, FIXEDTERM, or EVERGREEN
+
 **state**: possible values are:
 
 * `PENDING`: The subscription is not yet created.
@@ -60,10 +60,16 @@ The `Subscription` resource represents a subscription. The attributes contained 
 
 **`billCycleDayLocal`**: this value is either the overridden subscription billCycleDay (in case of BCD change) or the value at the subscription, bundle or account level (depending on the catalog [billing alignments](http://docs.killbill.io/latest/userguide_subscription.html#_billing_alignment_rules)). For `ACCOUNT` billing alignments, if the account level billCycleDay hasn't been set yet, the value returned would be null.
 
+**`Evants`**: possible event types are START_ENTITLEMENT, START_BILLING, PAUSE_ENTITLEMENT, PAUSE_BILLING, RESUME_ENTITLEMENT, RESUME_BILLING, PHASE, CHANGE, STOP_ENTITLEMENT, STOP_BILLING, SERVICE_STATE_CHANGE
+
 
 ## Subscriptions
 
+These endpoints support the basic CRUD operations on Subscriptions.
+
 ### Create a subscription
+
+This API creates a base product subscription. It also creates a bundle to contain the subscription.
 
 **HTTP Request** 
 
@@ -319,25 +325,31 @@ class Subscription {
 no content
 ```
 
+**Request Body**
+
+A subscription resource object specifying `accountId`, optional `externalKey`, and either `planName`, or  `productName`, `productCategory` (BASE or STANDALONE), `billingPeriod`, and `priceList`. 
+
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| **entitlementDate** | string | false | the date at which the entitlement (sevice) starts. A null date means right now. |
-| **billingDate** | string | false | the date at which the billing starts A null date means right now. |
-| **renameKeyIfExistsAndUnused** | boolean | false | rename external key if exists and unused (default: true) |
-| **migrated** | boolean | false | choose true if is migrated (default: false) |
-| **bcd** | integer | false | Override the bill cycle day for this subscription. |
-| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
-| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
+| Name | Type | Required | Default | Description |
+| ---- | ---- | -------- | ------- | ----------- |
+| **entitlementDate** | string | no | immediately | Date at which the entitlement (sevice) starts. |
+| **billingDate** | string | no | immediately | Date at which the billing starts. |
+| **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused |
+| **migrated** | boolean | no | false | If true, subscription is migrated |
+| **callCompletion** | boolean | no | false | If true, call can be blocked until invoice and payment, if any, have been generated.|
+| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds if **callCompletion** is true  |
 
 When creating an add-on subscription, you need to specify the associated bundle in the body, either via its id or via its external key (but not both).
 
-**Returns**
+**Response**
 
-Returns a subscription object.
+If successful, returns a status code of 201 and an empty body. In addition, a `Location` parameter is returned in the header which contains the new subscription id.
 
-### Create a subscription with addOn products
+### Create a subscription with addon products
+
+This API creates an addon product subscription. The bundle for the base subscription must be specified.
+
 
 **HTTP Request**
 
@@ -553,23 +565,31 @@ no content
 no content
 ```
 
+**Request Body**
+
+A subscription resource object specifying `accountId`, optional `externalKey`, and either `planName`, or  `productName`, `billingPeriod`, and `priceList`. 
+
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| **entitlementDate** | string | false | the date at which the entitlement (sevice) starts. A null date means right now.|
-| **billingDate** | string | false | the date at which the billing starts A null date means right now. |
-| **renameKeyIfExistsAndUnused** | boolean | false | rename key if exists and unused (default: true) |
-| **migrated** | boolean | false | choose true if is migrated (default: false) |
-| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
-| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
+| Name | Type | Required | Default | Description |
+| ---- | ---- | -------- | ------- | ----------- |
+| **entitlementDate** | string | no | immediately | Date at which the entitlement (sevice) starts. |
+| **billingDate** | string | no | immediately | Date at which the billing starts. |
+| **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused |
+| **migrated** | boolean | no | false | If true, subscription is migrated |
+| **callCompletion** | boolean | no | false | If true, call can be blocked until invoice and payment, if any, have been generated.|
+| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds if **callCompletion** is true  |
 
-**Returns**
+**Response**
 
-A `201` http status without content.
+If successful, returns a status code of 201 and an empty body. In addition, a `Location` parameter is returned in the header which contains the new subscription id.
 
 
-### Create multiple subscriptions with addOn products
+
+### Create multiple subscriptions with addon products
+
+This API creates multiple addon product subscription. The bundle for the base subscription must be specified.
+
 
 **HTTP Request** 
 
@@ -1136,24 +1156,31 @@ no content
 no content
 ```
 
+**Request Body**
+
+A subscription resource object specifying `accountId`, optional `externalKey`, and either `planName`, or  `productName`, `billingPeriod`, and `priceList`. 
+
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| **entitlementDate** | string | false | the date at which the entitlements (sevice) starts. A null date means right now. |
-| **billingDate** | string | false | the date at which the billing starts A null date means right now. |
-| **renameKeyIfExistsAndUnused** | boolean | false | Rename key if exists and unused (default: true) |
-| **migrated** | boolean | false | choose true if is migrated (default: false) |
-| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
-| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
+| Name | Type | Required | Default | Description |
+| ---- | ---- | -------- | ------- | ----------- |
+| **entitlementDate** | string | no | immediately | Date at which the entitlement (sevice) starts. |
+| **billingDate** | string | no | immediately | Date at which the billing starts. |
+| **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused |
+| **migrated** | boolean | no | false | If true, subscription is migrated |
+| **callCompletion** | boolean | no | false | If true, call can be blocked until invoice and payment, if any, have been generated.|
+| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds if **callCompletion** is true  |
 
-**Returns**
+**Response**
 
-A `201` http status without content.
+If successful, returns a status code of 201 and an empty body. In addition, a `Location` parameter is returned in the header which contains the new subscription id.
+
 
 
 ### Retrieve a subscription by id
+
+This API retrieves a subscription resource object based on its subscription id 
 
 **HTTP Request** 
 
@@ -1526,16 +1553,20 @@ class Subscription {
 ```
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **audit** | string | no | "NONE" | Level of audit information to return |
 
-**Returns**
+Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
-Returns a subscription object.
+**Response**
+
+If successful, returns a status code of 200 and a subscription resource object.
 
 
 ### Retrieve a subscription by key
+
+This API retrieves a subscription resource object based on its external key 
 
 **HTTP Request**
 
@@ -1791,22 +1822,24 @@ subscriptionApi.get_subscription_by_key(external_key, api_key, api_secret)
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| **externalKey** | String | true | the subscription external key |
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **externalKey** | String | yes | none | The subscription external key |
+| **audit** | string | no | "NONE" | Level of audit information to return |
 
-**Returns**
+Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
-Returns a subscription object.
+**Response**
+
+If successful, returns a status code of 200 and a subscription resource object.
 
 
-### Update the BCD associated to a subscription
+### Update the BCD associated with a subscription
 
-This allows to change the Bill Cycle Date, BCD, for a given subscription.
-This only apply for subscriptions whose recurring term is month based -- e.g `MONTHLY`, `ANNUAL`, ... 
+This API allows you to change the Bill Cycle Date, BCD, for a given subscription.
+This only applies to subscriptions whose recurring term is month based -- e.g `MONTHLY`, `ANNUAL`, ... 
 
-For example if a given subscription was invoiced on the 1st, then one could use this api
+For example if a given subscription was invoiced on the 1st, then one could use this API
 to realign invoicing, let's say on the 16th. 
 
 **HTTP Request** 
@@ -1895,20 +1928,22 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| **effectiveFromDate** | string | true | effective at which this change becomes effective, a null value means immediate | 
-| **forceNewBcdWithPastEffectiveDate** | boolean | false | by default the effective date must be in the future so as to not modify existing invoices. this flag allows to override this behavior. (default: false)| 
+| Name | Type | Required | Default | Description |
+| ---- | ---- | -------- | ------- |  ----------- |
+| **effectiveFromDate** | string | no | immediate | Date on which this change becomes effective | 
+| **forceNewBcdWithPastEffectiveDate** | boolean | no | false | See below | 
 
-**Returns**
+By default the effective date must be in the future so as to not modify existing invoices. Setting **forceNewBcdWithPastEffectiveDate** to true allows the date to be set in the past. 
 
-A `204` http status without content.
+**Response**
+
+If successful, returns a status code of 204 and an empty body.
 
 
 ### Change subscription plan
 
 
-Ability to upgrade/downgrade a given subscription to a new `Plan`.
+This API allows you to upgrade or downgrade a given subscription to a new `Plan`.
 
 **HTTP Request** 
 
@@ -2113,24 +2148,32 @@ no content
 ```python
 no content
 ```
+**Request Body**
+
+A subscription resource object specifying either `planName` or  `productName`, `billingPeriod`, and `priceList`. 
+
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| **billingPolicy** | string | false | billing policy that will be used to make this change effective -- e.g `END_OF_TERM` would ensure there is no pro-ratin. |
-| **requestedDate** | string | false | the date at which this change should become effective. This date is only used if no billingPolicy was specified. A null date makes it an immediate change. |
-| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
-| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
+| Name | Type | Required | Default | Description |
+| ---- | ---- | -------- | ------- | ----------- |
+| **billingPolicy** | string | no | default | Billing policy that will be used to make this change effective (see below) |
+| **requestedDate** | string | no | immediate | Date at which this change should become effective.|
+| **callCompletion** | boolean | no | false | If true, call can be blocked until invoice and payment, if any, have been generated.|
+| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds if **callCompletion** is true  |
 
-**Returns**
+**billingPolicy**: Possible values are START_OF_TERM, END_OF_TERM, IMMEDIATE, or ILLEGAL
 
-A `204` http status without content.
+**requestedDate**: This date is only used if no billingPolicy was specified.
+
+**Response**
+
+If successful, returns a status code of 204 and an empty body.
 
 
 ### Undo a pending change plan on a subscription
 
-This endpoint allows to undo a pending change of `Plan` for a given subscription.
+This endpoint allows a pending change of `Plan` for a given subscription to be canceled.
 
 **HTTP Request** 
 
@@ -2200,13 +2243,15 @@ no content
 
 None. 
 
-**Returns**
+**Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 
 
-### Cancel a subscription plan
+### Cancel a subscription
+
+This API cancels an existing subscription.
 
 **HTTP Request** 
 
@@ -2289,38 +2334,43 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| **requestedDate** | string | false | requested date. A null value means immediately. |
-| **entitlementPolicy** | string | false | entitlement policy |
-| **billingPolicy** | string | false | billing policy |
-| **useRequestedDateForBilling** | boolean | false | use requested date for billing (default: false) |
-| **callCompletion** | boolean | false | ability to block the call until invoice and payment, if any, have been generated. (default: false)|
-| **callTimeoutSec** | long | false | when setting callCompletion=true, timeout in sec |
+| Name | Type | Required | Default | Description |
+| ---- | ---- | -------- | ------- | ----------- |
+| **requestedDate** | string | no | immediate | Date at which this change should become effective.|
+| **entitlementPolicy** | string | no | default policy | entitlement policy |
+| **billingPolicy** | string | no | default policy | billing policy |
+| **useRequestedDateForBilling** | boolean | no | false | use **requestedDate** for billing |
+| **callCompletion** | boolean | no | false | If true, call can be blocked until invoice and payment, if any, have been generated.|
+| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds if **callCompletion** is true  |
 
-Since we offer the ability to control cancelation date for both entitlement (service) and billing either through policies, dates or null values (now), it is imperative to understand how those parameters work:
+**entitlementPolicy**: Possible values are IMMEDIATE, END_OF_TERM
 
-* If `entitlementPolicy` has been defined, the `requestedDate` is ignored, and we either default to the catalog defined `billingPolicy` for this `Plan`, or use the one provided in this api.
+**billingPolicy**: Possible values are START_OF_TERM, END_OF_TERM, IMMEDIATE, or ILLEGAL
+
+
+Since we offer the ability to control the cancelation date for both entitlement (service) and billing either through policies, dates or null values (now), it is important to understand how those parameters work:
+
+* If `entitlementPolicy` has been defined, the `requestedDate` is ignored, and we either default to the catalog defined `billingPolicy` for this `Plan`, or use the one provided in this API.
 * If not, the `requestedDate` is used to compute the entitlement cancelation date, and the null value value means change should be immediate. The billing date will then be computed the following way:
   * If `billingPolicy` has been specified, it is used to compute the billing cancelation date
   * If `billingPolicy` has not been specified, we either use the `requestedDate` when `useRequestedDateForBilling` is true or default to the catalog defined `billingPolicy` for this `Plan`
 
 So, the common use case would require the following:
 
-* **Immediate cancelation**: This will create a pro-ration credit unless this aligns with the subscription charged through date (`CTD`), that is, the date up to which it was invoiced, and then from an entitlement point of view it will deactivate service immediately. In order to achieve this result, one can pass the following parameters: `entitlementPolicy`=`IMMEDIATE` and `billingPolicy`=`IMMEDIATE`; alternatively passing no parameters and therefore a null `requestedDate` would produce the same result.
-* **EOT cancelation**: This will not create any pro-ration and keep the service active until the end of the period (`CTD`). In order to achieve this result, one can pass the following parameters: `entitlementPolicy`=`END_OF_TERM` and `billingPolicy`=`END_OF_TERM`.
+* **Immediate cancelation**: This will create a prorated credit unless this aligns with the subscription charged through date (`CTD`), that is, the date up to which it was invoiced, and then from an entitlement point of view it will deactivate service immediately. In order to achieve this result, one can pass the following parameters: `entitlementPolicy`=`IMMEDIATE` and `billingPolicy`=`IMMEDIATE`; alternatively passing no parameters and therefore a null `requestedDate` would produce the same result.
+* **EOT cancelation**: This will not create any proration and will keep the service active until the end of the period (`CTD`). In order to achieve this result, one can pass the following parameters: `entitlementPolicy`=`END_OF_TERM` and `billingPolicy`=`END_OF_TERM`.
 
 The reason for all this complexity is to allow to control entitlement and billing date separately, and also avoid users to have to compute dates to achieve certain behavior by relying on well defined policies.
 
 
 **Returns**
 
-A `204` http status without content.
+IF successful, returns a status code of 204 and an empty body.
 
 
 ### Un-cancel a subscription
 
-This endpoint allows to undo a pending cancelation for a given subscription.
+This endpoint allows you to undo a pending cancelation for a given subscription.
 
 **HTTP Request** 
 
@@ -2392,16 +2442,16 @@ None.
 
 **Returns**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 
 ## Blocking State
 
-See section [Account Blocing State](#account-blocking-state) for an introduction.
+See section [Account Blocing State](#account-blocking-state) for an introduction to blocking states.
 
 ### Block a subscription
 
-Provides an low level interface to add `BlockingState` event for this subscription. 
+Provides a low level interface to add a `BlockingState` event for this subscription. 
 
 **HTTP Request** 
 
@@ -2529,22 +2579,28 @@ no content
 no content
 ```
 
+**Response Body**
+
+A blocking state object
+
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | ---- | -------- | ----------- |
-| **requestedDate** | string | false | requested date | 
+| Name | Type | Required | Default | Description |
+| ---- | ---- | -------- | ------- | ----------- |
+| **requestedDate** | string | no | immediate | Date to begin blocking | 
 
-**Returns**
+**Response**
 
-A `201` http status without content.
+If successful, returns a status code of 201 and an empty body.
 
 
 ## Custom Fields
 
-Custom fields are `{key, value}` attributes that can be attached to any customer resources, and in particularly on the `Subscription` objects.
+`Custom fields` are `{key, value}` attributes that can be attached to any customer resources. For more on custom fields see [Custom Fields](#custom-fields). These endpoints manage custom fields associated with `Subscription` objects.
 
 ### Add custom fields to subscription
+
+Adds one or more custom fields to a subscription object. Existing custom fields are not disturbed.
 
 **HTTP Request** 
 
@@ -2654,16 +2710,29 @@ class CustomField {
 no content
 ```
 
+**Request Body**
+
+A list of objects giving the name and value of the custom field, or fields, to be added. For example:
+
+[
+  {
+    "name": "CF1",
+    "value": "123"
+  }
+]
+
 
 **Query Parameters**
 
 None.
 
-**Returns**
+**Response**
 
-Returns a custom field object.
+If successful, returns a status code of 201 and an empty body.
 
 ### Retrieve subscription custom fields
+
+Returns any custom field objects associated with the specified payment method
 
 **HTTP Request** 
 
@@ -2762,15 +2831,19 @@ class CustomField {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **audit** | string | no | "NONE" | Level of audit information to return |
 
-**Returns**
+Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
-Returns a list of custom field objects.
+**Response**
+
+If successful, returns a status code of 200 and a (possibly empty) list of custom field objects.
 
 ### Modify custom fields to subscription
+
+Modifies the value of one or more existing custom fields associated with a payment object
 
 **HTTP Request** 
 
@@ -2862,11 +2935,14 @@ no content
 
 None.
 
-**Returns**
+**Response**
 
-A `204` http status without content.
+If successful, a status code of 204 and an empty body.
 
 ### Remove custom fields from subscription
+
+Delete one or more custom fields from a subscription
+
 
 **HTTP Request** 
 
@@ -2938,24 +3014,24 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **customField** | string | true | the list of custom field object IDs that should be deleted. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **customField** | string | yes | none | the list of custom field object IDs that should be deleted. |
 
-**Returns**
+**Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 ## Tags
 
 
 See section [Account Tags](#account-tags) for an introduction.
 
-The are no `system` tags applicable for an `Subscription`.
-
-Let's assume there is an existing `user` tagDefintion already created with `tagDefinitionId`=`353752dd-9041-4450-b782-a8bb03a923c8`.
+The are no `system` tags applicable for a `Subscription`.
 
 ### Add tags to subscription
+
+This API adds one or more tags to an account. The tag definitions must already exist.
 
 **HTTP Request** 
 
@@ -3048,15 +3124,22 @@ class Tag {
 no content
 ```
 
+**Request Body**
+
+A JSON array containing one or more strings to be added as user tags.
+
 **Query Parameters**
 
 None.
 
 **Returns**
 
-A `201` http status without content.
+If successful, returns a status code of 201 and an empty body.
 
 ### Retrieve subscription tags
+
+Retrieve all tags attached to this subscription.
+
 
 **HTTP Request** 
 
@@ -3163,21 +3246,24 @@ class Tag {
 | **audit** | enum | false | level of audit logs returned |
 | **includedDeleted** | boolean | false | choose true if you want to include deleted tags |
 
-**Returns**
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **includedDeleted** | boolean | no | false | If true, include deleted tags |
+| **audit** | string | no | "NONE" | Level of audit information to return |
 
-Returns a list of bundle tag objects.
+Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+
+**Response**
+    
+If successful, returns a status code of 200 and a list of tag objects.
 
 ### Remove tags from subscription
+
+This API removes a list of tags attached to a subscription.
 
 **HTTP Request** 
 
 `DELETE http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/tags`
-
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagDef** | string | true | the list of tag definition ID identifying the tags that should be removed. |
 
 > Example Request:
 
@@ -3247,18 +3333,24 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagList** | string | true |  list of tags that you want to remove it |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ------------ |
+| **tagDef** | array of strings | true | none | List of tag definition IDs identifying the tags that should be removed. |
 
 **Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 
 ## Audit Logs
 
+Audit logs provide a record of events that occur involving various specific resources. For details on audit logs see [Audit and History](https://killbill.github.io/slate/#using-kill-bill-apis-audit-and-history).
+
+
 ### Retrieve subscription audit logs with history by subscription id
+
+Retrieve a list of audit log records showing events that occurred involving changes to the subscription. History information (a copy of the full subscription object) is included with each record.
+
 
 **HTTP Request** 
 
@@ -3342,19 +3434,20 @@ curl -v \
 
 None.
 
-**Returns**
+**Response**
     
-Returns a list of subscription audit logs with history.
+If successful, returns a status code of 200 and a list of audit logs.
 
 
 
 ### Retrieve subscription event audit logs with history by subscription event id
 
+Retrieve a list of audit log records showing events that occurred involving changes to the subscription, based on a subscription event id. History information (a copy of the full subscription object) is included with each record. The id of a subscription event comes from the [timeline api](#account-retrieve-account-timeline).
+
 **HTTP Request** 
 
 `GET http://127.0.0.1:8080/1.0/kb/subscriptions/events/{subscriptionEventId}/auditLogsWithHistory`
 
-The id of subscription event is the one comes from the [timeline api](#account-retrieve-account-timeline).
 
 
 > Example Request:
@@ -3413,7 +3506,7 @@ curl  \
 
 None.
 
-**Returns**
+**Response**
     
-Returns a list of subscription event audit logs with history.
+If successful, returns a status code of 200 and a list of audit logs with history.
 
