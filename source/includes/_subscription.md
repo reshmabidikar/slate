@@ -2841,9 +2841,9 @@ Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 If successful, returns a status code of 200 and a (possibly empty) list of custom field objects.
 
-### Modify custom fields to subscription
+### Modify custom fields for a subscription
 
-Modifies the value of one or more existing custom fields associated with a payment object
+Modifies the value of one or more existing custom fields associated with a subscription
 
 **HTTP Request** 
 
@@ -2937,7 +2937,7 @@ None.
 
 **Response**
 
-If successful, a status code of 204 and an empty body.
+If successful, returns a status code of 204 and an empty body.
 
 ### Remove custom fields from subscription
 
@@ -3241,10 +3241,6 @@ class Tag {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **audit** | enum | false | level of audit logs returned |
-| **includedDeleted** | boolean | false | choose true if you want to include deleted tags |
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
