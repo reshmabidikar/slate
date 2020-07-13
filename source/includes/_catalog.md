@@ -3327,6 +3327,13 @@ We provide a more basic level of APIs as a quick way to add a `Plan` into an **e
 The intent is mostly to help getting started with Kill Bill by abstracting away more complex topics such as alignements, rules, ...
 The functionality is exposed on our admin UI (KAUI) to provide a simple graphical way to configure a simple catalog and get started quickly.
 
+One can directly use our Simple Plan API to add new `Plans` without the need to create an initial catalog version: If there is no
+existing catalog version for the tenant, the system will create such an initial version when the first plan is added; otherwise, the
+system will use the existing active catalog version to add the new plan (but it will not create a new catalog version).
+
+Note that because the Simple Plan api is just an abstraction on top of the more complex XML based apis, one can start with such Simple Plan api,
+and then download the resulting XML, and edit such catalog by hand (to add entries, modify default rules, ...).
+
 A simple plan has the following limitations:
 
 * In-advance billing only
