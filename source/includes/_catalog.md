@@ -2,16 +2,18 @@
 
 The `Catalog` is at the heart of the Kill Bill subscription and billing systems. It provides complete current information on products available, subscription plans, billing options, and much more. Each tenant has a single catalog, but different tenants may have completely different catalogs.
 
-The catalog for a given tenant may be updated to new versions from time to time. This provides the ability to deprecate old products, add new ones, or change prices for existing products. Older versions remain available in case they are needed. If a new version is uploaded, existing subscriptions are still based on their original versions, but new subscriptions must use the new version.
+The catalog for a given tenant may be updated to new versions from time to time. This provides the ability to deprecate old products, add new ones, or change prices for existing products. Older versions remain available in case they are needed. If a new version is uploaded, new subscriptions will use the new version, but existing subscriptions may either depend on their original versions (grandfathering use case) or use the latest version (price update use case). Please refer to the [catalog section of our subscription billing documentation](https://docs.killbill.io/latest/userguide_subscription.html#components-catalog) for additional details.
 
-KAUI, our admin UI, provides the ability to upload a *simple plan*. The *simple plan* provides a way to ease testing and to play with the system. .
 
-A tenant has several options for setting up their catalog. you can choose the option that best meets your needs.
+KAUI, our admin UI, provides the ability to upload a *simple plan*. The *simple plan* provides a way to ease testing and to play with the system. See [API section Simple Plan](https://killbill.github.io/slate/#catalog-simple-plan).
 
-1. Use the default Kill Bill catalog unchanged. This is available to you automatically.
-2. Use the default catalog, and add the *simple plan* or other new plans to it.
-3. Write your own complete catalog as an XML file and upload it.
+A tenant has several options for setting up their catalog. You can choose the option that best meets your needs:
+
+1. Use the default test catalog that ships with Kill Bill by [creating a tenant](https://killbill.github.io/slate/#tenant-create-a-tenant) with `useGlobalDefault=true`
+2. Use the Simple Plan api from KAUI to get started quickly (no need to create an XML catalog, simply use the UI and add the plans you need).
+3. Write your own complete catalog as an XML file and upload it. Some examples of catalog can be found in our [test repo](https://github.com/killbill/killbill-docs/tree/v3/catalogs). For validation, check our [manual](https://docs.killbill.io/latest/userguide_subscription.html#components-catalog-overview) or use our [cloud validation tool](https://cloud.killbill.io/) after creating an account.
 4. Write a custom Catalog plugin. This is only for advanced users with special needs.
+
 
 For a full discussion of the KillBill catalog, see the [Catalog](https://docs.killbill.io/latest/userguide_subscription.html#components-catalog) section in the [Subscription Guide](https://docs.killbill.io/latest/userguide_subscription.html).
 
@@ -3324,6 +3326,13 @@ If successful, returns a status code of 200 and a record for the product for thi
 We provide a more basic level of APIs as a quick way to add a `Plan` into an **existing version** of the catalog.
 The intent is mostly to help getting started with Kill Bill by abstracting away more complex topics such as alignements, rules, ...
 The functionality is exposed on our admin UI (KAUI) to provide a simple graphical way to configure a simple catalog and get started quickly.
+
+One can directly use our Simple Plan API to add new `Plans` without the need to create an initial catalog version: If there is no
+existing catalog version for the tenant, the system will create such an initial version when the first plan is added; otherwise, the
+system will use the existing active catalog version to add the new plan (but it will not create a new catalog version).
+
+Note that because the Simple Plan api is just an abstraction on top of the more complex XML based apis, one can start with such Simple Plan api,
+and then download the resulting XML, and edit such catalog by hand (to add entries, modify default rules, ...).
 
 A simple plan has the following limitations:
 
