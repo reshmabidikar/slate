@@ -11,7 +11,7 @@ A tenant has several options for setting up their catalog. You can choose the op
 
 1. Use the default test catalog that ships with Kill Bill by [creating a tenant](https://killbill.github.io/slate/#tenant-create-a-tenant) with `useGlobalDefault=true`
 2. Use the Simple Plan api from KAUI to get started quickly (no need to create an XML catalog, simply use the UI and add the plans you need).
-3. Write your own complete catalog as an XML file and upload it. Some examples of catalog can be found in our [test repo](https://github.com/killbill/killbill/tree/master/catalog/src/test/resources). For validation, check our [manual](https://docs.killbill.io/latest/userguide_subscription.html#components-catalog-overview) or use our [cloud validation tool](https://cloud.killbill.io/) after creating an account.
+3. Write your own complete catalog as an XML file and upload it. Some examples of catalog can be found in our [test repo](https://github.com/killbill/killbill-docs/tree/v3/catalogs). For validation, check our [manual](https://docs.killbill.io/latest/userguide_subscription.html#components-catalog-overview) or use our [cloud validation tool](https://cloud.killbill.io/) after creating an account.
 4. Write a custom Catalog plugin. This is only for advanced users with special needs.
 
 
