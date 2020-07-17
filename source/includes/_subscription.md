@@ -60,7 +60,7 @@ The `Subscription` resource represents a subscription. The attributes contained 
 
 **`billCycleDayLocal`**: this value is either the overridden subscription billCycleDay (in case of BCD change) or the value at the subscription, bundle or account level (depending on the catalog [billing alignments](http://docs.killbill.io/latest/userguide_subscription.html#_billing_alignment_rules)). For `ACCOUNT` billing alignments, if the account level billCycleDay hasn't been set yet, the value returned would be null.
 
-**`Evants`**: possible event types are START_ENTITLEMENT, START_BILLING, PAUSE_ENTITLEMENT, PAUSE_BILLING, RESUME_ENTITLEMENT, RESUME_BILLING, PHASE, CHANGE, STOP_ENTITLEMENT, STOP_BILLING, SERVICE_STATE_CHANGE
+**`Events`**: possible event types are START_ENTITLEMENT, START_BILLING, PAUSE_ENTITLEMENT, PAUSE_BILLING, RESUME_ENTITLEMENT, RESUME_BILLING, PHASE, CHANGE, STOP_ENTITLEMENT, STOP_BILLING, SERVICE_STATE_CHANGE
 
 
 ## Subscriptions
@@ -69,7 +69,7 @@ These endpoints support the basic CRUD operations on Subscriptions.
 
 ### Create a subscription
 
-This API creates a base product subscription. It also creates a bundle to contain the subscription.
+This API creates a base product subscription. It also creates a bundle to contain the subscription. See [Bundle](https://killbill.github.io/slate/#bundle) for further information.
 
 **HTTP Request** 
 
@@ -327,7 +327,7 @@ no content
 
 **Request Body**
 
-A subscription resource object specifying `accountId`, optional `externalKey`, and either `planName`, or  `productName`, `productCategory` (BASE or STANDALONE), `billingPeriod`, and `priceList`. 
+A subscription resource object specifying `accountId`, optional `externalKey`, and `planName`. 
 
 **Query Parameters**
 
@@ -567,7 +567,7 @@ no content
 
 **Request Body**
 
-A subscription resource object specifying `accountId`, optional `externalKey`, and either `planName`, or  `productName`, `billingPeriod`, and `priceList`. 
+A subscription resource object specifying `accountId`, optional `externalKey`, and `planName`. 
 
 **Query Parameters**
 
@@ -1158,7 +1158,7 @@ no content
 
 **Request Body**
 
-A subscription resource object specifying `accountId`, optional `externalKey`, and either `planName`, or  `productName`, `billingPeriod`, and `priceList`. 
+A subscription resource object specifying `accountId`, optional `externalKey`, and `planName`. 
 
 
 **Query Parameters**
