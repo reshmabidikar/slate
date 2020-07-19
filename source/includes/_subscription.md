@@ -56,7 +56,13 @@ The `Subscription` resource represents a subscription. The attributes contained 
 **sourceType**: possible values are NATIVE, MIGRATED, or TRANSFERRED 
 
 
-**`chargedThroughDate`**: For `IN_ADVANCE` billing mode, this date will often be in the future; for `IN_ARREAR`, this date will often be in the past.
+**`chargedThroughDate`**: The date up to which the entitlement for this subscription has been invoiced. For `IN_ADVANCE` billing mode, this date will often be in the future; for `IN_ARREAR`, this date will often be in the past. For example,
+
+1. A subscription is billed each month, on the 15th, in advance. If we check on May 31, the `chargedThroughDate` will be June 15th, 15 days ahead. If the subscription is ended on May 31, a prorated credit will need to be issued.
+
+2. A subscription is billed quarterly, in arrears, on the 10th of Feb., May, Aug., and Nov. If we check on Jul. 20, the `chargedThroughDate` will be May 10, over 2 months earlier. If the subscription is cancelled on Jul. 20, an additional invoice will need to be issued.
+
+These use cases assume that invoicing is up to date. If AUTO_INVOICING_OFF is set, invoicing relies on a manual process and may be late. In that situation the first use case may require a smaller credit or none at all, while the second case will have a larger amount to be billed to close out the subscription.
 
 **`billCycleDayLocal`**: this value is either the overridden subscription billCycleDay (in case of BCD change) or the value at the subscription, bundle or account level (depending on the catalog [billing alignments](http://docs.killbill.io/latest/userguide_subscription.html#_billing_alignment_rules)). For `ACCOUNT` billing alignments, if the account level billCycleDay hasn't been set yet, the value returned would be null.
 
@@ -337,10 +343,10 @@ A subscription resource object specifying `accountId`, optional `externalKey`, a
 | **billingDate** | string | no | immediately | Date at which the billing starts. |
 | **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused |
 | **migrated** | boolean | no | false | If true, subscription is migrated |
-| **callCompletion** | boolean | no | false | If true, call can be blocked until invoice and payment, if any, have been generated.|
-| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds if **callCompletion** is true  |
+| **callCompletion** | boolean | no | false | see below |
+| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
 
-When creating an add-on subscription, you need to specify the associated bundle in the body, either via its id or via its external key (but not both).
+Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
 
 **Response**
 
@@ -577,8 +583,10 @@ A subscription resource object specifying `accountId`, optional `externalKey`, a
 | **billingDate** | string | no | immediately | Date at which the billing starts. |
 | **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused |
 | **migrated** | boolean | no | false | If true, subscription is migrated |
-| **callCompletion** | boolean | no | false | If true, call can be blocked until invoice and payment, if any, have been generated.|
-| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds if **callCompletion** is true  |
+| **callCompletion** | boolean | no | false | see below |
+| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
+
+Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
 
 **Response**
 
@@ -1169,8 +1177,10 @@ A subscription resource object specifying `accountId`, optional `externalKey`, a
 | **billingDate** | string | no | immediately | Date at which the billing starts. |
 | **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused |
 | **migrated** | boolean | no | false | If true, subscription is migrated |
-| **callCompletion** | boolean | no | false | If true, call can be blocked until invoice and payment, if any, have been generated.|
-| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds if **callCompletion** is true  |
+| **callCompletion** | boolean | no | false | see below |
+| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
+
+Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
 
 **Response**
 
@@ -2150,7 +2160,7 @@ no content
 ```
 **Request Body**
 
-A subscription resource object specifying either `planName` or  `productName`, `billingPeriod`, and `priceList`. 
+A subscription resource object specifying a `planName``. 
 
 
 **Query Parameters**
@@ -2159,12 +2169,14 @@ A subscription resource object specifying either `planName` or  `productName`, `
 | ---- | ---- | -------- | ------- | ----------- |
 | **billingPolicy** | string | no | default | Billing policy that will be used to make this change effective (see below) |
 | **requestedDate** | string | no | immediate | Date at which this change should become effective.|
-| **callCompletion** | boolean | no | false | If true, call can be blocked until invoice and payment, if any, have been generated.|
-| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds if **callCompletion** is true  |
+| **callCompletion** | boolean | no | false | see below |
+| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
 
 **billingPolicy**: Possible values are START_OF_TERM, END_OF_TERM, IMMEDIATE, or ILLEGAL
 
 **requestedDate**: This date is only used if no billingPolicy was specified.
+
+Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
 
 **Response**
 
@@ -2340,12 +2352,17 @@ no content
 | **entitlementPolicy** | string | no | default policy | entitlement policy |
 | **billingPolicy** | string | no | default policy | billing policy |
 | **useRequestedDateForBilling** | boolean | no | false | use **requestedDate** for billing |
-| **callCompletion** | boolean | no | false | If true, call can be blocked until invoice and payment, if any, have been generated.|
-| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds if **callCompletion** is true  |
+| **callCompletion** | boolean | no | false | see below |
+| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
+
 
 **entitlementPolicy**: Possible values are IMMEDIATE, END_OF_TERM
 
-**billingPolicy**: Possible values are START_OF_TERM, END_OF_TERM, IMMEDIATE, or ILLEGAL
+**billingPolicy**: Possible values are START_OF_TERM, END_OF_TERM, or IMMEDIATE
+
+Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
+
+
 
 
 Since we offer the ability to control the cancelation date for both entitlement (service) and billing either through policies, dates or null values (now), it is important to understand how those parameters work:
@@ -2581,7 +2598,18 @@ no content
 
 **Response Body**
 
-A blocking state object
+A blocking state resource representing the intended new blocking state. For example,
+
+{
+  "blockedId": "943c4fd0-9000-4975-a3a8-09712223e1f8",
+  "stateName": "STATE1",
+  "service": "ServiceStateService",
+  "isBlockChange": false,
+  "isBlockEntitlement": false,
+  "isBlockBilling": true,
+  "effectiveDate": "2020-07-18T18:22:30.376Z",
+  "type": "SUBSCRIPTION"
+}
 
 **Query Parameters**
 
@@ -2714,12 +2742,12 @@ no content
 
 A list of objects giving the name and value of the custom field, or fields, to be added. For example:
 
-[
-  {
-    "name": "CF1",
-    "value": "123"
-  }
-]
+    [
+      {
+        "name": "CF1",
+        "value": "123"
+      }
+    ]
 
 
 **Query Parameters**
@@ -2732,7 +2760,7 @@ If successful, returns a status code of 201 and an empty body.
 
 ### Retrieve subscription custom fields
 
-Returns any custom field objects associated with the specified payment method
+Returns any custom field objects associated with the specified subscription
 
 **HTTP Request** 
 
@@ -3031,7 +3059,7 @@ The are no `system` tags applicable for a `Subscription`.
 
 ### Add tags to subscription
 
-This API adds one or more tags to an account. The tag definitions must already exist.
+This API adds one or more tags to a subscription. The tag definitions must already exist.
 
 **HTTP Request** 
 
@@ -3126,7 +3154,7 @@ no content
 
 **Request Body**
 
-A JSON array containing one or more strings to be added as user tags.
+A JSON array containing one or more strings giving the UUID of tag definitions for the user tags to be added.
 
 **Query Parameters**
 
@@ -3345,7 +3373,7 @@ Audit logs provide a record of events that occur involving various specific reso
 
 ### Retrieve subscription audit logs with history by subscription id
 
-Retrieve a list of audit log records showing events that occurred involving changes to the subscription. History information (a copy of the full subscription object) is included with each record.
+Retrieve a list of audit log records showing events that occurred involving changes to the subscription. History information is included with each record.
 
 
 **HTTP Request** 
