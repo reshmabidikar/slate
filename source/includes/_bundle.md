@@ -3692,7 +3692,7 @@ If successful, returns a status code of 200 and a list with all bundles.
 
 ### Search bundles
 
-Search for a bundle by a specified search string.  The search string is compared to the `accountId`, the `bundleId`, and the bundle `externalKey`. The operation returns all bundle resources in which the search string matches all or part of any one of these attributes.
+Search for a bundle by a specified search string.  The search string is compared to the `accountId`, the `bundleId`, and the bundle `externalKey`. The operation returns all bundle resources in which the search string matches any one of these attributes. Note: the string must match the *entire* attribute, not just a part of it.
 
 **HTTP Request** 
 
