@@ -1824,7 +1824,7 @@ no content
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ----------- |
+| ---- | -----| -------- | ------- | ----------- |
 | **requestedDate** | string | no | current date | requested date for pausing |
 
 **Response**
