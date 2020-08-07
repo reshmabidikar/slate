@@ -2815,7 +2815,7 @@ If successful, returns a status code of 200 and an invoicePayment resource objec
 
 ## Custom Fields
 
-Custom fields are `{key, value}` attributes that can be attached to any customer resource. In particular they can be added to invoices`. For details on Custom Fields see [Custom Field](https://killbill.github.io/slate/#custom-field).
+Custom fields are `{key, value}` attributes that can be attached to any customer resource. In particular they can be added to invoices. For details on Custom Fields see [Custom Field](https://killbill.github.io/slate/#custom-field).
 
 ### Add custom fields to an invoice
 
@@ -3556,9 +3556,11 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Translation
 
-Refer to our [Internationalization manual](http://docs.killbill.io/0.20/internationalization.html#_invoice_templates) for an introduction.
+These endpoints support translation of invoices as well as other necessary entities to a different language when required by the customer. Refer to our [Internationalization manual](http://docs.killbill.io/0.20/internationalization.html#_invoice_templates) for an introduction.
 
 ### Upload the catalog translation for the tenant
+
+Uploads a catalog transaltion document that will be saved under a specified locale. The translation document gives a translation for specific names in the current catalog.
 
 **HTTP Request** 
 
@@ -5673,7 +5675,7 @@ If successful, returns a status code of 200 and a list of all accounts.
 
 ### Search invoices
 
-Search for an account by a specified search string. The search string is compared to the following attributes: ???`. The operation returns all account records in which the search string matches all or part of any one of these attributes??.
+Search for an account by a specified search string. If the search string is a number, it is compared to the `invoiceNumber` attribute. An exact match is required. Otherwise, it is compared to the following attributes: `invoiceId`, `accountId`, or `currency`. The operation returns all account records in which the search string matches all or part of any one of these attributes.
 
 
 **HTTP Request** 
