@@ -15,7 +15,6 @@ An invoice can have one of the following status values: DRAFT, COMMITTED, or VOI
 
 * A VOID invoice is ignored by the rest of the system. A DRAFT or COMMITTED invoice may be voided, but only if there are no successful payments against that invoice. Thus before voiding an invoice, any successful payments need to be refunded.
 
-For more information about invoice internals, refer to our [invoice subsystem doc](http://docs.killbill.io/latest/invoice_subsystem.html)
 
 
 ## Invoice Resource
@@ -3556,11 +3555,15 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Translation
 
-These endpoints support translation of invoices as well as other necessary entities to a different language when required by the customer. Refer to our [Internationalization manual](http://docs.killbill.io/0.20/internationalization.html#_invoice_templates) for an introduction.
+These endpoints support translation of invoices to a different language when required by the customer. Refer to our [Internationalization manual](http://docs.killbill.io/0.20/internationalization.html#_invoice_templates) for an introduction.
+
+Translation replaces words and phrases in an invoice or catalog with the equivalent words or phrases in a different language. A tenant may upload translation tables for specific locales (e.g., locale `fr_FR` for French). When a customer accesses an invoice, that invoice will be translated according to the locale of the customer's account, if a translation table exists for that locale.
+
+Translation in Kill Bill is based on [**mustache**](https://mustache.github.io/).
 
 ### Upload the catalog translation for the tenant
 
-Uploads a catalog transaltion document that will be saved under a specified locale. The translation document gives a translation for specific names in the current catalog.
+Uploads a catalog transaltion table that will be saved under a specified locale. The translation table gives a translation for specific names in the current catalog.
 
 **HTTP Request** 
 
@@ -3631,18 +3634,30 @@ TODO
 ```python
 no content
 ```
+**Response Body**
+
+A table of translation items. For example:
+
+gold-monthly = plan Or mensuel
+silver-monthly = plan d'argent mensuel
+
+Note that this table does not use a special syntax such as JSON. The equals sign is the only punctuation. There are no brackets or quotation marks.
+
+The names translated would be primarily plan names, product names, and other items that may appear on an invoice.
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **deleteIfExists** | boolean | false |  delete translation if exists |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ------------
+| **deleteIfExists** | boolean | no | false |  if true, delete any existing translations |
 
 **Response**
 
-A `201` http status without content.
+If successful, returns a status code of 201 and an empty body.
 
-### Retrieves the catalog translation for the tenant
+### Retrieve the catalog translation for the tenant
+
+Retrieves the catalog translation table that was previously uploaded for a particular locale, if any.
 
 **HTTP Request** 
 
@@ -3701,12 +3716,13 @@ None.
 
 **Response**
 
-A `200` http status without content.
-
+If successful, returns a status code of 200 and the translation table. A status code of 404 means no table was found for the specified locale.
 
 
 
 ### Upload the invoice translation for the tenant
+
+Uploads an invoice transaltion table that will be saved under a specified locale. The translation table gives a translation for specific names in the corresponding invoice template.
 
 **HTTP Request** 
 
@@ -3795,17 +3811,32 @@ processedPaymentRate=Le taux de conversion est
 no content
 ```
 
+**Response Body**
+
+A table of translation items. For example:
+
+invoiceTitle=FACTURE
+invoiceDate=Date:
+invoiceNumber=Facture #
+invoiceAmount=Montant à payer
+
+Note that this table does not use a special syntax such as JSON. The equals sign is the only punctuation. There are no brackets or quotation marks.
+
+
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **deleteIfExists** | boolean | false |  delete translation if exists |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ------------
+| **deleteIfExists** | boolean | no | false |  delete translation if exists |
 
 **Response**
 
-A `201` http status without content.
+If successful, returns a status code of 201 and an empty body.
 
-### Retrieves the invoice translation for the tenant
+### Retrieve the invoice translation for the tenant
+
+Retrieves the invoice translation table that was previously uploaded for a particular locale, if any.
+
 
 **HTTP Request** 
 
@@ -3885,14 +3916,16 @@ None.
 
 **Response**
 
-A `200` http status without content.
+If successful, returns a status code of 200 and the translation table. A status code of 404 means no table was found for the specified locale.
 
 
 ## Template
 
-Refer to our [Internationalization manual](http://docs.killbill.io/0.20/internationalization.html#_invoice_templates) for an introduction.
+A template is a document based on [**mustache**](https://mustache.github.io/) that provides the layout information for invoices. The template will be trnslated according to the translation table, if any, and the invoice data will be filled in by the Kill Bill system. Refer to our [Internationalization manual](http://docs.killbill.io/0.20/internationalization.html#_invoice_templates) for an introduction.
 
 ### Upload the manualPay invoice template for the tenant
+
+Uploads an invoice template based on the manual pay option.
 
 **HTTP Request** 
 
@@ -4115,19 +4148,24 @@ invoiceApi.upload_invoice_mp_template(body,
 ```python
 no content
 ```
+**Request Body**
+
+Contains a mustache manual pay template in HTML format.
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **deleteIfExists** | boolean | false | delete if exists |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **deleteIfExists** | boolean | no | false | if true, delete any existing manual pay template |
 
 
 **Response**
 
-Returns a invoice template.
+If successful, returns a status code of 200 and an empty body.
 
-### Retrieves the manualPay invoice template for the tenant
+### Retrieve the manualPay invoice template for the tenant
+
+Retrieves the manual pay invoice template previously uploaded for this tenant, if any.
 
 **HTTP Request** 
 
@@ -4496,9 +4534,12 @@ None.
 
 **Response**
 
-Returns a invoice template.
+If successful, returns a status code of 201 and the manual pay template.
 
 ### Upload the invoice template for the tenant
+
+Uploads an invoice template based on an automatic payment method.
+
 
 **HTTP Request** 
 
@@ -4722,18 +4763,25 @@ TODO
 no content
 ```
 
+**Request Body**
+
+Contains a mustache automatic pay template in HTML format.
+
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **deleteIfExists** | boolean | false | delete if exists |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **deleteIfExists** | boolean | no | false | if true, delete any existing manual pay template |
 
 
 **Response**
 
-Returns a invoice template.
+If successful, returns a status code of 200 and an empty body.
 
-### Retrieves the invoice template for the tenant
+### Retrieve the invoice template for the tenant
+
+Retrieves the automatic pay invoice template previously uploaded for this tenant, if any.
+
 
 **HTTP Request** 
 
@@ -5100,9 +5148,31 @@ TODO
 None.
 
 
+
 **Response**
 
-Returns a invoice template.
+If successful, returns a status code of 201 and the automatic pay template.
+
+## Example
+
+The translation and templating process may seem a little complex. Here is a simple example for the use of a template with translation.
+
+1. To begin, a tenant should upload suitable manual pay and autopay templates reflecting her desired layout for the invoice. If this is not done a default template will be used.
+
+2. Suppose the tenant does business with German customers. She then should upload translation tables, perhaps provided by customers, designated for the German locale (de_DE). Tables are needed for both invoice items and catalog items. The invoice items to be translated are the names of the fields on the template, such as invoiceTitle, invoiceAmount, etc. The catalog items to be translated are the names for actual items such as product name and plan name. There can be translation tables for any number of distinct locales.
+
+Catalog translation example (German):
+
+        gold plan = Goldplan
+        sports car = Sportwagen
+        
+Invoice transaltion example (German):
+
+    invoiceTitle = Rechnung
+    invoiceNumber = Rechnungsnumber
+    invoiceBalance = Rechnungssaldo
+    
+3. Each account has a designated locale. When an invoice is retrieved for an account, the appropriate translation tables, if any, are used to translate the invoice.
 
 
 ## Audit Logs
