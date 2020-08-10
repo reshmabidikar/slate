@@ -16131,7 +16131,9 @@ Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only insert
 </code></pre>
 <p><strong>Request Body</strong></p>
 
-<p>A subscription resource object specifying <code>accountId</code>, optional <code>externalKey</code>, and <code>planName</code>. </p>
+<p>A subscription resource object specifying <code>accountId</code>, optional <code>externalKey</code>, and <code>planName</code>.</p>
+
+<p>Also, note that one can atomically change the per-subscription BCD while making this call by specifying a new date in the field body <code>billCycleDayLocal</code>. This allows to make changes and realign the billing with the date of the change.</p>
 
 <p><strong>Query Parameters</strong></p>
 
