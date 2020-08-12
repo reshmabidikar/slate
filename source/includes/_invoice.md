@@ -3555,11 +3555,9 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Translation
 
-These endpoints support translation of invoices to a different language when required by the customer. Refer to our [Internationalization manual](http://docs.killbill.io/0.20/internationalization.html#_invoice_templates) for an introduction.
+These endpoints support translation of invoices to a different language when required by the customer. Refer to our [Internationalization manual](http://docs.killbill.io/latest/internationalization.html#_invoice_templates) for an introduction.
 
-Translation replaces words and phrases in an invoice or catalog with the equivalent words or phrases in a different language. A tenant may upload translation tables for specific locales (e.g., locale `fr_FR` for French). When a customer accesses an invoice, that invoice will be translated according to the locale of the customer's account, if a translation table exists for that locale.
-
-Translation in Kill Bill is based on [**mustache**](https://mustache.github.io/).
+Translation replaces words and phrases in an invoice or catalog with the equivalent words or phrases in a different language. A tenant may upload translation tables for specific locales (e.g., locale `fr_FR` for French). When a customer accesses an invoice, that invoice will be generated from the system data, formatted using the appropriate template (see below), and translated according to the locale of the customer's account, if a translation table exists for that locale.
 
 ### Upload the catalog translation for the tenant
 
@@ -3722,7 +3720,7 @@ If successful, returns a status code of 200 and the translation table. A status 
 
 ### Upload the invoice translation for the tenant
 
-Uploads an invoice transaltion table that will be saved under a specified locale. The translation table gives a translation for specific names in the corresponding invoice template.
+Uploads an invoice translation table that will be saved under a specified locale. The translation table gives a translation for specific names in the corresponding invoice template.
 
 **HTTP Request** 
 
@@ -3921,11 +3919,11 @@ If successful, returns a status code of 200 and the translation table. A status 
 
 ## Template
 
-A template is a document based on [**mustache**](https://mustache.github.io/) that provides the layout information for invoices. The template will be trnslated according to the translation table, if any, and the invoice data will be filled in by the Kill Bill system. Refer to our [Internationalization manual](http://docs.killbill.io/0.20/internationalization.html#_invoice_templates) for an introduction.
+A template is a document based on [**mustache**](https://mustache.github.io/) that provides the layout information for invoices. The template will be trnslated according to the translation table, if any, and the invoice data will be filled in by the Kill Bill system. Refer to our [Internationalization manual](http://docs.killbill.io/latest/internationalization.html#_invoice_templates) for an introduction.
 
 ### Upload the manualPay invoice template for the tenant
 
-Uploads an invoice template based on the manual pay option.
+Uploads an invoice template based on the manual pay option, for accounts that have the MANUAL_PAY tag. These accounts manually pay their invoices (e.g. ACH). Typically, this template will contain extra information like the company bank account details, PO number, etc.
 
 **HTTP Request** 
 
@@ -4538,7 +4536,7 @@ If successful, returns a status code of 201 and the manual pay template.
 
 ### Upload the invoice template for the tenant
 
-Uploads an invoice template based on an automatic payment method.
+Uploads an invoice template based on an automatic payment method. This is appropriate for accounts without the MANUAL_PAY tag.
 
 
 **HTTP Request** 
