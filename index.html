@@ -876,6 +876,12 @@
                     <a href="#invoice-invoice-resource" class="toc-h2 toc-link" data-title="Invoice Resource">Invoice Resource</a>
                   </li>
                   <li>
+                    <a href="#invoice-invoiceitem-resouece" class="toc-h2 toc-link" data-title="InvoiceItem Resouece">InvoiceItem Resouece</a>
+                  </li>
+                  <li>
+                    <a href="#invoice-invoicedryrun-resource" class="toc-h2 toc-link" data-title="InvoiceDryRun Resource">InvoiceDryRun Resource</a>
+                  </li>
+                  <li>
                     <a href="#invoice-invoice" class="toc-h2 toc-link" data-title="Invoice">Invoice</a>
                         <ul class="toc-list-h3">
                               <li>
@@ -903,10 +909,10 @@
                                 <a href="#invoice-render-an-invoice-as-html" class="toc-h3 toc-link" data-title="Invoice">Render an invoice as HTML</a>
                               </li>
                               <li>
-                                <a href="#invoice-perform-the-invoice-status-transition-from-draft-to-committed" class="toc-h3 toc-link" data-title="Invoice">Perform the invoice status transition from DRAFT to COMMITTED</a>
+                                <a href="#invoice-change-invoice-status-from-draft-to-committed" class="toc-h3 toc-link" data-title="Invoice">Change invoice status from DRAFT to COMMITTED</a>
                               </li>
                               <li>
-                                <a href="#invoice-perform-the-action-of-voiding-an-invoice" class="toc-h3 toc-link" data-title="Invoice">Perform the action of voiding an invoice</a>
+                                <a href="#invoice-void-an-invoice" class="toc-h3 toc-link" data-title="Invoice">Void an invoice</a>
                               </li>
                               <li>
                                 <a href="#invoice-adjust-an-invoice-item" class="toc-h3 toc-link" data-title="Invoice">Adjust an invoice item</a>
@@ -920,7 +926,7 @@
                     <a href="#invoice-dry-run" class="toc-h2 toc-link" data-title="Dry-run">Dry-run</a>
                         <ul class="toc-list-h3">
                               <li>
-                                <a href="#invoice-generate-a-dryrun-invoice" class="toc-h3 toc-link" data-title="Invoice">Generate a dryRun invoice</a>
+                                <a href="#invoice-generate-a-dry-run-invoice" class="toc-h3 toc-link" data-title="Invoice">Generate a dry run invoice</a>
                               </li>
                         </ul>
                   </li>
@@ -928,7 +934,7 @@
                     <a href="#invoice-payments" class="toc-h2 toc-link" data-title="Payments">Payments</a>
                         <ul class="toc-list-h3">
                               <li>
-                                <a href="#invoice-trigger-a-payment-for-invoice" class="toc-h3 toc-link" data-title="Invoice">Trigger a payment for invoice</a>
+                                <a href="#invoice-trigger-a-payment-for-an-invoice" class="toc-h3 toc-link" data-title="Invoice">Trigger a payment for an invoice</a>
                               </li>
                               <li>
                                 <a href="#invoice-retrieve-payments-associated-with-an-invoice" class="toc-h3 toc-link" data-title="Invoice">Retrieve payments associated with an invoice</a>
@@ -939,13 +945,13 @@
                     <a href="#invoice-custom-fields" class="toc-h2 toc-link" data-title="Custom Fields">Custom Fields</a>
                         <ul class="toc-list-h3">
                               <li>
-                                <a href="#invoice-add-custom-fields-to-invoice" class="toc-h3 toc-link" data-title="Invoice">Add custom fields to invoice</a>
+                                <a href="#invoice-add-custom-fields-to-an-invoice" class="toc-h3 toc-link" data-title="Invoice">Add custom fields to an invoice</a>
                               </li>
                               <li>
                                 <a href="#invoice-retrieve-invoice-custom-fields" class="toc-h3 toc-link" data-title="Invoice">Retrieve invoice custom fields</a>
                               </li>
                               <li>
-                                <a href="#invoice-modify-custom-fields-to-invoice" class="toc-h3 toc-link" data-title="Invoice">Modify custom fields to invoice</a>
+                                <a href="#invoice-modify-custom-fields-for-an-invoice" class="toc-h3 toc-link" data-title="Invoice">Modify custom fields for an invoice</a>
                               </li>
                               <li>
                                 <a href="#invoice-remove-custom-fields-from-invoice" class="toc-h3 toc-link" data-title="Invoice">Remove custom fields from invoice</a>
@@ -973,13 +979,13 @@
                                 <a href="#invoice-upload-the-catalog-translation-for-the-tenant" class="toc-h3 toc-link" data-title="Invoice">Upload the catalog translation for the tenant</a>
                               </li>
                               <li>
-                                <a href="#invoice-retrieves-the-catalog-translation-for-the-tenant" class="toc-h3 toc-link" data-title="Invoice">Retrieves the catalog translation for the tenant</a>
+                                <a href="#invoice-retrieve-the-catalog-translation-for-the-tenant" class="toc-h3 toc-link" data-title="Invoice">Retrieve the catalog translation for the tenant</a>
                               </li>
                               <li>
                                 <a href="#invoice-upload-the-invoice-translation-for-the-tenant" class="toc-h3 toc-link" data-title="Invoice">Upload the invoice translation for the tenant</a>
                               </li>
                               <li>
-                                <a href="#invoice-retrieves-the-invoice-translation-for-the-tenant" class="toc-h3 toc-link" data-title="Invoice">Retrieves the invoice translation for the tenant</a>
+                                <a href="#invoice-retrieve-the-invoice-translation-for-the-tenant" class="toc-h3 toc-link" data-title="Invoice">Retrieve the invoice translation for the tenant</a>
                               </li>
                         </ul>
                   </li>
@@ -990,15 +996,18 @@
                                 <a href="#invoice-upload-the-manualpay-invoice-template-for-the-tenant" class="toc-h3 toc-link" data-title="Invoice">Upload the manualPay invoice template for the tenant</a>
                               </li>
                               <li>
-                                <a href="#invoice-retrieves-the-manualpay-invoice-template-for-the-tenant" class="toc-h3 toc-link" data-title="Invoice">Retrieves the manualPay invoice template for the tenant</a>
+                                <a href="#invoice-retrieve-the-manualpay-invoice-template-for-the-tenant" class="toc-h3 toc-link" data-title="Invoice">Retrieve the manualPay invoice template for the tenant</a>
                               </li>
                               <li>
                                 <a href="#invoice-upload-the-invoice-template-for-the-tenant" class="toc-h3 toc-link" data-title="Invoice">Upload the invoice template for the tenant</a>
                               </li>
                               <li>
-                                <a href="#invoice-retrieves-the-invoice-template-for-the-tenant" class="toc-h3 toc-link" data-title="Invoice">Retrieves the invoice template for the tenant</a>
+                                <a href="#invoice-retrieve-the-invoice-template-for-the-tenant" class="toc-h3 toc-link" data-title="Invoice">Retrieve the invoice template for the tenant</a>
                               </li>
                         </ul>
+                  </li>
+                  <li>
+                    <a href="#invoice-example" class="toc-h2 toc-link" data-title="Example">Example</a>
                   </li>
                   <li>
                     <a href="#invoice-audit-logs" class="toc-h2 toc-link" data-title="Audit Logs">Audit Logs</a>
@@ -1015,7 +1024,7 @@
                         </ul>
                   </li>
                   <li>
-                    <a href="#invoice-pagination-search" class="toc-h2 toc-link" data-title="Pagination/Search">Pagination/Search</a>
+                    <a href="#invoice-list-and-search" class="toc-h2 toc-link" data-title="List and Search">List and Search</a>
                         <ul class="toc-list-h3">
                               <li>
                                 <a href="#invoice-list-invoices" class="toc-h3 toc-link" data-title="Invoice">List invoices</a>
@@ -23546,32 +23555,288 @@ any <code>ADD_ON</code> subscriptions in the same bundle are also cancelled auto
 <p><strong>Response</strong></p>
 
 <p>If successful, returns a status code of 200 and a list with all bundles that are matched by the search key.</p>
-<h1 id='invoice'>Invoice</h1><h2 id='invoice-invoice-resource'>Invoice Resource</h2>
-<p>The <code>Invoice</code> resource represents a specific invoice associated with a given <code>Account</code>. Users can generate invoices by using our apis
-to add credit or create charges against the <code>Account</code>. Invoices can also be automatically generated by the system when
-there are existing active subscriptions for the <code>Account</code>. In the later case, the <code>targetDate</code> will determine up to which point to invoice,
-and the billing mode <code>IN_ADVANCE</code> versus <code>IN_ARREAR</code> will determine which period to charge for.</p>
+<h1 id='invoice'>Invoice</h1>
+<p>An invoice is a bill provided to a customer for charges that are payable on the customer&#39;s account. A single invoice consolidates charges for all subscriptions held by that customer for a specified time period. Invoices may be set to be paid automatically, or may be paid manually by the customer.</p>
 
-<p>For each invoice, there is a corresponding status:</p>
+<p>An invoice contains a list of <code>InvoiceItem</code>s. The system will always invoice at the <code>Account</code> level, and will therefore create as many items on a given
+invoice as there are things to invoice. Given an active <code>Subscription</code>, one could see multiple items for that subscription on a single invoice including recurring items, usage items, fixed price items, etc. There can also be items for different subscriptions on the same invoice, as well as items that are unrelated to subscriptions such as adjustments and taxes.</p>
+
+<p>An invoice can be generated manually if there are any outstanding charges. In addition, charges can be explicitly added that will also result in an invoice being generated. Invoices can also be automatically generated by the system when there are existing active subscriptions for the <code>Account</code>. In the latter case, the <code>targetDate</code> will determine up to which point to invoice, and the billing mode (<code>IN_ADVANCE</code> or <code>IN_ARREAR</code>) will determine which period to charge for.</p>
+
+<p>An invoice can have one of the following status values: DRAFT, COMMITTED, or VOID.</p>
 
 <ul>
-<li>An invoice can be in <code>DRAFT</code> status, in which case it is open to receive additional items, and it is not taken into account by the rest for the system when computing the account balance, overdue status, ...</li>
-<li>A <code>COMMITTED</code> invoice on the other hand  becomes immutable, and its balance is reflected at the <code>Account</code> level. Payments can only happen against <code>COMMITTED</code> invoices.</li>
-<li>An invoice can also be in <code>VOID</code> status, in which case it is ignored by the rest of the system. We offer a <a href="https://killbill.github.io/slate/#invoice-perform-the-action-of-voiding-an-invoice">void api</a> to transition a <code>DRAFT</code> or <code>COMMITTED</code> invoice into <code>VOID</code> status. The operation is only available if there are no succesful payments against such invoice, therefore one would first need to refund existing succesful payments -- if any -- prior voiding the invoice.</li>
+<li><p>An invoice in DRAFT status is open to receive additional items, and is not considered by the rest of the system when computing account balances or related values.</p></li>
+<li><p>A COMMITTED invoice is immutable, and its balance is reflected at the Account level. Payments can only happen against COMMITTED invoices.</p></li>
+<li><p>A VOID invoice is ignored by the rest of the system. A DRAFT or COMMITTED invoice may be voided, but only if there are no successful payments against that invoice. Thus before voiding an invoice, any successful payments need to be refunded.</p></li>
 </ul>
+<h2 id='invoice-invoice-resource'>Invoice Resource</h2>
+<p>An <code>Invoice</code> resource represents an invoice associated with a specific account. The attributes contained in this resource are the following:</p>
 
-<p>An invoice contains a list of <code>InvoiceItem</code>. The system will always invoice at the <code>Account</code> level, and will therefore create as many items on a given
-invoice as there are things to invoice. Given an active <code>Subscription</code>, one could see multiple items for that subscription on one given invoice to take
-into account different things to invoice -- e.g recurring items, usage items, fixed price, ... There can also be different (invoice) items for different subscriptions on the same invoice, and there can also be items that are unrelated to subscriptions -- e.g adjustments, tax, ...</p>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Generated by</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>invoiceId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for the invoice</td>
+</tr>
+<tr>
+<td><strong>accountId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for the account</td>
+</tr>
+<tr>
+<td><strong>amount</strong></td>
+<td>number</td>
+<td>user or system</td>
+<td>Sum of all item amounts</td>
+</tr>
+<tr>
+<td><strong>currency</strong></td>
+<td>string</td>
+<td>user or system</td>
+<td>Currency associated with the account</td>
+</tr>
+<tr>
+<td><strong>status</strong></td>
+<td>string</td>
+<td>system</td>
+<td>Status of the invoice: DRAFT, COMMITTED or VOID</td>
+</tr>
+<tr>
+<td><strong>creditAdj</strong></td>
+<td>number</td>
+<td>system</td>
+<td>Sum of all current credits</td>
+</tr>
+<tr>
+<td><strong>refundAdj</strong></td>
+<td>number</td>
+<td>system</td>
+<td>Sum of all current refunds associated with payments</td>
+</tr>
+<tr>
+<td><strong>invoiceDate</strong></td>
+<td>date</td>
+<td>system</td>
+<td>Date when this invoice was generated</td>
+</tr>
+<tr>
+<td><strong>targetDate</strong></td>
+<td>date</td>
+<td>user or system</td>
+<td>Date up to which the account has been invoiced</td>
+</tr>
+<tr>
+<td><strong>invoiceNumber</strong></td>
+<td>number</td>
+<td>system</td>
+<td>Invoice number</td>
+</tr>
+<tr>
+<td><strong>balance</strong></td>
+<td>number</td>
+<td>system</td>
+<td>Sum of all item amounts minus the payment amount</td>
+</tr>
+<tr>
+<td><strong>bundleKeys</strong></td>
+<td>list</td>
+<td>system</td>
+<td>List of bundles invoiced. Deprecated.</td>
+</tr>
+<tr>
+<td><strong>credits</strong></td>
+<td>list</td>
+<td>system</td>
+<td>List of credits associated with this invoice. Deprecated.</td>
+</tr>
+<tr>
+<td><strong>items</strong></td>
+<td>list</td>
+<td>system</td>
+<td>List of invoice items on this invoice</td>
+</tr>
+<tr>
+<td><strong>isParentInvoice</strong></td>
+<td>boolean</td>
+<td>system</td>
+<td>If true, this invoice is the parent in the hierarchical model</td>
+</tr>
+<tr>
+<td><strong>parentInvoiceId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>In the hierarchical model, UUID of the parent invoice</td>
+</tr>
+<tr>
+<td><strong>parentAccountId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>In the hierarchical model, UUID of the parent account</td>
+</tr>
+</tbody></table>
+<h2 id='invoice-invoiceitem-resouece'>InvoiceItem Resouece</h2>
+<p>An <code>InvoiceItem</code> resource represents a single item charged on an invoice. The attributes contained in this resource are the following:</p>
 
-<p>For more information about invoice internals, refer to our this <a href="http://docs.killbill.io/latest/invoice_subsystem.html">invoice subsystem doc</a></p>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Generated by</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>invoiceItemId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for the invoice item</td>
+</tr>
+<tr>
+<td><strong>invoiceId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for the invoice</td>
+</tr>
+<tr>
+<td><strong>linkedInvoiceItemId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for the linked item, if any (see below)</td>
+</tr>
+<tr>
+<td><strong>accountId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for the account</td>
+</tr>
+<tr>
+<td><strong>childAccountId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>In the hierarchical model, the UUID of the child account</td>
+</tr>
+<tr>
+<td><strong>bundleId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for the bundle</td>
+</tr>
+<tr>
+<td><strong>subscriptionId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for the subscription</td>
+</tr>
+<tr>
+<td><strong>planName</strong></td>
+<td>string</td>
+<td>system</td>
+<td>Name of the <code>Plan</code> for this subscription</td>
+</tr>
+<tr>
+<td><strong>phaseName</strong></td>
+<td>string</td>
+<td>system</td>
+<td>Name of the <code>PlanPhase</code> for this subscription</td>
+</tr>
+<tr>
+<td><strong>usageName</strong></td>
+<td>string</td>
+<td>system</td>
+<td>Name of the <code>Usage</code> section for this subscription</td>
+</tr>
+<tr>
+<td><strong>prettyPlanName</strong></td>
+<td>string</td>
+<td>system</td>
+<td>Pretty name of the <code>Plan</code> for this subscription</td>
+</tr>
+<tr>
+<td><strong>prettyPhaseName</strong></td>
+<td>string</td>
+<td>system</td>
+<td>Pretty name of the <code>PlanPhase</code> for this subscription</td>
+</tr>
+<tr>
+<td><strong>prettyUsageName</strong></td>
+<td>string</td>
+<td>system</td>
+<td>Pretty name of the <code>Usage</code> section for this subscription</td>
+</tr>
+<tr>
+<td><strong>itemType</strong></td>
+<td>string</td>
+<td>system</td>
+<td>Item type (see below)</td>
+</tr>
+<tr>
+<td><strong>description</strong></td>
+<td>string</td>
+<td>user or system</td>
+<td>Optional description of the item</td>
+</tr>
+<tr>
+<td><strong>startDate</strong></td>
+<td>date</td>
+<td>user or system</td>
+<td>Start date of the period invoiced</td>
+</tr>
+<tr>
+<td><strong>endDate</strong></td>
+<td>date</td>
+<td>user or system</td>
+<td>End date of the period invoiced</td>
+</tr>
+<tr>
+<td><strong>amount</strong></td>
+<td>number</td>
+<td>user or system</td>
+<td>Amount being invoiced</td>
+</tr>
+<tr>
+<td><strong>quantity</strong></td>
+<td>number</td>
+<td>user or system</td>
+<td>Rate associated with the <code>Plan</code></td>
+</tr>
+<tr>
+<td><strong>currency</strong></td>
+<td>string</td>
+<td>user or system</td>
+<td>Currency associated with the account</td>
+</tr>
+<tr>
+<td><strong>itemDetails</strong></td>
+<td>string</td>
+<td>user or system</td>
+<td>In usage mode, details about what was invoiced.</td>
+</tr>
+<tr>
+<td><strong>childItems</strong></td>
+<td>list</td>
+<td>user or system</td>
+<td>In the hierarchical model, the items for the children.</td>
+</tr>
+</tbody></table>
 
-<p>The following invoice item types are currently supported:</p>
+<p><strong>linkedInvoiceItemId</strong>: This ID is used to link to another item. For example, an item representing an adjustment would link to the item being adjusted.</p>
+
+<p><strong>itemType</strong>: The following invoice item types are currently supported:</p>
 
 <ul>
-<li><code>EXTERNAL_CHARGE</code>: Charge independent of any subscription state - typically added using invoice apis.</li>
-<li><code>FIXED</code>: Fixed (one-time) charge associated to a subscription.</li>
-<li><code>RECURRING</code>: Recurring charge associated to a subscription.</li>
+<li><code>EXTERNAL_CHARGE</code>: Charge independent of any subscription state - typically added using invoice APIs.</li>
+<li><code>FIXED</code>: Fixed (one-time) charge associated with a subscription.</li>
+<li><code>RECURRING</code>: Recurring charge associated with a subscription.</li>
 <li><code>REPAIR_ADJ</code>: Internal adjustment generated by the system, used for billing in advance when the subscription state changed.</li>
 <li><code>CBA_ADJ</code>: Credit (positive or negative) generated by the system.</li>
 <li><code>ITEM_ADJ</code>: Invoice item adjustment -- by itself or triggered by a refund.</li>
@@ -23579,56 +23844,112 @@ into account different things to invoice -- e.g recurring items, usage items, fi
 <li><code>TAX</code>: Tax item -- this can only be added through an invoice plugin</li>
 <li><code>PARENT_SUMMARY</code>: In the hierarchical model, represents the summary across all children</li>
 </ul>
+<h2 id='invoice-invoicedryrun-resource'>InvoiceDryRun Resource</h2>
+<p>An <code>InvoiceDryRun</code> object represents an invoice preview generated to determine what would be in the invoice scheduled on a certain date, or if certain changes are made. A dry run has no actual effect on the system. The attributes contained in this resource are the following:</p>
 
-<p>The attributes are the following:</p>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Generated by</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td><strong>dryRunType</strong></td>
+<td>string</td>
+<td>user</td>
+<td>Category for this dry run (see notes below)</td>
+</tr>
+<tr>
+<td><strong>dryRunAction</strong></td>
+<td>string</td>
+<td>user</td>
+<td>Action on which the dry run should be based, if any (see notes below)</td>
+</tr>
+<tr>
+<td><strong>phaseType</strong></td>
+<td>string</td>
+<td>user</td>
+<td>Type of the plan phase (see notes below)</td>
+</tr>
+<tr>
+<td><strong>productName</strong></td>
+<td>string</td>
+<td>user</td>
+<td>Name of the product subscribed</td>
+</tr>
+<tr>
+<td><strong>productCategory</strong></td>
+<td>string</td>
+<td>user</td>
+<td>Product category (see notes below)</td>
+</tr>
+<tr>
+<td><strong>billingPeriod</strong></td>
+<td>string</td>
+<td>user</td>
+<td>Billing period (see notes below)</td>
+</tr>
+<tr>
+<td><strong>priceListName</strong></td>
+<td>string</td>
+<td>user</td>
+<td>Name of the applicable price list</td>
+</tr>
+<tr>
+<td><strong>subscriptiontId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for a subscription. If specified, only this subscription is used for the dry run</td>
+</tr>
+<tr>
+<td><strong>bundleId</strong></td>
+<td>string</td>
+<td>system</td>
+<td>UUID for a bundle. If specified, only this subscription is used for the dry run</td>
+</tr>
+<tr>
+<td><strong>effectiveDate</strong></td>
+<td>date</td>
+<td>user</td>
+<td>The date the change takes effect</td>
+</tr>
+<tr>
+<td><strong>billingPolicy</strong></td>
+<td>string</td>
+<td>user</td>
+<td>The billing policy (see notes below)</td>
+</tr>
+<tr>
+<td><strong>priceOverrides</strong></td>
+<td>list</td>
+<td>user</td>
+<td>list of prices if this subscription has price overrides</td>
+</tr>
+</tbody></table>
+
+<p><strong>dryRunType</strong>: possible values are:</p>
 
 <ul>
-<li><strong><code>invoiceId</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: The <code>ID</code> allocated by Kill Bill upon creation.</li>
-<li><strong><code>accountId</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: The <code>ID</code> allocated by Kill Bill upon creation.</li>
-<li><strong><code>amount</code></strong> <span style="color:#32A9C7"><em>[User or system generated]</em></span>: This is the sum of all the item amounts.</li>
-<li><strong><code>currency</code></strong> <span style="color:#32A9C7"><em>[User or system generated]</em></span>: Currency associated with the <code>Account</code>.</li>
-<li><strong><code>status</code></strong> <span style="color:#32A9C7"><em>[System generated]</em></span>: <code>DRAFT</code>, <code>COMMITTED</code> or <code>VOID</code>.</li>
-<li><strong><code>creditAdj</code></strong> <span style="color:#32A9C7"><em>[System generated]</em></span>: Sum of the credits of this invoice.</li>
-<li><strong><code>refundAdj</code></strong> <span style="color:#32A9C7"><em>[System generated]</em></span>: Sum of the refunds associated with all the payments against this invoice.</li>
-<li><strong><code>invoiceDate</code></strong> <span style="color:#32A9C7"><em>[System generated]</em>&lt;</span>: Date when this invoice was generated.</li>
-<li><strong><code>targetDate</code></strong> <span style="color:#32A9C7"><em>[User or system generated</em></span>: Date up to which the account has been invoiced.</li>
-<li><strong><code>invoiceNumber</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: </li>
-<li><strong><code>balance</code></strong> <span style="color:#32A9C7"><em>[System generated]</em></span>: The arithemtic sum of all items amounts on this invoice minus the payment amount.</li>
-<li><strong><code>bundleKeys</code></strong> <span style="color:#32A9C7"><em>[System generated]</em></span>: Comma separated list of bundles invoiced in this <code>Invoice</code>. Deprecated.</li>
-<li><strong><code>credits</code></strong> <span style="color:#32A9C7"><em>[See <code>Credit</code> below]</em></span>: List of credits associated with thsi Invoice. Deprecated.</li>
-<li><strong><code>items</code></strong> <span style="color:#32A9C7"><em>[See <code>InvoiceItem</code> below]</em></span>: The list of invoice items on this invoice</li>
-<li><strong><code>isParentInvoice</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: In the hierarchical model, whether is invoice is the parent invoice.</li>
-<li><strong><code>parentInvoiceId</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: In the hierarchical model, the <code>ID</code> of the parent invoice.</li>
-<li><strong><code>parentAccountId</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: In the hierarchical model, the <code>ID</code> of the parent account.</li>
+<li><p>TARGET_DATE -- Preview the invoice as of the given target date </p></li>
+<li><p>UPCOMING_INVOICE -- Preview the next scheduled invoice </p></li>
+<li><p>SUBSCRIPTION_ACTION -- Preview the invoice that would be generated if the specified <strong>dryRunAction</strong> is taken</p></li>
 </ul>
-<h4 id='invoice-invoiceitem'>InvoiceItem</h4>
-<ul>
-<li><strong><code>invoiceItemId</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: The <code>ID</code> allocated by Kill Bill upon creation.</li>
-<li><strong><code>invoiceId</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: The <code>Invoice</code> <code>ID</code>.</li>
-<li><strong><code>linkedInvoiceItemId</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: This <code>ID</code> is used to linked to another item -- e.g <code>ITEM_ADJ</code> item would link to the item being adjusted.</li>
-<li><strong><code>accountId</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: The <code>Account</code> <code>ID</code> allocated by Kill Bill upon creation.</li>
-<li><strong><code>childAccountId</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: In the hierarchical model, the <code>ID</code> of the child account.</li>
-<li><strong><code>bundleId</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: The <code>Bundle</code> <code>ID</code>.</li>
-<li><strong><code>subscriptionId</code></strong> <span style="color:#32A9C7"><em>[System generated, immutable]</em></span>: The <code>Subscription</code> <code>ID</code>.</li>
-<li><strong><code>planName</code></strong> <span style="color:#32A9C7"><em>[System generated]</em></span>: The name of the <code>Plan</code> associated with the subscription.</li>
-<li><strong><code>phaseName</code></strong> <span style="color:#32A9C7"><em>[System generated]</em></span>: The name of the <code>PlanPhase</code> associated with the subscription.</li>
-<li><strong><code>usageName</code></strong> <span style="color:#32A9C7"><em>[System generated]</em></span>: The name of the <code>Usage</code> section associated with the subscription.</li>
-<li><strong><code>prettyPlanName</code></strong> <span style="color:#32A9C7"><em>[System generated]</em></span>: The pretty name - as defined in the catalog -- of the <code>Plan</code> associated with the subscription.</li>
-<li><strong><code>prettyPhaseName</code></strong> <span style="color:#32A9C7"><em>[System generated]</em></span>: The pretty name - as defined in the catalog -- of the <code>PlanPhase</code> associated with the subscription.</li>
-<li><strong><code>prettyUsageName</code></strong> <span style="color:#32A9C7"><em>[System generated]</em></span>: The pretty name - as defined in the catalog -- of the <code>Usage</code> associated with the subscription.</li>
-<li><strong><code>itemType</code></strong> <span style="color:#32A9C7"><em>[System generated]</em></span>: The item type -- e.g <code>RECURRING</code></li>
-<li><strong><code>description</code></strong> <span style="color:#32A9C7"><em>[User or system generated]</em></span>: A possible description -- when issued from api.</li>
-<li><strong><code>startDate</code></strong> <span style="color:#32A9C7"><em>[User or system generated]</em></span>: Start date of the period to invoice</li>
-<li><strong><code>endDate</code></strong> <span style="color:#32A9C7"><em>[User or system generated]</em></span>: End date of the period to invoice</li>
-<li><strong><code>amount</code></strong> <span style="color:#32A9C7"><em>[User or system generated]</em></span>: The amount being invoiced.</li>
-<li><strong><code>rate</code></strong> <span style="color:#32A9C7"><em>[User or system generated]</em></span>: The rate associated with the <code>Plan</code></li>
-<li><strong><code>quantity</code></strong> <span style="color:#32A9C7"><em>[User or system generated]</em></span>: In usage mode, quantity of units being invoiced.</li>
-<li><strong><code>currency</code></strong> <span style="color:#32A9C7"><em>[User or system generated]</em></span>: The currency attached to the <code>Account</code></li>
-<li><strong><code>itemDetails</code></strong> <span style="color:#32A9C7"><em>[User or system generated]</em></span>: In usage mode, details about what was invoiced.</li>
-<li><strong><code>childItems</code></strong> <span style="color:#32A9C7"><em>[User or system generated]</em></span>: In the hierarchical model, the items for the children.</li>
-</ul>
-<h2 id='invoice-invoice'>Invoice</h2><h3 id='invoice-trigger-an-invoice-run'>Trigger an invoice run</h3>
-<p>This will create an invoice run for the associated <code>Account</code>. This may result in the creation of a new <code>Invoice</code> if there was anything to invoice for, or nothing, if the account was up to date.</p>
+
+<p><strong>dryRunAction</strong>: possible values are: START_BILLING, CHANGE (of <code>Plan</code>), or STOP_BILLING</p>
+
+<p><strong>phaseType</strong>: possible values are: TRIAL, DISCOUNT, FIXEDTERM, or EVERGREEN</p>
+
+<p><strong>productCategory</strong>: possible values are BASE, ADD_ON, or STANDALONE</p>
+
+<p><strong>billingPeriod</strong>: possible values are DAILY, WEEKLY, BIWEEKLY, THIRTY_DAYS, SIXTY_DAYS, NINETY_DAYS, MONTHLY, BIMESTRIAL (bimonthly), QUARTERLY, TRIANNUAL, BIANNUAL, ANNUAL, BIENNIAL, or NO_BILLING_PERIOD</p>
+
+<p><strong>billingPolicy</strong>: possible values are START_OF_TERM, END_OF_TERM, or IMMEDIATE</p>
+<h2 id='invoice-invoice'>Invoice</h2>
+<p>These endpoints provide basic operations on invoices.</p>
+<h3 id='invoice-trigger-an-invoice-run'>Trigger an invoice run</h3>
+<p>Create an invoice run for the associated account. This may result in the creation of a new invoice if there is anything to invoice for, or nothing, if the account is up to date. If an invoice is created, all necessary attributes are determined by the system.</p>
 
 <p><strong>HTTP Request</strong> </p>
 
@@ -23647,7 +23968,7 @@ into account different things to invoice -- e.g recurring items, usage items, fi
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices?accountId=29fd0a00-f08b-4886-849b-3f4b98c8df27"</span>  
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices?accountId=29fd0a00-f08b-4886-849b-3f4b98c8df27"</span>  
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -23714,28 +24035,31 @@ into account different things to invoice -- e.g recurring items, usage items, fi
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>accountId</strong></td>
 <td>string</td>
-<td>true</td>
+<td>yes</td>
+<td>none</td>
 <td>account id</td>
 </tr>
 <tr>
 <td><strong>targetDate</strong></td>
 <td>string</td>
-<td>true</td>
+<td>no</td>
+<td>current date</td>
 <td>target date</td>
 </tr>
 </tbody></table>
 
-<p><strong>Returns</strong></p>
+<p><strong>Response</strong></p>
 
-<p>A <code>201</code> http status without content.</p>
+<p>If successful, returns a status code of 201 and an empty body. A location item is also returned in the header, giving the UUID of the generated invoice (if any).</p>
 <h3 id='invoice-create-a-migration-invoice'>Create a migration invoice</h3>
-<p>This endpoint is used to insert existing invoices in the use case of a migration scenario from either a third party system or an in-house billing system into Kill Bill.</p>
+<p>This endpoint is used to insert existing invoices that are being migrated from either a third party system or an in-house billing system into Kill Bill.</p>
 
 <p><strong>HTTP Request</strong> </p>
 
@@ -23755,7 +24079,7 @@ into account different things to invoice -- e.g recurring items, usage items, fi
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
     -d <span class="s1">'[ { "invoiceItemId": "f38505c9-d673-4f0b-b7d4-9125cac2a567", "invoiceId": "f38505c9-d673-4f0b-b7d4-9125cac2a567", "linkedInvoiceItemId": "f38505c9-d673-4f0b-b7d4-9125cac2a567", "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "itemType": "EXTERNAL_CHARGE", "amount": 10, "rate": 0, "currency": "USD" }]'</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/migration/2ad52f53-85ae-408a-9879-32a7e59dd03d"</span>  
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/migration/2ad52f53-85ae-408a-9879-32a7e59dd03d"</span>  
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -23810,6 +24134,10 @@ into account different things to invoice -- e.g recurring items, usage items, fi
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
+<p><strong>Request Body</strong></p>
+
+<p>An invoice resource object with all fields filled in representing the invoice to be migrated.</p>
+
 <p><strong>Query Parameters</strong></p>
 
 <table><thead>
@@ -23817,28 +24145,31 @@ into account different things to invoice -- e.g recurring items, usage items, fi
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>accountId</strong></td>
 <td>string</td>
-<td>true</td>
+<td>yes</td>
+<td>none</td>
 <td>account id</td>
 </tr>
 <tr>
 <td><strong>targetDate</strong></td>
 <td>string</td>
-<td>true</td>
+<td>no</td>
+<td>current date</td>
 <td>target date</td>
 </tr>
 </tbody></table>
 
 <p><strong>Response</strong></p>
 
-<p>A <code>201</code> http status without content.</p>
+<p>If successful, returns a status code of 201 and an empty body. A location item is also returned in the header, giving the UUID of the generated invoice (if any).</p>
 <h3 id='invoice-create-external-charge-s'>Create external charge(s)</h3>
-<p>Create charges for a given <code>Account</code>. This will result in the creation of a new <code>Invoice</code>.</p>
+<p>Create a charge for a given account. This will result in the creation of a new invoice.</p>
 
 <p><strong>HTTP Request</strong> </p>
 
@@ -23858,7 +24189,7 @@ into account different things to invoice -- e.g recurring items, usage items, fi
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
     -d <span class="s1">'[ { "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "description": "My charge", "amount": 50, "currency": "USD" }]'</span>    <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/charges/2ad52f53-85ae-408a-9879-32a7e59dd03d"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/charges/2ad52f53-85ae-408a-9879-32a7e59dd03d"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -23987,6 +24318,10 @@ into account different things to invoice -- e.g recurring items, usage items, fi
 <span class="p">}</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
+<p><strong>Request Body</strong></p>
+
+<p>An invoiceItem resource object with at least the following attributes: accountId, itemType=EXTERNAL_CHARGE, description, amount, and currency.</p>
+
 <p><strong>Query Parameters</strong></p>
 
 <table><thead>
@@ -23994,29 +24329,31 @@ into account different things to invoice -- e.g recurring items, usage items, fi
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>requestedDate</strong></td>
 <td>string</td>
-<td>false</td>
+<td>no</td>
+<td>current date</td>
 <td>requested date</td>
 </tr>
 <tr>
 <td><strong>autoCommit</strong></td>
 <td>boolean</td>
+<td>no</td>
 <td>false</td>
-<td>whether to resulting invoice should be <code>COMMITTED</code>. Deafult is <code>false</code></td>
+<td>If true, the resulting invoice should be COMMITTED.</td>
 </tr>
 </tbody></table>
 
 <p><strong>Response</strong></p>
 
-<p>Returns a invoice object.</p>
+<p>If successful, returns a status code of 201 and an empty body. A location item is also returned in the header, giving the UUID of the generated invoice (if any).</p>
 <h3 id='invoice-create-tax-items'>Create tax items</h3>
-<p>The normal scenario to add <code>TAX</code> items is to rely on a (tax) invoice plugin, intercepting the <code>Invoice</code> during its creation and adding on the fly
-the required <code>TAX</code> items. In some scenario, we also want to add <code>TAX</code> items directly. This will result in the creation of a new <code>Invoice</code>.</p>
+<p>Normally, tax items are added to an invoice by a plugin, which intercepts the invoice during its creation and adds the required tax items on the fly. However, sometimes you may want to add tax items directly. This API adds a tax item to an account, which will result in the creation of a new invoice.</p>
 
 <p><strong>HTTP Request</strong> </p>
 
@@ -24036,7 +24373,7 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
     -d <span class="s1">'[ { "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "amount": 50, "currency": "USD" }]'</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/taxes/2ad52f53-85ae-408a-9879-32a7e59dd03d"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/taxes/2ad52f53-85ae-408a-9879-32a7e59dd03d"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -24167,6 +24504,10 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
 <span class="p">}</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
+<p><strong>Request Body</strong></p>
+
+<p>An invoiceItem resource object with at least the following attributes: accountId, itemType=TAX, amount, and currency.</p>
+
 <p><strong>Query Parameters</strong></p>
 
 <table><thead>
@@ -24174,27 +24515,32 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>requestedDate</strong></td>
 <td>string</td>
-<td>false</td>
+<td>no</td>
+<td>current date</td>
 <td>requested date</td>
 </tr>
 <tr>
 <td><strong>autoCommit</strong></td>
 <td>boolean</td>
+<td>no</td>
 <td>false</td>
-<td>whether to resulting invoice should be <code>COMMITTED</code>. Deafult is <code>false</code></td>
+<td>If true, the resulting invoice should be COMMITTED.</td>
 </tr>
 </tbody></table>
 
 <p><strong>Response</strong></p>
 
-<p>Returns a invoice object.</p>
+<p>If successful, returns a status code of 201 and an empty body. A location item is also returned in the header, giving the UUID of the generated invoice (if any).</p>
 <h3 id='invoice-retrieve-an-invoice-by-id'>Retrieve an invoice by id</h3>
+<p>Retrieves an invoice based on the <code>invoiceId</code>.</p>
+
 <p><strong>HTTP Request</strong></p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}</code></p>
@@ -24207,7 +24553,7 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5"</span>    
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5"</span>    
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -24360,27 +24706,34 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>withChildrenItems</strong></td>
 <td>boolean</td>
+<td>no</td>
 <td>false</td>
-<td>choose true if you want to include children items</td>
+<td>If true, include children items</td>
 </tr>
 <tr>
 <td><strong>audit</strong></td>
-<td>enum</td>
-<td>false</td>
-<td>level of audit logs returned</td>
+<td>string</td>
+<td>no</td>
+<td>&quot;NONE&quot;</td>
+<td>Level of audit information to return</td>
 </tr>
 </tbody></table>
 
+<p>Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only inserts), or &quot;FULL&quot;.</p>
+
 <p><strong>Returns</strong></p>
 
-<p>Returns a invoice object.</p>
+<p>If successful, returns a status code of 200 and an invoice resource object.</p>
 <h3 id='invoice-retrieve-an-invoice-by-number'>Retrieve an invoice by number</h3>
+<p>Retrieves an invoice based on the <code>invoiceNumber</code>.</p>
+
 <p><strong>HTTP Request</strong></p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoices/byNumber/{invoiceNumber</code></p>
@@ -24393,7 +24746,7 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/byNumber/310"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/byNumber/310"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -24567,27 +24920,34 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>withChildrenItems</strong></td>
 <td>boolean</td>
+<td>no</td>
 <td>false</td>
-<td>choose true if you want to include children items date</td>
+<td>If true, include children items</td>
 </tr>
 <tr>
 <td><strong>audit</strong></td>
-<td>enum</td>
-<td>false</td>
-<td>level of audit logs returned</td>
+<td>string</td>
+<td>no</td>
+<td>&quot;NONE&quot;</td>
+<td>Level of audit information to return</td>
 </tr>
 </tbody></table>
 
+<p>Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only inserts), or &quot;FULL&quot;.</p>
+
 <p><strong>Returns</strong></p>
 
-<p>Returns a invoice object.</p>
+<p>If successful, returns a status code of 200 and an invoice resource object.</p>
 <h3 id='invoice-retrieve-an-invoice-by-invoice-item-id'>Retrieve an invoice by invoice item id</h3>
+<p>Retrieves an invoice based on the <code>invoiceItemId</code> for an invoice item.</p>
+
 <p><strong>HTTP Request</strong></p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoices/byItemId/{itemId}</code></p>
@@ -24600,7 +24960,7 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/byItemId/3f0aa8f7-ca75-40cc-8c78-15a15cdbb977"</span>   
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/byItemId/3f0aa8f7-ca75-40cc-8c78-15a15cdbb977"</span>   
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -24784,27 +25144,34 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>withChildrenItems</strong></td>
 <td>boolean</td>
+<td>no</td>
 <td>false</td>
-<td>choose true if you want to include children items date</td>
+<td>If true, include children items</td>
 </tr>
 <tr>
 <td><strong>audit</strong></td>
-<td>enum</td>
-<td>false</td>
-<td>level of audit logs returned</td>
+<td>string</td>
+<td>no</td>
+<td>&quot;NONE&quot;</td>
+<td>Level of audit information to return</td>
 </tr>
 </tbody></table>
 
-<p><strong>Returns</strong></p>
+<p>Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only inserts), or &quot;FULL&quot;.</p>
 
-<p>Returns a invoice object.</p>
+<p><strong>Response</strong></p>
+
+<p>If successful, returns a status code of 200 and an invoice resource object.</p>
 <h3 id='invoice-render-an-invoice-as-html'>Render an invoice as HTML</h3>
+<p>This API formats an invoice as an HTML page, that can be displayed or printed for a customer.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/html</code></p>
@@ -24817,7 +25184,7 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: text/html"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5/html"</span>   
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5/html"</span>   
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -25230,10 +25597,12 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
 
 <p>None. </p>
 
-<p><strong>Returns</strong></p>
+<p><strong>Response</strong></p>
 
-<p>Returns a invoice rendered as HTML.</p>
-<h3 id='invoice-perform-the-invoice-status-transition-from-draft-to-committed'>Perform the invoice status transition from DRAFT to COMMITTED</h3>
+<p>If successful, returns a status code of 200 and an invoice rendered as HTML.</p>
+<h3 id='invoice-change-invoice-status-from-draft-to-committed'>Change invoice status from DRAFT to COMMITTED</h3>
+<p>Commit a DRAFT invoice by changing its staus to COMMITTED. The invoice becomes immutable and its balance is now included in account totals.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>PUT http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/commitInvoice</code></p>
@@ -25251,7 +25620,7 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5/commitInvoice"</span>  
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5/commitInvoice"</span>  
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -25286,10 +25655,12 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
 
 <p>None. </p>
 
-<p><strong>Returns</strong></p>
+<p><strong>Response</strong></p>
 
-<p>A <code>204</code> http status without content.</p>
-<h3 id='invoice-perform-the-action-of-voiding-an-invoice'>Perform the action of voiding an invoice</h3>
+<p>If successful, returns a status code of 204 and an empty body.</p>
+<h3 id='invoice-void-an-invoice'>Void an invoice</h3>
+<p>Change the status of an invoice to VOID. this can only be done if there are no successful payments on the account. A void invoice is ignored by the rest of the system.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>PUT http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/voidInvoice</code></p>
@@ -25307,7 +25678,7 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/18e9b3d9-9083-4725-9e8a-27d3a57c2e88/voidInvoice"</span>    
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/18e9b3d9-9083-4725-9e8a-27d3a57c2e88/voidInvoice"</span>    
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -25339,8 +25710,10 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
 
 <p><strong>Response</strong></p>
 
-<p>A <code>204</code> http status without content.</p>
+<p>If successful, returns a status code of 204 and an empty body.</p>
 <h3 id='invoice-adjust-an-invoice-item'>Adjust an invoice item</h3>
+<p>Adjust the amount for an invoice item</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>POST http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}</code></p>
@@ -25359,7 +25732,7 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
     -d <span class="s1">'{ "invoiceItemId": "903e55d3-8072-47f1-80fc-32857dbdbcc5", "invoiceId": "903e55d3-8072-47f1-80fc-32857dbdbcc5", "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "description": "Free adjustment: good customer", "amount": 50, "currency": "USD"}'</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5"</span>    
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5"</span>    
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -25463,21 +25836,25 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>requestedDate</strong></td>
 <td>string</td>
-<td>false</td>
+<td>no</td>
+<td>current date</td>
 <td>requested date</td>
 </tr>
 </tbody></table>
 
 <p><strong>Returns</strong></p>
 
-<p>Returns a invoice object.</p>
+<p>If successful, returns a status code of 201 and an empty body.</p>
 <h3 id='invoice-delete-a-cba-item'>Delete a CBA item</h3>
+<p>Delete a Credit Balance Adjust invoice item</p>
+
 <p><strong>HTTP Request</strong></p>
 
 <p><code>DELETE http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/{invoiceItemId}/cba</code></p>
@@ -25493,7 +25870,7 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/404a98a8-4dd8-4737-a39f-be871e916a8c/a35fb7b5-aec8-489e-aadf-c86107aa1d92/cba?accountId=8785164f-b5d7-4da1-9495-33f5105e8d80"</span>    
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/404a98a8-4dd8-4737-a39f-be871e916a8c/a35fb7b5-aec8-489e-aadf-c86107aa1d92/cba?accountId=8785164f-b5d7-4da1-9495-33f5105e8d80"</span>    
 </code></pre><pre class="highlight java tab-java"><code><span class="n">TODO</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">invoice_item</span>                 <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">InvoiceItem</span><span class="p">.</span><span class="nf">new</span>
 <span class="n">invoice_item</span><span class="p">.</span><span class="nf">account_id</span>      <span class="o">=</span> <span class="s2">"3ee3aa82-1d45-4bbc-b36b-74d628e095d0"</span>
@@ -25533,34 +25910,36 @@ the required <code>TAX</code> items. In some scenario, we also want to add <code
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>accountId</strong></td>
 <td>string</td>
-<td>true</td>
+<td>yes</td>
+<td>none</td>
 <td>account id</td>
 </tr>
 </tbody></table>
 
-<p><strong>Returns</strong></p>
+<p><strong>Response</strong></p>
 
-<p>A <code>204</code> http status without content.</p>
+<p>If successful, returns a status code of 204 and an empty body.</p>
 <h2 id='invoice-dry-run'>Dry-run</h2>
-<p>In some situations, it is necessary to preview what a given customer will be invoiced for before making the changes or to verify what the system will generate at a future date. Kill Bill provides dry-run invoices apis to accomplish such goal.</p>
-
-<p>We provide one dry run api to accomplish several distinct tasks:</p>
+<p>In some situations, it is necessary to preview what a given customer will be invoiced for before making changes, or to verify what the system will generate at a future date. Kill Bill provides a dry-run invoice API to accomplish these goals. This API can be used to answer several distinct questions:</p>
 
 <ul>
-<li>Next upcoming invoice: When is the next upcoming invoice for a given customer, and what will such invoice contain -- items, amount, date,... ​?</li>
-<li>Next upcoming invoice associated with a given subscription or bundle: When is the next upcoming invoice associated to a given subscription/bundle, and what will such invoice contain --items, amount, date,... ?</li>
+<li>When is the next upcoming invoice for a given customer, and what will this invoice contain?</li>
+<li>When is the next upcoming invoice associated with a given subscription or bundle, and what will this invoice contain?</li>
 <li>Given a <code>targetDate</code>, what invoice will the system generate?</li>
-<li>Subscription modifications: Given a change in a subscription -- new subscription, change of plan, cancellation ---, which invoice will the system generate?</li>
+<li>Given a change in a subscription, such as a new subscription, change of plan, or cancellation, what invoice will the system generate?</li>
 </ul>
-<h3 id='invoice-generate-a-dryrun-invoice'>Generate a dryRun invoice</h3>
-<p>The endpoint below allows to create a dry-run invoice and based on its parameters provide answers to the different questions listed above.
-This endpoint is rather expensive as it creates a full invoice run for the designated <code>Account</code>, but no invoice will be created/persisted
+
+<p>A dry run is based on a <a href="https://killbill.github.io/slate/#invoice-invoicedryrun-resource">dry run resource object</a>.</p>
+<h3 id='invoice-generate-a-dry-run-invoice'>Generate a dry run invoice</h3>
+<p>This endpoint creates a dry-run invoice. Based on its parameters you can obtain answers to the different questions listed above.
+Note: This endpoint is rather expensive, as it creates a full invoice run for the designated account, but no invoice will be created or persisted
 in the system.</p>
 
 <p><strong>HTTP Request</strong> </p>
@@ -25773,6 +26152,39 @@ in the system.</p>
  <span class="s">'status'</span><span class="p">:</span> <span class="s">'COMMITTED'</span><span class="p">,</span>
  <span class="s">'target_date'</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2018</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">9</span><span class="p">)}</span>
 </code></pre>
+<p><strong>Request Body</strong></p>
+
+<p>A <a href="https://killbill.github.io/slate/#invoice-invoicedryrun-resource">dry run resource object</a>. The <strong>dryRunType</strong> and sometimes <strong>dryRunAction</strong> must be specified. Other attributes depend on these:</p>
+
+<table><thead>
+<tr>
+<th><strong>dryRunType</strong></th>
+<th><strong>dryRunAction</strong></th>
+<th>Other Required Attributes</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>TARGET_DATE</td>
+<td>N/A</td>
+<td>none</td>
+</tr>
+<tr>
+<td>UPCOMING_INVOICE</td>
+<td>N/A</td>
+<td>optional subscriptionId or bundleId</td>
+</tr>
+<tr>
+<td>SUBSCRIPTION_ACTION</td>
+<td>START_BILING or CHANGE</td>
+<td>effectiveDate, productName, productCategory, priceListName, billingPeriod, billingPolicy</td>
+</tr>
+<tr>
+<td>SUBSCRIPTION_ACTION</td>
+<td>STOP_BILLING</td>
+<td>effectiveDate</td>
+</tr>
+</tbody></table>
+
 <p><strong>Query Parameters</strong></p>
 
 <table><thead>
@@ -25780,46 +26192,34 @@ in the system.</p>
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>accountId</strong></td>
 <td>string</td>
-<td>true</td>
-<td>the account id</td>
+<td>yes</td>
+<td>none</td>
+<td>Account id</td>
 </tr>
 <tr>
 <td><strong>targetDate</strong></td>
 <td>string</td>
-<td>false</td>
-<td>the target date when the goal is to create a (dry-run) invoice based on a well defined <code>targetDate</code></td>
+<td>*</td>
+<td>none</td>
+<td>Target date, if <strong>dryRunType</strong> is TARGET_DATE. Otherwise not needed</td>
 </tr>
 </tbody></table>
 
-<p>The body of the request contains the following important information:</p>
-
-<ul>
-<li><strong>dryRunType</strong> : The type of dry-run operation to run.
-
-<ul>
-<li><code>TARGET_DATE</code>: This must be specified to create a dry-run invoice, associated with a given <code>targetDate</code>; in this scenario the query parameter <code>targetDate</code> must be specified.</li>
-<li><code>UPCOMING_INVOICE</code>: This must be specified to inquire about the next upcoming invoice associated with the account. Specifying either the <code>subscriptionId</code> or <code>bundleId</code> will filter out from the generated invoice other items.</li>
-<li><code>SUBSCRIPTION_ACTION</code>: This allow to preview the would-be generated invoice after a subscription was created, cancelled, downgraded/upgraded. In addition to the <code>dryRunAction</code>, one must also specify the catalog input, for instnace to create a new subscription the <code>productName</code>, <code>productCategory</code>, <code>billingPeriod</code>, <code>priceListName</code> and also the <code>effectiveDate</code> for the operation.</li>
-</ul></li>
-<li><strong>dryRunAction</strong> : This is only used when specifying <code>dryRunType=SUBSCRIPTION_ACTION</code> and can have the following values:
-
-<ul>
-<li><code>START_BILLING</code> : Should be used to preview the effect of a subscription creation </li>
-<li><code>CHANGE</code> : Should be used to preview the effect of a subscription change of <code>Plan</code></li>
-<li><code>STOP_BILLING</code> : Should be used to preview the effect of a subscription cancelation.</li>
-</ul></li>
-</ul>
-
 <p><strong>Response</strong></p>
 
-<p>Returns a invoice object.</p>
-<h2 id='invoice-payments'>Payments</h2><h3 id='invoice-trigger-a-payment-for-invoice'>Trigger a payment for invoice</h3>
+<p>If successful, returns a status code of 200 and an invoice resource object.</p>
+<h2 id='invoice-payments'>Payments</h2>
+<p>These endpoints relate to payments on an invoice. More information can be found at <a href="https://killbill.github.io/slate/#invoice-payment">Invoice Payments</a>.</p>
+<h3 id='invoice-trigger-a-payment-for-an-invoice'>Trigger a payment for an invoice</h3>
+<p>This API causes the system to generate a payment for an invoice.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>POST http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/payments</code></p>
@@ -25926,6 +26326,10 @@ in the system.</p>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
+<p><strong>Request Body</strong></p>
+
+<p>An invoicePayment resource object, with at least the following attributes: targetInvoiceId, accountId, and purchasedAmount.</p>
+
 <p><strong>Query Parameters</strong></p>
 
 <table><thead>
@@ -25933,21 +26337,25 @@ in the system.</p>
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>externalPayment</strong></td>
 <td>boolean</td>
+<td>no</td>
 <td>false</td>
-<td>choose if the payment method should be defaulted to the (system provided) external payment method. Default is false</td>
+<td>If true, the payment method should be defaulted to the (system provided) external payment method.</td>
 </tr>
 </tbody></table>
 
-<p><strong>Returns</strong></p>
+<p><strong>Response</strong></p>
 
-<p>A <code>201</code> http status without content.</p>
+<p>If successful, returns a status code of 201 and an empty body.</p>
 <h3 id='invoice-retrieve-payments-associated-with-an-invoice'>Retrieve payments associated with an invoice</h3>
+<p>Retrieves a list of invoicePayment objects for payments associated with the invoice</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/payments</code></p>
@@ -25960,7 +26368,7 @@ in the system.</p>
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5/payments"</span>   
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/903e55d3-8072-47f1-80fc-32857dbdbcc5/payments"</span>   
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -26138,35 +26546,41 @@ in the system.</p>
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>withPluginInfo</strong></td>
 <td>boolean</td>
+<td>no</td>
 <td>false</td>
-<td>choose true if you want plugin info</td>
+<td>If true, plugin info is included</td>
 </tr>
 <tr>
 <td><strong>withAttempts</strong></td>
 <td>boolean</td>
+<td>no</td>
 <td>false</td>
-<td>choose true if you want payment attempts</td>
+<td>If true, payment attempts are included</td>
 </tr>
 <tr>
 <td><strong>audit</strong></td>
-<td>enum</td>
-<td>false</td>
-<td>level of audit logs returned</td>
+<td>string</td>
+<td>no</td>
+<td>&quot;NONE&quot;</td>
+<td>Level of audit information to return</td>
 </tr>
 </tbody></table>
 
-<p><strong>Returns</strong></p>
+<p>Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only inserts), or &quot;FULL&quot;.</p>
 
-<p>Returns a invoice payment object.</p>
+<p><strong>Response</strong></p>
+
+<p>If successful, returns a status code of 200 and an invoicePayment resource object.</p>
 <h2 id='invoice-custom-fields'>Custom Fields</h2>
-<p>Custom fields are <code>{key, value}</code> attributes that can be attached to any customer resources, and in particularly on the <code>Invoice</code> objects.</p>
-<h3 id='invoice-add-custom-fields-to-invoice'>Add custom fields to invoice</h3>
+<p>Custom fields are <code>{key, value}</code> attributes that can be attached to any customer resource. In particular they can be added to invoices. For details on Custom Fields see <a href="https://killbill.github.io/slate/#custom-field">Custom Field</a>.</p>
+<h3 id='invoice-add-custom-fields-to-an-invoice'>Add custom fields to an invoice</h3>
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>POST http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/customFields</code></p>
@@ -26185,7 +26599,7 @@ in the system.</p>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
     -d <span class="s1">'[ { "objectType": "INVOICE", "name": "Test Custom Field", "value": "demo_test_value" }]'</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"</span>   
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"</span>   
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -26254,14 +26668,20 @@ in the system.</p>
 <span class="p">]</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
+<p><strong>Request Body</strong></p>
+
+<p>A JSON string representing the custom field object to be added.</p>
+
 <p><strong>Query Parameters</strong></p>
 
 <p>None.</p>
 
-<p><strong>Returns</strong></p>
+<p><strong>Response</strong></p>
 
-<p>Returns a custom field object.</p>
+<p>If successful, returns a status code of 201 and an empty body.</p>
 <h3 id='invoice-retrieve-invoice-custom-fields'>Retrieve invoice custom fields</h3>
+<p>Retrieve the custom fields associated with an invoice</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/customFields</code></p>
@@ -26274,7 +26694,7 @@ in the system.</p>
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"</span>   
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"</span>   
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -26342,21 +26762,27 @@ in the system.</p>
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>audit</strong></td>
-<td>enum</td>
-<td>false</td>
-<td>level of audit logs returned</td>
+<td>string</td>
+<td>no</td>
+<td>&quot;NONE&quot;</td>
+<td>Level of audit information to return</td>
 </tr>
 </tbody></table>
 
-<p><strong>Returns</strong></p>
+<p>Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only inserts), or &quot;FULL&quot;.</p>
 
-<p>Returns a list of custom field objects.</p>
-<h3 id='invoice-modify-custom-fields-to-invoice'>Modify custom fields to invoice</h3>
+<p><strong>Response</strong></p>
+
+<p>If successful, returns a status code of 200 and a list of custom field objects</p>
+<h3 id='invoice-modify-custom-fields-for-an-invoice'>Modify custom fields for an invoice</h3>
+<p>Modify the custom fields associated with an account</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>PUT http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/customFields</code></p>
@@ -26375,7 +26801,7 @@ in the system.</p>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
     -d <span class="s1">'[ { "customFieldId": "349de10f-4bb1-4e1a-93f6-11b745200bf5", "objectId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d", "objectType": "INVOICE", "name": "Test Custom Field", "value": "test_modify_value", "auditLogs": [] }]'</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"</span>   
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"</span>   
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -26422,14 +26848,20 @@ in the system.</p>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
+<p><strong>Requst Body</strong></p>
+
+<p>A JSON string representing a list of custom fields to substitute for the existing ones.</p>
+
 <p><strong>Query Parameters</strong></p>
 
 <p>None.</p>
 
-<p><strong>Returns</strong></p>
+<p><strong>Response</strong></p>
 
-<p>A <code>204</code> http status without content.</p>
+<p>If successful, returns a status code of 204 and an empty body.</p>
 <h3 id='invoice-remove-custom-fields-from-invoice'>Remove custom fields from invoice</h3>
+<p>Remove a specified set of custom fields from the invoice</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>DELETE http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/customFields</code></p>
@@ -26445,7 +26877,7 @@ in the system.</p>
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields?customField=349de10f-4bb1-4e1a-93f6-11b745200bf5"</span>  
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields?customField=349de10f-4bb1-4e1a-93f6-11b745200bf5"</span>  
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -26488,25 +26920,29 @@ in the system.</p>
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>customField</strong></td>
 <td>string</td>
-<td>true</td>
-<td>a list of custom field objects that you want to remove it</td>
+<td>yes</td>
+<td>none</td>
+<td>Comma separated list of custom field object IDs that should be deleted.</td>
 </tr>
 </tbody></table>
 
-<p><strong>Returns</strong></p>
+<p><strong>Response</strong></p>
 
-<p>A <code>204</code> http status without content.</p>
+<p>If successful, returns a status code of 204 and an empty body.</p>
 <h2 id='invoice-tags'>Tags</h2>
-<p>See section <a href="#account-tags">Account Tags</a> for an introduction.</p>
+<p>See <a href="https://killbill.github.io/slate/#account-tags">Account Tags</a> for an introduction.</p>
 
 <p>The only <code>system</code> tag applicable for an <code>Invoice</code> is <code>WRITTEN_OFF</code> (<code>00000000-0000-0000-0000-000000000004</code>), which as it&#39;s name indicates, is used to write off an unpaid invoice, bringing its balance to $0.</p>
 <h3 id='invoice-add-tags-to-invoice'>Add tags to invoice</h3>
+<p>This API adds one or more tags to an invoice. The tag definitions must already exist.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>POST http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/tags</code></p>
@@ -26525,7 +26961,7 @@ in the system.</p>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
     -d <span class="s1">'[ "00000000-0000-0000-0000-000000000004"]'</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags"</span>   
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags"</span>   
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -26591,8 +27027,10 @@ in the system.</p>
 
 <p><strong>Returns</strong></p>
 
-<p>A <code>201</code> http status without content.</p>
+<p>If successful, returns a status code of 201 and an empty body.</p>
 <h3 id='invoice-retrieve-invoice-tags'>Retrieve invoice tags</h3>
+<p>Retrieve all tags attached to this invoice.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/tags</code></p>
@@ -26605,7 +27043,7 @@ in the system.</p>
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags"</span>   
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags"</span>   
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -26689,27 +27127,34 @@ in the system.</p>
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td><strong>audit</strong></td>
-<td>enum</td>
-<td>false</td>
-<td>level of audit logs returned</td>
-</tr>
-<tr>
 <td><strong>includedDeleted</strong></td>
 <td>boolean</td>
+<td>no</td>
 <td>false</td>
-<td>choose true if you want to include deleted tags</td>
+<td>If true, include deleted tags</td>
+</tr>
+<tr>
+<td><strong>audit</strong></td>
+<td>string</td>
+<td>no</td>
+<td>&quot;NONE&quot;</td>
+<td>Level of audit information to return</td>
 </tr>
 </tbody></table>
 
-<p><strong>Returns</strong></p>
+<p>Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only inserts), or &quot;FULL&quot;.</p>
 
-<p>Returns a list of invoice tag objects.</p>
+<p><strong>Response</strong></p>
+
+<p>If successful, returns a status code of 200 and a list of tag objects.</p>
 <h3 id='invoice-remove-tags-from-invoice'>Remove tags from invoice</h3>
+<p>Removes a list of tags attached to an invoice.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>DELETE http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/tags</code></p>
@@ -26725,7 +27170,7 @@ in the system.</p>
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags?tagDef=00000000-0000-0000-0000-000000000002"</span>   
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/tags?tagDef=00000000-0000-0000-0000-000000000002"</span>   
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -26768,23 +27213,29 @@ in the system.</p>
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>tagDef</strong></td>
-<td>string</td>
-<td>true</td>
-<td>the list of tag definition ID identifying the tags that should be removed.</td>
+<td>array of string</td>
+<td>yes</td>
+<td>none</td>
+<td>List of tag definition IDs identifying the tags that should be removed.</td>
 </tr>
 </tbody></table>
 
 <p><strong>Response</strong></p>
 
-<p>A <code>204</code> http status without content.</p>
+<p>If successful, returns a status code of 204 and an empty body.</p>
 <h2 id='invoice-translation'>Translation</h2>
-<p>Refer to our <a href="http://docs.killbill.io/0.20/internationalization.html#_invoice_templates">Internationalization manual</a> for an introduction.</p>
+<p>These endpoints support translation of invoices to a different language when required by the customer. Refer to our <a href="http://docs.killbill.io/latest/internationalization.html#_invoice_templates">Internationalization manual</a> for an introduction.</p>
+
+<p>Translation replaces words and phrases in an invoice or catalog with the equivalent words or phrases in a different language. A tenant may upload translation tables for specific locales (e.g., locale <code>fr_FR</code> for French). When a customer accesses an invoice, that invoice will be generated from the system data, formatted using the appropriate template (see below), and translated according to the locale of the customer&#39;s account, if a translation table exists for that locale.</p>
 <h3 id='invoice-upload-the-catalog-translation-for-the-tenant'>Upload the catalog translation for the tenant</h3>
+<p>Uploads a catalog transaltion table that will be saved under a specified locale. The translation table gives a translation for specific names in the current catalog.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>POST http://127.0.0.1:8080/1.0/kb/invoices/catalogTranslation/{locale}</code></p>
@@ -26838,6 +27289,17 @@ in the system.</p>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="s2">"sports-monthly = Voiture Sport"</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
+<p><strong>Response Body</strong></p>
+
+<p>A table of translation items. For example:</p>
+
+<p>gold-monthly = plan Or mensuel
+silver-monthly = plan d&#39;argent mensuel</p>
+
+<p>Note that this table does not use a special syntax such as JSON. The equals sign is the only punctuation. There are no brackets or quotation marks.</p>
+
+<p>The names translated would be primarily plan names, product names, and other items that may appear on an invoice.</p>
+
 <p><strong>Query Parameters</strong></p>
 
 <table><thead>
@@ -26845,21 +27307,25 @@ in the system.</p>
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>deleteIfExists</strong></td>
 <td>boolean</td>
+<td>no</td>
 <td>false</td>
-<td>delete translation if exists</td>
+<td>if true, delete any existing translations</td>
 </tr>
 </tbody></table>
 
 <p><strong>Response</strong></p>
 
-<p>A <code>201</code> http status without content.</p>
-<h3 id='invoice-retrieves-the-catalog-translation-for-the-tenant'>Retrieves the catalog translation for the tenant</h3>
+<p>If successful, returns a status code of 201 and an empty body.</p>
+<h3 id='invoice-retrieve-the-catalog-translation-for-the-tenant'>Retrieve the catalog translation for the tenant</h3>
+<p>Retrieves the catalog translation table that was previously uploaded for a particular locale, if any.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoices/catalogTranslation/{locale}</code></p>
@@ -26899,8 +27365,10 @@ in the system.</p>
 
 <p><strong>Response</strong></p>
 
-<p>A <code>200</code> http status without content.</p>
+<p>If successful, returns a status code of 200 and the translation table. A status code of 404 means no table was found for the specified locale.</p>
 <h3 id='invoice-upload-the-invoice-translation-for-the-tenant'>Upload the invoice translation for the tenant</h3>
+<p>Uploads an invoice translation table that will be saved under a specified locale. The translation table gives a translation for specific names in the corresponding invoice template.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>POST http://127.0.0.1:8080/1.0/kb/invoices/translation/{locale}</code></p>
@@ -26971,6 +27439,17 @@ in the system.</p>
 <span class="n">processedPaymentRate</span><span class="o">=</span><span class="no">Le</span> <span class="n">taux</span> <span class="n">de</span> <span class="n">conversion</span> <span class="n">est</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
+<p><strong>Response Body</strong></p>
+
+<p>A table of translation items. For example:</p>
+
+<p>invoiceTitle=FACTURE
+invoiceDate=Date:
+invoiceNumber=Facture #
+invoiceAmount=Montant à payer</p>
+
+<p>Note that this table does not use a special syntax such as JSON. The equals sign is the only punctuation. There are no brackets or quotation marks.</p>
+
 <p><strong>Query Parameters</strong></p>
 
 <table><thead>
@@ -26978,12 +27457,14 @@ in the system.</p>
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>deleteIfExists</strong></td>
 <td>boolean</td>
+<td>no</td>
 <td>false</td>
 <td>delete translation if exists</td>
 </tr>
@@ -26991,8 +27472,10 @@ in the system.</p>
 
 <p><strong>Response</strong></p>
 
-<p>A <code>201</code> http status without content.</p>
-<h3 id='invoice-retrieves-the-invoice-translation-for-the-tenant'>Retrieves the invoice translation for the tenant</h3>
+<p>If successful, returns a status code of 201 and an empty body.</p>
+<h3 id='invoice-retrieve-the-invoice-translation-for-the-tenant'>Retrieve the invoice translation for the tenant</h3>
+<p>Retrieves the invoice translation table that was previously uploaded for a particular locale, if any.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoices/translation/{locale}</code></p>
@@ -27054,10 +27537,12 @@ sports-monthly <span class="o">=</span> Voiture Sport
 
 <p><strong>Response</strong></p>
 
-<p>A <code>200</code> http status without content.</p>
+<p>If successful, returns a status code of 200 and the translation table. A status code of 404 means no table was found for the specified locale.</p>
 <h2 id='invoice-template'>Template</h2>
-<p>Refer to our <a href="http://docs.killbill.io/0.20/internationalization.html#_invoice_templates">Internationalization manual</a> for an introduction.</p>
+<p>A template is a document based on <a href="https://mustache.github.io/"><strong>mustache</strong></a> that provides the layout information for invoices. The template will be trnslated according to the translation table, if any, and the invoice data will be filled in by the Kill Bill system. Refer to our <a href="http://docs.killbill.io/latest/internationalization.html#_invoice_templates">Internationalization manual</a> for an introduction.</p>
 <h3 id='invoice-upload-the-manualpay-invoice-template-for-the-tenant'>Upload the manualPay invoice template for the tenant</h3>
+<p>Uploads an invoice template based on the manual pay option, for accounts that have the MANUAL_PAY tag. These accounts manually pay their invoices (e.g. ACH). Typically, this template will contain extra information like the company bank account details, PO number, etc.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>POST http://127.0.0.1:8080/1.0/kb/invoices/manualPayTemplate</code></p>
@@ -27263,6 +27748,10 @@ sports-monthly <span class="o">=</span> Voiture Sport
 "</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
+<p><strong>Request Body</strong></p>
+
+<p>Contains a mustache manual pay template in HTML format.</p>
+
 <p><strong>Query Parameters</strong></p>
 
 <table><thead>
@@ -27270,21 +27759,25 @@ sports-monthly <span class="o">=</span> Voiture Sport
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>deleteIfExists</strong></td>
 <td>boolean</td>
+<td>no</td>
 <td>false</td>
-<td>delete if exists</td>
+<td>if true, delete any existing manual pay template</td>
 </tr>
 </tbody></table>
 
 <p><strong>Response</strong></p>
 
-<p>Returns a invoice template.</p>
-<h3 id='invoice-retrieves-the-manualpay-invoice-template-for-the-tenant'>Retrieves the manualPay invoice template for the tenant</h3>
+<p>If successful, returns a status code of 200 and an empty body.</p>
+<h3 id='invoice-retrieve-the-manualpay-invoice-template-for-the-tenant'>Retrieve the manualPay invoice template for the tenant</h3>
+<p>Retrieves the manual pay invoice template previously uploaded for this tenant, if any.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoices/manualPayTemplate</code></p>
@@ -27634,8 +28127,10 @@ sports-monthly <span class="o">=</span> Voiture Sport
 
 <p><strong>Response</strong></p>
 
-<p>Returns a invoice template.</p>
+<p>If successful, returns a status code of 201 and the manual pay template.</p>
 <h3 id='invoice-upload-the-invoice-template-for-the-tenant'>Upload the invoice template for the tenant</h3>
+<p>Uploads an invoice template based on an automatic payment method. This is appropriate for accounts without the MANUAL_PAY tag.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>POST http://127.0.0.1:8080/1.0/kb/invoices/template</code></p>
@@ -27841,6 +28336,10 @@ sports-monthly <span class="o">=</span> Voiture Sport
 "</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
+<p><strong>Request Body</strong></p>
+
+<p>Contains a mustache automatic pay template in HTML format.</p>
+
 <p><strong>Query Parameters</strong></p>
 
 <table><thead>
@@ -27848,21 +28347,25 @@ sports-monthly <span class="o">=</span> Voiture Sport
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>deleteIfExists</strong></td>
 <td>boolean</td>
+<td>no</td>
 <td>false</td>
-<td>delete if exists</td>
+<td>if true, delete any existing manual pay template</td>
 </tr>
 </tbody></table>
 
 <p><strong>Response</strong></p>
 
-<p>Returns a invoice template.</p>
-<h3 id='invoice-retrieves-the-invoice-template-for-the-tenant'>Retrieves the invoice template for the tenant</h3>
+<p>If successful, returns a status code of 200 and an empty body.</p>
+<h3 id='invoice-retrieve-the-invoice-template-for-the-tenant'>Retrieve the invoice template for the tenant</h3>
+<p>Retrieves the automatic pay invoice template previously uploaded for this tenant, if any.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoices/template</code></p>
@@ -28212,8 +28715,34 @@ Some_HTML_String
 
 <p><strong>Response</strong></p>
 
-<p>Returns a invoice template.</p>
-<h2 id='invoice-audit-logs'>Audit Logs</h2><h3 id='invoice-retrieve-invoice-audit-logs-with-history-by-invoice-id'>Retrieve invoice audit logs with history by invoice id</h3>
+<p>If successful, returns a status code of 201 and the automatic pay template.</p>
+<h2 id='invoice-example'>Example</h2>
+<p>The translation and templating process may seem a little complex. Here is a simple example for the use of a template with translation.</p>
+
+<ol>
+<li><p>To begin, a tenant should upload suitable manual pay and autopay templates reflecting her desired layout for the invoice. If this is not done a default template will be used.</p></li>
+<li><p>Suppose the tenant does business with German customers. She then should upload translation tables, perhaps provided by customers, designated for the German locale (de_DE). Tables are needed for both invoice items and catalog items. The invoice items to be translated are the names of the fields on the template, such as invoiceTitle, invoiceAmount, etc. The catalog items to be translated are the names for actual items such as product name and plan name. There can be translation tables for any number of distinct locales.</p></li>
+</ol>
+
+<p>Catalog translation example (German):</p>
+
+<p>gold plan = Goldplan
+        sports car = Sportwagen</p>
+
+<p>Invoice transaltion example (German):</p>
+
+<p>invoiceTitle = Rechnung
+    invoiceNumber = Rechnungsnumber
+    invoiceBalance = Rechnungssaldo</p>
+
+<ol>
+<li>Each account has a designated locale. When an invoice is retrieved for an account, the appropriate translation tables, if any, are used to translate the invoice.</li>
+</ol>
+<h2 id='invoice-audit-logs'>Audit Logs</h2>
+<p>Audit logs provide a record of events that occur involving various specific resources. For details on audit logs see <a href="https://killbill.github.io/slate/#using-kill-bill-apis-audit-and-history">Audit and History</a>.</p>
+<h3 id='invoice-retrieve-invoice-audit-logs-with-history-by-invoice-id'>Retrieve invoice audit logs with history by invoice id</h3>
+<p>Retrieve a list of audit log records showing events that occurred involving changes to a specified invoice. History information is included with each record.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/auditLogsWithHistory</code></p>
@@ -28226,7 +28755,7 @@ Some_HTML_String
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/d456a9b3-7e48-4f56-b387-1d65a492e75e/auditLogsWithHistory"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/d456a9b3-7e48-4f56-b387-1d65a492e75e/auditLogsWithHistory"</span>
 </code></pre>
 <blockquote>
 <p>Example Response:</p>
@@ -28276,10 +28805,12 @@ Some_HTML_String
 
 <p>None.</p>
 
-<p><strong>Returns</strong></p>
+<p><strong>Response</strong></p>
 
-<p>Returns a list of invoice audit logs with history.</p>
+<p>If successful, returns a status code of 200 and a list of audit logs with history.</p>
 <h3 id='invoice-retrieve-invoice-item-audit-logs-with-history-by-invoice-item-id'>Retrieve invoice item audit logs with history by invoice item id</h3>
+<p>Retrieve a list of audit log records showing events that occurred involving changes to a specified invoice item. History information is included with each record.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoiceItems/{invoiceItemId}/auditLogsWithHistory</code></p>
@@ -28292,7 +28823,7 @@ Some_HTML_String
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoiceItems/b45ef2ac-e4b7-4e79-89d8-1c2e95838300/auditLogsWithHistory"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoiceItems/b45ef2ac-e4b7-4e79-89d8-1c2e95838300/auditLogsWithHistory"</span>
 </code></pre>
 <blockquote>
 <p>Example Response:</p>
@@ -28347,10 +28878,12 @@ Some_HTML_String
 
 <p>None.</p>
 
-<p><strong>Returns</strong></p>
+<p><strong>Response</strong></p>
 
-<p>Returns a list of invoice item audit logs with history.</p>
+<p>If successful, returns a status code of 200 and a list of audit logs with history.</p>
 <h3 id='invoice-retrieve-invoice-payment-audit-logs-with-history-by-invoice-payment-id'>Retrieve invoice payment audit logs with history by invoice payment id</h3>
+<p>Retrieve a list of audit log records showing events that occurred involving changes to a specified invoice payment. History information is included with each record.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoicePayments/{invoicePaymentId}/auditLogsWithHistory</code></p>
@@ -28363,7 +28896,7 @@ Some_HTML_String
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoicePayments/5eedf918-b418-4d14-8dba-51c977a3f700/auditLogsWithHistory"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoicePayments/5eedf918-b418-4d14-8dba-51c977a3f700/auditLogsWithHistory"</span>
 </code></pre>
 <blockquote>
 <p>Example Response:</p>
@@ -28440,10 +28973,14 @@ Some_HTML_String
 
 <p>None.</p>
 
-<p><strong>Returns</strong></p>
+<p><strong>Response</strong></p>
 
-<p>Returns a list of invoice payment audit logs with history.</p>
-<h2 id='invoice-pagination-search'>Pagination/Search</h2><h3 id='invoice-list-invoices'>List invoices</h3>
+<p>If successful, returns a status code of 200 and a list of audit logs with history.</p>
+<h2 id='invoice-list-and-search'>List and Search</h2>
+<p>These endpoints allow you to list all invoices or to search for a specific invoice.</p>
+<h3 id='invoice-list-invoices'>List invoices</h3>
+<p>Retrieve a list of all invoice records for this tenant.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoices/pagination</code></p>
@@ -28456,7 +28993,7 @@ Some_HTML_String
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/pagination"</span>  
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/pagination"</span>  
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -28720,33 +29257,41 @@ Some_HTML_String
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>offset</strong></td>
 <td>long</td>
-<td>true</td>
-<td>offset</td>
+<td>no</td>
+<td>0</td>
+<td>Starting index for items listed</td>
 </tr>
 <tr>
 <td><strong>limit</strong></td>
 <td>long</td>
-<td>true</td>
-<td>limit search items</td>
+<td>no</td>
+<td>100</td>
+<td>Maximum number of items to be listed</td>
 </tr>
 <tr>
 <td><strong>audit</strong></td>
-<td>enum</td>
-<td>false</td>
-<td>level of audit logs returned</td>
+<td>string</td>
+<td>no</td>
+<td>&quot;NONE&quot;</td>
+<td>Level of audit information to return</td>
 </tr>
 </tbody></table>
 
-<p><strong>Returns</strong></p>
+<p>Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only inserts), or &quot;FULL&quot;.</p>
 
-<p>Returns a list with all invoices.</p>
+<p><strong>Response</strong></p>
+
+<p>If successful, returns a status code of 200 and a list of all accounts.</p>
 <h3 id='invoice-search-invoices'>Search invoices</h3>
+<p>Search for an account by a specified search string. If the search string is a number, it is compared to the <code>invoiceNumber</code> attribute. An exact match is required. Otherwise, it is compared to the following attributes: <code>invoiceId</code>, <code>accountId</code>, or <code>currency</code>. The operation returns all account records in which the search string matches all or part of any one of these attributes.</p>
+
 <p><strong>HTTP Request</strong> </p>
 
 <p><code>GET http://127.0.0.1:8080/1.0/kb/invoices/search/{searchKey}</code></p>
@@ -28759,7 +29304,7 @@ Some_HTML_String
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/invoices/search/404a98a8-4dd8-4737-a39f-be871e916a8c"</span> 
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/invoices/search/404a98a8-4dd8-4737-a39f-be871e916a8c"</span> 
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.InvoiceApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">InvoiceApi</span> <span class="n">invoiceApi</span><span class="o">;</span>
 
@@ -28909,32 +29454,45 @@ Some_HTML_String
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
+<td><strong>searchKey</strong></td>
+<td>string</td>
+<td>yes</td>
+<td>none</td>
+<td>What you want to find</td>
+</tr>
+<tr>
 <td><strong>offset</strong></td>
 <td>long</td>
-<td>true</td>
-<td>offset</td>
+<td>none</td>
+<td>0</td>
+<td>Starting index for items listed</td>
 </tr>
 <tr>
 <td><strong>limit</strong></td>
 <td>long</td>
-<td>true</td>
-<td>limit search items</td>
+<td>none</td>
+<td>100</td>
+<td>Maximum number of items to return on this page</td>
 </tr>
 <tr>
 <td><strong>audit</strong></td>
-<td>enum</td>
-<td>false</td>
-<td>level of audit logs returned</td>
+<td>string</td>
+<td>no</td>
+<td>&quot;NONE&quot;</td>
+<td>Level of audit information to return</td>
 </tr>
 </tbody></table>
 
-<p><strong>Returns</strong></p>
+<p>Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only inserts), or &quot;FULL&quot;.</p>
 
-<p>Return a list with invoices matched with the search key entered.</p>
+<p><strong>Response</strong></p>
+
+<p>If successful, returns a list of all invoices matched with the search key entered.</p>
 <h1 id='credit'>Credit</h1><h2 id='credit-credit-resource'>Credit Resource</h2>
 <p>The <code>Credit</code> resource represents the credits created on behalf of the customer <code>Account</code>. Credits are tracked inside invoices, as a specical kind of
 invoice item. The credits are visible at the level of the <code>Account</code>, i.e account credit, and those will automatically be consumed by the system on
