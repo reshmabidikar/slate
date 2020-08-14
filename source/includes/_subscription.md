@@ -335,7 +335,7 @@ no content
 
 A subscription resource object specifying `accountId`, optional `externalKey`, and `planName`.
 
-Also, note that one can atomically change the per-subscription BCD while making this call by specifying a new date in the field body `billCycleDayLocal`. This allows to make changes and realign the billing with the date of the change.
+Also, note that one can atomically change the per-subscription BCD while making this call by specifying a new date in the field body `billCycleDayLocal`. This allows changes to be made to realign the billing with the date of the change.
 
 
 **Query Parameters**
