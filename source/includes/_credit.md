@@ -11,7 +11,7 @@ See section [Invoice Resource](#invoice) for the description of the `InvoiceItem
 
 ## Credit
 
-Basic endpoints to create and retrieve a credit invoice item
+Basic endpoints to create and retrieve credit invoice items
 
 ### Create credits
 
@@ -152,7 +152,7 @@ no content
 
 **Request Body**
 
-An invoiceItem object, or a list of such objects. Each object requires at least the following attributes: accountId, amount, and description. If an invoiceId is given, the item will be added to the specified invoice. This invoice must be in DRAFT status or an error will occur.
+A list of one or more invoiceItem objects. Each object requires at least the following attributes: accountId and amount. If an invoiceId is given, the item will be added to the specified invoice. This invoice must be in DRAFT status or an error will occur.
 
 **Query Parameters**
 
@@ -162,7 +162,7 @@ An invoiceItem object, or a list of such objects. Each object requires at least 
 
 **Returns**
 
-If successful, returns a status code of 200 and an invoiceItem resource object or a list of objects representing the credit(s).
+If successful, returns a status code of 200 and a list of invoiceItem resource objects representing the credit(s).
 
 ### Retrieve a credit by id
 
