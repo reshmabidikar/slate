@@ -13,9 +13,9 @@ See section [Invoice Resource](#invoice) for the description of the `InvoiceItem
 
 Basic endpoints to create and retrieve a credit invoice item
 
-### Create a credit
+### Create credits
 
-Create a credit for a specified account. This will result in the creation of a new 'invoice`. The credit will appear as an `invoiceItem`.
+Create one or more credits for a specified account. These credits will appear as `invoiceItem`s. They may be added to an existing DRAFT invoice, or they may result in the creation of a new invoice. 
 
 **HTTP Request** 
 
@@ -152,17 +152,17 @@ no content
 
 **Request Body**
 
-An invoiceItem object, with at least the following attributes: accountId, amount, and description.
+An invoiceItem object, or a list of such objects. Each object requires at least the following attributes: accountId, amount, and description. If an invoiceId is given, the item will be added to the specified invoice. This invoice must be in DRAFT status or an error will occur.
 
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
-| **autoCommit** | boolean | no | false | if true, the resulting invoice should be `COMMITTED`.|
+| **autoCommit** | boolean | no | false | if true, the resulting invoice will be `COMMITTED`.|
 
 **Returns**
 
-If successful, returns a status code of 200 and an invoiceItem resource object representing the credit.
+If successful, returns a status code of 200 and an invoiceItem resource object or a list of objects representing the credit(s).
 
 ### Retrieve a credit by id
 
