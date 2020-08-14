@@ -2371,7 +2371,7 @@ Creating a subscription often triggers the creation of an invoice, and associate
 Since we offer the ability to control the cancelation date for both entitlement (service) and billing either through policies, dates or null values (now), it is important to understand how those parameters work:
 
 * If `entitlementPolicy` has been defined, the `requestedDate` is ignored, and we either default to the catalog defined `billingPolicy` for this `Plan`, or use the one provided in this API.
-* If not, the `requestedDate` is used to compute the entitlement cancelation date, and the null value value means change should be immediate. The billing date will then be computed the following way:
+* If not, the `requestedDate` is used to compute the entitlement cancelation date, and the null value means change should be immediate. The billing date will then be computed the following way:
   * If `billingPolicy` has been specified, it is used to compute the billing cancelation date
   * If `billingPolicy` has not been specified, we either use the `requestedDate` when `useRequestedDateForBilling` is true or default to the catalog defined `billingPolicy` for this `Plan`
 
@@ -2385,7 +2385,7 @@ The reason for all this complexity is to allow to control entitlement and billin
 
 **Returns**
 
-IF successful, returns a status code of 204 and an empty body.
+If successful, returns a status code of 204 and an empty body.
 
 
 ### Un-cancel a subscription
