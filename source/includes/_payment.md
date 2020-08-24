@@ -1,10 +1,10 @@
 # Payment
 
-A `Payment` in Kill Bill is an amount paid or payable on a specific account due to an invoice or independent of any invoice. A Payment associated with an invoice is an `InvoicePayment`.
+A `Payment` in Kill Bill is an amount paid or payable on a specific account due to an invoice or independent of any invoice. An `InvoicePayment` is a payment associated with an invoice.
 
 A Payment may be associated with a series of `PaymentTransaction`s, such as authorization, payment attempt, chargeback, etc. each of which may succeed or fail.
 
-A PaymentTransaction takes place using a `PaymentMethod`. The transaction is processed by a plugin, which provides access to the appropriate `PaymentGateway`.
+A Payment Transaction takes place using a `PaymentMethod` such as a credit card. The transaction is processed by a plugin, which provides access to the appropriate `PaymentGateway`. The Payment Gateway in turn interacts with the appropriate Payment Method to process the Payment Transaction. In some cases a Payment Transaction may be in a PENDING state waiting for completion of its processing by the plugin.
 
 Please refer to the [payment manual](http://docs.killbill.io/latest/userguide_payment.html) for more details.
 
@@ -28,11 +28,11 @@ A Payment Resource represents a `Payment`. The attributes for the payment resour
 | **transactions** | list | system | **PaymentTransactions** associated with this payment (see below) |
 | **paymentAttempts** | list | system | Payment retries (see below) |
 
-* **authAmount**: Total amount that is authorized for this payment. Often this is the amount autorized by a single AUTHORIZATION paymentTransaction.
+* **authAmount**: Total amount that is authorized for this payment. Often this is the amount authorized by a single AUTHORIZATION Payment Transaction.
 
 * **capturedAmount**: Total amount that has been captured (that is, successfully paid).
 
-* **purchasedAmount**: Total amount that has been purchased. A PURCHASE operation is an autocapture transaction.
+* **purchasedAmount**: Total amount that has been purchased. A PURCHASE transaction combines authorization and capture.
 
 * **refundedAmount**: Total amount that has been refunded.
 
@@ -40,18 +40,18 @@ A Payment Resource represents a `Payment`. The attributes for the payment resour
 
 * **paymentAttempts**: Only effective when the system has been configured to retry failed transactions.
 
+The attributes for an `InvoicePayment` are the same, with the addition of **targetInvoice**, the UUID of the invoice to which the payment is to be applied.
 
-
-The attributes for the `PaymentTransaction` are described [here](#payment-transaction-payments-transactions).
+The attributes for a `PaymentTransaction` are described [here](#payment-transaction-payments-transactions).
 
 
 ## Payments
 
-These endpoints initiate transactions on a specified payment. To begin a new payment, see [Trigger a Payment](https://killbill.github.io/slate/?shell#account-trigger-a-payment-authorization-purchase-or-credit) in the Account API. 
+These endpoints initiate transactions on an existing payment. To begin a new payment, see [Trigger a Payment](https://killbill.github.io/slate/?shell#account-trigger-a-payment-authorization-purchase-or-credit) in the Account API. 
 
 ### Capture an existing authorization
 
-Obtains a payment amount based on a prior authorization.
+Requests a payment amount based on a prior authorization.
 
 **HTTP Request** 
 
@@ -242,16 +242,21 @@ class Payment {
 ```python
 no content
 ```
+**Request Body**
+
+A `PaymentTransaction` object containing, as a minimum, the `amount` to be captured.
 
 **Query Parameters**
 
 None.
 
-**Returns**
+**Response**
 
-Returns a payment object.
+If successful, returns a status code of 201 and an empty body.
 
 ### Capture an existing authorization [using external key]
+
+Requests a payment amount based on a prior authorization. The payment is identified by its external key.
 
 **HTTP Request** 
 
@@ -457,15 +462,19 @@ class Payment {
 no content
 ```
 
+**Request Body**
+
+A `PaymentTransaction` object containing, as a minimum, the `paymentExternalKey` and the`amount` to be captured.
+
 **Query Parameters**
 
 None.
 
-**Returns**
+**Response**
 
-Returns a payment object.
+If successful, returns a status code of 201 and an empty body.
 
-### Retrieve a payment by id
+### Retrieve a payment [Using payment Id]
 
 Retrieves a payment object based on a `paymentId`. The `paymentId` is provided as a path parameter.
 
@@ -733,7 +742,7 @@ Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 If successful, returns a status code of 200 and a `Payment` object.
 
-### Retrieve a payment by external key
+### Retrieve a payment [Using external key]
 
 Retrieves a payment object based on its external key.
 
@@ -1011,6 +1020,7 @@ class Payment {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
+| **externalKey** | string | yes | none | Payment external key |
 | **withPluginInfo** | boolean | no | false | If true, include plugin info |
 | **withAttempts** | boolean | no | false | If true, include payment attempts |
 | **audit** | string | no | "NONE" | Level of audit information to return |
@@ -1022,7 +1032,9 @@ Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 If successful, returns a status code of 200 and a `Payment` object.
 
-### Complete an existing transaction [payment]
+### Complete an existing transaction [using payment Id]
+
+Completes an existing Payment Transaction that might be in a PENDING state
 
 **HTTP Request** 
 
@@ -1134,15 +1146,22 @@ no content
 no content
 ```
 
+**Request Body**
+
+A Payment object containing, at least, the `paymentID` ???
+
 **Query Parameters**
 
 None.
 
 **Returns**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 ### Complete an existing transaction [using external key]
+
+Completes an existing Payment Transaction that might be in a PENDING state
+
 
 **HTTP Request** 
 
@@ -1252,15 +1271,21 @@ no content
 no content
 ```
 
+**Request Body**
+
+A Payment object containing, at least, the `paymentExternalKey`
+
 **Query Parameters**
 
 None.
 
 **Returns**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
-### Void an existing payment
+### Void an existing payment [Using payment Id]
+
+Voids a payment, providing it is in a voidable state.
 
 **HTTP Request** 
 
@@ -1350,15 +1375,21 @@ no content
 no content
 ```
 
+**Request Body**
+
+A Payment object containing, at least, the `paymentId` ???
+
 **Query Parameters**
 
-None. 
+None.
 
 **Returns**
 
-Returns a payment transaction object.
+If successful, returns a status code of 204 and an empty body.
 
 ### Void an existing payment [using external key]
+
+Voids a payment, providing it is in a voidable state.
 
 **HTTP Request** 
 
@@ -1446,17 +1477,23 @@ no content
 no content
 ```
 
+**Request Body**
+
+A Payment object containing, at least, the `paymentExternalKey`.
+
 **Query Parameters**
 
-None. 
+None.
 
 **Returns**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 
 
-### Record a chargeback [payment]
+### Record a chargeback [Using payment Id]
+
+Creates a chargeback transaction for a specified payment
 
 **HTTP Request** 
 
@@ -1574,15 +1611,22 @@ paymentApi.chargeback_payment(payment_id,
 no content
 ```
 
+**Request Body**
+
+A Payment object containing, at least, the `amount`.
+
 **Query Parameters**
 
-None. 
+None.
 
 **Returns**
 
-Returns a payment object.
+If successful, returns a status code of 204 and an empty body.
 
 ### Record a chargeback [using external key]
+
+Creates a chargeback transaction for a specified payment
+
 
 **HTTP Request** 
 
@@ -1699,15 +1743,19 @@ paymentApi.chargeback_payment_by_external_key(body,
 no content
 ```
 
+**Request Body**
+
+A Payment object containing, at least, the `amount` and the `paymentExternalKey`.
+
 **Query Parameters**
 
-None. 
+None.
 
 **Returns**
 
-Returns a payment object.
+If successful, returns a status code of 204 and an empty body.
 
-### Record a chargeback reversal [payment]
+### Record a chargeback reversal [Using payment Id]
 
 **HTTP Request** 
 
