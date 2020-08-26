@@ -4,7 +4,7 @@ A `Payment` in Kill Bill is an amount paid or payable on a specific account due 
 
 A Payment may be associated with a series of `PaymentTransaction`s, such as authorization, payment attempt, chargeback, etc. each of which may succeed or fail.
 
-A Payment Transaction takes place using a `PaymentMethod` such as a credit card. The transaction is processed by a plugin, which provides access to the appropriate `PaymentGateway`. The Payment Gateway in turn interacts with the appropriate Payment Method to process the Payment Transaction. In some cases a Payment Transaction may be in a PENDING state waiting for completion of its processing by the plugin.
+A Payment Transaction takes place using a `PaymentMethod` such as a credit card. The transaction is processed by a plugin, which provides access to the appropriate payment gateway. The payment gateway processes the transaction, using the Payment Method provided in the request. In some cases a Payment Transaction may be in a PENDING state waiting for completion of its processing by the plugin.
 
 Please refer to the [payment manual](http://docs.killbill.io/latest/userguide_payment.html) for more details.
 
@@ -68,11 +68,7 @@ curl -v \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
     -d '{
-          "transactionExternalKey": "transactionExternalKey",
-          "paymentId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
-          "transactionType": "AUTHORIZE",
-          "amount": 5,
-          "currency": "USD"
+          "amount": 5
         }' \
     'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d' 
 ```
