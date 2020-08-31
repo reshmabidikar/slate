@@ -49,9 +49,9 @@ The attributes for a `PaymentTransaction` are described [here](#payment-transact
 
 These endpoints initiate transactions on an existing payment. To begin a new payment, see [Trigger a Payment](https://killbill.github.io/slate/?shell#account-trigger-a-payment-authorization-purchase-or-credit) in the Account API. 
 
-### Capture an existing authorization
+### Capture an existing authorization [using payment id]
 
-Requests a payment amount based on a prior authorization.
+Requests a payment amount based on a prior authorization. The payment is identified by its `paymentId` provided as a path parameter.
 
 **HTTP Request** 
 
@@ -248,11 +248,11 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a status code of 201 and an empty body. A payment transaction of type CAPTURE is created.
 
 ### Capture an existing authorization [using external key]
 
-Requests a payment amount based on a prior authorization. The payment is identified by its external key.
+Requests a payment amount based on a prior authorization. The payment is identified by its external key given in the request body.
 
 **HTTP Request** 
 
@@ -269,11 +269,8 @@ curl -v \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
     -d '{
-          "transactionExternalKey": "transaction",
           "paymentExternalKey": "paymentExternalKey",
-          "transactionType": "AUTHORIZE",
-          "amount": 1,
-          "currency": "USD"
+          "amount": 1
         }' \
     'http://127.0.0.1:8080/1.0/kb/payments' 	
 ```
@@ -468,11 +465,11 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a status code of 201 and an empty body. A payment transaction of type CAPTURE is created.
 
-### Retrieve a payment [Using payment Id]
+### Retrieve a payment [using payment Id]
 
-Retrieves a payment object based on a `paymentId`. The `paymentId` is provided as a path parameter.
+Retrieves a payment object based on a `paymentId`given as a path parameter.
 
 **HTTP Request** 
 
@@ -738,9 +735,9 @@ Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 If successful, returns a status code of 200 and a `Payment` object.
 
-### Retrieve a payment [Using external key]
+### Retrieve a payment [using external key]
 
-Retrieves a payment object based on its external key.
+Retrieves a payment object based on its external key given as a query parameter.
 
 
 **HTTP Request** 
@@ -1030,7 +1027,7 @@ If successful, returns a status code of 200 and a `Payment` object.
 
 ### Complete an existing transaction [using payment Id]
 
-Completes an existing Payment Transaction that might be in a PENDING state
+Completes any existing Payment Transaction that is in a PENDING state, based on a `PaymentId` given as a path parameter.
 
 **HTTP Request** 
 
@@ -1046,9 +1043,6 @@ curl \
     -H 'X-Killbill-ApiSecret: lazar' \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
-    -d '{
-          "paymentId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d"
-      }' \
     'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d' 
 ```
 
@@ -1142,10 +1136,6 @@ no content
 no content
 ```
 
-**Request Body**
-
-A Payment object containing, at least, the `paymentID` ???
-
 **Query Parameters**
 
 None.
@@ -1156,7 +1146,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Complete an existing transaction [using external key]
 
-Completes an existing Payment Transaction that might be in a PENDING state
+Completes any existing Payment Transaction that is in a PENDING state, based on a `paymentExternalKey` given in the request body.
 
 
 **HTTP Request** 
@@ -1279,9 +1269,9 @@ None.
 
 If successful, returns a status code of 204 and an empty body.
 
-### Void an existing payment [Using payment Id]
+### Void an existing payment [using payment Id]
 
-Voids a payment, providing it is in a voidable state.
+Voids a payment, providing it is in a voidable state. For example, a payment with only an AUTHORIZE transaction can be voided. No further transactions are possible on a voided payment. THe payment is identified by its `paymentId`, which is given as a path parameter.
 
 **HTTP Request** 
 
@@ -1297,9 +1287,6 @@ curl -v \
     -H 'X-Killbill-ApiSecret: lazar' \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
-    -d '{
-          "paymentId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d"
-      }' \
     'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d' 	
 ```
 
@@ -1371,21 +1358,17 @@ no content
 no content
 ```
 
-**Request Body**
-
-A Payment object containing, at least, the `paymentId` ???
-
 **Query Parameters**
 
 None.
 
 **Returns**
 
-If successful, returns a status code of 204 and an empty body.
+If successful, returns a status code of 204 and an empty body. a Payment Transaction of type VOID is created.
 
 ### Void an existing payment [using external key]
 
-Voids a payment, providing it is in a voidable state.
+Voids a payment, providing it is in a voidable state. For example, a payment with only an AUTHORIZE transaction can be voided. can be voided. No further transactions are possible on a voided payment. THe payment is identified by its `paymentExternalKey`, which is given as a query parameter.
 
 **HTTP Request** 
 
@@ -1483,13 +1466,13 @@ None.
 
 **Returns**
 
-If successful, returns a status code of 204 and an empty body.
+If successful, returns a status code of 204 and an empty body. a Payment Transaction of type VOID is created.
 
 
 
-### Record a chargeback [Using payment Id]
+### Record a chargeback [using payment Id]
 
-Creates a chargeback transaction for a specified payment
+Creates a CHARGEBACK transaction for a specified payment. The payment is identified by a `PaymentId` given as a path parameter. The captured amount is reduced by the chargeback amount.
 
 **HTTP Request** 
 
@@ -1506,9 +1489,7 @@ curl -v \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
     -d '{
-          "paymentId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
-          "amount": 5,
-          "currency": "USD"
+          "amount": 5
         }' \
     'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/chargebacks' 
 ```
@@ -1609,7 +1590,7 @@ no content
 
 **Request Body**
 
-A Payment object containing, at least, the `amount`.
+A Payment Transaction object containing, at least, the `amount`.
 
 **Query Parameters**
 
@@ -1617,11 +1598,11 @@ None.
 
 **Returns**
 
-If successful, returns a status code of 204 and an empty body.
+If successful, returns a status code of 204 and an empty body. A Payment Transaction is created with type CHARGEBACK.
 
 ### Record a chargeback [using external key]
 
-Creates a chargeback transaction for a specified payment
+Creates a CHARGEBACK transaction for a specified payment. The payment is identified by a `paymentExternalKey` given in the request body. The captured amount is reduced by the chargeback amount.
 
 
 **HTTP Request** 
@@ -1741,7 +1722,7 @@ no content
 
 **Request Body**
 
-A Payment object containing, at least, the `amount` and the `paymentExternalKey`.
+A Payment Transaction object containing, at least, the `paymentExternalKey` and the `amount`.
 
 **Query Parameters**
 
@@ -1749,9 +1730,11 @@ None.
 
 **Returns**
 
-If successful, returns a status code of 204 and an empty body.
+If successful, returns a status code of 204 and an empty body. A Payment Transaction is created with type CHARGEBACK.
 
-### Record a chargeback reversal [Using payment Id]
+### Record a chargeback reversal [using payment Id]
+
+Reverses a CHARGEBACK transaction, if permitted by the payment plugin. The chargeback amount is added back to the captured amount. The payment is identified by its `paymentId` which is given as a path parameter. The CHARGEBACK transction is identified by its `transactionExternalKey` which is given in the request body.
 
 **HTTP Request** 
 
@@ -1768,8 +1751,7 @@ curl -v \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
     -d '{
-          "transactionExternalKey": "7ff346e8-24cc-4437-acfa-c79d96d54ee2",
-          "paymentId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
+          "transactionExternalKey": "7ff346e8-24cc-4437-acfa-c79d96d54ee2"
         }' \
     'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/chargebackReversals' 
 ```
@@ -1873,16 +1855,23 @@ paymentApi.chargeback_reversal_payment(payment_id,
 ```python
 no content
 ```
+**Request Body**
+
+A Payment Transaction object containing, at least, the `transactiobExternalKey`.
+
 
 **Query Parameters**
 
 None.
 
-**Returns**
+**Response**
 
-Returns a payment object.
+If successful, returns a status code of 201 and an empty body.
 
 ### Record a chargeback reversal [using external key]
+
+Reverses a CHARGEBACK transaction, if permitted by the payment plugin. The chargeback amount is added back to the captured amount. The payment is identified by its `paymentExternalKey` which is given in the request body. The CHARGEBACK transction is identified by its `transactionExternalKey` which is also given in the request body.
+
 
 **HTTP Request** 
 
@@ -2001,17 +1990,23 @@ paymentApi.chargeback_reversal_payment_by_external_key(body,
 no content
 ```
 
+**Request Body**
+
+A Payment Transaction object containing, at least, the `paymentExternalKey` and the `TransactionExternalKey`.
+
+
 **Query Parameters**
 
 None.
 
-**Returns**
+**Response**
 
-Returns a payment object.
+If successful, returns a status code of 201 and an empty body.
 
 
+### Refund an existing payment [using payment Id]
 
-### Refund an existing payment
+Refunds part or all of the balance of an existing payment. The payment is identified ny its `paymentId`, which is given as a path parameter.
 
 **HTTP Request** 
 
@@ -2028,9 +2023,7 @@ curl -v \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
     -d '{
-          "paymentId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
-          "amount": 5,
-          "currency": "USD"
+          "amount": 5
         }' \
     'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/refunds' 
 ```
@@ -2198,15 +2191,22 @@ class Payment {
 no content
 ```
 
+**Request Body**
+
+A payment object including, as a minimum, the `amount` to be refunded
+
 **Query Parameters**
 
 None. 
 
 **Returns**
 
-Returns a payment object.
+If successful, returns a status code of 201 and an empty body. A new payment transaction of type REFUND is created.
 
-### Refund an existing payment with external key
+### Refund an existing payment [using external key]
+
+Refunds part or all of the balance of an existing payment. The payment is identified ny its `paymentExternalKey`, which is given in the request body.
+
 
 **HTTP Request** 
 
@@ -2318,15 +2318,21 @@ paymentApi.refund_payment_by_external_key(body,
 no content
 ```
 
+**Request Body**
+
+A payment object including, as a minimum, the `paymentExternalKey` and the `amount` to be refunded
+
 **Query Parameters**
 
 None. 
 
 **Returns**
 
-Returns a payment object.
+If successful, returns a status code of 201 and an empty body. A new payment transaction of type REFUND is created.
 
-### Cancels a scheduled payment attempt retry
+### Cancel a scheduled payment attempt retry [using transaction Id]
+
+Cancels a transaction that is scheduled to be retried. The transaction is identified by its `transactionId`, which is provided as a path parameter.
 
 **HTTP Request** 
 
@@ -2388,11 +2394,14 @@ no content
 
 None.
 
-**Returns**
+**Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
-### Cancels a scheduled payment attempt retry [using external key]
+### Cancel a scheduled payment attempt retry [using external key]
+
+Cancels a transaction that is scheduled to be retried. The transaction is identified by its `transactionExternalKey`, which is provided in the request body.
+
 
 **HTTP Request** 
 
@@ -2456,14 +2465,17 @@ no content
 ```python
 no content
 ```
+**Request Body**
+
+A payment transaction object including, as a minimum, the `transactionExternalKey`.
 
 **Query Parameters**
 
 None.
 
-**Returns**
+**Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 ### Combo api to create a new payment transaction on a existing (or not) account
 
@@ -2692,9 +2704,11 @@ Returns a payment object.
 
 ## Custom Fields
 
-Custom fields are `{key, value}` attributes that can be attached to any customer resources, and in particularly on the `Payment` objects.
+Custom fields are `{key, value}` attributes that can be attached to any customer resource. In particular they can be added to Payment objects. For details on Custom Fields see [Custom Field](https://killbill.github.io/slate/#custom-field).
 
-### Add custom fields to payment [payment]
+### Add custom fields to payment
+
+Adds one or more custom fields to a payment object. Existing custom fields are not disturbed.
 
 **HTTP Request** 
 
@@ -2711,8 +2725,6 @@ curl -v \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
     -d '[{ 
-            "objectId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
-            "objectType": "PAYMENT",
             "name": "Test Custom Field",
             "value": "test_value"
     }]' \
@@ -2802,15 +2814,21 @@ class CustomField {
 no content
 ```
 
+**Request Body**
+
+A JSON string representing the custom field object or objects to be added.
+
 **Query Parameters**
 
 None.
 
-**Returns**
+**Response**
 
-Returns a custom field object.
+If successful, returns a status code of 201 and an empty body.
 
-### Retrieve payment custom fields [payment]
+### Retrieve payment custom fields
+
+Retrieves the custom fields associated with a payment
 
 **HTTP Request** 
 
@@ -2903,15 +2921,20 @@ class CustomField {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **audit** | enum | false | level of audit logs returned |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **audit** | string | no | "NONE" | Level of audit information to return |
 
-**Returns**
+Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
-Returns a list of custom field objects.
+**Response**
+    
+If successful, returns a status code of 200 and a list of custom field objects
 
-### Modify custom fields to payment [payment]
+### Modify custom fields for a payment
+
+Modifies the custom fields associated with a payment object
+
 
 **HTTP Request** 
 
@@ -2993,15 +3016,24 @@ no content
 no content
 ```
 
+**Requst Body**
+
+A JSON string representing a list of custom fields to substitute for the existing ones.
+
+
 **Query Parameters**
 
 None.
 
-**Returns**
+**Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
-### Remove custom fields from payment [payment]
+
+### Remove custom fields from a payment
+
+Removes a specified set of custom fields from a payment object
+
 
 **HTTP Request** 
 
@@ -3072,23 +3104,25 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **customField** | string | true | the list of custom field object IDs that should be deleted. |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **customField** | string | yes | none | Comma separated list of custom field object IDs that should be deleted. |
 
-**Returns**
+**Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
+
 
 ## Tags
 
-See section [Account Tags](#account-tags) for an introduction.
+See [Account Tags](https://killbill.github.io/slate/#account-tags) for an introduction.
 
-The are no `system` tags applicable for a `Bundle`.
+The are no `system` tags applicable to a Payment.
 
-Let's assume there is an existing `user` tagDefintion already created with `tagDefinitionId`=`353752dd-9041-4450-b782-a8bb03a923c8`.
+### Add tags to a payment
 
-### Add tags to payment [payment]
+Adds one or more tags to a payment object. The tag definitions must already exist.
+
 
 **HTTP Request** 
 
@@ -3181,16 +3215,22 @@ class Tag {
 ```python
 no content
 ```
+**Request Body**
+
+Provides a list of tag definition Ids in JSON format
 
 **Query Parameters**
 
 None.
 
-**Returns**
+**Response**
 
-A `201` http status without content.
+If successful, returns a status code of 201 and an empty body.
 
-### Retrieve payment tags [payment]
+### Retrieve payment tags
+
+Retrieves all tags attached to this payment.
+
 
 **HTTP Request** 
 
@@ -3300,26 +3340,25 @@ class Tag {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **audit** | enum | false | level of audit logs returned |
-| **includedDeleted** | boolean | false | choose true if you want to include deleted tags |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ------------ |
+| **includedDeleted** | boolean | no | false | If true, include deleted tags |
+| **audit** | string | no | "NONE" | Level of audit information to return |
 
-**Returns**
+Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
-Returns a list of bundle tag objects.
+**Response**
+    
+If successful, returns a status code of 200 and a list of tag objects.
 
-### Remove tags from payment [payment]
+### Remove tags from a payment
+
+Removes a list of tags attached to an invoice.
 
 **HTTP Request** 
 
 `DELETE http://127.0.0.1:8080/1.0/kb/payments/{paymentId}/tags`
 
-**Query Parameters**
-
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagDef** | string | true | the list of tag definition ID identifying the tags that should be removed. |
 
 > Example Request:
 
@@ -3389,17 +3428,23 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ---- | ------------
-| **tagDef** | string | true |  list with tag definition id's that you want to remove it |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ------------ |
+| **tagDef** | array of string | yes | none | List of tag definition IDs identifying the tags that should be removed. |
 
 **Response**
 
-A `204` http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 ## Audit Logs
 
+Audit logs provide a record of events that occur involving various specific resources. For details on audit logs see [Audit and History](https://killbill.github.io/slate/#using-kill-bill-apis-audit-and-history).
+
+
 ### Retrieve payment audit logs with history by id
+
+Retrieves a list of audit log records showing events that occurred involving changes to a specified payment. History information is included with each record.
+
 
 **HTTP Request** 
 
@@ -3563,13 +3608,18 @@ class AuditLog {
 
 None.
 
-**Returns**
+**Response**
     
-Returns a list of account audit logs with history.
+If successful, returns a status code of 200 and a list of account audit logs with history.
 
-## Pagination/Search
+## List and Search
+
+These endpoints allow you to list all payments or to search for a specific payment.
 
 ### Get payments
+
+Retrieve a list of all payments for this tenant.
+
 
 **HTTP Request** 
 
@@ -3856,20 +3906,25 @@ class Payment {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **offset** | long | true | offset |
-| **limit** | long | true | limit search items |
-| **audit** | enum | false | level of audit logs returned | 
-| **pluginName** | string | false | plugin name |
-| **withPluginInfo** | boolean | true | choose true if you want plugin info |
-| **withAttempts** | boolean | true | choose true if you want payment attempts |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **offset** | long | no | 0 | Starting index for items listed |
+| **limit** | long | no | 100 | Maximum number of items to be listed |
+| **withPluginInfo** | boolean | no | false | if true, include plugin info |
+| **withAttempts** | boolean | no | false | if true, include payment attempts |
+| **audit** | string | no | "NONE" | Level of audit information to return |
 
-**Returns**
+Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
-Returns a list with all payments.
+**Response**
+
+If successful, returns a status code of 200 and a list of all payments for this tenant.
+
 
 ### Search payments
+
+Search for a payment using a specified search string. The operation returns all payment records which are matched by the search string.
+
 
 **HTTP Request** 
 
@@ -4163,15 +4218,17 @@ class Payment {
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- | 
-| **offset** | long | true | offset |
-| **limit** | long | true | limit search items |
-| **audit** | enum | false | level of audit logs returned | 
-| **pluginName** | string | false | plugin name |
-| **withPluginInfo** | boolean | true | choose true if you want plugin info |
-| **withAttempts** | boolean | true | choose true if you want payment attempts |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **searchKey** | string | yes | none | What you want to find |
+| **offset** | long | no | 0 | Starting index for items listed |
+| **limit** | long | no | 100 | Maximum number of items to be listed |
+| **withPluginInfo** | boolean | no | false | if true, include plugin info |
+| **withAttempts** | boolean | no | false | if true, include payment attempts |
+| **audit** | string | no | "NONE" | Level of audit information to return |
 
-**Returns**
+Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
-Return a list with payments matched with the search key entered.
+**Response**
+
+If successful, returns a status code of 200 and a list of all payments matched with the search key entered.
