@@ -1734,7 +1734,7 @@ If successful, returns a status code of 204 and an empty body. A PaymentTransact
 
 ### Record a chargeback reversal [using paymentId]
 
-Reverses a CHARGEBACK PaymentTransaction, if permitted by the Payment plugin. The chargeback amount is added back to the captured amount. The payment is identified by its `paymentId` which is given as a path parameter. The CHARGEBACK transction is identified by its `transactionExternalKey` which is given in the request body.
+Reverses a CHARGEBACK PaymentTransaction, if permitted by the Payment plugin. The chargeback amount is added back to the captured amount. The payment is identified by its `paymentId` which is given as a path parameter. The CHARGEBACK transaction is identified by its `transactionExternalKey` which is given in the request body.
 
 **HTTP Request** 
 
