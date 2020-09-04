@@ -6,7 +6,7 @@ A Payment may be associated with a series of `PaymentTransaction`s, such as auth
 
 A Payment Transaction takes place using a `PaymentMethod` such as a credit card. The transaction is processed by a plugin, which provides access to the appropriate payment gateway. The payment gateway processes the transaction, using the Payment Method provided in the request.
 
-A Payment Attempt is an attempt to perform a Payment Transaction. A Payment Attempt may succeed or fail, and a Payment Transaction may have nore than one Payment Attempt. In some cases a Payment Transaction may be in a PENDING state waiting for completion of its processing by the plugin.
+A Payment Attempt is an attempt to perform a Payment Transaction. A Payment Attempt may succeed or fail, and a Payment Transaction may have more than one Payment Attempt. In some cases a Payment Transaction may be in a PENDING state waiting for completion of its processing by the plugin.
 
 Please refer to the [payment manual](http://docs.killbill.io/latest/userguide_payment.html) for more details.
 
@@ -40,7 +40,7 @@ A Payment is represented by a `Payment` resource object. The attributes for the 
 
 * **creditedAmount**: Total amount that has been credited.
 
-* **paymentAttempts**: Number of payment attempts; tis is only effective when the system has been configured to retry failed transactions.
+* **paymentAttempts**: Number of payment attempts; this is only effective when the system has been configured to retry failed transactions.
 
 The attributes for a `PaymentTransaction` are described [here](#payment-transaction-payments-transactions).
 
@@ -1466,7 +1466,7 @@ None.
 
 **Returns**
 
-If successful, returns a status code of 204 and an empty body. a PaymentTransaction of type VOID is created.
+If successful, returns a status code of 204 and an empty body. A PaymentTransaction of type VOID is created.
 
 
 
