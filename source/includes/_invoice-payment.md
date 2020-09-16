@@ -37,7 +37,7 @@ The `InvoicePayment` resource represents a payment associated with a given invoi
 * **paymentAttempts**: Only applicable when the system is configured to retry failed attempts.
 
 
-## Invoice Payment Tranaction Resource
+## Invoice Payment Transaction Resource
 
 The `InvoicePaymentTransaction` resource represents a payment transaction associated with a given `InvoicePayment`. It is identical to the `PaymentTransaction` resource except for the inclusion of the **isAdjusted** and **adjustments** attributes. The attributes for this resource object are:
 
@@ -515,7 +515,7 @@ An `InvoicePaymentTransaction` object, including at least the **amount** attribu
 | **externalPayment** | boolean | no | false | choose true if the payment method is external |
 | **paymentMethodId** | string | yes | none | paymentMethod id |
 
-**Returns**
+**Response**
 
 If successful, returns a status code of 201 and an empty body.
 
@@ -696,98 +696,9 @@ An `InvoicePaymentTransaction` object, including at least the **amount** attribu
 
 None.
 
-**Returns**
+**Response**
 
 If successful, returns a status code of 201 and an empty body.
-
-### Complete an existing transaction
-
-Completes any existing InvoicePaymentTransaction that is in a PENDING state, based on its `paymentId` given as a path parameter.
-
-**HTTP Request** 
-
-`PUT http://127.0.0.1:8080/1.0/kb/invoicePayments/{paymentId}`
-
-> Example Request:
-
-```shell
-curl -v \
-    -X PUT \
-    -u admin:password \
-    -H 'X-Killbill-ApiKey: bob' \
-    -H 'X-Killbill-ApiSecret: lazar' \
-    -H 'Content-Type: application/json' \
-    -H 'X-Killbill-CreatedBy: demo' \
-    -d '{
-            "paymentId": "cc7fcd4d-e701-4679-9741-41289103db83"
-        }' \
-    'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83' 
-```
-
-```java
-import org.killbill.billing.client.api.gen.InvoicePaymentApi;
-protected InvoicePaymentApi invoicePaymentApi;
-
-UUID paymentId = UUID.fromString("80f5bfca-e142-4320-b8f2-ae4530ca7172");
-PaymentTransaction body = new PaymentTransaction();
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
-
-invoicePaymentApi.completeInvoicePaymentTransaction(paymentId, 
-                                                    body, 
-                                                    NULL_PLUGIN_NAMES, 
-                                                    NULL_PLUGIN_PROPERTIES, 
-                                                    requestOptions);
-```
-
-```ruby
-payment_id = '2276b3c9-4e51-41b2-b5bf-9ddc11582ee4'
-
-KillBillClient::Model::InvoicePayment.complete_invoice_payment_transaction(payment_id, 
-                                                                           user, 
-                                                                           reason, 
-                                                                           comment, 
-                                                                           options)
-```
-
-```python
-invoicePaymentApi = killbill.api.InvoicePaymentApi()
-body = PaymentTransaction(payment_id=payment_id)
-
-invoicePaymentApi.complete_invoice_payment_transaction(payment_id, 
-                                                       body, 
-                                                       created_by, 
-                                                       api_key, 
-                                                       api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Query Parameters**
-
-None.
-
-**Returns**
-
-If successful, returns a status code of 204 and an empty body.
-
 
 ### Record a chargeback reversal
 
@@ -933,6 +844,96 @@ None.
 **Response**
 
 If successful, returns a status code of 201 and an empty body.
+
+### Complete an existing transaction
+
+Completes any existing InvoicePaymentTransaction that is in a PENDING state, based on its `paymentId` given as a path parameter.
+
+**HTTP Request** 
+
+`PUT http://127.0.0.1:8080/1.0/kb/invoicePayments/{paymentId}`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Content-Type: application/json' \
+    -H 'X-Killbill-CreatedBy: demo' \
+    -d '{
+            "paymentId": "cc7fcd4d-e701-4679-9741-41289103db83"
+        }' \
+    'http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83' 
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoicePaymentApi;
+protected InvoicePaymentApi invoicePaymentApi;
+
+UUID paymentId = UUID.fromString("80f5bfca-e142-4320-b8f2-ae4530ca7172");
+PaymentTransaction body = new PaymentTransaction();
+ImmutableList<String> NULL_PLUGIN_NAMES = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+invoicePaymentApi.completeInvoicePaymentTransaction(paymentId, 
+                                                    body, 
+                                                    NULL_PLUGIN_NAMES, 
+                                                    NULL_PLUGIN_PROPERTIES, 
+                                                    requestOptions);
+```
+
+```ruby
+payment_id = '2276b3c9-4e51-41b2-b5bf-9ddc11582ee4'
+
+KillBillClient::Model::InvoicePayment.complete_invoice_payment_transaction(payment_id, 
+                                                                           user, 
+                                                                           reason, 
+                                                                           comment, 
+                                                                           options)
+```
+
+```python
+invoicePaymentApi = killbill.api.InvoicePaymentApi()
+body = PaymentTransaction(payment_id=payment_id)
+
+invoicePaymentApi.complete_invoice_payment_transaction(payment_id, 
+                                                       body, 
+                                                       created_by, 
+                                                       api_key, 
+                                                       api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Query Parameters**
+
+None.
+
+**Response**
+
+If successful, returns a status code of 204 and an empty body.
+
+
 
 ## Custom Fields
 
@@ -1268,7 +1269,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Remove custom fields from an invoice payment
 
-Removes a specified set of custom fields from an invoice payment object
+Removes a specified set of custom fields from an `InvoicePayment` object
 
 **HTTP Request** 
 
