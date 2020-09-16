@@ -13,7 +13,7 @@ A `PaymentTransaction` is represented by a PaymentTransaction resource object. T
 | ---- | -----| -------- | ------------ |
 | **transactionId** | string | system | UUID for the transaction |
 | **transactionExternalKey** | string | user or system | Optional external key |
-| **paymentId** | string | system | UUID for the transaction |
+| **paymentId** | string | system | UUID for the payment |
 | **paymentExternalKey** | string | user or system | Optional external key |
 | **transactionType** | string | user | Transaction type (see below) |
 | **amount** | number | system | Total amount of the transaction |
@@ -46,102 +46,6 @@ A `PaymentTransaction` is represented by a PaymentTransaction resource object. T
 Endpoints to retrieve a `PaymentTransaction` object or to set the status of a pending transaction. Note that endpoints to generate payment transactions are provided with the `Payment` APIs. 
 
 
-### Retrieve a payment transaction by external key
-
-Retrieve a Payment object based on a PaymentTransaction external key, which is given as a query parameter
-
-
-**HTTP Request** 
-
-`GET http://127.0.0.1:8080/1.0/kb/paymentTransactions`
-
-> Example Request:
-
-```shell
-curl -v \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://127.0.0.1:8080/1.0/kb/paymentTransactions?paymentExternalKey=e8edd4c6-2f85-4375-95f3-e78ca4d85b82"
-```
-
-```java
-TODO
-```
-
-```ruby
-TODO
-```
-
-```python
-TODO
-```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-{
-  "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-  "paymentId": "e8edd4c6-2f85-4375-95f3-e78ca4d85b82",
-  "paymentNumber": "47",
-  "paymentExternalKey": "e8edd4c6-2f85-4375-95f3-e78ca4d85b82",
-  "authAmount": 0,
-  "capturedAmount": 0,
-  "purchasedAmount": 0,
-  "refundedAmount": 0,
-  "creditedAmount": 0,
-  "currency": "USD",
-  "paymentMethodId": "c02fa9b0-ae95-42ae-9010-bc11cb160947",
-  "transactions": [
-    {
-      "transactionId": "07655b3c-7f17-4172-b193-ece48e5741ad",
-      "transactionExternalKey": "07655b3c-7f17-4172-b193-ece48e5741ad",
-      "paymentId": "e8edd4c6-2f85-4375-95f3-e78ca4d85b82",
-      "paymentExternalKey": "e8edd4c6-2f85-4375-95f3-e78ca4d85b82",
-      "transactionType": "AUTHORIZE",
-      "amount": 0,
-      "currency": "USD",
-      "effectiveDate": "2018-07-18T18:58:11.000Z",
-      "processedAmount": 0,
-      "processedCurrency": "USD",
-      "status": "SUCCESS",
-      "gatewayErrorCode": null,
-      "gatewayErrorMsg": null,
-      "firstPaymentReferenceId": null,
-      "secondPaymentReferenceId": null,
-      "properties": null,
-      "auditLogs": []
-    }
-  ],
-  "paymentAttempts": null,
-  "auditLogs": []
-}
-```
-```java
-TODO
-```
-```ruby
-TODO
-```
-```python
-TODO
-```
-
-**Query Parameters**
-
-| Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ------- | ----------- |
-| **transactionExternalKey** | string | yes | none | Transaction external key |
-| **withPluginInfo** | boolean | no | false | If true, include plugin info |
-| **withAttempts** | boolean | no | false | if true, include payment attempts |
-
-**Response**
-
-If successful, returns a status code of 200 and a payment object including the specified transaction.
 
 ### Retrieve a payment by transaction id
 
@@ -240,6 +144,103 @@ TODO
 If successful, returns a status code of 200 and a payment object including the specified transaction.
 
 
+### Retrieve a payment transaction by external key
+
+Retrieve a Payment object based on a PaymentTransaction external key, which is given as a query parameter
+
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/paymentTransactions`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://127.0.0.1:8080/1.0/kb/paymentTransactions?transactionExternalKey=07655b3c-7f17-4172-b193-ece48e5741ad"
+```
+
+```java
+TODO
+```
+
+```ruby
+TODO
+```
+
+```python
+TODO
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+{
+  "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+  "paymentId": "e8edd4c6-2f85-4375-95f3-e78ca4d85b82",
+  "paymentNumber": "47",
+  "paymentExternalKey": "e8edd4c6-2f85-4375-95f3-e78ca4d85b82",
+  "authAmount": 0,
+  "capturedAmount": 0,
+  "purchasedAmount": 0,
+  "refundedAmount": 0,
+  "creditedAmount": 0,
+  "currency": "USD",
+  "paymentMethodId": "c02fa9b0-ae95-42ae-9010-bc11cb160947",
+  "transactions": [
+    {
+      "transactionId": "07655b3c-7f17-4172-b193-ece48e5741ad",
+      "transactionExternalKey": "07655b3c-7f17-4172-b193-ece48e5741ad",
+      "paymentId": "e8edd4c6-2f85-4375-95f3-e78ca4d85b82",
+      "paymentExternalKey": "e8edd4c6-2f85-4375-95f3-e78ca4d85b82",
+      "transactionType": "AUTHORIZE",
+      "amount": 0,
+      "currency": "USD",
+      "effectiveDate": "2018-07-18T18:58:11.000Z",
+      "processedAmount": 0,
+      "processedCurrency": "USD",
+      "status": "SUCCESS",
+      "gatewayErrorCode": null,
+      "gatewayErrorMsg": null,
+      "firstPaymentReferenceId": null,
+      "secondPaymentReferenceId": null,
+      "properties": null,
+      "auditLogs": []
+    }
+  ],
+  "paymentAttempts": null,
+  "auditLogs": []
+}
+```
+```java
+TODO
+```
+```ruby
+TODO
+```
+```python
+TODO
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **transactionExternalKey** | string | yes | none | Transaction external key |
+| **withPluginInfo** | boolean | no | false | If true, include plugin info |
+| **withAttempts** | boolean | no | false | If true, include payment attempts |
+
+**Response**
+
+If successful, returns a status code of 200 and a payment object including the specified transaction.
+
 ### Mark a pending payment transaction as succeeded or failed
 
 Sets the status of a PENDING `PaymentTransaction` to SUCCESS or PAYMENT_FAILURE
@@ -302,7 +303,7 @@ A `PaymentTransaction` object including, at least, a `paymentId` and a `status` 
 
 None.
 
-**Returns**
+**Response**
 
 If successful, returns a status code of 201 and an empty body.
 
