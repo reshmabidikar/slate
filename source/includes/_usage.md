@@ -6,7 +6,9 @@ For more information, see our [catalog usage documentation](http://docs.killbill
 
 ## Usage Resource
 
-There are several resource objects associated with usage in Kill-Bill. These include:
+There are several resource objects associated with usage in Kill-Bill. These are shown below.
+
+**SubscriptionUsageRecord**, along with its components **UnitUsageRecord** and **UsageRecord**, is used to enter the daily usage summary into the system.
 
 **SubscriptionUsageRecord**:
 
@@ -29,6 +31,8 @@ There are several resource objects associated with usage in Kill-Bill. These inc
 | ---- | -----| -------- | ------------ |
 | **recordDate** | string | user | Date for this record |
 | **amount ** | integer | user | Amount of usage for this record |
+
+**RolledUpUsage**, along with its component **RolledUpUnit**, is used to maintain the cumulative record of usage over a specified period of time.
 
 **RolledUpUsage**:
 
