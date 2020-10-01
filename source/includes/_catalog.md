@@ -38,6 +38,9 @@ Full details about the elements of a Catalog are given in the links cited above.
 
 This endpoint uploads a complete catalog in XML format. This becomes the current version of the Catalog for this Tenant.
 
+
+Note that the naming for the various entities is based on what the [XML spec specifies](https://www.w3.org/TR/1999/REC-xml-names-19990114/#NT-NCName), and in particular the `name` elements need to be globally unique in the catalog and must conform to the XML `NCName` definition. This means that they cannot contain symbol characters like :, @, $, %, &, /, +, ,, ;,, whitespace characters or parentheses, and they cannot begin with a number, dot or minus character.
+
 **HTTP Request** 
 
 `POST http://127.0.0.1:8080/1.0/kb/catalog/xml`
