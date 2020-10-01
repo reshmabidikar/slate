@@ -137,6 +137,9 @@ These endpoints provide basic operations on invoices.
 
 Create an invoice run for the associated account. This may result in the creation of a new invoice if there is anything to invoice for, or nothing, if the account is up to date. If an invoice is created, all necessary attributes are determined by the system.
 
+
+Also refer to our [subscription manual for more examples](https://docs.killbill.io/latest/userguide_subscription.html#invoicing-dry-run)
+
 **HTTP Request** 
 
 `POST http://127.0.0.1:8080/1.0/kb/invoices`
