@@ -1,18 +1,16 @@
 # Admin
 
-The admin resource offers a set of enpoints of the following nature:
+The Admin resource offers a set of enpoints such as the following:
 
-* Administrative apis to fix existing state 
-* Operational apis such as adding hosts in and out of rotation, clearing internal caches, ...
-* Retrieve low level information from the system
+* Administrative APIs to fix existing state 
+* Operational APIs such as adding hosts in and out of rotation, clearing internal caches, etc.
+* APIs to retrieve low level information from the system
 
 ## Administrative Apis
 
 ### Trigger an invoice generation for all parked accounts
 
-When the system detects an issue invoicing a customer `Account`, it will automatically `PARK` the `Account` as explained in this [documentation](http://docs.killbill.io/0.20/invoice_subsystem.html#_parked_accounts). 
-
-After the issue was corrected -- e.g bug was fixed -- one can get all all the `Account` out of that state by triggering the following endpoint.
+When the system detects an issue invoicing a customer `Account`, it will automatically `PARK` the `Account` as explained [here](http://docs.killbill.io/0.20/invoice_subsystem.html#_parked_accounts). This API can be used after the issues have been resolved to remove all accounts from the parked state and generate any outstanding invoices needed. 
 
 
 **HTTP Request** 
@@ -32,7 +30,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://localhost:8080/1.0/kb/admin/invoices"
+    "http://127.0.0.1:8080/1.0/kb/admin/invoices"
 ```
 
 ```java
@@ -92,11 +90,10 @@ This api behaves like a [pagination api](https://killbill.github.io/slate/#using
 
 A 200 http status without content.
 
-### Update existing paymentTransaction and associated payment state
+### Update the state of a paymentTransaction and associated payment
 
-Provides a way to fix the payment state data for a given `Payment`.
-Typically this could happen under a scenario where the call to the third party payment gateway timed-out, and the system is left in an unknwon state.
-Later, after possibly retrieveing third party payment gateway data, one can fix the state in Kill Bill using this endpoint.
+Provides a way to fix the payment state data for a given `Payment`, if that data becomes corrupted.
+This could happen, for example, if a call to a third party payment gateway times out, leaving the system in an unknwon state.
 
 
 **HTTP Request** 
@@ -113,7 +110,7 @@ curl -v \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Content-Type: application/json" \
     -H "X-Killbill-CreatedBy: demo" \
-    "http://localhost:8080/1.0/kb/admin/payments/864c1418-e768-4cd5-a0db-67537144b685/transactions/864c1418-e768-4cd5-a0db-67537144b685"
+    "http://127.0.0.1:8080/1.0/kb/admin/payments/864c1418-e768-4cd5-a0db-67537144b685/transactions/864c1418-e768-4cd5-a0db-67537144b685"
 ```
 
 ```java
@@ -187,20 +184,23 @@ no content
 no content
 ```
 
+**Request Body**
+
+An `AdminPayment' object
+
 **Query Parameters**
 
 None.
 
 **Returns**
 
-A 204 http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 ## Operational Apis
 
-### Invalidates the given Cache if specified, otherwise invalidates all caches
+### Invalidate a specific cache, or invalidate all caches
 
-
-Ability to invalidate some/all the caches on a given Kill Bill node/server.
+Invalidates a specified cache. Of no cache is specified, it invalidates all Kill Bill caches on the server.
 
 **HTTP Request** 
 
@@ -214,7 +214,7 @@ curl -v \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
-    "http://localhost:8080/1.0/kb/admin/cache"
+    "http://127.0.0.1:8080/1.0/kb/admin/cache"
 ```
 
 ```java
@@ -256,15 +256,15 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **cacheName** | string | false | cache name |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **cacheName** | string | no | all caches | cache name |
 
 **Returns**
 
-A 204 http status without content.
+If successful, returns a status code of 204 and an empty body.
 
-### Invalidates Caches per account level
+### Invalidate Caches per account level
 
 Ability to invalidate some/all of the caches associated to a specific `Account` on a given Kill Bill node/server.
 
