@@ -1,16 +1,18 @@
 # Admin
 
-The Admin resource offers a set of enpoints such as the following:
+The Admin resource offers a set of endpoints such as the following:
 
-* Administrative APIs to fix existing state 
+* Administrative APIs to fix improper states 
 * Operational APIs such as adding hosts in and out of rotation, clearing internal caches, etc.
 * APIs to retrieve low level information from the system
 
 ## Administrative Apis
 
+Miscellaneous administrative APIs
+
 ### Trigger an invoice generation for all parked accounts
 
-When the system detects an issue invoicing a customer `Account`, it will automatically `PARK` the `Account` as explained [here](http://docs.killbill.io/0.20/invoice_subsystem.html#_parked_accounts). This API can be used after the issues have been resolved to remove all accounts from the parked state and generate any outstanding invoices needed. 
+When the system detects an issue invoicing a customer `Account`, it will automatically `PARK` the `Account` as explained [here](http://docs.killbill.io/latest/invoice_subsystem.html#_parked_accounts). This API can be used after the issues have been resolved to remove accounts from the parked state and generate any outstanding invoices needed. 
 
 
 **HTTP Request** 
@@ -78,17 +80,15 @@ no content
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
+| Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ----------- |
-| **offset** | long | false | offset for the next pagination call or 0 if not specified |
-| **limit** | long | false | limit results or default to 100 if not specified |
-
-This api behaves like a [pagination api](https://killbill.github.io/slate/#using-kill-bill-apis-pagination) so the pagination headers can be used to paginate over results.
+| **offset** | long | no | 0 | starting offset for the page |
+| **limit** | long | no | 100 | max results on this page |
 
 
 **Returns**
 
-A 200 http status without content.
+If successful, returns a status code of 200 and a list of invoices generated.
 
 ### Update the state of a paymentTransaction and associated payment
 
@@ -198,9 +198,11 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Operational Apis
 
+These APIs invalidate caches and move a host in and out of the rotation
+
 ### Invalidate a specific cache, or invalidate all caches
 
-Invalidates a specified cache. Of no cache is specified, it invalidates all Kill Bill caches on the server.
+Invalidates a specified cache. If no cache is specified, it invalidates all Kill Bill caches on the server.
 
 **HTTP Request** 
 
@@ -264,10 +266,9 @@ no content
 
 If successful, returns a status code of 204 and an empty body.
 
-### Invalidate Caches per account level
+### Invalidate Caches for an Account
 
-Ability to invalidate some/all of the caches associated to a specific `Account` on a given Kill Bill node/server.
-
+Invalidates all Kill Bill caches on the server associated with a specific Account
 
 **HTTP Request** 
 
@@ -281,7 +282,7 @@ curl -v \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
-    "http://localhost:8080/1.0/kb/admin/cache/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d"
+    "http://127.0.0.1:8080/1.0/kb/admin/cache/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d"
 ```
 
 ```java
@@ -326,13 +327,13 @@ no content
 
 None.
 
-**Returns**
+**Response**
 
-A 204 http status without content.
+If successful, returns a status code of 204 and an empty body.
 
-### Invalidates Caches per tenant level
+### Invalidate Caches for a Tenant
 
-Ability to invalidate some/all of the caches associated to a specific `Tenant` on a given Kill Bill node/server.
+Invalidates all Kill Bill caches on the server associated with this Tenant
 
 
 **HTTP Request** 
@@ -347,7 +348,7 @@ curl -v \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
-    "http://localhost:8080/1.0/kb/admin/cache/tenants"
+    "http://127.0.0.1:8080/1.0/kb/admin/cache/tenants"
 ```
 
 ```java
@@ -390,13 +391,11 @@ None.
 
 **Returns**
 
-A 204 http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 ### Put the host back into rotation
 
-Kill Bill provides some [apis to return the healtcheck](http://docs.killbill.io/0.20/debugging.html#_healthchecks_and_metrics) of a particular server. Such healthcheck is configurable and also extensible to plugins, i.e each plugin can also return its own healthcheck status.
-
-The following endpoint can be used to add a server back into the rotation during a deployment.
+Adds a server back into the rotation after it has been removed.
 
 **HTTP Request** 
 
@@ -411,7 +410,7 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Content-Type: application/json" \
-    "http://localhost:8080/1.0/kb/admin/healthcheck"
+    "http://127.0.0.1:8080/1.0/kb/admin/healthcheck"
 ```
 
 ```java
@@ -452,13 +451,13 @@ no content
 
 None.
 
-**Returns**
+**Response**
 
-A 204 http status without content.
+If successful, returns a status code of 204 and an empty body.
 
-### Put the host out of rotation
+### Remove a server from the rotation
 
-The following endpoint can be used to remove a server back into the rotation during a deployment.
+Removes a server from the rotation during a deployment.
 
 
 **HTTP Request** 
@@ -514,15 +513,17 @@ no content
 
 None.
 
-**Returns**
+**Response**
 
-A 204 http status without content.
+If successful, returns a status code of 204 and an empty body.
 
 ## Low Level View Apis
 
-### Get queues entries
+This API group currently includes a single API to view entries in the system queues
 
-Returns low level details about the queued notifications for a given `Account`.
+### Get queue entries
+
+Returns low level details about queue entries. Results can be requested for a specific account or all accounts; for a specific queue or all queues, and for a specific service or all services. In addition optional types of events may be specified, including history, for a specified date range; in processing; bus events; and notifications.
 
 **HTTP Request** 
 
@@ -596,20 +597,20 @@ adminApi.get_queue_entries(api_key, api_secret)
 
 **Query Parameters**
 
-| Name | Type | Required | Description |
-| ---- | -----| -------- | ----------- |
-| **accountId** | string | false | account id or if not specified return across all accounts |
-| **queueName** | string | false | queue name or if not specified return across all queues |
-| **serviceName** | string | false | service name or if not specified return across all services|
-| **withHistory** | boolean | false | choose true to get history |
-| **minDate** | string | false | minimum date |
-| **maxDate** | string | false | maximun date |
-| **withInProcessing** | boolean | false | choose true to get processing |
-| **withBusEvents** | boolean | false | choose true to get bus events |
-| **withNotifications** | boolean | false |choose true to get notifications |
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **accountId** | string | no | all accounts | account id  |
+| **queueName** | string | no | all queues | queue name  |
+| **serviceName** | string | no | all services | service name |
+| **withHistory** | boolean | no | true | if true include history |
+| **minDate** | string | no | from the beginning | earliest date for history |
+| **maxDate** | string | no | current date | latest date for history |
+| **withInProcessing** | boolean | no | true | if true include in processing |
+| **withBusEvents** | boolean | no | true | if true include bus events |
+| **withNotifications** | boolean | no | true |if true include notifications |
 
 **Returns**
 
-A 200 http status.
+If successful, returns a status code of 200 and a list of queue entries of the specified types.
 
 
