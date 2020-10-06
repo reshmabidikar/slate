@@ -1414,7 +1414,7 @@
                                 <a href="#admin-trigger-an-invoice-generation-for-all-parked-accounts" class="toc-h3 toc-link" data-title="Admin">Trigger an invoice generation for all parked accounts</a>
                               </li>
                               <li>
-                                <a href="#admin-update-existing-paymenttransaction-and-associated-payment-state" class="toc-h3 toc-link" data-title="Admin">Update existing paymentTransaction and associated payment state</a>
+                                <a href="#admin-update-the-state-of-a-paymenttransaction-and-associated-payment" class="toc-h3 toc-link" data-title="Admin">Update the state of a paymentTransaction and associated payment</a>
                               </li>
                         </ul>
                   </li>
@@ -1422,19 +1422,19 @@
                     <a href="#admin-operational-apis" class="toc-h2 toc-link" data-title="Operational Apis">Operational Apis</a>
                         <ul class="toc-list-h3">
                               <li>
-                                <a href="#admin-invalidates-the-given-cache-if-specified-otherwise-invalidates-all-caches" class="toc-h3 toc-link" data-title="Admin">Invalidates the given Cache if specified, otherwise invalidates all caches</a>
+                                <a href="#admin-invalidate-a-specific-cache-or-invalidate-all-caches" class="toc-h3 toc-link" data-title="Admin">Invalidate a specific cache, or invalidate all caches</a>
                               </li>
                               <li>
-                                <a href="#admin-invalidates-caches-per-account-level" class="toc-h3 toc-link" data-title="Admin">Invalidates Caches per account level</a>
+                                <a href="#admin-invalidate-caches-for-an-account" class="toc-h3 toc-link" data-title="Admin">Invalidate Caches for an Account</a>
                               </li>
                               <li>
-                                <a href="#admin-invalidates-caches-per-tenant-level" class="toc-h3 toc-link" data-title="Admin">Invalidates Caches per tenant level</a>
+                                <a href="#admin-invalidate-caches-for-a-tenant" class="toc-h3 toc-link" data-title="Admin">Invalidate Caches for a Tenant</a>
                               </li>
                               <li>
                                 <a href="#admin-put-the-host-back-into-rotation" class="toc-h3 toc-link" data-title="Admin">Put the host back into rotation</a>
                               </li>
                               <li>
-                                <a href="#admin-put-the-host-out-of-rotation" class="toc-h3 toc-link" data-title="Admin">Put the host out of rotation</a>
+                                <a href="#admin-remove-a-server-from-the-rotation" class="toc-h3 toc-link" data-title="Admin">Remove a server from the rotation</a>
                               </li>
                         </ul>
                   </li>
@@ -1442,7 +1442,7 @@
                     <a href="#admin-low-level-view-apis" class="toc-h2 toc-link" data-title="Low Level View Apis">Low Level View Apis</a>
                         <ul class="toc-list-h3">
                               <li>
-                                <a href="#admin-get-queues-entries" class="toc-h3 toc-link" data-title="Admin">Get queues entries</a>
+                                <a href="#admin-get-queue-entries" class="toc-h3 toc-link" data-title="Admin">Get queue entries</a>
                               </li>
                         </ul>
                   </li>
@@ -37978,17 +37978,17 @@ that work directly at the transaction level.</p>
 
 <p>If successful, returns a status code of 200 and a list of tag definition audit logs with history.</p>
 <h1 id='admin'>Admin</h1>
-<p>The admin resource offers a set of enpoints of the following nature:</p>
+<p>The Admin resource offers a set of endpoints such as the following:</p>
 
 <ul>
-<li>Administrative apis to fix existing state </li>
-<li>Operational apis such as adding hosts in and out of rotation, clearing internal caches, ...</li>
-<li>Retrieve low level information from the system</li>
+<li>Administrative APIs to fix improper states </li>
+<li>Operational APIs such as adding hosts in and out of rotation, clearing internal caches, etc.</li>
+<li>APIs to retrieve low level information from the system</li>
 </ul>
-<h2 id='admin-administrative-apis'>Administrative Apis</h2><h3 id='admin-trigger-an-invoice-generation-for-all-parked-accounts'>Trigger an invoice generation for all parked accounts</h3>
-<p>When the system detects an issue invoicing a customer <code>Account</code>, it will automatically <code>PARK</code> the <code>Account</code> as explained in this <a href="http://docs.killbill.io/0.20/invoice_subsystem.html#_parked_accounts">documentation</a>. </p>
-
-<p>After the issue was corrected -- e.g bug was fixed -- one can get all all the <code>Account</code> out of that state by triggering the following endpoint.</p>
+<h2 id='admin-administrative-apis'>Administrative Apis</h2>
+<p>Miscellaneous administrative APIs</p>
+<h3 id='admin-trigger-an-invoice-generation-for-all-parked-accounts'>Trigger an invoice generation for all parked accounts</h3>
+<p>When the system detects an issue invoicing a customer <code>Account</code>, it will automatically <code>PARK</code> the <code>Account</code> as explained <a href="http://docs.killbill.io/latest/invoice_subsystem.html#_parked_accounts">here</a>. This API can be used after the issues have been resolved to remove accounts from the parked state and generate any outstanding invoices needed. </p>
 
 <p><strong>HTTP Request</strong> </p>
 
@@ -38007,7 +38007,7 @@ that work directly at the transaction level.</p>
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/admin/invoices"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/admin/invoices"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.AdminApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">AdminApi</span> <span class="n">adminApi</span><span class="o">;</span>
 
@@ -38038,37 +38038,17 @@ that work directly at the transaction level.</p>
 </code></pre>
 <p><strong>Query Parameters</strong></p>
 
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Required</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td><strong>offset</strong></td>
-<td>long</td>
-<td>false</td>
-<td>offset for the next pagination call or 0 if not specified</td>
-</tr>
-<tr>
-<td><strong>limit</strong></td>
-<td>long</td>
-<td>false</td>
-<td>limit results or default to 100 if not specified</td>
-</tr>
-</tbody></table>
-
-<p>This api behaves like a <a href="https://killbill.github.io/slate/#using-kill-bill-apis-pagination">pagination api</a> so the pagination headers can be used to paginate over results.</p>
+<p>| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ----------- |
+| <strong>offset</strong> | long | no | 0 | starting offset for the page |
+| <strong>limit</strong> | long | no | 100 | max results on this page |</p>
 
 <p><strong>Returns</strong></p>
 
-<p>A 200 http status without content.</p>
-<h3 id='admin-update-existing-paymenttransaction-and-associated-payment-state'>Update existing paymentTransaction and associated payment state</h3>
-<p>Provides a way to fix the payment state data for a given <code>Payment</code>.
-Typically this could happen under a scenario where the call to the third party payment gateway timed-out, and the system is left in an unknwon state.
-Later, after possibly retrieveing third party payment gateway data, one can fix the state in Kill Bill using this endpoint.</p>
+<p>If successful, returns a status code of 200 and a list of invoices generated.</p>
+<h3 id='admin-update-the-state-of-a-paymenttransaction-and-associated-payment'>Update the state of a paymentTransaction and associated payment</h3>
+<p>Provides a way to fix the payment state data for a given <code>Payment</code>, if that data becomes corrupted.
+This could happen, for example, if a call to a third party payment gateway times out, leaving the system in an unknwon state.</p>
 
 <p><strong>HTTP Request</strong> </p>
 
@@ -38084,7 +38064,7 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/admin/payments/864c1418-e768-4cd5-a0db-67537144b685/transactions/864c1418-e768-4cd5-a0db-67537144b685"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/admin/payments/864c1418-e768-4cd5-a0db-67537144b685/transactions/864c1418-e768-4cd5-a0db-67537144b685"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.AdminApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">AdminApi</span> <span class="n">adminApi</span><span class="o">;</span>
 
@@ -38141,15 +38121,21 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
+<p><strong>Request Body</strong></p>
+
+<p>An `AdminPayment&#39; object</p>
+
 <p><strong>Query Parameters</strong></p>
 
 <p>None.</p>
 
 <p><strong>Returns</strong></p>
 
-<p>A 204 http status without content.</p>
-<h2 id='admin-operational-apis'>Operational Apis</h2><h3 id='admin-invalidates-the-given-cache-if-specified-otherwise-invalidates-all-caches'>Invalidates the given Cache if specified, otherwise invalidates all caches</h3>
-<p>Ability to invalidate some/all the caches on a given Kill Bill node/server.</p>
+<p>If successful, returns a status code of 204 and an empty body.</p>
+<h2 id='admin-operational-apis'>Operational Apis</h2>
+<p>These APIs invalidate caches and move a host in and out of the rotation</p>
+<h3 id='admin-invalidate-a-specific-cache-or-invalidate-all-caches'>Invalidate a specific cache, or invalidate all caches</h3>
+<p>Invalidates a specified cache. If no cache is specified, it invalidates all Kill Bill caches on the server.</p>
 
 <p><strong>HTTP Request</strong> </p>
 
@@ -38163,7 +38149,7 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
     -u admin:password <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/admin/cache"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/admin/cache"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.AdminApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">AdminApi</span> <span class="n">adminApi</span><span class="o">;</span>
 
@@ -38193,22 +38179,24 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>cacheName</strong></td>
 <td>string</td>
-<td>false</td>
+<td>no</td>
+<td>all caches</td>
 <td>cache name</td>
 </tr>
 </tbody></table>
 
 <p><strong>Returns</strong></p>
 
-<p>A 204 http status without content.</p>
-<h3 id='admin-invalidates-caches-per-account-level'>Invalidates Caches per account level</h3>
-<p>Ability to invalidate some/all of the caches associated to a specific <code>Account</code> on a given Kill Bill node/server.</p>
+<p>If successful, returns a status code of 204 and an empty body.</p>
+<h3 id='admin-invalidate-caches-for-an-account'>Invalidate Caches for an Account</h3>
+<p>Invalidates all Kill Bill caches on the server associated with a specific Account</p>
 
 <p><strong>HTTP Request</strong> </p>
 
@@ -38222,7 +38210,7 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
     -u admin:password <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/admin/cache/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/admin/cache/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.AdminApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">AdminApi</span> <span class="n">adminApi</span><span class="o">;</span>
 
@@ -38250,11 +38238,11 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
 
 <p>None.</p>
 
-<p><strong>Returns</strong></p>
+<p><strong>Response</strong></p>
 
-<p>A 204 http status without content.</p>
-<h3 id='admin-invalidates-caches-per-tenant-level'>Invalidates Caches per tenant level</h3>
-<p>Ability to invalidate some/all of the caches associated to a specific <code>Tenant</code> on a given Kill Bill node/server.</p>
+<p>If successful, returns a status code of 204 and an empty body.</p>
+<h3 id='admin-invalidate-caches-for-a-tenant'>Invalidate Caches for a Tenant</h3>
+<p>Invalidates all Kill Bill caches on the server associated with this Tenant</p>
 
 <p><strong>HTTP Request</strong> </p>
 
@@ -38268,7 +38256,7 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
     -u admin:password <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/admin/cache/tenants"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/admin/cache/tenants"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.AdminApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">AdminApi</span> <span class="n">adminApi</span><span class="o">;</span>
 
@@ -38294,11 +38282,9 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
 
 <p><strong>Returns</strong></p>
 
-<p>A 204 http status without content.</p>
+<p>If successful, returns a status code of 204 and an empty body.</p>
 <h3 id='admin-put-the-host-back-into-rotation'>Put the host back into rotation</h3>
-<p>Kill Bill provides some <a href="http://docs.killbill.io/0.20/debugging.html#_healthchecks_and_metrics">apis to return the healtcheck</a> of a particular server. Such healthcheck is configurable and also extensible to plugins, i.e each plugin can also return its own healthcheck status.</p>
-
-<p>The following endpoint can be used to add a server back into the rotation during a deployment.</p>
+<p>Adds a server back into the rotation after it has been removed.</p>
 
 <p><strong>HTTP Request</strong> </p>
 
@@ -38313,7 +38299,7 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
     -H <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
-    <span class="s2">"http://localhost:8080/1.0/kb/admin/healthcheck"</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/admin/healthcheck"</span>
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.AdminApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">AdminApi</span> <span class="n">adminApi</span><span class="o">;</span>
 
@@ -38337,11 +38323,11 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
 
 <p>None.</p>
 
-<p><strong>Returns</strong></p>
+<p><strong>Response</strong></p>
 
-<p>A 204 http status without content.</p>
-<h3 id='admin-put-the-host-out-of-rotation'>Put the host out of rotation</h3>
-<p>The following endpoint can be used to remove a server back into the rotation during a deployment.</p>
+<p>If successful, returns a status code of 204 and an empty body.</p>
+<h3 id='admin-remove-a-server-from-the-rotation'>Remove a server from the rotation</h3>
+<p>Removes a server from the rotation during a deployment.</p>
 
 <p><strong>HTTP Request</strong> </p>
 
@@ -38379,11 +38365,13 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
 
 <p>None.</p>
 
-<p><strong>Returns</strong></p>
+<p><strong>Response</strong></p>
 
-<p>A 204 http status without content.</p>
-<h2 id='admin-low-level-view-apis'>Low Level View Apis</h2><h3 id='admin-get-queues-entries'>Get queues entries</h3>
-<p>Returns low level details about the queued notifications for a given <code>Account</code>.</p>
+<p>If successful, returns a status code of 204 and an empty body.</p>
+<h2 id='admin-low-level-view-apis'>Low Level View Apis</h2>
+<p>This API group currently includes a single API to view entries in the system queues</p>
+<h3 id='admin-get-queue-entries'>Get queue entries</h3>
+<p>Returns low level details about queue entries. Results can be requested for a specific account or all accounts; for a specific queue or all queues, and for a specific service or all services. In addition optional types of events may be specified, including history, for a specified date range; in processing; bus events; and notifications.</p>
 
 <p><strong>HTTP Request</strong> </p>
 
@@ -38447,68 +38435,78 @@ Later, after possibly retrieveing third party payment gateway data, one can fix 
 <th>Name</th>
 <th>Type</th>
 <th>Required</th>
+<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
 <td><strong>accountId</strong></td>
 <td>string</td>
-<td>false</td>
-<td>account id or if not specified return across all accounts</td>
+<td>no</td>
+<td>all accounts</td>
+<td>account id</td>
 </tr>
 <tr>
 <td><strong>queueName</strong></td>
 <td>string</td>
-<td>false</td>
-<td>queue name or if not specified return across all queues</td>
+<td>no</td>
+<td>all queues</td>
+<td>queue name</td>
 </tr>
 <tr>
 <td><strong>serviceName</strong></td>
 <td>string</td>
-<td>false</td>
-<td>service name or if not specified return across all services</td>
+<td>no</td>
+<td>all services</td>
+<td>service name</td>
 </tr>
 <tr>
 <td><strong>withHistory</strong></td>
 <td>boolean</td>
-<td>false</td>
-<td>choose true to get history</td>
+<td>no</td>
+<td>true</td>
+<td>if true include history</td>
 </tr>
 <tr>
 <td><strong>minDate</strong></td>
 <td>string</td>
-<td>false</td>
-<td>minimum date</td>
+<td>no</td>
+<td>from the beginning</td>
+<td>earliest date for history</td>
 </tr>
 <tr>
 <td><strong>maxDate</strong></td>
 <td>string</td>
-<td>false</td>
-<td>maximun date</td>
+<td>no</td>
+<td>current date</td>
+<td>latest date for history</td>
 </tr>
 <tr>
 <td><strong>withInProcessing</strong></td>
 <td>boolean</td>
-<td>false</td>
-<td>choose true to get processing</td>
+<td>no</td>
+<td>true</td>
+<td>if true include in processing</td>
 </tr>
 <tr>
 <td><strong>withBusEvents</strong></td>
 <td>boolean</td>
-<td>false</td>
-<td>choose true to get bus events</td>
+<td>no</td>
+<td>true</td>
+<td>if true include bus events</td>
 </tr>
 <tr>
 <td><strong>withNotifications</strong></td>
 <td>boolean</td>
-<td>false</td>
-<td>choose true to get notifications</td>
+<td>no</td>
+<td>true</td>
+<td>if true include notifications</td>
 </tr>
 </tbody></table>
 
 <p><strong>Returns</strong></p>
 
-<p>A 200 http status.</p>
+<p>If successful, returns a status code of 200 and a list of queue entries of the specified types.</p>
 
       </div>
       <div class="dark-box">
