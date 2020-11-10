@@ -12294,12 +12294,12 @@ attached to various objects in the system by using tags. Tags come in 2 differen
     -H <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
     -H <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
     -H <span class="s2">"Accept: application/json"</span> <span class="se">\</span>
-    -H <span class="s2">"X-Killbill"</span>-CreatedBy: demo<span class="s2">" </span><span class="se">\</span><span class="s2">
-    -H "</span>X-Killbill-Reason: demo<span class="s2">" </span><span class="se">\</span><span class="s2">
-    -H "</span>X-Killbill-Comment: demo<span class="s2">" </span><span class="se">\</span><span class="s2">
-    -d '[ "</span>00000000-0000-0000-0000-000000000002<span class="s2">"]' </span><span class="se">\</span><span class="s2">
-    "</span>http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags<span class="s2">"
-</span></code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.AccountApi</span><span class="o">;</span>
+    -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
+    -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
+    -d <span class="s1">'[ "00000000-0000-0000-0000-000000000002"]'</span> <span class="se">\</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/tags"</span>
+</code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.AccountApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">AccountApi</span> <span class="n">accountApi</span><span class="o">;</span>
 
 <span class="n">UUID</span> <span class="n">accountId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"f4087a76-9f8a-4893-abbf-c5bb69975d1b"</span><span class="o">);</span>
