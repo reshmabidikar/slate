@@ -5437,7 +5437,7 @@ curl -v \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "X-Killbill"-CreatedBy: demo" \
+    -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '[ "00000000-0000-0000-0000-000000000002"]' \
