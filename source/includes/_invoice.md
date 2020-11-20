@@ -2445,8 +2445,14 @@ A [dry run resource object](https://killbill.github.io/slate/#invoice-invoicedry
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **accountId** | string | yes | none | Account id |
-| **targetDate** | string | * | none | Target date, if **dryRunType** is TARGET_DATE. Otherwise not needed |
+| **targetDate** | string | * | none | Target date is the invoicing target date |
     
+
+Note that for `SUBSCRIPTION_ACTION`, there are 2 dates to take into account:
+* The `effectiveDate` in the body specifies when the action (e.g CREATE) takes place
+* The `targetDate` as a query parameter specifies the date for the billing, i.e how far in the future we want to bill for. A null `targetDate` default to now.
+
+
 
 **Response**
 
