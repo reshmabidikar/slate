@@ -10635,7 +10635,7 @@ communicating with the payment gateway. The transaction could be an authorizatio
     -H <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Reason: demo"</span> <span class="se">\</span>
     -H <span class="s2">"X-Killbill-Comment: demo"</span> <span class="se">\</span>
-    -d <span class="s1">'{ "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "isDefault": false, "pluginName": "__EXTERNAL_PAYMENT__"}'</span> <span class="se">\</span>
+    -d <span class="s1">'{ "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "pluginName": "__EXTERNAL_PAYMENT__"}'</span> <span class="se">\</span>
     <span class="s2">"http://127.0.0.1:8080/1.0/kb/accounts/8785164f-b5d7-4da1-9495-33f5105e8d80/paymentMethods"</span> 
 </code></pre><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.AccountApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="n">AccountApi</span> <span class="n">accountApi</span><span class="o">;</span>
