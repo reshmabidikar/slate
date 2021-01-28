@@ -114,7 +114,6 @@ LocalDate entitlementDate = null;
 LocalDate billingDate = null;
 Boolean renameKeyIfExistsAndUnused = null; 
 Boolean migrated = null;
-Integer bcd = null;
 Boolean callCompletion = true;
 long DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC = 10;
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
@@ -124,7 +123,6 @@ Subscription subscription = subscriptionApi.createSubscription(input,
                                                                billingDate, 
                                                                renameKeyIfExistsAndUnused, 
                                                                migrated, 
-                                                               bcd, 
                                                                callCompletion, 
                                                                DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC, 
                                                                NULL_PLUGIN_PROPERTIES, 
