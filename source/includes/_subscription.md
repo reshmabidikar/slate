@@ -2286,13 +2286,13 @@ curl  -v \
 import org.killbill.billing.client.api.gen.SubscriptionApi;
 protected SubscriptionApi subscriptionApi;
 
-UUID accountId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
+UUID subscriptionId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
 LocalDate requestedDate = null;
 EntitlementActionPolicy entitlementPolicy = null;
 BillingActionPolicy billingPolicy = null;
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
 
-subscriptionApi.cancelSubscriptionPlan(accountId, 
+subscriptionApi.cancelSubscriptionPlan(subscriptionId,
                                        requestedDate, 
                                        entitlementPolicy, 
                                        billingPolicy, 
