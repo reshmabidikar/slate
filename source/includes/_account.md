@@ -2,7 +2,7 @@
 
 Each of your customers is identified by an account. The information for an account is contained in an account resource object. The endpoints in this group manage the account resource and the information it contains. 
 
-## Account Resource 
+## Account Resource
 
 An `Account` resource represents a customer. This is the top level per-customer resource. All other per-customer data, such as bundles, subscriptions, invoices and payments, will be linked to this resource. An account resource may contain Personally Identifiable Information (PII) for the customer such as name, address, email, etc. A large number of endpoints are available to manage not only purely account related information -- e.g `name` -- but other per-account data as well.
 
