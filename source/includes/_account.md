@@ -5364,9 +5364,9 @@ no content
 ```python
 no content
 ```
-**Requst Body**
+**Request Body**
 
-A JSON string representing a list of custom fields to substitute for the existing ones. Note that the field name and object type cannot be modified ,only the field value can be modified.
+A JSON string representing a list of custom fields to substitute for the existing ones. Although the `field name` and `object type` can be specified in the request body, these cannot be modified, only the field value can be modified.
 
 **Query Parameters**
 
