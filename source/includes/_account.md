@@ -5281,7 +5281,7 @@ If successful, returns a status code of 200 and a list of custom field objects
 
 ### Modify custom fields for an account
 
-Modify the custom fields associated with an account.  
+Modify the custom fields associated with an account. Note that it is not possible to modify the name of a custom field, it is only possible to modify its value.
 
 **HTTP Request** 
 
