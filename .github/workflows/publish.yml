@@ -15,6 +15,10 @@ jobs:
         with:
           ruby-version: 2.7
           bundler-cache: true
+      - name: Setup git user
+        run: |
+          git config --global user.email "contact@killbill.io"
+          git config --global user.name "Kill Bill core team"
       - name: Deploy Slate
         run: |
           ./deploy.sh
