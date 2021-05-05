@@ -4,7 +4,7 @@
 
 The `Payment Method` resource represents the payment methods associated with a customer `Account`. There are two parts to the state associated with this resource, a first generic set of attributes kept by Kill Bill core subsystem, and another set of attributes kept at the (payment) plugin level.
 
-* The core Kill Bill attributes shown below mostly track the associated payment plugin that is used to interract with the payment gateway.
+* The core Kill Bill attributes shown below mostly track the associated payment plugin that is used to interact with the payment gateway.
 * The plugin attributes are typically the details about such customer payment method: In the case of a credit card for instance, the plugin would keep track of things like `name`, `address`, `last4`, and `token`. Not only are such attributes dependent on the payment method, but they are also dependent on the third party payment gateway, and on the tokenization model, which is why they are kept by the plugin (internal tables), and not by the Kill Bill core payment subsystem.
 
 
@@ -168,7 +168,7 @@ class PaymentMethod {
 | ---- | -----| -------- | ------- | ----------- |
 | **includedDeleted** | boolean | no | false | If true, include deleted payment methods |
 | **withPluginInfo** | boolean | no | false | If true, include plugin info |
-| **audit** | string | yes | "NONE" | Level of audit information to return |
+| **audit** | string | no | "NONE" | Level of audit information to return |
 
 If **withPluginInfo** is set to true, attributes for the active plugin are returned. These are plugin-dependent (see discussion above).
 Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
@@ -208,8 +208,8 @@ PaymentMethod paymentMethod = paymentMethodApi.getPaymentMethodByKey(externalKey
                                                                      includedDeleted,
                                                                      withPluginInfo,
                                                                      NULL_PLUGIN_PROPERTIES, 
-                                                                     AuditLevel.NONE
-                                                                     equestOptions);
+                                                                     AuditLevel.NONE,
+                                                                     requestOptions);
 ```
 
 ```ruby
@@ -291,7 +291,7 @@ class PaymentMethod {
 | **externalKey** | string | yes | none | External key |
 | **includedDeleted** | boolean | no | false | If true, include deleted payment methods |
 | **withPluginInfo** | boolean | no | false | If true, include plugin info |
-| **audit** | string | yes | "NONE" | Level of audit information to return |
+| **audit** | string | no | "NONE" | Level of audit information to return |
 
 If **withPluginInfo** is set to true, attributes for the active plugin are returned. These are plugin-dependent (see discussion above).
 Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
@@ -430,7 +430,7 @@ ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
 PaymentMethods allPaymentMethods = paymentMethodApi.getPaymentMethods(offset,
                                                                       limit,
                                                                       pluginName,
-                                                                      withPluginInfo
+                                                                      withPluginInfo,
                                                                       NULL_PLUGIN_PROPERTIES,
                                                                       AuditLevel.NONE,
                                                                       requestOptions);
@@ -975,10 +975,12 @@ UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
 CustomField customFieldModified = new CustomField();
 customFieldModified.setCustomFieldId(customFieldsId);
 customFieldModified.setValue("NewValue");
-
+CustomFields customFields = new CustomFields();
+customFields.add(customFieldModified);
 paymentMethodApi.modifyPaymentMethodCustomFields(paymentMethodId, 
-                                                 customFieldModified, 
-                                                 requestOptions);
+				                                    customFields, 
+		                                           requestOptions);
+
 ```
 
 ```ruby
@@ -1038,6 +1040,7 @@ A list of objects giving the id and the new value for the custom field, or field
   }  
 ]
 
+Although the field name and object type can be specified in the request body, these cannot be modified, only the field value can be modified.
 
 **Query Parameters**
 
@@ -1073,9 +1076,9 @@ protected PaymentMethodApi paymentMethodApi;
 
 UUID paymentMethodId = UUID.fromString("3c449da6-7ec4-4c74-813f-f5055739a0b9");
 UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-
+List<UUID> customFieldsList = ImmutableList.<UUID>of(customFieldsId);
 paymentMethodApi.deletePaymentMethodCustomFields(paymentMethodId, 
-                                                 customFieldsId, 
+                                                 customFieldsList, 
                                                  requestOptions);
 ```
 
@@ -1121,7 +1124,7 @@ no content
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **customField** | string | yes | none | the list of custom field object IDs that should be deleted. |
+| **customField** | string | yes | none | Custom field object ID that should be deleted. Multiple custom fields can be deleted by specifying a separate **customField** parameter corresponding to each field. |
 
 **Response**
 
