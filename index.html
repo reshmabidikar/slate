@@ -14531,7 +14531,7 @@ attached to various objects in the system by using tags. Tags come in 2 differen
 <p>The <code>Payment Method</code> resource represents the payment methods associated with a customer <code>Account</code>. There are two parts to the state associated with this resource, a first generic set of attributes kept by Kill Bill core subsystem, and another set of attributes kept at the (payment) plugin level.</p>
 
 <ul>
-<li>The core Kill Bill attributes shown below mostly track the associated payment plugin that is used to interract with the payment gateway.</li>
+<li>The core Kill Bill attributes shown below mostly track the associated payment plugin that is used to interact with the payment gateway.</li>
 <li>The plugin attributes are typically the details about such customer payment method: In the case of a credit card for instance, the plugin would keep track of things like <code>name</code>, <code>address</code>, <code>last4</code>, and <code>token</code>. Not only are such attributes dependent on the payment method, but they are also dependent on the third party payment gateway, and on the tokenization model, which is why they are kept by the plugin (internal tables), and not by the Kill Bill core payment subsystem.</li>
 </ul>
 
@@ -14728,7 +14728,7 @@ based on custom business rules. Additional information can be found in our <a hr
 <tr>
 <td><strong>audit</strong></td>
 <td>string</td>
-<td>yes</td>
+<td>no</td>
 <td>&quot;NONE&quot;</td>
 <td>Level of audit information to return</td>
 </tr>
@@ -14766,8 +14766,8 @@ Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only insert
                                                                      <span class="n">includedDeleted</span><span class="o">,</span>
                                                                      <span class="n">withPluginInfo</span><span class="o">,</span>
                                                                      <span class="n">NULL_PLUGIN_PROPERTIES</span><span class="o">,</span> 
-                                                                     <span class="n">AuditLevel</span><span class="o">.</span><span class="na">NONE</span>
-                                                                     <span class="n">equestOptions</span><span class="o">);</span>
+                                                                     <span class="n">AuditLevel</span><span class="o">.</span><span class="na">NONE</span><span class="o">,</span>
+                                                                     <span class="n">requestOptions</span><span class="o">);</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">payment_method_ek</span> <span class="o">=</span> <span class="s2">"sample_external_key"</span>
 <span class="n">included_deleted</span> <span class="o">=</span> <span class="kp">false</span>
 <span class="n">with_plugin_info</span> <span class="o">=</span> <span class="kp">false</span>
@@ -14862,7 +14862,7 @@ Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only insert
 <tr>
 <td><strong>audit</strong></td>
 <td>string</td>
-<td>yes</td>
+<td>no</td>
 <td>&quot;NONE&quot;</td>
 <td>Level of audit information to return</td>
 </tr>
@@ -14996,7 +14996,7 @@ Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only insert
 <span class="n">PaymentMethods</span> <span class="n">allPaymentMethods</span> <span class="o">=</span> <span class="n">paymentMethodApi</span><span class="o">.</span><span class="na">getPaymentMethods</span><span class="o">(</span><span class="n">offset</span><span class="o">,</span>
                                                                       <span class="n">limit</span><span class="o">,</span>
                                                                       <span class="n">pluginName</span><span class="o">,</span>
-                                                                      <span class="n">withPluginInfo</span>
+                                                                      <span class="n">withPluginInfo</span><span class="o">,</span>
                                                                       <span class="n">NULL_PLUGIN_PROPERTIES</span><span class="o">,</span>
                                                                       <span class="n">AuditLevel</span><span class="o">.</span><span class="na">NONE</span><span class="o">,</span>
                                                                       <span class="n">requestOptions</span><span class="o">);</span>
@@ -15556,10 +15556,12 @@ Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only insert
 <span class="n">CustomField</span> <span class="n">customFieldModified</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CustomField</span><span class="o">();</span>
 <span class="n">customFieldModified</span><span class="o">.</span><span class="na">setCustomFieldId</span><span class="o">(</span><span class="n">customFieldsId</span><span class="o">);</span>
 <span class="n">customFieldModified</span><span class="o">.</span><span class="na">setValue</span><span class="o">(</span><span class="s">"NewValue"</span><span class="o">);</span>
-
+<span class="n">CustomFields</span> <span class="n">customFields</span> <span class="o">=</span> <span class="k">new</span> <span class="n">CustomFields</span><span class="o">();</span>
+<span class="n">customFields</span><span class="o">.</span><span class="na">add</span><span class="o">(</span><span class="n">customFieldModified</span><span class="o">);</span>
 <span class="n">paymentMethodApi</span><span class="o">.</span><span class="na">modifyPaymentMethodCustomFields</span><span class="o">(</span><span class="n">paymentMethodId</span><span class="o">,</span> 
-                                                 <span class="n">customFieldModified</span><span class="o">,</span> 
-                                                 <span class="n">requestOptions</span><span class="o">);</span>
+                                                    <span class="n">customFields</span><span class="o">,</span> 
+                                                   <span class="n">requestOptions</span><span class="o">);</span>
+
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">custom_field</span><span class="p">.</span><span class="nf">custom_field_id</span> <span class="o">=</span> <span class="s1">'7fb3dde7-0911-4477-99e3-69d142509bb9'</span>
 <span class="n">custom_field</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s1">'Test Modify'</span>
 <span class="n">custom_field</span><span class="p">.</span><span class="nf">value</span> <span class="o">=</span> <span class="s1">'test_modify_value'</span>
@@ -15604,6 +15606,8 @@ Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only insert
   }<br>
 ]</p>
 
+<p>Although the field name and object type can be specified in the request body, these cannot be modified, only the field value can be modified.</p>
+
 <p><strong>Query Parameters</strong></p>
 
 <p>None.</p>
@@ -15633,9 +15637,9 @@ Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only insert
 
 <span class="n">UUID</span> <span class="n">paymentMethodId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"3c449da6-7ec4-4c74-813f-f5055739a0b9"</span><span class="o">);</span>
 <span class="n">UUID</span> <span class="n">customFieldsId</span> <span class="o">=</span> <span class="n">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"9913e0f6-b5ef-498b-ac47-60e1626eba8f"</span><span class="o">);</span>
-
+<span class="n">List</span><span class="o">&lt;</span><span class="n">UUID</span><span class="o">&gt;</span> <span class="n">customFieldsList</span> <span class="o">=</span> <span class="n">ImmutableList</span><span class="o">.&lt;</span><span class="n">UUID</span><span class="o">&gt;</span><span class="n">of</span><span class="o">(</span><span class="n">customFieldsId</span><span class="o">);</span>
 <span class="n">paymentMethodApi</span><span class="o">.</span><span class="na">deletePaymentMethodCustomFields</span><span class="o">(</span><span class="n">paymentMethodId</span><span class="o">,</span> 
-                                                 <span class="n">customFieldsId</span><span class="o">,</span> 
+                                                 <span class="n">customFieldsList</span><span class="o">,</span> 
                                                  <span class="n">requestOptions</span><span class="o">);</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">custom_field_id</span> <span class="o">=</span> <span class="n">custom_field</span><span class="p">.</span><span class="nf">id</span>
 
@@ -15679,7 +15683,7 @@ Audit information options are &quot;NONE&quot;, &quot;MINIMAL&quot; (only insert
 <td>string</td>
 <td>yes</td>
 <td>none</td>
-<td>the list of custom field object IDs that should be deleted.</td>
+<td>Custom field object ID that should be deleted. Multiple custom fields can be deleted by specifying a separate <strong>customField</strong> parameter corresponding to each field.</td>
 </tr>
 </tbody></table>
 
