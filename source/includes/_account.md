@@ -5598,7 +5598,7 @@ None.
 
 **Returns**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a status code of 201 and a list of Tag objects.
 
 
 ### Retrieve all tags

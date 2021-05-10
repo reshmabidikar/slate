@@ -68,7 +68,12 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentTransactionApi;
+protected PaymentTransactionApi paymentTransactionApi;
+
+UUID paymentTransactionId = UUID.fromString("41f4d299-4371-4876-96b4-0b3cc81b246b");
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Payment payment = paymentTransactionApi.getPaymentByTransactionId(paymentTransactionId, NULL_PLUGIN_PROPERTIES, requestOptions);
 ```
 
 ```ruby
@@ -123,7 +128,42 @@ TODO
 }
 ```
 ```java
-TODO
+class Payment {
+    org.killbill.billing.client.model.gen.Payment@dd818d6d
+    accountId: 3093aa3e-63c6-4ffe-92d1-60a0e34f2397
+    paymentId: 59f1e0cb-58ae-481a-afbb-6709e86066de
+    paymentNumber: 42
+    paymentExternalKey: 59f1e0cb-58ae-481a-afbb-6709e86066de
+    authAmount: 0
+    capturedAmount: 0
+    purchasedAmount: 0
+    refundedAmount: 0
+    creditedAmount: 0
+    currency: USD
+    paymentMethodId: aa00971a-6310-43e1-af83-28fca1edadd3
+    transactions: [class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@c3eadd4f
+        transactionId: 41f4d299-4371-4876-96b4-0b3cc81b246b
+        transactionExternalKey: 41f4d299-4371-4876-96b4-0b3cc81b246b
+        paymentId: 59f1e0cb-58ae-481a-afbb-6709e86066de
+        paymentExternalKey: 59f1e0cb-58ae-481a-afbb-6709e86066de
+        transactionType: PURCHASE
+        amount: 1.00
+        currency: USD
+        effectiveDate: 2021-05-05T11:54:19.000Z
+        processedAmount: 0.00
+        processedCurrency: USD
+        status: UNKNOWN
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }]
+    paymentAttempts: null
+    auditLogs: []
+}
 ```
 ```ruby
 TODO
@@ -165,7 +205,13 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentTransactionApi;
+protected PaymentTransactionApi paymentTransactionApi;
+
+String transactionExternalKey = "41f4d299-4371-4876-96b4-0b3cc81b246b";
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Payment payment = paymentTransactionApi.getPaymentByTransactionExternalKey(transactionExternalKey, NULL_PLUGIN_PROPERTIES, requestOptions);
+
 ```
 
 ```ruby
@@ -220,7 +266,42 @@ TODO
 }
 ```
 ```java
-TODO
+class Payment {
+    org.killbill.billing.client.model.gen.Payment@dd818d6d
+    accountId: 3093aa3e-63c6-4ffe-92d1-60a0e34f2397
+    paymentId: 59f1e0cb-58ae-481a-afbb-6709e86066de
+    paymentNumber: 42
+    paymentExternalKey: 59f1e0cb-58ae-481a-afbb-6709e86066de
+    authAmount: 0
+    capturedAmount: 0
+    purchasedAmount: 0
+    refundedAmount: 0
+    creditedAmount: 0
+    currency: USD
+    paymentMethodId: aa00971a-6310-43e1-af83-28fca1edadd3
+    transactions: [class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@c3eadd4f
+        transactionId: 41f4d299-4371-4876-96b4-0b3cc81b246b
+        transactionExternalKey: 41f4d299-4371-4876-96b4-0b3cc81b246b
+        paymentId: 59f1e0cb-58ae-481a-afbb-6709e86066de
+        paymentExternalKey: 59f1e0cb-58ae-481a-afbb-6709e86066de
+        transactionType: PURCHASE
+        amount: 1.00
+        currency: USD
+        effectiveDate: 2021-05-05T11:54:19.000Z
+        processedAmount: 0.00
+        processedCurrency: USD
+        status: UNKNOWN
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }]
+    paymentAttempts: null
+    auditLogs: []
+}
 ```
 ```ruby
 TODO
@@ -262,12 +343,24 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d '[{"paymentId": "e8edd4c6-2f85-4375-95f3-e78ca4d85b82", "status": "SUCCESS"}]' \
+    -d '{"paymentId": "e8edd4c6-2f85-4375-95f3-e78ca4d85b82", "status": "SUCCESS"}' \
     "http://127.0.0.1:8080/1.0/kb/paymentTransactions/07655b3c-7f17-4172-b193-ece48e5741ad"
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentTransactionApi;
+protected PaymentTransactionApi paymentTransactionApi;
+
+UUID paymentTransactionId = UUID.fromString("37d15a2f-55ac-40ab-a873-08faae78f213");
+PaymentTransaction paymentTransaction = new PaymentTransaction();
+paymentTransaction.setStatus(TransactionStatus.SUCCESS);
+paymentTransaction.setPaymentId(UUID.fromString("27d15e39-b25c-4dc1-92cf-5487397a48a6");
+				
+paymentTransactionApi.notifyStateChanged(paymentTransactionId, 
+                                         paymentTransaction, 
+                                         null, 
+                                         requestOptions);
+	
 ```
 
 ```ruby
@@ -282,11 +375,47 @@ TODO
 ```shell
 # Subset of headers returned when specifying -v curl option
 < HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/payments/27d15e39-b25c-4dc1-92cf-5487397a48a6/
 < Content-Type: application/json
 < Content-Length: 0
 ```
 ```java
-TODO
+class Payment {
+    org.killbill.billing.client.model.gen.Payment@b3bf4de6
+    accountId: f7aadaf2-1594-4bd8-b8fd-a09783e04b6d
+    paymentId: 27d15e39-b25c-4dc1-92cf-5487397a48a6
+    paymentNumber: 43
+    paymentExternalKey: 27d15e39-b25c-4dc1-92cf-5487397a48a6
+    authAmount: 0
+    capturedAmount: 0
+    purchasedAmount: 10.00
+    refundedAmount: 0
+    creditedAmount: 0
+    currency: USD
+    paymentMethodId: 47953e4d-2b52-4ac2-a016-340eb0074444
+    transactions: [class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@38b46552
+        transactionId: 37d15a2f-55ac-40ab-a873-08faae78f213
+        transactionExternalKey: 37d15a2f-55ac-40ab-a873-08faae78f213
+        paymentId: 27d15e39-b25c-4dc1-92cf-5487397a48a6
+        paymentExternalKey: 27d15e39-b25c-4dc1-92cf-5487397a48a6
+        transactionType: PURCHASE
+        amount: 10.00
+        currency: USD
+        effectiveDate: 2021-05-07T09:16:52.000Z
+        processedAmount: 10.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }]
+    paymentAttempts: null
+    auditLogs: []
+}
 ```
 ```ruby
 TODO
@@ -305,7 +434,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a status code of 201 and the payment object.
 
 ## Audit Logs
 
@@ -333,7 +462,13 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentTransactionApi;
+protected PaymentTransactionApi paymentTransactionApi;
+
+UUID paymentTransactionId = UUID.fromString("41f4d299-4371-4876-96b4-0b3cc81b246b");
+
+List<AuditLog> result = paymentTransactionApi.getTransactionAuditLogsWithHistory(paymentTransactionId, 
+                                                                                 requestOptions);
 ```
 
 ```ruby
@@ -418,7 +553,27 @@ TODO
 ]
 ```
 ```java
-TODO
+[class AuditLog {
+    changeType: INSERT
+    changeDate: 2021-05-05T11:54:19.000Z
+    objectType: TRANSACTION
+    objectId: 41f4d299-4371-4876-96b4-0b3cc81b246b
+    changedBy: Kill Bill Client Tutorial
+    reasonCode: Demonstrating Kill Bill Client
+    comments: Demonstrating Kill Bill Client
+    userToken: d05cc121-5a34-4b9e-b876-c48bab354418
+    history: {id=null, createdDate=2021-05-05T11:54:19.000Z, updatedDate=2021-05-05T11:54:19.000Z, recordId=42, accountRecordId=39, tenantRecordId=1, attemptId=null, paymentId=59f1e0cb-58ae-481a-afbb-6709e86066de, transactionExternalKey=41f4d299-4371-4876-96b4-0b3cc81b246b, transactionType=PURCHASE, effectiveDate=2021-05-05T11:54:19.000Z, transactionStatus=UNKNOWN, amount=1.0, currency=USD, processedAmount=null, processedCurrency=null, gatewayErrorCode=null, gatewayErrorMsg=null, tableName=PAYMENT_TRANSACTIONS, historyTableName=PAYMENT_TRANSACTION_HISTORY}
+}, class AuditLog {
+    changeType: UPDATE
+    changeDate: 2021-05-05T11:54:19.000Z
+    objectType: TRANSACTION
+    objectId: 41f4d299-4371-4876-96b4-0b3cc81b246b
+    changedBy: Kill Bill Client Tutorial
+    reasonCode: Demonstrating Kill Bill Client
+    comments: Demonstrating Kill Bill Client
+    userToken: d05cc121-5a34-4b9e-b876-c48bab354418
+    history: {id=null, createdDate=2021-05-05T11:54:19.000Z, updatedDate=2021-05-05T11:54:19.000Z, recordId=42, accountRecordId=39, tenantRecordId=1, attemptId=null, paymentId=59f1e0cb-58ae-481a-afbb-6709e86066de, transactionExternalKey=41f4d299-4371-4876-96b4-0b3cc81b246b, transactionType=PURCHASE, effectiveDate=2021-05-05T11:54:19.000Z, transactionStatus=UNKNOWN, amount=1.0, currency=USD, processedAmount=0.0, processedCurrency=USD, gatewayErrorCode=null, gatewayErrorMsg=null, tableName=PAYMENT_TRANSACTIONS, historyTableName=PAYMENT_TRANSACTION_HISTORY}
+}]
 ```
 ```ruby
 TODO
@@ -481,7 +636,7 @@ customFields.add(new CustomField(null,
                                  "test_value", 
                                  EMPTY_AUDIT_LOGS));
 
-PaymentTransactionApi.createTransactionCustomFields(paymentTransactionId, 
+paymentTransactionApi.createTransactionCustomFields(paymentTransactionId, 
                                                     customFields, 
                                                     requestOptions);
 ```
@@ -506,7 +661,7 @@ paymentTransactionApi.create_transaction_custom_fields(payment_transaction_id,
 ```shell
 # Subset of headers returned when specifying -v curl option
 < HTTP/1.1 201 Created
-< Location: http://127.0.0.1:8080/1.0/kb/paymentTransactions/8fe697d4-2c25-482c-aa45-f6cd5a48186d/
+< Location: http://127.0.0.1:8080/1.0/kb/paymentTransactions/41f4d299-4371-4876-96b4-0b3cc81b246b/customFields
 < Content-Type: application/json
 < Content-Length: 0
 ```
@@ -532,7 +687,9 @@ no content
 
 **Request Body**
 
-A JSON string representing the custom field object or objects to be added.
+A JSON string representing the custom field object or objects to be added. For example:
+
+[ { "name": "CF1", "value": "123" } ]
 
 **Query Parameters**
 
@@ -540,7 +697,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a status code of 201 and a list of custom field objects.
 
 ### Retrieve payment transaction custom fields 
 
@@ -672,9 +829,10 @@ UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
 CustomField customFieldModified = new CustomField();
 customFieldModified.setCustomFieldId(customFieldsId);
 customFieldModified.setValue("NewValue");
-
+CustomFields customFields = new CustomFields();
+customFields.add(customFieldModified);
 paymentTransactionApi.modifyTransactionCustomFields(paymentTransactionId, 
-                                                    customFieldModified, 
+                                                    customFields, 
                                                     requestOptions);
 ```
 
@@ -716,6 +874,11 @@ no content
 **Requst Body**
 
 A JSON string representing a list of custom fields to substitute for the existing ones.
+For example:
+
+[ { "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f", "value": "123" } ]
+
+Although the field name and object type can be specified in the request body, these cannot be modified, only the field value can be modified.
 
 
 **Query Parameters**
@@ -753,9 +916,9 @@ protected PaymentTransactionApi paymentTransactionApi;
 
 UUID paymentTransactionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
 UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-
+List<UUID> customFieldsList = ImmutableList.<UUID>of(customFieldsId);
 paymentTransactionApi.deleteTransactionCustomFields(paymentTransactionId, 
-                                                    customFieldsId, 
+                                                    customFieldsList, 
                                                     requestOptions);
 ```
 
@@ -843,7 +1006,7 @@ UUID paymentTransactionId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa
 
 UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
-Tags result = PaymentTransactionApi.createTransactionTags(paymentTransactionId, 
+Tags result = paymentTransactionApi.createTransactionTags(paymentTransactionId, 
                                                           ImmutableList.<UUID>of(tagDefinitionId), 
                                                           requestOptions);
 ```
@@ -903,7 +1066,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a status code of 201 and a list of Tag objects.
 
 ### Retrieve payment transaction tags
 
