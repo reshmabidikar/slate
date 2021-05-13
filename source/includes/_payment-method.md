@@ -828,7 +828,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL to retrieve the custom fields associated with the payment method.
 
 ###  Retrieve payment method custom fields
 
@@ -978,8 +978,8 @@ customFieldModified.setValue("NewValue");
 CustomFields customFields = new CustomFields();
 customFields.add(customFieldModified);
 paymentMethodApi.modifyPaymentMethodCustomFields(paymentMethodId, 
-				                                    customFields, 
-		                                           requestOptions);
+                                                 customFields, 
+                                                 requestOptions);
 
 ```
 
@@ -1033,12 +1033,7 @@ no content
 
 A list of objects giving the id and the new value for the custom field, or fields, to be modified. For example:
 
-[  
-  {  
-    "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f",  
-    "value": "123"  
-  }  
-]
+[  {  "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f",  "value": "123" }  ]
 
 Although the field name and object type can be specified in the request body, these cannot be modified, only the field value can be modified.
 

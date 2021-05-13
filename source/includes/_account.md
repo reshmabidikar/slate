@@ -188,7 +188,7 @@ none
 
 **Response**
 
-IF successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL for the account object, including the generated `accountId`.
+If successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL for the account object, including the generated `accountId`.
 
 ### Retrieve an Account by its ID
 
@@ -797,7 +797,7 @@ no content
 
 **Response**
 
-IF successful, eturns a status code of 204 and an empty body.
+IF successful, returns a status code of 204 and an empty body.
 
 ## List and Search
 
@@ -1316,7 +1316,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and an empty response body.
+If successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL for the account object, including the `accountId`.
 
 ### Retrieve account emails
 
@@ -1487,7 +1487,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 204 and an empty response body.
+If successful, returns a status code of 204 and without any data.
 
 ## Bundle
 
@@ -2994,7 +2994,7 @@ no content
 
 **Response**
 
-If successful, returns a status code of 204 and an empty body.
+If successful, returns a status code of 204 without any data.
 
 ### Retrieve account invoice payments
 
@@ -3620,7 +3620,7 @@ The request body is a JSON string representing the payment transaction. See sect
 
 **Response**
 
-If successful, returns a status code of 200 and a payment object including the new transaction.
+If successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL for the payment object, including the generated `paymentId`.
 
 ### Trigger a payment (authorization, purchase or credit) using the account external key 
 
@@ -3820,7 +3820,7 @@ The request body is a JSON string representing the payment transaction. See sect
 
 **Response**
 
-If successful, returns a status code of 200 and a payment object including the new transaction.
+If successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL for the payment object, including the generated `paymentId`.
 
 ## Payment Method
 
@@ -3957,7 +3957,7 @@ no content
 
 **Response**
 
-If successful, returns a status code of 201 and a payment method object.
+If successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL for the payment method, including the generated `paymentMethodId`.
 
 ### Retrieve account payment methods
 
@@ -4507,7 +4507,7 @@ A JSON string representing the blocking state object to be added. For details on
 
 **Response**
 
-If successful, returns a status code of 201 and a blocking state object.
+If successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL for retrieving blocking states for the account.
 
 ### Retrieve blocking states for account
 
@@ -5038,7 +5038,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 200 and a list of custom field objects.
+If successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL to retrieve the custom fields associated with the account.
 
 ### Retrieve all custom fields
 
@@ -5598,7 +5598,7 @@ None.
 
 **Returns**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL to retrieve the tags associated with the account.
 
 
 ### Retrieve all tags
