@@ -828,7 +828,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and a list of custom field objects.
+If successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL to retrieve the custom fields associated with the payment method.
 
 ###  Retrieve payment method custom fields
 

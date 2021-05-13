@@ -697,7 +697,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and a list of custom field objects.
+If successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL to retrieve the custom fields associated with the payment transaction.
 
 ### Retrieve payment transaction custom fields 
 
@@ -1066,7 +1066,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and a list of Tag objects.
+If successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL to retrieve the tags associated with the payment transaction.
 
 ### Retrieve payment transaction tags
 
