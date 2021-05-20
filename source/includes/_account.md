@@ -2876,6 +2876,7 @@ class Invoice {
 | **withMigrationInvoices** | boolean | false | false | Choose true to include migration invoices |
 | **unpaidInvoicesOnly** | boolean | false | false | Choose true to include unpaid invoices only |
 | **includeVoidedInvoices** | boolean | false | false | Choose true to include voided invoices |
+| **invoicesFilter** | string | false | empty | A comma separated list of invoiceIds to filter |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 For information about migration and migration invoices, see the [Migration Guide](http://docs.killbill.io/latest/migration_guide.html).
