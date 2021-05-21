@@ -2876,6 +2876,7 @@ class Invoice {
 | **withMigrationInvoices** | boolean | false | false | Choose true to include migration invoices |
 | **unpaidInvoicesOnly** | boolean | false | false | Choose true to include unpaid invoices only |
 | **includeVoidedInvoices** | boolean | false | false | Choose true to include voided invoices |
+| **invoicesFilter** | string | false | empty | A comma separated list of invoiceIds to filter |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 For information about migration and migration invoices, see the [Migration Guide](http://docs.killbill.io/latest/migration_guide.html).
@@ -2893,6 +2894,8 @@ These endpoints are used to make or manage payments associated with this account
 ### Trigger a payment for all unpaid invoices
 
 Initiate payments for any unpaid invoices. This API allows you to make a series of payment calls, one against each unpaid invoice, using a specific payment method.
+
+If successful, returns a 201 status code. In addition, a `Location` header is returned giving the URL for fetching the paid invoices. If no payments were made, returns a 204 status code.
 
 **HTTP Request** 
 
@@ -2969,11 +2972,62 @@ accountApi.pay_all_invoices(account_id,
 
 ```shell
 # Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
+< 201
 < Content-Type: application/json
+< Location: http://127.0.0.1:8080/1.0/kb/accounts/82ecbf80-ddd2-4208-92be-2d3b2b7fc266/invoices?endDate=2012-05-25&invoicesFilter=c6ca1d31-4e22-4011-ba38-058df9369536&startDate=2012-05-25
 ```
 ```java
-no content
+class Invoice {
+    org.killbill.billing.client.model.gen.Invoice@f31161b5
+    amount: 0.00
+    currency: USD
+    status: COMMITTED
+    creditAdj: 0.00
+    refundAdj: 0.00
+    invoiceId: ee0fc684-09af-4b50-a7b2-85bd0e99e3d6
+    invoiceDate: 2012-04-25
+    targetDate: 2012-04-25
+    invoiceNumber: 1
+    balance: 0.00
+    accountId: 82ecbf80-ddd2-4208-92be-2d3b2b7fc266/
+    bundleKeys: null
+    credits: null
+    items: [class InvoiceItem {
+        org.killbill.billing.client.model.gen.InvoiceItem@f8d70905
+        invoiceItemId: 0a446486-77ca-4948-8631-c696fa0b6b4f
+        invoiceId: ee0fc684-09af-4b50-a7b2-85bd0e99e3d6
+        linkedInvoiceItemId: null
+        accountId: 82ecbf80-ddd2-4208-92be-2d3b2b7fc266/
+        childAccountId: null
+        bundleId: 38f03432-82be-4536-93df-2619e156afcd
+        subscriptionId: 5f0f5def-d2b0-42df-80fc-156806a62f3e
+        productName: Shotgun
+        planName: shotgun-monthly
+        phaseName: shotgun-monthly-trial
+        usageName: null
+        prettyProductName: Shotgun
+        prettyPlanName: Shotgun Monthly
+        prettyPhaseName: shotgun-monthly-trial
+        prettyUsageName: null
+        itemType: FIXED
+        description: shotgun-monthly-trial
+        startDate: 2012-04-25
+        endDate: null
+        amount: 0.00
+        rate: null
+        currency: USD
+        quantity: null
+        itemDetails: null
+        catalogEffectiveDate: 2011-01-01T00:00:00.000Z
+        childItems: null
+        auditLogs: []
+    }]
+    trackingIds: []
+    isParentInvoice: false
+    parentInvoiceId: null
+    parentAccountId: null
+    auditLogs: []
+}
 ```
 ```ruby
 no content
