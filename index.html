@@ -9689,6 +9689,13 @@ several such emails for one customer account.</p>
 <td>Choose true to include voided invoices</td>
 </tr>
 <tr>
+<td><strong>invoicesFilter</strong></td>
+<td>string</td>
+<td>false</td>
+<td>empty</td>
+<td>A comma separated list of invoiceIds to filter</td>
+</tr>
+<tr>
 <td><strong>audit</strong></td>
 <td>string</td>
 <td>false</td>
@@ -9706,6 +9713,8 @@ several such emails for one customer account.</p>
 <p>These endpoints are used to make or manage payments associated with this account. See section <a href="#payment">Payment</a> for details on payments.</p>
 <h3 id='account-trigger-a-payment-for-all-unpaid-invoices'>Trigger a payment for all unpaid invoices</h3>
 <p>Initiate payments for any unpaid invoices. This API allows you to make a series of payment calls, one against each unpaid invoice, using a specific payment method.</p>
+
+<p>If successful, returns a 201 status code. In addition, a <code>Location</code> header is returned giving the URL for fetching the paid invoices. If no payments were made, returns a 204 status code.</p>
 
 <p><strong>HTTP Request</strong> </p>
 
@@ -9772,9 +9781,60 @@ several such emails for one customer account.</p>
 <p>Example Response:</p>
 </blockquote>
 <pre class="highlight shell tab-shell"><code><span class="c"># Subset of headers returned when specifying -v curl option</span>
-&lt; HTTP/1.1 204 No Content
+&lt; 201
 &lt; Content-Type: application/json
-</code></pre><pre class="highlight java tab-java"><code><span class="n">no</span> <span class="n">content</span>
+&lt; Location: http://127.0.0.1:8080/1.0/kb/accounts/82ecbf80-ddd2-4208-92be-2d3b2b7fc266/invoices?endDate<span class="o">=</span>2012-05-25&amp;invoicesFilter<span class="o">=</span>c6ca1d31-4e22-4011-ba38-058df9369536&amp;startDate<span class="o">=</span>2012-05-25
+</code></pre><pre class="highlight java tab-java"><code><span class="kd">class</span> <span class="nc">Invoice</span> <span class="o">{</span>
+    <span class="n">org</span><span class="o">.</span><span class="na">killbill</span><span class="o">.</span><span class="na">billing</span><span class="o">.</span><span class="na">client</span><span class="o">.</span><span class="na">model</span><span class="o">.</span><span class="na">gen</span><span class="o">.</span><span class="na">Invoice</span><span class="nd">@f31161b5</span>
+    <span class="nl">amount:</span> <span class="mf">0.00</span>
+    <span class="nl">currency:</span> <span class="n">USD</span>
+    <span class="nl">status:</span> <span class="n">COMMITTED</span>
+    <span class="nl">creditAdj:</span> <span class="mf">0.00</span>
+    <span class="nl">refundAdj:</span> <span class="mf">0.00</span>
+    <span class="nl">invoiceId:</span> <span class="n">ee0fc684</span><span class="o">-</span><span class="mi">09</span><span class="n">af</span><span class="o">-</span><span class="mi">4</span><span class="n">b50</span><span class="o">-</span><span class="n">a7b2</span><span class="o">-</span><span class="mi">85</span><span class="n">bd0e99e3d6</span>
+    <span class="nl">invoiceDate:</span> <span class="mi">2012</span><span class="o">-</span><span class="mo">04</span><span class="o">-</span><span class="mi">25</span>
+    <span class="nl">targetDate:</span> <span class="mi">2012</span><span class="o">-</span><span class="mo">04</span><span class="o">-</span><span class="mi">25</span>
+    <span class="nl">invoiceNumber:</span> <span class="mi">1</span>
+    <span class="nl">balance:</span> <span class="mf">0.00</span>
+    <span class="nl">accountId:</span> <span class="mi">82</span><span class="n">ecbf80</span><span class="o">-</span><span class="n">ddd2</span><span class="o">-</span><span class="mi">4208</span><span class="o">-</span><span class="mi">92</span><span class="n">be</span><span class="o">-</span><span class="mi">2</span><span class="n">d3b2b7fc266</span><span class="o">/</span>
+    <span class="nl">bundleKeys:</span> <span class="kc">null</span>
+    <span class="nl">credits:</span> <span class="kc">null</span>
+    <span class="nl">items:</span> <span class="o">[</span><span class="kd">class</span> <span class="nc">InvoiceItem</span> <span class="o">{</span>
+        <span class="n">org</span><span class="o">.</span><span class="na">killbill</span><span class="o">.</span><span class="na">billing</span><span class="o">.</span><span class="na">client</span><span class="o">.</span><span class="na">model</span><span class="o">.</span><span class="na">gen</span><span class="o">.</span><span class="na">InvoiceItem</span><span class="nd">@f8d70905</span>
+        <span class="nl">invoiceItemId:</span> <span class="mi">0</span><span class="n">a446486</span><span class="o">-</span><span class="mi">77</span><span class="n">ca</span><span class="o">-</span><span class="mi">4948</span><span class="o">-</span><span class="mi">8631</span><span class="o">-</span><span class="n">c696fa0b6b4f</span>
+        <span class="nl">invoiceId:</span> <span class="n">ee0fc684</span><span class="o">-</span><span class="mi">09</span><span class="n">af</span><span class="o">-</span><span class="mi">4</span><span class="n">b50</span><span class="o">-</span><span class="n">a7b2</span><span class="o">-</span><span class="mi">85</span><span class="n">bd0e99e3d6</span>
+        <span class="nl">linkedInvoiceItemId:</span> <span class="kc">null</span>
+        <span class="nl">accountId:</span> <span class="mi">82</span><span class="n">ecbf80</span><span class="o">-</span><span class="n">ddd2</span><span class="o">-</span><span class="mi">4208</span><span class="o">-</span><span class="mi">92</span><span class="n">be</span><span class="o">-</span><span class="mi">2</span><span class="n">d3b2b7fc266</span><span class="o">/</span>
+        <span class="nl">childAccountId:</span> <span class="kc">null</span>
+        <span class="nl">bundleId:</span> <span class="mi">38</span><span class="n">f03432</span><span class="o">-</span><span class="mi">82</span><span class="n">be</span><span class="o">-</span><span class="mi">4536</span><span class="o">-</span><span class="mi">93</span><span class="n">df</span><span class="o">-</span><span class="mi">2619</span><span class="n">e156afcd</span>
+        <span class="nl">subscriptionId:</span> <span class="mi">5</span><span class="n">f0f5def</span><span class="o">-</span><span class="n">d2b0</span><span class="o">-</span><span class="mi">42</span><span class="n">df</span><span class="o">-</span><span class="mi">80</span><span class="n">fc</span><span class="o">-</span><span class="mi">156806</span><span class="n">a62f3e</span>
+        <span class="nl">productName:</span> <span class="n">Shotgun</span>
+        <span class="nl">planName:</span> <span class="n">shotgun</span><span class="o">-</span><span class="n">monthly</span>
+        <span class="nl">phaseName:</span> <span class="n">shotgun</span><span class="o">-</span><span class="n">monthly</span><span class="o">-</span><span class="n">trial</span>
+        <span class="nl">usageName:</span> <span class="kc">null</span>
+        <span class="nl">prettyProductName:</span> <span class="n">Shotgun</span>
+        <span class="nl">prettyPlanName:</span> <span class="n">Shotgun</span> <span class="n">Monthly</span>
+        <span class="nl">prettyPhaseName:</span> <span class="n">shotgun</span><span class="o">-</span><span class="n">monthly</span><span class="o">-</span><span class="n">trial</span>
+        <span class="nl">prettyUsageName:</span> <span class="kc">null</span>
+        <span class="nl">itemType:</span> <span class="n">FIXED</span>
+        <span class="nl">description:</span> <span class="n">shotgun</span><span class="o">-</span><span class="n">monthly</span><span class="o">-</span><span class="n">trial</span>
+        <span class="nl">startDate:</span> <span class="mi">2012</span><span class="o">-</span><span class="mo">04</span><span class="o">-</span><span class="mi">25</span>
+        <span class="nl">endDate:</span> <span class="kc">null</span>
+        <span class="nl">amount:</span> <span class="mf">0.00</span>
+        <span class="nl">rate:</span> <span class="kc">null</span>
+        <span class="nl">currency:</span> <span class="n">USD</span>
+        <span class="nl">quantity:</span> <span class="kc">null</span>
+        <span class="nl">itemDetails:</span> <span class="kc">null</span>
+        <span class="nl">catalogEffectiveDate:</span> <span class="mi">2011</span><span class="o">-</span><span class="mo">01</span><span class="o">-</span><span class="mo">01</span><span class="nl">T00:</span><span class="mo">00</span><span class="o">:</span><span class="mf">00.000</span><span class="n">Z</span>
+        <span class="nl">childItems:</span> <span class="kc">null</span>
+        <span class="nl">auditLogs:</span> <span class="o">[]</span>
+    <span class="o">}]</span>
+    <span class="nl">trackingIds:</span> <span class="o">[]</span>
+    <span class="nl">isParentInvoice:</span> <span class="kc">false</span>
+    <span class="nl">parentInvoiceId:</span> <span class="kc">null</span>
+    <span class="nl">parentAccountId:</span> <span class="kc">null</span>
+    <span class="nl">auditLogs:</span> <span class="o">[]</span>
+<span class="o">}</span>
 </code></pre><pre class="highlight ruby tab-ruby"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre><pre class="highlight python tab-python"><code><span class="n">no</span> <span class="n">content</span>
 </code></pre>
