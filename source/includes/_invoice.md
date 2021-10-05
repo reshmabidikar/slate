@@ -2109,7 +2109,7 @@ If successful, returns a status code of 201 and an empty body.
 
 ### Delete a CBA item
 
-Delete a Credit Balance Adjust (`CBA_ADJ`) invoice item. There are some limitations and side effect with this api:
+Delete a Credit Balance Adjust (`CBA_ADJ`) invoice item. There are some limitations and side effects with this api:
 
 1. Deleting a positive `CBA_ADJ` (credit generation), may lead the system to reclaim portion of the used credit, possibly leaving some invoices with a balance. Example:
 
