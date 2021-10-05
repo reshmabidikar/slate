@@ -1886,7 +1886,11 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Void an invoice
 
-Change the status of an invoice to VOID. this can only be done if there are no successful payments on the account. A void invoice is ignored by the rest of the system.
+Change the status of an invoice to VOID. A void invoice is ignored by the rest of the system. There are some restrictions for this operation:
+
+* We cannot VOID an invoice that was partially or fully paid
+* We cannot VOID an invoice if it contains positive credit items (`CBA_ADJ` >0), unless such credit was not used, i.e there is enough credit left on the account.
+* We cannot VOID an invoice if it was repaired, i.e there exists a `REPAIR_ADJ` item pointing to an item inside that invoice
 
 **HTTP Request** 
 
@@ -2105,7 +2109,17 @@ If successful, returns a status code of 201 and an empty body.
 
 ### Delete a CBA item
 
-Delete a Credit Balance Adjust invoice item
+Delete a Credit Balance Adjust (`CBA_ADJ`) invoice item. There are some limitations and side effects with this api:
+
+1. Deleting a positive `CBA_ADJ` (credit generation), may lead the system to reclaim portion of the used credit, possibly leaving some invoices with a balance. Example:
+
+Given an invoice, I1,  where user added some credit ($12), we would see the following items: {`CREDIT_ADJ`: -12, `CBA_ADJ`: +12}. Given another invoice, I2, where the system invoiced for a recurring subscription, and where some of this credit was consumed, we would see the following items: {`RECURRING`: +10, `CBA_ADJ`: -10}. Deleting the `CBA_ADJ` from I1, would lead to the following resulting invoices:  I1 {`CREDIT_ADJ`: 0, `CBA_ADJ`: 0} and I2 {`RECURRING`: +10, `CBA_ADJ`: 0}. The system zeroed-out the credit generation and the part that was used, and as a result I2 would be left with a balance of +10.
+
+
+2. System generated credit
+
+In an in-advanced scenario where the system first invoiced for a recurring subscription ($20), and then repaired ($-8) for instance as a result of an early cancelation, we would have the following invoices: I1 {`RECURRING`: +20} and I2 {`REPAIR_ADJ`: -8, `CBA_ADJ`: +8}. Attempting to delete the `CBA_ADJ` on I2 would fail as the generation of credit was system generated, i.e it happened as a result of a subscription change.
+
 
 **HTTP Request**
 
