@@ -931,7 +931,7 @@ class CustomField {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **audit** | string | no | "NONE" | Level of audit information to return |
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL", or "FULL" |
 
 Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
@@ -1031,11 +1031,11 @@ no content
 
 **Request Body**
 
-A list of objects giving the id and the new value for the custom field, or fields, to be modified. For example:
+A list of objects specifying the id and the new value for the custom fields to be modified. For example:
 
-[  {  "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f",  "value": "123" }  ]
+[ { "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f", "value": "123" } ]
 
-Although the field name and object type can be specified in the request body, these cannot be modified, only the field value can be modified.
+Although the `fieldName` and `objectType` can be specified in the request body, these cannot be modified, only the field value can be modified.
 
 **Query Parameters**
 

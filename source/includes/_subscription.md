@@ -97,6 +97,27 @@ curl -v \
             "planName": "super-monthly"
         }' \
     "http://127.0.0.1:8080/1.0/kb/subscriptions" 
+    
+    OR
+    
+    curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '{ 
+          "accountId": "59afd9fe-e98d-4fb3-b5bf-21d4a2b036cd",
+			"externalKey": "somethingSpecial", 
+			"productName": "Test", 
+			"productCategory": "BASE",  
+			"billingPeriod": "MONTHLY",
+			"priceList": "DEFAULT"
+        }' \
+    "http://127.0.0.1:8080/1.0/kb/subscriptions" 	
+    
+    
 ```
 
 ```java
@@ -106,7 +127,7 @@ protected SubscriptionApi subscriptionApi;
 UUID accountId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
 
 Subscription input = new Subscription();
-input.setAccountId(accountJson.getAccountId());
+input.setAccountId(accountId);
 input.setExternalKey("somethingSpecial");
 input.setPlanName("shotgun-monthly");
 
@@ -331,23 +352,31 @@ no content
 
 **Request Body**
 
-A subscription resource object specifying `accountId`, optional `externalKey`, and `planName`.
+A subscription resource object specifying `accountId` and either the `planName` or a combination of `productName`, `productCategory`,`billingPeriod` and `priceList`. 
 
-Also, note that one can atomically change the per-subscription BCD while making this call by specifying a new date in the field body `billCycleDayLocal`. This allows changes to be made to realign the billing with the date of the change.
+It can also include the following optional fields:
+* `phaseType` - Target phase type. Specifying this field causes the subscription to start with this phase.
+* `externalKey` - External key corresponding to the subscription.
+* `billCycleDayLocal` - Per-subscription BCD. Specifying this value allows realigning the billing with the specified date. 
+* `bundleId` - Id of the bundle in which to create this subscription. Can be specified only while invoking this method for an addon subscription.
 
 
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
 | ---- | ---- | -------- | ------- | ----------- |
-| **entitlementDate** | string | no | immediately | Date at which the entitlement (sevice) starts. |
-| **billingDate** | string | no | immediately | Date at which the billing starts. |
+| **entitlementDate** | string | no | immediately | Date at which the entitlement (service) starts in `yyyy-mm-dd` format. |
+| **billingDate** | string | no | immediately | Date at which the billing starts in `yyyy-mm-dd` format. |
 | **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused |
 | **migrated** | boolean | no | false | If true, subscription is migrated |
 | **callCompletion** | boolean | no | false | see below |
 | **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
 
 Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
+
+**Other Notes** 
+The `entitlementDate` drives the subscription state. So, if a subscription is created with a future `entitlementDate`, its state remains `PENDING` until the date is reached after which it becomes `ACTIVE`.
+
 
 **Response**
 
@@ -391,222 +420,9 @@ curl -v \
         }
         ]' \
     'http://127.0.0.1:8080/1.0/kb/subscriptions/createSubscriptionWithAddOns' 
-```
+    
+OR
 
-```java
-import org.killbill.billing.client.api.gen.SubscriptionApi;
-protected SubscriptionApi subscriptionApi;
-
-UUID accountId = UUID.fromString("a3087bfb-eb81-466d-afeb-6501c30f8f85");
-
-Subscription base = new Subscription();
-base.setAccountId(accountId);
-base.setExternalKey("base");
-base.setProductName("Shotgun");
-base.setProductCategory(ProductCategory.BASE);
-base.setBillingPeriod(BillingPeriod.MONTHLY);
-base.setPriceList("DEFAULT");
-
-final Subscription addOn1 = new Subscription();
-addOn1.setAccountId(accountId);
-addOn1.setProductName("Telescopic-Scope");
-addOn1.setProductCategory(ProductCategory.ADD_ON);
-addOn1.setBillingPeriod(BillingPeriod.MONTHLY);
-addOn1.setPriceList("DEFAULT");
-
-final Subscription addOn2 = new Subscription();
-addOn2.setAccountId(accountId);
-addOn2.setProductName("Laser-Scope");
-addOn2.setProductCategory(ProductCategory.ADD_ON);
-addOn2.setBillingPeriod(BillingPeriod.MONTHLY);
-addOn2.setPriceList("DEFAULT");
-
-final Subscriptions subscriptions = new Subscriptions();
-subscriptions.add(base);
-subscriptions.add(addOn1);
-subscriptions.add(addOn2);
-
-BulkSubscriptionsBundles bulkSubscriptionsBundles = new BulkSubscriptionsBundles();
-
-BulkSubscriptionsBundle bulkSubscriptionsBundle = new BulkSubscriptionsBundle();
-bulkSubscriptionsBundle.setBaseEntitlementAndAddOns(subscriptions);
-bulkSubscriptionsBundles.add(bulkSubscriptionsBundle);
-
-LocalDate entitlementDate = null;
-LocalDate billingDate = null;
-Boolean renameKeyIfExistsAndUnused = false;
-Boolean migrated = false;
-Boolean callCompletion = true;
-long DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC = 10;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
-
-Bundles bundles = subscriptionApi.createSubscriptionsWithAddOns(bulkSubscriptionsBundles, 
-                                                                entitlementDate, 
-                                                                billingDate, 
-                                                                renameKeyIfExistsAndUnused, 
-                                                                migrated, 
-                                                                callCompletion, 
-                                                                DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC,
-                                                                NULL_PLUGIN_PROPERTIES, 
-                                                                requestOptions);
-```
-
-```ruby
-entitlement = [
-                 {
-                    "baseEntitlementAndAddOns":[
-                       {
-                          "accountId":"16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836",
-                          "externalKey":"1-16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836-827963",
-                          "productCategory":"BASE",
-                          "planName":"sports-monthly"
-                       }
-                    ]
-                 }
-              ]
-requested_date = nil
-entitlement_date = nil
-billing_date = nil
-migrated = false
-call_completion_sec = 3
-
-subscription = KillBillClient::Model::Subscription.new
-subscription.create_entitlement_with_add_on(entitlement,
-                                            requested_date,
-                                            entitlement_date, 
-                                            billing_date,
-                                            migrated, 
-                                            call_completion_sec,                                            
-                                            user, 
-                                            reason, 
-                                            comment, 
-                                            options)                                         
-```
-
-```python
-subscriptionApi = killbill.api.SubscriptionApi()
-account_id = '16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836'
-subscription_a = Subscription(account_id=account_id,
-                              product_category='BASE',
-                              plan_name='sports-monthly')
-
-subscription_b = Subscription(account_id=account_id,
-                              product_category='ADD_ON',
-                              plan_name='super-monthly')
-
-body = [subscription_a, subscription_b]
-
-subscriptionApi.create_subscription_with_add_ons(body,
-                                                 created_by,
-                                                 api_key,
-                                                 api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://127.0.0.1:8080/1.0/kb/accounts/886adb60-be70-40c8-b97d-1f8ecbc30a64/bundles?bundlesFilter=cbcc7642-1aa5-4609-b89d-5356d05819be
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-class BulkSubscriptionsBundle {
-    baseEntitlementAndAddOns: [class Subscription {
-        org.killbill.billing.client.model.gen.Subscription@23b30120
-        accountId: a3087bfb-eb81-466d-afeb-6501c30f8f85
-        bundleId: 2df85b05-4a69-474b-9e10-02a836674cc8
-        subscriptionId: null
-        externalKey: null
-        startDate: null
-        productName: Telescopic-Scope
-        productCategory: ADD_ON
-        billingPeriod: MONTHLY
-        phaseType: null
-        priceList: DEFAULT
-        planName: null
-        state: null
-        sourceType: null
-        cancelledDate: null
-        chargedThroughDate: null
-        billingStartDate: null
-        billingEndDate: null
-        billCycleDayLocal: null
-        events: null
-        priceOverrides: null
-        prices: null
-        auditLogs: null
-    }, class Subscription {
-        org.killbill.billing.client.model.gen.Subscription@1b88c7d0
-        accountId: a3087bfb-eb81-466d-afeb-6501c30f8f85
-        bundleId: 2df85b05-4a69-474b-9e10-02a836674cc8
-        subscriptionId: null
-        externalKey: null
-        startDate: null
-        productName: Laser-Scope
-        productCategory: ADD_ON
-        billingPeriod: MONTHLY
-        phaseType: null
-        priceList: DEFAULT
-        planName: null
-        state: null
-        sourceType: null
-        cancelledDate: null
-        chargedThroughDate: null
-        billingStartDate: null
-        billingEndDate: null
-        billCycleDayLocal: null
-        events: null
-        priceOverrides: null
-        prices: null
-        auditLogs: null
-    }]
-}
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-**Request Body**
-
-A subscription resource object specifying `accountId`, optional `externalKey`, and `planName`. 
-
-**Query Parameters**
-
-| Name | Type | Required | Default | Description |
-| ---- | ---- | -------- | ------- | ----------- |
-| **entitlementDate** | string | no | immediately | Date at which the entitlement (sevice) starts. |
-| **billingDate** | string | no | immediately | Date at which the billing starts. |
-| **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused |
-| **migrated** | boolean | no | false | If true, subscription is migrated |
-| **callCompletion** | boolean | no | false | see below |
-| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
-
-Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
-
-**Response**
-
-If successful, returns a status code of 201 and an empty body. In addition, a `Location` parameter is returned in the header which contains the new subscription id.
-
-
-
-### Create multiple subscriptions with addon products
-
-This API creates multiple addon product subscription. The bundle for the base subscription must be specified.
-
-
-**HTTP Request** 
-
-`POST http://127.0.0.1:8080/1.0/kb/subscriptions/createSubscriptionsWithAddOns`
-
-> Example Request:
-
-```shell
 curl -v \
     -X POST \
     -u admin:password \
@@ -615,27 +431,15 @@ curl -v \
     -H "Content-Type: application/json" \
     -H "X-Killbill-CreatedBy: demo" \
     -d '[
-          {
-            "baseEntitlementAndAddOns": [
-              {
-                "accountId": "886adb60-be70-40c8-b97d-1f8ecbc30a64",
-                "externalKey": "base",
-                "productName": "Sports",
-                "productCategory": "BASE",
-                "billingPeriod": "MONTHLY",
-                "priceList": "DEFAULT"
-              },
-              {
-                "accountId": "886adb60-be70-40c8-b97d-1f8ecbc30a64",
-                "productName": "OilSlick",
-                "productCategory": "ADD_ON",
-                "billingPeriod": "MONTHLY",
-                "priceList": "DEFAULT"
-              }
-            ]
-          }
+          
+        {
+          "accountId": "1f635c3d-fc24-4fa8-81e0-ab646882807a",
+          "planName": "remotecontrol-monthly",
+          "bundleId":"b4709feb-bd14-455a-bbb4-57a758498791"
+        }
         ]' \
-    'http://127.0.0.1:8080/1.0/kb/subscriptions/createSubscriptionsWithAddOns' 
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/createSubscriptionWithAddOns' 	
+    
 ```
 
 ```java
@@ -691,40 +495,35 @@ final Bundle bundle = subscriptionApi.createSubscriptionWithAddOns(subscriptions
 ```
 
 ```ruby
-bulk_subscription_list = [
-                            {
-                               "baseEntitlementAndAddOns":[
-                                  {
-                                     "accountId":"16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836",
-                                     "externalKey":"1-16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836-827963",
-                                     "productCategory":"BASE",
-                                     "planName":"sports-monthly"
-                                  }
-                               ]
-                            },
-                            {
-                               "baseEntitlementAndAddOns":[
-                                  {
-                                     "accountId":"16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836",
-                                     "externalKey":"2-16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836-717751",
-                                     "productCategory":"ADD_ON",
-                                     "planName":"super-monthly"
-                                  }
-                               ]
-                            }
-                         ]
+entitlement = [
+                 {
+                    "baseEntitlementAndAddOns":[
+                       {
+                          "accountId":"16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836",
+                          "externalKey":"1-16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836-827963",
+                          "productCategory":"BASE",
+                          "planName":"sports-monthly"
+                       }
+                    ]
+                 }
+              ]
+requested_date = nil
 entitlement_date = nil
 billing_date = nil
-call_completion_sec = nil
+migrated = false
+call_completion_sec = 3
 
-KillBillClient::Model::BulkSubscription.create_bulk_subscriptions(bulk_subscription_list, 
-                                                                  user, 
-                                                                  reason, 
-                                                                  comment, 
-                                                                  entitlement_date, 
-                                                                  billing_date, 
-                                                                  call_completion_sec, 
-                                                                  options)
+subscription = KillBillClient::Model::Subscription.new
+subscription.create_entitlement_with_add_on(entitlement,
+                                            requested_date,
+                                            entitlement_date, 
+                                            billing_date,
+                                            migrated, 
+                                            call_completion_sec,                                            
+                                            user, 
+                                            reason, 
+                                            comment, 
+                                            options)                                         
 ```
 
 ```python
@@ -738,12 +537,12 @@ subscription_b = Subscription(account_id=account_id,
                               product_category='ADD_ON',
                               plan_name='super-monthly')
 
-body = BulkSubscriptionsBundle([subscription_a, subscription_b])
+body = [subscription_a, subscription_b]
 
-subscriptionApi.create_subscriptions_with_add_ons([body],
-                                                  created_by,
-                                                  api_key,
-                                                  api_secret)
+subscriptionApi.create_subscription_with_add_ons(body,
+                                                 created_by,
+                                                 api_key,
+                                                 api_secret)
 ```
 
 > Example Response:
@@ -1167,15 +966,752 @@ no content
 
 **Request Body**
 
-A subscription resource object specifying `accountId`, optional `externalKey`, and `planName`. 
+A subscription resource object corresponding to the base subscription and zero or more subscription resource objects corresponding to add-on subscriptions need to be specified. Alternatively, only a list of add-on subscription resource objects may be specified along with the base subscription bundle id. Each subscription resource object needs to include `accountId` and either the `planName` or a combination of `productName`, `productCategory`,`billingPeriod` and `priceList`.
+
+In addition, each subscription resource can also include the following optional fields:
+* `phaseType` - Target phase type. Specifying this field causes the subscription to start with this phase.
+* `externalKey` - External key corresponding to the subscription.
+* `billCycleDayLocal` - Per-subscription BCD. Specifying this value allows realigning the billing with the specified date. 
+* `bundleId` - Id of the bundle in which to create this subscription. Can be specified only with an add-on subscription resource.
+
+**Query Parameters**
+
+| Name | Type | Required | Default | Description |
+| ---- | ---- | -------- | ------- | ----------- |
+| **entitlementDate** | string | no | immediately | Date at which the entitlement (sevice) starts in `yyyy-mm-dd` format. If specified, applies both to base and add-on products. |
+| **billingDate** | string | no | immediately | Date at which the billing starts in `yyyy-mm-dd` format. If specified, applies both to base and add-on products. |
+| **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused |
+| **migrated** | boolean | no | false | If true, subscription is migrated |
+| **callCompletion** | boolean | no | false | see below |
+| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
+
+Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
+
+**Response**
+
+If successful, returns a status code of 201 and an empty body. In addition, a `Location` parameter is returned in the header which contains the new subscription id.
+
+
+
+### Create multiple subscriptions with addon products
+
+This API creates multiple subscriptions with addon products. The bundle for the base subscription must be specified.
+
+
+**HTTP Request** 
+
+`POST http://127.0.0.1:8080/1.0/kb/subscriptions/createSubscriptionsWithAddOns`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '[
+          {
+            "baseEntitlementAndAddOns": [
+              {
+                "accountId": "886adb60-be70-40c8-b97d-1f8ecbc30a64",
+                "externalKey": "base",
+                "productName": "Sports",
+                "productCategory": "BASE",
+                "billingPeriod": "MONTHLY",
+                "priceList": "DEFAULT"
+              },
+              {
+                "accountId": "886adb60-be70-40c8-b97d-1f8ecbc30a64",
+                "productName": "OilSlick",
+                "productCategory": "ADD_ON",
+                "billingPeriod": "MONTHLY",
+                "priceList": "DEFAULT"
+              }
+            ]
+          },
+		   {
+            "baseEntitlementAndAddOns": [
+              {
+                "accountId": "59afd9fe-e98d-4fb3-b5bf-21d4a2b036cd",
+                "externalKey": "createSubscriptionsWithAddOns3",
+                "productName": "Test",
+                "productCategory": "BASE",
+                "billingPeriod": "MONTHLY",
+                "priceList": "DEFAULT"
+              },
+              {
+                "accountId": "59afd9fe-e98d-4fb3-b5bf-21d4a2b036cd",
+                "productName": "TestAO",
+                "productCategory": "ADD_ON",
+                "billingPeriod": "MONTHLY",
+                "priceList": "DEFAULT"
+              }
+            ]
+          }
+        ]' \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/createSubscriptionsWithAddOns' 
+    
+OR 
+
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '[
+          {
+            "baseEntitlementAndAddOns": [
+              {
+                "accountId": "1f635c3d-fc24-4fa8-81e0-ab646882807a",
+                "planName": "remotecontrol-monthly",  
+                "bundleId":"a8b4022c-e38c-4336-ad2f-ee15c5e18d12"
+              }
+            ]
+          },
+		  {
+            "baseEntitlementAndAddOns": [
+              
+              {
+                "accountId": "1f635c3d-fc24-4fa8-81e0-ab646882807a",
+                "planName": "remotecontrol-monthly",
+                "bundleId":"06892885-c276-4cf9-8311-ef0b8a2e364b"
+              }
+            ]
+          }
+        ]' \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/createSubscriptionsWithAddOns' 
+    
+```
+
+```java
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID accountId = UUID.fromString("a3087bfb-eb81-466d-afeb-6501c30f8f85");
+
+Subscription base = new Subscription();
+base.setAccountId(accountId);
+base.setPlanName("test-monthly");
+
+final Subscription addOn1 = new Subscription();
+addOn1.setAccountId(accountId);
+addOn1.setPlanName("testao-monthly");
+
+final Subscriptions subscriptions = new Subscriptions();
+subscriptions.add(base);
+subscriptions.add(addOn1);
+
+BulkSubscriptionsBundle bulkSubscriptionsBundle = new BulkSubscriptionsBundle();
+bulkSubscriptionsBundle.setBaseEntitlementAndAddOns(subscriptions);
+		
+Subscription base2 = new Subscription();
+base2.setAccountId(accountId);
+base2.setPlanName("product1-monthly");
+		
+Subscription base2addOn1 = new Subscription();
+base2addOn1.setAccountId(accountId);
+base2addOn1.setPlanName("product1-ao-monthly");
+base2addOn1.setBillCycleDayLocal(18);
+		
+Subscriptions subscriptions2 = new Subscriptions();
+subscriptions2.add(base2);
+subscriptions2.add(base2addOn1);
+		
+BulkSubscriptionsBundle bulkSubscriptionsBundle2 = new BulkSubscriptionsBundle();
+bulkSubscriptionsBundle2.setBaseEntitlementAndAddOns(subscriptions2);
+		
+BulkSubscriptionsBundles bulkSubscriptionsBundles = new BulkSubscriptionsBundles();
+bulkSubscriptionsBundles.add(bulkSubscriptionsBundle);
+bulkSubscriptionsBundles.add(bulkSubscriptionsBundle2);
+
+LocalDate entitlementDate = null;
+LocalDate billingDate = null;
+Boolean renameKeyIfExistsAndUnused = false;
+Boolean migrated = false;
+Boolean callCompletion = true;
+long DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC = 10;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+Bundles bundles = subscriptionApi.createSubscriptionsWithAddOns(bulkSubscriptionsBundles, 
+		                                                         entitlementDate, 
+		                                                         billingDate, 
+		                                                         renameKeyIfExistsAndUnused, 
+		                                                         migrated, 
+		                                                         callCompletion, 
+                                                                DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC, NULL_PLUGIN_PROPERTIES,                                                               requestOptions);
+```
+
+```ruby
+bulk_subscription_list = [
+                            {
+                               "baseEntitlementAndAddOns":[
+                                  {
+                                     "accountId":"16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836",
+                                     "externalKey":"1-16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836-827963",
+                                     "productCategory":"BASE",
+                                     "planName":"sports-monthly"
+                                  }
+                               ]
+                            },
+                            {
+                               "baseEntitlementAndAddOns":[
+                                  {
+                                     "accountId":"16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836",
+                                     "externalKey":"2-16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836-717751",
+                                     "productCategory":"ADD_ON",
+                                     "planName":"super-monthly"
+                                  }
+                               ]
+                            }
+                         ]
+entitlement_date = nil
+billing_date = nil
+call_completion_sec = nil
+
+KillBillClient::Model::BulkSubscription.create_bulk_subscriptions(bulk_subscription_list, 
+                                                                  user, 
+                                                                  reason, 
+                                                                  comment, 
+                                                                  entitlement_date, 
+                                                                  billing_date, 
+                                                                  call_completion_sec, 
+                                                                  options)
+```
+
+```python
+subscriptionApi = killbill.api.SubscriptionApi()
+account_id = '16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836'
+subscription_a = Subscription(account_id=account_id,
+                              product_category='BASE',
+                              plan_name='sports-monthly')
+
+subscription_b = Subscription(account_id=account_id,
+                              product_category='ADD_ON',
+                              plan_name='super-monthly')
+
+body = BulkSubscriptionsBundle([subscription_a, subscription_b])
+
+subscriptionApi.create_subscriptions_with_add_ons([body],
+                                                  created_by,
+                                                  api_key,
+                                                  api_secret)
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201 Created
+< Location: http://127.0.0.1:8080/1.0/kb/accounts/886adb60-be70-40c8-b97d-1f8ecbc30a64/bundles?bundlesFilter=cbcc7642-1aa5-4609-b89d-5356d05819be
+< Content-Type: application/json
+< Content-Length: 0
+```
+
+```java
+class Bundle {
+    org.killbill.billing.client.model.gen.Bundle@ccb83609
+    accountId: 1d6ef148-3e91-455d-937a-27d8b2f6deff
+    bundleId: 18cae774-d466-4a19-b1d3-d64fb6c0bd30
+    externalKey: 18cae774-d466-4a19-b1d3-d64fb6c0bd30
+    subscriptions: [class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@6ab8272b
+        accountId: 1d6ef148-3e91-455d-937a-27d8b2f6deff
+        bundleId: 18cae774-d466-4a19-b1d3-d64fb6c0bd30
+        bundleExternalKey: 18cae774-d466-4a19-b1d3-d64fb6c0bd30
+        subscriptionId: 266ff081-db2a-4fd9-b9b4-4a4b85c553df
+        externalKey: 266ff081-db2a-4fd9-b9b4-4a4b85c553df
+        startDate: 2021-11-29
+        productName: Product1
+        productCategory: BASE
+        billingPeriod: MONTHLY
+        phaseType: TRIAL
+        priceList: DEFAULT
+        planName: product1-monthly
+        state: ACTIVE
+        sourceType: NATIVE
+        cancelledDate: null
+        chargedThroughDate: 2021-11-29
+        billingStartDate: 2021-11-29
+        billingEndDate: null
+        billCycleDayLocal: 29
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@9ac9be06
+            eventId: 12c85188-f2a8-4590-83af-65c75fc9677b
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: product1-monthly
+            product: Product1
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: product1-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@546fe023
+            eventId: eadcaf35-673e-4d93-8adf-dfe5ad6422cb
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: product1-monthly
+            product: Product1
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: product1-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@37f33629
+            eventId: 29a3ccee-f331-48d4-b1c6-be7f03d0d8c5
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-12-09
+            plan: product1-monthly
+            product: Product1
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: product1-monthly-evergreen
+            auditLogs: []
+        }]
+        priceOverrides: null
+        prices: [class PhasePrice {
+            planName: product1-monthly
+            phaseName: product1-monthly-trial
+            phaseType: TRIAL
+            fixedPrice: 0
+            recurringPrice: null
+            usagePrices: []
+        }, class PhasePrice {
+            planName: product1-monthly
+            phaseName: product1-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: null
+            recurringPrice: 10
+            usagePrices: []
+        }]
+        auditLogs: []
+    }, class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@edd6cbe2
+        accountId: 1d6ef148-3e91-455d-937a-27d8b2f6deff
+        bundleId: 18cae774-d466-4a19-b1d3-d64fb6c0bd30
+        bundleExternalKey: 18cae774-d466-4a19-b1d3-d64fb6c0bd30
+        subscriptionId: 244d5e5a-71af-4bfc-b7ec-7651f30e7208
+        externalKey: 244d5e5a-71af-4bfc-b7ec-7651f30e7208
+        startDate: 2021-11-29
+        productName: product1-ao
+        productCategory: ADD_ON
+        billingPeriod: MONTHLY
+        phaseType: TRIAL
+        priceList: DEFAULT
+        planName: product1-ao-monthly
+        state: ACTIVE
+        sourceType: NATIVE
+        cancelledDate: null
+        chargedThroughDate: 2021-11-29
+        billingStartDate: 2021-11-29
+        billingEndDate: null
+        billCycleDayLocal: 18
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@13fb439a
+            eventId: 8a9c0292-a36d-4428-ac47-c9fe39876d5a
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: product1-ao-monthly
+            product: product1-ao
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: product1-ao-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@8553fc75
+            eventId: 6c87c127-edef-4762-9804-3cd8638673be
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: product1-ao-monthly
+            product: product1-ao
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: product1-ao-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@28e2d33d
+            eventId: 13495761-2cf0-46aa-ab80-7586cdaf8a11
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-12-09
+            plan: product1-ao-monthly
+            product: product1-ao
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: product1-ao-monthly-evergreen
+            auditLogs: []
+        }]
+        priceOverrides: null
+        prices: [class PhasePrice {
+            planName: product1-ao-monthly
+            phaseName: product1-ao-monthly-trial
+            phaseType: TRIAL
+            fixedPrice: 0
+            recurringPrice: null
+            usagePrices: []
+        }, class PhasePrice {
+            planName: product1-ao-monthly
+            phaseName: product1-ao-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: null
+            recurringPrice: 5
+            usagePrices: []
+        }]
+        auditLogs: []
+    }]
+    timeline: class BundleTimeline {
+        org.killbill.billing.client.model.gen.BundleTimeline@26b7a071
+        accountId: 1d6ef148-3e91-455d-937a-27d8b2f6deff
+        bundleId: 18cae774-d466-4a19-b1d3-d64fb6c0bd30
+        externalKey: 18cae774-d466-4a19-b1d3-d64fb6c0bd30
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@d4de5a4
+            eventId: 8a9c0292-a36d-4428-ac47-c9fe39876d5a
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: product1-ao-monthly
+            product: product1-ao
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: product1-ao-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@6312065e
+            eventId: 12c85188-f2a8-4590-83af-65c75fc9677b
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: product1-ao-monthly
+            product: product1-ao
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: product1-ao-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@a057c269
+            eventId: 6c87c127-edef-4762-9804-3cd8638673be
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: product1-ao-monthly
+            product: product1-ao
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: product1-ao-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@535f32e2
+            eventId: eadcaf35-673e-4d93-8adf-dfe5ad6422cb
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: product1-monthly
+            product: Product1
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: product1-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@d0d4bb9c
+            eventId: 13495761-2cf0-46aa-ab80-7586cdaf8a11
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-12-09
+            plan: product1-ao-monthly
+            product: product1-ao
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: product1-ao-monthly-evergreen
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@8351e73e
+            eventId: 29a3ccee-f331-48d4-b1c6-be7f03d0d8c5
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-12-09
+            plan: product1-monthly
+            product: Product1
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: product1-monthly-evergreen
+            auditLogs: []
+        }]
+        auditLogs: []
+    }
+    auditLogs: []
+}, class Bundle {
+    org.killbill.billing.client.model.gen.Bundle@2fedb607
+    accountId: 1d6ef148-3e91-455d-937a-27d8b2f6deff
+    bundleId: 64123897-ae99-452b-9dbd-88dd9f591bf4
+    externalKey: 64123897-ae99-452b-9dbd-88dd9f591bf4
+    subscriptions: [class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@39c20f59
+        accountId: 1d6ef148-3e91-455d-937a-27d8b2f6deff
+        bundleId: 64123897-ae99-452b-9dbd-88dd9f591bf4
+        bundleExternalKey: 64123897-ae99-452b-9dbd-88dd9f591bf4
+        subscriptionId: ccbb17ab-0734-49be-8a2a-ccc3fbe2ecdf
+        externalKey: ccbb17ab-0734-49be-8a2a-ccc3fbe2ecdf
+        startDate: 2021-11-29
+        productName: Test
+        productCategory: BASE
+        billingPeriod: MONTHLY
+        phaseType: EVERGREEN
+        priceList: DEFAULT
+        planName: test-monthly
+        state: ACTIVE
+        sourceType: NATIVE
+        cancelledDate: null
+        chargedThroughDate: 2021-12-29
+        billingStartDate: 2021-11-29
+        billingEndDate: null
+        billCycleDayLocal: 29
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@1bb29bcf
+            eventId: 133ae9b4-a250-4d93-8919-534a990ed4e4
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: test-monthly
+            product: Test
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: test-monthly-evergreen
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@f46f814d
+            eventId: 309cc4d6-c21e-4e01-8289-a5767e8272e8
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: test-monthly
+            product: Test
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: test-monthly-evergreen
+            auditLogs: []
+        }]
+        priceOverrides: null
+        prices: [class PhasePrice {
+            planName: test-monthly
+            phaseName: test-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: null
+            recurringPrice: 20
+            usagePrices: []
+        }]
+        auditLogs: []
+    }, class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@c984106f
+        accountId: 1d6ef148-3e91-455d-937a-27d8b2f6deff
+        bundleId: 64123897-ae99-452b-9dbd-88dd9f591bf4
+        bundleExternalKey: 64123897-ae99-452b-9dbd-88dd9f591bf4
+        subscriptionId: 15e08a0d-9cce-4eb6-b3ce-ecd42e82ffa0
+        externalKey: 15e08a0d-9cce-4eb6-b3ce-ecd42e82ffa0
+        startDate: 2021-11-29
+        productName: TestAO
+        productCategory: ADD_ON
+        billingPeriod: MONTHLY
+        phaseType: EVERGREEN
+        priceList: DEFAULT
+        planName: testao-monthly
+        state: ACTIVE
+        sourceType: NATIVE
+        cancelledDate: null
+        chargedThroughDate: 2021-12-29
+        billingStartDate: 2021-11-29
+        billingEndDate: null
+        billCycleDayLocal: 29
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@d1b77a46
+            eventId: 02dcf5bd-a284-47ef-b88a-a5d8a67ba14c
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: testao-monthly
+            product: TestAO
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: testao-monthly-evergreen
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@997747ea
+            eventId: b724dc1a-e6bc-4a09-8790-f1d1d81bb8b5
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: testao-monthly
+            product: TestAO
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: testao-monthly-evergreen
+            auditLogs: []
+        }]
+        priceOverrides: null
+        prices: [class PhasePrice {
+            planName: testao-monthly
+            phaseName: testao-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: 100
+            recurringPrice: 10
+            usagePrices: []
+        }]
+        auditLogs: []
+    }]
+    timeline: class BundleTimeline {
+        org.killbill.billing.client.model.gen.BundleTimeline@379f0209
+        accountId: 1d6ef148-3e91-455d-937a-27d8b2f6deff
+        bundleId: 64123897-ae99-452b-9dbd-88dd9f591bf4
+        externalKey: 64123897-ae99-452b-9dbd-88dd9f591bf4
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@7ebf20b
+            eventId: 02dcf5bd-a284-47ef-b88a-a5d8a67ba14c
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: test-monthly
+            product: Test
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: test-monthly-evergreen
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@d60a18b
+            eventId: 133ae9b4-a250-4d93-8919-534a990ed4e4
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: test-monthly
+            product: Test
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: test-monthly-evergreen
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@c8e43ac8
+            eventId: 309cc4d6-c21e-4e01-8289-a5767e8272e8
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: test-monthly
+            product: Test
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: test-monthly-evergreen
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@c00d61ad
+            eventId: b724dc1a-e6bc-4a09-8790-f1d1d81bb8b5
+            billingPeriod: MONTHLY
+            effectiveDate: 2021-11-29
+            plan: testao-monthly
+            product: TestAO
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: testao-monthly-evergreen
+            auditLogs: []
+        }]
+        auditLogs: []
+    }
+    auditLogs: []
+}
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Request Body**
+
+One or more subscription resource object corresponding to the base subscriptions need to be specified. Additional, each base subscription resource object can include zero or more subscription resource objects corresponding to add-on subscriptions. Alternatively, only a list of add-on subscription resource objects may be specified along with the base subscription bundle id. Each subscription resource object needs to include `accountId` and either the `planName` or a combination of `productName`, `productCategory`,`billingPeriod` and `priceList`.
+
+
+In addition, each subscription resource can also include the following optional fields:
+* `phaseType` - Target phase type. Specifying this field causes the subscription to start with this phase.
+* `externalKey` - External key corresponding to the subscription.
+* `billCycleDayLocal` - Per-subscription BCD. Specifying this value allows realigning the billing with the specified date. 
+* `bundleId` - Id of the bundle in which to create this subscription. Can be specified only with an add-on subscription resource.
 
 
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
 | ---- | ---- | -------- | ------- | ----------- |
-| **entitlementDate** | string | no | immediately | Date at which the entitlement (sevice) starts. |
-| **billingDate** | string | no | immediately | Date at which the billing starts. |
+| **entitlementDate** | string | no | immediately | Date at which the entitlement (sevice) starts in `yyyy-mm-dd` format. If specified, applies both to base and add-on products. |
+| **billingDate** | string | no | immediately | Date at which the billing starts in `yyyy-mm-dd` format. If specified, applies both to base and add-on products. |
 | **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused |
 | **migrated** | boolean | no | false | If true, subscription is migrated |
 | **callCompletion** | boolean | no | false | see below |
@@ -1937,14 +2473,21 @@ no content
 no content
 ```
 
+**Request Body**
+
+The new BCD needs to be specified in the request body via the `billCycleDayLocal` field.
+
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
 | ---- | ---- | -------- | ------- |  ----------- |
-| **effectiveFromDate** | string | no | immediate | Date on which this change becomes effective | 
+| **effectiveFromDate** | string | no | immediate | Date on which this change becomes effective in `yyyy-mm-dd` format. | 
 | **forceNewBcdWithPastEffectiveDate** | boolean | no | false | See below | 
 
 By default the effective date must be in the future so as to not modify existing invoices. Setting **forceNewBcdWithPastEffectiveDate** to true allows the date to be set in the past. 
+
+Secondly, even after this endpoint is executed, the [Retrieve a Subscription](https://killbill.github.io/slate/?shell#subscription-retrieve-a-subscription-by-id) endpoint will still return the old BCD until an invoice is generated on the new BCD.
+
 
 **Response**
 
@@ -1996,7 +2539,9 @@ newInput.setPriceList("DEFAULT");
 newInput.setPlanName("shotgun-monthly");
 
 LocalDate requestedDate = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
 
+//specify either requestedDate or BillingActionPolicy
 subscriptionApi.changeSubscriptionPlan(subscriptionId, 
                                        newInput, 
                                        requestedDate, 
@@ -2161,15 +2706,14 @@ no content
 ```
 **Request Body**
 
-A subscription resource object specifying a `planName``. 
-
+A subscription resource object specifying either the `planName` or a combination of `productName`, `billingPeriod` and `priceList`. 
 
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
 | ---- | ---- | -------- | ------- | ----------- |
 | **billingPolicy** | string | no | default | Billing policy that will be used to make this change effective (see below) |
-| **requestedDate** | string | no | immediate | Date at which this change should become effective.|
+| **requestedDate** | string | no | immediate | Date at which this change should become effective in `yyyy-mm-dd` format.|
 | **callCompletion** | boolean | no | false | see below |
 | **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
 
@@ -2186,7 +2730,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Undo a pending change plan on a subscription
 
-This endpoint allows a pending change of `Plan` for a given subscription to be canceled.
+This endpoint allows a pending `Plan` change (plan change request with a future effective date) for a given subscription to be canceled. Note that if the plan change is already effective, then it cannot be undone. 
 
 **HTTP Request** 
 
@@ -2349,9 +2893,9 @@ no content
 
 | Name | Type | Required | Default | Description |
 | ---- | ---- | -------- | ------- | ----------- |
-| **requestedDate** | string | no | immediate | Date at which this change should become effective.|
-| **entitlementPolicy** | string | no | default policy | entitlement policy |
-| **billingPolicy** | string | no | default policy | billing policy |
+| **requestedDate** | string | no | immediate | Date at which this change should become effective in `yyyy-mm-dd` format.|
+| **entitlementPolicy** | string | no | IMMEDIATE | entitlement policy (see below) |
+| **billingPolicy** | string | no | default policy from catalog if present, otherwise `END_OF_TERM` | billing policy (see below) |
 | **useRequestedDateForBilling** | boolean | no | false | use **requestedDate** for billing |
 | **callCompletion** | boolean | no | false | see below |
 | **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
@@ -2380,6 +2924,9 @@ So, the common use case would require the following:
 
 The reason for all this complexity is to allow to control entitlement and billing date separately, and also avoid users to have to compute dates to achieve certain behavior by relying on well defined policies.
 
+**Other Notes**
+If a subscription is created with a future date and if the cancel method is invoked for immediate cancellation, the cancellation takes effect only after the subscription creation date is reached. Thus, the subscription remains in `PENDING` state until the subscription creation date is reached after which it is moved to the `CANCELLED` state.
+
 
 **Returns**
 
@@ -2388,7 +2935,8 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Un-cancel a subscription
 
-This endpoint allows you to undo a pending cancelation for a given subscription.
+This endpoint allows you to undo a pending cancellation (cancellation request with a future effective date) for a given subscription.
+
 
 **HTTP Request** 
 
@@ -2465,7 +3013,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Blocking State
 
-See section [Account Blocing State](#account-blocking-state) for an introduction to blocking states.
+See section [Account Blocking State](#account-blocking-state) for an introduction to blocking states.
 
 ### Block a subscription
 
@@ -2597,10 +3145,11 @@ no content
 no content
 ```
 
-**Response Body**
+**Request Body**
 
 A blocking state resource representing the intended new blocking state. For example,
 
+```
 {
   "blockedId": "943c4fd0-9000-4975-a3a8-09712223e1f8",
   "stateName": "STATE1",
@@ -2611,6 +3160,7 @@ A blocking state resource representing the intended new blocking state. For exam
   "effectiveDate": "2020-07-18T18:22:30.376Z",
   "type": "SUBSCRIPTION"
 }
+```
 
 **Query Parameters**
 
@@ -2757,7 +3307,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a 201 status code.In addition, a Location header is returned giving the URL to retrieve the custom fields associated with the subscription.
 
 ### Retrieve subscription custom fields
 
@@ -2862,7 +3412,7 @@ class CustomField {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **audit** | string | no | "NONE" | Level of audit information to return |
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL", or "FULL" |
 
 Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
@@ -2872,7 +3422,7 @@ If successful, returns a status code of 200 and a (possibly empty) list of custo
 
 ### Modify custom fields for a subscription
 
-Modifies the value of one or more existing custom fields associated with a subscription
+Modifies the value of one or more existing custom fields associated with a subscription. Note that it is not possible to modify the name of a custom field, it is only possible to modify its value.
 
 **HTTP Request** 
 
@@ -2905,9 +3455,11 @@ UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
 CustomField customFieldModified = new CustomField();
 customFieldModified.setCustomFieldId(customFieldsId);
 customFieldModified.setValue("NewValue");
+CustomFields customFields = new CustomFields();
+customFields.add(customFieldModified);
 
 subscriptionApi.modifySubscriptionCustomFields(subscriptionId, 
-                                               customFieldModified, 
+                                               customFields, 
                                                requestOptions);
 ```
 
@@ -2958,7 +3510,13 @@ no content
 ```python
 no content
 ```
+**Request Body**
 
+A list of objects specifying the id and the new value for the custom fields to be modified. For example:
+
+[ { "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f", "value": "123" } ]
+
+Although the `fieldName` and `objectType` can be specified in the request body, these cannot be modified, only the field value can be modified.
 
 **Query Parameters**
 
@@ -2995,9 +3553,10 @@ protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
 UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+List<UUID> customFieldsList = ImmutableList.<UUID>of(customFieldsId);
 
 subscriptionApi.deleteSubscriptionCustomFields(subscriptionId, 
-                                               customFieldsId, 
+                                               customFieldsList, 
                                                requestOptions);
 ```
 
@@ -3045,7 +3604,7 @@ no content
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **customField** | string | yes | none | the list of custom field object IDs that should be deleted. |
+| **customField** | string | yes | none | Custom field object ID that should be deleted. Multiple custom fields can be deleted by specifying a separate **customField** parameter corresponding to each field |
 
 **Response**
 
@@ -3089,7 +3648,7 @@ protected SubscriptionApi subscriptionApi;
 UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
 UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
-Tags result = subscriptionApi.createSubscriptionTags(subscriptionId, 
+subscriptionApi.createSubscriptionTags(subscriptionId, 
                                                      ImmutableList.<UUID>of(tagDefinitionId), 
                                                      requestOptions);
 ```
@@ -3163,7 +3722,9 @@ None.
 
 **Returns**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a 201 status code. In addition, a Location header is returned giving the URL to retrieve the tags associated with the subscription.
+
+Retrieve all tags
 
 ### Retrieve subscription tags
 
@@ -3274,7 +3835,7 @@ class Tag {
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **includedDeleted** | boolean | no | false | If true, include deleted tags |
-| **audit** | string | no | "NONE" | Level of audit information to return |
+| **audit** | string | no | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
@@ -3360,7 +3921,7 @@ no content
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ------------ |
-| **tagDef** | array of strings | true | none | List of tag definition IDs identifying the tags that should be removed. |
+| **tagDef** | array of strings | true | none | A tag definition ID identifying the tag that should be removed. Multiple tags can be deleted by specifying a separate tagDef parameter corresponding to each tag. |
 
 **Response**
 
@@ -3391,6 +3952,15 @@ curl -v \
     -H "Accept: application/json" \
     "http://localhost:8080/1.0/kb/subscriptions/70b6856e-6938-495f-9ae9-0a8ec0571c37/auditLogsWithHistory"
 ```
+```java
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("bc9b98e8-7497-4330-aa42-1fbc71a3d19c");
+		
+List<AuditLog> auditLog = subscriptionApi.getSubscriptionAuditLogsWithHistory(subscriptionId, 																				  																							requestOptions);
+```
+
 > Example Response:
 
 ```shell
@@ -3485,6 +4055,15 @@ curl  \
     -H "Accept: application/json" \
     "http://localhost:8080/1.0/kb/subscriptions/events/9a1c85d5-beba-40c8-9268-f73e09c24007/auditLogsWithHistory"
 ```
+```java
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionEventId = UUID.fromString("b4b6f990-4456-4009-9e6c-9825a99a1f25");
+		
+List<AuditLog> eventAuditLog = subscriptionApi.getSubscriptionEventAuditLogsWithHistory(subscriptionEventId, requestOptions);
+```
+
 > Example Response:
 
 
