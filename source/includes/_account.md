@@ -5084,7 +5084,9 @@ no content
 
 **Request Body**
 
-A JSON string representing the custom field object to be added.
+A list of objects giving the name and value of the custom field, or fields, to be added. For example:
+
+[ { "name": "CF1", "value": "123" } ]
 
 **Query Parameters**
 
@@ -5331,7 +5333,7 @@ class CustomField {
 
 **Response**
     
-If successful, returns a status code of 200 and a list of custom field objects
+If successful, returns a status code of 200 and a (possibly empty) list of custom field objects
 
 ### Modify custom fields for an account
 
@@ -5420,7 +5422,11 @@ no content
 ```
 **Request Body**
 
-A JSON string representing a list of custom fields to substitute for the existing ones. Although the `field name` and `object type` can be specified in the request body, these cannot be modified, only the field value can be modified.
+A list of objects specifying the id and the new value for the custom fields to be modified. For example:
+
+[ { "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f", "value": "123" } ]
+
+Although the `fieldName` and `objectType` can be specified in the request body, these cannot be modified, only the field value can be modified.
 
 **Query Parameters**
 
