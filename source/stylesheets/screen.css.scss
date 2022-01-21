@@ -24,6 +24,9 @@ under the License.
 // GENERAL STUFF
 ////////////////////////////////////////////////////////////////////////////////
 
+
+@import "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap";
+
 html, body {
   color: $main-text;
   padding: 0;
@@ -34,6 +37,7 @@ html, body {
   background-color: $main-bg;
   height: 100%;
   -webkit-text-size-adjust: none; /* Never autoresize text */
+  font-family: 'Inter', sans-serif;
 }
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -49,7 +53,6 @@ html, body {
 
 .toc-wrapper {
   transition: left 0.3s ease-in-out;
-
   overflow-y: auto;
   overflow-x: hidden;
   position: fixed;
@@ -57,8 +60,7 @@ html, body {
   top: 0;
   left: 0;
   bottom: 0;
-  width: $nav-width;
-  background-color: $nav-bg;
+  width: 16.6%;
   font-size: 13px;
   font-weight: bold;
 
@@ -154,22 +156,8 @@ html, body {
     transition-duration: 200ms;
   }
 
-  // This is the currently selected ToC entry
-  .toc-link.active {
-    background-color: #1F7CB5;
-    color: $nav-active-text;
-  }
-
-  // this is parent links of the currently selected ToC entry
-  .toc-link.active-parent {
-    background-color: $nav-active-parent-bg;
-    color: $nav-active-parent-text;
-  }
-
   .toc-list-h2 {
     display: none;
-    background-color: $nav-subitem-bg;
-    font-weight: 500;
   }
 
   .toc-h2 {
@@ -179,7 +167,6 @@ html, body {
 
   .toc-list-h3 {
     display: none;
-    background-color: $nav-subitem-bg;
   }
 
   .toc-h3 {
@@ -209,6 +196,24 @@ html, body {
   }
 }
 
+.content a {
+  color: #167BB7;
+}
+
+.toc-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.toc-wrapper::-webkit-scrollbar-track {
+  background-color: #F3F4F6;
+}
+
+.toc-wrapper::-webkit-scrollbar-thumb {
+  background-color: #D1D5DB;
+  width: 6px;
+  border-radius: 32px;
+}
+
 .toc-link, .toc-footer li {
   padding: 0 $nav-padding 0 $nav-padding;
   display: block;
@@ -216,8 +221,7 @@ html, body {
   white-space: nowrap;
   text-overflow: ellipsis;
   text-decoration: none;
-  color: #fff;
-  transition-property: background;
+  color: #1F2937;
   transition-timing-function: linear;
   transition-duration: 130ms;
 }
@@ -261,10 +265,10 @@ html, body {
 ////////////////////////////////////////////////////////////////////////////////
 
 .page-wrapper {
-  margin-left: $nav-width;
+  margin-left: 16.6%;
   position: relative;
   z-index: 10;
-  background-color: $main-bg;
+  background-color: #fff;
   min-height: 100%;
 
   padding-bottom: 1px; // prevent margin overflow
@@ -276,7 +280,7 @@ html, body {
   // half of the content always this background color.
   .dark-box {
     width: $examples-width;
-    background-color: $examples-bg;
+    background-color: #50576A;
     position: absolute;
     right: 0;
     top: 0;
@@ -286,12 +290,12 @@ html, body {
   .lang-selector {
     position: fixed;
     z-index: 50;
-    border-bottom: 5px solid $lang-select-active-bg;
+    border-bottom: 5px solid #78AECD;
   }
 }
 
 .lang-selector {
-  background-color: $lang-select-bg;
+  background-color: #3C4356;
   width: 100%;
   font-weight: bold;
   a {
@@ -304,13 +308,14 @@ html, body {
     outline: 0;
 
     &:active, &:focus {
-      background-color: $lang-select-pressed-bg;
+      background-color: #78AECD;
       color: $lang-select-pressed-text;
     }
 
     &.active {
-      background-color: $lang-select-active-bg;
+      background-color: #78AECD;
       color: $lang-select-active-text;
+      border-radius: 4px 4px 0 0;
     }
   }
 
@@ -367,6 +372,7 @@ html, body {
     border-top: 1px solid #ccc;
     border-bottom: 1px solid #ccc;
     background-color: #fdfdfd;
+    color: #167BB7;
   }
 
   h1:first-child, div:first-child + h1 {
@@ -383,7 +389,7 @@ html, body {
     padding-top: 1.2em;
     padding-bottom: 1.2em;
     background-image: linear-gradient(to bottom, rgba(#fff, 0.2), rgba(#fff, 0));
-    color: #ba3925;
+    color: #167BB7;
   }
 
   // h2s right after h1s should bump right up
@@ -402,7 +408,7 @@ html, body {
 
   h3 {
     font-size: 16px;
-    color: #ba3925;
+    color: #167BB7;
     border-top: #E8E8E8 1px solid;
     padding-top: 1em;
     padding-bottom: 1em;
@@ -535,7 +541,7 @@ html, body {
 
 .content {
   pre, blockquote {
-    background-color: $code-bg;
+    background-color: #50576A;
     color: #fff;
 
     margin: 0;
@@ -566,10 +572,121 @@ html, body {
 
   blockquote {
     &>p {
-      background-color: $code-annotation-bg;
+      background-color: #3C4356;
+      border-radius: 4px 4px 0 0;
       padding: $code-annotation-padding 2em;
       color: #eee;
     }
+  }
+}
+
+header {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  z-index: 200;
+  background: #fff;
+  display: flex;
+  padding: 20px 40px;
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+header .logo {
+  width: 13%;
+  max-width: 215px;
+  margin-right: 50px;
+}
+
+header .lang-selector {
+  display: none;
+}
+
+header .search {
+  width: 60%;
+  position: relative;
+}
+
+header .search .search-form-icon {
+  position: absolute;
+  left: 13px;
+  top: 9px;
+  z-index: 1;
+  width: 20px;
+  height: 20px;
+  pointer-events: none;
+}
+
+header .search-results.visible {
+  position: absolute;
+  left: 240px;
+  width: calc(60% - 40px);
+  padding: 20px;
+  list-style-type: none;
+  top: 45px;
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+header .search  input {
+  width: 100%;
+  padding: 9px 9px 9px 40px;
+  border: 1px solid #D1D5DB;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+.toc-wrapper {
+  top: 94px;
+  background: #FBFDFF;
+  padding: 25px 0;
+}
+
+.toc-wrapper .toc-h1 {
+  color: #1F2937;
+}
+
+.toc-wrapper li{
+  color: #1F2937;
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.toc-wrapper li a.active {
+  color: #167BB7;
+}
+
+.toc-wrapper li .toc-h1 {
+  font-weight: 500;
+  font-size: 14px;
+  background: transparent;
+}
+
+.toc-wrapper li .toc-h2 {
+  background: transparent;
+}
+
+.main-wrapper {
+  padding-top: 94px;
+}
+
+@media (max-width: 1500px) {
+  .toc-wrapper {
+    top: 85px;
+  }
+
+  .main-wrapper {
+    padding-top: 85px;
+  }
+}
+
+@media (max-width: 1300px) {
+  .toc-wrapper {
+    top: 85px;
+  }
+
+  .main-wrapper {
+    padding-top: 85px;
   }
 }
 
