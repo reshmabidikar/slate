@@ -111,4 +111,17 @@
   }
 
   window.loadToc = loadToc;
+
+ 
+  var $window = $(window);  
+
+  $window.scroll(function() {
+    if ( $window.scrollTop() >= 94 ) {
+      $('.toc-wrapper').css('top', 0);
+      $('.page-wrapper .lang-selector').css('top', 0)
+    } else {
+      $('.toc-wrapper').css('top', '94px');
+      $('.page-wrapper .lang-selector').css('top', 'initial');
+    }
+  });
 })();

@@ -57,7 +57,7 @@ html, body {
   overflow-x: hidden;
   position: fixed;
   z-index: 30;
-  top: 0;
+  top: 94px;
   left: 0;
   bottom: 0;
   width: 16.6%;
@@ -315,7 +315,6 @@ html, body {
     &.active {
       background-color: #78AECD;
       color: $lang-select-active-text;
-      border-radius: 4px 4px 0 0;
     }
   }
 
@@ -581,7 +580,6 @@ html, body {
 }
 
 header {
-  position: fixed;
   left: 0;
   top: 0;
   right: 0;
@@ -637,10 +635,10 @@ header .search  input {
 }
 
 .toc-wrapper {
-  top: 94px;
   background: #FBFDFF;
   padding: 25px 0;
 }
+
 
 .toc-wrapper .toc-h1 {
   color: #1F2937;
@@ -666,29 +664,6 @@ header .search  input {
   background: transparent;
 }
 
-.main-wrapper {
-  padding-top: 94px;
-}
-
-@media (max-width: 1500px) {
-  .toc-wrapper {
-    top: 85px;
-  }
-
-  .main-wrapper {
-    padding-top: 85px;
-  }
-}
-
-@media (max-width: 1300px) {
-  .toc-wrapper {
-    top: 85px;
-  }
-
-  .main-wrapper {
-    padding-top: 85px;
-  }
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 // RESPONSIVE DESIGN
