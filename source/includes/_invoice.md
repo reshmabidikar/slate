@@ -2451,7 +2451,7 @@ A [dry run resource object](https://killbill.github.io/slate/#invoice-invoicedry
 | -------------- | ---------------- | ------------------------- |
 | TARGET_DATE   |   N/A  |  none |
 | UPCOMING_INVOICE | N/A | optional subscriptionId or bundleId |
-| SUBSCRIPTION_ACTION | START_BILING or CHANGE | effectiveDate, productName, productCategory, priceListName, billingPeriod, billingPolicy |
+| SUBSCRIPTION_ACTION | START_BILLING or CHANGE | effectiveDate, productName, productCategory, priceListName, billingPeriod, billingPolicy |
 | SUBSCRIPTION_ACTION | STOP_BILLING | effectiveDate |
 
 **Query Parameters**
@@ -2463,6 +2463,7 @@ A [dry run resource object](https://killbill.github.io/slate/#invoice-invoicedry
     
 
 Note that for `SUBSCRIPTION_ACTION`, there are 2 dates to take into account:
+
 * The `effectiveDate` in the body specifies when the action (e.g CREATE) takes place
 * The `targetDate` as a query parameter specifies the date for the billing, i.e how far in the future we want to bill for. A null `targetDate` default to now.
 
