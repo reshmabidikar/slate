@@ -198,6 +198,11 @@ html, body {
 
 .content a {
   color: #167BB7;
+  text-decoration: none;
+}
+
+.content a:hover {
+  text-decoration: underline;
 }
 
 .toc-wrapper::-webkit-scrollbar {
@@ -224,6 +229,11 @@ html, body {
   color: #1F2937;
   transition-timing-function: linear;
   transition-duration: 130ms;
+}
+
+.toc-link:hover, .toc-footer li:hover {
+  text-overflow: initial;
+  white-space: normal;
 }
 
 // button to show navigation on mobile devices
@@ -504,16 +514,15 @@ html, body {
     &.success {
       background-color: $aside-success-bg;
     }
+    &.notice {
+      background: transparent;
+    }
   }
 
   aside:before {
     vertical-align: middle;
     padding-right: 0.5em;
     font-size: 14px;
-  }
-
-  aside.notice:before {
-    @extend %icon-info-sign;
   }
 
   aside.warning:before {
@@ -663,6 +672,11 @@ header .search  input {
   font-weight: 400;
 }
 
+.toc-wrapper li a {
+  position: relative;
+  padding: 5px 15px;
+}
+
 .toc-wrapper li a.active {
   color: #167BB7;
 }
@@ -746,6 +760,7 @@ header .search  input {
 .toc-list-h2 li,
 .toc-list-h3 li {
   position: relative;
+  line-height: 1.5;
 }
 
 .toc-list-h2 li a::before,
@@ -765,7 +780,6 @@ header .search  input {
 }
 
 .toc-list-h1 > li {
-  margin-bottom: 26px;
   position: relative;
 }
 
@@ -779,4 +793,16 @@ header .search  input {
 .toc-list-h1 > li > a.active::after,
 .toc-list-h1 > li > a.active-parent::after {
   transform: rotate(180deg);
+}
+
+.doclink {
+  position: fixed;
+  bottom: 0;
+  padding: 0 15px 10px;
+  background-color: #FBFDFF;
+  z-index: 1000;
+  font-size: 12px;
+  color: #167BB7;
+  text-decoration: none;
+  font-weight: normal;
 }

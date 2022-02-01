@@ -81,13 +81,15 @@
       }
     };
 
+    
+
     var makeToc = function() {
       recacheHeights();
       refreshToc();
 
       $("#nav-button").click(function() {
-        $(".toc-wrapper").toggleClass('open');
-        $("#nav-button").toggleClass('open');
+        $(".toc-wrapper").addClass('open');
+        $("#nav-button").addClass('open');
         return false;
       });
       $(".page-wrapper").click(closeToc);
