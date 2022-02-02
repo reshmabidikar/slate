@@ -54,31 +54,6 @@ under the License.
   </head>
 
   <body class="<%= page_classes %>" data-languages="<%=h language_tabs.map{ |lang| lang.is_a?(Hash) ? lang.keys.first : lang }.to_json %>">
-    <header>
-      <a href="https://killbill.github.io/slate" class="logo"><%= image_tag "logo.png" %></a>
-      <% if language_tabs.any? %>
-        <div class="lang-selector">
-          <% language_tabs.each do |lang| %>
-            <% if lang.is_a? Hash %>
-              <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
-            <% else %>
-              <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
-      <% if current_page.data.search %>
-        <div class="search">
-          <div class="search-form-icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-            <path fill="#9CA3AF" fill-rule="evenodd" d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM2 8a6 6 0 1 1 10.9 3.48l4.8 4.81a1 1 0 0 1-1.4 1.42l-4.82-4.82A6 6 0 0 1 2 8Z" clip-rule="evenodd"></path>
-            </svg>
-          </div>  
-          <input type="text" class="search" id="input-search" placeholder="Search">
-        </div>
-        <ul class="search-results"></ul>
-      <% end %>
-    </header>
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -86,7 +61,33 @@ under the License.
       </span>
     </a>
     <div class="main-wrapper">
-      <div class="toc-wrapper">
+        <div class="toc-wrapper">
+        <a href="https://killbill.github.io/slate" class="logo"><%= image_tag "logo.png" %></a>
+        <% if language_tabs.any? %>
+          <div class="lang-selector">
+            <% language_tabs.each do |lang| %>
+              <% if lang.is_a? Hash %>
+                <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
+              <% else %>
+                <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+        <% if current_page.data.search %>
+        <div class="search">
+            <div class="search-form-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path fill="#9CA3AF" fill-rule="evenodd" d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM2 8a6 6 0 1 1 10.9 3.48l4.8 4.81a1 1 0 0 1-1.4 1.42l-4.82-4.82A6 6 0 0 1 2 8Z" clip-rule="evenodd"></path>
+              </svg>
+            </div>  
+            <input type="text" class="search" id="input-search" placeholder="Search">
+            <div class="remove-sign">
+            <%= image_tag "close.png" %>
+            </div>
+          </div>
+          <ul class="search-results"></ul>
+        <% end %>
         <div id="toc" class="toc-list-h1">
           <% toc_data(page_content).each do |h1| %>
             <li>

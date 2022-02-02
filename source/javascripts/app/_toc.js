@@ -65,23 +65,23 @@
         loaded = true;
       }
 
+
       var $best = $toc.find("[href='" + best + "']").first();
       if (!$best.hasClass("active")) {
-        // .active is applied to the ToC link we're currently on, and its parent <ul>s selected by tocListSelector
-        // .active-expanded is applied to the ToC links that are parents of this one
-        $toc.find(".active").removeClass("active");
-        $toc.find(".active-parent").removeClass("active-parent");
-        $best.addClass("active");
-        $best.parents(tocListSelector).addClass("active").siblings(tocLinkSelector).addClass('active-parent');
-        $best.siblings(tocListSelector).addClass("active");
-        $toc.find(tocListSelector).filter(":not(.active)").slideUp(150);
-        $toc.find(tocListSelector).filter(".active").slideDown(150);
-        // TODO remove classnames
-        document.title = $best.data("title") + " – " + originalTitle;
+           // .active is applied to the ToC link we're currently on, and its parent <ul>s selected by tocListSelector
+           // .active-expanded is applied to the ToC links that are parents of this one
+          $toc.find(".active").removeClass("active");
+          $toc.find(".active-parent").removeClass("active-parent");
+          $best.addClass("active");
+          $best.parents(tocListSelector).addClass("active").siblings(tocLinkSelector).addClass('active-parent');
+          $best.siblings(tocListSelector).addClass("active");
+          $toc.find(tocListSelector).filter(":not(.active)").slideUp(150);
+          $toc.find(tocListSelector).filter(".active").slideDown(150);
+          // TODO remove classnames
+          document.title = $best.data("title") + " – " + originalTitle;
       }
-    };
 
-    
+    };
 
     var makeToc = function() {
       recacheHeights();
@@ -117,13 +117,4 @@
  
   var $window = $(window);  
 
-  $window.scroll(function() {
-    if ( $window.scrollTop() >= 94 ) {
-      $('.toc-wrapper').css('top', 0);
-      $('.page-wrapper .lang-selector').css('top', 0)
-    } else {
-      $('.toc-wrapper').css('top', '94px');
-      $('.page-wrapper .lang-selector').css('top', 'initial');
-    }
-  });
 })();

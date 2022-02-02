@@ -53,11 +53,11 @@ html, body {
 
 .toc-wrapper {
   transition: left 0.3s ease-in-out;
-  overflow-y: auto;
+  overflow-y: hidden;
   overflow-x: hidden;
   position: fixed;
   z-index: 30;
-  top: 94px;
+  top: 0;
   left: 0;
   bottom: 0;
   width: 16.6%;
@@ -205,15 +205,20 @@ html, body {
   text-decoration: underline;
 }
 
-.toc-wrapper::-webkit-scrollbar {
+.toc-wrapper #toc{
+  overflow-y: scroll;
+  height: calc(100vh - 210px);
+}
+
+.toc-wrapper #toc::-webkit-scrollbar, .toc-wrapper .search-results::-webkit-scrollbar {
   width: 8px;
 }
 
-.toc-wrapper::-webkit-scrollbar-track {
+.toc-wrapper #toc::-webkit-scrollbar-track, .toc-wrapper .search-results::-webkit-scrollbar-track{
   background-color: #F3F4F6;
 }
 
-.toc-wrapper::-webkit-scrollbar-thumb {
+.toc-wrapper #toc::-webkit-scrollbar-thumb, .toc-wrapper .search-results::-webkit-scrollbar-thumb {
   background-color: #D1D5DB;
   width: 6px;
   border-radius: 32px;
@@ -601,13 +606,12 @@ header {
   box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06);
 }
 
-header .logo {
-  width: 13%;
-  max-width: 215px;
-  margin-right: 50px;
+.logo {
+  display: inline-block;
+  padding: 0 15px;
 }
 
-header .logo img {
+.logo img {
   max-width: 100%;
 }
 
@@ -615,45 +619,59 @@ header .lang-selector {
   display: none;
 }
 
-header .search {
-  width: 60%;
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-header .search .search-form-icon {
+.toc-wrapper .search .search-form-icon {
   position: absolute;
-  left: 13px;
+  left: 20px;
   z-index: 1;
-  top: 30%;
+  top: 25%;
   width: 20px;
   height: 20px;
   pointer-events: none;
 }
 
-
-header .search-results{
+.toc-wrapper .search .remove-sign {
   position: absolute;
-  left: 17%;
-  width: calc(60% - 40px);
-  list-style-type: none;
-  top: 45px;
-  background-color: #fff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
-  z-index: 50;
+  top: 11px;
+  right: 25px;
+  cursor: pointer;
+  display: none;
 }
 
-header .search-results.visible{
+.toc-wrapper .search .remove-sign img {
+  width: 12px;
+}
+
+.toc-wrapper .search::before{
+  content: none;
+}
+
+.toc-wrapper .search-results{
+  background-color: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+}
+
+.toc-wrapper .search-results a {
+  color: #333;
+}
+
+.toc-wrapper .search-results.visible{
   padding: 20px;
 }
 
-header .search  input {
+.toc-wrapper .search {
+  margin: 20px 0;
+  padding: 0 15px;
+}
+
+.toc-wrapper .search  input {
   width: 100%;
-  padding: 9px 9px 9px 40px;
+  padding: 9px 9px 9px 25px;
   border: 1px solid #D1D5DB;
   border-radius: 6px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, .05);
+  margin: 0;
+  color: #333;
+  background: transparent;
 }
 
 .toc-wrapper {
