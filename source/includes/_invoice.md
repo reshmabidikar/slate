@@ -29,13 +29,13 @@ An `Invoice` resource represents an invoice associated with a specific account. 
 | **amount** | number | user or system | Sum of all item amounts |
 | **currency** | string | user or system | Currency associated with the account |
 | **status** | string | system | Status of the invoice: DRAFT, COMMITTED or VOID |
-| **creditAdj** | number | system | Sum of all current credits |
-| **refundAdj** | number | system | Sum of all current refunds associated with payments |
+| **creditAdj** | number | system | Invoice credit (amount that we owe to the customer). It is calculated as the sum of `CBA_ADJ` invoice items|
+| **refundAdj** | number | system | Refund amount associated with an invoice. It is calculated as the sum of all invoice payment amounts of type `REFUND` and `CHARGED_BACK`. |
 | **invoiceDate** | date | system | Date when this invoice was generated |
 | **targetDate** | date | user or system | Date up to which the account has been invoiced |
 | **invoiceNumber** | number | system | Invoice number |
-| **balance** | number | system | Sum of all item amounts minus the payment amount |
-| **bundleKeys** | list | system | List of bundles invoiced. Deprecated. |
+| **balance** | number | system |  Invoice balance (amount that a customer owes as part of an invoice). At a high level, it is calculated as the sum of all item amounts minus the payment amount. See [Invoice Balance](https://docs.killbill.io/latest/invoice_examples.html#_invoice_balance) for further details. |
+| **bundleKeys** | list | system |List of bundles invoiced. Deprecated. |
 | **credits** | list | system | List of credits associated with this invoice. Deprecated. |
 | **items** | list | system | List of invoice items on this invoice |
 | **isParentInvoice** | boolean | system | If true, this invoice is the parent in the hierarchical model |
@@ -44,7 +44,7 @@ An `Invoice` resource represents an invoice associated with a specific account. 
 
 
 
-## InvoiceItem Resouece
+## InvoiceItem Resource
 
 An `InvoiceItem` resource represents a single item charged on an invoice. The attributes contained in this resource are the following:
 
@@ -56,13 +56,13 @@ An `InvoiceItem` resource represents a single item charged on an invoice. The at
 | **accountId** | string | system | UUID for the account |
 | **childAccountId** | string | system | In the hierarchical model, the UUID of the child account |
 | **bundleId** | string | system | UUID for the bundle |
-| **subscriptionId** | string | system | UUID for the subscription |
-| **planName** | string | system | Name of the `Plan` for this subscription |
-| **phaseName** | string | system | Name of the `PlanPhase` for this subscription |
-| **usageName** | string | system | Name of the `Usage` section for this subscription |
-| **prettyPlanName** | string | system | Pretty name of the `Plan` for this subscription |
-| **prettyPhaseName** | string | system | Pretty name of the `PlanPhase` for this subscription |
-| **prettyUsageName** | string | system | Pretty name of the `Usage` section for this subscription |
+| **subscriptionId** | string | system | UUID for the subscription (present only if invoice item corresponds to a subscription) |
+| **planName** | string | system | Name of the `Plan` for this subscription if any|
+| **phaseName** | string | system | Name of the `PlanPhase` for this subscription if any|
+| **usageName** | string | system | Name of the `Usage` section for this subscription if any|
+| **prettyPlanName** | string | system | Pretty name of the `Plan` for this subscription if any|
+| **prettyPhaseName** | string | system | Pretty name of the `PlanPhase` for this subscription if any|
+| **prettyUsageName** | string | system | Pretty name of the `Usage` section for this subscription if any|
 | **itemType** | string | system | Item type (see below) |
 | **description** | string | user or system | Optional description of the item |
 | **startDate** | date | user or system | Start date of the period invoiced |
@@ -86,6 +86,8 @@ An `InvoiceItem` resource represents a single item charged on an invoice. The at
 * `USAGE`: Usage item
 * `TAX`: Tax item -- this can only be added through an invoice plugin
 * `PARENT_SUMMARY`: In the hierarchical model, represents the summary across all children
+
+Refer to the [Subscription Billing](https://docs.killbill.io/latest/userguide_subscription.html#components-invoicing) document for further details.  
 
 ## InvoiceDryRun Resource
 
@@ -165,7 +167,7 @@ import org.killbill.billing.client.api.gen.InvoiceApi;
 protected InvoiceApi invoiceApi;
 
 UUID accountId = UUID.fromString("5f1e9142-b4de-4409-9366-9920cc1683e9");
-LocalDate targetDate = today.plus(1, ChronoUnit.DAYS);
+LocalDate targetDate = new LocalDate(2012,3,29);
 
 Invoice result = invoiceApi.createFutureInvoice(accountId, 
                                                 targetDate, 
@@ -238,12 +240,12 @@ no content
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **accountId** | string | yes | none | account id |
-| **targetDate** | string | no | current date | target date |
+| **targetDate** | string | no | current date | target date (date up to which the account should be invoiced) |
 
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body. A location item is also returned in the header, giving the UUID of the generated invoice (if any).
+If successful, returns a status code of 201 and an empty body. A location item is also returned in the header, giving the UUID of the generated invoice (if any). If there is nothing to invoice for, returns a 404 status code.
 
 
 ### Create a migration invoice
@@ -331,7 +333,57 @@ invoiceApi.create_migration_invoice(account_id,
 < Content-Length: 0
 ```
 ```java
-no content
+class Invoice {
+    org.killbill.billing.client.model.gen.Invoice@7983407c
+    amount: 10.00
+    currency: USD
+    status: COMMITTED
+    creditAdj: 0.00
+    refundAdj: 0.00
+    invoiceId: fb5dadee-f820-4d93-84b1-8cb37a0b8eea
+    invoiceDate: 2022-01-31
+    targetDate: 2022-01-31
+    invoiceNumber: 3139
+    balance: 0
+    accountId: 85472112-4dcd-4d5e-a345-5716635d7629
+    bundleKeys: null
+    credits: null
+    items: [class InvoiceItem {
+        org.killbill.billing.client.model.gen.InvoiceItem@f50cb1b2
+        invoiceItemId: e501ddc2-cf18-4dd5-840e-dbb0527827c3
+        invoiceId: fb5dadee-f820-4d93-84b1-8cb37a0b8eea
+        linkedInvoiceItemId: null
+        accountId: 85472112-4dcd-4d5e-a345-5716635d7629
+        childAccountId: null
+        bundleId: null
+        subscriptionId: null
+        productName: null
+        planName: null
+        phaseName: null
+        usageName: null
+        prettyProductName: null
+        prettyPlanName: null
+        prettyPhaseName: null
+        prettyUsageName: null
+        itemType: FIXED
+        description: Fixed price charge
+        startDate: 2022-01-31
+        endDate: null
+        amount: 10.00
+        rate: null
+        currency: USD
+        quantity: null
+        itemDetails: null
+        catalogEffectiveDate: null
+        childItems: null
+        auditLogs: []
+    }]
+    trackingIds: []
+    isParentInvoice: false
+    parentInvoiceId: null
+    parentAccountId: null
+    auditLogs: []
+}
 ```
 ```ruby
 no content
@@ -342,13 +394,12 @@ no content
 
 **Request Body**
 
-An invoice resource object with all fields filled in representing the invoice to be migrated.
+An invoice resource object with all fields filled in representing the invoice to be migrated. At least the following fields need to be specified: itemType=EXTERNAL_CHARGE, amount.
 
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
-| **accountId** | string | yes | none | account id |
 | **targetDate** | string | no | current date | target date |
 
 
@@ -395,15 +446,14 @@ externalCharge.setDescription("My charge");
 InvoiceItems externalCharges = new InvoiceItems();
 externalCharges.add(externalCharge);
 
-LocalDate requestedDate = clock.getUTCToday();
-Boolean payInvoice = false;
+LocalDate requestedDate = null;
 Map<String, String> pluginProperty = null;
 Boolean autoCommit = true;
 
 List<InvoiceItem> createdExternalCharges = invoiceApi.createExternalCharges(accountId, 
                                                                             externalCharges, 
                                                                             requestedDate,
-                                                                            autoCommit
+                                                                            autoCommit,
                                                                             pluginProperty, 
                                                                             requestOptions);
 ```
@@ -526,7 +576,8 @@ no content
 
 **Request Body**
 
-An invoiceItem resource object with at least the following attributes: accountId, itemType=EXTERNAL_CHARGE, description, amount, and currency.
+An invoice item resource object with at least the `amount` attribute. 
+
 
 **Query Parameters**
 
@@ -537,7 +588,7 @@ An invoiceItem resource object with at least the following attributes: accountId
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body. A location item is also returned in the header, giving the UUID of the generated invoice (if any).
+If successful, returns a status code of 201 and an invoice item object.
 
 
 ### Create tax items
@@ -584,7 +635,7 @@ Boolean autoCommit = true;
 LocalDate requestedDate = clock.getUTCToday();
 Map<String, String> pluginProperty = null;
 
-List<InvoiceItem> createdExternalCharges = invoiceApi.createTaxItems(accountId, 
+List<InvoiceItem> createdTaxItems = invoiceApi.createTaxItems(accountId, 
                                                                      input,
                                                                      autoCommit,
                                                                      requestedDate,
@@ -712,7 +763,7 @@ no content
 
 **Request Body**
 
-An invoiceItem resource object with at least the following attributes: accountId, itemType=TAX, amount, and currency.
+An invoice item resource object with at least the `amount` attribute. 
 
 **Query Parameters**
 
@@ -723,7 +774,7 @@ An invoiceItem resource object with at least the following attributes: accountId
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body. A location item is also returned in the header, giving the UUID of the generated invoice (if any).
+If successful, returns a status code of 201 and an invoice item object.
 
 
 ### Retrieve an invoice by id
@@ -2096,6 +2147,10 @@ class Invoice {
 no content
 ```
 
+**Request Body**
+
+An invoice item resource object with at least `invoiceitemId`, `invoiceId`, and `amount` attribute. 
+
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -2104,7 +2159,7 @@ no content
 
 **Returns**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a status code of 201 and an empty body. In addition, a `Location` header containing the invoice id is returned.
 
 
 ### Delete a CBA item
@@ -2233,9 +2288,56 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
+    -d '{ "dryRunType": "TARGET_DATE"}' \
+    "http://localhost:8080/1.0/kb/invoices/dryRun?accountId=60a47168-7d36-4380-8ec7-e48cfe4e65d6&&targetDate=2022-02-28"   
+
+OR 
+
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
     -d '{ "dryRunType": "UPCOMING_INVOICE"}' \
     "http://localhost:8080/1.0/kb/invoices/dryRun?accountId=2ad52f53-85ae-408a-9879-32a7e59dd03d" 	
+    
+OR
+
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d '{ "dryRunType": "SUBSCRIPTION_ACTION","dryRunAction":"CHANGE","productName":"Standard", "productCategory":"BASE","billingPeriod":"MONTHLY","subscriptionId":"0b9efead-d5e4-40a9-8178-2286dee0fe48","bundleId":"	6ebcc573-c2c4-408a-b5c3-d6ae0dbae233"}' \
+    "http://localhost:8080/1.0/kb/invoices/dryRun?accountId=60a47168-7d36-4380-8ec7-e48cfe4e65d6"  
+    
+OR
+
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d '{ "dryRunType": "SUBSCRIPTION_ACTION","dryRunAction":"STOP_BILLING","subscriptionId":"0b9efead-d5e4-40a9-8178-2286dee0fe48","bundleId":"	6ebcc573-c2c4-408a-b5c3-d6ae0dbae233","effectiveDate":"2022-02-10"}' \
+    "http://localhost:8080/1.0/kb/invoices/dryRun?accountId=60a47168-7d36-4380-8ec7-e48cfe4e65d6"          
+    
 ```
+
 
 ```java
 import org.killbill.billing.client.api.gen.InvoiceApi;
@@ -2252,7 +2354,7 @@ UUID subscriptionId = null;
 UUID bundleId = null;
 LocalDate effectiveDate = null;
 BillingActionPolicy billingPolicy = null;
-List<PhasePriceOverride> priceOverrides = null;
+List<PhasePrice> priceOverrides = null;
 
 InvoiceDryRun dryRunArg = new InvoiceDryRun(dryRunType, 
                                             dryRunAction,
@@ -2269,7 +2371,7 @@ InvoiceDryRun dryRunArg = new InvoiceDryRun(dryRunType,
 
 
 UUID accountId = UUID.fromString("fe1a6f86-9ec5-4ac3-8d39-15f024cc8339");
-LocalDate targetDate = today.plus(1, ChronoUnit.DAYS);
+LocalDate targetDate = new LocalDate().plusDays(1);
 
 Invoice dryRunInvoice = invoiceApi.generateDryRunInvoice(dryRunArg, 
                                                          accountId, 
@@ -2314,7 +2416,86 @@ invoiceApi.generate_dry_run_invoice(body,
 # Subset of headers returned when specifying -v curl option
 < HTTP/1.1 201 Created
 < Content-Type: application/json
-< Content-Length: 0
+{
+  "amount": 60,
+  "currency": "USD",
+  "status": "COMMITTED",
+  "creditAdj": 0,
+  "refundAdj": 0,
+  "invoiceId": "cf4d1d3b-81cf-4054-96d7-bbdada2b9bc2",
+  "invoiceDate": "2022-01-31",
+  "targetDate": "2022-02-28",
+  "invoiceNumber": null,
+  "balance": 60,
+  "accountId": "60a47168-7d36-4380-8ec7-e48cfe4e65d6",
+  "bundleKeys": null,
+  "credits": null,
+  "items": [
+    {
+      "invoiceItemId": "8c453b1b-ba2c-4c05-894f-e02eb2ee834e",
+      "invoiceId": "cf4d1d3b-81cf-4054-96d7-bbdada2b9bc2",
+      "linkedInvoiceItemId": null,
+      "accountId": "60a47168-7d36-4380-8ec7-e48cfe4e65d6",
+      "childAccountId": null,
+      "bundleId": "6ebcc573-c2c4-408a-b5c3-d6ae0dbae233",
+      "subscriptionId": "0b9efead-d5e4-40a9-8178-2286dee0fe48",
+      "productName": "Standard",
+      "planName": "standard-monthly",
+      "phaseName": "standard-monthly-evergreen",
+      "usageName": null,
+      "prettyProductName": null,
+      "prettyPlanName": null,
+      "prettyPhaseName": null,
+      "prettyUsageName": null,
+      "itemType": "RECURRING",
+      "description": "standard-monthly-evergreen",
+      "startDate": "2022-02-28",
+      "endDate": "2022-03-31",
+      "amount": 30,
+      "rate": 30,
+      "currency": "USD",
+      "quantity": null,
+      "itemDetails": null,
+      "catalogEffectiveDate": "2019-01-01T00:00:00.000Z",
+      "childItems": null,
+      "auditLogs": []
+    },
+    {
+      "invoiceItemId": "c1e83a72-ef8e-42d4-93e1-b5f9390294b4",
+      "invoiceId": "cf4d1d3b-81cf-4054-96d7-bbdada2b9bc2",
+      "linkedInvoiceItemId": null,
+      "accountId": "60a47168-7d36-4380-8ec7-e48cfe4e65d6",
+      "childAccountId": null,
+      "bundleId": "c22936f6-5105-45b6-b418-ebba142a17aa",
+      "subscriptionId": "9cce25a5-6ef2-40fe-8718-ca22529fe9d8",
+      "productName": "Standard",
+      "planName": "standard-monthly",
+      "phaseName": "standard-monthly-evergreen",
+      "usageName": null,
+      "prettyProductName": null,
+      "prettyPlanName": null,
+      "prettyPhaseName": null,
+      "prettyUsageName": null,
+      "itemType": "RECURRING",
+      "description": "standard-monthly-evergreen",
+      "startDate": "2022-02-28",
+      "endDate": "2022-03-31",
+      "amount": 30,
+      "rate": 30,
+      "currency": "USD",
+      "quantity": null,
+      "itemDetails": null,
+      "catalogEffectiveDate": "2019-01-01T00:00:00.000Z",
+      "childItems": null,
+      "auditLogs": []
+    }
+  ],
+  "trackingIds": [],
+  "isParentInvoice": false,
+  "parentInvoiceId": null,
+  "parentAccountId": null,
+  "auditLogs": []
+}
 ```
 ```java
 class Invoice {
@@ -2447,19 +2628,23 @@ class Invoice {
 
 A [dry run resource object](https://killbill.github.io/slate/#invoice-invoicedryrun-resource). The **dryRunType** and sometimes **dryRunAction** must be specified. Other attributes depend on these:
 
-| **dryRunType** | **dryRunAction** | Other Required Attributes |
-| -------------- | ---------------- | ------------------------- |
-| TARGET_DATE   |   N/A  |  none |
-| UPCOMING_INVOICE | N/A | optional subscriptionId or bundleId |
-| SUBSCRIPTION_ACTION | START_BILLING or CHANGE | effectiveDate, productName, productCategory, priceListName, billingPeriod, billingPolicy |
-| SUBSCRIPTION_ACTION | STOP_BILLING | effectiveDate |
+| **dryRunType** | **dryRunAction** | **Other Required Attributes** |**Description**
+| -------------- | ---------------- | ------------------------- |------------------------|
+| TARGET_DATE   |   N/A  |  none | Preview the invoice as of the target date specified as a query parameter|
+| UPCOMING_INVOICE | N/A | Optional subscriptionId or bundleId (When specified, computes the upcoming invoice for the specified subscription/bundle. Note that if there are other subscriptions invoiced on the same day, these will also be included in the upcoming invoice) |Preview the next scheduled invoice. `targetDate` query parameter does not need to be specified, it is ignored even if specified|
+| SUBSCRIPTION_ACTION | START_BILLING or CHANGE | productName, productCategory,billingPeriod,subscriptionId,bundleId
+Other optional attributes - effectiveDate, priceListName, billingPolicy
+ |Preview the invoice that would be generated if the **START_BILING** or **CHANGE** action is taken|
+| SUBSCRIPTION_ACTION | STOP_BILLING | subscriptionId,bundleId
+Other optional attributes - effectiveDate
+ |Preview the invoice that would be generated if the **STOP_BILLING** action is taken|
 
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **accountId** | string | yes | none | Account id |
-| **targetDate** | string | * | none | Target date is the invoicing target date |
+| **targetDate** | string | No | current date | Target date is the invoicing target date |
     
 
 Note that for `SUBSCRIPTION_ACTION`, there are 2 dates to take into account:
@@ -2555,7 +2740,7 @@ invoiceApi.create_instant_payment(invoice_id,
 
 ```shell
 # Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
+< HTTP/1.1 201 No Content
 < Content-Type: application/json
 ```
 ```java
@@ -2605,7 +2790,7 @@ no content
 ```
 **Request Body**
 
-An invoicePayment resource object, with at least the following attributes: targetInvoiceId, accountId, and purchasedAmount.
+An invoicePayment resource object, with at least the following attributes: accountId, and purchasedAmount.
 
 **Query Parameters**
 
@@ -2833,7 +3018,7 @@ Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 **Response**
 
-If successful, returns a status code of 200 and an invoicePayment resource object.
+If successful, returns a status code of 200 and a List of InvoicePayment resource objects.
 
 
 ## Custom Fields
@@ -2948,7 +3133,9 @@ no content
 
 **Request Body**
 
-A JSON string representing the custom field object to be added.
+A list of [Custom Field](https://killbill.github.io/slate/?java#custom-field-custom-field-resource) objects. Each object should specify at least the the `name` and `value` attribute. For example:
+
+[ { "name": "CF1", "value": "123" } ]
 
 **Query Parameters**
 
@@ -2956,7 +3143,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a 201 status code. In addition, a Location header is returned with the URL to retrieve the custom fields associated with the invoice.
 
 ### Retrieve invoice custom fields
 
@@ -3065,11 +3252,11 @@ Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 **Response**
     
-If successful, returns a status code of 200 and a list of custom field objects
+If successful, returns a status code of 200 and a (possibly empty) list of custom field objects.
 
 ### Modify custom fields for an invoice
 
-Modify the custom fields associated with an account
+Modify the custom fields associated with an invoice. Note that it is not possible to modify the name of a custom field, it is only possible to modify its value.
 
 **HTTP Request** 
 
@@ -3105,8 +3292,11 @@ CustomField customFieldModified = new CustomField();
 customFieldModified.setCustomFieldId(customFieldsId);
 customFieldModified.setValue("NewValue");
 
+CustomFields customFields = new CustomFields();
+customFields.add(customFieldModified);
+
 invoiceApi.modifyInvoiceCustomFields(invoiceId, 
-                                     customFieldModified, 
+                                     customFields, 
                                      requestOptions);
 ```
 
@@ -3156,6 +3346,11 @@ no content
 
 **Requst Body**
 
+
+A list of [Custom Field](https://killbill.github.io/slate/?java#custom-field-custom-field-resource) objects. Each object should specify at least the the `customFieldId` and `value` attribute. For example:
+
+[ { "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f", "value": "123" } ]
+
 A JSON string representing a list of custom fields to substitute for the existing ones.
 
 
@@ -3198,9 +3393,10 @@ protected InvoiceApi invoiceApi;
 UUID invoiceId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
 
 UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+List<UUID> customFieldsList = ImmutableList.<UUID>of(customFieldsId);
 
 invoiceApi.deleteInvoiceCustomFields(invoiceId, 
-                                     customFieldsId, 
+                                     customFieldsList, 
                                      requestOptions);
 ```
 
@@ -3247,7 +3443,7 @@ no content
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **customField** | string | yes | none | Comma separated list of custom field object IDs that should be deleted. |
+| **customField** | string | yes | none | Custom field object ID that should be deleted. Multiple custom fields can be deleted by specifying a separate **customField** parameter corresponding to each field |
 
 **Response**
 
@@ -3362,13 +3558,17 @@ class Tag {
 no content
 ```
 
+**Request Body**
+
+A JSON array containing one or more tag definition ids to be added as tags.
+
 **Query Parameters**
 
 None.
 
 **Returns**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a 201 status code. In addition, a Location header is returned giving the URL to retrieve the tags associated with the invoice.
 
 ### Retrieve invoice tags
 
@@ -3571,7 +3771,7 @@ no content
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ------------ |
-| **tagDef** | array of string | yes | none | List of tag definition IDs identifying the tags that should be removed. |
+| **tagDef** | array of string | yes | none | A tag definition ID identifying the tag that should be removed. Multiple tags can be deleted by specifying a separate tagDef parameter corresponding to each tag. |
 
 **Response**
 
@@ -3579,13 +3779,13 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Translation
 
-These endpoints support translation of invoices to a different language when required by the customer. Refer to our [Internationalization manual](http://docs.killbill.io/latest/internationalization.html#_invoice_templates) for an introduction.
+These endpoints support translation of invoices to a different language when required by the customer. Refer to our [Internationalization manual](https://docs.killbill.io/latest/internationalization.html#_language_translations) for an introduction.
 
 Translation replaces words and phrases in an invoice or catalog with the equivalent words or phrases in a different language. A tenant may upload translation tables for specific locales (e.g., locale `fr_FR` for French). When a customer accesses an invoice, that invoice will be generated from the system data, formatted using the appropriate template (see below), and translated according to the locale of the customer's account, if a translation table exists for that locale.
 
 ### Upload the catalog translation for the tenant
 
-Uploads a catalog transaltion table that will be saved under a specified locale. The translation table gives a translation for specific names in the current catalog.
+Uploads a catalog translation table that will be saved under a specified locale. The translation table gives a translation for specific names in the current catalog.
 
 **HTTP Request** 
 
@@ -3604,12 +3804,16 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d '"sports-monthly = Voiture Sport"' \
+    -d '"sports-monthly = Voiture Sport
+silver-monthly = plan d'argent mensuel"' \
     "http://localhost:8080/1.0/kb/invoices/catalogTranslation/fr_FR"
 ```
 
 ```java
-TODO
+String locale = "en_US";
+String body = "gold-monthly=plan";
+Boolean deleteIfExists = true;
+invoiceApi.uploadCatalogTranslation(locale, body, deleteIfExists,requestOptions);
 ```
 
 ```ruby
@@ -3656,11 +3860,12 @@ TODO
 ```python
 no content
 ```
-**Response Body**
+**Request Body**
 
 A table of translation items. For example:
 
 gold-monthly = plan Or mensuel
+
 silver-monthly = plan d'argent mensuel
 
 Note that this table does not use a special syntax such as JSON. The equals sign is the only punctuation. There are no brackets or quotation marks.
@@ -3675,7 +3880,7 @@ The names translated would be primarily plan names, product names, and other ite
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a status code of 201 and a Location header which can be used to retrieve the catalog translation.
 
 ### Retrieve the catalog translation for the tenant
 
@@ -3697,7 +3902,8 @@ curl -v \
 ```
 
 ```java
-TODO
+String locale = "en_US";
+String translation = invoiceApi.getCatalogTranslation(locale, requestOptions);
 ```
 
 ```ruby
@@ -3722,7 +3928,7 @@ invoiceApi.get_catalog_translation(locale, api_key, api_secret)
 "sports-monthly = Voiture Sport"
 ```
 ```java
-TODO
+"sports-monthly = Voiture Sport"
 ```
 ```ruby
 "sports-monthly = Voiture Sport"
@@ -3763,12 +3969,17 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d "sports-monthly = Voiture Sport"
+    -d "invoiceTitle=FACTURE
+invoiceDate=Date:
+invoiceNumber=Facture #" \
     "http://localhost:8080/1.0/kb/invoices/translation/fr_FR"
 ```
 
 ```java
-TODO
+String locale = "en_US";
+String body = "gold-monthly=plan";
+Boolean deleteIfExists = true;
+String translation = invoiceApi.uploadInvoiceTranslation(locale, body, deleteIfExists,requestOptions);
 ```
 
 ```ruby
@@ -3833,14 +4044,18 @@ processedPaymentRate=Le taux de conversion est
 no content
 ```
 
-**Response Body**
+**Request Body**
 
 A table of translation items. For example:
 
 invoiceTitle=FACTURE
+
 invoiceDate=Date:
+
 invoiceNumber=Facture #
+
 invoiceAmount=Montant à payer
+
 
 Note that this table does not use a special syntax such as JSON. The equals sign is the only punctuation. There are no brackets or quotation marks.
 
@@ -3853,7 +4068,7 @@ Note that this table does not use a special syntax such as JSON. The equals sign
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a status code of 201 and a Location header which can be used to retrieve the invoice translation.
 
 ### Retrieve the invoice translation for the tenant
 
@@ -3876,7 +4091,9 @@ curl -v \
 ```
 
 ```java
-TODO
+String locale = "en_US";
+String translation = invoiceApi.getInvoiceTranslation(locale, requestOptions);
+
 ```
 
 ```ruby
@@ -3902,7 +4119,7 @@ invoiceApi.get_invoice_translation(locale, api_key, api_secret)
 sports-monthly = Voiture Sport
 ```
 ```java 
-TODO
+sports-monthly = Voiture Sport
 ```
 ```ruby
 invoiceTitle=FACTURE
@@ -3943,7 +4160,7 @@ If successful, returns a status code of 200 and the translation table. A status 
 
 ## Template
 
-A template is a document based on [**mustache**](https://mustache.github.io/) that provides the layout information for invoices. The template will be trnslated according to the translation table, if any, and the invoice data will be filled in by the Kill Bill system. Refer to our [Internationalization manual](http://docs.killbill.io/latest/internationalization.html#_invoice_templates) for an introduction.
+A template is a document based on [**mustache**](https://mustache.github.io/) that provides the layout information for invoices. The template will be trnslated according to the translation table, if any, and the invoice data will be filled in by the Kill Bill system. Refer to our [Internationalization manual](https://docs.killbill.io/latest/internationalization.html#_language_translations) for an introduction.
 
 ### Upload the manualPay invoice template for the tenant
 
@@ -3971,7 +4188,10 @@ curl -v \
 ```
 
 ```java
-TODO
+String body = "Test HTML String";
+Boolean deleteIfExists = true;
+String template = invoiceApi.uploadInvoiceMPTemplate(body, deleteIfExists,requestOptions);
+
 ```
 
 ```ruby
@@ -4007,7 +4227,7 @@ invoiceApi.upload_invoice_mp_template(body,
 < Content-Length: 0
 ```
 ```java 
-
+Some HTML String
 ```
 ```ruby
 "
@@ -4201,11 +4421,12 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: text/html" \
-    "http://localhost:8080/1.0/kb/invoices/manualPayTemplate/%257Blocale%3A.*%257D"	
+    "http://localhost:8080/1.0/kb/invoices/manualPayTemplate/"	
 ```
 
 ```java
-TODO
+String locale = "fr_FR";
+String template = invoiceApi.getInvoiceMPTemplate(locale, requestOptions);
 ```
 
 ```ruby
@@ -4231,7 +4452,7 @@ invoiceApi.get_invoice_mp_template(api_key, api_secret)
 "Some_HTML_String"
 ```
 ```java 
-TODO
+Some_HTML_String
 ```
 ```ruby
 "
@@ -4585,7 +4806,9 @@ curl -v \
 ```
 
 ```java
-TODO
+String body = "Test HTML String";
+Boolean deleteIfExists = true;
+String template = invoiceApi.uploadInvoiceTemplate(body, deleteIfExists,requestOptions);
 ```
 
 ```ruby
@@ -4621,7 +4844,7 @@ invoiceApi.upload_invoice_template(body,
 < Content-Length: 0
 ```
 ```java
-TODO
+Some HTML String
 ```
 ```ruby
 "
@@ -4821,7 +5044,7 @@ curl -v \
 ```
 
 ```java
-TODO
+String template = invoiceApi.getInvoiceTemplate(requestOptions);
 ```
 
 ```ruby
@@ -4847,7 +5070,7 @@ invoiceApi.get_invoice_template(api_key, api_secret)
 Some_HTML_String
 ```
 ```java 
-TODO
+Some_HTML_String
 ```
 ```ruby
 "
@@ -5221,6 +5444,13 @@ curl \
     -H "Accept: application/json" \
     "http://127.0.0.1:8080/1.0/kb/invoices/d456a9b3-7e48-4f56-b387-1d65a492e75e/auditLogsWithHistory"
 ```
+
+```java
+UUID invoiceId = UUID.fromString("8f6f3405-249f-4b66-a0c2-ee84e884e81d");
+AuditLogs logs = invoiceApi.getInvoiceAuditLogsWithHistory(invoiceId, requestOptions);
+
+```
+
 > Example Response:
 
 ```shell
@@ -5264,6 +5494,20 @@ curl \
   }
 ]
 
+```
+
+```java
+[class AuditLog {
+    changeType: INSERT
+    changeDate: 2022-01-31T00:10:47.000Z
+    objectType: INVOICE
+    objectId: 8f6f3405-249f-4b66-a0c2-ee84e884e81d
+    changedBy: SubscriptionBaseTransition
+    reasonCode: null
+    comments: null
+    userToken: a6bb5711-b9b3-4161-a7c1-69f5c3d574c1
+    history: {id=null, createdDate=2022-01-31T00:10:47.000Z, updatedDate=null, recordId=3149, accountRecordId=562, tenantRecordId=1, accountId=60a47168-7d36-4380-8ec7-e48cfe4e65d6, invoiceNumber=null, invoiceDate=2022-01-31, targetDate=2022-01-31, currency=USD, migrated=false, status=COMMITTED, invoiceItems=[], invoicePayments=[], trackingIds=[], processedCurrency=USD, parentInvoice=null, isWrittenOff=false, isRepaired=false, writtenOff=false, repaired=false, tableName=INVOICES, historyTableName=INVOICE_HISTORY}
+}]
 ```
 
 **Query Parameters**
@@ -5797,6 +6041,7 @@ Long limit = 1L;
 invoiceApi.searchInvoices(searchKey, 
                           offset,
                           limit, 
+                          AuditLevel.NONE, 
                           requestOptions);
 ```
 
