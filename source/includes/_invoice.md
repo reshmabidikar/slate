@@ -2149,7 +2149,7 @@ no content
 
 **Request Body**
 
-An invoice item resource object with at least `invoiceitemId`, `invoiceId`, and `amount` attribute. 
+An invoice item resource object with at least `invoiceItemId`, `invoiceId`, and `amount` attributes. 
 
 **Query Parameters**
 
@@ -2169,8 +2169,6 @@ Delete a Credit Balance Adjust (`CBA_ADJ`) invoice item. There are some limitati
 1. Deleting a positive `CBA_ADJ` (credit generation), may lead the system to reclaim portion of the used credit, possibly leaving some invoices with a balance. Example:
 
 Given an invoice, I1,  where user added some credit ($12), we would see the following items: {`CREDIT_ADJ`: -12, `CBA_ADJ`: +12}. Given another invoice, I2, where the system invoiced for a recurring subscription, and where some of this credit was consumed, we would see the following items: {`RECURRING`: +10, `CBA_ADJ`: -10}. Deleting the `CBA_ADJ` from I1, would lead to the following resulting invoices:  I1 {`CREDIT_ADJ`: 0, `CBA_ADJ`: 0} and I2 {`RECURRING`: +10, `CBA_ADJ`: 0}. The system zeroed-out the credit generation and the part that was used, and as a result I2 would be left with a balance of +10.
-
-
 2. System generated credit
 
 In an in-advanced scenario where the system first invoiced for a recurring subscription ($20), and then repaired ($-8) for instance as a result of an early cancelation, we would have the following invoices: I1 {`RECURRING`: +20} and I2 {`REPAIR_ADJ`: -8, `CBA_ADJ`: +8}. Attempting to delete the `CBA_ADJ` on I2 would fail as the generation of credit was system generated, i.e it happened as a result of a subscription change.
@@ -2195,7 +2193,10 @@ curl -v \
 ```
 
 ```java
-TODO
+UUID invoiceId = UUID.fromString("c0c2d79d-8b2e-4830-a05b-b9a43b38482c");
+UUID invoiceItemId = UUID.fromString("29a8933a-2e5c-409c-97be-7a5964dbf708");
+UUID accountId = UUID.fromString("41e61312-cfb1-4300-afc7-64bc5cb29e85");
+invoiceApi.deleteCBA(invoiceId, invoiceItemId, accountId, requestOptions);
 ```
 
 ```ruby
@@ -2232,7 +2233,7 @@ invoiceApi.delete_cba(invoice_id,
 < Content-Type: application/json
 ```
 ```java 
-TODO
+no content
 ```
 ```ruby
 no content
@@ -2289,7 +2290,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '{ "dryRunType": "TARGET_DATE"}' \
-    "http://localhost:8080/1.0/kb/invoices/dryRun?accountId=60a47168-7d36-4380-8ec7-e48cfe4e65d6&&targetDate=2022-02-28"   
+    "http://localhost:8080/1.0/kb/invoices/dryRun?accountId=60a47168-7d36-4380-8ec7-e48cfe4e65d6&targetDate=2022-02-28"   
 
 OR 
 
@@ -2628,16 +2629,12 @@ class Invoice {
 
 A [dry run resource object](https://killbill.github.io/slate/#invoice-invoicedryrun-resource). The **dryRunType** and sometimes **dryRunAction** must be specified. Other attributes depend on these:
 
-| **dryRunType** | **dryRunAction** | **Other Required Attributes** |**Description**
-| -------------- | ---------------- | ------------------------- |------------------------|
-| TARGET_DATE   |   N/A  |  none | Preview the invoice as of the target date specified as a query parameter|
-| UPCOMING_INVOICE | N/A | Optional subscriptionId or bundleId (When specified, computes the upcoming invoice for the specified subscription/bundle. Note that if there are other subscriptions invoiced on the same day, these will also be included in the upcoming invoice) |Preview the next scheduled invoice. `targetDate` query parameter does not need to be specified, it is ignored even if specified|
-| SUBSCRIPTION_ACTION | START_BILLING or CHANGE | productName, productCategory,billingPeriod,subscriptionId,bundleId
-Other optional attributes - effectiveDate, priceListName, billingPolicy
- |Preview the invoice that would be generated if the **START_BILING** or **CHANGE** action is taken|
-| SUBSCRIPTION_ACTION | STOP_BILLING | subscriptionId,bundleId
-Other optional attributes - effectiveDate
- |Preview the invoice that would be generated if the **STOP_BILLING** action is taken|
+| **dryRunType** | **dryRunAction** | **Other Required Attributes** |**Other Optional Attributes** |**Description**
+|--|--|--|--|--|
+| TARGET_DATE   |   N/A  |  none |none |Preview the invoice as of the target date specified as a query parameter|
+| UPCOMING_INVOICE | N/A | none |subscriptionId or bundleId (When specified, computes the upcoming invoice for the specified subscription/bundle. Note that if there are other subscriptions invoiced on the same day, these will also be included in the upcoming invoice) |Preview the next scheduled invoice. `targetDate` query parameter does not need to be specified, it is ignored even if specified|
+| SUBSCRIPTION_ACTION | START_BILLING or CHANGE | productName, productCategory, billingPeriod, subscriptionId, bundleId |effectiveDate, priceListName, billingPolicy|Preview the invoice that would be generated if the **START_BILING** or **CHANGE** action is taken|
+| SUBSCRIPTION_ACTION | STOP_BILLING | subscriptionId, bundleId|  effectiveDate |Preview the invoice that would be generated if the **STOP_BILLING** action is taken|
 
 **Query Parameters**
 
@@ -4160,7 +4157,7 @@ If successful, returns a status code of 200 and the translation table. A status 
 
 ## Template
 
-A template is a document based on [**mustache**](https://mustache.github.io/) that provides the layout information for invoices. The template will be trnslated according to the translation table, if any, and the invoice data will be filled in by the Kill Bill system. Refer to our [Internationalization manual](https://docs.killbill.io/latest/internationalization.html#_language_translations) for an introduction.
+A template is a document based on [**mustache**](https://mustache.github.io/) that provides the layout information for invoices. The template will be translated according to the translation table, if any, and the invoice data will be filled in by the Kill Bill system. Refer to our [Internationalization manual](https://docs.killbill.io/latest/internationalization.html#_language_translations) for an introduction.
 
 ### Upload the manualPay invoice template for the tenant
 
@@ -5418,6 +5415,8 @@ Invoice transaltion example (German):
     invoiceBalance = Rechnungssaldo
     
 3. Each account has a designated locale. When an invoice is retrieved for an account, the appropriate translation tables, if any, are used to translate the invoice.
+
+You can refer to the (Invoice Templates Tutorial)[https://docs.killbill.io/latest/invoice_templates.html] to know more about the how this works.
 
 
 ## Audit Logs
