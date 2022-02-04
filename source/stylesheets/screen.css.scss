@@ -663,6 +663,20 @@ header .lang-selector {
   padding: 0 15px;
 }
 
+.toc-wrapper .search .algolia-autocomplete {
+  width: 100%;
+}
+
+.toc-wrapper .search .algolia-autocomplete .ds-dropdown-menu {
+  background: #fff;
+  padding: 10px;
+}
+
+.toc-wrapper .search .algolia-autocomplete .ds-dropdown-menu a {
+  color: #167BB7;
+  margin-bottom: 10px;
+}
+
 .toc-wrapper .search  input {
   width: 100%;
   padding: 9px 9px 9px 25px;
