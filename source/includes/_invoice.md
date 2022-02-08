@@ -2169,6 +2169,7 @@ Delete a Credit Balance Adjust (`CBA_ADJ`) invoice item. There are some limitati
 1. Deleting a positive `CBA_ADJ` (credit generation), may lead the system to reclaim portion of the used credit, possibly leaving some invoices with a balance. Example:
 
 Given an invoice, I1,  where user added some credit ($12), we would see the following items: {`CREDIT_ADJ`: -12, `CBA_ADJ`: +12}. Given another invoice, I2, where the system invoiced for a recurring subscription, and where some of this credit was consumed, we would see the following items: {`RECURRING`: +10, `CBA_ADJ`: -10}. Deleting the `CBA_ADJ` from I1, would lead to the following resulting invoices:  I1 {`CREDIT_ADJ`: 0, `CBA_ADJ`: 0} and I2 {`RECURRING`: +10, `CBA_ADJ`: 0}. The system zeroed-out the credit generation and the part that was used, and as a result I2 would be left with a balance of +10.
+
 2. System generated credit
 
 In an in-advanced scenario where the system first invoiced for a recurring subscription ($20), and then repaired ($-8) for instance as a result of an early cancelation, we would have the following invoices: I1 {`RECURRING`: +20} and I2 {`REPAIR_ADJ`: -8, `CBA_ADJ`: +8}. Attempting to delete the `CBA_ADJ` on I2 would fail as the generation of credit was system generated, i.e it happened as a result of a subscription change.
@@ -2268,8 +2269,10 @@ A dry run is based on a [dry run resource object](https://killbill.github.io/sla
 ### Generate a dry run invoice
 
 This endpoint creates a dry-run invoice. Based on its parameters you can obtain answers to the different questions listed above.
-Note: This endpoint is rather expensive, as it creates a full invoice run for the designated account, but no invoice will be created or persisted
-in the system.
+
+| ![note icon](https://github.com/killbill/killbill-docs/raw/v3/userguide/assets/img/note-icon.png)%7C **Note:** This endpoint is rather expensive, as it creates a full invoice run for the designated account, but no invoice will be created or persisted
+in the system. |
+
 
 
 **HTTP Request** 
