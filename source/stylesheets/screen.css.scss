@@ -608,11 +608,12 @@ header {
 
 .logo {
   display: inline-block;
-  padding: 0 15px;
+  padding: 0 14%;
 }
 
 .logo img {
-  max-width: 100%;
+  max-width: 215px;
+  width: 100%;
 }
 
 header .lang-selector {
