@@ -70,6 +70,8 @@
         return r.score > 0.0001;
       });
 
+      $('.toc-wrapper .search .remove-sign').show();
+
       if (results.length) {
         searchResults.empty();
         $.each(results, function (index, result) {
@@ -84,7 +86,14 @@
     } else {
       unhighlight();
       searchResults.removeClass('visible');
+
+      $('.toc-wrapper .search .remove-sign').hide();
     }
+
+    $('.toc-wrapper .search .remove-sign').on('click', function() {
+      searchInput.value = ''
+      searchResults.removeClass('visible');
+    });
   }
 
   function highlight() {

@@ -60,64 +60,9 @@ under the License.
         <%= image_tag('navbar.png') %>
       </span>
     </a>
-    <div class="toc-wrapper">
-      <%= image_tag "logo.png", class: 'logo' %>
-      <% if language_tabs.any? %>
-        <div class="lang-selector">
-          <% language_tabs.each do |lang| %>
-            <% if lang.is_a? Hash %>
-              <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
-            <% else %>
-              <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
-      <% if current_page.data.search %>
-        <div class="search">
-          <input type="text" class="search" id="input-search" placeholder="Search">
-        </div>
-        <ul class="search-results"></ul>
-      <% end %>
-      <div id="toc" class="toc-list-h1">
-        <% toc_data(page_content).each do |h1| %>
-          <li>
-            <a href="#<%= h1[:id] %>" class="toc-h1 toc-link" data-title="<%= h1[:content] %>"><%= h1[:content] %></a>
-            <% if h1[:children].length > 0 %>
-              <ul class="toc-list-h2">
-                <% h1[:children].each do |h2| %>
-                  <li>
-                    <a href="#<%= h2[:id] %>" class="toc-h2 toc-link" data-title="<%= h2[:content] %>"><%= h2[:content] %></a>
-                    <% if h2[:children].length > 0 %>
-                        <ul class="toc-list-h3">
-                          <% h2[:children].each do |h3| %>
-                              <li>
-                                <a href="#<%= h3[:id] %>" class="toc-h3 toc-link" data-title="<%= h1[:content] %>"><%= h3[:content] %></a>
-                              </li>
-                          <% end %>
-                        </ul>
-                    <% end %>
-                  </li>
-                <% end %>
-              </ul>
-            <% end %>
-          </li>
-        <% end %>
-      </div>
-      <% if current_page.data.toc_footers %>
-        <ul class="toc-footer">
-          <% current_page.data.toc_footers.each do |footer| %>
-            <li><%= footer %></li>
-          <% end %>
-        </ul>
-      <% end %>
-    </div>
-    <div class="page-wrapper">
-      <div class="dark-box"></div>
-      <div class="content">
-        <%= page_content %>
-      </div>
-      <div class="dark-box">
+    <div class="main-wrapper">
+        <div class="toc-wrapper">
+        <a href="https://killbill.github.io/slate" class="logo"><%= image_tag "logo.png" %></a>
         <% if language_tabs.any? %>
           <div class="lang-selector">
             <% language_tabs.each do |lang| %>
@@ -129,7 +74,75 @@ under the License.
             <% end %>
           </div>
         <% end %>
+        <% if current_page.data.search %>
+        <div class="search">
+            <div class="search-form-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path fill="#9CA3AF" fill-rule="evenodd" d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM2 8a6 6 0 1 1 10.9 3.48l4.8 4.81a1 1 0 0 1-1.4 1.42l-4.82-4.82A6 6 0 0 1 2 8Z" clip-rule="evenodd"></path>
+              </svg>
+            </div>  
+            <input type="text" class="search" id="input-search" placeholder="Search">
+            <div class="remove-sign">
+            <%= image_tag "close.png" %>
+            </div>
+          </div>
+          <ul class="search-results"></ul>
+        <% end %>
+        <div id="toc" class="toc-list-h1">
+          <% toc_data(page_content).each do |h1| %>
+            <li>
+              <a href="#<%= h1[:id] %>" class="toc-h1 toc-link" data-title="<%= h1[:content] %>"><%= h1[:content] %></a>
+              <% if h1[:children].length > 0 %>
+                <ul class="toc-list-h2">
+                  <% h1[:children].each do |h2| %>
+                    <li>
+                      <a href="#<%= h2[:id] %>" class="toc-h2 toc-link" data-title="<%= h2[:content] %>"><%= h2[:content] %></a>
+                      <% if h2[:children].length > 0 %>
+                          <ul class="toc-list-h3">
+                            <% h2[:children].each do |h3| %>
+                                <li>
+                                  <a href="#<%= h3[:id] %>" class="toc-h3 toc-link" data-title="<%= h1[:content] %>"><%= h3[:content] %></a>
+                                </li>
+                            <% end %>
+                          </ul>
+                      <% end %>
+                    </li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </li>
+          <% end %>
+        </div>
+        <% if current_page.data.toc_footers %>
+          <ul class="toc-footer">
+            <% current_page.data.toc_footers.each do |footer| %>
+              <li><%= footer %></li>
+            <% end %>
+          </ul>
+        <% end %>
+        <a class="doclink" href="mailto:support@killbill.io">Report a doc problem </a>
+      </div>
+      <div class="page-wrapper">
+        <div class="dark-box"></div>
+        <div class="content">
+          <%= page_content %>
+        </div>
+        <div class="dark-box">
+          <% if language_tabs.any? %>
+            <div class="lang-selector">
+              <% language_tabs.each do |lang| %>
+                <% if lang.is_a? Hash %>
+                  <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
+                <% else %>
+                  <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </body>
+  <script src='https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js'></script>	
+  <script>docsearch({apiKey: 'd90e9251686de118832e4e00d6a548d2',indexName: 'killbill',inputSelector: '#input-search', debug: false, algoliaOptions: {hitsPerPage: 10}});</script>
 </html>
