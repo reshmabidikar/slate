@@ -19,7 +19,7 @@ The `Subscription` resource represents a subscription. The attributes contained 
 | ---- | -----| -------- | ------------ |
 | **accountId** | string | system | UUID for the account |
 | **bundleId** | string | system | UUID for the bundle |
-| **sunscriptiontId** | string | system | UUID for this subscription |
+| **subscriptionId** | string | system | UUID for this subscription |
 | **externalKey** | string | user | Optional external key for the subscription |
 | **bundleExternalKey** | string | user | Optional external key for the bundle |
 | **startDate** | date | user | The date the service (entitlement) starts |
