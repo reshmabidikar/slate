@@ -355,6 +355,7 @@ no content
 A subscription resource object specifying `accountId` and either the `planName` or a combination of `productName`, `productCategory`,`billingPeriod` and `priceList`. 
 
 It can also include the following optional fields:
+
 * `phaseType` - Target phase type. Specifying this field causes the subscription to start with this phase.
 * `externalKey` - External key corresponding to the subscription.
 * `billCycleDayLocal` - Per-subscription BCD. Specifying this value allows realigning the billing with the specified date. 
@@ -969,6 +970,7 @@ no content
 A subscription resource object corresponding to the base subscription and zero or more subscription resource objects corresponding to add-on subscriptions need to be specified. Alternatively, only a list of add-on subscription resource objects may be specified along with the base subscription bundle id. Each subscription resource object needs to include `accountId` and either the `planName` or a combination of `productName`, `productCategory`,`billingPeriod` and `priceList`.
 
 In addition, each subscription resource can also include the following optional fields:
+
 * `phaseType` - Target phase type. Specifying this field causes the subscription to start with this phase.
 * `externalKey` - External key corresponding to the subscription.
 * `billCycleDayLocal` - Per-subscription BCD. Specifying this value allows realigning the billing with the specified date. 
@@ -1700,6 +1702,7 @@ One or more subscription resource object corresponding to the base subscriptions
 
 
 In addition, each subscription resource can also include the following optional fields:
+
 * `phaseType` - Target phase type. Specifying this field causes the subscription to start with this phase.
 * `externalKey` - External key corresponding to the subscription.
 * `billCycleDayLocal` - Per-subscription BCD. Specifying this value allows realigning the billing with the specified date. 

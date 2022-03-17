@@ -4,6 +4,21 @@ A tag is a label that may be attached to almost any resource. There are two cate
 
 Kill Bill provides a small set of predefined `System Tags` that affect the behavior of the system. For example, `AUTO_PAY_OFF` prevents the system from initiating automatic payment of an invoice. `System Tags` may be attached only to specific resource types, and most (including `AUTO_PAY_OFF`) apply only to `Accounts`.
 
+The following **system** tags have been defined:
+
+| Tag | tagDefinitionId | Object type | Description |
+| --- | --------------- | ----------- | ----------- |
+| `AUTO_PAY_OFF` | `00000000-0000-0000-0000-000000000001` | `ACCOUNT` | Suspends payments until removed. |
+| `AUTO_INVOICING_OFF` | `00000000-0000-0000-0000-000000000002` | `ACCOUNT` | Suspends invoicing until removed. |
+| `OVERDUE_ENFORCEMENT_OFF` | `00000000-0000-0000-0000-000000000003` | `ACCOUNT` | Suspends overdue enforcement behaviour until removed. |
+| `WRITTEN_OFF` | `00000000-0000-0000-0000-000000000004` | `INVOICE` | Indicates that an invoice is written off. This has no effect on billing or payment. |
+| `MANUAL_PAY` | `00000000-0000-0000-0000-000000000005` | `ACCOUNT` | Indicates that Killbill doesn't process payments for this account. That is, the account uses external payments only. |
+| `TEST` | `00000000-0000-0000-0000-000000000006` | `ACCOUNT` | Indicates that this is a test account. |
+| `PARTNER` | `00000000-0000-0000-0000-000000000007` | `ACCOUNT` | Indicates that this is a partner account. |
+| `AUTO_INVOICING_DRAFT` | `00000000-0000-0000-0000-000000000008` | `ACCOUNT` | Generate account invoices in DRAFT mode. |
+| `AUTO_INVOICING_REUSE_DRAFT` | `00000000-0000-0000-0000-000000000009` | `ACCOUNT` | Use existing draft invoice if exists. |
+
+
 `User Tags` are defined by the user for any desired purpose and are not interpreted by the system. `User Tags` must be defined using the `Tag Definition` APIs below. These tags may be attached to almost any resource type.
 
 This section provides APIs to list all tags, search for a specific tag, and retrieve tag audit logs. In addition, each resource provides APIs for the applicable CRUD operations: creation, retrieval, and deletion. 
