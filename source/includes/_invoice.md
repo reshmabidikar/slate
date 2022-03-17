@@ -2270,8 +2270,8 @@ A dry run is based on a [dry run resource object](https://killbill.github.io/sla
 
 This endpoint creates a dry-run invoice. Based on its parameters you can obtain answers to the different questions listed above.
 
-| ![note icon](https://github.com/killbill/killbill-docs/raw/v3/userguide/assets/img/note-icon.png)%7C **Note:** This endpoint is rather expensive, as it creates a full invoice run for the designated account, but no invoice will be created or persisted
-in the system. |
+Note: This endpoint is rather expensive, as it creates a full invoice run for the designated account, but no invoice will be created or persisted
+in the system.
 
 
 
@@ -2636,7 +2636,7 @@ A [dry run resource object](https://killbill.github.io/slate/#invoice-invoicedry
 |--|--|--|--|--|
 | TARGET_DATE   |   N/A  |  none |none |Preview the invoice as of the target date specified as a query parameter|
 | UPCOMING_INVOICE | N/A | none |subscriptionId or bundleId (When specified, computes the upcoming invoice for the specified subscription/bundle. Note that if there are other subscriptions invoiced on the same day, these will also be included in the upcoming invoice) |Preview the next scheduled invoice. `targetDate` query parameter does not need to be specified, it is ignored even if specified|
-| SUBSCRIPTION_ACTION | START_BILLING or CHANGE | productName, productCategory, billingPeriod, subscriptionId, bundleId |effectiveDate, priceListName, billingPolicy|Preview the invoice that would be generated if the **START_BILING** or **CHANGE** action is taken|
+| SUBSCRIPTION_ACTION | START_BILLING or CHANGE | productName, productCategory, billingPeriod, subscriptionId, bundleId |effectiveDate, priceListName, billingPolicy|Preview the invoice that would be generated if the **START_BILLING** or **CHANGE** action is taken|
 | SUBSCRIPTION_ACTION | STOP_BILLING | subscriptionId, bundleId|  effectiveDate |Preview the invoice that would be generated if the **STOP_BILLING** action is taken|
 
 **Query Parameters**
