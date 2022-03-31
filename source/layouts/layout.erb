@@ -52,72 +52,24 @@ under the License.
       gtag('config', 'UA-32705710-4');
     </script>
   </head>
-
   <body class="<%= page_classes %>" data-languages="<%=h language_tabs.map{ |lang| lang.is_a?(Hash) ? lang.keys.first : lang }.to_json %>">
+    <div class="loader-wrapper">
+      <div id="loading"></div>           
+    </div>
+    <script>
+      $(window).on('load',function(){
+        $('.loader-wrapper').hide();
+      });
+    </script>
     <a href="#" id="nav-button">
       <span>
         NAV
         <%= image_tag('navbar.png') %>
       </span>
     </a>
-    <div class="toc-wrapper">
-      <%= image_tag "logo.png", class: 'logo' %>
-      <% if language_tabs.any? %>
-        <div class="lang-selector">
-          <% language_tabs.each do |lang| %>
-            <% if lang.is_a? Hash %>
-              <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
-            <% else %>
-              <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
-            <% end %>
-          <% end %>
-        </div>
-      <% end %>
-      <% if current_page.data.search %>
-        <div class="search">
-          <input type="text" class="search" id="input-search" placeholder="Search">
-        </div>
-        <ul class="search-results"></ul>
-      <% end %>
-      <div id="toc" class="toc-list-h1">
-        <% toc_data(page_content).each do |h1| %>
-          <li>
-            <a href="#<%= h1[:id] %>" class="toc-h1 toc-link" data-title="<%= h1[:content] %>"><%= h1[:content] %></a>
-            <% if h1[:children].length > 0 %>
-              <ul class="toc-list-h2">
-                <% h1[:children].each do |h2| %>
-                  <li>
-                    <a href="#<%= h2[:id] %>" class="toc-h2 toc-link" data-title="<%= h2[:content] %>"><%= h2[:content] %></a>
-                    <% if h2[:children].length > 0 %>
-                        <ul class="toc-list-h3">
-                          <% h2[:children].each do |h3| %>
-                              <li>
-                                <a href="#<%= h3[:id] %>" class="toc-h3 toc-link" data-title="<%= h1[:content] %>"><%= h3[:content] %></a>
-                              </li>
-                          <% end %>
-                        </ul>
-                    <% end %>
-                  </li>
-                <% end %>
-              </ul>
-            <% end %>
-          </li>
-        <% end %>
-      </div>
-      <% if current_page.data.toc_footers %>
-        <ul class="toc-footer">
-          <% current_page.data.toc_footers.each do |footer| %>
-            <li><%= footer %></li>
-          <% end %>
-        </ul>
-      <% end %>
-    </div>
-    <div class="page-wrapper">
-      <div class="dark-box"></div>
-      <div class="content">
-        <%= page_content %>
-      </div>
-      <div class="dark-box">
+    <div class="main-wrapper">
+        <div class="toc-wrapper">
+        <a href="https://killbill.github.io/slate" class="logo"><%= image_tag "logo.png" %></a>
         <% if language_tabs.any? %>
           <div class="lang-selector">
             <% language_tabs.each do |lang| %>
@@ -129,7 +81,102 @@ under the License.
             <% end %>
           </div>
         <% end %>
+        <% if current_page.data.search %>
+        <div class="search">
+            <div class="search-form-icon">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path fill="#9CA3AF" fill-rule="evenodd" d="M8 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8ZM2 8a6 6 0 1 1 10.9 3.48l4.8 4.81a1 1 0 0 1-1.4 1.42l-4.82-4.82A6 6 0 0 1 2 8Z" clip-rule="evenodd"></path>
+              </svg>
+            </div>  
+            <input type="text" class="search" id="input-search" placeholder="Search">
+            <div class="remove-sign">
+            <%= image_tag "close.png" %>
+            </div>
+          </div>
+          <ul class="search-results"></ul>
+        <% end %>
+        <div id="toc" class="toc-list-h1">
+          <% toc_data(page_content).each do |h1| %>
+            <li>
+              <a href="#<%= h1[:id] %>" class="toc-h1 toc-link" data-title="<%= h1[:content] %>"><%= h1[:content] %></a>
+              <% if h1[:children].length > 0 %>
+                <ul class="toc-list-h2">
+                  <% h1[:children].each do |h2| %>
+                    <li>
+                      <a href="#<%= h2[:id] %>" class="toc-h2 toc-link" data-title="<%= h2[:content] %>"><%= h2[:content] %></a>
+                      <% if h2[:children].length > 0 %>
+                          <ul class="toc-list-h3">
+                            <% h2[:children].each do |h3| %>
+                                <li>
+                                  <a href="#<%= h3[:id] %>" class="toc-h3 toc-link" data-title="<%= h1[:content] %>"><%= h3[:content] %></a>
+                                </li>
+                            <% end %>
+                          </ul>
+                      <% end %>
+                    </li>
+                  <% end %>
+                </ul>
+              <% end %>
+            </li>
+          <% end %>
+        </div>
+        <% if current_page.data.toc_footers %>
+          <ul class="toc-footer">
+            <% current_page.data.toc_footers.each do |footer| %>
+              <li><%= footer %></li>
+            <% end %>
+          </ul>
+        <% end %>
+        <a class="doclink" href="mailto:support@killbill.io">Report a doc problem </a>
+      </div>
+      <div class="page-wrapper">
+        <div class="dark-box"></div>
+        <div class="content">
+          <%= page_content %>
+        </div>
+        <div class="dark-box">
+          <% if language_tabs.any? %>
+            <div class="lang-selector">
+              <% language_tabs.each do |lang| %>
+                <% if lang.is_a? Hash %>
+                  <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
+                <% else %>
+                  <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
+                <% end %>
+              <% end %>
+            </div>
+          <% end %>
+        </div>
       </div>
     </div>
   </body>
+  <script>
+    setTimeout(function(){
+      $('.content h2, .content h3, .content h4').append('<a href=""><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>');
+      $('.content h2, .content h3, .content h4').each(function(){
+        let itemHref = '#' + $(this).attr('id');
+        $(this).find('a').attr("href", itemHref);
+      });
+      function copyToClipboard(text) {
+        let sampleTextarea = document.createElement("textarea");
+        document.body.appendChild(sampleTextarea);
+        sampleTextarea.value = text;
+        sampleTextarea.select();
+        document.execCommand("copy");
+        document.body.removeChild(sampleTextarea);
+      }
+      $('.content h2 a, .content h3 a, .content h4 a').on('click', function(){
+        setTimeout(function(){
+          copyToClipboard($(location).attr("href"));
+        }, 500);  
+      });
+      $('.content pre').prepend('<div class="copy-icon"><svg width="20" height="20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M13.847 8.462a2.309 2.309 0 0 0-2.308-2.308h-9.23A2.307 2.307 0 0 0 0 8.462v9.23A2.307 2.307 0 0 0 2.308 20h9.23a2.309 2.309 0 0 0 2.309-2.308v-9.23Zm-1.539 0v9.23a.77.77 0 0 1-.77.77h-9.23a.769.769 0 0 1-.769-.77v-9.23c0-.425.344-.77.769-.77h9.23a.77.77 0 0 1 .77.77Z" fill="#99B7CE"/><path fill-rule="evenodd" clip-rule="evenodd" d="M6.924 4.615a.769.769 0 0 1-.77-.769V2.308A2.308 2.308 0 0 1 8.462 0h9.23A2.308 2.308 0 0 1 20 2.308v9.23a2.308 2.308 0 0 1-2.308 2.308h-1.538a.769.769 0 1 1 0-1.539h1.538c.425 0 .77-.344.77-.769v-9.23a.769.769 0 0 0-.77-.77h-9.23a.769.769 0 0 0-.77.77v1.538a.77.77 0 0 1-.768.77Z" fill="#99B7CE"/></svg></div>');
+      $('.content pre svg').on('click', function() {
+          copyToClipboard($(this).parent().parent().find('code').text());
+      });
+    });
+  </script>
+  <script src='https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.js'></script>	
+  <script>docsearch({apiKey: 'd90e9251686de118832e4e00d6a548d2',indexName: 'killbill',inputSelector: '#input-search', debug: false, algoliaOptions: {hitsPerPage: 10}});</script>
 </html>
+

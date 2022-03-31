@@ -9,7 +9,9 @@ $(function() {
     window.recacheHeights();
     window.refreshToc();
   });
+
 });
+
 
 window.onpopstate = function() {
   activateLanguage(getLanguageFromQueryString());

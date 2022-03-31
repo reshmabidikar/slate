@@ -5532,21 +5532,6 @@ attached to various objects in the system by using tags. Tags come in 2 differen
 
 The APIs to manage tags rely on having an existing tag definition and supplying the `tagDefinitionId` in the calls. Therefore, for user tags, one should first create a `TagDefinition`.
 
-The following **system** tags have been defined:
-
-| Tag | tagDefinitionId | Object type | Description |
-| --- | --------------- | ----------- | ----------- |
-| `AUTO_PAY_OFF` | `00000000-0000-0000-0000-000000000001` | `ACCOUNT` | Suspends payments until removed. |
-| `AUTO_INVOICING_OFF` | `00000000-0000-0000-0000-000000000002` | `ACCOUNT` | Suspends invoicing until removed. |
-| `OVERDUE_ENFORCEMENT_OFF` | `00000000-0000-0000-0000-000000000003` | `ACCOUNT` | Suspends overdue enforcement behaviour until removed. |
-| `WRITTEN_OFF` | `00000000-0000-0000-0000-000000000004` | `INVOICE` | Indicates that an invoice is written off. This has no effect on billing or payment. |
-| `MANUAL_PAY` | `00000000-0000-0000-0000-000000000005` | `ACCOUNT` | Indicates that Killbill doesn't process payments for this account. That is, the account uses external payments only. |
-| `TEST` | `00000000-0000-0000-0000-000000000006` | `ACCOUNT` | Indicates that this is a test account. |
-| `PARTNER` | `00000000-0000-0000-0000-000000000007` | `ACCOUNT` | Indicates that this is a partner account. |
-| `AUTO_INVOICING_DRAFT` | `00000000-0000-0000-0000-000000000008` | `ACCOUNT` | Generate account invoices in DRAFT mode. |
-| `AUTO_INVOICING_REUSE_DRAFT` | `00000000-0000-0000-0000-000000000009` | `ACCOUNT` | Use existing draft invoice if exists. |
-
-
 To create user tags, one must first create the tag definitions. For instructions see section [Tag definition](#tag-definition).
 
 

@@ -1,7 +1,7 @@
 //= require ../lib/_jquery
 //= require ../lib/_imagesloaded.min
 ;(function () {
-  'use strict';
+'use strict';
 
   var loaded = false;
 
@@ -16,7 +16,8 @@
         timeout = true;
       }
     };
-  };
+   };
+
 
   var closeToc = function() {
     $(".toc-wrapper").removeClass('open');
@@ -65,20 +66,22 @@
         loaded = true;
       }
 
+
       var $best = $toc.find("[href='" + best + "']").first();
       if (!$best.hasClass("active")) {
-        // .active is applied to the ToC link we're currently on, and its parent <ul>s selected by tocListSelector
-        // .active-expanded is applied to the ToC links that are parents of this one
-        $toc.find(".active").removeClass("active");
-        $toc.find(".active-parent").removeClass("active-parent");
-        $best.addClass("active");
-        $best.parents(tocListSelector).addClass("active").siblings(tocLinkSelector).addClass('active-parent');
-        $best.siblings(tocListSelector).addClass("active");
-        $toc.find(tocListSelector).filter(":not(.active)").slideUp(150);
-        $toc.find(tocListSelector).filter(".active").slideDown(150);
-        // TODO remove classnames
-        document.title = $best.data("title") + " – " + originalTitle;
+           // .active is applied to the ToC link we're currently on, and its parent <ul>s selected by tocListSelector
+           // .active-expanded is applied to the ToC links that are parents of this one
+          $toc.find(".active").removeClass("active");
+          $toc.find(".active-parent").removeClass("active-parent");
+          $best.addClass("active");
+          $best.parents(tocListSelector).addClass("active").siblings(tocLinkSelector).addClass('active-parent');
+          $best.siblings(tocListSelector).addClass("active");
+          $toc.find(tocListSelector).filter(":not(.active)").slideUp(150);
+          $toc.find(tocListSelector).filter(".active").slideDown(150);
+          // TODO remove classnames
+          document.title = $best.data("title") + " – " + originalTitle;
       }
+
     };
 
     var makeToc = function() {
@@ -86,8 +89,8 @@
       refreshToc();
 
       $("#nav-button").click(function() {
-        $(".toc-wrapper").toggleClass('open');
-        $("#nav-button").toggleClass('open');
+        $(".toc-wrapper").addClass('open');
+        $("#nav-button").addClass('open');
         return false;
       });
       $(".page-wrapper").click(closeToc);
@@ -111,4 +114,8 @@
   }
 
   window.loadToc = loadToc;
+
+ 
+  var $window = $(window);  
+
 })();
