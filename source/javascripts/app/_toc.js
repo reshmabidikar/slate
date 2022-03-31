@@ -18,7 +18,6 @@
     };
    };
 
-
   var closeToc = function() {
     $(".toc-wrapper").removeClass('open');
     $("#nav-button").removeClass('open');
