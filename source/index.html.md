@@ -1,4 +1,4 @@
---- 
+---
 includes:
   - tenant
   - catalog
@@ -16,22 +16,22 @@ includes:
   - tag
   - tag-definition
   - admin
-  
-title: Kill Bill 
 
-language_tabs: 
+title: Kill Bill
+
+language_tabs:
    - shell
    - java
    - ruby
    - python
 
-search: true 
+search: true
 
---- 
+---
 
 # Using Kill Bill APIs
 
-## Introduction 
+## Introduction
 
 Kill Bill offers a set of HTTP APIs, commonly called REST APIs, that use the HTTP verbs `POST`, `GET`, `PUT`, `DELETE` to invoke Create, Read, Update and Delete (CRUD) operations, and that use HTTP response codes to indicate errors. These APIs enable the management of Kill Bill resources -- e.g `Account` -- through the use of JSON input and output.
 
@@ -44,7 +44,7 @@ Official libraries for the Kill Bill API are available in several languages,
 including Java, Php, Python, Ruby, Node, and Go. Community-supported libraries
 such as .NET are also available. Note that code examples for Curl, Java, Ruby and Python are shown in the right-hand column of this document.
 
-In the following documentation, we assume 
+In the following documentation, we assume
 you have a Kill Bill server instance running on `127.0.0.1` on port `8080`. It is straightforward to substitute a different IP address or port number if necessary.
 
 Kill Bill supports the `https` protocol, but here all examples are shown using `http`.
@@ -78,7 +78,7 @@ Depending on how the system has been configured, the authentication mechanism ca
 * Database configuration
 * LDAP configuration
 * OKTA configuration
- 
+
  The system also supports configuring roles and permissions, to restrict user access to certain resources and operations. The permissions are quite granular and are defined [here](https://github.com/killbill/killbill-api/blob/master/src/main/java/org/killbill/billing/security/Permission.java#L19)
 
 
@@ -201,7 +201,7 @@ self.username = "admin"
 self.password = "password"
 
 ####################################################
-  
+
 # Basic example using the client
 exampleApi = killbill.api.ExampleApi()
 body = Example(name='John', last_name = 'Doe')
@@ -209,9 +209,9 @@ created_by = 'me'
 api_key = 'bob'
 api_secret = 'lazar'
 
-exampleApi.create(body, 
-                  created_by, 
-                  api_key, 
+exampleApi.create(body,
+                  created_by,
+                  api_key,
                   api_secret)
 ```
 
@@ -245,7 +245,7 @@ Every api in Kill Bill that creates, or modifies state will create an audit log 
 
 In addition to the audit log, Kill Bill also records the history of the changes. For instance updating the billing addess of a customer would create an additonal row to track the change and link it to the audit log. The `audit` query parameter can take the following values:
 
-* **`NONE`** <span style="color:#32A9C7">*[Default]*</span>: No audit log is beeing returned. 
+* **`NONE`** *[Default]*: No audit log is beeing returned. 
 * **`MINIMAL`** : Only rows associated to *inserts* are being returned, but no `updates`.
 * **`FULL`** : Everything is being returned.  
 
@@ -258,7 +258,7 @@ curl \
 -H "X-Killbill-ApiSecret: lazar" \
 -H "Content-Type: application/json" \
 -H "X-Killbill-CreatedBy: demo" \
-"http://127.0.0.1:8080/1.0/kb/accounts/e8877928-0226-488d-9272-07a5e66d897f?audit=MINIMAL" 
+"http://127.0.0.1:8080/1.0/kb/accounts/e8877928-0226-488d-9272-07a5e66d897f?audit=MINIMAL"
 ```
 
 ```java
@@ -274,7 +274,7 @@ TODO  Api does not exist ;-(
 
 ```
 
-> Response: 
+> Response:
 
 ```
 {
@@ -292,7 +292,7 @@ TODO  Api does not exist ;-(
 }  
 ```
 
-Every API that retrieves information, whether associated with a specific resource, or with a list of resources,  may return audit logs. 
+Every API that retrieves information, whether associated with a specific resource, or with a list of resources,  may return audit logs.
 
 Audit and history information associated with a given resource is always stored atomically to ensure that if the state is changed, such audit and history information exists and is accurate.
 
@@ -354,7 +354,7 @@ Dependencies for version 0.22.8
   killbill-plugin-api 0.26.4
   killbill-commons 0.23.11
   killbill-platform 0.39.15
-  
+
 Known plugins for KB version 0.22.8
   analytics 7.0.8
   avatax 0.7.0
@@ -362,7 +362,7 @@ Known plugins for KB version 0.22.8
   payment-test 7.0.4
   stripe 7.0.4
   ...
-  
+
 ```
 
 
@@ -404,4 +404,3 @@ In addition to these error codes, the system will often return some json to prov
 ## Additional Resources
 
 Our main documentation is found [here](http://docs.killbill.io).
-

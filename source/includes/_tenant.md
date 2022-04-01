@@ -22,9 +22,11 @@ These endpoints manage information that is maintained at the tenant level. Unles
 
 ### Create a tenant
 
-This API creates a new tenant. NOTE: If you create a tenant using this API, it will *not* be recognized immediately by KAUI because KAUI will be unable to retrieve the `apiSecret`. To fix this, you should "create" the same tenant separately after logging into KAUI. This will *not* create another tenant, but it will synchronize KAUI with the one already created.
+This API creates a new tenant.
 
-**HTTP Request** 
+| ![note icon](https://github.com/killbill/killbill-docs/raw/v3/userguide/assets/img/note-icon.png)|**Note:** If you create a tenant using this API, it will *not* be recognized immediately by KAUI because KAUI will be unable to retrieve the `apiSecret`. To fix this, you should "create" the same tenant separately after logging into KAUI. This will *not* create another tenant, but it will synchronize KAUI with the one already created.|
+
+**HTTP Request**
 
 `POST http://127.0.0.1:8080/1.0/kb/tenants`
 
@@ -58,7 +60,7 @@ Tenant body = new Tenant(tenantId,
                          apiKey,
                          apiSecret,
                          EMPTY_AUDIT_LOGS);
-                         
+
 tenantApi.createTenant(body, requestOptions);
 ```
 
@@ -73,10 +75,10 @@ user = "demo"
 reason = nil
 comment = nil
 
-tenant.create(use_global_defalut, 
-              user, 
-              reason, 
-              comment, 
+tenant.create(use_global_defalut,
+              user,
+              reason,
+              comment,
               options)
 ```
 
@@ -136,7 +138,7 @@ If successful, returns a status code of 201 and an empty body. In addition a `Lo
 
 Retrieves a tenant resource, given its ID.
 
-**HTTP Request** 
+**HTTP Request**
 
 `GET http://127.0.0.1:8080/1.0/kb/tenants/{tenantId}`
 
@@ -218,7 +220,7 @@ If successful, returns a status code of 200 and a tenant resource object.  The `
 
 Retrieves a tenant resource, given its `apiKey`. The `apiKey` is passed as a query parameter.
 
-**HTTP Request** 
+**HTTP Request**
 
 `GET http://127.0.0.1:8080/1.0/kb/tenants`
 
@@ -312,7 +314,7 @@ See push notification documentation [here](https://docs.killbill.io/latest/push_
 
 Register a callback URL for this tenant for push notifications.The key name is PUSH_NOTIFICATION_CB. The API sets the value of this key, replacing any previous value.
 
-**HTTP Request** 
+**HTTP Request**
 
 `POST http://127.0.0.1:8080/1.0/kb/tenants/registerNotificationCallback`
 
@@ -387,7 +389,7 @@ If successful, returns a status code of 201 and an empty body. In addition, a `L
 
 Gets the push notification registered for this tenant, if any.
 
-**HTTP Request** 
+**HTTP Request**
 
 `GET http://127.0.0.1:8080/1.0/kb/tenants/registerNotificationCallback`
 
@@ -463,7 +465,7 @@ If successful, returns a status code of 200 and a body containing a key-value ob
 
 Deletes the registered callback URL, if any.
 
-**HTTP Request** 
+**HTTP Request**
 
 `DELETE http://127.0.0.1:8080/1.0/kb/tenants/registerNotificationCallback`
 
@@ -532,7 +534,7 @@ is used internally by the system to keep track of all the per-tenant configurati
 
 This API adds a key-value pair to the tenant database. If the key already exists its value is replaced. The key is given as a path parameter.
 
-**HTTP Request** 
+**HTTP Request**
 
 `POST http://127.0.0.1:8080/1.0/kb/tenants/userKeyValue/{keyName}`
 
@@ -570,11 +572,11 @@ comment = nil
 key_name = "demo_value"
 key_value = "demo_value"
 
-KillBillClient::Model::Tenant.upload_tenant_user_key_value(key_name, 
-                                                           key_value, 
-                                                           user, 
-                                                           reason, 
-                                                           comment, 
+KillBillClient::Model::Tenant.upload_tenant_user_key_value(key_name,
+                                                           key_value,
+                                                           user,
+                                                           reason,
+                                                           comment,
                                                            options)
 ```
 
@@ -630,7 +632,7 @@ If successful, returns a status code of 201 and an empty body. In addition, a `L
 
 Retrieves the value for a specified key, if it exists, from the tenant database. The key name is given as a path parameter.
 
-**HTTP Request** 
+**HTTP Request**
 
 `GET http://127.0.0.1:8080/1.0/kb/tenants/userKeyValue/{keyName}`
 
@@ -724,7 +726,7 @@ If the key does not exist no error is signalled but the `values` list is empty.
 
 Deletes a key and its value, if it exists, from the tenant database. The key is given as a path parameter.
 
-**HTTP Request** 
+**HTTP Request**
 
 `DELETE http://127.0.0.1:8080/1.0/kb/tenants/userKeyValue/{keyName}`
 
@@ -757,10 +759,10 @@ reason = nil
 comment = nil
 key_value = "demo_value"
 
-KillBillClient::Model::Tenant.delete_tenant_user_key_value(key_value, 
+KillBillClient::Model::Tenant.delete_tenant_user_key_value(key_value,
                                                            user,
-                                                           reason, 
-                                                           comment, 
+                                                           reason,
+                                                           comment,
                                                            options)
 ```
 
@@ -802,7 +804,7 @@ If successful, returns a status code of 204 and an empty body. No error is signa
 This API enables searching for existing keys based on a prefix of the key name. For example, a search string of "MYK" would match keys such as `MYKEY1`, `MYKEY2`, etc. The search string is given as a path parameter.
 
 
-**HTTP Request** 
+**HTTP Request**
 
 `GET http://127.0.0.1:8080/1.0/kb/tenants/uploadPerTenantConfig/{keyPrefix}/search`
 
@@ -898,7 +900,7 @@ For example, in order to disable the invoice safety bound mechanism on a per-ten
 The API sets the value of the "PER_TENANT_CONFIG" key, replacing any previous value.
 
 
-**HTTP Request** 
+**HTTP Request**
 
 `POST http://127.0.0.1:8080/1.0/kb/tenants/uploadPerTenantConfig`
 
@@ -980,7 +982,7 @@ If successful, returns a status code of 201 and an empty body.
 
 Retrieves the per-tenant system property settings, which are given as the value of the key `PER_TENANT_CONFIG`.
 
-**HTTP Request** 
+**HTTP Request**
 
 `GET http://127.0.0.1:8080/1.0/kb/tenants/uploadPerTenantConfig`
 
@@ -1055,7 +1057,7 @@ If successful, returns a status code of 200 and a tenant key value object for th
 
 Deletes any current per tenant system properties configuration parameters, which are given as the values of the `PER_TENANT_CONFIG` key.
 
-**HTTP Request** 
+**HTTP Request**
 
 `DELETE http://127.0.0.1:8080/1.0/kb/tenants/uploadPerTenantConfig`
 
@@ -1135,7 +1137,7 @@ Adds a per tenant key-value pair for the specified plugin. The plugin name is gi
 The value string uploaded is plugin dependent but typically consists of key/value properties,
 or well formatted yml or a properties file.
 
-**HTTP Request** 
+**HTTP Request**
 
 `POST http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginConfig/{pluginName}`
 
@@ -1175,11 +1177,11 @@ user = "demo"
 reason = nil
 comment = nil
 
-KillBillClient::Model::Tenant.upload_tenant_plugin_config(plugin_name, 
-                                                          plugin_config, 
-                                                          user, 
-                                                          reason, 
-                                                          comment, 
+KillBillClient::Model::Tenant.upload_tenant_plugin_config(plugin_name,
+                                                          plugin_config,
+                                                          user,
+                                                          reason,
+                                                          comment,
                                                           options)
 ```
 
@@ -1204,8 +1206,8 @@ tenantApi.upload_plugin_configuration(plugin_name, body, created_by='demo')
 ```java
 class TenantKeyValue {
     key: PLUGIN_CONFIG_PLUGIN_FOO
-    values: 
-    
+    values:
+
     :my_plugin:
       :test: True
       :log_file: /var/tmp/myplugin.log
@@ -1213,11 +1215,11 @@ class TenantKeyValue {
       :password: yoyoyo
       :merchant_id:
         :USD: '0689870'
-    
+
     :database:
       :adapter: sqlite3
       :database: test.db
-    
+
     ]
 }
 ```
@@ -1249,7 +1251,7 @@ If successful, returns a status code of 201 and an empty body. A `Location` head
 
 Gets the per tenant configuration value string for a specified plugin. The plugin name is given as a path parameter.
 
-**HTTP Request** 
+**HTTP Request**
 
 `GET http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginConfig/{pluginName}`
 
@@ -1304,8 +1306,8 @@ tenantApi.get_plugin_configuration(plugin_name)
 ```java
 class TenantKeyValue {
     key: PLUGIN_CONFIG_PLUGIN_FOO
-    values: 
-    
+    values:
+
     :my_plugin:
       :test: True
       :log_file: /var/tmp/myplugin.log
@@ -1313,11 +1315,11 @@ class TenantKeyValue {
       :password: yoyoyo
       :merchant_id:
         :USD: '0689870'
-    
+
     :database:
       :adapter: sqlite3
       :database: test.db
-    
+
     ]
 }
 ```
@@ -1343,9 +1345,9 @@ If successful, returns a status code of 200 and a tenant key value object for th
 
 ### Delete a per tenant configuration for a plugin
 
-Deletes the per tenant plugin configuration value for the appropriate key. The plugin name is given as a path parameter. 
+Deletes the per tenant plugin configuration value for the appropriate key. The plugin name is given as a path parameter.
 
-**HTTP Request** 
+**HTTP Request**
 
 `DELETE http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginConfig/{pluginName}`
 
@@ -1379,10 +1381,10 @@ comment = nil
 
 plugin_name = "demo_plugin"
 
-KillBillClient::Model::Tenant.delete_tenant_plugin_config(plugin_name, 
-                                                          user, 
-                                                          reason, 
-                                                          comment, 
+KillBillClient::Model::Tenant.delete_tenant_plugin_config(plugin_name,
+                                                          user,
+                                                          reason,
+                                                          comment,
                                                           options)
 ```
 
@@ -1431,7 +1433,7 @@ Adds a per tenant key-value pair for the specified plugin. The plugin name is gi
 
 The state machine is defined in an XML file. The complete XML file becomes the value of the key.
 
-**HTTP Request** 
+**HTTP Request**
 
 Let's say we want to overwrite the default Kill Bill payment state machine for the payment plugin `demo_plugin`, and assuming `SimplePaymentStates.xml`is a valid payment state machine XML file, then the HTTP Request would be:
 
@@ -1461,8 +1463,8 @@ protected TenantApi tenantApi;
 String pluginName = "noop";
 String stateMachineConfig = getResourceBodyString("SimplePaymentStates.xml");
 
-TenantKeyValue result = tenantApi.uploadPluginPaymentStateMachineConfig(pluginName, 
-                                                                        stateMachineConfig, 
+TenantKeyValue result = tenantApi.uploadPluginPaymentStateMachineConfig(pluginName,
+                                                                        stateMachineConfig,
                                                                         requestOptions);
 ```
 
@@ -1492,11 +1494,11 @@ tenantApi.upload_plugin_payment_state_machine_config(plugin_name, body, created_
 class TenantKeyValue {
     key: PLUGIN_PAYMENT_STATE_MACHINE_noop
     values: [<?xml version="1.0" encoding="UTF-8"?>
-   
-    
+
+
     <stateMachineConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                         xsi:noNamespaceSchemaLocation="StateMachineConfig.xsd">
-    
+
         <stateMachines>
             <stateMachine name="BIG_BANG">
                 <states>
@@ -1546,7 +1548,7 @@ class TenantKeyValue {
                 </operations>
             </stateMachine>
         </stateMachines>
-    
+
         <linkStateMachines>
             <linkStateMachine>
                 <initialStateMachine>BIG_BANG</initialStateMachine>
@@ -1568,7 +1570,7 @@ no content
 
 **Query Parameters**
 
-None. 
+None.
 
 **Response**
 
@@ -1578,7 +1580,7 @@ If successful, returns a status code of 201 and an empty body. In addition, a `L
 
 Retrieves the value for the appropriate payment state machine key for the specified plugin. If present, this value should be the complete XML file that defines the state machine.
 
-**HTTP Request** 
+**HTTP Request**
 
 `GET http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginPaymentStateMachineConfig/{pluginName}`
 
@@ -1624,10 +1626,10 @@ tenantApi.get_plugin_payment_state_machine_config(plugin_name)
 {
   "key": "PLUGIN_PAYMENT_STATE_MACHINE_demo_plugin",
   "values": [<?xml version="1.0" encoding="UTF-8"?>
-    
+
     <stateMachineConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                         xsi:noNamespaceSchemaLocation="StateMachineConfig.xsd">
-    
+
         <stateMachines>
             <stateMachine name="BIG_BANG">
                 <states>
@@ -1677,7 +1679,7 @@ tenantApi.get_plugin_payment_state_machine_config(plugin_name)
                 </operations>
             </stateMachine>
         </stateMachines>
-    
+
         <linkStateMachines>
             <linkStateMachine>
                 <initialStateMachine>BIG_BANG</initialStateMachine>
@@ -1694,10 +1696,10 @@ tenantApi.get_plugin_payment_state_machine_config(plugin_name)
 class TenantKeyValue {
     key: PLUGIN_PAYMENT_STATE_MACHINE_noop
     values: [<?xml version="1.0" encoding="UTF-8"?>
-    
+
     <stateMachineConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
                         xsi:noNamespaceSchemaLocation="StateMachineConfig.xsd">
-    
+
         <stateMachines>
             <stateMachine name="BIG_BANG">
                 <states>
@@ -1747,7 +1749,7 @@ class TenantKeyValue {
                 </operations>
             </stateMachine>
         </stateMachines>
-    
+
         <linkStateMachines>
             <linkStateMachine>
                 <initialStateMachine>BIG_BANG</initialStateMachine>
@@ -1779,7 +1781,7 @@ If successful, returns a status code of 200 and a key value object for the key `
 
 Deletes the payment state machine for the specified plugin for this tenant. The plugin reverts to the default payment state machine.
 
-**HTTP Request** 
+**HTTP Request**
 
 `DELETE http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginPaymentStateMachineConfig/{pluginName}`
 
@@ -1842,4 +1844,3 @@ None.
 **Returns**
 
 If successful, returns a status code of 204 and an empty body.
-
