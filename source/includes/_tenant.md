@@ -24,7 +24,7 @@ These endpoints manage information that is maintained at the tenant level. Unles
 
 This API creates a new tenant.
 
-| ![note icon](https://github.com/killbill/killbill-docs/raw/v3/userguide/assets/img/note-icon.png)|**Note:** If you create a tenant using this API, it will *not* be recognized immediately by KAUI because KAUI will be unable to retrieve the `apiSecret`. To fix this, you should "create" the same tenant separately after logging into KAUI. This will *not* create another tenant, but it will synchronize KAUI with the one already created.|
+**Note:** If you create a tenant using this API, it will *not* be recognized immediately by KAUI because KAUI will be unable to retrieve the `apiSecret`. To fix this, you should "create" the same tenant separately after logging into KAUI. This will *not* create another tenant, but it will synchronize KAUI with the one already created.
 
 **HTTP Request**
 
