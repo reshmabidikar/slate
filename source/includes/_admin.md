@@ -2,7 +2,7 @@
 
 The Admin resource offers a set of endpoints such as the following:
 
-* Administrative APIs to fix improper states 
+* Administrative APIs to fix improper states
 * Operational APIs such as adding hosts in and out of rotation, clearing internal caches, etc.
 * APIs to retrieve low level information from the system
 
@@ -12,10 +12,10 @@ Miscellaneous administrative APIs
 
 ### Trigger an invoice generation for all parked accounts
 
-When the system detects an issue invoicing a customer `Account`, it will automatically `PARK` the `Account` as explained [here](http://docs.killbill.io/latest/invoice_subsystem.html#_parked_accounts). This API can be used after the issues have been resolved to remove accounts from the parked state and generate any outstanding invoices needed. 
+When the system detects an issue invoicing a customer `Account`, it will automatically `PARK` the `Account` as explained [here](http://docs.killbill.io/latest/invoice_subsystem.html#_parked_accounts). This API can be used after the issues have been resolved to remove accounts from the parked state and generate any outstanding invoices needed.
 
 
-**HTTP Request** 
+**HTTP Request**
 
 `POST http://127.0.0.1:8080/1.0/kb/admin/invoices`
 
@@ -39,8 +39,8 @@ curl -v \
 import org.killbill.billing.client.api.gen.AdminApi;
 protected AdminApi adminApi;
 
-adminApi.triggerInvoiceGenerationForParkedAccounts(offset, 
-                                                   limit, 
+adminApi.triggerInvoiceGenerationForParkedAccounts(offset,
+                                                   limit,
                                                    requestOptions);
 ```
 
@@ -49,9 +49,9 @@ ofset = 0
 limit = 100
 user = "demo"
 
-KillBillClient::Model::Admin.trigger_invoice_generation_for_parked_accounts(ofset, 
-                                                                            limit, 
-                                                                            user, 
+KillBillClient::Model::Admin.trigger_invoice_generation_for_parked_accounts(ofset,
+                                                                            limit,
+                                                                            user,
                                                                             options)
 ```
 
@@ -85,7 +85,6 @@ no content
 | **offset** | long | no | 0 | starting offset for the page |
 | **limit** | long | no | 100 | max results on this page |
 
-
 **Returns**
 
 If successful, returns a status code of 200 and a list of invoices generated.
@@ -96,7 +95,7 @@ Provides a way to fix the payment state data for a given `Payment`, if that data
 This could happen, for example, if a call to a third party payment gateway times out, leaving the system in an unknwon state.
 
 
-**HTTP Request** 
+**HTTP Request**
 
 `PUT http://127.0.0.1:8080/1.0/kb/admin/payments/{paymentId}/transactions/{paymentTransactionId}`
 
@@ -124,13 +123,13 @@ String lastSuccessPaymentState = "AUTH_FAILED";
 String currentPaymentStateName = "AUTH_FAILED";
 String transactionStatus = "PAYMENT_FAILURE";
 
-AdminPayment body = new AdminPayment(lastSuccessPaymentState, 
-                                     currentPaymentStateName, 
+AdminPayment body = new AdminPayment(lastSuccessPaymentState,
+                                     currentPaymentStateName,
                                      transactionStatus);
 
-adminApi.updatePaymentTransactionState(paymentId, 
-                                       paymentTransactionId, 
-                                       body, 
+adminApi.updatePaymentTransactionState(paymentId,
+                                       paymentTransactionId,
+                                       body,
                                        requestOptions);
 ```
 
@@ -142,12 +141,12 @@ user =  "demo"
 reason = nil
 comment = nil
 
-KillBillClient::Model::Admin.fix_transaction_state(payment_id, 
-                                                   transaction_id, 
-                                                   transaction_status, 
-                                                   user, 
-                                                   reason, 
-                                                   comment, 
+KillBillClient::Model::Admin.fix_transaction_state(payment_id,
+                                                   transaction_id,
+                                                   transaction_status,
+                                                   user,
+                                                   reason,
+                                                   comment,
                                                    options)
 ```
 
@@ -159,11 +158,11 @@ payment_transaction_id = '6cb944a-b308-4488-b046-4b4d61d375a6'
 body = AdminPayment(transaction_status='AUTH_FAILED')
 created_by = 'demo'
 
-adminApi.update_payment_transaction_state(payment_id, 
-                                          payment_transaction_id, 
-                                          body, 
+adminApi.update_payment_transaction_state(payment_id,
+                                          payment_transaction_id,
+                                          body,
                                           created_by,
-                                          api_key, 
+                                          api_key,
                                           api_secret)
 ```
 
@@ -204,7 +203,7 @@ These APIs invalidate caches and move a host in and out of the rotation
 
 Invalidates a specified cache. If no cache is specified, it invalidates all Kill Bill caches on the server.
 
-**HTTP Request** 
+**HTTP Request**
 
 `DELETE http://127.0.0.1:8080/1.0/kb/admin/cache`
 
@@ -270,7 +269,7 @@ If successful, returns a status code of 204 and an empty body.
 
 Invalidates all Kill Bill caches on the server associated with a specific Account
 
-**HTTP Request** 
+**HTTP Request**
 
 `DELETE http://127.0.0.1:8080/1.0/kb/admin/cache/accounts/{accountId}`
 
@@ -336,7 +335,7 @@ If successful, returns a status code of 204 and an empty body.
 Invalidates all Kill Bill caches on the server associated with this Tenant
 
 
-**HTTP Request** 
+**HTTP Request**
 
 `DELETE http://127.0.0.1:8080/1.0/kb/admin/cache/tenants`
 
@@ -397,7 +396,7 @@ If successful, returns a status code of 204 and an empty body.
 
 Adds a server back into the rotation after it has been removed.
 
-**HTTP Request** 
+**HTTP Request**
 
 `PUT http://127.0.0.1:8080/1.0/kb/admin/healthcheck`
 
@@ -460,7 +459,7 @@ If successful, returns a status code of 204 and an empty body.
 Removes a server from the rotation during a deployment.
 
 
-**HTTP Request** 
+**HTTP Request**
 
 `DELETE http://127.0.0.1:8080/1.0/kb/admin/healthcheck`
 
@@ -525,7 +524,7 @@ This API group currently includes a single API to view entries in the system que
 
 Returns low level details about queue entries. Results can be requested for a specific account or all accounts; for a specific queue or all queues, and for a specific service or all services. In addition optional types of events may be specified, including history, for a specified date range; in processing; bus events; and notifications.
 
-**HTTP Request** 
+**HTTP Request**
 
 `GET http://127.0.0.1:8080/1.0/kb/admin/queues`
 
@@ -553,15 +552,15 @@ OutputStream outputStream = null;
 
 
 adminApi.getQueueEntries(accountId,
-                         queueName, 
-                         serviceName, 
-                         withHistory, 
-                         minDate, 
-                         maxDate, 
-                         withInProcessing, 
-                         withBusEvents, 
-                         withNotifications, 
-                         outputStream, 
+                         queueName,
+                         serviceName,
+                         withHistory,
+                         minDate,
+                         maxDate,
+                         withInProcessing,
+                         withBusEvents,
+                         withNotifications,
+                         outputStream,
                          requestOptions);
 ```
 
@@ -612,5 +611,3 @@ adminApi.get_queue_entries(api_key, api_secret)
 **Returns**
 
 If successful, returns a status code of 200 and a list of queue entries of the specified types.
-
-
