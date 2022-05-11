@@ -1941,7 +1941,7 @@ Change the status of an invoice to VOID. A void invoice is ignored by the rest o
 
 * We cannot VOID an invoice that was partially or fully paid
 * We cannot VOID an invoice if it contains positive credit items (`CBA_ADJ` >0), unless such credit was not used, i.e there is enough credit left on the account.
-* We cannot VOID an invoice if it was repaired, i.e there exists a `REPAIR_ADJ` item pointing to an item inside that invoice
+* We cannot VOID an invoice if it was repaired, i.e there exists a `REPAIR_ADJ` item pointing to an item inside that invoice.
 
 **HTTP Request** 
 
@@ -2168,7 +2168,7 @@ Delete a Credit Balance Adjust (`CBA_ADJ`) invoice item. There are some limitati
 
 1. Deleting a positive `CBA_ADJ` (credit generation), may lead the system to reclaim portion of the used credit, possibly leaving some invoices with a balance. Example:
 
-Given an invoice, I1,  where user added some credit ($12), we would see the following items: {`CREDIT_ADJ`: -12, `CBA_ADJ`: +12}. Given another invoice, I2, where the system invoiced for a recurring subscription, and where some of this credit was consumed, we would see the following items: {`RECURRING`: +10, `CBA_ADJ`: -10}. Deleting the `CBA_ADJ` from I1, would lead to the following resulting invoices:  I1 {`CREDIT_ADJ`: 0, `CBA_ADJ`: 0} and I2 {`RECURRING`: +10, `CBA_ADJ`: 0}. The system zeroed-out the credit generation and the part that was used, and as a result I2 would be left with a balance of +10.
+Given an invoice, I1,  where user added some credit ($12), we would see the following items: {`CREDIT_ADJ`: -12, `CBA_ADJ`: +12}. Given another invoice, I2, where the system invoiced for a recurring subscription, and where some of this credit was consumed, we would see the following items: {`RECURRING`: +10, `CBA_ADJ`: -10}. Deleting the `CBA_ADJ` from I1, would lead to the following resulting invoices:  I1 {`CREDIT_ADJ`: 0, `CBA_ADJ`: 0} and I2 {`RECURRING`: +10, `CBA_ADJ`: 0}. The system zeroed-out the credit generation and the part that was used, and as a result I2 would be left with a balance of +10. Deleting the `CBA_ADJ` from I2 on the other hand would lead to the following invoice:  I2 {`RECURRING`: +20, `CBA_ADJ`: 0} . 
 
 2. System generated credit
 
@@ -2701,10 +2701,12 @@ invoicePayment.setAccountId(accountId);
 invoicePayment.setTargetInvoiceId(invoiceId);
 
 Boolean externalPayment = true; // Will use a external payment method
+List<String> controlPluginNames = null;
 Map<String, String> pluginProperty = null;
 InvoicePayment result = invoiceApi.createInstantPayment(invoiceId, 
                                                         invoicePayment, 
                                                         externalPayment, 
+                                                        controlPluginNames, 
                                                         pluginProperty, 
                                                         requestOptions);
 ```
@@ -3246,9 +3248,7 @@ class CustomField {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL", or "FULL" |
 
 **Response**
     
@@ -3686,9 +3686,7 @@ class Tag {
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ------------ |
 | **includedDeleted** | boolean | no | false | If true, include deleted tags |
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| **audit** | string | no | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
 **Response**
     

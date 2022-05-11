@@ -37,8 +37,8 @@ The `Subscription` resource represents a subscription. The attributes contained 
 | **billingEndDate** | date | user | Date on which the system ends invoicing |
 | **billCycleDayLocal** | integer | user or system | Day of the month on which invoices are generated, if applicable (see notes below) |
 | **events** | list | system | list of subscription events tracking what happened (see notes below) |
-| **price** | list | user | list of prices, one for each phase in the plan |
-| **priceOverrides** | list | user | list of prices if this subscription has price overrides |
+| **prices** | list | user | list of prices, one for each phase in the plan |
+| **priceOverrides** | list | user | list of prices if this subscription has price overrides (see notes below) |
 
 **productCategory**: possible values are BASE, ADD_ON, or STANDALONE
 
@@ -69,6 +69,21 @@ These use cases assume that invoicing is up to date. If AUTO_INVOICING_OFF is se
 **`Events`**: possible event types are START_ENTITLEMENT, START_BILLING, PAUSE_ENTITLEMENT, PAUSE_BILLING, RESUME_ENTITLEMENT, RESUME_BILLING, PHASE, CHANGE, STOP_ENTITLEMENT, STOP_BILLING, SERVICE_STATE_CHANGE
 
 
+**`priceOverrides`**:  List of overridden prices for specific plan phases. Can be specified to override the fixed/recurring price in the catalog for a particular phase. For example, suppose you are creating a subscription corresponding to a plan that has an `EVERGREEN` phase with a recurring price of `$100`. You can specify an overridden price of `200` while creating the subscription by specifying a `priceOverrides` object as follows:
+
+
+```shell
+"priceOverrides": [
+        {
+            "planName": "shotgun-monthly",
+            "phaseType": "DISCOUNT",
+            "fixedPrice": null,
+            "recurringPrice": 150.00,
+            "usagePrices": []
+        }
+```
+
+
 ## Subscriptions
 
 These endpoints support the basic CRUD operations on Subscriptions.
@@ -84,6 +99,8 @@ This API creates a base product subscription. It also creates a bundle to contai
 > Example Request:
 
 ```shell
+
+# With planName
 curl -v \
     -X POST \
     -u admin:password \
@@ -98,7 +115,7 @@ curl -v \
         }' \
     "http://127.0.0.1:8080/1.0/kb/subscriptions" 
     
-    OR
+# With productName, productCategory and billingPeriod
     
     curl -v \
     -X POST \
@@ -117,6 +134,36 @@ curl -v \
         }' \
     "http://127.0.0.1:8080/1.0/kb/subscriptions" 	
     
+# With priceOverrides
+    
+    curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '{ 
+            "accountId": "187f9270-7aa0-4db5-81f7-857e8e59fd9a",
+            "planName": "shotgun-monthly",
+			 "prices": [
+        {
+            "planName": "shotgun-monthly",
+            "phaseType": "DISCOUNT",
+            "fixedPrice": 150.00,
+            "recurringPrice": null,
+            "usagePrices": []
+        },
+        {
+            "planName": "shotgun-monthly",
+            "phaseType": "EVERGREEN",
+            "fixedPrice": null,
+            "recurringPrice": 400.00,
+            "usagePrices": []
+        }		
+    ]
+        }' \
+    "http://127.0.0.1:8080/1.0/kb/subscriptions" 
     
 ```
 
@@ -135,6 +182,7 @@ LocalDate entitlementDate = null;
 LocalDate billingDate = null;
 Boolean renameKeyIfExistsAndUnused = null; 
 Boolean migrated = null;
+Boolean skipResponse = false;
 Boolean callCompletion = true;
 long DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC = 10;
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
@@ -143,7 +191,8 @@ Subscription subscription = subscriptionApi.createSubscription(input,
                                                                entitlementDate, 
                                                                billingDate, 
                                                                renameKeyIfExistsAndUnused, 
-                                                               migrated, 
+                                                               migrated,
+                                                               skipResponse,  
                                                                callCompletion, 
                                                                DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC, 
                                                                NULL_PLUGIN_PROPERTIES, 
@@ -479,6 +528,7 @@ subscriptions.add(addOn2);
 LocalDate entitlementDate = null;
 LocalDate billingDate = null;
 Boolean migrated = null;
+Boolean skipResponse = false;
 Boolean renameKeyIfExistsAndUnused = null;
 Boolean callCompletion = true;
 long DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC = 10;
@@ -488,6 +538,7 @@ final Bundle bundle = subscriptionApi.createSubscriptionWithAddOns(subscriptions
                                                                    entitlementDate, 
                                                                    billingDate, 
                                                                    migrated, 
+                                                                   skipResponse,
                                                                    renameKeyIfExistsAndUnused, 
                                                                    callCompletion, 
                                                                    DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC, 
@@ -1135,6 +1186,7 @@ LocalDate entitlementDate = null;
 LocalDate billingDate = null;
 Boolean renameKeyIfExistsAndUnused = false;
 Boolean migrated = false;
+Boolean skipResponse = false;
 Boolean callCompletion = true;
 long DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC = 10;
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
@@ -1144,6 +1196,7 @@ Bundles bundles = subscriptionApi.createSubscriptionsWithAddOns(bulkSubscription
 		                                                         billingDate, 
 		                                                         renameKeyIfExistsAndUnused, 
 		                                                         migrated, 
+		                                                         skipResponse, 
 		                                                         callCompletion, 
                                                                 DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC, NULL_PLUGIN_PROPERTIES,                                                               requestOptions);
 ```
@@ -3417,8 +3470,6 @@ class CustomField {
 | ---- | -----| -------- | ------- | ----------- | 
 | **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL", or "FULL" |
 
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
-
 **Response**
 
 If successful, returns a status code of 200 and a (possibly empty) list of custom field objects.
@@ -3727,7 +3778,6 @@ None.
 
 If successful, returns a 201 status code. In addition, a Location header is returned giving the URL to retrieve the tags associated with the subscription.
 
-Retrieve all tags
 
 ### Retrieve subscription tags
 
@@ -3840,7 +3890,6 @@ class Tag {
 | **includedDeleted** | boolean | no | false | If true, include deleted tags |
 | **audit** | string | no | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 **Response**
     

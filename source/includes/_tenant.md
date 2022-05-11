@@ -827,7 +827,7 @@ protected TenantApi tenantApi;
 
 String keyPrefix = "PER_TENANT";
 
-TenantKeyValue result = tenantApi.getAllPluginConfiguration(keyPrefix, requestOptions);
+TenantKeyValues result = tenantApi.getAllPluginConfiguration(keyPrefix, requestOptions);
 ```
 
 ```ruby
