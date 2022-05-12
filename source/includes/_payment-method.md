@@ -933,7 +933,6 @@ class CustomField {
 | ---- | -----| -------- | ------- | ----------- | 
 | **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL", or "FULL" |
 
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 **Response**
 

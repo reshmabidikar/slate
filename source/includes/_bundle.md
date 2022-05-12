@@ -1,10 +1,10 @@
 # Bundle
 
-A Bundle is a collection of subscriptions. Grouping certain subscriptions into a bundle is useful to ensure
+A Bundle (also known as Subscription Bundle) is a collection of subscriptions. Grouping certain subscriptions into a bundle is useful to ensure
 that certain operations propagate to the group. A common example is cancellation. When cancelling a `BASE` subscription, which is part of a bundle,
 any `ADD_ON` subscriptions in the same bundle are also cancelled automatically.
 
-A Bundle is automatically created by the system when creating the intial (BASE) subscription. To add additional subscriptions in the same bundle, one must specify the `bundleId` for the bundle previously created.
+A Bundle is automatically created by the system when creating the initial (BASE) subscription. To add additional subscriptions in the same bundle, one must specify the `bundleId` for the bundle previously created.
 
 
 ## Bundle Resource
@@ -662,9 +662,8 @@ class Bundle {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
-| **audit** | string | no | "NONE" | Level of audit information to return |
+| **audit** | string | no | "NONE" | Level of audit information to return: "NONE", "MINIMAL" (only inserts), or "FULL" |
 
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 **Response**
 
@@ -678,7 +677,7 @@ This API retrieves a bundle resource object based on its external key
 
 Retrieves the details information for the `Bundle` using its `externalKey`.
 
-`GET http://127.0.0.1:8080/1.0/kb/bundles`
+`GET http://127.0.0.1:8080/1.0/kb/bundles?externalKey=<external_key>`
 
 > Example Request:
 
@@ -1292,17 +1291,15 @@ class Bundle {
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **externalKey** | String | yes | none | The subscription external key |
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| **audit** | string | no | "NONE" | Level of audit information to return: "NONE", "MINIMAL" (only inserts), or "FULL" |
 
 **Response**
 
-If successful, returns a status code of 200 and a subscription resource object.
+If successful, returns a status code of 200 and a bundle resource object.
 
 
 
-### Update a bundle externalKey
+### Update a bundle external key
 
 THis API sets a new external key for a bundle
 
@@ -1328,7 +1325,10 @@ curl -v \
     "http://127.0.0.1:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/renameKey"
 ```
 ```java
-TODO	
+String externalKey = "another_external_key";
+Bundle bundle = new Bundle();
+bundle.setExternalKey(externalKey);
+bundleApi.renameExternalKey(bundleId, bundle, requestOptions);
 ```
 ```ruby
 bundle = KillBillClient::Model::Bundle.new
@@ -1417,7 +1417,7 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '{ "accountId": "8785164f-b5d7-4da1-9495-33f5105e8d80", "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d"}' \
-    "http://127.0.01:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d"
+    "http://127.0.0.1:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d"
 ```
 ```java
 import org.killbill.billing.client.api.gen.BundleApi;
@@ -1737,20 +1737,18 @@ no content
 
 **Request Body**
 
-A bundle resource containing the new account id
+A bundle resource containing at least the new account id
 
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **requestedDate** | string | no | current date | Requested date for the transfer of the bundle |
-| **billingPolicy** | string | no | IMMEDIATE | When billing should occur (see below) |
-
-**billingPolicy**: options are START_OF_TERM, END_OF_TERM, or IMMEDIATE.
+| **billingPolicy** | string | no | IMMEDIATE | When billing should occur. Possible values are START_OF_TERM, END_OF_TERM, or IMMEDIATE |
 
 **Response**
 
-IF successful, returns a status code of 201 and an empty body.
+If successful, returns a status code of 201. In addition, a Location header containing the bundleId in the target account is returned. 
 
 
 ## Blocking State
@@ -1759,7 +1757,7 @@ See section [Account Blocking State](#account-blocking-state) for an introductio
 
 ### Pause a bundle
 
-Provides a simple interface to pause both billing and entitlement for all subscriptions in a bundle. The **state** attribute in the bundle resource is set to BLOCKED.
+Provides a simple interface to pause both billing and entitlement for all subscriptions in a bundle. The **state** attribute in the bundle resource is set to ENT_BLOCKED.
 
 **HTTP Request** 
 
@@ -1768,7 +1766,7 @@ Provides a simple interface to pause both billing and entitlement for all subscr
 > Example Request:
 
 ```shell
-  -X PUT \
+  curl -X PUT \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
@@ -1780,7 +1778,10 @@ Provides a simple interface to pause both billing and entitlement for all subscr
     "http://127.0.0.1:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/pause" \
 ```
 ```java
-TODO	
+UUID bundleId = UUID.fromString("96a2ba35-de50-4db9-98bb-938cf1e5f616");
+LoalDate requestedDate = null;
+Map<String, String> pluginProperty = null;
+bundleApi.pauseBundle(bundleId, requestedDate, pluginProperty, requestOptions);
 ```
 ```ruby
 bundle = KillBillClient::Model::Bundle.new
@@ -1833,7 +1834,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Resume a bundle
 
-Provides a simple interface to resume both billing and entitlement for all subscriptions in the bundle. The state of the bundle resource is set to ACTIVE.
+Provides a simple interface to resume both billing and entitlement for all subscriptions in the bundle. The state of the bundle resource is set to ENT_CLEAR.
 
 **HTTP Request** 
 
@@ -1855,7 +1856,10 @@ curl -v \
     "http://127.0.0.1:8080/1.0/kb/bundles/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/resume"
 ```
 ```java
-TODO	
+UUID bundleId = UUID.fromString("96a2ba35-de50-4db9-98bb-938cf1e5f616");
+LocalDate requestedDate = null;
+Map<String, String> pluginProperty = null;
+bundleApi.resumeBundle(bundleId, requestedDate, pluginProperty, requestOptions);	
 ```
 ```ruby
 bundle = KillBillClient::Model::Bundle.new
@@ -2171,7 +2175,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a 201 status code. In addition, a Location header is returned giving the URL to retrieve the custom fields associated with the bundle.
 
 ### Retrieve bundle custom fields
 
@@ -2272,9 +2276,8 @@ class CustomField {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **audit** | string | no | "NONE" | Level of audit information to return |
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL", or "FULL" |
 
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 **Response**
 
@@ -2317,9 +2320,10 @@ UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
 CustomField customFieldModified = new CustomField();
 customFieldModified.setCustomFieldId(customFieldsId);
 customFieldModified.setValue("NewValue");
-
+CustomFields customFields = new CustomFields();
+customFields.add(customFieldModified);
 bundleApi.modifyBundleCustomFields(bundleId, 
-                                   customFieldModified, 
+                                   customFields, 
                                    requestOptions);
 ```
 
@@ -2364,6 +2368,13 @@ no content
 ```python
 no content
 ```
+**Request Body**
+
+A list of objects specifying the id and the new value for the custom fields to be modified. For example:
+
+[ { "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f", "value": "123" } ]
+
+Although the `fieldName` and `objectType` can be specified in the request body, these cannot be modified, only the field value can be modified.
 
 **Query Parameters**
 
@@ -2402,9 +2413,9 @@ protected BundleApi bundleApi;
 
 UUID bundleId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
 UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-
+List<UUID> customFieldsList = ImmutableList.<UUID>of(customFieldsId);
 bundleApi.deleteBundleCustomFields(bundleId, 
-                                   customFieldsId, 
+                                   customFieldsList, 
                                    requestOptions);
 ```
 
@@ -2449,7 +2460,7 @@ no content
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **customField** | string | yes | none | List of object IDs for the custom fields that should be deleted. |
+| **customField** | string | yes | none | Custom field object ID that should be deleted. Multiple custom fields can be deleted by specifying a separate **customField** parameter corresponding to each field |
 
 **Response**
 
@@ -2466,7 +2477,7 @@ Let's assume there is an existing `user` tagDefintion already created with `tagD
 
 ### Add tags to bundle
 
-This API adds one or more tags to a subscription. The tag definitions must already exist.
+This API adds one or more tags to a subscription bundle. The tag definitions must already exist.
 
 
 **HTTP Request** 
@@ -2574,7 +2585,7 @@ None.
 
 **Returns**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a 201 status code. In addition, a Location header is returned giving the URL to retrieve the tags associated with the bundle.
 
 ### Retrieve bundle tags
 
@@ -2691,9 +2702,8 @@ class Tag {
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **includedDeleted** | boolean | no | false | If true, include deleted tags |
-| **audit** | string | no | "NONE" | Level of audit information to return |
+| **audit** | string | no | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL"|
 
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 **Response**
     
@@ -2775,11 +2785,9 @@ no content
 
 **Query Parameters**
 
-**Query Parameters**
-
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ------------ |
-| **tagDef** | array of strings | true | none | List of tag definition IDs identifying the tags that should be removed. |
+| **tagDef** | array of strings | true | none | A tag definition ID identifying the tag that should be removed. Multiple tags can be deleted by specifying a separate tagDef parameter corresponding to each tag. |
 
 **Response**
 
@@ -3681,9 +3689,8 @@ class Bundle {
 | ---- | -----| -------- | ------- | ----------- | 
 | **offset** | long | no | 0 | Starting index for items listed |
 | **limit** | long | no | 100 | maximum number of items listed |
-| **audit** | string | no | "NONE" | Level of audit information to return |
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL", or "FULL" |
 
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 
 **Response**
@@ -4335,9 +4342,7 @@ class Bundle {
 | **searchKey** | string | yes | none | String to be matched |
 | **offset** | long | no | 0 | Starting index for items listed |
 | **limit** | long | no | 100 | maximum number of items listed |
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL", or "FULL"  |
 
 **Response**
 

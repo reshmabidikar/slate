@@ -3640,9 +3640,137 @@ If successful, returns a status code of 200 and a list of account audit logs wit
 
 Retrieves a list of audit log records showing events that occurred related to a specified payment attempt. History information is included with each record.
 
+**HTTP Request**
+
+`GET http://127.0.0.1:8080/1.0/kb/payments/attempts/{payment_attempt_id}/auditLogsWithHistory`
+
 > Example Request:
 
+```shell
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+     'http://127.0.0.1:8080/1.0/kb/payments/attempts/<payment_attempt_id>/auditLogsWithHistory'	 
+```
+
+```java
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+UUID paymentAttemptId = UUID.fromString("2706b8c6-97f2-41b7-b9c5-de23726bb399");
+AuditLogs logs = paymentApi.getPaymentAttemptAuditLogsWithHistory(paymentAttemptId, requestOptions);
+
+```
+
+```python
+```
+
+```ruby
+```
+
 > Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+[
+  {
+    "changeType": "INSERT",
+    "changeDate": "2022-05-02T11:15:52.000Z",
+    "objectType": "PAYMENT_ATTEMPT",
+    "objectId": "2706b8c6-97f2-41b7-b9c5-de23726bb399",
+    "changedBy": "admin",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "b65afb87-9e43-4ffe-a492-84ac5d5f10a9",
+    "history": {
+      "id": null,
+      "createdDate": "2022-05-02T11:15:52.000Z",
+      "updatedDate": "2022-05-02T11:15:52.000Z",
+      "recordId": 11214,
+      "accountRecordId": 2306,
+      "tenantRecordId": 1,
+      "accountId": "bdcd8ed0-ffc6-42db-88eb-cf1ee504b9a8",
+      "paymentMethodId": "82e375db-4aff-413e-9b52-f70803ea3bc5",
+      "paymentExternalKey": "1833cad4-4b10-432e-959b-01dbf3ca0596",
+      "transactionId": null,
+      "transactionExternalKey": "92f17f72-c03f-427b-95eb-a959451c37b8",
+      "transactionType": "PURCHASE",
+      "stateName": "INIT",
+      "amount": 10,
+      "currency": "USD",
+      "pluginName": "__INVOICE_PAYMENT_CONTROL_PLUGIN__",
+      "pluginProperties": "WlYAAAJbXQ==",
+      "historyTableName": "PAYMENT_ATTEMPT_HISTORY",
+      "tableName": "PAYMENT_ATTEMPTS"
+    }
+  },
+  {
+    "changeType": "UPDATE",
+    "changeDate": "2022-05-02T11:15:52.000Z",
+    "objectType": "PAYMENT_ATTEMPT",
+    "objectId": "2706b8c6-97f2-41b7-b9c5-de23726bb399",
+    "changedBy": "admin",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "b65afb87-9e43-4ffe-a492-84ac5d5f10a9",
+    "history": {
+      "id": null,
+      "createdDate": "2022-05-02T11:15:52.000Z",
+      "updatedDate": "2022-05-02T11:15:52.000Z",
+      "recordId": 11214,
+      "accountRecordId": 2306,
+      "tenantRecordId": 1,
+      "accountId": "bdcd8ed0-ffc6-42db-88eb-cf1ee504b9a8",
+      "paymentMethodId": "82e375db-4aff-413e-9b52-f70803ea3bc5",
+      "paymentExternalKey": "1833cad4-4b10-432e-959b-01dbf3ca0596",
+      "transactionId": "92f17f72-c03f-427b-95eb-a959451c37b8",
+      "transactionExternalKey": "92f17f72-c03f-427b-95eb-a959451c37b8",
+      "transactionType": "PURCHASE",
+      "stateName": "SUCCESS",
+      "amount": 10,
+      "currency": "USD",
+      "pluginName": "__INVOICE_PAYMENT_CONTROL_PLUGIN__",
+      "pluginProperties": "WlYAADxbeyJJUENEX0lOVk9JQ0VfSUQiOiI3MzdmNDRhMi1iYTljLTRjNjQtOTQzYi04NWRlMjEyODMxYWMifV0=",
+      "historyTableName": "PAYMENT_ATTEMPT_HISTORY",
+      "tableName": "PAYMENT_ATTEMPTS"
+    }
+  }
+]
+```
+
+```java
+[class AuditLog {
+    changeType: INSERT
+    changeDate: 2022-05-02T11:15:52.000Z
+    objectType: PAYMENT_ATTEMPT
+    objectId: 2706b8c6-97f2-41b7-b9c5-de23726bb399
+    changedBy: admin
+    reasonCode: null
+    comments: null
+    userToken: b65afb87-9e43-4ffe-a492-84ac5d5f10a9
+    history: {id=null, createdDate=2022-05-02T11:15:52.000Z, updatedDate=2022-05-02T11:15:52.000Z, recordId=11214, accountRecordId=2306, tenantRecordId=1, accountId=bdcd8ed0-ffc6-42db-88eb-cf1ee504b9a8, paymentMethodId=82e375db-4aff-413e-9b52-f70803ea3bc5, paymentExternalKey=1833cad4-4b10-432e-959b-01dbf3ca0596, transactionId=null, transactionExternalKey=92f17f72-c03f-427b-95eb-a959451c37b8, transactionType=PURCHASE, stateName=INIT, amount=10.0, currency=USD, pluginName=__INVOICE_PAYMENT_CONTROL_PLUGIN__, pluginProperties=WlYAAAJbXQ==, historyTableName=PAYMENT_ATTEMPT_HISTORY, tableName=PAYMENT_ATTEMPTS}
+}, class AuditLog {
+    changeType: UPDATE
+    changeDate: 2022-05-02T11:15:52.000Z
+    objectType: PAYMENT_ATTEMPT
+    objectId: 2706b8c6-97f2-41b7-b9c5-de23726bb399
+    changedBy: admin
+    reasonCode: null
+    comments: null
+    userToken: b65afb87-9e43-4ffe-a492-84ac5d5f10a9
+    history: {id=null, createdDate=2022-05-02T11:15:52.000Z, updatedDate=2022-05-02T11:15:52.000Z, recordId=11214, accountRecordId=2306, tenantRecordId=1, accountId=bdcd8ed0-ffc6-42db-88eb-cf1ee504b9a8, paymentMethodId=82e375db-4aff-413e-9b52-f70803ea3bc5, paymentExternalKey=1833cad4-4b10-432e-959b-01dbf3ca0596, transactionId=92f17f72-c03f-427b-95eb-a959451c37b8, transactionExternalKey=92f17f72-c03f-427b-95eb-a959451c37b8, transactionType=PURCHASE, stateName=SUCCESS, amount=10.0, currency=USD, pluginName=__INVOICE_PAYMENT_CONTROL_PLUGIN__, pluginProperties=WlYAADxbeyJJUENEX0lOVk9JQ0VfSUQiOiI3MzdmNDRhMi1iYTljLTRjNjQtOTQzYi04NWRlMjEyODMxYWMifV0=, historyTableName=PAYMENT_ATTEMPT_HISTORY, tableName=PAYMENT_ATTEMPTS}
+}]
+```
+
+```python
+```
+
+```ruby
+```
 
 
 **Query Parameters**
