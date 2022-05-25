@@ -1,0 +1,23 @@
+{
+    "index_name": "killbill_slate",
+    "start_urls": [
+        "https://killbill.github.io/slate/index.html"
+    ],
+    "stop_urls": [],
+    "selectors": {
+        "lvl0": {
+            "global": true,
+            "selector": ".content h1"
+        },
+        "lvl1": ".content h2",
+        "lvl2": ".content h3",
+        "lvl3": ".content h4",
+        "text": ".content p, .content dt, .content-wrapper td.content, .content-wrapper th.tableblock"
+    },
+    "js_render": false,
+    "use_anchors": false,
+    "min_indexed_level": 1,
+    "custom_settings": {
+        "advancedSyntax": true
+    }
+}
