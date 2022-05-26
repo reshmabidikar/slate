@@ -71,6 +71,19 @@ under the License.
     <div class="main-wrapper">
         <div class="toc-wrapper">
         <a href="https://killbill.github.io/slate" class="logo"><%= image_tag "logo.png" %></a>
+        
+        <% if language_tabs.any? %>
+          <div class="lang-selector">
+            <% language_tabs.each do |lang| %>
+              <% if lang.is_a? Hash %>
+                <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
+              <% else %>
+                <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
+              <% end %>
+            <% end %>
+          </div>
+        <% end %>
+
         <div id="docsearch"></div>
         
         <div id="toc" class="toc-list-h1">
