@@ -15,7 +15,7 @@ Basic endpoints to create and retrieve credit invoice items
 
 ### Create credits
 
-Create one or more credits for a specified account. These credits will appear as `invoiceItem`s. They may be added to an existing DRAFT invoice, or they may result in the creation of a new invoice. 
+Create one or more credits for a specified account. These credits will appear as `invoiceItem`s. They may be added to an existing DRAFT invoice, or they may result in the creation of a new invoice. Also, it is worth noting, that the credits are added either at account level OR invoice level (if invoiceID is specified) and not linked to any existing `invoiceItem`s. Consequently, if you pass certain fields like `linkedInvoiceItemId`, `subscriptionID` while creating the credit, they will not reflect in the database and the same will not be visible in subsequent Get requests. 
 
 **HTTP Request** 
 
@@ -152,7 +152,7 @@ no content
 
 **Request Body**
 
-A list of one or more invoiceItem objects. Each object requires at least the following attributes: accountId and amount. If an invoiceId is given, the item will be added to the specified invoice. This invoice must be in DRAFT status or an error will occur.
+A list of one or more invoiceItem objects. Each object requires at least the following attributes: accountId and amount. If an invoiceId is given, the item will be added to the specified invoice. This invoice must be in DRAFT status or an error will occur. 
 
 **Query Parameters**
 

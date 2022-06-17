@@ -593,7 +593,7 @@ If successful, returns a status code of 201 and an invoice item object.
 
 ### Create tax items
 
-Normally, tax items are added to an invoice by a plugin, which intercepts the invoice during its creation and adds the required tax items on the fly. However, sometimes you may want to add tax items directly. This API adds a tax item to an account, which will result in the creation of a new invoice.
+Normally, tax items are added to an invoice by a plugin, which intercepts the invoice during its creation and adds the required tax items on the fly. However, sometimes you may want to add tax items directly. This API adds a tax item to an account, which will result in the creation of a new invoice. Also, it is worth noting, that the tax items are not linked to any existing `invoiceItem`s. Consequently, if you pass certain fields like `linkedInvoiceItemId`, `subscriptionID` while creating the tax item, they will not reflect in the database and the same will not be visible in subsequent Get requests. 
 
 **HTTP Request** 
 
