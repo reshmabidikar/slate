@@ -6011,7 +6011,7 @@ If successful, returns a status code of 200 and a list of all accounts.
 
 ### Search invoices
 
-Search for an account by a specified search string. If the search string is a number, it is compared to the `invoiceNumber` attribute. An exact match is required. Otherwise, it is compared to the following attributes: `invoiceId`, `accountId`, or `currency`. The operation returns all account records in which the search string matches all or part of any one of these attributes.
+Search for an account by a specified search string. If the search string is a number, it is compared to the `invoiceNumber` attribute. An exact match is required. Otherwise, it is compared to the following attributes: `invoiceId`, `accountId`, or `currency`. The operation returns all account records in which the search string matches all or part of any one of these attributes. All `search` apis for a specific type (e.g `Invoice`) return the shallow objects without doing any computation. So for instance, the amount, or balance would require pulling more data such the list of `InvoiceItem`, and as a result such fields are not populated (and default to 0).
 
 
 **HTTP Request** 
