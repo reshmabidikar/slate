@@ -92,7 +92,7 @@ If successful, returns a status code of 200 and a list of invoices generated.
 ### Update the state of a paymentTransaction and associated payment
 
 Provides a way to fix the payment state data for a given `Payment`, if that data becomes corrupted.
-This could happen, for example, if a call to a third party payment gateway times out, leaving the system in an unknwon state.
+This could happen, for example, if a call to a third party payment gateway times out, leaving the system in an unknown state.
 
 
 **HTTP Request**
