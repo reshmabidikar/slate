@@ -14,7 +14,7 @@ The attributes of the `Tenant` resource object are the following:
 | **apiSecret** | string | user | The API secret associated with the tenant. This value is hashed and cannot be retrieved. |
 | **auditLogs** | array | system | Array of audit log records for this tenant |
 
-Note that The tenant itself has very few attributes, as most attributes belong to the individual accounts and related resources.
+Note that the tenant itself has very few attributes, as most attributes belong to the individual accounts and related resources.
 
 ## Tenant
 
