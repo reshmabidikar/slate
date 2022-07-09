@@ -801,7 +801,7 @@ IF successful, returns a status code of 204 and an empty body.
 
 ## List and Search
 
-These endpoints allow you to list all accounts or to search for a specific account.
+These endpoints allow you to list all accounts or to search for a specific account. For all the search endpoints, objects that involve any actual computation default to 0. As an example, both these endpoints will return `accountBalance` as 0.
 
 
 ### List accounts
