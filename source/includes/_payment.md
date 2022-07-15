@@ -51,7 +51,7 @@ These endpoints initiate transactions on an existing Payment. To begin a new Pay
 
 ### Capture an existing authorization [using paymentId]
 
-Attempts to capture a payment amount based on a prior authorization. The Payment is identified by its `paymentId` provided as a path parameter.
+Attempts to capture a payment amount based on a prior authorization. (A prior authorization may be created via the [Trigger a Payment](https://killbill.github.io/slate/index.html?shell#account-trigger-a-payment-authorization-purchase-or-credit) endpoint). The Payment is identified by its `paymentId` provided as a path parameter.
 
 **HTTP Request** 
 
@@ -83,8 +83,6 @@ PaymentTransaction captureTransaction = new PaymentTransaction();
 captureTransaction.setPaymentId(paymentId);
 captureTransaction.setAmount(BigDecimal.ONE);
 captureTransaction.setCurrency(Currency.USD);
-captureTransaction.setPaymentExternalKey("d86ecaaa-10ad-4b00-afa8-e469dd3d4bb3");
-captureTransaction.setTransactionExternalKey("9cc6ebab-9a92-44f1-a0dc-e111aa7c368d");
 
 ImmutableList<String> NULL_PLUGIN_NAMES = null;
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
@@ -248,11 +246,11 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body. A PaymentTransaction of type CAPTURE is created.
+If successful, returns a status code of 201 and an empty body. A Location header containing the payment id is also included in the response. A PaymentTransaction of type CAPTURE is created.
 
 ### Capture an existing authorization [using paymentExternalKey]
 
-Requests a payment amount based on a prior authorization. The payment is identified by its external key given in the request body.
+Requests a payment amount based on a prior authorization.(A prior authorization may be created via the [Trigger a Payment](https://killbill.github.io/slate/index.html?shell#account-trigger-a-payment-authorization-purchase-or-credit) endpoint).The payment is identified by its external key given in the request body.
 
 **HTTP Request** 
 
@@ -282,8 +280,8 @@ protected PaymentApi paymentApi;
 PaymentTransaction captureTransaction = new PaymentTransaction();
 captureTransaction.setAmount(BigDecimal.ONE);
 captureTransaction.setCurrency(Currency.USD);
-captureTransaction.setPaymentExternalKey("8e0c507a-05f9-4572-a57d-3f742cdc040d");
-captureTransaction.setTransactionExternalKey("9b4dbbe7-749d-4c96-a2e7-57b8bff3bf05");
+captureTransaction.setPaymentExternalKey("8e0c507a-05f9-4572-a57d-3f742cdc040d"); //payment external key
+captureTransaction.setTransactionExternalKey("9b4dbbe7-749d-4c96-a2e7-57b8bff3bf05"); //external key to be set on the newly created CAPTURE transaction
 
 ImmutableList<String> NULL_PLUGIN_NAMES = null;
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
@@ -465,7 +463,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body. A paymentTransaction of type CAPTURE is created.
+If successful, returns a status code of 201 and an empty body. A Location header containing the payment id is also included in the response. A PaymentTransaction of type CAPTURE is created.
 
 ### Retrieve a payment [using paymentId]
 
@@ -769,7 +767,7 @@ Payment payment = paymentApi.getPaymentByExternalKey(externalPaymentKey,
                                                      withAttempts, 
                                                      NULL_PLUGIN_PROPERTIES, 
                                                      AuditLevel.NONE, 
-                                                     requestOptions);` `
+                                                     requestOptions);
 ```
 ```ruby
 external_key = "example_payment_external_key"
@@ -1043,6 +1041,9 @@ curl \
     -H 'X-Killbill-ApiSecret: lazar' \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
+    -d '{ 
+    		"paymentId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d"
+      }' \
     'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d' 
 ```
 
@@ -1135,6 +1136,10 @@ no content
 ```python
 no content
 ```
+
+**Request Body**
+
+A PaymentTransaction object containing, at least, the `paymentId`
 
 **Query Parameters**
 
@@ -1259,7 +1264,7 @@ no content
 
 **Request Body**
 
-A Payment object containing, at least, the `paymentExternalKey`
+A PaymentTransaction object containing, at least, the `paymentExternalKey`
 
 **Query Parameters**
 
@@ -1287,6 +1292,9 @@ curl -v \
     -H 'X-Killbill-ApiSecret: lazar' \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
+    -d '{ 
+    		"paymentId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d"
+      }' \    
     'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d' 	
 ```
 
@@ -1357,6 +1365,10 @@ no content
 ```python
 no content
 ```
+
+**Request Body**
+
+A PaymentTransaction object containing, at least, the `paymentId`
 
 **Query Parameters**
 
@@ -1495,7 +1507,17 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+UUID paymentId = UUID.fromString("8a096f10-1591-4546-880d-f6d4f7ea818c");
+PaymentTransaction body = new PaymentTransaction();
+body.setAmount(new BigDecimal(5));
+		
+ImmutableList<String> NULL_PLUGIN_NAMES = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+		
+Payment payment = paymentApi.chargebackPayment(paymentId, body, NULL_PLUGIN_NAMES, NULL_PLUGIN_PROPERTIES, requestOptions);
 ```
 
 ```ruby
@@ -1536,6 +1558,64 @@ paymentApi.chargeback_payment(payment_id,
 < Location: http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/
 < Content-Type: application/json
 < Content-Length: 0
+```
+
+```java
+class Payment {
+    org.killbill.billing.client.model.gen.Payment@99051262
+    accountId: e2b3ca57-89ee-4eb9-aa37-d807a8623a67
+    paymentId: 8a096f10-1591-4546-880d-f6d4f7ea818c
+    paymentNumber: 68
+    paymentExternalKey: 8a096f10-1591-4546-880d-f6d4f7ea818c
+    authAmount: 0
+    capturedAmount: 0
+    purchasedAmount: 35.00
+    refundedAmount: 0
+    creditedAmount: 0
+    currency: USD
+    paymentMethodId: 5cb571fd-5c50-4803-9b99-d7c39e2a9911
+    transactions: [class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@17da847e
+        transactionId: 669b0912-edb4-46ed-afd7-3f653cf957ab
+        transactionExternalKey: 669b0912-edb4-46ed-afd7-3f653cf957ab
+        paymentId: 8a096f10-1591-4546-880d-f6d4f7ea818c
+        paymentExternalKey: 8a096f10-1591-4546-880d-f6d4f7ea818c
+        transactionType: PURCHASE
+        amount: 40.00
+        currency: USD
+        effectiveDate: 2022-07-04T07:18:09.000Z
+        processedAmount: 40.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }, class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@99588f7d
+        transactionId: ae308e00-a25f-4195-9869-6b35b84929a6
+        transactionExternalKey: ae308e00-a25f-4195-9869-6b35b84929a6
+        paymentId: 8a096f10-1591-4546-880d-f6d4f7ea818c
+        paymentExternalKey: 8a096f10-1591-4546-880d-f6d4f7ea818c
+        transactionType: CHARGEBACK
+        amount: 5.00
+        currency: USD
+        effectiveDate: 2022-07-04T07:18:52.000Z
+        processedAmount: 5.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }]
+    paymentAttempts: null
+    auditLogs: []
+}
 ```
 
 ```ruby
@@ -1628,7 +1708,18 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+PaymentTransaction body = new PaymentTransaction();
+body.setPaymentExternalKey("a975f7b8-1e59-4801-91c9-fcce1526b019");
+body.setAmount(new BigDecimal(5));
+		
+ImmutableList<String> NULL_PLUGIN_NAMES = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+		
+Payment payment = paymentApi.chargebackPaymentByExternalKey(body, NULL_PLUGIN_NAMES, NULL_PLUGIN_PROPERTIES, requestOptions);
+
 ```
 
 ```ruby
@@ -1668,6 +1759,64 @@ paymentApi.chargeback_payment_by_external_key(body,
 < Location: http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/
 < Content-Type: application/json
 < Content-Length: 0
+```
+
+```java
+class Payment {
+    org.killbill.billing.client.model.gen.Payment@81697070
+    accountId: e2b3ca57-89ee-4eb9-aa37-d807a8623a67
+    paymentId: a975f7b8-1e59-4801-91c9-fcce1526b019
+    paymentNumber: 70
+    paymentExternalKey: a975f7b8-1e59-4801-91c9-fcce1526b019
+    authAmount: 0
+    capturedAmount: 0
+    purchasedAmount: 40.00
+    refundedAmount: 0
+    creditedAmount: 0
+    currency: USD
+    paymentMethodId: 5cb571fd-5c50-4803-9b99-d7c39e2a9911
+    transactions: [class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@afa9b700
+        transactionId: 81821062-fcc0-495b-a3e9-011b72169d0f
+        transactionExternalKey: 81821062-fcc0-495b-a3e9-011b72169d0f
+        paymentId: a975f7b8-1e59-4801-91c9-fcce1526b019
+        paymentExternalKey: a975f7b8-1e59-4801-91c9-fcce1526b019
+        transactionType: PURCHASE
+        amount: 45.00
+        currency: USD
+        effectiveDate: 2022-07-04T08:17:32.000Z
+        processedAmount: 45.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }, class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@be9a38a8
+        transactionId: 1c6429e6-49fc-472c-a144-4893b5905c15
+        transactionExternalKey: 1c6429e6-49fc-472c-a144-4893b5905c15
+        paymentId: a975f7b8-1e59-4801-91c9-fcce1526b019
+        paymentExternalKey: a975f7b8-1e59-4801-91c9-fcce1526b019
+        transactionType: CHARGEBACK
+        amount: 5.00
+        currency: USD
+        effectiveDate: 2022-07-04T08:18:04.000Z
+        processedAmount: 5.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }]
+    paymentAttempts: null
+    auditLogs: []
+}
 ```
 
 ```ruby
@@ -1757,7 +1906,17 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+PaymentTransaction body = new PaymentTransaction();
+body.setPaymentExternalKey("a975f7b8-1e59-4801-91c9-fcce1526b019");
+body.setAmount(new BigDecimal(5));
+		
+ImmutableList<String> NULL_PLUGIN_NAMES = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+		
+Payment payment = paymentApi.chargebackPaymentByExternalKey(body, NULL_PLUGIN_NAMES, NULL_PLUGIN_PROPERTIES, requestOptions);
 ```
 
 ```ruby
@@ -1793,6 +1952,83 @@ paymentApi.chargeback_reversal_payment(payment_id,
 < Location: http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/
 < Content-Type: application/json
 < Content-Length: 0
+```
+
+```java
+class Payment {
+    org.killbill.billing.client.model.gen.Payment@c78613e0
+    accountId: d02f6cfa-127f-46c6-9275-88362a46b4ff
+    paymentId: c999b791-588b-4101-bc45-2d39b7b3f4fa
+    paymentNumber: 72
+    paymentExternalKey: c999b791-588b-4101-bc45-2d39b7b3f4fa
+    authAmount: 0
+    capturedAmount: 0
+    purchasedAmount: 60.00
+    refundedAmount: 0
+    creditedAmount: 0
+    currency: USD
+    paymentMethodId: d07aa4e5-3ea7-43f4-9ba3-3421c7c3a981
+    transactions: [class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@3f6c1918
+        transactionId: 05201077-e36a-43a9-b8c7-cc50413c3e17
+        transactionExternalKey: 05201077-e36a-43a9-b8c7-cc50413c3e17
+        paymentId: c999b791-588b-4101-bc45-2d39b7b3f4fa
+        paymentExternalKey: c999b791-588b-4101-bc45-2d39b7b3f4fa
+        transactionType: PURCHASE
+        amount: 60.00
+        currency: USD
+        effectiveDate: 2022-07-04T08:35:58.000Z
+        processedAmount: 60.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }, class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@debaf134
+        transactionId: 34fcfe0d-d281-4d29-ab8b-ae48596a7963
+        transactionExternalKey: 34fcfe0d-d281-4d29-ab8b-ae48596a7963
+        paymentId: c999b791-588b-4101-bc45-2d39b7b3f4fa
+        paymentExternalKey: c999b791-588b-4101-bc45-2d39b7b3f4fa
+        transactionType: CHARGEBACK
+        amount: 10.00
+        currency: USD
+        effectiveDate: 2022-07-04T08:36:43.000Z
+        processedAmount: 10.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }, class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@2e763f20
+        transactionId: b5ec40fc-5d2c-4f24-84b8-8b06e07308a1
+        transactionExternalKey: 34fcfe0d-d281-4d29-ab8b-ae48596a7963
+        paymentId: c999b791-588b-4101-bc45-2d39b7b3f4fa
+        paymentExternalKey: c999b791-588b-4101-bc45-2d39b7b3f4fa
+        transactionType: CHARGEBACK
+        amount: null
+        currency: null
+        effectiveDate: 2022-07-04T08:37:32.000Z
+        processedAmount: 0E-9
+        processedCurrency: null
+        status: PAYMENT_FAILURE
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }]
+    paymentAttempts: null
+    auditLogs: []
+}
 ```
 
 ```ruby
@@ -1868,7 +2104,7 @@ None.
 
 If successful, returns a status code of 201 and an empty body.
 
-### Record a chargeback reversal [using paymnetExternalKey]
+### Record a chargeback reversal [using paymentExternalKey]
 
 Reverses a CHARGEBACK PaymentTransaction, if permitted by the Payment plugin. The chargeback amount is added back to the captured amount. The Payment is identified by its `paymentExternalKey` which is given in the request body. The CHARGEBACK transaction is identified by its `transactionExternalKey` which is also given in the request body.
 
@@ -1889,13 +2125,24 @@ curl -v \
     -H 'X-Killbill-CreatedBy: demo' \
     -d '{
           "transactionExternalKey": "7ff346e8-24cc-4437-acfa-c79d96d54ee2",
-          "paymentExternalKey": "paymentExternalKey",
+          "paymentExternalKey": "paymentExternalKey"
         }' \
     'http://127.0.0.1:8080/1.0/kb/payments/chargebackReversals' 
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+PaymentTransaction body = new PaymentTransaction();
+body.setPaymentExternalKey("631ec4ac-d745-4457-939d-d761badbf0ad");
+body.setTransactionExternalKey("72789509-2b94-43b6-b889-42c5ec5d27f3");
+body.setAmount(new BigDecimal(10));
+		
+ImmutableList<String> NULL_PLUGIN_NAMES = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+		
+Payment payment = paymentApi.chargebackPaymentByExternalKey(body, NULL_PLUGIN_NAMES, NULL_PLUGIN_PROPERTIES, requestOptions);
 ```
 
 ```ruby
@@ -1927,6 +2174,83 @@ paymentApi.chargeback_reversal_payment_by_external_key(body,
 < Location: http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/
 < Content-Type: application/json
 < Content-Length: 0
+```
+
+```java
+class Payment {
+    org.killbill.billing.client.model.gen.Payment@1a4138f0
+    accountId: e67ad136-419a-4942-a56b-6c0446b13994
+    paymentId: 631ec4ac-d745-4457-939d-d761badbf0ad
+    paymentNumber: 74
+    paymentExternalKey: 631ec4ac-d745-4457-939d-d761badbf0ad
+    authAmount: 0
+    capturedAmount: 0
+    purchasedAmount: 55.00
+    refundedAmount: 0
+    creditedAmount: 0
+    currency: USD
+    paymentMethodId: 6bfaeab1-acdb-4cce-86fd-e3d330ab13cf
+    transactions: [class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@bce4ad8e
+        transactionId: 4c335d90-9a25-400c-8811-9d8a8d8d9b8f
+        transactionExternalKey: 4c335d90-9a25-400c-8811-9d8a8d8d9b8f
+        paymentId: 631ec4ac-d745-4457-939d-d761badbf0ad
+        paymentExternalKey: 631ec4ac-d745-4457-939d-d761badbf0ad
+        transactionType: PURCHASE
+        amount: 75.00
+        currency: USD
+        effectiveDate: 2022-07-04T08:51:58.000Z
+        processedAmount: 75.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }, class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@13d1034
+        transactionId: 72789509-2b94-43b6-b889-42c5ec5d27f3
+        transactionExternalKey: 72789509-2b94-43b6-b889-42c5ec5d27f3
+        paymentId: 631ec4ac-d745-4457-939d-d761badbf0ad
+        paymentExternalKey: 631ec4ac-d745-4457-939d-d761badbf0ad
+        transactionType: CHARGEBACK
+        amount: 10.00
+        currency: USD
+        effectiveDate: 2022-07-04T08:53:10.000Z
+        processedAmount: 10.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }, class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@e911ae29
+        transactionId: bf8b42b3-89b0-4655-bf3e-8b4fa9557777
+        transactionExternalKey: 72789509-2b94-43b6-b889-42c5ec5d27f3
+        paymentId: 631ec4ac-d745-4457-939d-d761badbf0ad
+        paymentExternalKey: 631ec4ac-d745-4457-939d-d761badbf0ad
+        transactionType: CHARGEBACK
+        amount: 10.00
+        currency: USD
+        effectiveDate: 2022-07-04T08:54:10.000Z
+        processedAmount: 10.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }]
+    paymentAttempts: null
+    auditLogs: []
+}
 ```
 
 ```ruby
@@ -2006,7 +2330,7 @@ If successful, returns a status code of 201 and an empty body.
 
 ### Refund an existing payment [using paymentId]
 
-Refunds part or all of the balance of an existing Payment. The Payment is identified by its `paymentId`, which is given as a path parameter.
+Refunds part or all of the balance of an existing Payment. The Payment is identified by its `paymentId`, which is given as a path parameter. 
 
 **HTTP Request** 
 
@@ -2039,12 +2363,14 @@ body.setPaymentId(paymentId);
 body.setAmount(BigDecimal.TEN);
 body.setCurrency(Currency.USD);
 body.setPaymentExternalKey("de924e98-2c76-4e90-b9d6-2ced262bc251");
-body.setTransactionExternalKey("c4de33be-1c2b-4cf8-be75-6371f08738de");
+
+ImmutableList<String> NULL_PLUGIN_NAMES = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 Payment refundPayment = paymentApi.refundPayment(paymentId, 
                                                  body, 
                                                  NULL_PLUGIN_NAMES, 
-                                                 pluginProperties, 
+                                                 NULL_PLUGIN_PROPERTIES, 
                                                  requestOptions);
 ```
 
@@ -2193,7 +2519,7 @@ no content
 
 **Request Body**
 
-A Payment object including, as a minimum, the `amount` to be refunded.
+A PaymentTransaction object including, as a minimum, the `amount` to be refunded.
 
 **Query Parameters**
 
@@ -2201,7 +2527,7 @@ None.
 
 **Returns**
 
-If successful, returns a status code of 201 and an empty body. A new paymentTransaction of type REFUND is created.
+If successful, returns a status code of 201 and an empty body. In addition, a Location header containing the payment id is returned. A new PaymentTransaction of type `REFUND` is created.
 
 ### Refund an existing payment [using paymentExternalKey]
 
@@ -2231,7 +2557,19 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+PaymentTransaction body = new PaymentTransaction();
+body.setAmount(new BigDecimal(2));
+body.setCurrency(Currency.USD);
+body.setPaymentExternalKey("da96999c-b1ac-470f-8c48-c4ecf386cd89");
+		
+ImmutableList<String> NULL_PLUGIN_NAMES = null;
+ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+		
+Payment refundPayment = paymentApi.refundPaymentByExternalKey(body, NULL_PLUGIN_NAMES, NULL_PLUGIN_PROPERTIES, requestOptions);
+
 ```
 
 ```ruby
@@ -2266,6 +2604,121 @@ paymentApi.refund_payment_by_external_key(body,
 < Location: http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d/
 < Content-Type: application/json
 < Content-Length: 0
+```
+
+```java
+class Payment {
+    org.killbill.billing.client.model.gen.Payment@bf80fd62
+    accountId: a0b2f8e9-cf39-49e3-a8b6-18ed96da9fa2
+    paymentId: da96999c-b1ac-470f-8c48-c4ecf386cd89
+    paymentNumber: 75
+    paymentExternalKey: da96999c-b1ac-470f-8c48-c4ecf386cd89
+    authAmount: 0
+    capturedAmount: 0
+    purchasedAmount: 25.00
+    refundedAmount: 20.00
+    creditedAmount: 0
+    currency: USD
+    paymentMethodId: 76af5ee6-f4db-4bf7-8221-9beb3c358b0b
+    transactions: [class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@8547d674
+        transactionId: 337315c5-eb6c-4881-9665-a07fc1c19e69
+        transactionExternalKey: 337315c5-eb6c-4881-9665-a07fc1c19e69
+        paymentId: da96999c-b1ac-470f-8c48-c4ecf386cd89
+        paymentExternalKey: da96999c-b1ac-470f-8c48-c4ecf386cd89
+        transactionType: PURCHASE
+        amount: 25.00
+        currency: USD
+        effectiveDate: 2022-07-04T11:14:35.000Z
+        processedAmount: 25.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }, class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@2544fe4d
+        transactionId: a89d8533-a975-470f-857f-79ea8ee02ccb
+        transactionExternalKey: a89d8533-a975-470f-857f-79ea8ee02ccb
+        paymentId: da96999c-b1ac-470f-8c48-c4ecf386cd89
+        paymentExternalKey: da96999c-b1ac-470f-8c48-c4ecf386cd89
+        transactionType: REFUND
+        amount: 5.00
+        currency: USD
+        effectiveDate: 2022-07-04T11:17:14.000Z
+        processedAmount: 5.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }, class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@4357fe3
+        transactionId: 9d361b25-0fc7-4070-87c3-e6a5113161bf
+        transactionExternalKey: 9d361b25-0fc7-4070-87c3-e6a5113161bf
+        paymentId: da96999c-b1ac-470f-8c48-c4ecf386cd89
+        paymentExternalKey: da96999c-b1ac-470f-8c48-c4ecf386cd89
+        transactionType: REFUND
+        amount: 10.00
+        currency: USD
+        effectiveDate: 2022-07-04T11:28:53.000Z
+        processedAmount: 10.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }, class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@d90b4e50
+        transactionId: 3ace5dc9-e556-4350-baeb-4f4723d8bf1f
+        transactionExternalKey: 3ace5dc9-e556-4350-baeb-4f4723d8bf1f
+        paymentId: da96999c-b1ac-470f-8c48-c4ecf386cd89
+        paymentExternalKey: da96999c-b1ac-470f-8c48-c4ecf386cd89
+        transactionType: REFUND
+        amount: 3.00
+        currency: USD
+        effectiveDate: 2022-07-04T11:32:53.000Z
+        processedAmount: 3.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }, class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@e989e91a
+        transactionId: 2846d45e-01e9-473e-aed9-c628fadba970
+        transactionExternalKey: 2846d45e-01e9-473e-aed9-c628fadba970
+        paymentId: da96999c-b1ac-470f-8c48-c4ecf386cd89
+        paymentExternalKey: da96999c-b1ac-470f-8c48-c4ecf386cd89
+        transactionType: REFUND
+        amount: 2.00
+        currency: USD
+        effectiveDate: 2022-07-04T11:37:45.000Z
+        processedAmount: 2.00
+        processedCurrency: USD
+        status: SUCCESS
+        gatewayErrorCode: null
+        gatewayErrorMsg: null
+        firstPaymentReferenceId: null
+        secondPaymentReferenceId: null
+        properties: null
+        auditLogs: []
+    }]
+    paymentAttempts: null
+    auditLogs: []
+}
 ```
 
 ```ruby
@@ -2320,7 +2773,7 @@ no content
 
 **Request Body**
 
-A payment object including, as a minimum, the `paymentExternalKey` and the `amount` to be refunded.
+A PaymentTransaction object including, as a minimum, the `paymentExternalKey` and the `amount` to be refunded.
 
 **Query Parameters**
 
@@ -2328,7 +2781,7 @@ None.
 
 **Returns**
 
-If successful, returns a status code of 201 and an empty body. A new PaymentTransaction of type REFUND is created.
+If successful, returns a status code of 201 and an empty body. In addition, a Location header containing the payment id is returned. A new PaymentTransaction of type `REFUND` is created.
 
 ### Cancel a scheduled payment attempt retry [using transactionId]
 
@@ -2351,7 +2804,12 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.killbill.billing.client.api.gen.PaymentApi;
+protected PaymentApi paymentApi;
+
+UUID paymentTransactionId = UUID.fromString("54aed1ed-f8dc-4445-a19f-3a2519c1a334");
+paymentApi.cancelScheduledPaymentTransactionById(paymentTransactionId, requestOptions);
+
 ```
 
 ```ruby
@@ -2383,6 +2841,10 @@ paymentApi.cancel_scheduled_payment_transaction_by_id(payment_transaction_id,
 < Content-Length: 0
 ```
 
+```java
+no content
+```
+
 ```ruby
 no content
 ```
@@ -2400,7 +2862,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Cancel a scheduled payment attempt retry [using transactionExternalKey]
 
-Cancels a scheduled attempt to retry a PaymentTransaction. The transaction is identified by its `transactionExternalKey`, which is provided in the request body.
+Cancels a scheduled attempt to retry a PaymentTransaction. The transaction is identified by its `transactionExternalKey`, which is provided as a query parameter.
 
 
 **HTTP Request** 
@@ -2423,7 +2885,7 @@ curl -v \
 import org.killbill.billing.client.api.gen.PaymentApi;
 protected PaymentApi paymentApi;
 
-String transactionExternalKey = "example_payment_external_key"
+String transactionExternalKey = "example_payment_external_key";
 
 paymentApi.cancelScheduledPaymentTransactionByExternalKey(transactionExternalKey, inputOptions);
 ```
@@ -2465,13 +2927,12 @@ no content
 ```python
 no content
 ```
-**Request Body**
-
-A payment transaction object including, as a minimum, the `transactionExternalKey`.
 
 **Query Parameters**
 
-None.
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **transactionExternalKey** | string | yes | none | Transaction external key |
 
 **Response**
 
@@ -2506,7 +2967,6 @@ curl -v \
             },
             "transaction":
             {
-                "transactionExternalKey": "somedTransactionExternalKey",
                 "transactionType": "AUTHORIZE",
                 "amount": 5,
                 "currency": "USD"
@@ -2518,22 +2978,28 @@ curl -v \
 ```java
 import org.killbill.billing.client.api.gen.AccountApi;
 import org.killbill.billing.client.api.gen.PaymentApi;
-protected AccountApi accountApi;
 protected PaymentApi paymentApi;
 
-UUID accountId = UUID.fromString("864c1418-e768-4cd5-a0db-67537144b685");
-Boolean accountWithBalance = false; // Will not include account balance
-Boolean accountWithBalanceAndCBA = false; // Will not include account balance and CBA info
+Account account = new Account();
+account.setName("Jane Doe");
+account.setExternalKey("JaneDoe");
 
-Account account = accountApi.getAccount(accountId, 
-                                        accountWithBalance, 
-                                        accountWithBalanceAndCBA, 
-                                        AuditLevel.NONE, 
-                                        requestOptions);
+PaymentMethod paymentMethod = new PaymentMethod();
+paymentMethod.setPluginName("__EXTERNAL_PAYMENT__");
+		
+PaymentTransaction paymentTransaction = new PaymentTransaction();
+paymentTransaction.setAmount(BigDecimal.TEN);
+paymentTransaction.setCurrency(Currency.USD);
+paymentTransaction.setTransactionType(TransactionType.AUTHORIZE);
+		
+ComboPaymentTransaction body = new ComboPaymentTransaction();
+body.setAccount(account);
+body.setPaymentMethod(paymentMethod);
+body.setTransaction(paymentTransaction);
+		
+ImmutableList<String> NULL_PLUGIN_NAMES = null;
 
-String paymentExternalKey = "5f216d82-dcc4-4e7b-9110-f3896bf6f49a";
-
-ComboPaymentTransaction result = createComboPaymentTransaction(account, paymentExternalKey);
+Payment result = paymentApi.createComboPayment(body,  NULL_PLUGIN_NAMES, requestOptions);
 ```
 
 ```ruby
@@ -2587,74 +3053,41 @@ paymentApi.create_combo_payment(body,
 ```
 
 ```java
-class ComboPaymentTransaction {
-    org.killbill.billing.client.model.gen.ComboPaymentTransaction@631731cc
-    account: class Account {
-        org.killbill.billing.client.model.gen.Account@9507aa91
-        accountId: 864c1418-e768-4cd5-a0db-67537144b685
-        name: 1af27661-dec0-4903-ae76-1783ae8f7d11
-        firstNameLength: 4
-        externalKey: 7cf53480-de54-4428-b72e-789b1c91e13a
-        email: aa2c2@da6c8
-        billCycleDayLocal: null
-        currency: USD
-        parentAccountId: null
-        isPaymentDelegatedToParent: false
-        paymentMethodId: null
-        referenceTime: null
-        timeZone: UTC
-        address1: 12 rue des ecoles
-        address2: Poitier
-        postalCode: 44 567
-        company: Renault
-        city: Quelque part
-        state: Poitou
-        country: France
-        locale: fr
-        phone: 81 53 26 56
-        notes: notes
-        isMigrated: false
-        accountBalance: null
-        accountCBA: null
-        auditLogs: []
-    }
-    paymentMethod: class PaymentMethod {
-        org.killbill.billing.client.model.gen.PaymentMethod@1619f5f6
-        paymentMethodId: null
-        externalKey: 5f216d82-dcc4-4e7b-9110-f3896bf6f49a
-        accountId: null
-        isDefault: false
-        pluginName: noop
-        pluginInfo: class PaymentMethodPluginDetail {
-            externalPaymentMethodId: null
-            isDefaultPaymentMethod: false
-            properties: null
-        }
-        auditLogs: null
-    }
-    transaction: class PaymentTransaction {
-        org.killbill.billing.client.model.gen.PaymentTransaction@c4d46526
-        transactionId: null
-        transactionExternalKey: 2eea894a-2e1e-44e1-942a-eed5a40d3ee0
-        paymentId: null
-        paymentExternalKey: 2f5fbec7-7f32-493c-a203-d9281f422e72
+class Payment {
+    org.killbill.billing.client.model.gen.Payment@f5175842
+    accountId: 52eb3f1a-aae4-4e8a-9f70-013d42750cbb
+    paymentId: fd3de75e-298e-4acc-ba25-7e6ca224e1bc
+    paymentNumber: 456
+    paymentExternalKey: fd3de75e-298e-4acc-ba25-7e6ca224e1bc
+    authAmount: 10.00
+    capturedAmount: 0
+    purchasedAmount: 0
+    refundedAmount: 0
+    creditedAmount: 0
+    currency: USD
+    paymentMethodId: 1244ac4f-f6cd-4a61-ace5-b05f0bf3149b
+    transactions: [class PaymentTransaction {
+        org.killbill.billing.client.model.gen.PaymentTransaction@7e8eeeb0
+        transactionId: 6837875c-4891-479d-9f84-a53e8b70ef0b
+        transactionExternalKey: 6837875c-4891-479d-9f84-a53e8b70ef0b
+        paymentId: fd3de75e-298e-4acc-ba25-7e6ca224e1bc
+        paymentExternalKey: fd3de75e-298e-4acc-ba25-7e6ca224e1bc
         transactionType: AUTHORIZE
-        amount: 10
+        amount: 10.00
         currency: USD
-        effectiveDate: null
-        processedAmount: null
-        processedCurrency: null
-        status: null
+        effectiveDate: 2022-07-15T06:59:35.000Z
+        processedAmount: 10.00
+        processedCurrency: USD
+        status: SUCCESS
         gatewayErrorCode: null
         gatewayErrorMsg: null
         firstPaymentReferenceId: null
         secondPaymentReferenceId: null
         properties: null
-        auditLogs: null
-    }
-    paymentMethodPluginProperties: []
-    transactionPluginProperties: []
-    auditLogs: null
+        auditLogs: []
+    }]
+    paymentAttempts: null
+    auditLogs: []
 }
 ```
 ```ruby
@@ -2697,6 +3130,7 @@ no content
 
 The request body is a JSON string that represents three distinct objects: account, paymentMethod, and transaction. For example:
 
+```
 {
   "account": {
   },
@@ -2708,6 +3142,7 @@ The request body is a JSON string that represents three distinct objects: accoun
     "currency": "USD"
   }
 }
+```
 
 This example assumes that a new Account is to be created.
 
@@ -2723,7 +3158,7 @@ None.
 
 **Returns**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a status code of 201 and an empty body. In addition, a `Location` header containing the `paymentId` is returned.
 
 
 ## Custom Fields
@@ -2840,7 +3275,9 @@ no content
 
 **Request Body**
 
-A JSON string representing the custom field object or objects to be added.
+A list of [Custom Field](https://killbill.github.io/slate/?java#custom-field-custom-field-resource) objects. Each object should specify at least the the `name` and `value` attribute. For example:
+
+[ { "name": "CF1", "value": "123" } ]
 
 **Query Parameters**
 
@@ -2848,7 +3285,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a 201 status code. In addition, a Location header is returned with the URL to retrieve the custom fields associated with the payment.
 
 ### Retrieve payment custom fields
 
@@ -2947,13 +3384,11 @@ class CustomField {
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL", or "FULL" |
 
 **Response**
     
-If successful, returns a status code of 200 and a list of custom field objects
+If successful, returns a status code of 200 and a (possibly empty) list of custom field objects.
 
 ### Modify custom fields for a payment
 
@@ -3042,7 +3477,9 @@ no content
 
 **Requst Body**
 
-A JSON string representing a list of custom fields to substitute for the existing ones.
+A list of [Custom Field](https://killbill.github.io/slate/?java#custom-field-custom-field-resource) objects representing the fields to substitute for existing ones. Each object should specify at least the the `customFieldId` and `value` attribute. For example:
+
+[ { "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f", "value": "123" } ]
 
 
 **Query Parameters**
@@ -3130,7 +3567,7 @@ no content
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **customField** | string | yes | none | Comma separated list of custom field object IDs that should be deleted. |
+| **customField** | string | yes | none | CCustom field object ID that should be deleted. Multiple custom fields can be deleted by specifying a separate **customField** parameter corresponding to each field |
 
 **Response**
 
@@ -3241,7 +3678,7 @@ no content
 ```
 **Request Body**
 
-Provides a list of tag definition Ids in JSON format
+A JSON array containing one or more tag definition ids to be added as tags.
 
 **Query Parameters**
 
@@ -3249,7 +3686,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a 201 status code. In addition, a Location header is returned containing the URL to retrieve the tags associated with the payment.
 
 ### Retrieve payment tags
 
@@ -3367,9 +3804,7 @@ class Tag {
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ------------ |
 | **includedDeleted** | boolean | no | false | If true, include deleted tags |
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| **audit** | string | no | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL"  |
 
 **Response**
     
@@ -3377,7 +3812,7 @@ If successful, returns a status code of 200 and a list of tag objects.
 
 ### Remove tags from a payment
 
-Removes a list of tags attached to an invoice.
+Removes a list of tags attached to a payment.
 
 **HTTP Request** 
 
@@ -3454,7 +3889,7 @@ no content
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ------------ |
-| **tagDef** | array of string | yes | none | List of tag definition IDs identifying the tags that should be removed. |
+| **tagDef** | array of string | yes | none | A tag definition ID identifying the tag that should be removed. Multiple tags can be deleted by specifying a separate tagDef parameter corresponding to each tag.  |
 
 **Response**
 
@@ -3634,7 +4069,7 @@ None.
 
 **Response**
     
-If successful, returns a status code of 200 and a list of account audit logs with history.
+If successful, returns a status code of 200 and a list of payment audit logs with history.
 
 ### Retrieve payment attempt audit logs with history by id
 
@@ -3779,11 +4214,8 @@ None.
 
 **Response**
     
-If successful, returns a status code of 200 and a list of account audit logs with history.
+If successful, returns a status code of 200 and a list of payment attempt audit logs with history.
 
-**HTTP Request** 
-
-`GET http://127.0.0.1:8080/1.0/kb/payments/{paymentId}/auditLogsWithHistory`
 
 
 
@@ -4087,9 +4519,7 @@ class Payment {
 | **limit** | long | no | 100 | Maximum number of items to be listed |
 | **withPluginInfo** | boolean | no | false | if true, include plugin info |
 | **withAttempts** | boolean | no | false | if true, include payment attempts |
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| **audit** | string | no | "NONE" | Level of audit information to return: "NONE", "MINIMAL" (only inserts), or "FULL" |
 
 **Response**
 
@@ -4098,8 +4528,7 @@ If successful, returns a status code of 200 and a list of all payments for this 
 
 ### Search payments
 
-Search for a payment using a specified search string. The operation returns all payment records which are matched by the search string.
-
+Search for a payment by a specified search string. The search string is compared against the `paymentNumber`, `paymentId`, `accountId`, or `transactionType` attributes. An exact match is required. 
 
 **HTTP Request** 
 
@@ -4400,9 +4829,7 @@ class Payment {
 | **limit** | long | no | 100 | Maximum number of items to be listed |
 | **withPluginInfo** | boolean | no | false | if true, include plugin info |
 | **withAttempts** | boolean | no | false | if true, include payment attempts |
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| **audit** | string | no | "NONE" | Level of audit information to return: "NONE", "MINIMAL" (only inserts), or "FULL" |
 
 **Response**
 
