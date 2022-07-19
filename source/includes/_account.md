@@ -801,7 +801,7 @@ IF successful, returns a status code of 204 and an empty body.
 
 ## List and Search
 
-These endpoints allow you to list all accounts or to search for a specific account. For all the search endpoints, objects that involve any actual computation default to 0. As an example, both these endpoints will return `accountBalance` as 0.
+These endpoints allow you to list all accounts or to search for a specific account. 
 
 
 ### List accounts
@@ -1022,7 +1022,7 @@ If successful, returns a status code of 200 and a list of all accounts.
 
 ### Search accounts
 
-Search for an account by a specified search string. The search string is compared to the following attributes: `accountId`, `name`, `email`, `companyName`, and `externalKey`. The operation returns all account records in which the search string matches all or part of any one of these attributes.
+Search for an account by a specified search string. The search string is compared to the following attributes: `accountId`, `name`, `email`, `companyName`, and `externalKey`. The operation returns all account records in which the search string matches all or part of any one of these attributes. For all the search endpoints, objects that involve any actual computation default to 0. As an example, the `Search` endpoint will return `accountBalance` as 0.
 
 **HTTP Request** 
 
