@@ -5702,7 +5702,7 @@ If successful, returns a status code of 200 and a list of audit logs with histor
 
 ## List and Search
 
-These endpoints allow you to list all invoices or to search for a specific invoice.
+These endpoints allow you to list all invoices or to search for a specific invoice. Note that these endpoints return shallow objects and thus the value `0` is returned for the `amount`, `creditAdj`, `refundAdj` and `balance` fields. In order to retrieve the actual data for these fields, additional endpoints (like retrieve invoice by id) would need to be invoked. 
 
 ### List invoices
 
@@ -6011,7 +6011,7 @@ If successful, returns a status code of 200 and a list of all accounts.
 
 ### Search invoices
 
-Search for an account by a specified search string. If the search string is a number, it is compared to the `invoiceNumber` attribute. An exact match is required. Otherwise, it is compared to the following attributes: `invoiceId`, `accountId`, or `currency`. The operation returns all account records in which the search string matches all or part of any one of these attributes.
+Search for an account by a specified search string. If the search string is a number, it is compared to the `invoiceNumber` attribute. An exact match is required. Otherwise, it is compared to the following attributes: `invoiceId`, `accountId`, or `currency`. The operation returns all account records in which the search string matches all or part of any one of these attributes. 
 
 
 **HTTP Request** 
