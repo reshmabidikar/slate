@@ -3347,11 +3347,10 @@ no content
 **Requst Body**
 
 
-A list of [Custom Field](https://killbill.github.io/slate/?java#custom-field-custom-field-resource) objects. Each object should specify at least the the `customFieldId` and `value` attribute. For example:
+A list of [Custom Field](https://killbill.github.io/slate/?java#custom-field-custom-field-resource) objects representing the fields to substitute for existing ones. Each object should specify at least the the `customFieldId` and `value` attribute. For example:
 
 [ { "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f", "value": "123" } ]
 
-A JSON string representing a list of custom fields to substitute for the existing ones.
 
 
 **Query Parameters**
@@ -3568,7 +3567,7 @@ None.
 
 **Returns**
 
-If successful, returns a 201 status code. In addition, a Location header is returned giving the URL to retrieve the tags associated with the invoice.
+If successful, returns a 201 status code. In addition, a Location header is returned containing the URL to retrieve the tags associated with the invoice.
 
 ### Retrieve invoice tags
 
@@ -6001,17 +6000,15 @@ class Invoice {
 | ---- | -----| -------- | ------- | ----------- | 
 | **offset** | long | no | 0 | Starting index for items listed |
 | **limit** | long | no | 100 | Maximum number of items to be listed |
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| **audit** | string | no | "NONE" | Level of audit information to return: "NONE", "MINIMAL" (only inserts), or "FULL" |
 
 **Response**
 
-If successful, returns a status code of 200 and a list of all accounts.
+If successful, returns a status code of 200 and a list of all invoices for this tenant.
 
 ### Search invoices
 
-Search for an account by a specified search string. If the search string is a number, it is compared to the `invoiceNumber` attribute. An exact match is required. Otherwise, it is compared to the following attributes: `invoiceId`, `accountId`, or `currency`. The operation returns all account records in which the search string matches all or part of any one of these attributes. 
+Search for an invoice by a specified search string. If the search string is a number, it is compared to the `invoiceNumber` attribute. An exact match is required. Otherwise, it is compared to the following attributes: `invoiceId`, `accountId`, or `currency`. The operation returns all invoice records in which the search string matches all or part of any one of these attributes.
 
 
 **HTTP Request** 
