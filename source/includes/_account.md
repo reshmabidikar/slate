@@ -1022,7 +1022,7 @@ If successful, returns a status code of 200 and a list of all accounts.
 
 ### Search accounts
 
-Search for an account by a specified search string. The search string is compared to the following attributes: `accountId`, `name`, `email`, `companyName`, and `externalKey`. The operation returns all account records in which the search string matches all or part of any one of these attributes. Note that this endpoint returns a shallow object (and thus the value `0` is returned for fields like `accountBalance`). In order to retrieve the actual data for such fields, additional endpoints (like retrieve account by id) would need to be invoked.
+Search for an account by a specified search string. The search string is compared to the following attributes: `accountId`, `name`, `email`, `companyName`, and `externalKey`. The operation returns the account record in which the search string matches any one of these attributes. Note: the string must match the entire attribute, not just a part of it.
 
 **HTTP Request** 
 
