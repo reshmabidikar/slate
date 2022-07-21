@@ -5701,7 +5701,7 @@ If successful, returns a status code of 200 and a list of audit logs with histor
 
 ## List and Search
 
-These endpoints allow you to list all invoices or to search for a specific invoice.
+These endpoints allow you to list all invoices or to search for a specific invoice. Note that these endpoints return shallow objects and thus the value `0` is returned for the `amount`, `creditAdj`, `refundAdj` and `balance` fields. In order to retrieve the actual data for these fields, additional endpoints (like retrieve invoice by id) would need to be invoked. 
 
 ### List invoices
 
