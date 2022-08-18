@@ -109,6 +109,11 @@ curl -v \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Content-Type: application/json" \
     -H "X-Killbill-CreatedBy: demo" \
+    -d '{
+          "lastSuccessPaymentState" : "AUTH_FAILED",
+          "currentPaymentStateName" : "AUTH_FAILED",
+          "transactionStatus": "PAYMENT_FAILURE"         
+        }' \
     "http://127.0.0.1:8080/1.0/kb/admin/payments/864c1418-e768-4cd5-a0db-67537144b685/transactions/864c1418-e768-4cd5-a0db-67537144b685"
 ```
 
@@ -185,7 +190,7 @@ no content
 
 **Request Body**
 
-An `AdminPayment' object
+An `AdminPayment` object containing, as a minimum, the new `transactionStatus` to be captured.
 
 **Query Parameters**
 
