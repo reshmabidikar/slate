@@ -81,7 +81,7 @@ no content
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ----------- |
+| ---- | -----| -------- | ------- | ----------- |
 | **offset** | long | no | 0 | starting offset for the page |
 | **limit** | long | no | 100 | max results on this page |
 
