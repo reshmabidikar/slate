@@ -377,7 +377,7 @@ class Subscription {
    "prices":[
       {
          "planName":"basic-monthly-in-advance",
-         "phaseName":"asic-monthly-in-advance-trial",
+         "phaseName":"basic-monthly-in-advance-trial",
          "phaseType":"TRIAL",
          "fixedPrice":0,
          "recurringPrice":null,
