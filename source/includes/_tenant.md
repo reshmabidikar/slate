@@ -112,7 +112,7 @@ class Tenant {
 {
    "tenantId":"ab5981c2-de14-43d6-a35b-a2ed0b28c746",
    "externalKey":"demo_external_key",
-   "apiKey":"bob
+   "apiKey":"bob"
 }
 ```
 ```python
