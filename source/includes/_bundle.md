@@ -1744,7 +1744,7 @@ A bundle resource containing at least the new account id
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **requestedDate** | string | no | current date | Requested date for the transfer of the bundle |
-| **billingPolicy** | string | no | IMMEDIATE | When billing should occur. Possible values are START_OF_TERM, END_OF_TERM, or IMMEDIATE |
+| **billingPolicy** | string | no | IMMEDIATE | When billing should occur. Possible values are END_OF_TERM or IMMEDIATE. Shows Unexpected billing policy in case of START_OF_TERM and defaults to END_OF_TERM in case left blank  |
 
 **Response**
 
