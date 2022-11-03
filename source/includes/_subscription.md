@@ -424,8 +424,9 @@ It can also include the following optional fields:
 
 Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
 
-**Other Notes** 
-The `entitlementDate` drives the subscription state. So, if a subscription is created with a future `entitlementDate`, its state remains `PENDING` until the date is reached after which it becomes `ACTIVE`.
+**Other Notes:**
+* Specifying the `startDate`/`billingStartDate` as part of the request body has no effect, these dates need to be passed as query parameters (`entitlementDate`/`billingDate`). 
+* The `entitlementDate` drives the subscription state. So, if a subscription is created with a future `entitlementDate`, its state remains `PENDING` until the date is reached after which it becomes `ACTIVE`.
 
 
 **Response**
@@ -2980,9 +2981,8 @@ So, the common use case would require the following:
 
 The reason for all this complexity is to allow to control entitlement and billing date separately, and also avoid users to have to compute dates to achieve certain behavior by relying on well defined policies.
 
-**Other Notes**
-If a subscription is created with a future date and if the cancel method is invoked for immediate cancellation, the cancellation takes effect only after the subscription creation date is reached. Thus, the subscription remains in `PENDING` state until the subscription creation date is reached after which it is moved to the `CANCELLED` state.
-
+**Other Notes:**
+* If a subscription is created with a future date and if the cancel method is invoked for immediate cancellation, the cancellation takes effect only after the subscription creation date is reached. Thus, the subscription remains in `PENDING` state until the subscription creation date is reached after which it is moved to the `CANCELLED` state.
 
 **Returns**
 
