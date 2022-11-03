@@ -3912,30 +3912,18 @@ curl -v \
 import org.killbill.billing.client.api.gen.AccountApi;
 protected AccountApi accountApi;
 
-UUID accountId = UUID.fromString("d751dd57-7644-469a-9e69-f98d36d86f67");
-
-UUID paymentMethodId = null;
-String externalKey = UUID.randomUUID().toString();
-Boolean isDefault = true; // Will set this new payment method as default
+UUID accountId = UUID.fromString("6e5d0912-2e56-4511-af77-af054b616696");
 String pluginName = "__EXTERNAL_PAYMENT__"; 
-PaymentMethodPluginDetail info = new PaymentMethodPluginDetail();
-ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
 
-PaymentMethod paymentMethod = new PaymentMethod(paymentMethodId, 
-                                                externalKey, 
-                                                accountId, 
-                                                isDefault, 
-                                                pluginName, 
-                                                info, 
-                                                EMPTY_AUDIT_LOGS);
+PaymentMethod paymentMethod = new PaymentMethod();
+paymentMethod.setPluginName(pluginName);
 ImmutableList<String> NULL_PLUGIN_NAMES = null;
 ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
 
-PaymentMethod paymentMethodPP = accountApi.createPaymentMethod(accountId, 
-                                                               paymentMethod, 
-                                                               NULL_PLUGIN_NAMES, 
-                                                               NULL_PLUGIN_PROPERTIES, 
-                                                               requestOptions);
+//create a payment method
+PaymentMethod paymentMethodPP = accountApi.createPaymentMethod(accountId, paymentMethod, NULL_PLUGIN_NAMES, NULL_PLUGIN_PROPERTIES, requestOptions);
+		
+//to create a payment method and set it as default use accountApi.createPaymentMethod(accountId, body, isDefault, payAllUnpaidInvoices, controlPluginName, pluginProperty, inputOptions);
 ```
 
 ```ruby

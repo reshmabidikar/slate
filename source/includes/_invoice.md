@@ -576,7 +576,7 @@ no content
 
 **Request Body**
 
-An invoice item resource object with at least the `amount` attribute. 
+An invoice item resource object with at least the `amount` attribute. If multiple invoice items are specified, a single invoice is created with all the invoice items. 
 
 
 **Query Parameters**
