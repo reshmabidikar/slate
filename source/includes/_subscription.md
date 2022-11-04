@@ -425,6 +425,7 @@ It can also include the following optional fields:
 Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
 
 **Other Notes:**
+
 * Specifying the `startDate`/`billingStartDate` as part of the request body has no effect, these dates need to be passed as query parameters (`entitlementDate`/`billingDate`). 
 * The `entitlementDate` drives the subscription state. So, if a subscription is created with a future `entitlementDate`, its state remains `PENDING` until the date is reached after which it becomes `ACTIVE`.
 
