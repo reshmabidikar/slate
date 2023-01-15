@@ -3904,7 +3904,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d '{ "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "pluginName": "__EXTERNAL_PAYMENT__"}' \
+    -d '{ "externalKey": "ExternalKey", "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "pluginName": "__EXTERNAL_PAYMENT__"}' \
     "http://127.0.0.1:8080/1.0/kb/accounts/8785164f-b5d7-4da1-9495-33f5105e8d80/paymentMethods"	
 ```
 
@@ -3944,7 +3944,7 @@ pm.create(is_default,
 ```python
 accountApi = killbill.api.AccountApi()
 account_id = '059ecfb8-6b4d-4a89-9537-63a687e6cf10'
-body = PaymentMethod(plugin_name='__EXTERNAL_PAYMENT__', plugin_info=None)
+body = PaymentMethod(external_key='ExternalKey', plugin_name='__EXTERNAL_PAYMENT__', plugin_info=None)
 
 accountApi.create_payment_method(account_id, 
                                  body, 
