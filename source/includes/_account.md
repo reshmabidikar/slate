@@ -2649,16 +2649,18 @@ LocalDate endDate = null;
 Boolean withMigrationInvoices = false; // Will not fetch migrated invoice - if any
 Boolean unpaidInvoicesOnly = false; // Will not restrict to unpaid invoices
 Boolean includeVoidedInvoices = false; // Will not include void invoices
+Boolean includeInvoiceComponents = false; //Will not include invoice components like invoice items/payments, etc.
 String invoicesFilter = null;
 Invoices invoices = accountApi.getInvoicesForAccount(accountId,
-                                                     startDate, 
-                                                     endDate,
-                                                     withMigrationInvoices, 
-                                                     unpaidInvoicesOnly, 
-                                                     includeVoidedInvoices, 
-                                                     invoicesFilter,
-                                                     AuditLevel.FULL, 
-                                                     requestOptions);
+		                                              startDate, 
+		                                              endDate,
+		                                              withMigrationInvoices,
+		                                              unpaidInvoicesOnly,
+		                                              includeVoidedInvoices,
+		                                              includeInvoiceComponents,
+		                                              invoicesFilter,
+		                                              AuditLevel.FULL,
+		                                              requestOptions);
 ```
 
 ```ruby
@@ -2879,6 +2881,7 @@ class Invoice {
 | **withMigrationInvoices** | boolean | false | false | Choose true to include migration invoices |
 | **unpaidInvoicesOnly** | boolean | false | false | Choose true to include unpaid invoices only |
 | **includeVoidedInvoices** | boolean | false | false | Choose true to include voided invoices |
+| **includeInvoiceComponents** | boolean | false | false | Choose true to include invoice components (like invoice items/payments, etc.) |
 | **invoicesFilter** | string | false | empty | A comma separated list of invoiceIds to filter |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
@@ -2888,7 +2891,172 @@ For information about migration and migration invoices, see the [Migration Guide
 
 If successful, returns a status of 200 and a list of invoice objects for this account.
 
+### Retrieve paginated account invoices
 
+List the Invoices associated with this account in a paginated format.
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/invoices/pagination`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://127.0.0.1:8080/1.0/kb/accounts/325fbe1c-7c35-4d96-a4e5-2cbaabe218c6/invoices/pagination"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("325fbe1c-7c35-4d96-a4e5-2cbaabe218c6");
+Long offset = 0L;
+Long limit = 10L;		
+Invoices invoices = accountApi.getInvoicesForAccountPaginated(accountId, offset, limit, AuditLevel.NONE, requestOptions);
+```
+
+```ruby
+TODO
+```
+
+```python
+TODO
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+   {
+      "amount":50.0,
+      "currency":"USD",
+      "status":"COMMITTED",
+      "creditAdj":0.0,
+      "refundAdj":0.0,
+      "invoiceId":"d981abbb-3622-487a-9564-d594c9d04f83",
+      "invoiceDate":"2013-08-01",
+      "targetDate":"2013-08-01",
+      "invoiceNumber":"1563",
+      "balance":0.0,
+      "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "items":[
+         {
+            "invoiceItemId":"5f3b4e9c-66bd-4c5c-b84a-4ae951cc2f1d",
+            "invoiceId":"d981abbb-3622-487a-9564-d594c9d04f83",
+            "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
+            "itemType":"EXTERNAL_CHARGE",
+            "description":"Some description",
+            "startDate":"2013-08-01",
+            "amount":50.0,
+            "currency":"USD",
+            "auditLogs":[]
+         }
+      ],
+      "isParentInvoice":false,
+      "auditLogs":[]
+   }
+]
+```
+```java
+//First element of the list
+class Invoice {
+    org.killbill.billing.client.model.gen.Invoice@df84aad8
+    amount: 0.00
+    currency: USD
+    status: COMMITTED
+    creditAdj: 0.00
+    refundAdj: 0.00
+    invoiceId: 66448454-4ff2-4a4c-9817-167c062fcde9
+    invoiceDate: 2012-04-25
+    targetDate: 2012-04-25
+    invoiceNumber: 1
+    balance: 0.00
+    accountId: d3a82897-ae72-4a2e-9bca-e3c1fe087f84
+    bundleKeys: null
+    credits: null
+    items: [class InvoiceItem {
+        org.killbill.billing.client.model.gen.InvoiceItem@7e405309
+        invoiceItemId: 898d4b59-9e85-48cc-b05e-33d2059b6250
+        invoiceId: 66448454-4ff2-4a4c-9817-167c062fcde9
+        linkedInvoiceItemId: null
+        accountId: d3a82897-ae72-4a2e-9bca-e3c1fe087f84
+        childAccountId: null
+        bundleId: 823db38d-864f-4123-96e1-86218663e1bd
+        subscriptionId: 8c0b5800-c892-4898-9295-837ecadad2f0
+        productName: Shotgun
+        planName: shotgun-monthly
+        phaseName: shotgun-monthly-trial
+        usageName: null
+        prettyProductName: Shotgun
+        prettyPlanName: Shotgun Monthly
+        prettyPhaseName: shotgun-monthly-trial
+        prettyUsageName: null
+        itemType: FIXED
+        description: shotgun-monthly-trial
+        startDate: 2012-04-25
+        endDate: null
+        amount: 0.00
+        rate: null
+        currency: USD
+        quantity: null
+        itemDetails: null
+        childItems: null
+        auditLogs: [class AuditLog {
+            changeType: INSERT
+            changeDate: 2012-04-25T00:03:43.000Z
+            objectType: INVOICE_ITEM
+            objectId: 898d4b59-9e85-48cc-b05e-33d2059b6250
+            changedBy: SubscriptionBaseTransition
+            reasonCode: null
+            comments: null
+            userToken: fc3e7a8d-7e8c-4b9d-a6ac-557cd2e74ccd
+            history: null
+        }]
+    }]
+    isParentInvoice: false
+    parentInvoiceId: null
+    parentAccountId: null
+    auditLogs: [class AuditLog {
+        changeType: INSERT
+        changeDate: 2012-04-25T00:03:43.000Z
+        objectType: INVOICE
+        objectId: 66448454-4ff2-4a4c-9817-167c062fcde9
+        changedBy: SubscriptionBaseTransition
+        reasonCode: null
+        comments: null
+        userToken: fc3e7a8d-7e8c-4b9d-a6ac-557cd2e74ccd
+        history: null
+    }]
+}
+```
+```ruby
+TODO
+```
+```python
+TODO
+```
+**Query Parameters**
+
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **offset** | long | false | 0 | Starting index for items listed |
+| **limit** | long | false | 100 | Maximum number of items to be listed |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
+
+For information about migration and migration invoices, see the [Migration Guide](http://docs.killbill.io/latest/migration_guide.html).
+
+**Response**
+
+If successful, returns a status of 200 and a list of invoice objects for this account.
 
 ## Payment 
 
