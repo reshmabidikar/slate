@@ -4562,7 +4562,7 @@ A JSON string representing the blocking state object to be added. For details on
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **requestedDate** | string | false | block immediately | Requested date to block an account |
+| **requestedDate** | string | false | block immediately | Date/DateTime to block an account in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format. |
 | **pluginProperty** | array of strings | false | empty list | List of plugin properties, if any |
 
 **Response**
