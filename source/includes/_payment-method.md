@@ -30,7 +30,7 @@ All payment operations associated with this payment method will be delegated to 
 
 Basic operations to retrieve, list, search and delete payment methods.
 
-Note that the creation of a payment method needs to be done on the Account level and the endpoint listed under [Account resource](https://killbill.github.io/slate/#account-add-a-payment-method) must be used for this. The `pluginName` attribute identifies the payment plugin that will be used by the system when this payment method is used for a payment. 
+Note that the creation of a payment method needs to be done at the Account level using the [Add a payment method](https://killbill.github.io/slate/#account-add-a-payment-method) endpoint. The `pluginName` attribute identifies the payment plugin that will be used by the system when this payment method is used for a payment. 
 
 ### Retrieve a payment method by id
 

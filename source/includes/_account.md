@@ -4507,7 +4507,7 @@ class PaymentMethod {
 ```ruby
 {
    "paymentMethodId":"059ecfb8-6b4d-4a89-9537-63a687e6cf10",
-   "externalKey":"unknown",
+   "externalKey":"ExternalKey",
    "accountId":"fa488b6e-c52a-450a-94bf-6607ae8b484f",
    "isDefault":true,
    "pluginName":"__EXTERNAL_PAYMENT__",
@@ -4520,6 +4520,10 @@ class PaymentMethod {
 ```python
 no content
 ```
+
+**Request Body**
+
+A payment method object specifying `accountId` and `pluginName` at the minimum. Please refer to the [payment method resource](https://killbill.github.io/slate/#payment-method-payment-method-resource) section for more details about the fields.
 
 **Query Parameters**
 
