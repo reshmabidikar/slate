@@ -2616,6 +2616,368 @@ class Bundle {
 
 If successful, returns a status code of 200 and a list of bundle objects.
 
+### Retrieve paginated bundles for account
+
+This endpoint is used to list all `Bundles` associated with this account in a paginated format.
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/bundles/pagination`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://127.0.0.1:8080/1.0/kb/accounts/325fbe1c-7c35-4d96-a4e5-2cbaabe218c6/bundles/pagination" 
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("325fbe1c-7c35-4d96-a4e5-2cbaabe218c6");
+Long offset = 0L;
+Long limit = 10L;		
+		
+Bundles bundles = accountApi.getAccountBundlesPaginated(accountId, offset, limit, AuditLevel.NONE, requestOptions);
+```
+
+```ruby
+TODO
+```
+
+```python
+TODO
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+  {
+    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+    "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+    "subscriptions": [
+      {
+        "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+        "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+        "subscriptionId": "8ab101b6-15e8-433b-b4f7-f99eeaa56a77",
+        "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+        "startDate": "2018-07-18",
+        "productName": "Standard",
+        "productCategory": "BASE",
+        "billingPeriod": "MONTHLY",
+        "phaseType": "TRIAL",
+        "priceList": "DEFAULT",
+        "planName": "standard-monthly",
+        "state": "ACTIVE",
+        "sourceType": "NATIVE",
+        "cancelledDate": null,
+        "chargedThroughDate": null,
+        "billingStartDate": "2018-07-18",
+        "billingEndDate": null,
+        "billCycleDayLocal": 17,
+        "events": [
+          {
+            "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-18",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "START_ENTITLEMENT",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "entitlement-service",
+            "serviceStateName": "ENT_STARTED",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-07-18",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "START_BILLING",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "billing-service",
+            "serviceStateName": "START_BILLING",
+            "phase": "standard-monthly-trial",
+            "auditLogs": []
+          },
+          {
+            "eventId": "f058c95f-9a86-435b-8bba-4f8532635450",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2018-08-17",
+            "plan": "standard-monthly",
+            "product": "Standard",
+            "priceList": "DEFAULT",
+            "eventType": "PHASE",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "entitlement+billing-service",
+            "serviceStateName": "PHASE",
+            "phase": "standard-monthly-evergreen",
+            "auditLogs": []
+          }
+        ],
+        "priceOverrides": null,
+        "prices": [
+          {
+            "planName": "standard-monthly",
+            "phaseName": "standard-monthly-trial",
+            "phaseType": "TRIAL",
+            "fixedPrice": 0,
+            "recurringPrice": null,
+            "usagePrices": []
+          },
+          {
+            "planName": "standard-monthly",
+            "phaseName": "standard-monthly-evergreen",
+            "phaseType": "EVERGREEN",
+            "fixedPrice": null,
+            "recurringPrice": 100,
+            "usagePrices": []
+          }
+        ],
+        "auditLogs": []
+      }
+    ],
+    "timeline": {
+      "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "bundleId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+      "externalKey": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d",
+      "events": [
+        {
+          "eventId": "3961e5a4-815c-4e95-aca6-2f3e76c37942",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-18",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_ENTITLEMENT",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "entitlement-service",
+          "serviceStateName": "ENT_STARTED",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "8e7a6a7d-7660-49e3-979c-a4a0b6ec6804",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-07-18",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "START_BILLING",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "billing-service",
+          "serviceStateName": "START_BILLING",
+          "phase": "standard-monthly-trial",
+          "auditLogs": []
+        },
+        {
+          "eventId": "f058c95f-9a86-435b-8bba-4f8532635450",
+          "billingPeriod": "MONTHLY",
+          "effectiveDate": "2018-08-17",
+          "plan": "standard-monthly",
+          "product": "Standard",
+          "priceList": "DEFAULT",
+          "eventType": "PHASE",
+          "isBlockedBilling": false,
+          "isBlockedEntitlement": false,
+          "serviceName": "entitlement+billing-service",
+          "serviceStateName": "PHASE",
+          "phase": "standard-monthly-evergreen",
+          "auditLogs": []
+        }
+      ],
+      "auditLogs": []
+    },
+    "auditLogs": []
+  }
+]
+```
+```java
+//First element of the list
+class Bundle {
+    org.killbill.billing.client.model.gen.Bundle@53060d66
+    accountId: 15434b45-54c1-4a44-851c-b1f2f7a52f03
+    bundleId: e17a7805-42cf-4464-aea7-963cf0078651
+    externalKey: 123467
+    subscriptions: [class Subscription {
+        org.killbill.billing.client.model.gen.Subscription@e1d5debf
+        accountId: 15434b45-54c1-4a44-851c-b1f2f7a52f03
+        bundleId: e17a7805-42cf-4464-aea7-963cf0078651
+        subscriptionId: 7b9de82a-319c-4334-b676-f1644591077e
+        externalKey: 123467
+        startDate: 2012-08-25
+        productName: Shotgun
+        productCategory: BASE
+        billingPeriod: MONTHLY
+        phaseType: TRIAL
+        priceList: DEFAULT
+        planName: shotgun-monthly
+        state: ACTIVE
+        sourceType: NATIVE
+        cancelledDate: null
+        chargedThroughDate: 2012-08-25
+        billingStartDate: 2012-08-25
+        billingEndDate: null
+        billCycleDayLocal: 24
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@6ea5e183
+            eventId: a6e0c854-16b7-4729-bc6c-cb019b3441ce
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-08-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@3635a9d5
+            eventId: 2cb255be-0008-44b0-9161-47760a5e2828
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-08-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@a561e242
+            eventId: a34e0990-80bb-42e1-a593-0a0bc952ef2c
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-09-24
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        priceOverrides: [class PhasePriceOverride {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-trial
+            phaseType: TRIAL
+            fixedPrice: 0
+            recurringPrice: null
+            usagePriceOverrides: []
+        }, class PhasePriceOverride {
+            planName: shotgun-monthly
+            phaseName: shotgun-monthly-evergreen
+            phaseType: EVERGREEN
+            fixedPrice: null
+            recurringPrice: 249.95
+            usagePriceOverrides: []
+        }]
+        auditLogs: []
+    }]
+    timeline: class BundleTimeline {
+        org.killbill.billing.client.model.gen.BundleTimeline@e70542
+        accountId: 15434b45-54c1-4a44-851c-b1f2f7a52f03
+        bundleId: e17a7805-42cf-4464-aea7-963cf0078651
+        externalKey: 123467
+        events: [class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@1852601c
+            eventId: a6e0c854-16b7-4729-bc6c-cb019b3441ce
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-08-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_ENTITLEMENT
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement-service
+            serviceStateName: ENT_STARTED
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@1d0ca762
+            eventId: 2cb255be-0008-44b0-9161-47760a5e2828
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-08-25
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: START_BILLING
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: billing-service
+            serviceStateName: START_BILLING
+            phase: shotgun-monthly-trial
+            auditLogs: []
+        }, class EventSubscription {
+            org.killbill.billing.client.model.gen.EventSubscription@a8ba9854
+            eventId: a34e0990-80bb-42e1-a593-0a0bc952ef2c
+            billingPeriod: MONTHLY
+            effectiveDate: 2012-09-24
+            plan: shotgun-monthly
+            product: Shotgun
+            priceList: DEFAULT
+            eventType: PHASE
+            isBlockedBilling: false
+            isBlockedEntitlement: false
+            serviceName: entitlement+billing-service
+            serviceStateName: PHASE
+            phase: shotgun-monthly-evergreen
+            auditLogs: []
+        }]
+        auditLogs: []
+    }
+    auditLogs: []
+}
+```
+```ruby
+TODO
+```
+```python
+TODO
+```
+
+
+**Query Parameters**
+
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **offset** | long | false | 0 | Starting index for items listed |
+| **limit** | long | false | 100 | Maximum number of items to be listed |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
+
+**Returns**
+
+If successful, returns a status code of 200 and a list of bundle objects.
+
 ## Invoice
 
 This endpoint provides an API to list the Invoices associated with this account. See section [Invoice](#invoice) for details on invoices.
@@ -2649,16 +3011,18 @@ LocalDate endDate = null;
 Boolean withMigrationInvoices = false; // Will not fetch migrated invoice - if any
 Boolean unpaidInvoicesOnly = false; // Will not restrict to unpaid invoices
 Boolean includeVoidedInvoices = false; // Will not include void invoices
+Boolean includeInvoiceComponents = false; //Will not include invoice components like invoice items/payments, etc.
 String invoicesFilter = null;
 Invoices invoices = accountApi.getInvoicesForAccount(accountId,
-                                                     startDate, 
-                                                     endDate,
-                                                     withMigrationInvoices, 
-                                                     unpaidInvoicesOnly, 
-                                                     includeVoidedInvoices, 
-                                                     invoicesFilter,
-                                                     AuditLevel.FULL, 
-                                                     requestOptions);
+		                                              startDate, 
+		                                              endDate,
+		                                              withMigrationInvoices,
+		                                              unpaidInvoicesOnly,
+		                                              includeVoidedInvoices,
+		                                              includeInvoiceComponents,
+		                                              invoicesFilter,
+		                                              AuditLevel.FULL,
+		                                              requestOptions);
 ```
 
 ```ruby
@@ -2879,6 +3243,7 @@ class Invoice {
 | **withMigrationInvoices** | boolean | false | false | Choose true to include migration invoices |
 | **unpaidInvoicesOnly** | boolean | false | false | Choose true to include unpaid invoices only |
 | **includeVoidedInvoices** | boolean | false | false | Choose true to include voided invoices |
+| **includeInvoiceComponents** | boolean | false | false | Choose true to include invoice components (like invoice items/payments, etc.) |
 | **invoicesFilter** | string | false | empty | A comma separated list of invoiceIds to filter |
 | **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
 
@@ -2888,7 +3253,172 @@ For information about migration and migration invoices, see the [Migration Guide
 
 If successful, returns a status of 200 and a list of invoice objects for this account.
 
+### Retrieve paginated account invoices
 
+List the Invoices associated with this account in a paginated format.
+
+**HTTP Request** 
+
+`GET http://127.0.0.1:8080/1.0/kb/accounts/{accountId}/invoices/pagination`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://127.0.0.1:8080/1.0/kb/accounts/325fbe1c-7c35-4d96-a4e5-2cbaabe218c6/invoices/pagination"
+```
+
+```java
+import org.killbill.billing.client.api.gen.AccountApi;
+protected AccountApi accountApi;
+
+UUID accountId = UUID.fromString("325fbe1c-7c35-4d96-a4e5-2cbaabe218c6");
+Long offset = 0L;
+Long limit = 10L;		
+Invoices invoices = accountApi.getInvoicesForAccountPaginated(accountId, offset, limit, AuditLevel.NONE, requestOptions);
+```
+
+```ruby
+TODO
+```
+
+```python
+TODO
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+
+[
+   {
+      "amount":50.0,
+      "currency":"USD",
+      "status":"COMMITTED",
+      "creditAdj":0.0,
+      "refundAdj":0.0,
+      "invoiceId":"d981abbb-3622-487a-9564-d594c9d04f83",
+      "invoiceDate":"2013-08-01",
+      "targetDate":"2013-08-01",
+      "invoiceNumber":"1563",
+      "balance":0.0,
+      "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
+      "items":[
+         {
+            "invoiceItemId":"5f3b4e9c-66bd-4c5c-b84a-4ae951cc2f1d",
+            "invoiceId":"d981abbb-3622-487a-9564-d594c9d04f83",
+            "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
+            "itemType":"EXTERNAL_CHARGE",
+            "description":"Some description",
+            "startDate":"2013-08-01",
+            "amount":50.0,
+            "currency":"USD",
+            "auditLogs":[]
+         }
+      ],
+      "isParentInvoice":false,
+      "auditLogs":[]
+   }
+]
+```
+```java
+//First element of the list
+class Invoice {
+    org.killbill.billing.client.model.gen.Invoice@df84aad8
+    amount: 0.00
+    currency: USD
+    status: COMMITTED
+    creditAdj: 0.00
+    refundAdj: 0.00
+    invoiceId: 66448454-4ff2-4a4c-9817-167c062fcde9
+    invoiceDate: 2012-04-25
+    targetDate: 2012-04-25
+    invoiceNumber: 1
+    balance: 0.00
+    accountId: d3a82897-ae72-4a2e-9bca-e3c1fe087f84
+    bundleKeys: null
+    credits: null
+    items: [class InvoiceItem {
+        org.killbill.billing.client.model.gen.InvoiceItem@7e405309
+        invoiceItemId: 898d4b59-9e85-48cc-b05e-33d2059b6250
+        invoiceId: 66448454-4ff2-4a4c-9817-167c062fcde9
+        linkedInvoiceItemId: null
+        accountId: d3a82897-ae72-4a2e-9bca-e3c1fe087f84
+        childAccountId: null
+        bundleId: 823db38d-864f-4123-96e1-86218663e1bd
+        subscriptionId: 8c0b5800-c892-4898-9295-837ecadad2f0
+        productName: Shotgun
+        planName: shotgun-monthly
+        phaseName: shotgun-monthly-trial
+        usageName: null
+        prettyProductName: Shotgun
+        prettyPlanName: Shotgun Monthly
+        prettyPhaseName: shotgun-monthly-trial
+        prettyUsageName: null
+        itemType: FIXED
+        description: shotgun-monthly-trial
+        startDate: 2012-04-25
+        endDate: null
+        amount: 0.00
+        rate: null
+        currency: USD
+        quantity: null
+        itemDetails: null
+        childItems: null
+        auditLogs: [class AuditLog {
+            changeType: INSERT
+            changeDate: 2012-04-25T00:03:43.000Z
+            objectType: INVOICE_ITEM
+            objectId: 898d4b59-9e85-48cc-b05e-33d2059b6250
+            changedBy: SubscriptionBaseTransition
+            reasonCode: null
+            comments: null
+            userToken: fc3e7a8d-7e8c-4b9d-a6ac-557cd2e74ccd
+            history: null
+        }]
+    }]
+    isParentInvoice: false
+    parentInvoiceId: null
+    parentAccountId: null
+    auditLogs: [class AuditLog {
+        changeType: INSERT
+        changeDate: 2012-04-25T00:03:43.000Z
+        objectType: INVOICE
+        objectId: 66448454-4ff2-4a4c-9817-167c062fcde9
+        changedBy: SubscriptionBaseTransition
+        reasonCode: null
+        comments: null
+        userToken: fc3e7a8d-7e8c-4b9d-a6ac-557cd2e74ccd
+        history: null
+    }]
+}
+```
+```ruby
+TODO
+```
+```python
+TODO
+```
+**Query Parameters**
+
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- | 
+| **offset** | long | false | 0 | Starting index for items listed |
+| **limit** | long | false | 100 | Maximum number of items to be listed |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
+
+For information about migration and migration invoices, see the [Migration Guide](http://docs.killbill.io/latest/migration_guide.html).
+
+**Response**
+
+If successful, returns a status of 200 and a list of invoice objects for this account.
 
 ## Payment 
 
@@ -4562,7 +5092,7 @@ A JSON string representing the blocking state object to be added. For details on
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **requestedDate** | string | false | block immediately | Requested date to block an account |
+| **requestedDate** | string | false | block immediately | Date/DateTime to block an account in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format. |
 | **pluginProperty** | array of strings | false | empty list | List of plugin properties, if any |
 
 **Response**

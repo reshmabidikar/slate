@@ -22,7 +22,7 @@ The `Subscription` resource represents a subscription. The attributes contained 
 | **subscriptionId** | string | system | UUID for this subscription |
 | **externalKey** | string | user | Optional external key for the subscription |
 | **bundleExternalKey** | string | user | Optional external key for the bundle |
-| **startDate** | date | user | The date the service (entitlement) starts |
+| **startDate** | date | user | Datetime the service (entitlement) starts |
 | **productName** | string | user | Name of the product subscribed (from catalog) |
 | **productCategory** |string | user | Product catgory (see notes below) |
 | **billingPeriod** | string | user | Billing period (see notes below) |
@@ -31,10 +31,10 @@ The `Subscription` resource represents a subscription. The attributes contained 
 | **planName** | string | user | Name of the current plan (from catalog) |
 | **state** | string | system | Current state of the subscription (see notes below) |
 | **sourceType** | string | system | Kind of subscription (see notes below) |
-| **cancelledDate** | date | user | Date when the service stopped, or will stop |
+| **cancelledDate** | date | user | Datetime when the service stopped, or will stop |
 | **chargedThroughDate** | date | system | Date up to which the subscription has been invoiced (see notes below) |
-| **billingStartDate** | date | user | Date on which the system starts invoicing |
-| **billingEndDate** | date | user | Date on which the system ends invoicing |
+| **billingStartDate** | date | user | Datetime on which the system starts invoicing |
+| **billingEndDate** | date | user | Datetime on which the system ends invoicing |
 | **billCycleDayLocal** | integer | user or system | Day of the month on which invoices are generated, if applicable (see notes below) |
 | **events** | list | system | list of subscription events tracking what happened (see notes below) |
 | **prices** | list | user | list of prices, one for each phase in the plan |
@@ -165,6 +165,21 @@ curl -v \
         }' \
     "http://127.0.0.1:8080/1.0/kb/subscriptions" 
     
+# With Datetime
+
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '{ 
+            "accountId": "325fbe1c-7c35-4d96-a4e5-2cbaabe218c6",
+            "planName": "pistol-monthly-notrial"
+        }' \
+    "http://127.0.0.1:8080/1.0/kb/subscriptions?billingDate=2023-02-07T11:15&entitlementDate=2023-02-07T11:15" 
+   
 ```
 
 ```java
@@ -185,7 +200,7 @@ Boolean migrated = null;
 Boolean skipResponse = false;
 Boolean callCompletion = true;
 long DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC = 10;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 Subscription subscription = subscriptionApi.createSubscription(input, 
                                                                entitlementDate, 
@@ -415,8 +430,8 @@ It can also include the following optional fields:
 
 | Name | Type | Required | Default | Description |
 | ---- | ---- | -------- | ------- | ----------- |
-| **entitlementDate** | string | no | immediately | Date at which the entitlement (service) starts in `yyyy-mm-dd` format. |
-| **billingDate** | string | no | immediately | Date at which the billing starts in `yyyy-mm-dd` format. |
+| **entitlementDate** | string | no | immediately | Date/DateTime at which the entitlement (service) starts in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format.|
+| **billingDate** | string | no | immediately | Date/DateTime at which the entitlement (service) starts in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format.|
 | **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused |
 | **migrated** | boolean | no | false | If true, subscription is migrated |
 | **callCompletion** | boolean | no | false | see below |
@@ -2771,7 +2786,7 @@ A subscription resource object specifying either the `planName` or a combination
 | Name | Type | Required | Default | Description |
 | ---- | ---- | -------- | ------- | ----------- |
 | **billingPolicy** | string | no | default | Billing policy that will be used to make this change effective (see below) |
-| **requestedDate** | string | no | immediate | Date at which this change should become effective in `yyyy-mm-dd` format.|
+| **requestedDate** | string | no | immediate | Date/DateTime at which this change should become effective in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm`  format.|
 | **callCompletion** | boolean | no | false | see below |
 | **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
 
@@ -2951,7 +2966,7 @@ no content
 
 | Name | Type | Required | Default | Description |
 | ---- | ---- | -------- | ------- | ----------- |
-| **requestedDate** | string | no | immediate | Date at which this change should become effective in `yyyy-mm-dd` format.|
+| **requestedDate** | string | no | immediate | Date/DateTime at which this change should become effective in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm`  format.|
 | **entitlementPolicy** | string | no | IMMEDIATE | entitlement policy (see below) |
 | **billingPolicy** | string | no | default policy from catalog if present, otherwise `END_OF_TERM` | billing policy (see below) |
 | **useRequestedDateForBilling** | boolean | no | false | use **requestedDate** for billing |
@@ -3223,7 +3238,7 @@ A blocking state resource representing the intended new blocking state. For exam
 
 | Name | Type | Required | Default | Description |
 | ---- | ---- | -------- | ------- | ----------- |
-| **requestedDate** | string | no | immediate | Date to begin blocking | 
+| **requestedDate** | string | no | immediate | Date/DateTime to begin blocking in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format. | 
 
 **Response**
 
