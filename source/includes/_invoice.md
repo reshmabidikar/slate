@@ -2658,6 +2658,357 @@ Note that for `SUBSCRIPTION_ACTION`, there are 2 dates to take into account:
 
 If successful, returns a status code of 200 and an invoice resource object.
 
+## Invoice Groups
+
+An invoice group is a group of invoices. An invoice group plugin can be used to split an invoice into multiple invoices. Such split invoices belong to a single invoice group. 
+
+Note that Kill Bill does not provide any reference implementation for an invoice group plugin. So anyone wishing to use this feature would need to create an invoice plugin and implement the [InvoicePluginApi#getInvoiceGrouping](https://github.com/killbill/killbill-plugin-api/blob/20e10d463b67b0434e1b9f4dd62ed34ebe84bd9b/invoice/src/main/java/org/killbill/billing/invoice/plugin/api/InvoicePluginApi.java#L41) method. We provide a [demo plugin](https://github.com/killbill/killbill-invgrp-demo) that demonstrates how an invoice group plugin can be implemented. When such a plugin is configured, an [invoice group run](https://killbill.github.io/slate/#invoice-trigger-an-invoice-group-run) would result in the generation of multiple invoices.
+
+
+### Trigger an invoice group run
+
+Triggers an invoice group run for the associated account. This would result in the creation of split invoices only if an invoice group plugin is configured. Otherwise, this endpoint behaves the same way as the [Trigger an invoice run](https://killbill.github.io/slate/#invoice-trigger-an-invoice-run) endpoint.
+
+**HTTP Request** 
+
+`POST http://127.0.0.1:8080/1.0/kb/invoices/group`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "Accept: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    "http://127.0.0.1:8080/1.0/kb/invoices/group?accountId=46897a8b-4ae8-45e2-b934-c4d00dba40a6" 
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+UUID accountId = UUID.fromString("34a65013-2dd1-480e-b4b8-7999bb15ebce");
+LocalDate targetDate = LocalDate.parse("2023-06-15");
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+Invoices invoices = invoiceApi.createFutureInvoiceGroup(accountId, targetDate, NULL_PLUGIN_PROPERTIES, requestOptions);
+```
+
+```ruby
+TODO
+```
+
+```python
+TODO
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 201
+< Content-Type: application/json
+< Content-Length: 0
+< Location: http://127.0.0.1:8080/1.0/kb/invoices/60f5af97-9457-4b53-9eec-aec1de96a66f/group
+```
+
+```java
+TODO
+```
+```ruby
+TODO
+```
+```python
+TODO
+```
+**Query Parameters**
+
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **accountId** | string | yes | none | account id |
+| **targetDate** | string | no | current date | target date (date up to which the account should be invoiced) |
+
+**Response**
+
+TODO
+If successful, returns a status code of 201 and an empty body. A location header containing the UUID of the generated group (if any) is also included in the response. If there is nothing to invoice for, returns a 404 status code.
+
+
+### Retrieve an invoice group
+
+Retrieves the invoices associated with the specified `groupId`.
+
+**HTTP Request**
+
+`GET http://127.0.0.1:8080/1.0/kb/invoices/{groupId}/group`
+
+> Example Request:
+
+```shell
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://127.0.0.1:8080/1.0/kb/invoices/e7fc3529-92e1-4987-b5f1-08e558a36698/group?accountId=40630170-e390-4cc7-9381-3788a894ba04" 
+```
+
+```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
+UUID accountId = UUID.fromString("62dfaf14-34c6-4756-8411-89c93b1cfba3");
+UUID groupId = UUID.fromString("f5ecf703-10b9-4019-8044-8db1163bef56");
+
+Invoices invoices = invoiceApi.getInvoicesGroup(groupId, accountId, requestOptions);
+```
+
+```ruby
+TODO
+```
+
+```python
+TODO
+```
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 200 OK
+< Content-Type: application/json
+[
+  {
+    "amount": 30,
+    "currency": "USD",
+    "status": "COMMITTED",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "f5ecf703-10b9-4019-8044-8db1163bef56",
+    "invoiceDate": "2023-02-16",
+    "targetDate": "2023-08-16",
+    "invoiceNumber": "428",
+    "balance": 30,
+    "accountId": "62dfaf14-34c6-4756-8411-89c93b1cfba3",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [
+      {
+        "invoiceItemId": "faf4f9a3-943b-42c4-9705-1365cfd91cc7",
+        "invoiceId": "f5ecf703-10b9-4019-8044-8db1163bef56",
+        "linkedInvoiceItemId": null,
+        "accountId": "62dfaf14-34c6-4756-8411-89c93b1cfba3",
+        "childAccountId": null,
+        "bundleId": "30a3a9bf-3fc7-4334-ac2e-064cdd99c9dc",
+        "subscriptionId": "5c463a1a-e884-4177-aa2c-cb09aa45e39b",
+        "productName": "Standard",
+        "planName": "standard-monthly",
+        "phaseName": "standard-monthly-evergreen",
+        "usageName": null,
+        "prettyProductName": "Standard",
+        "prettyPlanName": "standard-monthly",
+        "prettyPhaseName": "standard-monthly-evergreen",
+        "prettyUsageName": null,
+        "itemType": "RECURRING",
+        "description": "standard-monthly-evergreen",
+        "startDate": "2023-08-16",
+        "endDate": "2023-09-16",
+        "amount": 30,
+        "rate": 30,
+        "currency": "USD",
+        "quantity": null,
+        "itemDetails": null,
+        "catalogEffectiveDate": "2020-01-01T00:00:00.000Z",
+        "childItems": null,
+        "auditLogs": []
+      }
+    ],
+    "trackingIds": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  },
+  {
+    "amount": 30,
+    "currency": "USD",
+    "status": "COMMITTED",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "b2f575d9-9bb8-4b5a-8595-da001381fd13",
+    "invoiceDate": "2023-02-16",
+    "targetDate": "2023-08-16",
+    "invoiceNumber": "429",
+    "balance": 30,
+    "accountId": "62dfaf14-34c6-4756-8411-89c93b1cfba3",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [
+      {
+        "invoiceItemId": "42376d22-4b19-4a79-816b-b4896f9e8f48",
+        "invoiceId": "b2f575d9-9bb8-4b5a-8595-da001381fd13",
+        "linkedInvoiceItemId": null,
+        "accountId": "62dfaf14-34c6-4756-8411-89c93b1cfba3",
+        "childAccountId": null,
+        "bundleId": "c176641f-2b6e-4bcf-8264-bfa120bcb337",
+        "subscriptionId": "d424e7d9-e81a-45c7-9e84-77316bfe0c80",
+        "productName": "Standard",
+        "planName": "standard-monthly",
+        "phaseName": "standard-monthly-evergreen",
+        "usageName": null,
+        "prettyProductName": "Standard",
+        "prettyPlanName": "standard-monthly",
+        "prettyPhaseName": "standard-monthly-evergreen",
+        "prettyUsageName": null,
+        "itemType": "RECURRING",
+        "description": "standard-monthly-evergreen",
+        "startDate": "2023-08-16",
+        "endDate": "2023-09-16",
+        "amount": 30,
+        "rate": 30,
+        "currency": "USD",
+        "quantity": null,
+        "itemDetails": null,
+        "catalogEffectiveDate": "2020-01-01T00:00:00.000Z",
+        "childItems": null,
+        "auditLogs": []
+      }
+    ],
+    "trackingIds": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  }
+]
+```
+```java
+[class Invoice {
+    org.killbill.billing.client.model.gen.Invoice@13e92424
+    amount: 30.00
+    currency: USD
+    status: COMMITTED
+    creditAdj: 0.00
+    refundAdj: 0.00
+    invoiceId: f5ecf703-10b9-4019-8044-8db1163bef56
+    invoiceDate: 2023-02-16
+    targetDate: 2023-08-16
+    invoiceNumber: 428
+    balance: 30.00
+    accountId: 62dfaf14-34c6-4756-8411-89c93b1cfba3
+    bundleKeys: null
+    credits: null
+    items: [class InvoiceItem {
+        org.killbill.billing.client.model.gen.InvoiceItem@251cd54e
+        invoiceItemId: faf4f9a3-943b-42c4-9705-1365cfd91cc7
+        invoiceId: f5ecf703-10b9-4019-8044-8db1163bef56
+        linkedInvoiceItemId: null
+        accountId: 62dfaf14-34c6-4756-8411-89c93b1cfba3
+        childAccountId: null
+        bundleId: 30a3a9bf-3fc7-4334-ac2e-064cdd99c9dc
+        subscriptionId: 5c463a1a-e884-4177-aa2c-cb09aa45e39b
+        productName: Standard
+        planName: standard-monthly
+        phaseName: standard-monthly-evergreen
+        usageName: null
+        prettyProductName: Standard
+        prettyPlanName: standard-monthly
+        prettyPhaseName: standard-monthly-evergreen
+        prettyUsageName: null
+        itemType: RECURRING
+        description: standard-monthly-evergreen
+        startDate: 2023-08-16
+        endDate: 2023-09-16
+        amount: 30.00
+        rate: 30.000000000
+        currency: USD
+        quantity: null
+        itemDetails: null
+        catalogEffectiveDate: 2020-01-01T00:00:00.000Z
+        childItems: null
+        auditLogs: []
+    }]
+    trackingIds: []
+    isParentInvoice: false
+    parentInvoiceId: null
+    parentAccountId: null
+    auditLogs: []
+}, class Invoice {
+    org.killbill.billing.client.model.gen.Invoice@ebbaa6cb
+    amount: 30.00
+    currency: USD
+    status: COMMITTED
+    creditAdj: 0.00
+    refundAdj: 0.00
+    invoiceId: b2f575d9-9bb8-4b5a-8595-da001381fd13
+    invoiceDate: 2023-02-16
+    targetDate: 2023-08-16
+    invoiceNumber: 429
+    balance: 30.00
+    accountId: 62dfaf14-34c6-4756-8411-89c93b1cfba3
+    bundleKeys: null
+    credits: null
+    items: [class InvoiceItem {
+        org.killbill.billing.client.model.gen.InvoiceItem@16742d15
+        invoiceItemId: 42376d22-4b19-4a79-816b-b4896f9e8f48
+        invoiceId: b2f575d9-9bb8-4b5a-8595-da001381fd13
+        linkedInvoiceItemId: null
+        accountId: 62dfaf14-34c6-4756-8411-89c93b1cfba3
+        childAccountId: null
+        bundleId: c176641f-2b6e-4bcf-8264-bfa120bcb337
+        subscriptionId: d424e7d9-e81a-45c7-9e84-77316bfe0c80
+        productName: Standard
+        planName: standard-monthly
+        phaseName: standard-monthly-evergreen
+        usageName: null
+        prettyProductName: Standard
+        prettyPlanName: standard-monthly
+        prettyPhaseName: standard-monthly-evergreen
+        prettyUsageName: null
+        itemType: RECURRING
+        description: standard-monthly-evergreen
+        startDate: 2023-08-16
+        endDate: 2023-09-16
+        amount: 30.00
+        rate: 30.000000000
+        currency: USD
+        quantity: null
+        itemDetails: null
+        catalogEffectiveDate: 2020-01-01T00:00:00.000Z
+        childItems: null
+        auditLogs: []
+    }]
+    trackingIds: []
+    isParentInvoice: false
+    parentInvoiceId: null
+    parentAccountId: null
+    auditLogs: []
+}]
+```
+```ruby
+TODO
+```
+```python
+TODO
+```
+
+**Query Parameters**
+
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **withChildrenItems** | boolean | no | false | If true, include children items |
+| **audit** | string | no | "NONE" | Level of audit information to return |
+
+Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+
+**Returns**
+If successful, returns a status code of 200 and a list of invoice objects for this group.
+
+
 
 ## Payments
 
