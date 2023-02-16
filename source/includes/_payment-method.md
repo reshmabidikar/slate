@@ -30,7 +30,7 @@ All payment operations associated with this payment method will be delegated to 
 
 Basic operations to retrieve, list, search and delete payment methods.
 
-Note that the creation of a payment method relies on an operation listed under the [Account resource](https://killbill.github.io/slate/#account-add-a-payment-method). The creation of a Kill Bill PaymentMethod is always associated with a given `Account` and it identifies (through its `pluginName` attribute) the payment plugin that will be used by the system when a payment is made. 
+Note that the creation of a payment method needs to be done at the Account level using the [Add a payment method](https://killbill.github.io/slate/#account-add-a-payment-method) endpoint. The `pluginName` attribute identifies the payment plugin that will be used by the system when this payment method is used for a payment. 
 
 ### Retrieve a payment method by id
 
