@@ -2718,7 +2718,107 @@ TODO
 ```
 
 ```java
-TODO
+[class Invoice {
+    org.killbill.billing.client.model.gen.Invoice@13e92424
+    amount: 30.00
+    currency: USD
+    status: COMMITTED
+    creditAdj: 0.00
+    refundAdj: 0.00
+    invoiceId: f5ecf703-10b9-4019-8044-8db1163bef56
+    invoiceDate: 2023-02-16
+    targetDate: 2023-08-16
+    invoiceNumber: 428
+    balance: 30.00
+    accountId: 62dfaf14-34c6-4756-8411-89c93b1cfba3
+    bundleKeys: null
+    credits: null
+    items: [class InvoiceItem {
+        org.killbill.billing.client.model.gen.InvoiceItem@251cd54e
+        invoiceItemId: faf4f9a3-943b-42c4-9705-1365cfd91cc7
+        invoiceId: f5ecf703-10b9-4019-8044-8db1163bef56
+        linkedInvoiceItemId: null
+        accountId: 62dfaf14-34c6-4756-8411-89c93b1cfba3
+        childAccountId: null
+        bundleId: 30a3a9bf-3fc7-4334-ac2e-064cdd99c9dc
+        subscriptionId: 5c463a1a-e884-4177-aa2c-cb09aa45e39b
+        productName: Standard
+        planName: standard-monthly
+        phaseName: standard-monthly-evergreen
+        usageName: null
+        prettyProductName: Standard
+        prettyPlanName: standard-monthly
+        prettyPhaseName: standard-monthly-evergreen
+        prettyUsageName: null
+        itemType: RECURRING
+        description: standard-monthly-evergreen
+        startDate: 2023-08-16
+        endDate: 2023-09-16
+        amount: 30.00
+        rate: 30.000000000
+        currency: USD
+        quantity: null
+        itemDetails: null
+        catalogEffectiveDate: 2020-01-01T00:00:00.000Z
+        childItems: null
+        auditLogs: []
+    }]
+    trackingIds: []
+    isParentInvoice: false
+    parentInvoiceId: null
+    parentAccountId: null
+    auditLogs: []
+}, class Invoice {
+    org.killbill.billing.client.model.gen.Invoice@ebbaa6cb
+    amount: 30.00
+    currency: USD
+    status: COMMITTED
+    creditAdj: 0.00
+    refundAdj: 0.00
+    invoiceId: b2f575d9-9bb8-4b5a-8595-da001381fd13
+    invoiceDate: 2023-02-16
+    targetDate: 2023-08-16
+    invoiceNumber: 429
+    balance: 30.00
+    accountId: 62dfaf14-34c6-4756-8411-89c93b1cfba3
+    bundleKeys: null
+    credits: null
+    items: [class InvoiceItem {
+        org.killbill.billing.client.model.gen.InvoiceItem@16742d15
+        invoiceItemId: 42376d22-4b19-4a79-816b-b4896f9e8f48
+        invoiceId: b2f575d9-9bb8-4b5a-8595-da001381fd13
+        linkedInvoiceItemId: null
+        accountId: 62dfaf14-34c6-4756-8411-89c93b1cfba3
+        childAccountId: null
+        bundleId: c176641f-2b6e-4bcf-8264-bfa120bcb337
+        subscriptionId: d424e7d9-e81a-45c7-9e84-77316bfe0c80
+        productName: Standard
+        planName: standard-monthly
+        phaseName: standard-monthly-evergreen
+        usageName: null
+        prettyProductName: Standard
+        prettyPlanName: standard-monthly
+        prettyPhaseName: standard-monthly-evergreen
+        prettyUsageName: null
+        itemType: RECURRING
+        description: standard-monthly-evergreen
+        startDate: 2023-08-16
+        endDate: 2023-09-16
+        amount: 30.00
+        rate: 30.000000000
+        currency: USD
+        quantity: null
+        itemDetails: null
+        catalogEffectiveDate: 2020-01-01T00:00:00.000Z
+        childItems: null
+        auditLogs: []
+    }]
+    trackingIds: []
+    isParentInvoice: false
+    parentInvoiceId: null
+    parentAccountId: null
+    auditLogs: []
+}]
 ```
 ```ruby
 TODO
