@@ -39,6 +39,7 @@ The `Subscription` resource represents a subscription. The attributes contained 
 | **events** | list | system | list of subscription events tracking what happened (see notes below) |
 | **prices** | list | user | list of prices, one for each phase in the plan |
 | **priceOverrides** | list | user | list of prices if this subscription has price overrides (see notes below) |
+| **quantity** | integer | user | quantity of subscriptions (see notes below) |
 
 **productCategory**: possible values are BASE, ADD_ON, or STANDALONE
 
@@ -83,6 +84,7 @@ These use cases assume that invoicing is up to date. If AUTO_INVOICING_OFF is se
         }
 ```
 
+**quantity**: An integer value that specifies the quantity of subscription. The default value is 1. The corresponding invoice is generated as per the quantity. So if `price=$20/mo`, `quantity=$2` => `invoiceItem recurring amount=$40`.
 
 ## Subscriptions
 
@@ -2560,6 +2562,89 @@ The new BCD needs to be specified in the request body via the `billCycleDayLocal
 By default the effective date must be in the future so as to not modify existing invoices. Setting **forceNewBcdWithPastEffectiveDate** to true allows the date to be set in the past. 
 
 Secondly, even after this endpoint is executed, the [Retrieve a Subscription](https://killbill.github.io/slate/?shell#subscription-retrieve-a-subscription-by-id) endpoint will still return the old BCD until an invoice is generated on the new BCD.
+
+
+**Response**
+
+If successful, returns a status code of 204 and an empty body.
+
+### Update the subscription quantity
+
+This API allows you to change the subscription quantity.
+
+
+**HTTP Request** 
+
+`PUT http://127.0.0.1:8080/1.0/kb/subscriptions/{subscriptionId}/quantity`
+
+> Example Request:
+
+```shell
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '{ 
+            "quantity": "2" 
+        }' \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/c20715fa-8d69-488d-a094-51da0cdf999b/quantity'
+```
+
+```java
+import org.killbill.billing.client.api.gen.SubscriptionApi;
+protected SubscriptionApi subscriptionApi;
+
+UUID subscriptionId = UUID.fromString("f0143401-5b9b-41d1-b9c0-8513f1f0cf0b");
+
+Subscription body = new Subscription();
+body.setQuantity(3);
+LocalDate effectiveFromDate = null;
+		
+subscriptionApi.updateSubscriptionQuantity(subscriptionId, body, effectiveFromDate, requestOptions);
+```
+
+```ruby
+TODO
+```
+
+```python
+TODO
+```
+
+> Example Response:
+
+```shell
+# Subset of headers returned when specifying -v curl option
+< HTTP/1.1 204 No Content
+< Content-Type: application/json
+< Content-Length: 0
+```
+
+```java
+no content
+```
+```ruby
+no content
+```
+```python
+no content
+```
+
+**Request Body**
+
+The quantity needs to be specified in the request body via the `quantity` field.
+
+**Query Parameters**
+
+| Name | Type | Required | Default | Description |
+| ---- | ---- | -------- | ------- |  ----------- |
+| **effectiveFromDate** | string | no | immediate | Date on which this change becomes effective in `yyyy-mm-dd` format. | 
+| **forceNewQuantityWithPastEffectiveDate** | boolean | no | false | See below | 
+
+By default the effective date must be in the future so as to not modify existing invoices. Setting **forceNewQuantityWithPastEffectiveDate** to true allows the date to be set in the past. 
 
 
 **Response**

@@ -1745,6 +1745,13 @@ A bundle resource containing at least the new account id
 | ---- | -----| -------- | ------- | ----------- |
 | **requestedDate** | string | no | current date | Requested date for the transfer of the bundle |
 | **billingPolicy** | string | no | END_OF_TERM | When billing for target account should occur. Accepted values are END_OF_TERM or IMMEDIATE |
+| **bcdTransfer** | string | no | USE_EXISTING | Specifies how the per subscription BCD should be transferred. Accepted values are NONE, USE_EXISTING and ALIGN_WITH_EFF_DT. See notes below  |
+| **pluginProperty** | array of strings	 | no | omit | list of plugin properties, if any |
+
+Possible values for the **bcdTransfer** parameter are as explained below:
+* NONE: Does not transfer per-subscription BCD
+* USE_EXISTING: Transfer existing per-subscription BCD if exists
+* ALIGN_WITH_EFF_DT: Set per-subscription BCD to align with the day of the transfer effective date
 
 **Response**
 
