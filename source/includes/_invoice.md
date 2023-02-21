@@ -166,12 +166,11 @@ curl -v \
 import org.killbill.billing.client.api.gen.InvoiceApi;
 protected InvoiceApi invoiceApi;
 
-UUID accountId = UUID.fromString("5f1e9142-b4de-4409-9366-9920cc1683e9");
-LocalDate targetDate = new LocalDate(2012,3,29);
+UUID accountId = UUID.fromString("34a65013-2dd1-480e-b4b8-7999bb15ebce");
+LocalDate targetDate = LocalDate.parse("2023-07-15");
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
-Invoice result = invoiceApi.createFutureInvoice(accountId, 
-                                                targetDate, 
-                                                requestOptions);
+Invoice invoice = invoiceApi.createFutureInvoice(accountId, targetDate, NULL_PLUGIN_PROPERTIES, requestOptions);
 ```
 
 ```ruby
@@ -241,6 +240,7 @@ no content
 | ---- | -----| -------- | ------- | ----------- |
 | **accountId** | string | yes | none | account id |
 | **targetDate** | string | no | current date | target date (date up to which the account should be invoiced) |
+| **pluginProperty** | array of strings	 | no | omit | list of plugin properties, if any. Should be in the format `key%3Dvalue` |
 
 
 **Response**
@@ -2832,10 +2832,10 @@ TODO
 | ---- | -----| -------- | ------- | ----------- |
 | **accountId** | string | yes | none | account id |
 | **targetDate** | string | no | current date | target date (date up to which the account should be invoiced) |
+| **pluginProperty** | array of strings	 | no | omit | list of plugin properties, if any. Should be in the format `key%3Dvalue` |
 
 **Response**
 
-TODO
 If successful, returns a status code of 201 and an empty body. A location header containing the UUID of the generated group (if any) is also included in the response. If there is nothing to invoice for, returns a 404 status code.
 
 
