@@ -43,7 +43,7 @@ The `Subscription` resource represents a subscription. The attributes contained 
 
 **productCategory**: possible values are BASE, ADD_ON, or STANDALONE
 
-**billingPeriod**: possible values are DAILY, WEEKLY, BIWEEKLY, THIRTY_DAYS, SIXTY_DAYS, NINETY_DAYS, MONTHLY, BIMESTRIAL (bimonthly), QUARTERLY, TRIANNUAL, BIANNUAL, ANNUAL, BIENNIAL, or NO_BILLING_PERIOD
+**billingPeriod**: possible values are DAILY, WEEKLY, BIWEEKLY, THIRTY_DAYS, THIRTY_ONE_DAYS, SIXTY_DAYS, NINETY_DAYS, MONTHLY, BIMESTRIAL (bimonthly), QUARTERLY, TRIANNUAL, BIANNUAL, ANNUAL, SESQUIENNIAL, BIENNIAL, TRIENNIAL, or NO_BILLING_PERIOD
 
 **phaseType**: possible values are: TRIAL, DISCOUNT, FIXEDTERM, or EVERGREEN
 
@@ -53,6 +53,7 @@ The `Subscription` resource represents a subscription. The attributes contained 
 * `ACTIVE`: The subscription is currently active.
 * `BLOCKED`: The subscription is currently paused.
 * `CANCELLED`: The subscription has been cancelled.
+* `EXPIRED`: The subscription has expired. This state is applicable only for subscriptions with a `FIXEDTERM` phase.
 
 **sourceType**: possible values are NATIVE, MIGRATED, or TRANSFERRED 
 
