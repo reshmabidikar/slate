@@ -107,6 +107,7 @@ An `InvoiceDryRun` object represents an invoice preview generated to determine w
 | **effectiveDate** | date | user | The date the change takes effect |
 | **billingPolicy** | string | user | The billing policy (see notes below) |
 | **priceOverrides** | list | user | list of prices if this subscription has price overrides |
+| **planName** | string | user | Name of the plan subscribed |
 
 
 **dryRunType**: possible values are:
@@ -127,7 +128,7 @@ An `InvoiceDryRun` object represents an invoice preview generated to determine w
 
 **billingPolicy**: possible values are START_OF_TERM, END_OF_TERM, or IMMEDIATE
 
-
+Note that either the `planName` or a combination of `productName`, `productCategory` and `billingPeriod` needs to be specified.
 
 
 ## Invoice
@@ -2636,7 +2637,7 @@ A [dry run resource object](https://killbill.github.io/slate/#invoice-invoicedry
 |--|--|--|--|--|
 | TARGET_DATE   |   N/A  |  none |none |Preview the invoice as of the target date specified as a query parameter|
 | UPCOMING_INVOICE | N/A | none |subscriptionId or bundleId (When specified, computes the upcoming invoice for the specified subscription/bundle. Note that if there are other subscriptions invoiced on the same day, these will also be included in the upcoming invoice) |Preview the next scheduled invoice. `targetDate` query parameter does not need to be specified, it is ignored even if specified|
-| SUBSCRIPTION_ACTION | START_BILLING or CHANGE | productName, productCategory, billingPeriod, subscriptionId, bundleId |effectiveDate, priceListName, billingPolicy|Preview the invoice that would be generated if the **START_BILLING** or **CHANGE** action is taken|
+| SUBSCRIPTION_ACTION | START_BILLING or CHANGE | subscriptionId, bundleId and  the productName, productCategory, billingPeriod combination or planName |effectiveDate, priceListName, billingPolicy|Preview the invoice that would be generated if the **START_BILLING** or **CHANGE** action is taken|
 | SUBSCRIPTION_ACTION | STOP_BILLING | subscriptionId, bundleId|  effectiveDate |Preview the invoice that would be generated if the **STOP_BILLING** action is taken|
 
 **Query Parameters**
