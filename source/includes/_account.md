@@ -3459,7 +3459,7 @@ UUID paymentMethodId = null;
 Boolean externalPayment = true; // Will use a external payment method
 BigDecimal paymentAmount = null;
 LocalDate targetDate = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 accountApi.payAllInvoices(accountId, 
                           paymentMethodId, 
@@ -3607,7 +3607,7 @@ import org.killbill.billing.client.api.gen.AccountApi;
 protected AccountApi accountApi;
 
 UUID accountId = UUID.fromString("e011caa5-ba35-4ac6-81cb-63b4f08122dc");
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 InvoicePayments result = accountApi.getInvoicePayments(accountId, 
                                                        NULL_PLUGIN_PROPERTIES, 
@@ -3822,7 +3822,7 @@ protected AccountApi accountApi;
 UUID accountId = UUID.fromString("e0fe95af-7d59-4b70-8252-165e1840410c");
 Boolean withAttempts = false; // Will not reflect payment attempts
 Boolean withPluginInfo = false; // Will not reflect payment attempts
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 Payments payments = accountApi.getPaymentsForAccount(accountId,
                                                      withAttempts,
@@ -4048,8 +4048,8 @@ authTransaction.setCurrency(account.getCurrency());
 authTransaction.setTransactionType(TransactionType.AUTHORIZE);
 
 UUID paymentMethodId = UUID.fromString("1d55ed5f-deea-4109-98b0-beb13a242f7c");
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 Payment payment = accountApi.processPayment(accountId, 
                                             authTransaction, 
@@ -4247,8 +4247,8 @@ authTransaction.setCurrency(Currency.USD);//use currency associated with Account
 authTransaction.setTransactionType(TransactionType.AUTHORIZE);
 
 UUID paymentMethodId = UUID.fromString("c6bd413e-268e-4cc8-afb0-16b2dec3ffa5");
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 Payment payment = accountApi.processPaymentByExternalKey(authTransaction, 
 													              externalKey, 
@@ -4447,8 +4447,8 @@ String pluginName = "__EXTERNAL_PAYMENT__";
 
 PaymentMethod paymentMethod = new PaymentMethod();
 paymentMethod.setPluginName(pluginName);
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 //create a payment method
 PaymentMethod paymentMethodPP = accountApi.createPaymentMethod(accountId, paymentMethod, NULL_PLUGIN_NAMES, NULL_PLUGIN_PROPERTIES, requestOptions);
@@ -4562,7 +4562,7 @@ import org.killbill.billing.client.api.gen.AccountApi;
 protected AccountApi accountApi;
 
 UUID accountId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 List<PaymentMethod> paymentMethods = accountApi.getPaymentMethodsForAccount(accountId, 
                                                                             NULL_PLUGIN_PROPERTIES, 
@@ -4687,7 +4687,7 @@ protected AccountApi accountApi;
 
 UUID accountId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
 UUID paymentMethodId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 accountApi.setDefaultPaymentMethod(accountId, 
                                    paymentMethodId, 
@@ -4775,7 +4775,7 @@ protected AccountApi accountApi;
 
 UUID accountId = UUID.fromString("faf239a5-456a-4eb9-aef9-8d2254ef57dc");
 String pluginName = "__EXTERNAL_PAYMENT__";
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 accountApi.refreshPaymentMethods(accountId, 
                                  pluginName, 
@@ -5015,7 +5015,7 @@ blockingState.setIsBlockBilling(false);
 blockingState.setIsBlockEntitlement(false);
 
 LocalDate requestedDate = new LocalDate("2013-08-01");
-Map<String, String> pluginProperty = ImmutableMap.<String, String>of();
+Map<String, String> pluginProperty = Collections.emptyMap();
 
 BlockingStates result = accountApi.addAccountBlockingState(accountId,
                                                            blockingState,
@@ -5129,8 +5129,8 @@ protected AccountApi accountApi;
 
 UUID accountId = UUID.fromString("ee6835f0-8347-42d3-958c-9a939383ba28");
 
-List<BlockingStateType> blockingStateTypes = ImmutableList.<BlockingStateType>of(BlockingStateType.SUBSCRIPTION_BUNDLE);
-List<String> blockingStateSvcs = ImmutableList.<String>of("service");
+List<BlockingStateType> blockingStateTypes = List.of(BlockingStateType.SUBSCRIPTION_BUNDLE);
+List<String> blockingStateSvcs = List.of("service");
 
 BlockingStates blockingStates = accountApi.getBlockingStates(accountId, 
                                                              blockingStateTypes, 
@@ -5546,7 +5546,7 @@ import org.killbill.billing.client.api.gen.AccountApi;
 protected AccountApi accountApi;
 
 UUID accountId = UUID.fromString("15434b45-54c1-4a44-851c-b1f2f7a52f03");
-final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+final List<AuditLog> EMPTY_AUDIT_LOGS = Collections.emptyList();
 
 CustomFields customFields = new CustomFields();
 customFields.add(new CustomField(null, 
@@ -6004,7 +6004,7 @@ protected AccountApi accountApi;
 
 UUID accountId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
 UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-List<UUID> customFieldsList = ImmutableList.<UUID>of(customFieldsId);
+List<UUID> customFieldsList = List.of(customFieldsId);
 accountApi.deleteAccountCustomFields(accountId, 
 				                     customFieldsList, 
                                      requestOptions);
@@ -6109,7 +6109,7 @@ UUID accountId = UUID.fromString("f4087a76-9f8a-4893-abbf-c5bb69975d1b");
 UUID autoPayOffTagId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
 Tags result = accountApi.createAccountTags(accountId, 
-                                           ImmutableList.<UUID>of(autoPayOffTagId), 
+                                           List.of(autoPayOffTagId), 
                                            requestOptions);
 ```
 
@@ -6462,7 +6462,7 @@ UUID accountId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
 UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
 accountApi.deleteAccountTags(accountId, 
-                             ImmutableList.<UUID>of(autoPayOffId), 
+                             List.of(autoPayOffId), 
                              requestOptions);
 ```
 

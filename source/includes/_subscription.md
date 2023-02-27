@@ -552,7 +552,7 @@ Boolean skipResponse = false;
 Boolean renameKeyIfExistsAndUnused = null;
 Boolean callCompletion = true;
 long DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC = 10;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 final Bundle bundle = subscriptionApi.createSubscriptionWithAddOns(subscriptions, 
                                                                    entitlementDate, 
@@ -1209,7 +1209,7 @@ Boolean migrated = false;
 Boolean skipResponse = false;
 Boolean callCompletion = true;
 long DEFAULT_WAIT_COMPLETION_TIMEOUT_SEC = 10;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 Bundles bundles = subscriptionApi.createSubscriptionsWithAddOns(bulkSubscriptionsBundles, 
 		                                                         entitlementDate, 
@@ -2698,7 +2698,7 @@ newInput.setPriceList("DEFAULT");
 newInput.setPlanName("shotgun-monthly");
 
 LocalDate requestedDate = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 //specify either requestedDate or BillingActionPolicy
 subscriptionApi.changeSubscriptionPlan(subscriptionId, 
@@ -2912,7 +2912,7 @@ import org.killbill.billing.client.api.gen.SubscriptionApi;
 protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 subscriptionApi.undoChangeSubscriptionPlan(subscriptionId, 
                                            NULL_PLUGIN_PROPERTIES, 
@@ -2993,7 +2993,7 @@ UUID subscriptionId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
 LocalDate requestedDate = null;
 EntitlementActionPolicy entitlementPolicy = null;
 BillingActionPolicy billingPolicy = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 subscriptionApi.cancelSubscriptionPlan(subscriptionId,
                                        requestedDate, 
@@ -3117,7 +3117,7 @@ import org.killbill.billing.client.api.gen.SubscriptionApi;
 protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 subscriptionApi.uncancelSubscriptionPlan(subscriptionId, 
                                          NULL_PLUGIN_PROPERTIES, 
@@ -3215,7 +3215,7 @@ blockingState.setIsBlockBilling(false);
 blockingState.setIsBlockEntitlement(false);
 
 LocalDate requestedDate = new LocalDate("2013-08-01");
-Map<String, String> pluginProperty = ImmutableMap.<String, String>of();
+Map<String, String> pluginProperty = Collections.emptyMap();
 
 BlockingStates result = subscriptionApi.addSubscriptionBlockingState(subscriptionId,
                                                                      blockingState,
@@ -3368,7 +3368,7 @@ protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
 
-final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+final List<AuditLog> EMPTY_AUDIT_LOGS = Collections.emptyList();
 
 CustomFields customFields = new CustomFields();
 customFields.add(new CustomField(null, 
@@ -3709,7 +3709,7 @@ protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
 UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-List<UUID> customFieldsList = ImmutableList.<UUID>of(customFieldsId);
+List<UUID> customFieldsList = List.of(customFieldsId);
 
 subscriptionApi.deleteSubscriptionCustomFields(subscriptionId, 
                                                customFieldsList, 
@@ -3805,7 +3805,7 @@ UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
 UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 subscriptionApi.createSubscriptionTags(subscriptionId, 
-                                                     ImmutableList.<UUID>of(tagDefinitionId), 
+                                                     List.of(tagDefinitionId), 
                                                      requestOptions);
 ```
 
@@ -4026,7 +4026,7 @@ UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
 UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 subscriptionApi.deleteSubscriptionTags(subscriptionId, 
-                                       ImmutableList.<UUID>of(tagDefinitionId), 
+                                       List.of(tagDefinitionId), 
                                        requestOptions);
 ```
 

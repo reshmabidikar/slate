@@ -1431,7 +1431,7 @@ bundle.setAccountId(accountId);
 bundle.setBundleId(bundleId);
 
 LocalDate requestedDate = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 BillingActionPolicy billingPolicy = null;
 
 Bundle result = bundleApi.transferBundle(bundleId, 
@@ -1966,7 +1966,7 @@ BlockingState blockingState = new BlockingState(bundleId,
                                                 auditLogs);
 
 LocalDate requestedDate = clock.getToday(DateTimeZone.forID(account.getTimeZone()));
-Map<String, String> pluginProperty = ImmutableMap.<String, String>of();
+Map<String, String> pluginProperty = Collections.emptyMap();
 
 bundleApi.addBundleBlockingState(bundleId, 
                                  blockingState, 
@@ -2089,7 +2089,7 @@ import org.killbill.billing.client.api.gen.BundleApi;
 protected BundleApi bundleApi;
 
 UUID bundleId = UUID.fromString("b84a8af9-73d4-4749-8d81-38dbcc2d7fb1");
-final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+final List<AuditLog> EMPTY_AUDIT_LOGS = Collections.emptyList();
 
 CustomFields customFields = new CustomFields();
 customFields.add(new CustomField(null, 
@@ -2420,7 +2420,7 @@ protected BundleApi bundleApi;
 
 UUID bundleId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
 UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-List<UUID> customFieldsList = ImmutableList.<UUID>of(customFieldsId);
+List<UUID> customFieldsList = List.of(customFieldsId);
 bundleApi.deleteBundleCustomFields(bundleId, 
                                    customFieldsList, 
                                    requestOptions);
@@ -2517,7 +2517,7 @@ UUID bundleId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
 UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 Tags result = bundleApi.createBundleTags(bundleId, 
-                                         ImmutableList.<UUID>of(tagDefinitionId), 
+                                         List.of(tagDefinitionId), 
                                          requestOptions);
 ```
 
@@ -2747,7 +2747,7 @@ UUID bundleId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
 UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 bundleApi.deleteBundleTags(bundleId, 
-                           ImmutableList.<UUID>of(tagDefinitionId), 
+                           List.of(tagDefinitionId), 
                            requestOptions);
 ```
 

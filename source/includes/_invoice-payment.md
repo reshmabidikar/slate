@@ -107,7 +107,7 @@ protected InvoicePaymentApi invoicePaymentApi;
 UUID paymentId = UUID.fromString("80f5bfca-e142-4320-b8f2-ae4530ca7172");
 Boolean withPluginInfo = false; // Will not reflect plugin info
 Boolean withAttempts = false; // Will not reflect payment attempts
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 InvoicePayment invoicePayment = invoicePaymentApi.getInvoicePayment(paymentId, 
                                                                     withPluginInfo,
@@ -353,7 +353,7 @@ refund.setAmount(BigDecimal.ONE);
 
 UUID paymentMethodId = UUID.fromString("28a3ed1a-7a58-4ac2-b864-2ca723abb864");
 
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 invoicePaymentApi.createRefundWithAdjustments(paymentId, 
                                               refund, 
@@ -875,8 +875,8 @@ protected InvoicePaymentApi invoicePaymentApi;
 
 UUID paymentId = UUID.fromString("80f5bfca-e142-4320-b8f2-ae4530ca7172");
 PaymentTransaction body = new PaymentTransaction();
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 invoicePaymentApi.completeInvoicePaymentTransaction(paymentId, 
                                                     body, 
@@ -969,7 +969,7 @@ import org.killbill.billing.client.api.gen.InvoicePaymentApi;
 protected InvoicePaymentApi invoicePaymentApi;
 
 UUID paymentId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
-final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+final List<AuditLog> EMPTY_AUDIT_LOGS = Collections.emptyList();
 
 CustomFields customFields = new CustomFields();
 customFields.add(new CustomField(null, 
@@ -1389,7 +1389,7 @@ UUID paymentId = UUID.fromString("45d6f4c5-21be-49b1-99c5-7b0c3c985bf0");
 UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 Tags result = invoicePaymentApi.createInvoicePaymentTags(paymentId, 
-                                                         ImmutableList.<UUID>of(tagDefinitionId), 
+                                                         List.of(tagDefinitionId), 
                                                          requestOptions);
 ```
 
@@ -1617,7 +1617,7 @@ UUID paymentId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
 UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
 invoicePaymentApi.deleteInvoicePaymentTags(paymentId, 
-                                           ImmutableList.<UUID>of(autoPayOffId), 
+                                           List.of(autoPayOffId), 
                                            requestOptions);
 ```
 

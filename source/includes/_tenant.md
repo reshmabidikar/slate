@@ -53,7 +53,7 @@ UUID tenantId = null;
 String externalKey = null;
 String apiKey = "bob";
 String apiSecret = "lazar";
-ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+List<AuditLog> EMPTY_AUDIT_LOGS = Collections.emptyList();
 
 Tenant body = new Tenant(tenantId,
                          externalKey,

@@ -58,7 +58,7 @@ protected PaymentMethodApi paymentMethodApi;
 UUID paymentMethodId = UUID.fromString("3c449da6-7ec4-4c74-813f-f5055739a0b9");
 Boolean includedDeleted = false; // Will not include deleted
 Boolean withPluginInfo = true; // Will include plugin info
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 PaymentMethod paymentMethodJson = paymentMethodApi.getPaymentMethod(paymentMethodId, 
                                                                     includedDeleted, 
@@ -202,7 +202,7 @@ protected PaymentMethodApi paymentMethodApi;
 String externalKey = "foo";
 Boolean includedDeleted = false; // Will not include deleted
 Boolean withPluginInfo = false; // Will not reflect plugin info
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 PaymentMethod paymentMethod = paymentMethodApi.getPaymentMethodByKey(externalKey, 
                                                                      includedDeleted,
@@ -328,7 +328,7 @@ protected PaymentMethodApi paymentMethodApi;
 UUID paymentMethodId = UUID.fromString("3c449da6-7ec4-4c74-813f-f5055739a0b9");
 Boolean deleteDefaultPmWithAutoPayOff = true; // Will delete default payment method with auto pay off
 Boolean forceDefaultPmDeletion = true; // Will force default payment method deletion
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 paymentMethodApi.deletePaymentMethod(paymentMethodId, 
                                      deleteDefaultPmWithAutoPayOff, 
@@ -424,7 +424,7 @@ Long offset = 0L;
 Long limit = 1L;
 String pluginName = null;
 Boolean withPluginInfo = false;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 
 PaymentMethods allPaymentMethods = paymentMethodApi.getPaymentMethods(offset,
@@ -564,7 +564,7 @@ Long offset = 0L;
 Long limit = 100L;
 String pluginName = null;
 Boolean withPluginInfo = true;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 List<PaymentMethod> results = paymentMethodApi.searchPaymentMethods(searchKey, 
                                                                     offset, 
@@ -732,7 +732,7 @@ protected PaymentMethodApi paymentMethodApi;
 
 UUID paymentMethodId = UUID.fromString("3c449da6-7ec4-4c74-813f-f5055739a0b9");
 
-final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+final List<AuditLog> EMPTY_AUDIT_LOGS = Collections.emptyList();
 
 CustomFields customFields = new CustomFields();
 customFields.add(new CustomField(null, 
@@ -1070,7 +1070,7 @@ protected PaymentMethodApi paymentMethodApi;
 
 UUID paymentMethodId = UUID.fromString("3c449da6-7ec4-4c74-813f-f5055739a0b9");
 UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-List<UUID> customFieldsList = ImmutableList.<UUID>of(customFieldsId);
+List<UUID> customFieldsList = List.of(customFieldsId);
 paymentMethodApi.deletePaymentMethodCustomFields(paymentMethodId, 
                                                  customFieldsList, 
                                                  requestOptions);

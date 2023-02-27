@@ -3508,7 +3508,7 @@ protected InvoiceApi invoiceApi;
 
 UUID invoiceId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
 
-final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+final List<AuditLog> EMPTY_AUDIT_LOGS = Collections.emptyList();
 
 CustomFields customFields = new CustomFields();
 customFields.add(new CustomField(null, 
@@ -3844,7 +3844,7 @@ protected InvoiceApi invoiceApi;
 UUID invoiceId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
 
 UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-List<UUID> customFieldsList = ImmutableList.<UUID>of(customFieldsId);
+List<UUID> customFieldsList = List.of(customFieldsId);
 
 invoiceApi.deleteInvoiceCustomFields(invoiceId, 
                                      customFieldsList, 
@@ -3943,7 +3943,7 @@ UUID invoiceId = UUID.fromString("45d6f4c5-21be-49b1-99c5-7b0c3c985bf0");
 UUID writtenOffId = UUID.fromString("00000000-0000-0000-0000-000000000004");
 
 Tags result = invoiceApi.createInvoiceTags(invoiceId, 
-                                           ImmutableList.<UUID>of(writtenOffId), 
+                                           List.of(writtenOffId), 
                                            requestOptions);
 ```
 
@@ -4174,7 +4174,7 @@ UUID invoiceId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
 UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
 invoiceApi.deleteInvoiceTags(invoiceId, 
-                             ImmutableList.<UUID>of(autoPayOffId), 
+                             List.of(autoPayOffId), 
                              requestOptions);
 ```
 

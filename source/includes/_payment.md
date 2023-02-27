@@ -84,8 +84,8 @@ captureTransaction.setPaymentId(paymentId);
 captureTransaction.setAmount(BigDecimal.ONE);
 captureTransaction.setCurrency(Currency.USD);
 
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 Payment capturedPayment = paymentApi.captureAuthorization(paymentId, 
                                                           captureTransaction, 
@@ -283,8 +283,8 @@ captureTransaction.setCurrency(Currency.USD);
 captureTransaction.setPaymentExternalKey("8e0c507a-05f9-4572-a57d-3f742cdc040d"); //payment external key
 captureTransaction.setTransactionExternalKey("9b4dbbe7-749d-4c96-a2e7-57b8bff3bf05"); //external key to be set on the newly created CAPTURE transaction
 
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 Payment capturedPayment2 = paymentApi.captureAuthorizationByExternalKey(captureTransaction, 
                                                                         NULL_PLUGIN_NAMES, 
@@ -491,7 +491,7 @@ protected PaymentApi paymentApi;
 UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
 Boolean withPluginInfo = false; // Will not reflect plugin info
 Boolean withAttempts = true; // Will reflect payment attempts
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 Payment payment = paymentApi.getPayment(paymentId, 
                                         withPluginInfo, 
@@ -760,7 +760,7 @@ protected PaymentApi paymentApi;
 String externalPaymentKey = "11b28b2e-a377-4b95-b712-d71cbcb28f80";
 Boolean withPluginInfo = false; // Will not reflect plugin info
 Boolean withAttempts = false; // Will not reflect payment attempts
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 Payment payment = paymentApi.getPaymentByExternalKey(externalPaymentKey,
                                                      withPluginInfo, 
@@ -1055,8 +1055,8 @@ UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
 PaymentTransaction body = new PaymentTransaction();
 body.setPaymentId(paymentId);
 
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 paymentApi.completeTransaction(paymentId, 
                                body, 
@@ -1179,8 +1179,8 @@ import org.killbill.billing.client.api.gen.PaymentApi;
 protected PaymentApi paymentApi;
 
 String externalPaymentKey = "11b28b2e-a377-4b95-b712-d71cbcb28f80";
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 PaymentTransaction body = new PaymentTransaction();
 body.setPaymentExternalKey(externalPaymentKey);
@@ -1306,8 +1306,8 @@ UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
 PaymentTransaction body = new PaymentTransaction();
 body.setPaymentId(paymentId);
 
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 paymentApi.voidPayment(paymentId, 
                        body, 
@@ -1410,8 +1410,8 @@ String paymentExternalKey = "cca08349-8b26-41c7-bfcc-2e3cf70a0f28";
 PaymentTransaction body = new PaymentTransaction();
 body.setPaymentExternalKey(paymentExternalKey);
 
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 paymentApi.voidPaymentByExternalKey(body, 
                                     NULL_PLUGIN_NAMES, 
@@ -1514,8 +1514,8 @@ UUID paymentId = UUID.fromString("8a096f10-1591-4546-880d-f6d4f7ea818c");
 PaymentTransaction body = new PaymentTransaction();
 body.setAmount(new BigDecimal(5));
 		
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 		
 Payment payment = paymentApi.chargebackPayment(paymentId, body, NULL_PLUGIN_NAMES, NULL_PLUGIN_PROPERTIES, requestOptions);
 ```
@@ -1715,8 +1715,8 @@ PaymentTransaction body = new PaymentTransaction();
 body.setPaymentExternalKey("a975f7b8-1e59-4801-91c9-fcce1526b019");
 body.setAmount(new BigDecimal(5));
 		
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 		
 Payment payment = paymentApi.chargebackPaymentByExternalKey(body, NULL_PLUGIN_NAMES, NULL_PLUGIN_PROPERTIES, requestOptions);
 
@@ -1913,8 +1913,8 @@ PaymentTransaction body = new PaymentTransaction();
 body.setPaymentExternalKey("a975f7b8-1e59-4801-91c9-fcce1526b019");
 body.setAmount(new BigDecimal(5));
 		
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 		
 Payment payment = paymentApi.chargebackPaymentByExternalKey(body, NULL_PLUGIN_NAMES, NULL_PLUGIN_PROPERTIES, requestOptions);
 ```
@@ -2139,8 +2139,8 @@ body.setPaymentExternalKey("631ec4ac-d745-4457-939d-d761badbf0ad");
 body.setTransactionExternalKey("72789509-2b94-43b6-b889-42c5ec5d27f3");
 body.setAmount(new BigDecimal(10));
 		
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 		
 Payment payment = paymentApi.chargebackPaymentByExternalKey(body, NULL_PLUGIN_NAMES, NULL_PLUGIN_PROPERTIES, requestOptions);
 ```
@@ -2364,8 +2364,8 @@ body.setAmount(BigDecimal.TEN);
 body.setCurrency(Currency.USD);
 body.setPaymentExternalKey("de924e98-2c76-4e90-b9d6-2ced262bc251");
 
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 Payment refundPayment = paymentApi.refundPayment(paymentId, 
                                                  body, 
@@ -2565,8 +2565,8 @@ body.setAmount(new BigDecimal(2));
 body.setCurrency(Currency.USD);
 body.setPaymentExternalKey("da96999c-b1ac-470f-8c48-c4ecf386cd89");
 		
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+List<String> NULL_PLUGIN_NAMES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 		
 Payment refundPayment = paymentApi.refundPaymentByExternalKey(body, NULL_PLUGIN_NAMES, NULL_PLUGIN_PROPERTIES, requestOptions);
 
@@ -2997,7 +2997,7 @@ body.setAccount(account);
 body.setPaymentMethod(paymentMethod);
 body.setTransaction(paymentTransaction);
 		
-ImmutableList<String> NULL_PLUGIN_NAMES = null;
+List<String> NULL_PLUGIN_NAMES = null;
 
 Payment result = paymentApi.createComboPayment(body,  NULL_PLUGIN_NAMES, requestOptions);
 ```
@@ -3196,7 +3196,7 @@ protected PaymentApi paymentApi;
 
 UUID paymentId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
 
-final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+final List<AuditLog> EMPTY_AUDIT_LOGS = Collections.emptyList();
 
 CustomFields customFields = new CustomFields();
 customFields.add(new CustomField(null, 
@@ -3614,7 +3614,7 @@ UUID paymentId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
 UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 Tags result = paymentApi.createPaymentTags(paymentId, 
-                                           ImmutableList.<UUID>of(tagDefinitionId), 
+                                           List.of(tagDefinitionId), 
                                            requestOptions);
 ```
 
@@ -3840,7 +3840,7 @@ UUID paymentId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
 UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 paymentApi.deletePaymentTags(paymentId, 
-                             ImmutableList.<UUID>of(tagDefinitionId), 
+                             List.of(tagDefinitionId), 
                              requestOptions);
 ```
 
@@ -4252,7 +4252,7 @@ Long limit = 100L;
 String pluginName = null;
 Boolean withPluginInfo = false; // Will not fetch plugin info
 Boolean withAttempts = true; // Will reflect payment attempts
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 Payments payments = paymentApi.getPayments(offset, 
                                            limit, 
@@ -4556,7 +4556,7 @@ Long limit = 100L;
 Boolean withPluginInfo = false; // Will not reflect plugin info
 Boolean withAttempts = true;  // Will reflect payment attempts
 String pluginName = null;
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 Payments payments = paymentApi.searchPayments(searchKey, 
                                               offset, 
