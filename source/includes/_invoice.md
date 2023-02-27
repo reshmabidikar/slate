@@ -2637,7 +2637,7 @@ A [dry run resource object](https://killbill.github.io/slate/#invoice-invoicedry
 |--|--|--|--|--|
 | TARGET_DATE   |   N/A  |  none |none |Preview the invoice as of the target date specified as a query parameter|
 | UPCOMING_INVOICE | N/A | none |subscriptionId or bundleId (When specified, computes the upcoming invoice for the specified subscription/bundle. Note that if there are other subscriptions invoiced on the same day, these will also be included in the upcoming invoice) |Preview the next scheduled invoice. `targetDate` query parameter does not need to be specified, it is ignored even if specified|
-| SUBSCRIPTION_ACTION | START_BILLING | Either a combination of productName, productCategory, billingPeriod or planName |effectiveDate, priceListName, billingPolicy|Preview the invoice that would be generated if the **START_BILLING** action is taken|
+| SUBSCRIPTION_ACTION | START_BILLING | Either a combination of productName, productCategory, billingPeriod or planName. If the dry run is being generated for an ADDON product, then the bundleId also needs to be specified  |effectiveDate, priceListName, billingPolicy|Preview the invoice that would be generated if the **START_BILLING** action is taken|
 | SUBSCRIPTION_ACTION | CHANGE | subscriptionId, bundleId and either a combination of productName, productCategory, billingPeriod or planName |effectiveDate, priceListName, billingPolicy|Preview the invoice that would be generated if the **CHANGE** action is taken|
 | SUBSCRIPTION_ACTION | STOP_BILLING | subscriptionId, bundleId, effectiveDate| - |Preview the invoice that would be generated if the **STOP_BILLING** action is taken|
 
