@@ -733,6 +733,8 @@ Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
 
 If successful, returns a status code of 200 and a `Payment` object.
 
+**Note:** The `effectiveDate` of the last payment attempt in `SCHEDULED` state corresponds to the next scheduled payment retry date and can be used as such.
+
 ### Retrieve a payment [using paymentExternalKey]
 
 Retrieves a Payment object based on its external key given as a query parameter.
