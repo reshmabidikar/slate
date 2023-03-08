@@ -72,7 +72,7 @@ import org.killbill.billing.client.api.gen.PaymentTransactionApi;
 protected PaymentTransactionApi paymentTransactionApi;
 
 UUID paymentTransactionId = UUID.fromString("41f4d299-4371-4876-96b4-0b3cc81b246b");
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 Payment payment = paymentTransactionApi.getPaymentByTransactionId(paymentTransactionId, NULL_PLUGIN_PROPERTIES, requestOptions);
 ```
 
@@ -209,7 +209,7 @@ import org.killbill.billing.client.api.gen.PaymentTransactionApi;
 protected PaymentTransactionApi paymentTransactionApi;
 
 String transactionExternalKey = "41f4d299-4371-4876-96b4-0b3cc81b246b";
-ImmutableMap<String, String> NULL_PLUGIN_PROPERTIES = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 Payment payment = paymentTransactionApi.getPaymentByTransactionExternalKey(transactionExternalKey, NULL_PLUGIN_PROPERTIES, requestOptions);
 
 ```
@@ -626,7 +626,7 @@ protected PaymentTransactionApi paymentTransactionApi;
 
 UUID paymentTransactionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
 
-final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+final List<AuditLog> EMPTY_AUDIT_LOGS = Collections.emptyList();
 
 CustomFields customFields = new CustomFields();
 customFields.add(new CustomField(null, 
@@ -916,7 +916,7 @@ protected PaymentTransactionApi paymentTransactionApi;
 
 UUID paymentTransactionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
 UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-List<UUID> customFieldsList = ImmutableList.<UUID>of(customFieldsId);
+List<UUID> customFieldsList = List.of(customFieldsId);
 paymentTransactionApi.deleteTransactionCustomFields(paymentTransactionId, 
                                                     customFieldsList, 
                                                     requestOptions);
@@ -1007,7 +1007,7 @@ UUID paymentTransactionId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa
 UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 Tags result = paymentTransactionApi.createTransactionTags(paymentTransactionId, 
-                                                          ImmutableList.<UUID>of(tagDefinitionId), 
+                                                          List.of(tagDefinitionId), 
                                                           requestOptions);
 ```
 
@@ -1208,7 +1208,7 @@ UUID paymentTransactionId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7
 UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
 paymentTransactionApi.deleteTransactionTags(paymentTransactionId, 
-                                            ImmutableList.<UUID>of(tagDefinitionId), 
+                                            List.of(tagDefinitionId), 
                                             requestOptions);
 ```
 

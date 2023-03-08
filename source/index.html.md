@@ -313,14 +313,12 @@ The Kill Bill server version, or simply Kill Bill version, is the one from the [
 
 The version for all these dependencies is managed in the parent [pom.xml](https://github.com/killbill/killbill-oss-parent/blob/master/pom.xml). So in particular, for a given Kill Bill version, you can look up the version of the parent `pom.xml` and from there access all the dependencies.
 
-The current **stable** and **production** ready version of Kill Bill is `0.22.y`. You should use the latest relased (`y`) version as it may contain critical bug fixes.
+The current **stable** and **production** ready version of Kill Bill is `0.24.y`. You should use the latest released (`y`) version as it may contain critical bug fixes.
 
 * Any bug fixes will result in a new version identified by incrementing the `patch` number (`y`). We guarantee compatibility of these versions with those immediately preceding them. Each version will be accompanied by release notes on github - e.g [0.22.8 release notes](https://github.com/killbill/killbill/releases/tag/killbill-0.22.8).
-* New development may happen in parallel. This may lead to the release of development versions. Such versions are not yet deemed stable, and will not be supportetd on the public mailing list.
+* New development may happen in parallel. This may lead to the release of development versions. Such versions are not yet deemed stable, and will not be supported on the public mailing list.
 
 The choice of releasing `0.x.y` and not `1.x.y` is motivated by our desire to add additional features in upcoming releases, and is in no way a statement about code instability.
-
-More information on Kill Bill versions can be found [here](http://docs.killbill.io/0.22/development.html#_versioning).
 
 ### Client Libraries
 

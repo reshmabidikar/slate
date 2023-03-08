@@ -107,6 +107,7 @@ An `InvoiceDryRun` object represents an invoice preview generated to determine w
 | **effectiveDate** | date | user | The date the change takes effect |
 | **billingPolicy** | string | user | The billing policy (see notes below) |
 | **priceOverrides** | list | user | list of prices if this subscription has price overrides |
+| **planName** | string | user | Name of the plan subscribed |
 
 
 **dryRunType**: possible values are:
@@ -127,7 +128,7 @@ An `InvoiceDryRun` object represents an invoice preview generated to determine w
 
 **billingPolicy**: possible values are START_OF_TERM, END_OF_TERM, or IMMEDIATE
 
-
+Note that either the `planName` or a combination of `productName`, `productCategory` and `billingPeriod` needs to be specified for the **START_BILLING**, **CHANGE** `dryRunAction`.
 
 
 ## Invoice
@@ -166,12 +167,11 @@ curl -v \
 import org.killbill.billing.client.api.gen.InvoiceApi;
 protected InvoiceApi invoiceApi;
 
-UUID accountId = UUID.fromString("5f1e9142-b4de-4409-9366-9920cc1683e9");
-LocalDate targetDate = new LocalDate(2012,3,29);
+UUID accountId = UUID.fromString("34a65013-2dd1-480e-b4b8-7999bb15ebce");
+LocalDate targetDate = LocalDate.parse("2023-07-15");
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
-Invoice result = invoiceApi.createFutureInvoice(accountId, 
-                                                targetDate, 
-                                                requestOptions);
+Invoice invoice = invoiceApi.createFutureInvoice(accountId, targetDate, NULL_PLUGIN_PROPERTIES, requestOptions);
 ```
 
 ```ruby
@@ -241,6 +241,7 @@ no content
 | ---- | -----| -------- | ------- | ----------- |
 | **accountId** | string | yes | none | account id |
 | **targetDate** | string | no | current date | target date (date up to which the account should be invoiced) |
+| **pluginProperty** | array of strings	 | no | omit | list of plugin properties, if any. Should be in the format `key%3Dvalue` |
 
 
 **Response**
@@ -2636,8 +2637,9 @@ A [dry run resource object](https://killbill.github.io/slate/#invoice-invoicedry
 |--|--|--|--|--|
 | TARGET_DATE   |   N/A  |  none |none |Preview the invoice as of the target date specified as a query parameter|
 | UPCOMING_INVOICE | N/A | none |subscriptionId or bundleId (When specified, computes the upcoming invoice for the specified subscription/bundle. Note that if there are other subscriptions invoiced on the same day, these will also be included in the upcoming invoice) |Preview the next scheduled invoice. `targetDate` query parameter does not need to be specified, it is ignored even if specified|
-| SUBSCRIPTION_ACTION | START_BILLING or CHANGE | productName, productCategory, billingPeriod, subscriptionId, bundleId |effectiveDate, priceListName, billingPolicy|Preview the invoice that would be generated if the **START_BILLING** or **CHANGE** action is taken|
-| SUBSCRIPTION_ACTION | STOP_BILLING | subscriptionId, bundleId|  effectiveDate |Preview the invoice that would be generated if the **STOP_BILLING** action is taken|
+| SUBSCRIPTION_ACTION | START_BILLING | Either a combination of productName, productCategory, billingPeriod or planName. If the dry run is being generated for an ADDON product, then the bundleId also needs to be specified  |effectiveDate, priceListName, billingPolicy|Preview the invoice that would be generated if the **START_BILLING** action is taken|
+| SUBSCRIPTION_ACTION | CHANGE | subscriptionId, bundleId and either a combination of productName, productCategory, billingPeriod or planName |effectiveDate, priceListName, billingPolicy|Preview the invoice that would be generated if the **CHANGE** action is taken|
+| SUBSCRIPTION_ACTION | STOP_BILLING | subscriptionId, bundleId, effectiveDate| - |Preview the invoice that would be generated if the **STOP_BILLING** action is taken|
 
 **Query Parameters**
 
@@ -2832,10 +2834,10 @@ TODO
 | ---- | -----| -------- | ------- | ----------- |
 | **accountId** | string | yes | none | account id |
 | **targetDate** | string | no | current date | target date (date up to which the account should be invoiced) |
+| **pluginProperty** | array of strings	 | no | omit | list of plugin properties, if any. Should be in the format `key%3Dvalue` |
 
 **Response**
 
-TODO
 If successful, returns a status code of 201 and an empty body. A location header containing the UUID of the generated group (if any) is also included in the response. If there is nothing to invoice for, returns a 404 status code.
 
 
@@ -3507,7 +3509,7 @@ protected InvoiceApi invoiceApi;
 
 UUID invoiceId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
 
-final ImmutableList<AuditLog> EMPTY_AUDIT_LOGS = ImmutableList.<AuditLog>of();
+final List<AuditLog> EMPTY_AUDIT_LOGS = Collections.emptyList();
 
 CustomFields customFields = new CustomFields();
 customFields.add(new CustomField(null, 
@@ -3843,7 +3845,7 @@ protected InvoiceApi invoiceApi;
 UUID invoiceId = UUID.fromString("59860a0d-c032-456d-a35e-3a48fe8579e5");
 
 UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
-List<UUID> customFieldsList = ImmutableList.<UUID>of(customFieldsId);
+List<UUID> customFieldsList = List.of(customFieldsId);
 
 invoiceApi.deleteInvoiceCustomFields(invoiceId, 
                                      customFieldsList, 
@@ -3942,7 +3944,7 @@ UUID invoiceId = UUID.fromString("45d6f4c5-21be-49b1-99c5-7b0c3c985bf0");
 UUID writtenOffId = UUID.fromString("00000000-0000-0000-0000-000000000004");
 
 Tags result = invoiceApi.createInvoiceTags(invoiceId, 
-                                           ImmutableList.<UUID>of(writtenOffId), 
+                                           List.of(writtenOffId), 
                                            requestOptions);
 ```
 
@@ -4173,7 +4175,7 @@ UUID invoiceId = UUID.fromString("e659f0f3-745c-46d5-953c-28fe9282fc7d");
 UUID autoPayOffId = UUID.fromString("00000000-0000-0000-0000-000000000001");
 
 invoiceApi.deleteInvoiceTags(invoiceId, 
-                             ImmutableList.<UUID>of(autoPayOffId), 
+                             List.of(autoPayOffId), 
                              requestOptions);
 ```
 

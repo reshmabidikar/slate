@@ -3493,7 +3493,7 @@ SimplePlan body = new SimplePlan(planId,
                                  BillingPeriod.MONTHLY, 
                                  trialLength, 
                                  TimeUnit.UNLIMITED, 
-                                 ImmutableList.<String>of())
+                                 Collections.emptyList())
                                  
 catalogApi.addSimplePlan(body, requestOptions);
 ```
