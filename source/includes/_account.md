@@ -100,63 +100,51 @@ accountApi.create_account(body,
                           api_key, 
                           api_secret)
 ```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://127.0.0.1:8080/1.0/kb/accounts/a8984103-b8e1-47cc-9914-4b1c4f9dbeab
-< Content-Type: application/json
-< Content-Length: 0
-```
-```java
-class Account {
-    org.killbill.billing.client.model.gen.Account@3f77a367
-    accountId: e1342e5c-db2a-4439-b52c-8597fde4390f
-    name: John Doe
-    firstNameLength: null
-    externalKey: e1342e5c-db2a-4439-b52c-8597fde4390f
-    email: john@laposte.com
-    billCycleDayLocal: 0
-    currency: USD
-    parentAccountId: null
-    isPaymentDelegatedToParent: false
-    paymentMethodId: null
-    referenceTime: 2012-08-25T00:02:47.000Z
-    timeZone: UTC
-    address1: null
-    address2: null
-    postalCode: null
-    company: null
-    city: null
-    state: null
-    country: null
-    locale: null
-    phone: null
-    notes: null
-    isMigrated: false
-    accountBalance: null
-    accountCBA: null
-    auditLogs: []
-}
-```
-
-```ruby
+```Example JSON Response:
 {
-   "accountId":"87dccc88-f504-493e-a05f-9b4a702c3add",
-   "name":"John Doe",
-   "externalKey":"87dccc88-f504-493e-a05f-9b4a702c3add",
-   "email":"john@laposte.com",
-   "billCycleDayLocal":0,
-   "currency":"USD",
-   "isPaymentDelegatedToParent":false,
-   "timeZone":"UTC",
-   "auditLogs":[]
+"auditLogs":[],
+"externalKey":"36c05a84-563b-4794-8958-772d93e677e1",
+"accountId":"36c05a84-563b-4794-8958-772d93e677e1",
+"referenceTime":
+  {
+    "year":2023,
+    "dayOfYear":67,
+    "equalNow":false,
+    "weekyear":2023,
+    "chronology":{
+      "zone":{
+        "ID":"UTC"
+      }
+    },
+    "weekOfWeekyear":10,
+    "secondOfMinute":16,
+    "millisOfDay":59476000,
+    "monthOfYear":3,
+    "dayOfWeek":3,
+    "beforeNow":true,
+    "minuteOfDay":991,
+    "dayOfMonth":8,
+    "era":1,
+    "zone":{
+      "ID":"UTC"
+    },
+    "yearOfCentury":23,
+    "hourOfDay":16,
+    "centuryOfEra":20,
+    "secondOfDay":59476,
+    "millis":1678293076000,
+    "yearOfEra":2023,
+    "minuteOfHour":31,
+    "millisOfSecond":0,
+    "afterNow":false
+  },
+  "paymentDelegatedToParent":false,
+  "name":"John Doe",
+  "timeZone":"UTC",
+  "currency":"USD",
+  "billCycleDayLocal":0,
+  "email":"john@laposte.com"
 }
-```
-
-```python
-no content
 ```
 
 **Request Body**
