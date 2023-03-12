@@ -100,7 +100,7 @@ accountApi.create_account(body,
                           api_key, 
                           api_secret)
 ```
-```Example JSON Response:
+```JSON_Response:
 {
 "auditLogs":[],
 "externalKey":"36c05a84-563b-4794-8958-772d93e677e1",
@@ -195,14 +195,14 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d" 
+    "http://127.0.0.1:8080/1.0/kb/accounts/36c05a84-563b-4794-8958-772d93e677e1" 
 ```
 
 ```java
 import org.killbill.billing.client.api.gen.AccountApi;
 protected AccountApi accountApi;
 
-UUID accountId = UUID.fromString("864c1418-e768-4cd5-a0db-67537144b685");
+UUID accountId = UUID.fromString("36c05a84-563b-4794-8958-772d93e677e1");
 Boolean accountWithBalance = false; // Will not include account balance
 Boolean accountWithBalanceAndCBA = false; // Will not include account balance and CBA info
 
@@ -214,7 +214,7 @@ Account result = accountApi.getAccount(accountId,
 ```
 
 ```ruby
-account_id = "e8877928-0226-488d-9272-07a5e66d897f"
+account_id = "36c05a84-563b-4794-8958-772d93e677e1"
 with_balance = false
 with_balance_and_cba = false
 account = KillBillClient::Model::Account.new
@@ -225,30 +225,23 @@ account.find_by_id(account_id,
 ```
 ```python
 accountApi = killbill.api.AccountApi()
-account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+account_id = '36c05a84-563b-4794-8958-772d93e677e1'
 
 accountApi.get_account(account_id, api_key, api_secret)
 ```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
+```JSON_Response
 {
-  "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+  "accountId": "36c05a84-563b-4794-8958-772d93e677e1",
   "name": "John Doe",
   "firstNameLength": null,
-  "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+  "externalKey": "36c05a84-563b-4794-8958-772d93e677e1",
   "email": "john@laposte.com",
   "billCycleDayLocal": 0,
   "currency": "USD",
   "parentAccountId": null,
   "isPaymentDelegatedToParent": false,
   "paymentMethodId": null,
-  "referenceTime": "2018-07-17T15:02:45.000Z",
+  "referenceTime": "2023-03-08T16:31:16.000Z",
   "timeZone": "UTC",
   "address1": null,
   "address2": null,
@@ -265,101 +258,7 @@ accountApi.get_account(account_id, api_key, api_secret)
   "accountCBA": null,
   "auditLogs": []
 }
-
 ```
-```java
-class Account {
-    org.killbill.billing.client.model.gen.Account@4be0cf3a
-    accountId: 864c1418-e768-4cd5-a0db-67537144b685
-    name: John Doe
-    firstNameLength: null
-    externalKey: 864c1418-e768-4cd5-a0db-67537144b685
-    email: john@laposte.com
-    billCycleDayLocal: 0
-    currency: USD
-    parentAccountId: null
-    isPaymentDelegatedToParent: false
-    paymentMethodId: null
-    referenceTime: 2012-08-25T00:00:25.000Z
-    timeZone: UTC
-    address1: null
-    address2: null
-    postalCode: null
-    company: null
-    city: null
-    state: null
-    country: null
-    locale: null
-    phone: null
-    notes: null
-    isMigrated: false
-    accountBalance: null
-    accountCBA: null
-    auditLogs: []
-}
-```
-```ruby
-{
-   "accountId":"e8877928-0226-488d-9272-07a5e66d897f",
-   "name":"John Doe",
-   "firstNameLength":null,
-   "externalKey":"e8877928-0226-488d-9272-07a5e66d897f",
-   "email":"john@laposte.com",
-   "billCycleDayLocal":0,
-   "currency":"USD",
-   "parentAccountId":null,
-   "isPaymentDelegatedToParent":false,
-   "paymentMethodId":null,
-   "referenceTime":"2018-02-05T22:39:53.000Z",
-   "timeZone":"UTC",
-   "address1":null,
-   "address2":null,
-   "postalCode":null,
-   "company":null,
-   "city":null,
-   "state":null,
-   "country":null,
-   "locale":null,
-   "phone":null,
-   "notes":null,
-   "isMigrated":null,
-   "accountBalance":null,
-   "accountCBA":null,
-   "auditLogs":[]
-}
-```
-```python
-{
- 'account_balance': None,
- 'account_cba': None,
- 'account_id': '07c0cef4-41c5-4606-b2cd-661332cdd41c',
- 'address1': None,
- 'address2': None,
- 'audit_logs': [],
- 'bill_cycle_day_local': 0,
- 'city': None,
- 'company': None,
- 'country': 'USA',
- 'currency': 'USD',
- 'email': None,
- 'external_key': 'rpwtgr',
- 'first_name_length': None,
- 'is_migrated': False,
- 'is_notified_for_invoices': False,
- 'is_payment_delegated_to_parent': False,
- 'locale': None,
- 'name': 'John',
- 'notes': None,
- 'parent_account_id': None,
- 'payment_method_id': None,
- 'phone': None,
- 'postal_code': None,
- 'reference_time': datetime.datetime(2018, 5, 3, 15, 53, 44, tzinfo=tzutc()),
- 'state': 'CA',
- 'time_zone': 'UTC'
-}
-```
-
 
 **Query Parameters**
 
@@ -390,14 +289,14 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://127.0.0.1:8080/1.0/kb/accounts?externalKey=2ad52f53-85ae-408a-9879-32a7e59dd03d"
+    "http://127.0.0.1:8080/1.0/kb/accounts?externalKey=36c05a84-563b-4794-8958-772d93e677e1"
 ```
 
 ```java
 import org.killbill.billing.client.api.gen.AccountApi;
 protected AccountApi accountApi;
 
-String externalKey = "example_external_key";
+String externalKey = "36c05a84-563b-4794-8958-772d93e677e1";
 Boolean accountWithBalance = false; // Will not include account balance
 Boolean accountWithBalanceAndCBA = false; // Will not include account balance and CBA info
 
@@ -409,7 +308,7 @@ Account result = accountApi.getAccountByKey(externalKey,
 ```
 
 ```ruby
-external_key = 'example_external_key'
+external_key = '36c05a84-563b-4794-8958-772d93e677e1'
 with_balance = false
 with_balance_and_cba = false
 
@@ -422,30 +321,23 @@ account.find_by_external_key(external_key,
 
 ```python
 accountApi = killbill.api.AccountApi()
-external_key = 'example_external_key'
+external_key = '36c05a84-563b-4794-8958-772d93e677e1'
 
 accountApi.get_account(external_key, api_key, api_secret)
 ```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
+```JSON_Response
 {
-  "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
+  "accountId": "36c05a84-563b-4794-8958-772d93e677e1",
   "name": "John Doe",
   "firstNameLength": null,
-  "externalKey": "example_external_key",
+  "externalKey": "36c05a84-563b-4794-8958-772d93e677e1",
   "email": "john@laposte.com",
   "billCycleDayLocal": 0,
   "currency": "USD",
   "parentAccountId": null,
   "isPaymentDelegatedToParent": false,
   "paymentMethodId": null,
-  "referenceTime": "2018-07-17T15:02:45.000Z",
+  "referenceTime": "2023-03-08T16:31:16.000Z",
   "timeZone": "UTC",
   "address1": null,
   "address2": null,
@@ -461,98 +353,6 @@ accountApi.get_account(external_key, api_key, api_secret)
   "accountBalance": null,
   "accountCBA": null,
   "auditLogs": []
-}
-```
-```java
-class Account {
-    org.killbill.billing.client.model.gen.Account@4be0cf3a
-    accountId: 864c1418-e768-4cd5-a0db-67537144b685
-    name: John Doe
-    firstNameLength: null
-    externalKey: example_external_key
-    email: john@laposte.com
-    billCycleDayLocal: 0
-    currency: USD
-    parentAccountId: null
-    isPaymentDelegatedToParent: false
-    paymentMethodId: null
-    referenceTime: 2012-08-25T00:00:25.000Z
-    timeZone: UTC
-    address1: null
-    address2: null
-    postalCode: null
-    company: null
-    city: null
-    state: null
-    country: null
-    locale: null
-    phone: null
-    notes: null
-    isMigrated: false
-    accountBalance: null
-    accountCBA: null
-    auditLogs: []
-}
-```
-```ruby
-{
-   "accountId":"e8877928-0226-488d-9272-07a5e66d897f",
-   "name":"John Doe",
-   "firstNameLength":null,
-   "externalKey":"example_external_key",
-   "email":"john@laposte.com",
-   "billCycleDayLocal":0,
-   "currency":"USD",
-   "parentAccountId":null,
-   "isPaymentDelegatedToParent":false,
-   "paymentMethodId":null,
-   "referenceTime":"2018-02-05T22:39:53.000Z",
-   "timeZone":"UTC",
-   "address1":null,
-   "address2":null,
-   "postalCode":null,
-   "company":null,
-   "city":null,
-   "state":null,
-   "country":null,
-   "locale":null,
-   "phone":null,
-   "notes":null,
-   "isMigrated":null,
-   "accountBalance":null,
-   "accountCBA":null,
-   "auditLogs":[]
-}
-```
-```python
-{
- 'account_balance': None,
- 'account_cba': None,
- 'account_id': '07c0cef4-41c5-4606-b2cd-661332cdd41c',
- 'address1': None,
- 'address2': None,
- 'audit_logs': [],
- 'bill_cycle_day_local': 0,
- 'city': None,
- 'company': None,
- 'country': 'USA',
- 'currency': 'USD',
- 'email': None,
- 'external_key': 'example_external_key',
- 'first_name_length': None,
- 'is_migrated': False,
- 'is_notified_for_invoices': False,
- 'is_payment_delegated_to_parent': False,
- 'locale': None,
- 'name': 'John',
- 'notes': None,
- 'parent_account_id': None,
- 'payment_method_id': None,
- 'phone': None,
- 'postal_code': None,
- 'reference_time': datetime.datetime(2018, 5, 3, 15, 53, 44, tzinfo=tzutc()),
- 'state': 'CA',
- 'time_zone': 'UTC'
 }
 ```
 
@@ -641,19 +441,7 @@ accountApi.update_account(account_id,
                           api_key, 
                           api_secret)
 ```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-
-```
-```java
-no content
-```
-```ruby
+```JSON_Response
 {
    "accountId":"37e759ed-e769-4e81-9e39-afb75a33056d",
    "name":"Another Name",
@@ -675,10 +463,6 @@ no content
    "auditLogs":[]
 }
 ```
-```python
-no content
-```
-
 
 **Query Parameters**
 
@@ -755,24 +539,9 @@ accountApi.close_account(account_id,
                          api_key,
                          api_secret)
 ```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
+```JSON_Response:
 no content
 ```
-```ruby
-no content
-```
-```python
-no content
-```
-
 
 **Query Parameters**
 
@@ -845,154 +614,61 @@ accountApi = killbill.api.AccountApi()
 
 accountApi.get_accounts(api_key, api_secret)
 ```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  {
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "name": "John Doe",
-    "firstNameLength": null,
-    "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "email": "john@laposte.com",
-    "billCycleDayLocal": 0,
-    "currency": "USD",
-    "parentAccountId": null,
-    "isPaymentDelegatedToParent": false,
-    "paymentMethodId": null,
-    "referenceTime": "2018-07-17T15:02:45.000Z",
-    "timeZone": "UTC",
-    "address1": null,
-    "address2": null,
-    "postalCode": null,
-    "company": null,
-    "city": null,
-    "state": null,
-    "country": null,
-    "locale": null,
-    "phone": null,
-    "notes": null,
-    "isMigrated": null,
-    "accountBalance": null,
-    "accountCBA": null,
-    "auditLogs": []
-  }
-]
-```
-```java
-// First element of the list
-class Account {
-    org.killbill.billing.client.model.gen.Account@f0247489
-    accountId: 80e54c79-ca2b-4c82-920b-07822683e605
-    name: 34bd86b6-ebc8-49ea-9a6e-6bbbd61ac745
-    firstNameLength: 4
-    externalKey: 23338712-3409-4ad3-8c6d-1c95241efef6
-    email: f1a3a@44a80
-    billCycleDayLocal: 0
-    currency: USD
-    parentAccountId: null
-    isPaymentDelegatedToParent: false
-    paymentMethodId: null
-    referenceTime: 2012-08-25T00:00:01.000Z
-    timeZone: UTC
-    address1: 12 rue des ecoles
-    address2: Poitier
-    postalCode: 44 567
-    company: Renault
-    city: Quelque part
-    state: Poitou
-    country: France
-    locale: fr
-    phone: 81 53 26 56
-    notes: notes
-    isMigrated: false
-    accountBalance: null
-    accountCBA: null
-    auditLogs: []
+```Example JSON Response:
+{
+  "next": [
+    {
+      "auditLogs": [],
+      "externalKey": "e60a79de-0d4c-4aeb-82e9-7695fe393b81",
+      "accountId": "e60a79de-0d4c-4aeb-82e9-7695fe393b81",
+      "referenceTime": {
+        "year": 2023,
+        "dayOfYear": 65,
+        "equalNow": false,
+        "weekyear": 2023,
+        "chronology": {
+          "zone": {
+            "ID": "UTC"
+          }
+        },
+        "weekOfWeekyear": 10,
+        "secondOfMinute": 39,
+        "millisOfDay": 61959000,
+        "monthOfYear": 3,
+        "dayOfWeek": 1,
+        "beforeNow": true,
+        "minuteOfDay": 1032,
+        "dayOfMonth": 6,
+        "era": 1,
+        "zone": {
+          "ID": "UTC"
+        },
+        "yearOfCentury": 23,
+        "centuryOfEra": 20,
+        "hourOfDay": 17,
+        "secondOfDay": 61959,
+        "millis": 1678122759000,
+        "yearOfEra": 2023,
+        "minuteOfHour": 12,
+        "millisOfSecond": 0,
+        "afterNow": false
+      },
+      "paymentDelegatedToParent": false,
+      "name": "John Doe",
+      "timeZone": "UTC",
+      "currency": "USD",
+      "billCycleDayLocal": 0,
+      "email": "john@laposte.com"
+    }
+  ],
+  "paginationNextOffset": 1,
+  "paginationNextPageUri": "/1.0/kb/accounts/pagination?offset=1&limit=1&accountWithBalanceAndCBA=false&accountWithBalance=false&audit=NONE",
+  "paginationMaxNbRecords": 5,
+  "killBillHttpClient": {},
+  "paginationCurrentOffset": 0,
+  "paginationTotalNbRecords": 5,
+  "empty": false
 }
-```
-```ruby
-[
-   {
-      "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
-      "name":"John Doe",
-      "externalKey":"1522172592-516014",
-      "email":"John@laposte.com",
-      "billCycleDayLocal":0,
-      "currency":"USD",
-      "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
-      "isPaymentDelegatedToParent":true,
-      "timeZone":"UTC",
-      "address1":"7, yoyo road",
-      "address2":"Apt 5",
-      "postalCode":"94105",
-      "company":"Unemployed",
-      "city":"San Francisco",
-      "state":"California",
-      "country":"US",
-      "locale":"fr_FR",
-      "auditLogs":[]
-   }
-]
-```
-```python
-[{'account_balance': None,
- 'account_cba': None,
- 'account_id': '224a9677-735b-4902-a4a4-bf77469a0846',
- 'address1': None,
- 'address2': None,
- 'audit_logs': [],
- 'bill_cycle_day_local': 0,
- 'city': None,
- 'company': None,
- 'country': 'USA',
- 'currency': 'USD',
- 'email': None,
- 'external_key': 'fxelpb',
- 'first_name_length': None,
- 'is_migrated': False,
- 'is_notified_for_invoices': False,
- 'is_payment_delegated_to_parent': False,
- 'locale': None,
- 'name': 'John-0',
- 'notes': None,
- 'parent_account_id': None,
- 'payment_method_id': None,
- 'phone': None,
- 'postal_code': None,
- 'reference_time': datetime.datetime(2018, 5, 4, 19, 40, 35, tzinfo=tzutc()),
- 'state': 'CA',
- 'time_zone': 'UTC'}, {'account_balance': None,
- 'account_cba': None,
- 'account_id': '465f0295-e27e-4341-9eb7-072465e32ee5',
- 'address1': None,
- 'address2': None,
- 'audit_logs': [],
- 'bill_cycle_day_local': 0,
- 'city': None,
- 'company': None,
- 'country': 'USA',
- 'currency': 'USD',
- 'email': None,
- 'external_key': 'cpkwdl',
- 'first_name_length': None,
- 'is_migrated': False,
- 'is_notified_for_invoices': False,
- 'is_payment_delegated_to_parent': False,
- 'locale': None,
- 'name': 'John-1',
- 'notes': None,
- 'parent_account_id': None,
- 'payment_method_id': None,
- 'phone': None,
- 'postal_code': None,
- 'reference_time': datetime.datetime(2018, 5, 4, 19, 40, 36, tzinfo=tzutc()),
- 'state': 'CA',
- 'time_zone': 'UTC'}]
 ```
 
 **Query Parameters**
@@ -1033,7 +709,7 @@ curl -v \
 import org.killbill.billing.client.api.gen.AccountApi;
 protected AccountApi accountApi;
 
-String searchKey = "John-1";
+String searchKey = "John";
 Long offset = 0L;
 Long limit = 1L;
 Boolean accountWithBalance = false; // Will not include account balance
@@ -1049,7 +725,7 @@ List<Account> accountsByKey = accountApi.searchAccounts(searchKey,
 ```
 
 ```ruby
-search_key = 'example'
+search_key = 'John'
 offset = 0
 limit = 100
 with_balance = false
@@ -1065,133 +741,65 @@ account.find_in_batches_by_search_key(search_key,
 
 ```python
 accountApi = killbill.api.AccountApi()
-search_key = 'John-1'
+search_key = 'John'
 
 accountApi.search_accounts(search_key, api_key, api_secret)
 ```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
-[
-  {
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "name": "John Doe",
-    "firstNameLength": null,
-    "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "email": "john@laposte.com",
-    "billCycleDayLocal": 0,
-    "currency": "USD",
-    "parentAccountId": null,
-    "isPaymentDelegatedToParent": false,
-    "paymentMethodId": null,
-    "referenceTime": "2018-07-17T15:02:45.000Z",
-    "timeZone": "UTC",
-    "address1": null,
-    "address2": null,
-    "postalCode": null,
-    "company": null,
-    "city": null,
-    "state": null,
-    "country": null,
-    "locale": null,
-    "phone": null,
-    "notes": null,
-    "isMigrated": null,
-    "accountBalance": null,
-    "accountCBA": null,
-    "auditLogs": []
-  }
-]
-```
-```java
-// First element of the list
-class Account {
-    org.killbill.billing.client.model.gen.Account@24e22684
-    accountId: 80a454f3-182f-4621-812e-533d23e54cb9
-    name: John-1
-    firstNameLength: 4
-    externalKey: 94a664a3-eea5-43fb-8788-9d3129a2c95c
-    email: 33b2e@cc77b
-    billCycleDayLocal: 0
-    currency: USD
-    parentAccountId: null
-    isPaymentDelegatedToParent: false
-    paymentMethodId: null
-    referenceTime: 2012-08-25T00:00:02.000Z
-    timeZone: UTC
-    address1: 12 rue des ecoles
-    address2: Poitier
-    postalCode: 44 567
-    company: Renault
-    city: Quelque part
-    state: Poitou
-    country: France
-    locale: fr
-    phone: 81 53 26 56
-    notes: notes
-    isMigrated: false
-    accountBalance: null
-    accountCBA: null
-    auditLogs: []
+```JSON_Response:
+{
+  "next": [
+    {
+      "auditLogs": [],
+      "accountId": "fc693517-9ede-4543-a184-9e6f21119584",
+      "externalKey": "fc693517-9ede-4543-a184-9e6f21119584",
+      "referenceTime": {
+        "year": 2023,
+        "dayOfYear": 65,
+        "equalNow": false,
+        "weekyear": 2023,
+        "chronology": {
+          "zone": {
+            "ID": "UTC"
+          }
+        },
+        "weekOfWeekyear": 10,
+        "secondOfMinute": 21,
+        "millisOfDay": 62241000,
+        "monthOfYear": 3,
+        "dayOfWeek": 1,
+        "beforeNow": true,
+        "minuteOfDay": 1037,
+        "dayOfMonth": 6,
+        "era": 1,
+        "zone": {
+          "ID": "UTC"
+        },
+        "yearOfCentury": 23,
+        "hourOfDay": 17,
+        "centuryOfEra": 20,
+        "secondOfDay": 62241,
+        "millis": 1678123041000,
+        "yearOfEra": 2023,
+        "minuteOfHour": 17,
+        "millisOfSecond": 0,
+        "afterNow": false
+      },
+      "paymentDelegatedToParent": false,
+      "name": "John Doe",
+      "timeZone": "UTC",
+      "currency": "USD",
+      "billCycleDayLocal": 0,
+      "email": "john@laposte.com"
+    }
+  ],
+  "paginationNextOffset": 1,
+  "paginationNextPageUri": "/1.0/kb/accounts/search/John?offset=1&limit=1&accountWithBalanceAndCBA=false&accountWithBalance=false&audit=NONE",
+  "paginationMaxNbRecords": 5,
+  "killBillHttpClient": {},
+  "paginationCurrentOffset": 0,
+  "paginationTotalNbRecords": 4,
+  "empty": false
 }
-```
-```ruby
-[
-   {
-      "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
-      "name":"John Doe",
-      "externalKey":"1522172592-516014",
-      "email":"John@laposte.com",
-      "billCycleDayLocal":0,
-      "currency":"USD",
-      "parentAccountId":"01ab962b-3c66-4b17-b391-ffcc9fe51884",
-      "isPaymentDelegatedToParent":true,
-      "timeZone":"UTC",
-      "address1":"7, yoyo road",
-      "address2":"Apt 5",
-      "postalCode":"94105",
-      "company":"Unemployed",
-      "city":"San Francisco",
-      "state":"California",
-      "country":"US",
-      "locale":"fr_FR",
-      "auditLogs":[]
-   }
-]
-```
-```python
-[{'account_balance': None,
- 'account_cba': None,
- 'account_id': 'c41bf53b-c6a8-48de-8012-b755e51d5d3e',
- 'address1': None,
- 'address2': None,
- 'audit_logs': [],
- 'bill_cycle_day_local': 0,
- 'city': None,
- 'company': None,
- 'country': 'USA',
- 'currency': 'USD',
- 'email': None,
- 'external_key': 'njisdn',
- 'first_name_length': None,
- 'is_migrated': False,
- 'is_notified_for_invoices': False,
- 'is_payment_delegated_to_parent': False,
- 'locale': None,
- 'name': 'John-1',
- 'notes': None,
- 'parent_account_id': None,
- 'payment_method_id': None,
- 'phone': None,
- 'postal_code': None,
- 'reference_time': datetime.datetime(2018, 5, 4, 19, 44, 24, tzinfo=tzutc()),
- 'state': 'CA',
- 'time_zone': 'UTC'}]
 ```
 
 **Query Parameters**
@@ -1277,23 +885,7 @@ accountApi.add_email(account_id,
                      api_key,
                      api_secret)
 ```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://127.0.0.1:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/emails
-< Content-Type: application/json
-< Content-Length: 0
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
+```JSON_Response:
 no content
 ```
 **Request Body**
@@ -1347,14 +939,7 @@ account_id = 'c8f51346-562d-429b-8c89-27a0f72009b3'
 
 accountApi.get_emails(account_id, api_key, api_secret)
 ```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-< Content-Type: application/json
-
+```JSON_Response
 [
    {
       "accountId":"e4ca38b3-934d-42e8-a292-ffb0af5549f2",
@@ -1362,34 +947,6 @@ accountApi.get_emails(account_id, api_key, api_secret)
    }
 ]
 ```
-```java
-//First element of the list
-class AccountEmail {
-    org.killbill.billing.client.model.gen.AccountEmail@bdc0f8ad
-    accountId: cd026587-c93b-471c-a98d-224c21636fbc
-    email: email@laposte.com
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "email":"email@laposte.com"
-   }
-]
-```
-```python
-[
-  {
-    'account_id': 'c8f51346-562d-429b-8c89-27a0f72009b3',
-    'audit_logs': [],
-    'email': 'email@laposte.com'
-  }
-]
-```
-
-
 **Query Parameters**
 
 None.
@@ -1453,21 +1010,7 @@ accountApi.remove_email(account_id,
                         api_key,
                         api_secret)
 ```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-```
-```java
-no content
-```
-```ruby
-no content
-```
-```python
+```JSON_Response
 no content
 ```
 
