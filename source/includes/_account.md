@@ -100,7 +100,7 @@ accountApi.create_account(body,
                           api_key, 
                           api_secret)
 ```
-```JSON_Response:
+```json
 {
 "auditLogs":[],
 "externalKey":"36c05a84-563b-4794-8958-772d93e677e1",
@@ -232,7 +232,7 @@ accountApi.get_account(account_id, api_key, api_secret)
 
 > Example Response:
 
-```JSON
+```json
 {
   "accountId": "36c05a84-563b-4794-8958-772d93e677e1",
   "name": "John Doe",
@@ -330,7 +330,7 @@ accountApi.get_account(external_key, api_key, api_secret)
 ```
 > Example Response:
 
-```JSON
+```json
 {
   "accountId": "36c05a84-563b-4794-8958-772d93e677e1",
   "name": "John Doe",
@@ -449,7 +449,7 @@ accountApi.update_account(account_id,
 
 > Example Response:
 
-```JSON
+```json
 {
    "accountId":"37e759ed-e769-4e81-9e39-afb75a33056d",
    "name":"Another Name",
@@ -550,7 +550,7 @@ accountApi.close_account(account_id,
 
 > Example Response:
 
-```JSON
+```json
 no content
 ```
 
@@ -628,7 +628,7 @@ accountApi.get_accounts(api_key, api_secret)
 
 > Example Response:
 
-```JSON
+```json
 {
   "next": [
     {
@@ -762,7 +762,7 @@ accountApi.search_accounts(search_key, api_key, api_secret)
 
 > Example Response:
 
-```JSON
+```json
 {
   "next": [
     {
@@ -905,7 +905,7 @@ accountApi.add_email(account_id,
 
 > Example Response:
 
-```JSON
+```json
 no content
 ```
 **Request Body**
@@ -962,7 +962,7 @@ accountApi.get_emails(account_id, api_key, api_secret)
 
 > Example Response:
 
-```JSON
+```json
 [
    {
       "accountId":"e4ca38b3-934d-42e8-a292-ffb0af5549f2",
@@ -1036,7 +1036,7 @@ accountApi.remove_email(account_id,
 
 > Example Response:
 
-```JSON
+```json
 no content
 ```
 
@@ -1099,7 +1099,7 @@ accountApi.get_account_bundles(account_id, api_key, api_secret)
 
 > Example Response:
 
-```JSON
+```json
 [
   {
     "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
@@ -1307,7 +1307,7 @@ accountApi.get_account_bundles_paginated(account_id, api_key, api_secret)
 
 > Example Response:
 
-```JSON
+```json
 [
   {
     "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
@@ -1532,7 +1532,7 @@ accountApi.get_invoices_for_account(account_id, api_key, api_secret)
 
 > Example Response:
 
-```JSON
+```json
 [
    {
       "amount":50.0,
@@ -1627,7 +1627,7 @@ accountApi.get_invoices_for_account_paginated(account_id, api_key, api_secret)
 
 > Example Response:
 
-```JSON
+```json
 [
    {
       "amount":50.0,
@@ -1757,7 +1757,7 @@ accountApi.pay_all_invoices(account_id,
 
 > Example Response:
 
-```JSON
+```json
 no content
 ```
 
@@ -1825,7 +1825,7 @@ accountApi.get_invoice_payments(account_id, api_key, api_secret)
 
 > Example Response:
 
-```JSON
+```json
 [
    {
       "targetInvoiceId":"d1d6e8d8-c476-4b53-badf-c23f78c02c09",
@@ -1923,7 +1923,7 @@ accountApi.get_payments_for_account(account_id, api_key, api_secret)
 ```
 > Example Response:
 
-```JSON
+```json
 [
    {
       "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
@@ -2078,7 +2078,7 @@ accountApi.process_payment(account_id,
 
 > Example Response:
 
-```JSON
+```json
 {
    "accountId":"2ad4cae9-c44a-43f9-b3f8-2e3e4e097838",
    "paymentId":"b4c5b34f-cd3e-4269-9f71-55daf8edde60",
@@ -2229,7 +2229,7 @@ accountApi.process_payment_by_external_key(body,
 
 > Example Response:
 
-```JSON
+```json
 {
    "accountId":"2ad4cae9-c44a-43f9-b3f8-2e3e4e097838",
    "paymentId":"b4c5b34f-cd3e-4269-9f71-55daf8edde60",
@@ -2355,7 +2355,7 @@ accountApi.create_payment_method(account_id,
 
 > Example Response:
 
-```JSON
+```json
 {
    "paymentMethodId":"059ecfb8-6b4d-4a89-9537-63a687e6cf10",
    "externalKey":"ExternalKey",
@@ -2433,7 +2433,7 @@ accountApi.get_payment_methods_for_account(account_id, api_key, api_secret)
 ```
 > Example Response:
 
-```JSON
+```json
 [
   {
     "paymentMethodId": "f835c556-0694-4883-b4c1-d1b6e308409b",
@@ -2527,7 +2527,7 @@ accountApi.set_default_payment_method(account_id,
 ```
 > Example Response:
 
-```JSON
+```json
 no content
 ```
 
@@ -2602,7 +2602,7 @@ accountApi.refresh_payment_methods(account_id,
 ```
 > Example Response:
 
-```JSON
+```json
 no content
 ```
 
@@ -2663,7 +2663,7 @@ accountApi.get_overdue_account(account_id, api_key, api_secret)
 
 > Example Response:
 
-```JSON
+```json
 {
   "name": "__KILLBILL__CLEAR__OVERDUE_STATE__",
   "externalMessage": "",
@@ -2809,7 +2809,7 @@ accountApi.add_account_blocking_state(account_id,
 
 > Example Response:
 
-```JSON
+```json
 no content
 ```
 
@@ -2883,7 +2883,7 @@ accountApi.get_blocking_states(account_id, api_key, api_secret)
 ```
 > Example Response:
 
-```JSON
+```json
 [
   {
     "blockedId": "10483c3a-3394-4667-8519-0d849e9a8ec2",
@@ -2971,7 +2971,7 @@ accountApi.get_children_accounts(account_id, api_key, api_secret)
 
 > Example Response:
 
-```JSON
+```json
 [
    {
       "accountId":"e19c6ab3-1a21-42f2-8ea2-9859c082b093",
@@ -3059,7 +3059,7 @@ accountApi.transfer_child_credit_to_parent(child_account_id,
 ```
 > Example Response:
 
-```JSON
+```json
 no content
 ```
 
@@ -3146,7 +3146,7 @@ accountApi.create_account_custom_fields(account_id,
 
 > Example Response:
 
-```JSON
+```json
 [
    {
       "customFieldId":"6e571e22-b794-413c-be6f-1b2aa4bf9824",
@@ -3226,7 +3226,7 @@ account.all_custom_fields(object_type,
 
 > Example Response:
 
-```JSON
+```json
 [
   {
     "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
@@ -3297,7 +3297,7 @@ accountApi.get_account_custom_fields(account_id, api_key, api_secret)
 
 > Example Response:
 
-```JSON
+```json
 [
   {
     "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe",
@@ -3392,7 +3392,7 @@ account.modify_account_custom_fields(account_id,
 
 > Example Response:
 
-```JSON
+```json
 no content
 ```
 
@@ -3471,7 +3471,7 @@ account.delete_account_custom_fields(account_id,
 
 > Example Response:
 
-```JSON
+```json
 no content
 ```
 
@@ -3560,7 +3560,7 @@ accountApi.create_account_tags(account_id,
 ```
 > Example Response:
 
-```JSON
+```json
 [
    {
       "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
@@ -3640,7 +3640,7 @@ account.all_tags(object_type,
 
 > Example Response:
 
-```JSON
+```json
 [
   {
     "tagId": "0f7c5837-1ed9-41ab-b391-9ef7ea4ab049",
@@ -3717,7 +3717,7 @@ accountApi.get_account_tags(account_id, api_key, api_secret)
 
 > Example Response:
 
-```JSON
+```json
 [
   {
     "tagId": "0f7c5837-1ed9-41ab-b391-9ef7ea4ab049",
@@ -3798,7 +3798,7 @@ accountApi.delete_account_tags(account_id,
 ```
 > Example Response:
 
-```JSON
+```json
 no content
 ```
 
@@ -3858,7 +3858,7 @@ account.audit(options)
 
 > Example Response:
 
-```JSON
+```json
 [
   {
     "changeType": "INSERT",
@@ -3980,7 +3980,7 @@ account.audit_logs_with_history(options)
 
 > Example Response:
 
-```JSON
+```json
 [
   {
     "changeType": "INSERT",
@@ -4171,7 +4171,7 @@ account.email_audit_logs_with_history(account_email_id, options)
 
 > Example Response:
 
-```JSON
+```json
 [
   {
     "changeType": "INSERT",
@@ -4242,7 +4242,7 @@ AuditLogs result = accountApi.getBlockingStateAuditLogsWithHistory(blockingId, r
 
 > Example Response:
 
-```JSON
+```json
 [
   {
     "changeType": "INSERT",
@@ -4337,7 +4337,7 @@ accountApi.get_account_timeline(account_id, api_key, api_secret)
 
 > Example Response:
 
-```JSON
+```json
 {
   "account": {
     "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
