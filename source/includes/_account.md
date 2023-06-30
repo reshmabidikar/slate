@@ -962,10 +962,12 @@ accountApi.get_emails(account_id, api_key, api_secret)
 > Example Response:
 
 ```json
-{
+[
+  {
   "accountId":"e4ca38b3-934d-42e8-a292-ffb0af5549f2",
   "email":"email@laposte.com"
-}
+  }
+]
 ```
 **Query Parameters**
 
