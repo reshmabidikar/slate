@@ -2167,8 +2167,8 @@ UUID paymentMethodId = UUID.fromString("c6bd413e-268e-4cc8-afb0-16b2dec3ffa5");
 List<String> NULL_PLUGIN_NAMES = null;
 Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
-Payment payment = accountApi.processPaymentByExternalKey(authTransaction, 
-													                            externalKey, 
+Payment payment = accountApi.processPaymentByExternalKey(authTransaction,
+                                                         externalKey, 
 		                                                  paymentMethodId, 
 		                                                  NULL_PLUGIN_NAMES,
 		                                                  NULL_PLUGIN_PROPERTIES, 
