@@ -1216,27 +1216,6 @@ invoiceApi.adjust_invoice_item(invoice_id,
                                api_secret)
 ```
 
-> Example Response:
-
-```json
-{
-   "amount":400.0,
-   "currency":"USD",
-   "status":"COMMITTED",
-   "creditAdj":0.0,
-   "refundAdj":0.0,
-   "invoiceId":"2c98cfa2-7929-4cc2-9397-1624fb72c6d5",
-   "invoiceDate":"2013-08-31",
-   "targetDate":"2013-08-31",
-   "invoiceNumber":"1884",
-   "balance":0,
-   "accountId":"3ee3aa82-1d45-4bbc-b36b-74d628e095d0",
-   "items":[],
-   "isParentInvoice":false,
-   "auditLogs":[]
-}
-```
-
 **Request Body**
 
 An invoice item resource object with at least `invoiceItemId`, `invoiceId`, and `amount` attributes. 
