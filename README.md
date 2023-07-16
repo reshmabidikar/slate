@@ -1,30 +1,28 @@
 # Overview
 
-Kill Bill slate api doc
+Kill Bill API documentation.
 
 ## Setup
 
-The setup is described in the original [slate repo](https://github.com/lord/slate). in a nusthell:
+The pages are built using middleman:
 
 ```
-> bundle install
-> bundle exec middleman server
+bundle install
+bundle exec middleman server
 ```
 
+See also https://github.com/slatedocs/slate and https://github.com/middleman/middleman.
 
 ## Edit and Syntax
 
-The main file to edit is the [index.html.md](https://github.com/killbill/slate/blob/master/source/index.html.md), and the following is a summary of the [markdown syntax for slate](https://github.com/lord/slate/wiki/Markdown-Syntax).
+The documentation is in the `source/includes` directory.
 
+Markdown syntax: https://github.com/slatedocs/slate/wiki/Markdown-Syntax
 
 ## Publishing
 
 In order to publish the doc on github pages, simply run
 
 ```
-> ./deploy.sh
+./deploy.sh
 ```
-
-
-
-
