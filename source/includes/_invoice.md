@@ -196,11 +196,6 @@ invoiceApi.create_future_invoice(account_id,
                                  api_secret, 
                                  target_date=target_date)
 ```
-> Example Response:
-
-```json
-no content
-```
 
 **Query Parameters**
 
@@ -289,12 +284,6 @@ invoiceApi.create_migration_invoice(account_id,
                                     api_key,
                                     api_secret,
                                     target_date)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Request Body**
@@ -1054,12 +1043,6 @@ invoiceApi.commit_invoice(invoice_id,
                           api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Query Parameters**
 
 None. 
@@ -1118,12 +1101,6 @@ invoiceApi.void_invoice(invoice_id,
                         created_by, 
                         api_key, 
                         api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
@@ -1293,12 +1270,6 @@ invoiceApi.delete_cba(invoice_id,
                       created_by,
                       api_key,
                       api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
@@ -1637,11 +1608,6 @@ TODO
 ```python
 TODO
 ```
-> Example Response:
-
-```json
-no content
-```
 
 **Query Parameters**
 
@@ -1895,11 +1861,6 @@ invoiceApi.create_instant_payment(invoice_id,
                                   api_secret,
                                   external_payment=True)
 ```
-> Example Response:
-
-```json
-no content
-```
 
 **Request Body**
 
@@ -2090,21 +2051,6 @@ invoiceApi.create_invoice_custom_fields(invoice_id,
                                         api_secret)
 ```
 
-> Example Response:
-
-```json
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"INVOICE",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
-```
-
 **Request Body**
 
 A list of [Custom Field](https://killbill.github.io/slate/?java#custom-field-custom-field-resource) objects. Each object should specify at least the the `name` and `value` attribute. For example:
@@ -2261,12 +2207,6 @@ invoiceApi.modify_invoice_custom_fields(invoice_id,
                                         api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Requst Body**
 
 
@@ -2340,11 +2280,6 @@ invoiceApi.delete_invoice_custom_fields(invoice_id,
                                         created_by, 
                                         api_key, 
                                         api_secret)
-```
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
@@ -2424,21 +2359,6 @@ invoiceApi.create_invoice_tags(invoice_id,
                                created_by, 
                                api_key, 
                                api_secret)
-```
-
-> Example Response:
-
-```json
-[
-   {
-      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
-      "objectType":"INVOICE",
-      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"00000000-0000-0000-0000-000000000004",
-      "tagDefinitionName":"WRITTEN_OFF",
-      "auditLogs":[]
-   }
-]
 ```
 
 **Request Body**
@@ -2585,12 +2505,6 @@ invoiceApi.delete_invoice_tags(invoice_id,
                                tag_def=tag)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -2664,12 +2578,6 @@ invoiceApi.upload_catalog_translation(locale,
                                       created_by,
                                       api_key,
                                       api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Request Body**
@@ -2805,12 +2713,6 @@ invoiceApi.upload_invoice_translation(locale,
                                       api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Request Body**
 
 A table of translation items. For example:
@@ -2882,6 +2784,7 @@ invoiceApi.get_invoice_translation(locale, api_key, api_secret)
 {
     "sports-monthly" : "Voiture Sport"
 }
+```
 
 **Query Parameters**
 
@@ -2951,167 +2854,6 @@ invoiceApi.upload_invoice_mp_template(body,
                                       api_secret)
 ```
 
-> Example Response:
-
-```ruby
-"
-<meta charset=\"UTF-8\">
-
-<html>
-       
-   <head>
-              
-      <style type=\"text/css\"> th {align=left; width=225px; border-bottom: solid 2px black;} </style>
-          
-   </head>
-       
-   <body>
-              
-      <h1>Tenant template: {{text.invoiceTitle}}</h1>
-              
-      <table>
-                     
-         <tr>
-                            
-            <td rowspan=3 width=350px>Insert image here</td>
-                            
-            <td width=100px/>                
-            <td width=225px/>                
-            <td width=225px/>            
-         </tr>
-                     
-         <tr>
-                            
-            <td />                
-            <td align=right>{{text.invoiceDate}}</td>
-                            
-            <td>{{invoice.formattedInvoiceDate}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td />                
-            <td align=right>{{text.invoiceNumber}}</td>
-                            
-            <td>{{invoice.invoiceNumber}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyName}}</td>
-                            
-            <td></td>
-                            
-            <td align=right>{{text.accountOwnerName}}</td>
-                            
-            <td>{{account.name}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyAddress}}</td>
-                            
-            <td />                
-            <td />                
-            <td>{{account.email}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyCityProvincePostalCode}}</td>
-                            
-            <td />                
-            <td />                
-            <td>{{account.phone}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyCountry}}</td>
-                            
-            <td />                
-            <td />                
-            <td />            
-         </tr>
-                     
-         <tr>
-                            
-            <td><{{text.companyUrl}}</td>
-                            
-            <td />                
-            <td />                
-            <td />            
-         </tr>
-                 
-      </table>
-              <br />        <br />        <br />        
-      <table>
-                     
-         <tr>
-                            
-            <th>{{text.invoiceItemBundleName}}</td>                
-            <th>{{text.invoiceItemDescription}}</td>                
-            <th>{{text.invoiceItemServicePeriod}}</td>                
-            <th>{{text.invoiceItemAmount}}</td>            
-         </tr>
-                     {{#invoice.invoiceItems}}            
-         <tr>
-                            
-            <td>{{description}}</td>
-                            
-            <td>{{planName}}</td>
-                            
-            <td>{{formattedStartDate}}{{#formattedEndDate}} - {{formattedEndDate}}{{/formattedEndDate}}</td>
-                            
-            <td>{{invoice.currency}} {{amount}}</td>
-                        
-         </tr>
-                     {{/invoice.invoiceItems}}            
-         <tr>
-                            
-            <td colspan=4 />            
-         </tr>
-                     
-         <tr>
-                            
-            <td colspan=2 />                
-            <td align=right><strong>{{text.invoiceAmount}}</strong></td>
-                            
-            <td align=right><strong>{{invoice.chargedAmount}}</strong></td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td colspan=2 />                
-            <td align=right><strong>{{text.invoiceAmountPaid}}</strong></td>
-                            
-            <td align=right><strong>{{invoice.paidAmount}}</strong></td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td colspan=2 />                
-            <td align=right><strong>{{text.invoiceBalance}}</strong></td>
-                            
-            <td align=right><strong>{{invoice.balance}}</strong></td>
-                        
-         </tr>
-                 
-      </table>
-          
-   </body>
-   
-</html>
-"
-```
-
 **Request Body**
 
 Contains a mustache manual pay template in HTML format.
@@ -3162,167 +2904,6 @@ KillBillClient::Model::Invoice.get_invoice_template(is_manual_pay,
 invoiceApi = killbill.api.InvoiceApi()
 
 invoiceApi.get_invoice_mp_template(api_key, api_secret)
-```
-
-> Example Response:
-
-```ruby
-"
-<meta charset=\"UTF-8\">
-
-<html>
-       
-   <head>
-              
-      <style type=\"text/css\"> th {align=left; width=225px; border-bottom: solid 2px black;} </style>
-          
-   </head>
-       
-   <body>
-              
-      <h1>Tenant template: {{text.invoiceTitle}}</h1>
-              
-      <table>
-                     
-         <tr>
-                            
-            <td rowspan=3 width=350px>Insert image here</td>
-                            
-            <td width=100px/>                
-            <td width=225px/>                
-            <td width=225px/>            
-         </tr>
-                     
-         <tr>
-                            
-            <td />                
-            <td align=right>{{text.invoiceDate}}</td>
-                            
-            <td>{{invoice.formattedInvoiceDate}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td />                
-            <td align=right>{{text.invoiceNumber}}</td>
-                            
-            <td>{{invoice.invoiceNumber}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyName}}</td>
-                            
-            <td></td>
-                            
-            <td align=right>{{text.accountOwnerName}}</td>
-                            
-            <td>{{account.name}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyAddress}}</td>
-                            
-            <td />                
-            <td />                
-            <td>{{account.email}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyCityProvincePostalCode}}</td>
-                            
-            <td />                
-            <td />                
-            <td>{{account.phone}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyCountry}}</td>
-                            
-            <td />                
-            <td />                
-            <td />            
-         </tr>
-                     
-         <tr>
-                            
-            <td><{{text.companyUrl}}</td>
-                            
-            <td />                
-            <td />                
-            <td />            
-         </tr>
-                 
-      </table>
-              <br />        <br />        <br />        
-      <table>
-                     
-         <tr>
-                            
-            <th>{{text.invoiceItemBundleName}}</td>                
-            <th>{{text.invoiceItemDescription}}</td>                
-            <th>{{text.invoiceItemServicePeriod}}</td>                
-            <th>{{text.invoiceItemAmount}}</td>            
-         </tr>
-                     {{#invoice.invoiceItems}}            
-         <tr>
-                            
-            <td>{{description}}</td>
-                            
-            <td>{{planName}}</td>
-                            
-            <td>{{formattedStartDate}}{{#formattedEndDate}} - {{formattedEndDate}}{{/formattedEndDate}}</td>
-                            
-            <td>{{invoice.currency}} {{amount}}</td>
-                        
-         </tr>
-                     {{/invoice.invoiceItems}}            
-         <tr>
-                            
-            <td colspan=4 />            
-         </tr>
-                     
-         <tr>
-                            
-            <td colspan=2 />                
-            <td align=right><strong>{{text.invoiceAmount}}</strong></td>
-                            
-            <td align=right><strong>{{invoice.chargedAmount}}</strong></td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td colspan=2 />                
-            <td align=right><strong>{{text.invoiceAmountPaid}}</strong></td>
-                            
-            <td align=right><strong>{{invoice.paidAmount}}</strong></td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td colspan=2 />                
-            <td align=right><strong>{{text.invoiceBalance}}</strong></td>
-                            
-            <td align=right><strong>{{invoice.balance}}</strong></td>
-                        
-         </tr>
-                 
-      </table>
-          
-   </body>
-   
-</html>
-"
 ```
 
 **Query Parameters**
@@ -3389,166 +2970,6 @@ invoiceApi.upload_invoice_template(body,
                                    api_secret)
 ```
 
-> Example Response:
-
-```ruby
-"
-<meta charset=\"UTF-8\">
-
-<html>
-       
-   <head>
-              
-      <style type=\"text/css\"> th {align=left; width=225px; border-bottom: solid 2px black;} </style>
-          
-   </head>
-       
-   <body>
-              
-      <h1>Tenant template: {{text.invoiceTitle}}</h1>
-              
-      <table>
-                     
-         <tr>
-                            
-            <td rowspan=3 width=350px>Insert image here</td>
-                            
-            <td width=100px/>                
-            <td width=225px/>                
-            <td width=225px/>            
-         </tr>
-                     
-         <tr>
-                            
-            <td />                
-            <td align=right>{{text.invoiceDate}}</td>
-                            
-            <td>{{invoice.formattedInvoiceDate}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td />                
-            <td align=right>{{text.invoiceNumber}}</td>
-                            
-            <td>{{invoice.invoiceNumber}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyName}}</td>
-                            
-            <td></td>
-                            
-            <td align=right>{{text.accountOwnerName}}</td>
-                            
-            <td>{{account.name}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyAddress}}</td>
-                            
-            <td />                
-            <td />                
-            <td>{{account.email}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyCityProvincePostalCode}}</td>
-                            
-            <td />                
-            <td />                
-            <td>{{account.phone}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyCountry}}</td>
-                            
-            <td />                
-            <td />                
-            <td />            
-         </tr>
-                     
-         <tr>
-                            
-            <td><{{text.companyUrl}}</td>
-                            
-            <td />                
-            <td />                
-            <td />            
-         </tr>
-                 
-      </table>
-              <br />        <br />        <br />        
-      <table>
-                     
-         <tr>
-                            
-            <th>{{text.invoiceItemBundleName}}</td>                
-            <th>{{text.invoiceItemDescription}}</td>                
-            <th>{{text.invoiceItemServicePeriod}}</td>                
-            <th>{{text.invoiceItemAmount}}</td>            
-         </tr>
-                     {{#invoice.invoiceItems}}            
-         <tr>
-                            
-            <td>{{description}}</td>
-                            
-            <td>{{planName}}</td>
-                            
-            <td>{{formattedStartDate}}{{#formattedEndDate}} - {{formattedEndDate}}{{/formattedEndDate}}</td>
-                            
-            <td>{{invoice.currency}} {{amount}}</td>
-                        
-         </tr>
-                     {{/invoice.invoiceItems}}            
-         <tr>
-                            
-            <td colspan=4 />            
-         </tr>
-                     
-         <tr>
-                            
-            <td colspan=2 />                
-            <td align=right><strong>{{text.invoiceAmount}}</strong></td>
-                            
-            <td align=right><strong>{{invoice.chargedAmount}}</strong></td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td colspan=2 />                
-            <td align=right><strong>{{text.invoiceAmountPaid}}</strong></td>
-                            
-            <td align=right><strong>{{invoice.paidAmount}}</strong></td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td colspan=2 />                
-            <td align=right><strong>{{text.invoiceBalance}}</strong></td>
-                            
-            <td align=right><strong>{{invoice.balance}}</strong></td>
-                        
-         </tr>
-                 
-      </table>
-          
-   </body>
-   
-</html>
-"
-```
 
 **Request Body**
 
@@ -3602,166 +3023,6 @@ invoiceApi = killbill.api.InvoiceApi()
 invoiceApi.get_invoice_template(api_key, api_secret)
 ```
 
-> Example Response:
-
-```ruby
-"
-<meta charset=\"UTF-8\">
-
-<html>
-       
-   <head>
-              
-      <style type=\"text/css\"> th {align=left; width=225px; border-bottom: solid 2px black;} </style>
-          
-   </head>
-       
-   <body>
-              
-      <h1>Tenant template: {{text.invoiceTitle}}</h1>
-              
-      <table>
-                     
-         <tr>
-                            
-            <td rowspan=3 width=350px>Insert image here</td>
-                            
-            <td width=100px/>                
-            <td width=225px/>                
-            <td width=225px/>            
-         </tr>
-                     
-         <tr>
-                            
-            <td />                
-            <td align=right>{{text.invoiceDate}}</td>
-                            
-            <td>{{invoice.formattedInvoiceDate}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td />                
-            <td align=right>{{text.invoiceNumber}}</td>
-                            
-            <td>{{invoice.invoiceNumber}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyName}}</td>
-                            
-            <td></td>
-                            
-            <td align=right>{{text.accountOwnerName}}</td>
-                            
-            <td>{{account.name}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyAddress}}</td>
-                            
-            <td />                
-            <td />                
-            <td>{{account.email}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyCityProvincePostalCode}}</td>
-                            
-            <td />                
-            <td />                
-            <td>{{account.phone}}</td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td>{{text.companyCountry}}</td>
-                            
-            <td />                
-            <td />                
-            <td />            
-         </tr>
-                     
-         <tr>
-                            
-            <td><{{text.companyUrl}}</td>
-                            
-            <td />                
-            <td />                
-            <td />            
-         </tr>
-                 
-      </table>
-              <br />        <br />        <br />        
-      <table>
-                     
-         <tr>
-                            
-            <th>{{text.invoiceItemBundleName}}</td>                
-            <th>{{text.invoiceItemDescription}}</td>                
-            <th>{{text.invoiceItemServicePeriod}}</td>                
-            <th>{{text.invoiceItemAmount}}</td>            
-         </tr>
-                     {{#invoice.invoiceItems}}            
-         <tr>
-                            
-            <td>{{description}}</td>
-                            
-            <td>{{planName}}</td>
-                            
-            <td>{{formattedStartDate}}{{#formattedEndDate}} - {{formattedEndDate}}{{/formattedEndDate}}</td>
-                            
-            <td>{{invoice.currency}} {{amount}}</td>
-                        
-         </tr>
-                     {{/invoice.invoiceItems}}            
-         <tr>
-                            
-            <td colspan=4 />            
-         </tr>
-                     
-         <tr>
-                            
-            <td colspan=2 />                
-            <td align=right><strong>{{text.invoiceAmount}}</strong></td>
-                            
-            <td align=right><strong>{{invoice.chargedAmount}}</strong></td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td colspan=2 />                
-            <td align=right><strong>{{text.invoiceAmountPaid}}</strong></td>
-                            
-            <td align=right><strong>{{invoice.paidAmount}}</strong></td>
-                        
-         </tr>
-                     
-         <tr>
-                            
-            <td colspan=2 />                
-            <td align=right><strong>{{text.invoiceBalance}}</strong></td>
-                            
-            <td align=right><strong>{{invoice.balance}}</strong></td>
-                        
-         </tr>
-                 
-      </table>
-          
-   </body>
-   
-</html>
-"
-```
 
 **Query Parameters**
 
