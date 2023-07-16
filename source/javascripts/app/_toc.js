@@ -1,8 +1,9 @@
 //= require ../lib/_jquery
 //= require ../lib/_imagesloaded.min
 ;(function () {
-'use strict';
+  'use strict';
 
+  var htmlPattern = /<[^>]*>/g;
   var loaded = false;
 
   var debounce = function(func, waitTime) {
@@ -16,7 +17,7 @@
         timeout = true;
       }
     };
-   };
+  };
 
   var closeToc = function() {
     $(".toc-wrapper").removeClass('open');
@@ -37,7 +38,7 @@
       $toc.find(tocLinkSelector).each(function() {
         var targetId = $(this).attr('href');
         if (targetId[0] === "#") {
-          headerHeights[targetId] = $(targetId).offset().top;
+          headerHeights[targetId] = $("#" + $.escapeSelector(targetId.substring(1))).offset().top;
         }
       });
     };
@@ -65,22 +66,27 @@
         loaded = true;
       }
 
-
       var $best = $toc.find("[href='" + best + "']").first();
       if (!$best.hasClass("active")) {
-           // .active is applied to the ToC link we're currently on, and its parent <ul>s selected by tocListSelector
-           // .active-expanded is applied to the ToC links that are parents of this one
-          $toc.find(".active").removeClass("active");
-          $toc.find(".active-parent").removeClass("active-parent");
-          $best.addClass("active");
-          $best.parents(tocListSelector).addClass("active").siblings(tocLinkSelector).addClass('active-parent');
-          $best.siblings(tocListSelector).addClass("active");
-          $toc.find(tocListSelector).filter(":not(.active)").slideUp(150);
-          $toc.find(tocListSelector).filter(".active").slideDown(150);
-          // TODO remove classnames
-          document.title = $best.data("title") + " – " + originalTitle;
+        // .active is applied to the ToC link we're currently on, and its parent <ul>s selected by tocListSelector
+        // .active-expanded is applied to the ToC links that are parents of this one
+        $toc.find(".active").removeClass("active");
+        $toc.find(".active-parent").removeClass("active-parent");
+        $best.addClass("active");
+        $best.parents(tocListSelector).addClass("active").siblings(tocLinkSelector).addClass('active-parent');
+        $best.siblings(tocListSelector).addClass("active");
+        $toc.find(tocListSelector).filter(":not(.active)").slideUp(150);
+        $toc.find(tocListSelector).filter(".active").slideDown(150);
+        if (window.history.replaceState) {
+          window.history.replaceState(null, "", best);
+        }
+        var thisTitle = $best.data("title");
+        if (thisTitle !== undefined && thisTitle.length > 0) {
+          document.title = thisTitle.replace(htmlPattern, "") + " – " + originalTitle;
+        } else {
+          document.title = originalTitle;
+        }
       }
-
     };
 
     var makeToc = function() {
@@ -88,8 +94,8 @@
       refreshToc();
 
       $("#nav-button").click(function() {
-        $(".toc-wrapper").addClass('open');
-        $("#nav-button").addClass('open');
+        $(".toc-wrapper").toggleClass('open');
+        $("#nav-button").toggleClass('open');
         return false;
       });
       $(".page-wrapper").click(closeToc);
@@ -113,8 +119,4 @@
   }
 
   window.loadToc = loadToc;
-
- 
-  var $window = $(window);  
-
 })();
