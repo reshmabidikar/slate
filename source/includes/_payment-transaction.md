@@ -274,11 +274,6 @@ TODO
 ```python
 TODO
 ```
-> Example Response:
-
-```json
-no content
-```
 
 **Request Body**
 
