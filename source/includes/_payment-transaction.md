@@ -479,12 +479,6 @@ paymentTransactionApi.create_transaction_custom_fields(payment_transaction_id,
                                                        api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Request Body**
 
 A JSON string representing the custom field object or objects to be added. For example:
@@ -624,11 +618,6 @@ paymentTransactionApi.modify_transaction_custom_fields(payment_transaction_id,
                                                        api_key,
                                                        api_secret)
 ```
-> Example Response:
-
-```json
-no content
-```
 
 **Requst Body**
 
@@ -694,12 +683,6 @@ paymentTransactionApi.delete_transaction_custom_fields(payment_transaction_id,
                                                        created_by,
                                                        api_key,
                                                        api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
@@ -771,12 +754,6 @@ paymentTransactionApi.create_transaction_tags(payment_transaction_id,
                                               created_by,
                                               api_key,
                                               api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Request Body**
@@ -913,12 +890,6 @@ paymentTransactionApi.delete_transaction_tags(payment_transaction_id,
                                               api_key,
                                               api_secret,
                                               tag_def=tag)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**

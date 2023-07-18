@@ -259,12 +259,6 @@ paymentMethodApi.delete_payment_method(payment_method_id,
                                        api_secret)
 ```
 
-> Example Response:
-
-```json
-no content  
-```
-
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -552,21 +546,6 @@ paymentMethodApi.create_payment_method_custom_fields(payment_method_id,
                                                      api_secret)
 ```
 
-> Example Response:
-
-```json
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"PAYMENT_METHOD",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
-```
-
 **Request Body**
 
 A list of objects giving the name and value of the custom field, or fields, to be added. For example:
@@ -730,12 +709,6 @@ paymentMethodApi.modify_payment_method_custom_fields(payment_method_id,
                                                      api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Request Body**
 
 A list of objects specifying the id and the new value for the custom fields to be modified. For example:
@@ -802,11 +775,6 @@ paymentMethodApi.delete_payment_method_custom_fields(payment_method_id,
                                                      created_by,
                                                      api_key, 
                                                      api_secret)
-```
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
