@@ -141,12 +141,6 @@ result.create(user, nil, nil, options)
 TODO
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Request Body**
 
 A SubscriptionUsageRecord.
