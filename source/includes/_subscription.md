@@ -244,81 +244,6 @@ subscriptionApi.create_subscription(body,
                                     api_secret)
 ```
 
-> Example Response:
-
-```json
-{
-   "accountId":"e1826665-4524-4d57-81b5-a5eb11146f3f",
-   "bundleId":"f3dea847-1567-467a-8373-838dfdcf6afc",
-   "subscriptionId":"ee508b5b-46b8-42a7-8988-16c0470de4ae",
-   "externalKey":"f3dea847-1567-467a-8373-838dfdcf6afc",
-   "bundleExternalKey":"addea847-1467-167a-1373-988dfdcf7acc",
-   "startDate":"2013-08-01",
-   "productName":"Basic",
-   "productCategory":"BASE",
-   "billingPeriod":"MONTHLY",
-   "phaseType":"EVERGREEN",
-   "priceList":"DEFAULT",
-   "planName":"basic-monthly-in-advance",
-   "state":"ACTIVE",
-   "sourceType":"NATIVE",
-   "chargedThroughDate":"2013-09-01",
-   "billingStartDate":"2013-08-01",
-   "billCycleDayLocal":1,
-   "events":[
-      {
-         "eventId":"341fc529-612b-4bb9-b8d7-ee4a9115f577",
-         "billingPeriod":"MONTHLY",
-         "effectiveDate":"2013-08-01",
-         "plan":"basic-monthly-in-advance",
-         "product":"Basic",
-         "priceList":"DEFAULT",
-         "eventType":"START_ENTITLEMENT",
-         "isBlockedBilling":false,
-         "isBlockedEntitlement":false,
-         "serviceName":"entitlement-service",
-         "serviceStateName":"ENT_STARTED",
-         "phase":"basic-monthly-in-advance-evergreen",
-         "auditLogs":[]
-      },
-      {
-         "eventId":"caa54161-c001-44a0-9ff0-80be59989380",
-         "billingPeriod":"MONTHLY",
-         "effectiveDate":"2013-08-01",
-         "plan":"basic-monthly-in-advance",
-         "product":"Basic",
-         "priceList":"DEFAULT",
-         "eventType":"START_BILLING",
-         "isBlockedBilling":false,
-         "isBlockedEntitlement":false,
-         "serviceName":"billing-service",
-         "serviceStateName":"START_BILLING",
-         "phase":"basic-monthly-in-advance-evergreen",
-         "auditLogs":[]
-      }
-   ],
-   "prices":[
-      {
-         "planName":"basic-monthly-in-advance",
-         "phaseName":"basic-monthly-in-advance-trial",
-         "phaseType":"TRIAL",
-         "fixedPrice":0,
-         "recurringPrice":null,
-         "usagePrices":[]
-      },
-      {
-         "planName":"basic-monthly-in-advance",
-         "phaseName":"basic-monthly-in-advance-evergreen",
-         "phaseType":"EVERGREEN",
-         "fixedPrice":null,
-         "recurringPrice":500.0,
-         "usagePrices":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
-
 **Request Body**
 
 A subscription resource object specifying `accountId` and either the `planName` or a combination of `productName`, `productCategory`,`billingPeriod` and `priceList`. 
@@ -517,12 +442,6 @@ subscriptionApi.create_subscription_with_add_ons(body,
                                                  created_by,
                                                  api_key,
                                                  api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Request Body**
@@ -764,12 +683,6 @@ subscriptionApi.create_subscriptions_with_add_ons([body],
                                                   created_by,
                                                   api_key,
                                                   api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Request Body**
@@ -1149,12 +1062,6 @@ subscriptionApi.update_subscription_bcd(subscription_id,
                                         api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Request Body**
 
 The new BCD needs to be specified in the request body via the `billCycleDayLocal` field.
@@ -1219,12 +1126,6 @@ TODO
 
 ```python
 TODO
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Request Body**
@@ -1339,111 +1240,6 @@ subscriptionApi.change_subscription_plan(subscription_id,
                                          api_secret)
 ```
 
-> Example Response:
-
-```json
-{
-   "accountId":"986c5d4e-b322-4d71-ad24-e3bf6e38734a",
-   "bundleId":"b0b9da5f-6844-417b-ac97-d7e8df07c26a",
-   "subscriptionId":"97278000-72fd-45d7-9b67-e44690bdb074",
-   "externalKey":"986c5d4e-b322-4d71-ad24-e3bf6e38734a-452347",
-   "bundleExternalKey":"765c5d4e-b322-4d71-6544-e3bf6e38734a-cd2347",
-   "startDate":"2013-08-01",
-   "productName":"Super",
-   "productCategory":"BASE",
-   "billingPeriod":"MONTHLY",
-   "phaseType":"TRIAL",
-   "priceList":"DEFAULT",
-   "planName":"super-monthly",
-   "state":"ACTIVE",
-   "sourceType":"NATIVE",
-   "chargedThroughDate":"2013-08-01",
-   "billingStartDate":"2013-08-01",
-   "billCycleDayLocal":31,
-   "events":[
-      {
-         "eventId":"b2c4195a-0888-44e4-91a7-537b20b08bd8",
-         "billingPeriod":"MONTHLY",
-         "effectiveDate":"2013-08-01",
-         "plan":"sports-monthly",
-         "product":"Sports",
-         "priceList":"DEFAULT",
-         "eventType":"START_ENTITLEMENT",
-         "isBlockedBilling":false,
-         "isBlockedEntitlement":false,
-         "serviceName":"entitlement-service",
-         "serviceStateName":"ENT_STARTED",
-         "phase":"sports-monthly-trial",
-         "auditLogs":[]
-      },
-      {
-         "eventId":"0c15d9ba-f0f3-40e6-83d7-2d84af703d06",
-         "billingPeriod":"MONTHLY",
-         "effectiveDate":"2013-08-01",
-         "plan":"sports-monthly",
-         "product":"Sports",
-         "priceList":"DEFAULT",
-         "eventType":"START_BILLING",
-         "isBlockedBilling":false,
-         "isBlockedEntitlement":false,
-         "serviceName":"billing-service",
-         "serviceStateName":"START_BILLING",
-         "phase":"sports-monthly-trial",
-         "auditLogs":[]
-      },
-      {
-         "eventId":"b675c39f-eeef-4cc1-8ffc-e50f51e8a84a",
-         "billingPeriod":"MONTHLY",
-         "effectiveDate":"2013-08-02",
-         "plan":"super-monthly",
-         "product":"Super",
-         "priceList":"DEFAULT",
-         "eventType":"CHANGE",
-         "isBlockedBilling":false,
-         "isBlockedEntitlement":false,
-         "serviceName":"entitlement+billing-service",
-         "serviceStateName":"CHANGE",
-         "phase":"super-monthly-trial",
-         "auditLogs":[]
-      },
-      {
-         "eventId":"e411fe3e-6d38-4256-bd96-867f3a50c634",
-         "billingPeriod":"MONTHLY",
-         "effectiveDate":"2013-08-31",
-         "plan":"super-monthly",
-         "product":"Super",
-         "priceList":"DEFAULT",
-         "eventType":"PHASE",
-         "isBlockedBilling":false,
-         "isBlockedEntitlement":false,
-         "serviceName":"entitlement+billing-service",
-         "serviceStateName":"PHASE",
-         "phase":"super-monthly-evergreen",
-         "auditLogs":[]
-      }
-   ],
-   "prices":[
-      {
-         "planName":"sports-monthly",
-         "phaseName":"sports-monthly-trial",
-         "phaseType":"TRIAL",
-         "fixedPrice":0,
-         "recurringPrice":null,
-         "usagePrices":[]
-      },
-      {
-         "planName":"sports-monthly",
-         "phaseName":"sports-monthly-evergreen",
-         "phaseType":"EVERGREEN",
-         "fixedPrice":null,
-         "recurringPrice":500.0,
-         "usagePrices":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
-
 **Request Body**
 
 A subscription resource object specifying either the `planName` or a combination of `productName`, `billingPeriod` and `priceList`. 
@@ -1515,12 +1311,6 @@ subscriptionApi.undo_change_subscription_plan(subscription_id,
                                               created_by,
                                               api_key,
                                               api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
@@ -1595,12 +1385,6 @@ subscriptionApi.cancel_subscription_plan(subscription_id,
                                          created_by,
                                          api_key,
                                          api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
@@ -1694,12 +1478,6 @@ subscriptionApi.uncancel_subscription_plan(subscription_id,
                                            created_by,
                                            api_key,
                                            api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
@@ -1802,12 +1580,6 @@ subscriptionApi.add_subscription_blocking_state(subscription_id,
                                                 created_by,
                                                 api_key,
                                                 api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Request Body**
@@ -1914,22 +1686,6 @@ subscriptionApi.create_subscription_custom_fields(subscription_id,
                                                   api_key,
                                                   api_secret)
 ```
-
-> Example Response:
-
-```json
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"SUBSCRIPTION",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
-```
-
 
 **Request Body**
 
@@ -2093,12 +1849,6 @@ subscriptionApi.modify_subscription_custom_fields(subscription_id,
                                                   api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Request Body**
 
 A list of objects specifying the id and the new value for the custom fields to be modified. For example:
@@ -2168,13 +1918,6 @@ subscriptionApi.delete_subscription_custom_fields(subscription_id,
                                                   api_key,
                                                   api_secret)
 ```
-
-> Example Response:
-
-```json
-no content
-```
-
 
 **Query Parameters**
 
@@ -2250,21 +1993,6 @@ subscriptionApi.create_subscription_tags(subscription_id,
                                          api_key,
                                          api_secret)
 ```
-> Example Response:
-
-```json
-[
-   {
-      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
-      "objectType":"SUBSCRIPTION",
-      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"353752dd-9041-4450-b782-a8bb03a923c8",
-      "tagDefinitionName":"foo",
-      "auditLogs":[]
-   }
-]
-```
-
 
 **Request Body**
 
@@ -2335,14 +2063,14 @@ subscriptionApi.get_subscription_tags(subscription_id,
 
 ```json
 [
-    {
-        "tagId":"d0513754-56a9-4694-abb1-3ac46c72e861",
-        "objectType":"SUBSCRIPTION",
-        "objectId":"77e23878-8b9d-403b-bf31-93003e125712",
-        "tagDefinitionId":"353752dd-9041-4450-b782-a8bb03a923c8",
-        "tagDefinitionName":"foo",
-        "auditLogs":[]
-    }
+  {
+    "tagId":"d0513754-56a9-4694-abb1-3ac46c72e861",
+    "objectType":"SUBSCRIPTION",
+    "objectId":"77e23878-8b9d-403b-bf31-93003e125712",
+    "tagDefinitionId":"353752dd-9041-4450-b782-a8bb03a923c8",
+    "tagDefinitionName":"foo",
+    "auditLogs":[]
+  }
 ]
 ```
 
@@ -2414,13 +2142,6 @@ subscriptionApi.delete_subscription_tags(subscription_id,
                                          api_secret,
                                          tag_def=tag)
 ```
-
-> Example Response:
-
-```json
-no content
-```
-
 
 **Query Parameters**
 

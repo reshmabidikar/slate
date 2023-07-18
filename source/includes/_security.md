@@ -104,12 +104,6 @@ curl -v \
 ```python
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Query Parameters**
 
 None.
@@ -150,12 +144,6 @@ curl -v \
 ```
 
 ```python
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
