@@ -32,7 +32,7 @@ The `InvoicePayment` resource represents a payment associated with a given invoi
 
 * **creditedAmount**: this credit represents the actual money sent back by the merchant to the user, which is extremely rare. It is unrelated to the associated invoice or account credits.
 
-* **paymentTransactions **: List of transactions for this Payment. The attributes for a `PaymentTransaction` are described [here](#payment-transaction-payments-transactions).
+* **paymentTransactions**: List of transactions for this Payment. The attributes for a `PaymentTransaction` are described [here](https://killbill.github.io/slate/?shell#payment-transaction-payment-transaction-resource).
 
 * **paymentAttempts**: Only applicable when the system is configured to retry failed attempts.
 
@@ -137,10 +137,7 @@ invoicePaymentApi.get_invoice_payment(payment_id, api_key, api_secret)
 
 > Example Response:
 
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-<
+```json
 {
   "targetInvoiceId": "4be34fe4-5845-4a35-afd8-632ad04cccf9",
   "accountId": "8b66b9f9-bfb4-463a-86c7-e267128a294a",
@@ -178,131 +175,6 @@ invoicePaymentApi.get_invoice_payment(payment_id, api_key, api_secret)
   "paymentAttempts": null,
   "auditLogs": []
 }
-```
-
-```java
-class InvoicePayment {
-    org.killbill.billing.client.model.gen.InvoicePayment@47ec807
-    targetInvoiceId: 8ff7ded6-e524-4f38-94f7-d9aacef8b88b
-    accountId: ed1029e6-dcc0-4b1e-ae94-e00fb14efd41
-    paymentId: 80f5bfca-e142-4320-b8f2-ae4530ca7172
-    paymentNumber: 1
-    paymentExternalKey: 80f5bfca-e142-4320-b8f2-ae4530ca7172
-    authAmount: 0
-    capturedAmount: 0
-    purchasedAmount: 249.95
-    refundedAmount: 249.95
-    creditedAmount: 0
-    currency: USD
-    paymentMethodId: 083cc55b-65e9-484c-9c33-0d6956540a0e
-    transactions: [class PaymentTransaction {
-        org.killbill.billing.client.model.gen.PaymentTransaction@a0308e7f
-        transactionId: b9a795f0-c9d0-4e89-a0b2-783d8844bb44
-        transactionExternalKey: b9a795f0-c9d0-4e89-a0b2-783d8844bb44
-        paymentId: 80f5bfca-e142-4320-b8f2-ae4530ca7172
-        paymentExternalKey: 80f5bfca-e142-4320-b8f2-ae4530ca7172
-        transactionType: PURCHASE
-        amount: 249.95
-        currency: USD
-        effectiveDate: 2012-05-27T00:03:46.000Z
-        processedAmount: 249.95
-        processedCurrency: USD
-        status: SUCCESS
-        gatewayErrorCode: 
-        gatewayErrorMsg: 
-        firstPaymentReferenceId: null
-        secondPaymentReferenceId: null
-        properties: null
-        auditLogs: []
-    }, class PaymentTransaction {
-        org.killbill.billing.client.model.gen.PaymentTransaction@c4c601f0
-        transactionId: 5c59f93d-7f6d-406b-b499-7a1547c00c9f
-        transactionExternalKey: f4e8c3dc-9e97-4000-b82c-1f0dcd1cf84e
-        paymentId: 80f5bfca-e142-4320-b8f2-ae4530ca7172
-        paymentExternalKey: 80f5bfca-e142-4320-b8f2-ae4530ca7172
-        transactionType: REFUND
-        amount: 249.95
-        currency: USD
-        effectiveDate: 2012-05-27T00:03:47.000Z
-        processedAmount: 249.95
-        processedCurrency: USD
-        status: SUCCESS
-        gatewayErrorCode: 
-        gatewayErrorMsg: 
-        firstPaymentReferenceId: null
-        secondPaymentReferenceId: null
-        properties: null
-        auditLogs: []
-    }]
-    paymentAttempts: null
-    auditLogs: []
-}
-```
-```ruby
-{
-   "targetInvoiceId":"375f1ade-b4eb-4344-bb64-e44fe7a5dea1",
-   "accountId":"db0d9182-c7cf-4bb7-aa3e-73a9f7105606",
-   "paymentId":"28aef37a-7655-4351-985a-02b961ae4ac7",
-   "paymentNumber":"595",
-   "paymentExternalKey":"28aef37a-7655-4351-985a-02b961ae4ac7",
-   "authAmount":0,
-   "capturedAmount":0,
-   "purchasedAmount":50.0,
-   "refundedAmount":0,
-   "creditedAmount":0,
-   "currency":"USD",
-   "paymentMethodId":"0e47ceb2-8cfc-4005-86ac-5fe88ecce8ce",
-   "transactions":[
-      {
-         "transactionId":"37c0189d-737c-435c-bfbd-944aabe27d1b",
-         "transactionExternalKey":"37c0189d-737c-435c-bfbd-944aabe27d1b",
-         "paymentId":"28aef37a-7655-4351-985a-02b961ae4ac7",
-         "paymentExternalKey":"28aef37a-7655-4351-985a-02b961ae4ac7",
-         "transactionType":"PURCHASE",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:02.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
-```python
-{'account_id': '8a758318-25fb-46e1-a385-a8f8354ec903',
- 'audit_logs': [],
- 'auth_amount': 0.0,
- 'captured_amount': 0.0,
- 'credited_amount': 0.0,
- 'currency': 'USD',
- 'payment_attempts': None,
- 'payment_external_key': '5e9d8b82-2664-4a36-85a1-37471a0b618a',
- 'payment_id': '5e9d8b82-2664-4a36-85a1-37471a0b618a',
- 'payment_method_id': 'eb737a51-d230-46fe-ad95-8ddf0b8effe3',
- 'payment_number': '337',
- 'purchased_amount': 50.0,
- 'refunded_amount': 0.0,
- 'target_invoice_id': '8291871e-b16e-45e6-a971-577d44727327',
- 'transactions': [{'amount': 50.0,
-                   'audit_logs': [],
-                   'currency': 'USD',
-                   'effective_date': datetime.datetime(2018, 5, 9, 14, 27, 9, tzinfo=tzutc()),
-                   'first_payment_reference_id': None,
-                   'gateway_error_code': None,
-                   'gateway_error_msg': None,
-                   'payment_external_key': '5e9d8b82-2664-4a36-85a1-37471a0b618a',
-                   'payment_id': '5e9d8b82-2664-4a36-85a1-37471a0b618a',
-                   'processed_amount': 50.0,
-                   'processed_currency': 'USD',
-                   'properties': None,
-                   'second_payment_reference_id': None,
-                   'status': 'SUCCESS',
-                   'transaction_external_key': '70a36a47-878e-4fd8-8401-1ab2f4403d41',
-                   'transaction_id': '70a36a47-878e-4fd8-8401-1ab2f4403d41',
-                   'transaction_type': 'PURCHASE'}]}
 ```
 
 **Query Parameters**
@@ -386,124 +258,7 @@ invoicePaymentApi.create_refund_with_adjustments(payment_id,
                                                  api_key,
                                                  api_secret)
 ```
-> Example Response:
 
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-class InvoicePayment {
-    org.killbill.billing.client.model.gen.InvoicePayment@916e89e1
-    targetInvoiceId: 5de44543-2cd9-4781-b6a3-12c47a9244ed
-    accountId: 9b535e8a-dbfe-479a-8936-75c8b5e9cf45
-    paymentId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-    paymentNumber: 1
-    paymentExternalKey: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-    authAmount: 0
-    capturedAmount: 0
-    purchasedAmount: 249.95
-    refundedAmount: 1
-    creditedAmount: 0
-    currency: USD
-    paymentMethodId: 28a3ed1a-7a58-4ac2-b864-2ca723abb864
-    transactions: [class PaymentTransaction {
-        org.killbill.billing.client.model.gen.PaymentTransaction@ab430f5e
-        transactionId: 6727a8db-ec00-4d85-89f2-cda778b21ddf
-        transactionExternalKey: 6727a8db-ec00-4d85-89f2-cda778b21ddf
-        paymentId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-        paymentExternalKey: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-        transactionType: PURCHASE
-        amount: 249.95
-        currency: USD
-        effectiveDate: 2012-09-26T00:00:05.000Z
-        processedAmount: 249.95
-        processedCurrency: USD
-        status: SUCCESS
-        gatewayErrorCode: 
-        gatewayErrorMsg: 
-        firstPaymentReferenceId: null
-        secondPaymentReferenceId: null
-        properties: null
-        auditLogs: []
-    }, class PaymentTransaction {
-        org.killbill.billing.client.model.gen.PaymentTransaction@d404a66c
-        transactionId: a29e0204-a4db-400f-9f5f-3de1e57169d8
-        transactionExternalKey: b4903f2e-ea23-4c95-a2c8-a3d81b7dfd60
-        paymentId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-        paymentExternalKey: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-        transactionType: REFUND
-        amount: 1
-        currency: USD
-        effectiveDate: 2012-09-26T00:00:10.000Z
-        processedAmount: 1
-        processedCurrency: USD
-        status: SUCCESS
-        gatewayErrorCode: 
-        gatewayErrorMsg: 
-        firstPaymentReferenceId: null
-        secondPaymentReferenceId: null
-        properties: null
-        auditLogs: []
-    }]
-    paymentAttempts: null
-    auditLogs: []
-}
-```
-```ruby
-{
-   "targetInvoiceId":"045900ff-5b2a-4709-b7bd-d70501998dd5",
-   "accountId":"dc7d2b03-d989-4cfa-96db-f02b6475950e",
-   "paymentId":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
-   "paymentNumber":"347",
-   "paymentExternalKey":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
-   "authAmount":0,
-   "capturedAmount":0,
-   "purchasedAmount":50.0,
-   "refundedAmount":20.0,
-   "creditedAmount":0,
-   "currency":"USD",
-   "paymentMethodId":"4103cf10-08b4-4685-b3c2-1c2c88b0f32f",
-   "transactions":[
-      {
-         "transactionId":"1cd767ed-b3c1-4369-a447-09308f3bebf4",
-         "transactionExternalKey":"1cd767ed-b3c1-4369-a447-09308f3bebf4",
-         "paymentId":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
-         "paymentExternalKey":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
-         "transactionType":"PURCHASE",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:02.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"69f72535-dd5d-4784-b0a6-05d6f64359cf",
-         "transactionExternalKey":"d7118799-0268-45c9-a0e0-455fa2731a8b",
-         "paymentId":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
-         "paymentExternalKey":"8d85a8e8-c94b-438f-aac1-e8cb436b2c05",
-         "transactionType":"REFUND",
-         "amount":20.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:03.000Z",
-         "processedAmount":20.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
-```python
-no content
-```
 **Request Body**
 
 An `InvoicePaymentTransaction` object, including at least the **amount** attribute and the **isAdjusted** attribute. If **isAdjusted** is true, then the object must also include the attribute **adjustments** which is a list of `InvoiceItem` objects giving the **invoiceItemId**, the **invoiceId**, and the adjusted **amount** for each of the adjustments to be made.
@@ -587,106 +342,6 @@ invoicePaymentApi.create_chargeback(payment_id,
                                     api_secret)
 ```
 
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-class InvoicePayment {
-    org.killbill.billing.client.model.gen.InvoicePayment@e920eb58
-    targetInvoiceId: 84ae9d9a-badf-45c2-b53b-7b8a077e42ea
-    accountId: 4dd59373-be7a-409e-beaa-a17e8b234591
-    paymentId: 96930ff3-82e1-4556-888a-0cb07ec120d6
-    paymentNumber: 1
-    paymentExternalKey: 96930ff3-82e1-4556-888a-0cb07ec120d6
-    authAmount: 0
-    capturedAmount: 0
-    purchasedAmount: 0.00
-    refundedAmount: 0
-    creditedAmount: 0
-    currency: USD
-    paymentMethodId: a9408abd-d505-4462-afe6-0d29a202d8b3
-    transactions: [class PaymentTransaction {
-        org.killbill.billing.client.model.gen.PaymentTransaction@e72668f3
-        transactionId: 583ba30d-c6f4-4600-934e-73ef9782e444
-        transactionExternalKey: 583ba30d-c6f4-4600-934e-73ef9782e444
-        paymentId: 96930ff3-82e1-4556-888a-0cb07ec120d6
-        paymentExternalKey: 96930ff3-82e1-4556-888a-0cb07ec120d6
-        transactionType: PURCHASE
-        amount: 249.95
-        currency: USD
-        effectiveDate: 2012-09-26T00:00:08.000Z
-        processedAmount: 249.95
-        processedCurrency: USD
-        status: SUCCESS
-        gatewayErrorCode: 
-        gatewayErrorMsg: 
-        firstPaymentReferenceId: null
-        secondPaymentReferenceId: null
-        properties: null
-        auditLogs: []
-    }]
-    paymentAttempts: null
-    auditLogs: []
-}
-```
-```ruby
-{
-   "targetInvoiceId":"dd185d1c-a4c5-4420-b06a-df42af446975",
-   "accountId":"bb43a670-c644-4121-a981-ba5f5dac3b94",
-   "paymentId":"2276b3c9-4e51-41b2-b5bf-9ddc11582ee4",
-   "paymentNumber":"339",
-   "paymentExternalKey":"2276b3c9-4e51-41b2-b5bf-9ddc11582ee4",
-   "authAmount":0,
-   "capturedAmount":0,
-   "purchasedAmount":0.0,
-   "refundedAmount":0,
-   "creditedAmount":0,
-   "currency":"USD",
-   "paymentMethodId":"a9e97ad3-ef17-4475-8464-25d09e3b5290",
-   "transactions":[
-      {
-         "transactionId":"49eff7ec-2982-428a-b4f0-ed99dcbfbb82",
-         "transactionExternalKey":"49eff7ec-2982-428a-b4f0-ed99dcbfbb82",
-         "paymentId":"2276b3c9-4e51-41b2-b5bf-9ddc11582ee4",
-         "paymentExternalKey":"2276b3c9-4e51-41b2-b5bf-9ddc11582ee4",
-         "transactionType":"PURCHASE",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:02.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"16d55de4-5dd8-4306-87c3-d05db796d90f",
-         "transactionExternalKey":"d18943b1-96b7-49fd-9f11-78d55f361b18",
-         "paymentId":"2276b3c9-4e51-41b2-b5bf-9ddc11582ee4",
-         "paymentExternalKey":"2276b3c9-4e51-41b2-b5bf-9ddc11582ee4",
-         "transactionType":"CHARGEBACK",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:03.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
-```python
-no content
-```
-
 **Request Body**
 
 An `InvoicePaymentTransaction` object, including at least the **amount** attribute and the **isAdjusted** attribute. If **isAdjusted** is true, then the object must also include the attribute **adjustments** which is a list of `InvoiceItem` objects giving the **invoiceItemId**, the **invoiceId**, and the adjusted **amount** for each of the adjustments to be made.
@@ -758,78 +413,6 @@ invoicePaymentApi.create_chargeback_reversal(payment_id,
                                              created_by, 
                                              api_key, 
                                              api_secret)
-```
-
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```ruby
-{
-   "targetInvoiceId":"dee84f4e-5781-442c-845e-423a6bcb6b2b",
-   "accountId":"93182158-c000-4c8d-893e-1e758e975a2a",
-   "paymentId":"7a5d4997-5d44-4a82-8371-a410ea5615f4",
-   "paymentNumber":"338",
-   "paymentExternalKey":"7a5d4997-5d44-4a82-8371-a410ea5615f4",
-   "authAmount":0,
-   "capturedAmount":0,
-   "purchasedAmount":50.0,
-   "refundedAmount":0,
-   "creditedAmount":0,
-   "currency":"USD",
-   "paymentMethodId":"5d32f8f4-24b1-4519-85e4-356b5c087f76",
-   "transactions":[
-      {
-         "transactionId":"ef824f7f-30f6-4b08-82d4-5add7e7a773f",
-         "transactionExternalKey":"ef824f7f-30f6-4b08-82d4-5add7e7a773f",
-         "paymentId":"7a5d4997-5d44-4a82-8371-a410ea5615f4",
-         "paymentExternalKey":"7a5d4997-5d44-4a82-8371-a410ea5615f4",
-         "transactionType":"PURCHASE",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:02.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"90fef451-10d6-4ebd-a126-43c3ab4315c2",
-         "transactionExternalKey":"99c45d07-abe4-4bc7-a207-0524548c1b08",
-         "paymentId":"7a5d4997-5d44-4a82-8371-a410ea5615f4",
-         "paymentExternalKey":"7a5d4997-5d44-4a82-8371-a410ea5615f4",
-         "transactionType":"CHARGEBACK",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:04.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"a1c3648c-f3c0-4c0f-9eb0-e56c7ab9c798",
-         "transactionExternalKey":"99c45d07-abe4-4bc7-a207-0524548c1b08",
-         "paymentId":"7a5d4997-5d44-4a82-8371-a410ea5615f4",
-         "paymentExternalKey":"7a5d4997-5d44-4a82-8371-a410ea5615f4",
-         "transactionType":"CHARGEBACK",
-         "effectiveDate":"2013-08-01T06:00:05.000Z",
-         "processedAmount":0.0,
-         "status":"PAYMENT_FAILURE",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
-```python
-no content
 ```
 
 **Request Body**
@@ -906,25 +489,6 @@ invoicePaymentApi.complete_invoice_payment_transaction(payment_id,
                                                        api_secret)
 ```
 
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
 **Query Parameters**
 
 None.
@@ -932,7 +496,6 @@ None.
 **Response**
 
 If successful, returns a status code of 204 and an empty body.
-
 
 
 ## Custom Fields
@@ -1008,43 +571,6 @@ invoicePaymentApi.create_invoice_payment_custom_fields(payment_id,
                                                        api_secret)
 
 ```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://127.0.0.1:8080/1.0/kb/invoicePayments/2495e35e-2b96-434c-8877-62dbbf20f7e9/customFields
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-//First element of the list
-class CustomField {
-    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
-    customFieldId: null
-    objectId: 59860a0d-c032-456d-a35e-3a48fe8579e5
-    objectType: INVOICE_PAYMENT
-    name: Test Custom Field
-    value: test_value
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"INVOICE_PAYMENT",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
-```
-```python
-no content
-```
 
 **Request Body**
 
@@ -1105,10 +631,7 @@ invoicePaymentApi.get_invoice_payment_custom_fields(payment_id, api_key, api_sec
 
 > Example Response:
 
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-<
+```json
 [
   {
     "customFieldId": "3fbf75aa-6f22-4a02-974b-55eeded2cf6b",
@@ -1119,39 +642,6 @@ invoicePaymentApi.get_invoice_payment_custom_fields(payment_id, api_key, api_sec
     "auditLogs": []
   }
 ]
-```
-
-```java
-//First element of the list
-class CustomField {
-    org.killbill.billing.client.model.gen.CustomField@c7d0c38a
-    customFieldId: null
-    objectId: 59860a0d-c032-456d-a35e-3a48fe8579e5
-    objectType: INVOICE_PAYMENT
-    name: Test Custom Field
-    value: test_value
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-      "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-      "objectType":"INVOICE_PAYMENT",
-      "name":"Test Custom Field",
-      "value":"test_value",
-      "auditLogs":[]
-   }
-]
-```
-```python
-[{'audit_logs': [],
- 'custom_field_id': '9913e0f6-b5ef-498b-ac47-60e1626eba8f',
- 'name': 'Test Custom Field',
- 'object_id': 'f33e0adc-78df-438a-b920-aaacd7f8597a',
- 'object_type': 'PAYMENT',
- 'value': 'test_value'}]
 ```
 
 **Query Parameters**
@@ -1233,26 +723,6 @@ invoicePaymentApi.modify_invoice_payment_custom_fields(payment_id,
                                                        api_secret)
 ```
 
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
-
-
 **Requst Body**
 
 A JSON string representing a list of custom fields to substitute for the existing ones.
@@ -1319,24 +789,6 @@ invoicePaymentApi.delete_invoice_payment_custom_fields(payment_id,
                                                        api_key,
                                                        api_secret,
                                                        custom_field=custom_field)
-```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
 ```
 
 **Query Parameters**
@@ -1415,44 +867,6 @@ invoicePaymentApi.create_invoice_payment_tags(payment_id,
                                               api_secret)
 ```
 
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 201 Created
-< Location: http://127.0.0.1:8080/1.0/kb/invoicePayments/cc7fcd4d-e701-4679-9741-41289103db83/tags
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-//First element of the list
-class Tag {
-    org.killbill.billing.client.model.gen.Tag@bd138472
-    tagId: 1bb4b638-3886-4f73-90a5-89eb6d1bcf7f
-    objectType: INVOICE_PAYMENT
-    objectId: 45d6f4c5-21be-49b1-99c5-7b0c3c985bf0
-    tagDefinitionId: 353752dd-9041-4450-b782-a8bb03a923c8
-    tagDefinitionName: foo
-    auditLogs: []
-}
-```
-```ruby
-[
-   {
-      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
-      "objectType":"INVOICE_PAYMENT",
-      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"353752dd-9041-4450-b782-a8bb03a923c8",
-      "tagDefinitionName":"foo",
-      "auditLogs":[]
-   }
-]
-```
-```python
-no content
-```
-
 **Request Body**
 
 Provides a list of tag definition Ids in JSON format
@@ -1516,10 +930,7 @@ invoicePaymentApi.get_invoice_payment_tags(payment_id, api_key, api_secret)
 
 > Example Response:
 
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-<
+```json
 [
   {
     "tagId": "e7f68cab-3b9a-4150-909a-5f1c17f1fb2b",
@@ -1530,49 +941,6 @@ invoicePaymentApi.get_invoice_payment_tags(payment_id, api_key, api_secret)
     "auditLogs": []
   }
 ]
-```
-
-```java
-//First element of the list
-class Tag {
-    org.killbill.billing.client.model.gen.Tag@cae768d7
-    tagId: d724f79d-fad1-4758-b35e-d62708450d90
-    objectType: INVOICE_PAYMENT
-    objectId: e659f0f3-745c-46d5-953c-28fe9282fc7d
-    tagDefinitionId: 353752dd-9041-4450-b782-a8bb03a923c8
-    tagDefinitionName: foo
-    auditLogs: [class AuditLog {
-        changeType: INSERT
-        changeDate: 2012-08-25T00:00:02.000Z
-        objectType: TAG
-        objectId: d724f79d-fad1-4758-b35e-d62708450d90
-        changedBy: Toto
-        reasonCode: i am god
-        comments: no comment
-        userToken: e36f7ba5-fb5b-41c0-b47c-77c48ab37dd9
-        history: null
-    }]
-}
-```
-```ruby
-[
-   {
-      "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
-      "objectType":"INVOICE_PAYMENT",
-      "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-      "tagDefinitionId":"353752dd-9041-4450-b782-a8bb03a923c8",
-      "tagDefinitionName":"foo",
-      "auditLogs":[]
-   }
-]
-```
-```python
-[{'audit_logs': [],
- 'object_id': '2a1ffd2c-0de1-4f5c-b2a9-27d8deebe596',
- 'object_type': 'PAYMENT',
- 'tag_definition_id': '353752dd-9041-4450-b782-a8bb03a923c8',
- 'tag_definition_name': 'foo',
- 'tag_id': '864ee6aa-1439-4037-8f65-aa114739f09f'}]
 ```
 
 **Query Parameters**
@@ -1642,24 +1010,6 @@ invoicePaymentApi.delete_invoice_payment_tags(payment_id,
                                               api_secret, 
                                               tag_def=tag)
 ```
-> Example Response:
-
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 204 No Content
-< Content-Type: application/json
-< Content-Length: 0
-```
-
-```java
-no content
-```
-```ruby
-no content
-```
-```python
-no content
-```
 
 **Query Parameters**
 
@@ -1708,10 +1058,7 @@ curl \
 
 > Example Response:
 
-```shell
-# Subset of headers returned when specifying -v curl option
-< HTTP/1.1 200 OK
-<
+```json
 [
   {
     "changeType": "INSERT",
@@ -1741,14 +1088,6 @@ curl \
     }
   },
 ]
-```
-
-```java
-```
-```ruby
-```
-```python
-```
 
 **Query Parameters**
 
