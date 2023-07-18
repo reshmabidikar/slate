@@ -120,55 +120,6 @@ paymentApi.capture_authorization(payment_id,
                                  api_secret)
 ```
 
-> Example Response:
-
-```json
-{
-   "accountId":"fc82dba5-69e0-492c-be50-bc7e1642f987",
-   "paymentId":"b2a187b8-0028-4de8-b349-0ebe4e714a5a",
-   "paymentNumber":"63",
-   "paymentExternalKey":"payment1-323475",
-   "authAmount":240922.1504832,
-   "capturedAmount":483.22,
-   "purchasedAmount":0,
-   "refundedAmount":0,
-   "creditedAmount":0,
-   "currency":"BTC",
-   "paymentMethodId":"395cfcd1-7a7d-40a6-bc5d-f722833072d2",
-   "transactions":[
-      {
-         "transactionId":"41c95fbc-c9a2-4981-a7ef-7f16f20055ae",
-         "transactionExternalKey":"payment1-323475-auth1",
-         "paymentId":"b2a187b8-0028-4de8-b349-0ebe4e714a5a",
-         "paymentExternalKey":"payment1-323475",
-         "transactionType":"AUTHORIZE",
-         "amount":240922.1504832,
-         "currency":"BTC",
-         "effectiveDate":"2013-08-01T06:00:03.000Z",
-         "processedAmount":240922.1504832,
-         "processedCurrency":"BTC",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"a6afaec2-4e6f-4e4c-af94-9a03c39c6032",
-         "transactionExternalKey":"payment1-323475-capture1",
-         "paymentId":"b2a187b8-0028-4de8-b349-0ebe4e714a5a",
-         "paymentExternalKey":"payment1-323475",
-         "transactionType":"CAPTURE",
-         "amount":483.22,
-         "currency":"BTC",
-         "effectiveDate":"2013-08-01T06:00:04.000Z",
-         "processedAmount":483.22,
-         "processedCurrency":"BTC",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
-
 **Request Body**
 
 A `PaymentTransaction` object containing, as a minimum, the `amount` to be captured.
@@ -248,55 +199,6 @@ paymentApi.capture_authorization_by_external_key(body,
                                                  created_by, 
                                                  api_key, 
                                                  api_secret)
-```
-
-> Example Response:
-
-```json
-{
-   "accountId":"fc82dba5-69e0-492c-be50-bc7e1642f987",
-   "paymentId":"b2a187b8-0028-4de8-b349-0ebe4e714a5a",
-   "paymentNumber":"63",
-   "paymentExternalKey":"payment1-323475",
-   "authAmount":483.22,
-   "capturedAmount":483.22,
-   "purchasedAmount":0,
-   "refundedAmount":0,
-   "creditedAmount":0,
-   "currency":"BTC",
-   "paymentMethodId":"395cfcd1-7a7d-40a6-bc5d-f722833072d2",
-   "transactions":[
-      {
-         "transactionId":"41c95fbc-c9a2-4981-a7ef-7f16f20055ae",
-         "transactionExternalKey":"payment1-323475-auth1",
-         "paymentId":"b2a187b8-0028-4de8-b349-0ebe4e714a5a",
-         "paymentExternalKey":"payment1-323475",
-         "transactionType":"AUTHORIZE",
-         "amount":483.22,
-         "currency":"BTC",
-         "effectiveDate":"2013-08-01T06:00:03.000Z",
-         "processedAmount":483.22,
-         "processedCurrency":"BTC",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"a6afaec2-4e6f-4e4c-af94-9a03c39c6032",
-         "transactionExternalKey":"payment1-323475-capture1",
-         "paymentId":"b2a187b8-0028-4de8-b349-0ebe4e714a5a",
-         "paymentExternalKey":"payment1-323475",
-         "transactionType":"CAPTURE",
-         "amount":483.22,
-         "currency":"BTC",
-         "effectiveDate":"2013-08-01T06:00:04.000Z",
-         "processedAmount":483.22,
-         "processedCurrency":"BTC",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
 ```
 
 **Request Body**
@@ -602,41 +504,6 @@ paymentApi.complete_transaction(payment_id,
                                 api_secret)
 ```
 
-> Example Response:
-
-```json
-{
-   "accountId":"f25f5fe5-63ab-4478-89f1-cc868982f19a",
-   "paymentId":"7dcda896-808b-414c-aad4-74ddc98e3dcb",
-   "paymentNumber":"84",
-   "paymentExternalKey":"example_payment_external_key",
-   "authAmount":0,
-   "capturedAmount":0,
-   "purchasedAmount":50.0,
-   "refundedAmount":0,
-   "creditedAmount":0,
-   "currency":"USD",
-   "paymentMethodId":"0c6f5c90-3b90-4a35-b378-c22a2bea598b",
-   "transactions":[
-      {
-         "transactionId":"bfc95df3-fbaa-427d-a398-fe66c319a55b",
-         "transactionExternalKey":"bfc95df3-fbaa-427d-a398-fe66c319a55b",
-         "paymentId":"7dcda896-808b-414c-aad4-74ddc98e3dcb",
-         "paymentExternalKey":"7dcda896-808b-414c-aad4-74ddc98e3dcb",
-         "transactionType":"PURCHASE",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:03.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
-
 **Request Body**
 
 A PaymentTransaction object containing, at least, the `paymentId`
@@ -714,41 +581,6 @@ paymentApi.complete_transaction_by_external_key(body,
                                                 api_secret)
 ```
 
-> Example Response:
-
-```json
-{
-   "accountId":"f25f5fe5-63ab-4478-89f1-cc868982f19a",
-   "paymentId":"7dcda896-808b-414c-aad4-74ddc98e3dcb",
-   "paymentNumber":"84",
-   "paymentExternalKey":"example_payment_external_key",
-   "authAmount":0,
-   "capturedAmount":0,
-   "purchasedAmount":50.0,
-   "refundedAmount":0,
-   "creditedAmount":0,
-   "currency":"USD",
-   "paymentMethodId":"0c6f5c90-3b90-4a35-b378-c22a2bea598b",
-   "transactions":[
-      {
-         "transactionId":"bfc95df3-fbaa-427d-a398-fe66c319a55b",
-         "transactionExternalKey":"bfc95df3-fbaa-427d-a398-fe66c319a55b",
-         "paymentId":"7dcda896-808b-414c-aad4-74ddc98e3dcb",
-         "paymentExternalKey":"7dcda896-808b-414c-aad4-74ddc98e3dcb",
-         "transactionType":"PURCHASE",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:03.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
-
 **Request Body**
 
 A PaymentTransaction object containing, at least, the `paymentExternalKey`
@@ -824,21 +656,6 @@ paymentApi.void_payment(payment_id,
                         api_key,
                         api_secret)
 ```
-> Example Response:
-
-```json
-{
-   "transactionId":"29b34a3d-d301-4e57-8fc2-2c0a201c4fd0",
-   "transactionExternalKey":"payment2-121268-void",
-   "paymentId":"275889ca-60aa-4801-9b53-8b2e0b9844ca",
-   "paymentExternalKey":"payment2-121268",
-   "transactionType":"VOID",
-   "effectiveDate":"2013-08-01T06:00:07.000Z",
-   "processedAmount":0.0,
-   "status":"SUCCESS",
-   "auditLogs":[]
-}
-```
 
 **Request Body**
 
@@ -912,21 +729,6 @@ paymentApi.void_payment_by_external_key(body,
                                         created_by,
                                         api_key,
                                         api_secret)
-```
-> Example Response:
-
-```json
-{
-   "transactionId":"29b34a3d-d301-4e57-8fc2-2c0a201c4fd0",
-   "transactionExternalKey":"payment2-121268-void",
-   "paymentId":"275889ca-60aa-4801-9b53-8b2e0b9844ca",
-   "paymentExternalKey":"payment2-121268",
-   "transactionType":"VOID",
-   "effectiveDate":"2013-08-01T06:00:07.000Z",
-   "processedAmount":0.0,
-   "status":"SUCCESS",
-   "auditLogs":[]
-}
 ```
 
 **Request Body**
@@ -1009,55 +811,6 @@ paymentApi.chargeback_payment(payment_id,
                               created_by,
                               api_key,
                               api_secret)
-```
-
-> Example Response:
-
-```json
-{
-   "accountId":"82d3625e-65f0-403e-a3aa-8077accb4295",
-   "paymentId":"42ab1653-051f-416c-8c70-bf5d4061d4fa",
-   "paymentNumber":"67",
-   "paymentExternalKey":"42ab1653-051f-416c-8c70-bf5d4061d4fa",
-   "authAmount":0,
-   "capturedAmount":0,
-   "purchasedAmount":0.0,
-   "refundedAmount":0,
-   "creditedAmount":0,
-   "currency":"USD",
-   "paymentMethodId":"bde4c67d-4069-4d1c-bd46-029ddda0532f",
-   "transactions":[
-      {
-         "transactionId":"78591b50-a828-456b-a6c2-fefe89a356f3",
-         "transactionExternalKey":"78591b50-a828-456b-a6c2-fefe89a356f3",
-         "paymentId":"42ab1653-051f-416c-8c70-bf5d4061d4fa",
-         "paymentExternalKey":"42ab1653-051f-416c-8c70-bf5d4061d4fa",
-         "transactionType":"PURCHASE",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:02.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"59d9f016-a63a-4dac-bf9a-0464658d99e1",
-         "transactionExternalKey":"59d9f016-a63a-4dac-bf9a-0464658d99e1",
-         "paymentId":"42ab1653-051f-416c-8c70-bf5d4061d4fa",
-         "paymentExternalKey":"42ab1653-051f-416c-8c70-bf5d4061d4fa",
-         "transactionType":"CHARGEBACK",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:03.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
 ```
 
 **Request Body**
@@ -1143,55 +896,6 @@ paymentApi.chargeback_payment_by_external_key(body,
                                               api_secret)
 ```
 
-> Example Response:
-
-```json
-{
-   "accountId":"82d3625e-65f0-403e-a3aa-8077accb4295",
-   "paymentId":"42ab1653-051f-416c-8c70-bf5d4061d4fa",
-   "paymentNumber":"67",
-   "paymentExternalKey":"example_payment_external_key",
-   "authAmount":0,
-   "capturedAmount":0,
-   "purchasedAmount":0.0,
-   "refundedAmount":0,
-   "creditedAmount":0,
-   "currency":"USD",
-   "paymentMethodId":"bde4c67d-4069-4d1c-bd46-029ddda0532f",
-   "transactions":[
-      {
-         "transactionId":"78591b50-a828-456b-a6c2-fefe89a356f3",
-         "transactionExternalKey":"78591b50-a828-456b-a6c2-fefe89a356f3",
-         "paymentId":"42ab1653-051f-416c-8c70-bf5d4061d4fa",
-         "paymentExternalKey":"42ab1653-051f-416c-8c70-bf5d4061d4fa",
-         "transactionType":"PURCHASE",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:02.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"59d9f016-a63a-4dac-bf9a-0464658d99e1",
-         "transactionExternalKey":"59d9f016-a63a-4dac-bf9a-0464658d99e1",
-         "paymentId":"42ab1653-051f-416c-8c70-bf5d4061d4fa",
-         "paymentExternalKey":"42ab1653-051f-416c-8c70-bf5d4061d4fa",
-         "transactionType":"CHARGEBACK",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:03.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
-
 **Request Body**
 
 A PaymentTransaction object containing, at least, the `paymentExternalKey` and the `amount`.
@@ -1267,66 +971,6 @@ paymentApi.chargeback_reversal_payment(payment_id,
                                        api_secret)
 ```
 
-> Example Response:
-
-```json
-{
-   "accountId":"d513c084-2ee4-4e65-aea5-b47dde03d2d4",
-   "paymentId":"74a82e25-120a-4a39-a7f7-7b5c2b4ac05d",
-   "paymentNumber":"66",
-   "paymentExternalKey":"74a82e25-120a-4a39-a7f7-7b5c2b4ac05d",
-   "authAmount":0,
-   "capturedAmount":0,
-   "purchasedAmount":50.0,
-   "refundedAmount":0,
-   "creditedAmount":0,
-   "currency":"USD",
-   "paymentMethodId":"c5676241-85dd-47ba-be4c-5dec75fade33",
-   "transactions":[
-      {
-         "transactionId":"9ceb96a2-5407-482b-8847-7b08cc64213f",
-         "transactionExternalKey":"9ceb96a2-5407-482b-8847-7b08cc64213f",
-         "paymentId":"74a82e25-120a-4a39-a7f7-7b5c2b4ac05d",
-         "paymentExternalKey":"74a82e25-120a-4a39-a7f7-7b5c2b4ac05d",
-         "transactionType":"PURCHASE",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:02.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"597efe9b-b713-41fb-9ea1-4b2faf80f49c",
-         "transactionExternalKey":"597efe9b-b713-41fb-9ea1-4b2faf80f49c",
-         "paymentId":"74a82e25-120a-4a39-a7f7-7b5c2b4ac05d",
-         "paymentExternalKey":"74a82e25-120a-4a39-a7f7-7b5c2b4ac05d",
-         "transactionType":"CHARGEBACK",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:03.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"112ad9f1-5a36-447c-aadc-ac20c6e56feb",
-         "transactionExternalKey":"597efe9b-b713-41fb-9ea1-4b2faf80f49c",
-         "paymentId":"74a82e25-120a-4a39-a7f7-7b5c2b4ac05d",
-         "paymentExternalKey":"74a82e25-120a-4a39-a7f7-7b5c2b4ac05d",
-         "transactionType":"CHARGEBACK",
-         "effectiveDate":"2013-08-01T06:00:04.000Z",
-         "processedAmount":0.0,
-         "status":"PAYMENT_FAILURE",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
-
 **Request Body**
 
 A PaymentTransaction object containing, at least, the `transactionExternalKey`.
@@ -1400,66 +1044,6 @@ paymentApi.chargeback_reversal_payment_by_external_key(body,
                                                        created_by,
                                                        api_key,
                                                        api_secret)
-```
-
-> Example Response:
-
-```json
-{
-   "accountId":"58f01daa-df0f-424e-b430-ad54c3653d70",
-   "paymentId":"82a8a5eb-7953-4654-b3ff-f3d935ed0c37",
-   "paymentNumber":"71",
-   "paymentExternalKey":"example_payment_external_key",
-   "authAmount":0,
-   "capturedAmount":0,
-   "purchasedAmount":50.0,
-   "refundedAmount":0,
-   "creditedAmount":0,
-   "currency":"USD",
-   "paymentMethodId":"29b3f923-5985-496e-835a-c26f3742c13d",
-   "transactions":[
-      {
-         "transactionId":"231d2bbc-7ce3-4946-b6d9-f24f9a25ff6c",
-         "transactionExternalKey":"231d2bbc-7ce3-4946-b6d9-f24f9a25ff6c",
-         "paymentId":"82a8a5eb-7953-4654-b3ff-f3d935ed0c37",
-         "paymentExternalKey":"82a8a5eb-7953-4654-b3ff-f3d935ed0c37",
-         "transactionType":"PURCHASE",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:02.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"5c9be310-6508-40ff-9553-2b88d1707eef",
-         "transactionExternalKey":"5c9be310-6508-40ff-9553-2b88d1707eef",
-         "paymentId":"82a8a5eb-7953-4654-b3ff-f3d935ed0c37",
-         "paymentExternalKey":"82a8a5eb-7953-4654-b3ff-f3d935ed0c37",
-         "transactionType":"CHARGEBACK",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:03.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"b193f299-9788-4dc9-abc8-b1971bee68e1",
-         "transactionExternalKey":"5c9be310-6508-40ff-9553-2b88d1707eef",
-         "paymentId":"82a8a5eb-7953-4654-b3ff-f3d935ed0c37",
-         "paymentExternalKey":"82a8a5eb-7953-4654-b3ff-f3d935ed0c37",
-         "transactionType":"CHARGEBACK",
-         "effectiveDate":"2013-08-01T06:00:04.000Z",
-         "processedAmount":0.0,
-         "status":"PAYMENT_FAILURE",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
 ```
 
 **Request Body**
@@ -1548,55 +1132,6 @@ paymentApi.refund_payment(payment_id,
                           api_secret)
 ```
 
-> Example Response:
-
-```json
-{
-   "accountId":"6c297750-3a6d-42a4-9d75-c900fbc75ddf",
-   "paymentId":"dce5b2a0-0f0f-430b-9427-545ba4be5c7f",
-   "paymentNumber":"69",
-   "paymentExternalKey":"dce5b2a0-0f0f-430b-9427-545ba4be5c7f",
-   "authAmount":0,
-   "capturedAmount":0,
-   "purchasedAmount":50.0,
-   "refundedAmount":50.0,
-   "creditedAmount":0,
-   "currency":"USD",
-   "paymentMethodId":"ba2b0bd4-43f2-4b4a-839c-5a2fa40ea0de",
-   "transactions":[
-      {
-         "transactionId":"d58f9801-e0e6-4b8d-99fb-e19f5b29a313",
-         "transactionExternalKey":"d58f9801-e0e6-4b8d-99fb-e19f5b29a313",
-         "paymentId":"dce5b2a0-0f0f-430b-9427-545ba4be5c7f",
-         "paymentExternalKey":"dce5b2a0-0f0f-430b-9427-545ba4be5c7f",
-         "transactionType":"PURCHASE",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:02.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"28740a66-834a-4005-81d5-55a4550751b9",
-         "transactionExternalKey":"28740a66-834a-4005-81d5-55a4550751b9",
-         "paymentId":"dce5b2a0-0f0f-430b-9427-545ba4be5c7f",
-         "paymentExternalKey":"dce5b2a0-0f0f-430b-9427-545ba4be5c7f",
-         "transactionType":"REFUND",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:03.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
-
 **Request Body**
 
 A PaymentTransaction object including, as a minimum, the `amount` to be refunded.
@@ -1676,54 +1211,6 @@ paymentApi.refund_payment_by_external_key(body,
                                           api_key,
                                           api_secret)
 ```
-> Example Response:
-
-```json
-{
-   "accountId":"6c297750-3a6d-42a4-9d75-c900fbc75ddf",
-   "paymentId":"dce5b2a0-0f0f-430b-9427-545ba4be5c7f",
-   "paymentNumber":"69",
-   "paymentExternalKey":"example_payment_external_key",
-   "authAmount":0,
-   "capturedAmount":0,
-   "purchasedAmount":50.0,
-   "refundedAmount":50.0,
-   "creditedAmount":0,
-   "currency":"USD",
-   "paymentMethodId":"ba2b0bd4-43f2-4b4a-839c-5a2fa40ea0de",
-   "transactions":[
-      {
-         "transactionId":"d58f9801-e0e6-4b8d-99fb-e19f5b29a313",
-         "transactionExternalKey":"d58f9801-e0e6-4b8d-99fb-e19f5b29a313",
-         "paymentId":"dce5b2a0-0f0f-430b-9427-545ba4be5c7f",
-         "paymentExternalKey":"dce5b2a0-0f0f-430b-9427-545ba4be5c7f",
-         "transactionType":"PURCHASE",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:02.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      },
-      {
-         "transactionId":"28740a66-834a-4005-81d5-55a4550751b9",
-         "transactionExternalKey":"28740a66-834a-4005-81d5-55a4550751b9",
-         "paymentId":"dce5b2a0-0f0f-430b-9427-545ba4be5c7f",
-         "paymentExternalKey":"dce5b2a0-0f0f-430b-9427-545ba4be5c7f",
-         "transactionType":"REFUND",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:03.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
 
 **Request Body**
 
@@ -1786,12 +1273,6 @@ paymentApi.cancel_scheduled_payment_transaction_by_id(payment_transaction_id,
                                                       api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Query Parameters**
 
 None.
@@ -1848,11 +1329,6 @@ paymentApi.cancel_scheduled_payment_transaction_by_external_key(transaction_exte
                                                                 created_by,
                                                                 api_key,
                                                                 api_secret)
-```
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
@@ -1969,41 +1445,6 @@ paymentApi.create_combo_payment(body,
                                 api_secret)
 ```
 
-> Example Response:
-
-```json
-{
-   "accountId":"86bb6cbc-1324-47fe-99f6-f0f2bf47f3da",
-   "paymentId":"125de719-c4db-4c8c-be98-2a75f0d09011",
-   "paymentNumber":"83",
-   "paymentExternalKey":"test_key",
-   "authAmount":0,
-   "capturedAmount":0,
-   "purchasedAmount":50.0,
-   "refundedAmount":0,
-   "creditedAmount":0,
-   "currency":"USD",
-   "paymentMethodId":"3a61344c-c9b5-4ef6-92cc-581bcb8b20de",
-   "transactions":[
-      {
-         "transactionId":"a93d034b-ef54-4664-88c4-5be20272b330",
-         "transactionExternalKey":"a93d034b-ef54-4664-88c4-5be20272b330",
-         "paymentId":"125de719-c4db-4c8c-be98-2a75f0d09011",
-         "paymentExternalKey":"test_key",
-         "transactionType":"PURCHASE",
-         "amount":50.0,
-         "currency":"USD",
-         "effectiveDate":"2013-08-01T06:00:04.000Z",
-         "processedAmount":50.0,
-         "processedCurrency":"USD",
-         "status":"SUCCESS",
-         "auditLogs":[]
-      }
-   ],
-   "auditLogs":[]
-}
-```
-
 **Request Body**
 
 The request body is a JSON string that represents three distinct objects: account, paymentMethod, and transaction. For example:
@@ -2113,19 +1554,6 @@ paymentApi.create_payment_custom_fields(payment_id,
                                         api_secret)
 ```
 
-> Example Response:
-
-```json
-{
-  "customFieldId":"7fb3dde7-0911-4477-99e3-69d142509bb9",
-  "objectId":"4927c1a2-3959-4f71-98e7-ce3ba19c92ac",
-  "objectType":"PAYMENT",
-  "name":"Test Custom Field",
-  "value":"test_value",
-  "auditLogs":[]
-}
-```
-
 **Request Body**
 
 A list of [Custom Field](https://killbill.github.io/slate/?java#custom-field-custom-field-resource) objects. Each object should specify at least the the `name` and `value` attribute. For example:
@@ -2185,14 +1613,16 @@ paymentApi.get_payment_custom_fields(payment_id, api_key, api_secret)
 > Example Response:
 
 ```json
-{
+[
+  {
     "customFieldId": "e4bac228-872d-4966-8072-2c3ac06442ed",
     "objectId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
     "objectType": "PAYMENT",
     "name": "Test Custom Field",
     "value": "test_value",
     "auditLogs": []
-}
+  }
+]
 ```
 
 **Query Parameters**
@@ -2270,11 +1700,6 @@ paymentApi.modify_payment_custom_fields(payment_id,
                                         api_key,
                                         api_secret)
 ```
-> Example Response:
-
-```json
-no content
-```
 
 **Requst Body**
 
@@ -2343,12 +1768,6 @@ paymentApi.delete_payment_custom_fields(payment_id,
                                         created_by,
                                         api_key,
                                         api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
@@ -2427,19 +1846,6 @@ paymentApi.create_payment_tags(payment_id,
                                api_secret)
 ```
 
-> Example Response:
-
-```json
-{
-  "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
-  "objectType":"PAYMENT",
-  "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-  "tagDefinitionId":"353752dd-9041-4450-b782-a8bb03a923c8",
-  "tagDefinitionName":"foo",
-  "auditLogs":[]
-}
-```
-
 **Request Body**
 
 A JSON array containing one or more tag definition ids to be added as tags.
@@ -2505,14 +1911,16 @@ paymentApi.get_payment_tags(payment_id, api_key, api_secret)
 > Example Response:
 
 ```json
-{
+[
+  {
     "tagId": "890e3b13-3114-478b-9365-50f1a2682143",
     "objectType": "PAYMENT",
     "objectId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d",
     "tagDefinitionId": "353752dd-9041-4450-b782-a8bb03a923c8",
     "tagDefinitionName": "foo",
     "auditLogs": []
-}
+  }
+]
 ```
 
 **Query Parameters**
@@ -2582,12 +1990,6 @@ paymentApi.delete_payment_tags(payment_id,
                                tag_def=tag)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -2647,7 +2049,8 @@ account.audit_logs_with_history(options)
 > Example Response:
 
 ```json
-{
+[
+  {
     "changeType": "INSERT",
     "changeDate": "2018-07-19T16:39:00.000Z",
     "objectType": "PAYMENT",
@@ -2657,23 +2060,24 @@ account.audit_logs_with_history(options)
     "comments": null,
     "userToken": "5d32d0ab-3c08-47b2-8c6d-bb9d2a7fd62c",
     "history": 
-        {
-          "id": null,
-          "createdDate": "2018-07-19T16:39:00.000Z",
-          "updatedDate": "2018-07-19T16:39:00.000Z",
-          "recordId": 14,
-          "accountRecordId": 35,
-          "tenantRecordId": 1,
-          "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
-          "paymentNumber": null,
-          "paymentMethodId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
-          "externalKey": "paymentExternalKey",
-          "stateName": null,
-          "lastSuccessStateName": null,
-          "tableName": "PAYMENTS",
-          "historyTableName": "PAYMENT_HISTORY"
-        }
-}
+    {
+      "id": null,
+      "createdDate": "2018-07-19T16:39:00.000Z",
+      "updatedDate": "2018-07-19T16:39:00.000Z",
+      "recordId": 14,
+      "accountRecordId": 35,
+      "tenantRecordId": 1,
+      "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
+      "paymentNumber": null,
+      "paymentMethodId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
+      "externalKey": "paymentExternalKey",
+      "stateName": null,
+      "lastSuccessStateName": null,
+      "tableName": "PAYMENTS",
+      "historyTableName": "PAYMENT_HISTORY"
+    }
+  },
+]
 ```
 
 **Query Parameters**
@@ -2721,6 +2125,7 @@ AuditLogs logs = paymentApi.getPaymentAttemptAuditLogsWithHistory(paymentAttempt
 > Example Response:
 
 ```json
+[  
   {
     "changeType": "INSERT",
     "changeDate": "2022-05-02T11:15:52.000Z",
@@ -2784,6 +2189,7 @@ AuditLogs logs = paymentApi.getPaymentAttemptAuditLogsWithHistory(paymentAttempt
       "tableName": "PAYMENT_ATTEMPTS"
     }
   }
+]
 ```
 
 **Query Parameters**
