@@ -2780,10 +2780,10 @@ invoiceApi.get_invoice_translation(locale, api_key, api_secret)
 
 > Example Response:
 
-```json
-{
-    "sports-monthly" : "Voiture Sport"
-}
+```text/plain
+
+sports-monthly : Voiture Sport
+
 ```
 
 **Query Parameters**
