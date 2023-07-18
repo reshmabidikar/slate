@@ -74,12 +74,6 @@ adminApi = killbill.api.AdminApi()
 adminApi.trigger_invoice_generation_for_parked_accounts('test', api_key, api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -173,12 +167,6 @@ adminApi.update_payment_transaction_state(payment_id,
                                           api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Request Body**
 
 An `AdminPayment` object containing, as a minimum, the new `transactionStatus` to be captured. The allowed values of the `transactionStatus` as well as what each `transactionStatus` means are already explained above. 
@@ -235,12 +223,6 @@ adminApi = killbill.api.AdminApi()
 adminApi.invalidates_cache(api_key, api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -291,12 +273,6 @@ account_id = '2ad52f53-85ae-408a-9879-32a7e59dd03d'
 adminApi.invalidates_cache_by_account(account_id, api_key, api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Query Parameters**
 
 None.
@@ -340,12 +316,6 @@ KillBillClient::Model::Admin.invalidates_cache_by_tenant(options)
 adminApi = killbill.api.AdminApi()
 
 adminApi.invalidates_cache_by_tenant(api_key, api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
@@ -393,12 +363,6 @@ adminApi = killbill.api.AdminApi()
 adminApi.put_in_rotation(api_key, api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Query Parameters**
 
 None.
@@ -442,12 +406,6 @@ KillBillClient::Model::Admin.put_out_of_rotation(options)
 adminApi = killbill.api.AdminApi()
 
 adminApi.put_out_of_rotation(api_key, api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
