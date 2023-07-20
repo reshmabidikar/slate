@@ -74,6 +74,32 @@ adminApi = killbill.api.AdminApi()
 adminApi.trigger_invoice_generation_for_parked_accounts('test', api_key, api_secret)
 ```
 
+> Example Response:
+
+```json
+{
+  "amount": 0,
+  "currency": "USD",
+  "status": "COMMITTED",
+  "creditAdj": 0,
+  "refundAdj": 0,
+  "invoiceId": "5c7656b7-1974-447b-b263-1613448d4c1e",
+  "invoiceDate": "2023-07-19",
+  "targetDate": "2023-03-01",
+  "invoiceNumber": "17700",
+  "balance": 0,
+  "accountId": "f65913b6-3185-48b2-b0cf-62495b879047",
+  "bundleKeys": null,
+  "credits": null,
+  "items": [],
+  "trackingIds": [],
+  "isParentInvoice": false,
+  "parentInvoiceId": null,
+  "parentAccountId": null,
+  "auditLogs": []
+}
+```
+
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
