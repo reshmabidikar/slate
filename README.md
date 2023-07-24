@@ -2,27 +2,32 @@
 
 Kill Bill API documentation.
 
-## Setup
-
-The pages are built using middleman:
-
-```
-bundle install
-bundle exec middleman server
-```
-
-See also https://github.com/slatedocs/slate and https://github.com/middleman/middleman.
-
 ## Edit and Syntax
 
 The documentation is in the `source/includes` directory.
 
 Markdown syntax: https://github.com/slatedocs/slate/wiki/Markdown-Syntax
 
-## Publishing
+## Deployment
 
-In order to publish the doc on github pages, simply run
+The site is built using [Middleman](https://github.com/middleman/middleman):
 
 ```
-./deploy.sh
+middleman build
+```
+
+See also https://github.com/slatedocs/slate.
+
+Notes:
+
+* The generated static pages under `build` are deployed by Cloudflare
+* The built pages are also pushed to the `gh-pages` branch for debugging (served by GitHub pages at https://killbill.github.io/slate/)
+* Minification of assets is handled by Cloudflare (check-in the unminified version)
+
+## Development
+
+To run the site locally:
+
+```
+middleman server
 ```
