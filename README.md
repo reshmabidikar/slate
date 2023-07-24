@@ -20,8 +20,8 @@ See also https://github.com/slatedocs/slate.
 
 Notes:
 
-* The generated static pages under `build` are deployed by Cloudflare
-* The built pages are also pushed to the `gh-pages` branch for debugging (served by GitHub pages at https://killbill.github.io/slate/)
+* The generated static pages under `build` are deployed by Cloudflare (https://apidocs.killbill.io/)
+* The built pages are also pushed to the `gh-pages` branch for debugging (served by GitHub pages at https://killbill.github.io/slate/ for backward compatibility)
 * Minification of assets is handled by Cloudflare (check-in the unminified version)
 
 ## Development
