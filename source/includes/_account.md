@@ -962,7 +962,7 @@ If successful, returns a status code of 204 and without any data.
 
 ## Bundle
 
-This endpoint provides an API to list the Bundles associated with this account. A Bundle is a set of Subscriptions and related information. See [Bundle](#bundle) for details on Bundles.
+This endpoint provides an API to list the Bundles associated with this account. A Bundle is a set of Subscriptions and related information. See [Bundle](bundle.html) for details on Bundles.
 
 ### Retrieve bundles for account
 
@@ -1385,7 +1385,7 @@ If successful, returns a status code of 200 and a list of bundle objects.
 
 ## Invoice
 
-This endpoint provides an API to list the Invoices associated with this account. See section [Invoice](#invoice) for details on invoices.
+This endpoint provides an API to list the Invoices associated with this account. See section [Invoice](invoice.html) for details on invoices.
 
 ### Retrieve account invoices
 
@@ -1588,7 +1588,7 @@ If successful, returns a status of 200 and a list of invoice objects for this ac
 
 ## Payment 
 
-These endpoints are used to make or manage payments associated with this account. See section [Payment](#payment) for details on payments.
+These endpoints are used to make or manage payments associated with this account. See section [Payment](payment.html) for details on payments.
 
 ### Trigger a payment for all unpaid invoices
 
@@ -1984,7 +1984,7 @@ accountApi.process_payment(account_id,
 
 **Request Body**
 
-The request body is a JSON string representing the payment transaction. See section [Payment Transaction](#payment-transaction) for details on payment transactions.
+The request body is a JSON string representing the payment transaction. See section [Payment Transaction](payment-transaction.html) for details on payment transactions.
 
 **Query Parameters**
 
@@ -2100,7 +2100,7 @@ accountApi.process_payment_by_external_key(body,
 
 **Request Body**
 
-The request body is a JSON string representing the payment transaction. See section [Payment Transaction](#payment-transaction) for details on payment transactions.
+The request body is a JSON string representing the payment transaction. See section [Payment Transaction](payment-transaction.html) for details on payment transactions.
 
 **Query Parameters**
 
@@ -2117,7 +2117,7 @@ If successful, returns a 201 status code. In addition, a `Location` header is re
 
 ## Payment Method
 
-These endpoints allow you to manage the payment methods for an account. See section [Payment Method](#payment-method) for details on payment methods.
+These endpoints allow you to manage the payment methods for an account. See section [Payment Method](payment-method.html) for details on payment methods.
 
 ### Add a payment method
 
@@ -2191,7 +2191,7 @@ accountApi.create_payment_method(account_id,
 
 **Request Body**
 
-A payment method object specifying `accountId` and `pluginName` at the minimum. Please refer to the [payment method resource](https://killbill.github.io/slate/#payment-method-payment-method-resource) section for more details about the fields.
+A payment method object specifying `accountId` and `pluginName` at the minimum. Please refer to the [payment method resource](payment-method.html#payment-method-resource) section for more details about the fields.
 
 **Query Parameters**
 
@@ -2872,7 +2872,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Custom Fields
 
-Custom fields are `{key, value}` attributes that can be attached to any customer resource. In particular they can be added to the customer `Account`. For details on Custom Fields see [Custom Field](#custom-field).
+Custom fields are `{key, value}` attributes that can be attached to any customer resource. In particular they can be added to the customer `Account`. For details on Custom Fields see [Custom Field](custom-field.html).
 
 ### Add custom fields to account
 
@@ -3268,7 +3268,7 @@ attached to various objects in the system by using tags. Tags come in 2 differen
 
 The APIs to manage tags rely on having an existing tag definition and supplying the `tagDefinitionId` in the calls. Therefore, for user tags, one should first create a `TagDefinition`.
 
-To create user tags, one must first create the tag definitions. For instructions see section [Tag definition](#tag-definition).
+To create user tags, one must first create the tag definitions. For instructions see section [Tag definition](tag-definition.html).
 
 
 ### Add tags to account
