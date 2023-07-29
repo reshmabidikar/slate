@@ -15,4 +15,4 @@ jobs:
           bundler-cache: true
       - name: Build Slate
         run: |
-          ./deploy.sh --source-only
+          ./deploy.sh -v --source-only

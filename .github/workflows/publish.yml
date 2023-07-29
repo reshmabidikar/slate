@@ -21,4 +21,4 @@ jobs:
           git config --global user.name "Kill Bill core team"
       - name: Deploy Slate
         run: |
-          ./deploy.sh
+          ./deploy.sh -v

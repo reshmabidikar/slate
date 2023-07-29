@@ -21,7 +21,11 @@ Options:
 
 
 run_build() {
-  bundle exec middleman build --clean
+  if [ $verbose ]; then
+    bundle exec middleman build --clean --verbose
+  else
+    bundle exec middleman build --clean
+  fi
 }
 
 parse_args() {
