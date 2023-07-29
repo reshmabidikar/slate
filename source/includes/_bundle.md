@@ -506,12 +506,6 @@ bundleApi.rename_external_key(bundle_id,
                               api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Request Body**
 
 A bundle resource containing the new external key
@@ -613,115 +607,6 @@ bundleApi.transfer_bundle(bundle_id,
                           api_secret)
 ```
 
-> Example Response:
-
-```json
-{
-   "accountId":"71499886-296d-4b0f-8b76-0eed352d8801",
-   "bundleId":"cff04ff5-19ba-4bdc-8aca-ed486d4b845c",
-   "externalKey":"25f2de6b-2443-4d7c-8487-22bf6df5a5ec-73709",
-   "subscriptions":[
-      {
-         "accountId":"71499886-296d-4b0f-8b76-0eed352d8801",
-         "bundleId":"cff04ff5-19ba-4bdc-8aca-ed486d4b845c",
-         "subscriptionId":"46e6fcdc-9f63-4ffc-a091-0cde70f964f0",
-         "externalKey":"25f2de6b-2443-4d7c-8487-22bf6df5a5ec-73709",
-         "startDate":"2013-09-01",
-         "productName":"Sports",
-         "productCategory":"BASE",
-         "billingPeriod":"MONTHLY",
-         "phaseType":"EVERGREEN",
-         "priceList":"DEFAULT",
-         "planName":"sports-monthly",
-         "state":"ACTIVE",
-         "sourceType":"TRANSFERRED",
-         "billingStartDate":"2013-09-01",
-         "billCycleDayLocal":1,
-         "events":[
-            {
-               "eventId":"605c5696-4046-4597-8a67-7e50d26856cd",
-               "billingPeriod":"MONTHLY",
-               "effectiveDate":"2013-09-01",
-               "plan":"sports-monthly",
-               "product":"Sports",
-               "priceList":"DEFAULT",
-               "eventType":"START_ENTITLEMENT",
-               "isBlockedBilling":false,
-               "isBlockedEntitlement":false,
-               "serviceName":"entitlement-service",
-               "serviceStateName":"ENT_STARTED",
-               "phase":"sports-monthly-evergreen",
-               "auditLogs":[]
-            },
-            {
-               "eventId":"fbc53e69-0683-4904-bc77-5d244b9ad1c9",
-               "billingPeriod":"MONTHLY",
-               "effectiveDate":"2013-09-01",
-               "plan":"sports-monthly",
-               "product":"Sports",
-               "priceList":"DEFAULT",
-               "eventType":"START_BILLING",
-               "isBlockedBilling":false,
-               "isBlockedEntitlement":false,
-               "serviceName":"billing-service",
-               "serviceStateName":"START_BILLING",
-               "phase":"sports-monthly-evergreen",
-               "auditLogs":[]
-            }
-         ],
-         "priceOverrides":[
-            {
-               "planName":"sports-monthly",
-               "phaseName":"sports-monthly-evergreen",
-               "phaseType":"EVERGREEN",
-               "recurringPrice":500.0
-            }
-         ],
-         "auditLogs":[]
-      }
-   ],
-   "timeline":{
-      "accountId":"71499886-296d-4b0f-8b76-0eed352d8801",
-      "bundleId":"cff04ff5-19ba-4bdc-8aca-ed486d4b845c",
-      "externalKey":"25f2de6b-2443-4d7c-8487-22bf6df5a5ec-73709",
-      "events":[
-         {
-            "eventId":"605c5696-4046-4597-8a67-7e50d26856cd",
-            "billingPeriod":"MONTHLY",
-            "effectiveDate":"2013-09-01",
-            "plan":"sports-monthly",
-            "product":"Sports",
-            "priceList":"DEFAULT",
-            "eventType":"START_ENTITLEMENT",
-            "isBlockedBilling":false,
-            "isBlockedEntitlement":false,
-            "serviceName":"entitlement-service",
-            "serviceStateName":"ENT_STARTED",
-            "phase":"sports-monthly-evergreen",
-            "auditLogs":[]
-         },
-         {
-            "eventId":"fbc53e69-0683-4904-bc77-5d244b9ad1c9",
-            "billingPeriod":"MONTHLY",
-            "effectiveDate":"2013-09-01",
-            "plan":"sports-monthly",
-            "product":"Sports",
-            "priceList":"DEFAULT",
-            "eventType":"START_BILLING",
-            "isBlockedBilling":false,
-            "isBlockedEntitlement":false,
-            "serviceName":"billing-service",
-            "serviceStateName":"START_BILLING",
-            "phase":"sports-monthly-evergreen",
-            "auditLogs":[]
-         }
-      ],
-      "auditLogs":[]
-   },
-   "auditLogs":[]
-}
-```
-
 **Request Body**
 
 A bundle resource containing at least the new account id
@@ -747,7 +632,7 @@ If successful, returns a status code of 201. In addition, a Location header cont
 
 ## Blocking State
 
-See section [Account Blocking State](#account-blocking-state) for an introduction.
+See section [Account Blocking State](account.html#account-blocking-state) for an introduction.
 
 ### Pause a bundle
 
@@ -797,12 +682,6 @@ bundleApi.pause_bundle(bundle_id,
                        created_by, 
                        api_key, 
                        api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
@@ -865,11 +744,6 @@ bundleApi.resume_bundle(bundle_id,
                         api_key, 
                         api_secret)
 ```
-> Example Response:
-
-```json
-no content
-```
 
 **Query Parameters**
 
@@ -883,7 +757,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Block a bundle
 
-Provides a low level interface to add a `BlockingState` event for this bundle. Note that the previous [pause](#bundle-pause-a-bundle) and [resume](#bundle-resume-a-bundle) operations can be achieved using this API.
+Provides a low level interface to add a `BlockingState` event for this bundle. Note that the previous [pause](bundle.html#bundle-pause-a-bundle) and [resume](bundle.html#bundle-resume-a-bundle) operations can be achieved using this API.
 
 
 **HTTP Request** 
@@ -976,11 +850,6 @@ bundleApi.add_bundle_blocking_state(bundle_id,
                                     api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
 **Request Body**
 
 A blocking state resource representing the intended new blocking state. For example,
@@ -1008,7 +877,7 @@ If successful, returns a status code of 201 and an empty body.
 
 ## Custom Fields
 
-`Custom fields` are `{key, value}` attributes that can be attached to any customer resources. For more on custom fields see [Custom Fields](#custom-fields). These endpoints manage custom fields associated with `Bundle` objects.
+`Custom fields` are `{key, value}` attributes that can be attached to any customer resources. For more on custom fields see [Custom Fields](custom-field.html). These endpoints manage custom fields associated with `Bundle` objects.
 
 ### Add custom fields to bundle
 
@@ -1078,19 +947,6 @@ bundleApi.create_bundle_custom_fields(bundle_id,
                                       created_by,
                                       api_key,
                                       api_secret)
-```
-
-> Example Response:
-
-```json
-{
-  "customFieldId":"6e571e22-b794-413c-be6f-1b2aa4bf9824",
-  "objectId":"0149ffc6-fdfd-40b1-8cf4-29a66aef51d4",
-  "objectType":"BUNDLE",
-  "name":"Test Custom Field",
-  "value":"test_value",
-  "auditLogs":[]
-}
 ```
 
 **Request Body**
@@ -1249,12 +1105,6 @@ bundleApi.modify_bundle_custom_fields(bundle_id,
                                       api_key, 
                                       api_secret)
 ```
-
-> Example Response:
-
-```json
-no content
-```
 **Request Body**
 
 A list of objects specifying the id and the new value for the custom fields to be modified. For example:
@@ -1326,12 +1176,6 @@ bundleApi.delete_bundle_custom_fields(bundle_id,
                                       api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -1345,7 +1189,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Tags
 
-See section [Account Tags](#account-tags) for an introduction.
+See section [Account Tags](account.html#account-tags) for an introduction.
 
 The are no `system` tags applicable for a `Bundle`.
 
@@ -1410,19 +1254,6 @@ bundleApi.create_bundle_tags(bundle_id,
                              created_by, 
                              api_key, 
                              api_secret)
-```
-
-> Example Response:
-
-```json
-{
-  "tagId":"a46cfeb6-e175-42db-be62-7f117326ab4e",
-  "objectType":"BUNDLE",
-  "objectId":"28af3cb9-275b-4ac4-a55d-a0536e479069",
-  "tagDefinitionId":"353752dd-9041-4450-b782-a8bb03a923c8",
-  "tagDefinitionName":"foo",
-  "auditLogs":[]
-}
 ```
 
 **Request Body**
@@ -1564,12 +1395,6 @@ bundleApi.delete_bundle_tags(bundle_id,
                              api_key, 
                              api_secret,
                              tag_def=tag)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**

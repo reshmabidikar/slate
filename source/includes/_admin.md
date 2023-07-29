@@ -16,7 +16,7 @@ The Admin resource offers a set of endpoints such as the following:
 
 Please refer [Payment States](https://github.com/killbill/killbill/blob/ff81c701e236310561e31624df18bab5788b0339/payment/src/main/java/org/killbill/billing/payment/core/sm/PaymentStateMachineHelper.java) information to understand the possible values of Payment State.
 
-Please refer [Payment Transaction Resource](https://killbill.github.io/slate/?shell#payment-transaction-payment-transaction-resource) to understand the possible values of `transactionStatus`.
+Please refer [Payment Transaction Resource](payment-transaction.html#payment-transaction-resource) to understand the possible values of `transactionStatus`.
 
 
 ## Administrative Apis
@@ -77,7 +77,27 @@ adminApi.trigger_invoice_generation_for_parked_accounts('test', api_key, api_sec
 > Example Response:
 
 ```json
-no content
+{
+  "amount": 0,
+  "currency": "USD",
+  "status": "COMMITTED",
+  "creditAdj": 0,
+  "refundAdj": 0,
+  "invoiceId": "5c7656b7-1974-447b-b263-1613448d4c1e",
+  "invoiceDate": "2023-07-19",
+  "targetDate": "2023-03-01",
+  "invoiceNumber": "17700",
+  "balance": 0,
+  "accountId": "f65913b6-3185-48b2-b0cf-62495b879047",
+  "bundleKeys": null,
+  "credits": null,
+  "items": [],
+  "trackingIds": [],
+  "isParentInvoice": false,
+  "parentInvoiceId": null,
+  "parentAccountId": null,
+  "auditLogs": []
+}
 ```
 
 **Query Parameters**
@@ -173,12 +193,6 @@ adminApi.update_payment_transaction_state(payment_id,
                                           api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Request Body**
 
 An `AdminPayment` object containing, as a minimum, the new `transactionStatus` to be captured. The allowed values of the `transactionStatus` as well as what each `transactionStatus` means are already explained above. 
@@ -235,12 +249,6 @@ adminApi = killbill.api.AdminApi()
 adminApi.invalidates_cache(api_key, api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -291,12 +299,6 @@ account_id = '2ad52f53-85ae-408a-9879-32a7e59dd03d'
 adminApi.invalidates_cache_by_account(account_id, api_key, api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Query Parameters**
 
 None.
@@ -340,12 +342,6 @@ KillBillClient::Model::Admin.invalidates_cache_by_tenant(options)
 adminApi = killbill.api.AdminApi()
 
 adminApi.invalidates_cache_by_tenant(api_key, api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
@@ -393,12 +389,6 @@ adminApi = killbill.api.AdminApi()
 adminApi.put_in_rotation(api_key, api_secret)
 ```
 
-> Example Response:
-
-```json
-no content
-```
-
 **Query Parameters**
 
 None.
@@ -442,12 +432,6 @@ KillBillClient::Model::Admin.put_out_of_rotation(options)
 adminApi = killbill.api.AdminApi()
 
 adminApi.put_out_of_rotation(api_key, api_secret)
-```
-
-> Example Response:
-
-```json
-no content
 ```
 
 **Query Parameters**
