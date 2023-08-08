@@ -24,6 +24,8 @@ language_tabs:
    - java
    - ruby
    - python
+   - javascript
+   - php
 
 search: true
 
