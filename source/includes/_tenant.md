@@ -1094,12 +1094,12 @@ api.uploadPluginConfiguration(body, plugin_name, 'created-by', 'reason', 'commen
 ````php
 $apiInstance = $client->getTenantApi();
 
-$pluginName = "demo_plugin";
-$body = "tenant_config";
-
 $xKillbillCreatedBy = "user";
 $xKillbillReason = "reason";
 $xKillbillComment = "comment";
+
+$pluginName = "demo_plugin";
+$body = "tenant_config";
 
 $result = $apiInstance->uploadPluginConfiguration($body, $xKillbillCreatedBy, $pluginName, $xKillbillReason, $xKillbillComment);
 ````
@@ -1165,7 +1165,6 @@ const api: killbill.TenantApi = new killbill.TenantApi(config);
 const plugin_name = 'demo_plugin';
 
 const response: AxiosResponse<killbill.TenantKeyValue, any> = await api.getPluginConfiguration(plugin_name)
-
 ````
 
 ````php
@@ -1255,17 +1254,16 @@ const api: killbill.TenantApi = new killbill.TenantApi(config);
 const plugin_name = 'demo_plugin';
 
 api.deletePluginConfiguration(plugin_name, 'created-by', 'reason', 'comment')
-
 ````
 
 ````php
 $apiInstance = $client->getTenantApi();
 
-$pluginName = "demo_plugin";
-
 $xKillbillCreatedBy = "user";
 $xKillbillReason = "reason";
 $xKillbillComment = "comment";
+
+$pluginName = "demo_plugin";
 
 $apiInstance->deletePluginConfiguration($pluginName, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment);
 ````
