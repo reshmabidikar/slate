@@ -92,16 +92,18 @@ tenantApi.create_tenant(body, created_by='demo')
 
 ```javascript
 const api: killbill.TenantApi = new killbill.TenantApi(config);
+
 const tenant: killbill.Tenant = {apiKey: `api_key`, apiSecret: `api_secret`};
-const response: AxiosResponse<killbill.Tenant, any> = await api.createTenant(tenant, 'created-by');
+
+const response: AxiosResponse<killbill.Tenant, any> = await api.createTenant(tenant, 'created-by', 'reason', 'comment');
 ```
 
 ```php
 $apiInstance = $client->getTenantApi();
 
-$xKillbillCreatedBy = "xKillbillCreatedBy_example";
-$xKillbillReason = "xKillbillReason_example";
-$xKillbillComment = "xKillbillComment_example";
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
 
 $tenant = new Tenant();
 $tenant->setApiKey('demo_api_key');
@@ -166,13 +168,17 @@ tenant = tenantApi.get_tenant(tenant_id='1a723c1a-9287-459f-9e40-eca9f0fd213e')
 
 ```javascript
 const api: killbill.TenantApi = new killbill.TenantApi(config);
+
 const id='9ab7db57-02a9-430c-bdfa-0a8c24d2e368'
+
 const response: AxiosResponse<killbill.Tenant, any> = await api.getTenant(id);
 ```
 
 ```php
 $apiInstance = $client->getTenantApi();
+
 $tenantid='9ab7db57-02a9-430c-bdfa-0a8c24d2e368';
+
 $tenantdata = $apiInstance->getTenant($tenantid);
 ```
 
@@ -236,13 +242,17 @@ tenant = tenantApi.get_tenant_by_api_key(api_key='bob')
 
 ```javascript
 const api: killbill.TenantApi = new killbill.TenantApi(config);
+
 const apiKey = 'bob'
+
 const response: AxiosResponse<killbill.Tenant, any> = await api.getTenantByApiKey(apiKey);
 ```
 
 ```php
 $apiInstance = $client->getTenantApi();
+
 $apikey='bob';
+
 $tenantdata = $apiInstance->getTenantByApiKey($apikey);
 ```
 
@@ -509,16 +519,18 @@ tenantApi.insert_user_key_value(key_name, body, created_by='demo')
 ````javascript
 const key = 'demo_key';
 const value = 'demo_value';
+
 const api: killbill.TenantApi = new killbill.TenantApi(config);
-api.insertUserKeyValue(value, key, 'created-by')
+
+api.insertUserKeyValue(value, key, 'created-by', 'reason', 'comment')
 ````
 
 ````php
 $apiInstance = $client->getTenantApi();
 
-$xKillbillCreatedBy = "xKillbillCreatedBy_example";
-$xKillbillReason = "xKillbillReason_example";
-$xKillbillComment = "xKillbillComment_example";
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
 
 $keyName = "demo_key";
 $body = "demo_value";
@@ -582,13 +594,17 @@ tenantKeyValue = tenantApi.get_user_key_value(key_name)
 
 ````javascript
 const api: killbill.TenantApi = new killbill.TenantApi(config);
+
 const key = 'demo_key'
+
 const response: AxiosResponse<killbill.TenantKeyValue, any> = await api.getUserKeyValue(key)
 ````
 
 ````php
 $apiInstance = $client->getTenantApi();
+
 $keyName = "demo_key";
+
 $result = $apiInstance->getUserKeyValue($keyName);
 ````
 
@@ -678,16 +694,18 @@ tenantApi.delete_user_key_value(key_name, created_by='demo')
 
 ````javascript
 const api: killbill.TenantApi = new killbill.TenantApi(config);
+
 const key = 'demo_key'
-api.deleteUserKeyValue(key, 'created-by')
+
+api.deleteUserKeyValue(key, 'created-by', 'reason', 'comment')
 ````
 
 ````php
 $apiInstance = $client->getTenantApi();
 
-$xKillbillCreatedBy = "xKillbillCreatedBy_example"; 
-$xKillbillReason = "xKillbillReason_example";
-$xKillbillComment = "xKillbillComment_example";
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
 
 $keyName = "demo_key"; 
 
@@ -836,17 +854,20 @@ tenantApi.upload_per_tenant_configuration(body, created_by='demo')
 
 ````javascript
 const body = '{"org.killbill.invoice.sanitySafetyBoundEnabled":"false"}';
+
 const api: killbill.TenantApi = new killbill.TenantApi(config);
-api.uploadPerTenantConfiguration(body, 'created-by')
+
+api.uploadPerTenantConfiguration(body, 'created-by', 'reason', 'comment')
 ````
 
 ````php
 $apiInstance = $client->getTenantApi();
 
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
 $body = "{'org.killbill.invoice.sanitySafetyBoundEnabled':'false'}";
-$xKillbillCreatedBy = "xKillbillCreatedBy_example";
-$xKillbillReason = "xKillbillReason_example";
-$xKillbillComment = "xKillbillComment_example";
 
 $result = $apiInstance->uploadPerTenantConfiguration($body, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment);
 ````
@@ -901,11 +922,13 @@ tenantKeyValue =  tenantApi.get_per_tenant_configuration()
 
 ````javascript
 const api: killbill.TenantApi = new killbill.TenantApi(config);
+
 const response: AxiosResponse<killbill.TenantKeyValue, any> = await api.getPerTenantConfiguration()
 ````
 
 ````php
 $apiInstance = $client->getTenantApi();
+
 $result = $apiInstance->getPerTenantConfiguration();
 ````
 
@@ -970,15 +993,16 @@ tenantApi.delete_per_tenant_configuration(created_by='demo')
 
 ````javascript
 const api: killbill.TenantApi = new killbill.TenantApi(config);
-api.deletePerTenantConfiguration('created-by')
+
+api.deletePerTenantConfiguration('created-by', 'reason', 'comment')
 ````
 
 ````php
 $apiInstance = $client->getTenantApi();
 
-$xKillbillCreatedBy = "xKillbillCreatedBy_example";
-$xKillbillReason = "xKillbillReason_example";
-$xKillbillComment = "xKillbillComment_example";
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
 
 $apiInstance->deletePerTenantConfiguration($xKillbillCreatedBy, $xKillbillReason, $xKillbillComment);
 ````
