@@ -173,8 +173,21 @@ under the License.
           let itemHref = '#' + $(this).attr('id');
           $(this).find('a').attr("href", itemHref);
         });
-      })
 
+        $('.content h2').each(
+          function(i,e) {
+            const sectionElements = $(this).nextUntil(this.tagName)
+
+            const codeBlock = sectionElements.filter('.highlight, blockquote', )
+            const paragraphsBlock = sectionElements.not('.highlight, blockquote')
+
+            const section = $('<section class="content__section" />')
+              .append($('<div class="content__paragraphs" />').append(paragraphsBlock))
+              .append($('<div class="content__code" />').append(codeBlock))
+
+            section.insertAfter($(this))
+        });        
+      })
     </script>
     <script src='https://cdn.jsdelivr.net/npm/@docsearch/js@3'></script>
     <script>
