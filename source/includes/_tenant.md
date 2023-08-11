@@ -92,15 +92,24 @@ tenantApi.create_tenant(body, created_by='demo')
 
 ```javascript
 const api: killbill.TenantApi = new killbill.TenantApi(config);
+
 const tenant: killbill.Tenant = {apiKey: `api_key`, apiSecret: `api_secret`};
-const response: AxiosResponse<killbill.Tenant, any> = await api.createTenant(tenant, 'created-by');
+
+const response: AxiosResponse<killbill.Tenant, any> = await api.createTenant(tenant, 'created-by', 'reason', 'comment');
 ```
 
 ```php
+$apiInstance = $client->getTenantApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
 $tenant = new Tenant();
-$tenant->setApiKey('php-tenant1');
-$tenant->setApiSecret('php-tenant1');
-$tenant = $client->getTenantApi()->createTenant($tenant, 'test_user', 'PHP_TEST', 'no comment');
+$tenant->setApiKey('demo_api_key');
+$tenant->setApiSecret('demo_api_secret');
+
+$tenant = $apiInstance->createTenant($tenant, $xKillbillCreatedBy, $keyName, $xKillbillReason, $xKillbillComment);
 ```
 
 **Request Body**
@@ -159,13 +168,18 @@ tenant = tenantApi.get_tenant(tenant_id='1a723c1a-9287-459f-9e40-eca9f0fd213e')
 
 ```javascript
 const api: killbill.TenantApi = new killbill.TenantApi(config);
+
 const id='9ab7db57-02a9-430c-bdfa-0a8c24d2e368'
+
 const response: AxiosResponse<killbill.Tenant, any> = await api.getTenant(id);
 ```
 
 ```php
+$apiInstance = $client->getTenantApi();
+
 $tenantid='9ab7db57-02a9-430c-bdfa-0a8c24d2e368';
-$tenantdata = $client->getTenantApi()->getTenant($tenantid);
+
+$tenantdata = $apiInstance->getTenant($tenantid);
 ```
 
 > Example Response:
@@ -228,13 +242,18 @@ tenant = tenantApi.get_tenant_by_api_key(api_key='bob')
 
 ```javascript
 const api: killbill.TenantApi = new killbill.TenantApi(config);
+
 const apiKey = 'bob'
+
 const response: AxiosResponse<killbill.Tenant, any> = await api.getTenantByApiKey(apiKey);
 ```
 
 ```php
+$apiInstance = $client->getTenantApi();
+
 $apikey='bob';
-$tenantdata = $client->getTenantApi()->getTenantByApiKey($apikey);
+
+$tenantdata = $apiInstance->getTenantByApiKey($apikey);
 ```
 
 > Example Response:
@@ -441,7 +460,7 @@ is used internally by the system to keep track of all the per-tenant configurati
 
 ### Add a per tenant user key/value
 
-This API adds a key-value pair to the tenant database. If the key already exists its value is replaced. The key is given as a path parameter.
+This API adds a key-value pair to the tenant database. If the key already exists, the new value is appended to the existing value. The key is given as a path parameter.
 
 **HTTP Request**
 
@@ -468,7 +487,7 @@ curl -v \
 import org.killbill.billing.client.api.gen.TenantApi;
 protected TenantApi tenantApi;
 
-String keyName = "demo_value";
+String keyName = "demo_key";
 String body = "demo_value";
 TenantKeyValue result = tenantApi.insertUserKeyValue(keyName, body, requestOptions);
 ```
@@ -478,10 +497,10 @@ user = "demo"
 reason = nil
 comment = nil
 
-key_name = "demo_value"
+key_name = "demo_key"
 key_value = "demo_value"
 
-KillBillClient::Model::Tenant.upload_tenant_user_key_value(key_name,
+tenant_key_value = KillBillClient::Model::Tenant.upload_tenant_user_key_value(key_name,
                                                            key_value,
                                                            user,
                                                            reason,
@@ -492,11 +511,32 @@ KillBillClient::Model::Tenant.upload_tenant_user_key_value(key_name,
 ```python
 tenantApi = killbill.api.TenantApi()
 
-key_name = 'demo_value'
+key_name = 'demo_key'
 body = 'demo_value'
 
 tenantApi.insert_user_key_value(key_name, body, created_by='demo')
 ```
+````javascript
+const key = 'demo_key';
+const value = 'demo_value';
+
+const api: killbill.TenantApi = new killbill.TenantApi(config);
+
+api.insertUserKeyValue(value, key, 'created-by', 'reason', 'comment')
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$keyName = "demo_key";
+$body = "demo_value";
+
+$result = $apiInstance->insertUserKeyValue($body, $xKillbillCreatedBy, $keyName, $xKillbillReason, $xKillbillComment);
+````
 
 **Request Body**
 
@@ -526,31 +566,47 @@ curl -v \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://127.0.0.1:8080/1.0/kb/tenants/userKeyValue/demo_value"
+    "http://127.0.0.1:8080/1.0/kb/tenants/userKeyValue/demo_key"
 ```
 
 ```java
 import org.killbill.billing.client.api.gen.TenantApi;
 protected TenantApi tenantApi;
 
-String keyName = "demo_value";
+String keyName = "demo_key";
 
 TenantKeyValue result = tenantApi.getUserKeyValue(keyName, requestOptions);
 ```
 
 ```ruby
-key_name = "demo_value"
+key_name = "demo_key"
 
-KillBillClient::Model::Tenant.get_tenant_user_key_value(key_name, options)
+tenant_key_value = KillBillClient::Model::Tenant.get_tenant_user_key_value(key_name, options)
 ```
 
 ```python
 tenantApi = killbill.api.TenantApi()
 
-key_name = 'demo_value'
+key_name = 'demo_key'
 
-tenantApi.get_user_key_value(key_name)
+tenantKeyValue = tenantApi.get_user_key_value(key_name)
 ```
+
+````javascript
+const api: killbill.TenantApi = new killbill.TenantApi(config);
+
+const key = 'demo_key'
+
+const response: AxiosResponse<killbill.TenantKeyValue, any> = await api.getUserKeyValue(key)
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$keyName = "demo_key";
+
+$result = $apiInstance->getUserKeyValue($keyName);
+````
 
 > Example Response:
 
@@ -603,14 +659,14 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    "http://127.0.0.1:8080/1.0/kb/tenants/userKeyValue/demo_value"
+    "http://127.0.0.1:8080/1.0/kb/tenants/userKeyValue/demo_key"
 ```
 
 ```java
 import org.killbill.billing.client.api.gen.TenantApi;
 protected TenantApi tenantApi;
 
-String keyName = "demo_value";
+String keyName = "demo_key";
 
 tenantApi.deleteUserKeyValue(keyName, requestOptions);
 ```
@@ -619,9 +675,9 @@ tenantApi.deleteUserKeyValue(keyName, requestOptions);
 user = "demo"
 reason = nil
 comment = nil
-key_value = "demo_value"
+key_name = "demo_key"
 
-KillBillClient::Model::Tenant.delete_tenant_user_key_value(key_value,
+KillBillClient::Model::Tenant.delete_tenant_user_key_value(key_name,
                                                            user,
                                                            reason,
                                                            comment,
@@ -631,10 +687,30 @@ KillBillClient::Model::Tenant.delete_tenant_user_key_value(key_value,
 ```python
 tenantApi = killbill.api.TenantApi()
 
-key_name = 'demo_value'
+key_name = 'demo_key'
 
 tenantApi.delete_user_key_value(key_name, created_by='demo')
 ```
+
+````javascript
+const api: killbill.TenantApi = new killbill.TenantApi(config);
+
+const key = 'demo_key'
+
+api.deleteUserKeyValue(key, 'created-by', 'reason', 'comment')
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$keyName = "demo_key"; 
+
+$apiInstance->deleteUserKeyValue($keyName, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
@@ -686,6 +762,14 @@ tenantApi = killbill.api.TenantApi()
 
 tenantApi.get_all_plugin_configuration(key_prefix='tenant_config')
 ```
+
+````javascript
+TODO
+````
+
+````php
+TODO
+````
 
 > Example Response:
 
@@ -752,7 +836,7 @@ curl -v \
 import org.killbill.billing.client.api.gen.TenantApi;
 protected TenantApi tenantApi;
 
-String body = "{\"org.killbill.invoice.sanitySafetyBoundEnabled\":\"false\"}";
+String body = "{'org.killbill.invoice.sanitySafetyBoundEnabled':'false'}";
 
 TenantKeyValue result = tenantApi.uploadPerTenantConfiguration(body, requestOptions);
 ```
@@ -767,6 +851,26 @@ body = '{"org.killbill.invoice.sanitySafetyBoundEnabled":"false"}'
 
 tenantApi.upload_per_tenant_configuration(body, created_by='demo')
 ```
+
+````javascript
+const body = '{"org.killbill.invoice.sanitySafetyBoundEnabled":"false"}';
+
+const api: killbill.TenantApi = new killbill.TenantApi(config);
+
+api.uploadPerTenantConfiguration(body, 'created-by', 'reason', 'comment')
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$body = "{'org.killbill.invoice.sanitySafetyBoundEnabled':'false'}";
+
+$result = $apiInstance->uploadPerTenantConfiguration($body, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment);
+````
 
 **Request Body**
 
@@ -813,8 +917,20 @@ TODO
 ```python
 tenantApi = killbill.api.TenantApi()
 
-tenantApi.get_per_tenant_configuration()
+tenantKeyValue =  tenantApi.get_per_tenant_configuration()
 ```
+
+````javascript
+const api: killbill.TenantApi = new killbill.TenantApi(config);
+
+const response: AxiosResponse<killbill.TenantKeyValue, any> = await api.getPerTenantConfiguration()
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$result = $apiInstance->getPerTenantConfiguration();
+````
 
 > Example Response:
 
@@ -874,6 +990,22 @@ tenantApi = killbill.api.TenantApi()
 
 tenantApi.delete_per_tenant_configuration(created_by='demo')
 ```
+
+````javascript
+const api: killbill.TenantApi = new killbill.TenantApi(config);
+
+api.deletePerTenantConfiguration('created-by', 'reason', 'comment')
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$apiInstance->deletePerTenantConfiguration($xKillbillCreatedBy, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
