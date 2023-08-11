@@ -1308,15 +1308,17 @@ The endpoints below allow you to override such state machines on a per-tenant le
 
 ### Add a per tenant payment state machine for a plugin
 
-Adds a per tenant key-value pair for the specified plugin. The plugin name is given as a path parameter. The key name is `PLUGIN_PAYMENT_STATE_MACHINE_*plugin*` where *plugin* is the plugin name. The API sets the value of this key, replacing any previous value.
+Adds a per tenant key-value pair for the specified plugin. The plugin name is given as a path parameter. The key name is `PLUGIN_PAYMENT_STATE_MACHINE_*plugin*` where *plugin* is the payment plugin name. The API sets the value of this key, replacing any previous value.
 
 The state machine is defined in an XML file. The complete XML file becomes the value of the key.
 
 **HTTP Request**
 
-Let's say we want to overwrite the default Kill Bill payment state machine for the payment plugin `demo_plugin`, and assuming `SimplePaymentStates.xml`is a valid payment state machine XML file, then the HTTP Request would be:
-
 `POST http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginPaymentStateMachineConfig/{pluginName}`
+
+**Request Body**
+
+The request body can be specified as an XML string. Alternatively, the path of the XML file can be specified.
 
 > Example Request:
 
@@ -1339,8 +1341,8 @@ curl -v \
 import org.killbill.billing.client.api.gen.TenantApi;
 protected TenantApi tenantApi;
 
-String pluginName = "noop";
-String stateMachineConfig = getResourceBodyString("SimplePaymentStates.xml");
+String pluginName = "demo_plugin";
+String stateMachineConfig = "<xml>..</xml>";
 
 TenantKeyValue result = tenantApi.uploadPluginPaymentStateMachineConfig(pluginName,
                                                                         stateMachineConfig,
@@ -1355,10 +1357,32 @@ TODO
 tenantApi = killbill.api.TenantApi()
 
 plugin_name = 'demo_plugin'
-body = 'SimplePaymentStates.xml'
+body = '<xml>..</xml>'
 
 tenantApi.upload_plugin_payment_state_machine_config(plugin_name, body, created_by='demo')
 ```
+
+````javascript
+const api: killbill.TenantApi = new killbill.TenantApi(config);
+
+const plugin_name = 'demo_plugin';
+const body = '<xml>..</xml>'
+
+api.uploadPluginPaymentStateMachineConfig(body, plugin_name, 'created-by', 'reason', 'comment')
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$pluginName = "demo_plugin";
+$body = "<xml>..</xml>";
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$result = $apiInstance->uploadPluginPaymentStateMachineConfig($body, $xKillbillCreatedBy, $pluginName, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
@@ -1370,7 +1394,7 @@ If successful, returns a status code of 201 and an empty body. In addition, a `L
 
 ### Retrieve a per tenant payment state machine for a plugin
 
-Retrieves the value for the appropriate payment state machine key for the specified plugin. If present, this value should be the complete XML file that defines the state machine.
+Retrieves the complete XML file corresponding to the payment state machine for the specified plugin if it exists.
 
 **HTTP Request**
 
@@ -1391,7 +1415,7 @@ curl -v \
 import org.killbill.billing.client.api.gen.TenantApi;
 protected TenantApi tenantApi;
 
-String pluginName = "noop";
+String pluginName = "demo_plugin";
 
 TenantKeyValue result = tenantApi.getPluginPaymentStateMachineConfig(pluginName, requestOptions);
 ```
@@ -1405,8 +1429,24 @@ tenantApi = killbill.api.TenantApi()
 
 plugin_name = 'demo_plugin'
 
-tenantApi.get_plugin_payment_state_machine_config(plugin_name)
+tenantKeyValue = tenantApi.get_plugin_payment_state_machine_config(plugin_name)
 ```
+
+````javascript
+const api: killbill.TenantApi = new killbill.TenantApi(config);
+
+const plugin_name = 'demo_plugin';
+
+const response: AxiosResponse<killbill.TenantKeyValue, any> = await api.getPluginPaymentStateMachineConfig(plugin_name)
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$pluginName = "demo_plugin";
+
+$result = $apiInstance->getPluginPaymentStateMachineConfig($pluginName);
+````
 
 > Example Response:
 
@@ -1488,7 +1528,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 200 and a key value object for the key `PLUGIN_PAYMENT_STATE_MACHINE_*plugin*`. The value of this key should be the complete XML file that defines the payment state machine.
+If successful, returns a status code of 200 and a key value object for the key `PLUGIN_PAYMENT_STATE_MACHINE_*plugin*`. 
 
 ### Delete a per tenant payment state machine for a plugin
 
@@ -1516,7 +1556,7 @@ curl -v \
 import org.killbill.billing.client.api.gen.TenantApi;
 protected TenantApi tenantApi;
 
-String pluginName = "noop";
+String pluginName = "demo_plugin";
 
 tenantApi.deletePluginPaymentStateMachineConfig(pluginName, requestOptions);
 ```
@@ -1532,6 +1572,26 @@ plugin_name = 'demo_plugin'
 
 tenantApi.delete_plugin_payment_state_machine_config(plugin_name, created_by='demo')
 ```
+
+````javascript
+const api: killbill.TenantApi = new killbill.TenantApi(config);
+
+const plugin_name = 'demo_plugin';
+
+api.deletePluginPaymentStateMachineConfig(plugin_name, 'created-by', 'reason', 'comment')
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$pluginName = "demo_plugin";
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$apiInstance->deletePluginPaymentStateMachineConfig($pluginName, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
