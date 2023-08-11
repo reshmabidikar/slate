@@ -275,7 +275,7 @@ See push notification documentation [here](https://docs.killbill.io/latest/push_
 
 ### Register a push notification
 
-Register a callback URL for this tenant for push notifications.The key name is PUSH_NOTIFICATION_CB. The API sets the value of this key, replacing any previous value.
+Register a callback URL for this tenant for push notifications. Inserts a key-value pair corresponding to the tenant where key name is `PUSH_NOTIFICATION_CB` and value is the URL of the push notification handler. The API sets the value of this key, replacing any previous value. 
 
 **HTTP Request**
 
@@ -315,6 +315,22 @@ tenantApi = killbill.api.TenantApi()
 
 tenantApi.register_push_notification_callback(created_by='demo', cb='http://demo/callmeback')
 ```
+
+````javascript
+TODO
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$cb = "http://demo/callmeback";
+
+$result = $apiInstance->registerPushNotificationCallback($xKillbillCreatedBy, $cb, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
@@ -362,6 +378,18 @@ tenantApi = killbill.api.TenantApi()
 tenantApi.get_push_notification_callbacks()
 ```
 
+````javascript
+const api: killbill.TenantApi = new killbill.TenantApi(config);
+
+const response: AxiosResponse<killbill.TenantKeyValue, any> = await api.getPushNotificationCallbacks()
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$result = $apiInstance->getPushNotificationCallbacks();
+````
+
 > Example Response:
 
 ```json
@@ -380,12 +408,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 200 and a body containing a key-value object as follows:
-
-{
-  "key": "PUSH_NOTIFICATION_CB",
-  "values": list containing the callback URL, if any
-}
+If successful, returns a status code of 200 and a tenant key value object for the key PUSH_NOTIFICATION_CB.
 
 ### Delete a registered push notification
 
@@ -425,6 +448,22 @@ tenantApi = killbill.api.TenantApi()
 
 tenantApi.delete_push_notification_callbacks(created_by='demo')
 ```
+
+````javascript
+const api: killbill.TenantApi = new killbill.TenantApi(config);
+
+api.deletePushNotificationCallbacks('created-by', 'reason', 'comment')
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$apiInstance->deletePushNotificationCallbacks($xKillbillCreatedBy, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
