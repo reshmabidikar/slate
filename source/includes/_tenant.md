@@ -1018,19 +1018,19 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Plugin Configuration
 
-Plugins also support configuration on a per-tenant level. Please refer to our [plugin configuration manual](https://docs.killbill.io/latest/plugin_development.html#_plugin_configuration) for more details.
+Plugins also support configuration on a per-tenant level. Please refer to our [plugin configuration manual](https://docs.killbill.io/latest/plugin_installation.html#per-tenant-configuration) for more details.
 
 An example of the use of such per-tenant properties is to configure a payment plugin with different API keys,
 one set of keys for each tenant. This allows for a true multi-tenant deployment where plugins have different configuration
 based on the tenant in which they operate.
 
-Upon adding or deleting a new per-tenant plugin configuration, the system will generate a `TENANT_CONFIG_CHANGE`/`TENANT_CONFIG_DELETION` event, which can be handled in the plugin to refresh its configuration. In multi-node scenarios, events will be dispatched on each node, that is, on each plugin instance so they end up with a consistent view. A lot of the logic to handle configuration update has been implemented in our plugin frameworks (see [ruby framework](https://github.com/killbill/killbill-plugin-framework-ruby) and [java framework](https://github.com/killbill/killbill-plugin-framework-java)).
+Upon adding or deleting a new per-tenant plugin configuration, the system will generate a `TENANT_CONFIG_CHANGE`/`TENANT_CONFIG_DELETION` event, which can be handled in the plugin to refresh its configuration. In multi-node scenarios, events will be dispatched on each node, that is, on each plugin instance so they end up with a consistent view. A lot of the logic to handle configuration update has been implemented in our  [plugin framework](https://github.com/killbill/killbill-plugin-framework-java)).
 
 As with the system properties configuration, this is actually a special case of per-tenant key-value pairs. The following endpoints provide the ability to configure plugins on a per-tenant level.
 
 ### Add a per tenant configuration for a plugin
 
-Adds a per tenant key-value pair for the specified plugin. The plugin name is given as a path parameter. The key name is `PLUGIN_CONFIG_*plugin*` where *plugin* is the plugin name. The API sets the value of this key, replacing any previous value.
+Adds a per tenant key-value pair for the specified plugin. The plugin name is given as a path parameter. The API internally inserts a key-value pair with key name=`PLUGIN_CONFIG_*plugin*` where *plugin* is the plugin name. It replaces any previous value.
 
 The value string uploaded is plugin dependent but typically consists of key/value properties,
 or well formatted yml or a properties file.
@@ -1056,6 +1056,20 @@ curl -v \
     -H "X-Killbill-Comment: demo" \
     -d @./config.properties \
     "http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginConfig/demo_plugin"
+    
+OR 
+
+curl -v \
+     -X POST \
+     -u admin:password \
+     -H 'X-Killbill-ApiKey: bob' \
+     -H 'X-Killbill-ApiSecret: lazar' \
+     -H 'X-Killbill-CreatedBy: admin' \
+     -H 'Content-Type: text/plain' \
+     -d 'org.killbill.billing.plugin.avatax.url=XXX
+org.killbill.billing.plugin.avatax.accountId=YYY
+org.killbill.billing.plugin.avatax.licenseKey=ZZZ' \
+     http://127.0.0.1:8080/1.0/kb/tenants/uploadPluginConfig/killbill-avatax
 ```
 
 ```java
@@ -1075,7 +1089,7 @@ user = "demo"
 reason = nil
 comment = nil
 
-KillBillClient::Model::Tenant.upload_tenant_plugin_config(plugin_name,
+tenant_key_value = KillBillClient::Model::Tenant.upload_tenant_plugin_config(plugin_name,
                                                           plugin_config,
                                                           user,
                                                           reason,
@@ -1091,6 +1105,28 @@ body = 'tenant_config'
 
 tenantApi.upload_plugin_configuration(plugin_name, body, created_by='demo')
 ```
+
+````javascript
+const api: killbill.TenantApi = new killbill.TenantApi(config);
+
+const plugin_name = 'demo_plugin';
+const body = 'tenant_config'
+
+api.uploadPluginConfiguration(body, plugin_name, 'created-by', 'reason', 'comment')
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$pluginName = "demo_plugin";
+$body = "tenant_config";
+
+$result = $apiInstance->uploadPluginConfiguration($body, $xKillbillCreatedBy, $pluginName, $xKillbillReason, $xKillbillComment);
+````
 
 
 **Request Body**
@@ -1136,7 +1172,7 @@ final TenantKeyValue result = tenantApi.getPluginConfiguration(pluginName, reque
 ```ruby
 plugin_name = "demo_plugin"
 
-KillBillClient::Model::Tenant.get_tenant_plugin_config(plugin_name, options)
+tenant_key_value = KillBillClient::Model::Tenant.get_tenant_plugin_config(plugin_name, options)
 ```
 
 ```python
@@ -1144,8 +1180,24 @@ tenantApi = killbill.api.TenantApi()
 
 plugin_name = 'demo_plugin'
 
-tenantApi.get_plugin_configuration(plugin_name)
+tenantKeyValue = tenantApi.get_plugin_configuration(plugin_name)
 ```
+
+````javascript
+const api: killbill.TenantApi = new killbill.TenantApi(config);
+
+const plugin_name = 'demo_plugin';
+
+const response: AxiosResponse<killbill.TenantKeyValue, any> = await api.getPluginConfiguration(plugin_name)
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$pluginName = "demo_plugin";
+
+$result = $apiInstance->getPluginConfiguration($pluginName);
+````
 
 > Example Response:
 
@@ -1219,6 +1271,26 @@ plugin_name = 'demo_plugin'
 
 tenantApi.delete_plugin_configuration(plugin_name, created_by='demo')
 ```
+
+````javascript
+const api: killbill.TenantApi = new killbill.TenantApi(config);
+
+const plugin_name = 'demo_plugin';
+
+api.deletePluginConfiguration(plugin_name, 'created-by', 'reason', 'comment')
+````
+
+````php
+$apiInstance = $client->getTenantApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$pluginName = "demo_plugin";
+
+$apiInstance->deletePluginConfiguration($pluginName, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
