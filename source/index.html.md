@@ -1,6 +1,21 @@
 ---
 includes:
-  
+  # - tenant
+  # - catalog
+  # - account
+  # - payment-method
+  # - subscription
+  # - bundle
+  # - invoice
+  # - credit
+  # - payment
+  # - payment-transaction
+  # - invoice-payment
+  # - usage
+  # - custom-field
+  # - tag
+  # - tag-definition
+  # - admin
 
 title: Kill Bill
 
@@ -27,8 +42,6 @@ Kill Bill offers a set of HTTP APIs, commonly called REST APIs, that use the HTT
 
 Kill Bill also offers a set of [java APIs](https://github.com/killbill/killbill-api/tree/master/src/main/java/org/killbill/billing) that can be used by plugins to make requests, and a set of [java plugin APIs](https://github.com/killbill/killbill-plugin-api) for Kill Bill core to interact with the plugins. These apis are beyond the scope of this documentation.
 
-> API client libraries
-
 
 Official libraries for the Kill Bill API are available in several languages,
 including Java, Php, Python, Ruby, Node, and Go. Community-supported libraries
@@ -38,6 +51,8 @@ In the following documentation, we assume
 you have a Kill Bill server instance running on `127.0.0.1` on port `8080`. It is straightforward to substitute a different IP address or port number if necessary.
 
 Kill Bill supports the `https` protocol, but here all examples are shown using `http`.
+
+> API client libraries
 
 
 ```java
@@ -71,7 +86,6 @@ Depending on how the system has been configured, the authentication mechanism ca
 
  The system also supports configuring roles and permissions, to restrict user access to certain resources and operations. The permissions are quite granular and are defined [here](https://github.com/killbill/killbill-api/blob/master/src/main/java/org/killbill/billing/security/Permission.java#L19)
 
-
 ## Multi-Tenancy
 
 Kill Bill has been designed from the ground up to run multiple logical instances on the same set of servers and databases. This allows different customer data sets to be cleanly separated. Another common use case is to configure both a production tenant and a test tenant, the latter being used for test requests during deployment and for sanity after deployment.
@@ -81,7 +95,12 @@ Each API call requires the tenant being used to be identified, through the use o
 * **`X-Killbill-ApiKey`**: The API key associated with the tenant. This value is stored in clear in the database.
 * **`X-Killbill-ApiSecret`**: The API secret associated with the tenant. This value is hashed and stored along with the `salt` in the database
 
-<aside class="notice">Note: You can control the number of hash iterations through the system property `org.killbill.security.shiroNbHashIterations` whose default value is set to `200000`. If your security requirements are met through other means, you can set this value to `1` to avoid wasting CPU cycles and greatly improve latency. Changing the value on an existing system requires re-hashing the keys.</aside>
+<aside class="notice">
+  <span class="title">Note:</span> 
+  <span class="content">
+    You can control the number of hash iterations through the system property `org.killbill.security.shiroNbHashIterations` whose default value is set to `200000`. If your security requirements are met through other means, you can set this value to `1` to avoid wasting CPU cycles and greatly improve latency. Changing the value on an existing system requires re-hashing the keys.
+  </span>
+</aside>
 
 
 > Specifying the basic authentication headers and multi-tenancy headers:
@@ -205,7 +224,6 @@ exampleApi.create(body,
                   api_secret)
 ```
 
-
 ## Resource IDs and External Keys
 
 When a new resource is created, there are 2 IDS associated with it. Kill Bill will allocate a unique ID, and the user of the API will also be able to associate its own unique key, called the `external key`. The external key is used for 2 scenarios:
@@ -328,6 +346,7 @@ We also keep a global repository for all plugins [here](https://github.com/killb
 
 `KPM`, The Kill Bill Package Manager, provides among [other things](https://github.com/killbill/killbill-cloud/tree/master/kpm) the ability to retrieve version mapping for dependencies and plugins -- see the example on the right side.
 
+> 
 
 ```
 
@@ -363,6 +382,7 @@ Kill Bill relies on HTTP response codes to indicate the success or failure of an
 * **`4xx`** status often indicates a client side error -- e.g missing madatory API field
 * **`5xx`** status indicates an error with Kill Bill's servers or third party system -- e.g payment gateway returns 5xx.
 
+>
 
 ```
 HTTP status code summary:
@@ -393,19 +413,19 @@ In addition to these error codes, the system will often return some json to prov
 
 Our main documentation is found [here](http://docs.killbill.io).
 
-# [Tenant](tenant.html)
-# [Catalog](catalog.html)
-# [Account](account.html)
-# [Payment Method](payment-method.html)
-# [Subscription](subscription.html)
-# [Bundle](bundle.html)
-# [Invoice](invoice.html)
-# [Credit](credit.html)
-# [Payment](payment.html)
-# [Payment Transaction](payment-transaction.html)
-# [Invoice Payment](invoice-payment.html)
-# [Usage](usage.html)
-# [Custom Field](custom-field.html)
-# [Tag](tag.html)
-# [Tag Definition](tag-definition.html)
-# [Admin](admin.html)
+# <span class="sidebar-item">[Tenant](tenant.html)</span>
+# <span class="sidebar-item">[Catalog](catalog.html)</span>
+# <span class="sidebar-item">[Account](account.html)</span>
+# <span class="sidebar-item">[Payment Method](payment-method.html)</span>
+# <span class="sidebar-item">[Subscription](subscription.html)</span>
+# <span class="sidebar-item">[Bundle](bundle.html)</span>
+# <span class="sidebar-item">[Invoice](invoice.html)</span>
+# <span class="sidebar-item">[Credit](credit.html)</span>
+# <span class="sidebar-item">[Payment](payment.html)</span>
+# <span class="sidebar-item">[Payment Transaction](payment-transaction.html)</span>
+# <span class="sidebar-item">[Invoice Payment](invoice-payment.html)</span>
+# <span class="sidebar-item">[Usage](usage.html)</span>
+# <span class="sidebar-item">[Custom Field](custom-field.html)</span>
+# <span class="sidebar-item">[Tag](tag.html)</span>
+# <span class="sidebar-item">[Tag Definition](tag-definition.html)</span>
+# <span class="sidebar-item">[Admin](admin.html)</span>

@@ -65,17 +65,17 @@ under the License.
       <header class="header sticky" id="header">
         <div class="header-wrapper">
           <div class="header-logo">
-          <div class="logo-switch-wrapper">
+            <div class="logo-switch-wrapper">
               <div class="logo">
-              <a href="/">
-                <img src="/images/logo/light-logo.svg" style="height:38px" alt="Kill Bill Docs" id="logo">
-              </a>
+                <a href="/">
+                  <img src="/images/logo/light-logo.svg" style="height:38px" alt="Kill Bill Docs" id="logo">
+                </a>
+              </div>
+              <div class="switch">
+                <input type="checkbox" id="theme-toggle">
+                <span class="slider round"></span>
+              </div>
             </div>
-            <div class="switch">
-              <input type="checkbox" id="theme-toggle">
-              <span class="slider round"></span>
-            </div>
-          </div>
             <div class="header-search">
               <div class="search-form-wrapper">
                 <div id="docsearch" style="height: 43px; display: flex; align-items: center; width: 100%;">
@@ -92,6 +92,11 @@ under the License.
           </div>
           <% if language_tabs.any? %>
             <div class="lang-selector">
+              <select class="mob-lang-selector">
+                <% language_tabs.each do |lang|%>
+                  <option data-language-name="<%= lang %>" value="<%= lang %>"><%= lang %></option>
+                <% end %>
+              </select>
               <% language_tabs.each do |lang| %>
                 <% if lang.is_a? Hash %>
                   <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
@@ -113,7 +118,6 @@ under the License.
       </script>
       <a href="#" id="nav-button">
         <span>
-          NAV
           <%= image_tag('navbar.png') %>
         </span>
       </a>
@@ -174,7 +178,6 @@ under the License.
           $(this).find('a').attr("href", itemHref);
         });
       })
-
     </script>
     <script src='https://cdn.jsdelivr.net/npm/@docsearch/js@3'></script>
     <script>

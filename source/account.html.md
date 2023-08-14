@@ -12,6 +12,13 @@ language_tabs:
    - ruby
    - python
 
+toc_footers:
+  - <a href="mailto:support@killbill.io">Report a doc problem </a>
+
+search: true
+
+code_clipboard: true
+
 search: true
 
 ---

@@ -210,6 +210,10 @@ html, body {
   }
 }
 
+.mob-lang-selector {
+  display: none;
+}
+
 .toc-link, .toc-footer li, li span a {
   padding: 6px 12px 6px 12px;
   display: block;
@@ -230,12 +234,11 @@ html, body {
     display: block;
     $side-pad: $main-padding / 2 - 8px;
     padding: $side-pad $side-pad $side-pad;
-    background-color: rgba($main-bg, 0.7);
     transform-origin: 0 0;
     transform: rotate(-90deg) translate(-100%, 0);
     border-radius: 0 0 0 5px;
+    padding: 28px;
   }
-  padding: 0 1.5em 5em 0; // increase touch size area
   display: none;
   position: fixed;
   top: 0;
@@ -254,7 +257,6 @@ html, body {
   transition: left 0.3s ease-in-out;
 
   &:hover { opacity: 1; }
-  &.open {left: $nav-width}
 }
 
 
@@ -502,8 +504,7 @@ html, body {
   }
 
   aside {
-    padding-top: 1em;
-    padding-bottom: 1em;
+    padding: 16px;
     margin-top: 1.5em;
     margin-bottom: 1.5em;
     background: $aside-notice-bg;
@@ -518,15 +519,59 @@ html, body {
     }
   }
 
-  aside:before {
+  aside .title:before {
     vertical-align: middle;
     padding-right: 0.5em;
     font-size: 14px;
   }
 
-  aside.notice:before {
+  aside.notice .title {
+    display: block;
+    font-weight: 600;
+    font-size: 14px;
+    color: $heading-text;
+  }
+  
+  aside.notice .content {
+    margin-left: 26px;
+    display: block;
+    font-weight: 400;
+    line-height: 21px;
+    font-size: 14px;
+  }
+
+  aside.notice .title:before {
     @extend %icon-info-sign;
   }
+
+
+.main .note .icon {
+  width: 20px;
+  height: 20px;
+  display: flex;
+}
+
+.main .note .icon.info-icon {
+  height: 100%;
+  width: 100%;
+}
+
+.main .note .icon .fa.icon-note {
+  display: none;
+}
+
+.main .note .content {
+  font-weight: 400;
+  font-size: 14px;
+  color: var(--color);
+  padding-left: 12px;
+}
+
+.main .note .content strong:is(:first-child) {
+  display: block;
+  height: 21px;
+  color: var(--heading-color);
+}
 
   aside.warning:before {
     @extend %icon-exclamation-sign;
@@ -656,6 +701,45 @@ html, body {
   .sidebar-toggler {
     display: block;
   }
+
+  .mob-lang-selector {
+    display: block;
+    background-color: transparent;
+    border: none;
+    scale: 1.1;
+    font-size: 14px;
+    font-family: 'Inter';
+  }
+
+  .mob-lang-selector:focus-visible, .mob-lang-selector:active {
+    outline: none;
+  }
+
+  .header .header-search {
+    width: 52px !important;
+  }
+
+  .header .header-wrapper {
+    justify-content: end !important;
+  }
+
+  .logo-switch-wrapper,  .lang-selector a {
+    display: none !important;
+  }
+  .lang-selector {
+    width: 73px !important;
+    padding-right: 48px;
+    margin-left: 0 !important;
+  }
+  .search-form-wrapper {
+    .DocSearch.DocSearch-Button {
+      width: auto !important;
+      margin-left: 0 !important;
+    }
+    .DocSearch-Button-Keys, .DocSearch-Button-Placeholder {
+      display: none;
+    }
+  }
 }
 
 @media (max-width: $phone-width) {
@@ -686,6 +770,9 @@ html, body {
 
   .highlight + p {
     margin-top: 20px;
+  }
+  .content > p {
+    padding-right: 0 !important;
   }
 }
 
@@ -838,6 +925,3 @@ html, body {
   }
 }
 
-.section-container {
-  display: flex;
-}
