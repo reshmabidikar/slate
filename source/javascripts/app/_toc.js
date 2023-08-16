@@ -19,11 +19,6 @@
     };
   };
 
-  var closeToc = function() {
-    $(".toc-wrapper").removeClass('open');
-    $("#nav-button").removeClass('open');
-  };
-
   function loadToc($toc, tocLinkSelector, tocListSelector, scrollOffset) {
     var headerHeights = {};
     var pageHeight = 0;
@@ -92,14 +87,6 @@
     var makeToc = function() {
       recacheHeights();
       refreshToc();
-
-      $("#nav-button").click(function() {
-        $(".toc-wrapper").toggleClass('open');
-        $("#nav-button").toggleClass('open');
-        return false;
-      });
-      $(".page-wrapper").click(closeToc);
-      $(".toc-link").click(closeToc);
 
       // reload immediately after scrolling on toc click
       $toc.find(tocLinkSelector).click(function() {

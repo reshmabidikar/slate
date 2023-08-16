@@ -12,36 +12,14 @@ $default: auto;
     float: left;
 }
 
-.toc-wrapper {
-    transition: right 0.3s ease-in-out !important;
-    left: $default !important;
-    #{right}: 0;
-}
-
 .toc-h2 {
     padding-#{right}: $nav-padding + $nav-indent;
 }
 
-#nav-button {
-    #{right}: 0;
-    transition: right 0.3s ease-in-out;
-    &.open {
-        right: $nav-width
-    }
-}
 
 ////////////////////////////////////////////////////////////////////////////////
 // PAGE LAYOUT AND CODE SAMPLE BACKGROUND
 ////////////////////////////////////////////////////////////////////////////////
-.page-wrapper {
-    margin-#{left}: $default !important;
-    margin-#{right}: $nav-width;
-    .dark-box {
-        #{right}: $default;
-        #{left}: 0;
-    }
-}
-
 .lang-selector {
     width: $default !important;
     a {
@@ -111,28 +89,9 @@ aside {
     direction: rtl;
 }
 
-.toc-wrapper {
-    text-align: right;
-    direction: rtl;
-    font-weight: 100 !important;
-}
-
-
 ////////////////////////////////////////////////////////////////////////////////
 // RESPONSIVE DESIGN
 ////////////////////////////////////////////////////////////////////////////////
-@media (max-width: $tablet-width) {
-    .toc-wrapper {
-        #{right}: -$nav-width;
-        &.open {
-            #{right}: 0;
-        }
-    }
-    .page-wrapper {
-        margin-#{right}: 0;
-    }
-}
-
 @media (max-width: $phone-width) {
     %left-col {
         margin-#{left}: 0;

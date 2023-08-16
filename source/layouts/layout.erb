@@ -61,49 +61,47 @@ under the License.
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
       <% end %>
     </head>
-    <body class="<%= page_classes %>" data-languages="<%=h language_tabs.map{ |lang| lang.is_a?(Hash) ? lang.keys.first : lang }.to_json %>">
+    <body data-languages="<%=h language_tabs.map{ |lang| lang.is_a?(Hash) ? lang.keys.first : lang }.to_json %>">
       <header class="header sticky" id="header">
-        <div class="header-wrapper">
-          <div class="header-logo">
-            <div class="logo-switch-wrapper">
-              <div class="logo">
-                <a href="/">
-                  <img src="/images/logo/light-logo.svg" style="height:38px" alt="Kill Bill Docs" id="logo">
-                </a>
-              </div>
-              <div class="switch">
-                <input type="checkbox" id="theme-toggle">
-                <span class="slider round"></span>
-              </div>
-            </div>
-            <div class="header-search">
-              <div class="search-form-wrapper">
-                <div id="docsearch" style="height: 43px; display: flex; align-items: center; width: 100%;">
-                </div>
-              </div>
+        <div class="header__logo-wrapper">
+          <div class="header__logo">
+            <a href="/">
+              <img src="/images/logo/light-logo.svg" style="height:38px" alt="Kill Bill Docs" id="logo">
+            </a>
+          </div>
+          <label class="header__theme-switch theme-switch"></label>
+        </div>
+        
+        <div class="header__sidebar-toggler">
+          <svg class="hamburger" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M20.75 7C20.75 7.41421 20.4142 7.75 20 7.75L4 7.75C3.58579 7.75 3.25 7.41421 3.25 7C3.25 6.58579 3.58579 6.25 4 6.25L20 6.25C20.4142 6.25 20.75 6.58579 20.75 7Z" fill=""/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M20.75 12C20.75 12.4142 20.4142 12.75 20 12.75L4 12.75C3.58579 12.75 3.25 12.4142 3.25 12C3.25 11.5858 3.58579 11.25 4 11.25L20 11.25C20.4142 11.25 20.75 11.5858 20.75 12Z" fill=""/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M20.75 17C20.75 17.4142 20.4142 17.75 20 17.75L4 17.75C3.58579 17.75 3.25 17.4142 3.25 17C3.25 16.5858 3.58579 16.25 4 16.25L20 16.25C20.4142 16.25 20.75 16.5858 20.75 17Z" fill=""/>
+          </svg>
+        </div>
+
+        <div class="header__search-wrapper">
+          <div class="header__search">
+            <div id="docsearch" style="height: 43px; display: flex; align-items: center; width: 100%;">
             </div>
           </div>
-          <div class="nav-toggler sidebar-toggler">
-            <svg class="hamburger" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24" fill="none">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M20.75 7C20.75 7.41421 20.4142 7.75 20 7.75L4 7.75C3.58579 7.75 3.25 7.41421 3.25 7C3.25 6.58579 3.58579 6.25 4 6.25L20 6.25C20.4142 6.25 20.75 6.58579 20.75 7Z" fill=""/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M20.75 12C20.75 12.4142 20.4142 12.75 20 12.75L4 12.75C3.58579 12.75 3.25 12.4142 3.25 12C3.25 11.5858 3.58579 11.25 4 11.25L20 11.25C20.4142 11.25 20.75 11.5858 20.75 12Z" fill=""/>
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M20.75 17C20.75 17.4142 20.4142 17.75 20 17.75L4 17.75C3.58579 17.75 3.25 17.4142 3.25 17C3.25 16.5858 3.58579 16.25 4 16.25L20 16.25C20.4142 16.25 20.75 16.5858 20.75 17Z" fill=""/>
-            </svg>
-          </div>
+
           <% if language_tabs.any? %>
             <div class="lang-selector">
-              <select class="mob-lang-selector">
+              <select class="lang-selector__select">
                 <% language_tabs.each do |lang|%>
                   <option data-language-name="<%= lang %>" value="<%= lang %>"><%= lang %></option>
                 <% end %>
               </select>
-              <% language_tabs.each do |lang| %>
-                <% if lang.is_a? Hash %>
-                  <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
-                <% else %>
-                  <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
+              <div class="lang-selector__list">
+                <% language_tabs.each do |lang| %>
+                  <% if lang.is_a? Hash %>
+                    <a href="#" class="lang-selector__link" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
+                  <% else %>
+                    <a href="#" class="lang-selector__link" data-language-name="<%= lang %>"><%= lang %></a>
+                  <% end %>
                 <% end %>
-              <% end %>
+              </div>
             </div>
           <% end %>
         </div>
@@ -116,59 +114,44 @@ under the License.
           $('.loader-wrapper').hide();
         });
       </script>
-      <a href="#" id="nav-button">
-        <span>
-          <%= image_tag('navbar.png') %>
-        </span>
-      </a>
-      <div class="toc-wrapper">
-        <% if language_tabs.any? %>
-          <div class="lang-selector">
-            <% language_tabs.each do |lang| %>
-              <% if lang.is_a? Hash %>
-                <a href="#" data-language-name="<%= lang.keys.first %>"><%= lang.values.first %></a>
-              <% else %>
-                <a href="#" data-language-name="<%= lang %>"><%= lang %></a>
-              <% end %>
-            <% end %>
-          </div>
-        <% end %>
-        <ul id="toc" class="toc-list-h1">
-          <% toc_data(page_content).each do |h1| %>
-            <li>
-              <% if h1[:content].to_s.include?('span') %>
-                <%= h1[:content] %>
-              <% else %>
-                <a href="#<%= h1[:id] %>" class="toc-h1 toc-link" data-title="<%= h1[:title] %>"><%= h1[:content] %></a>
-              <% end %>
-              <% if h1[:children].length > 0 %>
-                <ul class="toc-list-h2">
-                  <% h1[:children].each do |h2| %>
-                    <li>
-                      <a href="#<%= h2[:id] %>" class="toc-h2 toc-link" data-title="<%= h2[:title] %>"><%= h2[:content] %></a>
-                    </li>
+      
+      <main class="page">
+        <div class="page__sidebar">
+          <nav class="toc-wrapper">
+            <ul id="toc" class="toc-list-h1">
+              <% toc_data(page_content).each do |h1| %>
+                <li>
+                  <% if h1[:content].to_s.include?('span') %>
+                    <%= h1[:content] %>
+                  <% else %>
+                    <a href="#<%= h1[:id] %>" class="toc-h1 toc-link" data-title="<%= h1[:title] %>"><%= h1[:content] %></a>
                   <% end %>
-                </ul>
+                  <% if h1[:children].length > 0 %>
+                    <ul class="toc-list-h2">
+                      <% h1[:children].each do |h2| %>
+                        <li>
+                          <a href="#<%= h2[:id] %>" class="toc-h2 toc-link" data-title="<%= h2[:title] %>"><%= h2[:content] %></a>
+                        </li>
+                      <% end %>
+                    </ul>
+                  <% end %>
+                </li>
               <% end %>
-            </li>
-          <% end %>
-        </ul>
-        <% if current_page.data.toc_footers %>
-          <ul class="toc-footer">
-            <% current_page.data.toc_footers.each do |footer| %>
-              <li><%= footer %></li>
+            </ul>
+            <% if current_page.data.toc_footers %>
+              <ul class="toc-footer">
+                <% current_page.data.toc_footers.each do |footer| %>
+                  <li><%= footer %></li>
+                <% end %>
+              </ul>
             <% end %>
-          </ul>
-        <% end %>
-      </div>
-      <div class="page-wrapper">
-        <div class="content">
+          </nav>
+        </div>
+
+        <div class="page__content content">
           <%= page_content %>
         </div>
-        <div class="dark-box">
-          <div id="docsearch"></div>
-        </div>
-      </div>
+      </main>
     </body>
     <script>
       setTimeout(function(){
@@ -182,12 +165,12 @@ under the License.
           function(i,e) {
             const sectionElements = $(this).nextUntil(this.tagName)
 
-            const codeBlock = sectionElements.filter('.highlight, blockquote', )
-            const paragraphsBlock = sectionElements.not('.highlight, blockquote')
+            const codeSnippets = sectionElements.filter('.highlight, blockquote', )
+            const textBlock = sectionElements.not('.highlight, blockquote')
 
             const section = $('<section class="content__section" />')
-              .append($('<div class="content__paragraphs" />').append(paragraphsBlock))
-              .append($('<div class="content__code" />').append(codeBlock))
+              .append($('<div class="content__text" />').append(textBlock))
+              .append($('<div class="content__code-snippets" />').append(codeSnippets))
 
             section.insertAfter($(this))
         });        
