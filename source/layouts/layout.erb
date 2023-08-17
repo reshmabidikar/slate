@@ -117,20 +117,17 @@ under the License.
       
       <main class="page">
         <div class="page__sidebar">
-          <nav class="toc-wrapper">
-            <ul id="toc" class="toc-list-h1">
-              <% toc_data(page_content).each do |h1| %>
+          <nav class="toc-wrapper site-navigator">
+            <ul id="toc" class="toc-list-h1 site-navigator__menu">
+              <% toc_data(current_page.data.menu_items, current_page.data.current_page, page_content).each do |menu_item| %>
                 <li>
-                  <% if h1[:content].to_s.include?('span') %>
-                    <%= h1[:content] %>
-                  <% else %>
-                    <a href="#<%= h1[:id] %>" class="toc-h1 toc-link" data-title="<%= h1[:title] %>"><%= h1[:content] %></a>
-                  <% end %>
-                  <% if h1[:children].length > 0 %>
-                    <ul class="toc-list-h2">
-                      <% h1[:children].each do |h2| %>
+                  <a href="<%= menu_item[:href].nil? ? "##{menu_item[:id]}" : menu_item[:href] %>" class="toc-h1 toc-link site-navigator__item site-navigator__menu-item" data-title="<%= menu_item[:title] %>"><%= menu_item[:content] %></a>
+                  
+                  <% if menu_item[:children].length > 0 %>
+                    <ul class="toc-list-h2 site-navigator__submenu">
+                      <% menu_item[:children].each do |submenu_item| %>
                         <li>
-                          <a href="#<%= h2[:id] %>" class="toc-h2 toc-link" data-title="<%= h2[:title] %>"><%= h2[:content] %></a>
+                          <a href="#<%= submenu_item[:id] %>" class="toc-h2 toc-link site-navigator__item site-navigator__submenu-item" data-title="<%= submenu_item[:title] %>"><%= submenu_item[:content] %></a>
                         </li>
                       <% end %>
                     </ul>
@@ -139,7 +136,7 @@ under the License.
               <% end %>
             </ul>
             <% if current_page.data.toc_footers %>
-              <ul class="toc-footer">
+              <ul class="toc-footer site-navigator__footer">
                 <% current_page.data.toc_footers.each do |footer| %>
                   <li><%= footer %></li>
                 <% end %>
@@ -173,7 +170,27 @@ under the License.
               .append($('<div class="content__code-snippets" />').append(codeSnippets))
 
             section.insertAfter($(this))
-        });        
+        });
+
+        $('.theme-switch').on('click', function (e) {
+          $('body').toggleClass('dark');
+        });
+
+        $('.header__sidebar-toggler').on('click', function() {
+          $('.page').toggleClass('show-sidebar')
+        })
+
+        $('.site-navigator .site-navigator__menu-item').on('click', function () {
+          $('.site-navigator .site-navigator__menu-item').removeClass('active')
+          $(this).addClass('active')
+        })
+        
+        $('.site-navigator .site-navigator__sub-item').on('click', function () {
+          $('.site-navigator .site-navigator__submenu-item').removeClass('active')
+          $('.site-navigator .site-navigator__menu-item').removeClass('active')
+          $(this).parent('.site-navigator__menu-item').addClass('active')
+          $(this).addClass('active')
+        })
       })
     </script>
     <script src='https://cdn.jsdelivr.net/npm/@docsearch/js@3'></script>

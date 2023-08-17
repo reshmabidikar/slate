@@ -1,7 +1,27 @@
 ---
 includes:
-  
   - tag-definition
+
+current_page: tag-definition
+
+menu_items:
+  - index
+  - tenant
+  - catalog
+  - account
+  - payment-method
+  - subscription
+  - bundle
+  - invoice
+  - credit
+  - payment
+  - payment-transaction
+  - invoice-payment
+  - usage
+  - custom-field
+  - tag
+  - tag-definition
+  - admin
   
 title: Kill Bill
 
