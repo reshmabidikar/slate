@@ -218,9 +218,13 @@ Subscription subscription = subscriptionApi.createSubscription(input,
 ```
 
 ```ruby
-subscription              = KillBillClient::Model::Subscription.new
-subscription.account_id   = "e1826665-4524-4d57-81b5-a5eb11146f3f"
-subscription.plan_name    = "basic-monthly-in-advance"
+user = "demo"
+reason = nil
+comment = nil
+
+subscription = KillBillClient::Model::Subscription.new
+subscription.account_id = "e1826665-4524-4d57-81b5-a5eb11146f3f"
+subscription.plan_name = "basic-monthly-in-advance"
 
 requested_date  = nil
 call_completion = nil 
@@ -277,11 +281,11 @@ Creating a subscription often triggers the creation of an invoice, and associate
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body. In addition, a `Location` parameter is returned in the header which contains the new subscription id.
+If successful, returns a status code of 201 and an empty body. In addition, a `Location` header is returned which contains the new subscription id.
 
 ### Create a subscription with addon products
 
-This API creates an addon product subscription. The bundle for the base subscription must be specified.
+This API creates a subscription bundle with base and addon product subscriptions. It can also be used to add an addon subscription to a base subscription in which case the bundle id of the base subscription must be specified.
 
 
 **HTTP Request**
@@ -291,6 +295,7 @@ This API creates an addon product subscription. The bundle for the base subscrip
 > Example Request:
 
 ```shell
+# create a subscription with addon
 curl -v \
     -X POST \
     -u admin:password \
@@ -320,6 +325,7 @@ curl -v \
     
 OR
 
+# create an addon on an existing base subscription
 curl -v \
     -X POST \
     -u admin:password \
@@ -394,18 +400,27 @@ final Bundle bundle = subscriptionApi.createSubscriptionWithAddOns(subscriptions
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 entitlement = [
-                 {
-                    "baseEntitlementAndAddOns":[
-                       {
-                          "accountId":"16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836",
-                          "externalKey":"1-16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836-827963",
-                          "productCategory":"BASE",
-                          "planName":"sports-monthly"
-                       }
-                    ]
-                 }
-              ]
+                {
+                    "accountId":"e3a23520-2ce2-493a-a3c0-7fc08e554353",
+                    "productCategory":"BASE",
+                    "productName":"Shotgun",
+                    "billingPeriod":"MONTHLY",
+                    "priceList":"DEFAULT"
+                },
+                {
+                    "accountId":"e3a23520-2ce2-493a-a3c0-7fc08e554353",
+                    "productCategory":"ADD_ON",
+                    "productName":"Telescopic-Scope",
+                    "billingPeriod":"MONTHLY",
+                    "priceList":"DEFAULT"
+                }
+             ]
+
 requested_date = nil
 entitlement_date = nil
 billing_date = nil
@@ -415,14 +430,14 @@ call_completion_sec = 3
 subscription = KillBillClient::Model::Subscription.new
 subscription.create_entitlement_with_add_on(entitlement,
                                             requested_date,
-                                            entitlement_date, 
+                                            entitlement_date,
                                             billing_date,
-                                            migrated, 
-                                            call_completion_sec,                                            
-                                            user, 
-                                            reason, 
-                                            comment, 
-                                            options)                                         
+                                            migrated,
+                                            call_completion_sec,
+                                            user,
+                                            reason,
+                                            comment,
+                                            options)
 ```
 
 ```python
@@ -470,14 +485,12 @@ Creating a subscription often triggers the creation of an invoice, and associate
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body. In addition, a `Location` parameter is returned in the header which contains the new subscription id.
-
+If successful, returns a status code of 201 and an empty body. In addition, a `Location` header is returned which contains the new bundle id.
 
 
 ### Create multiple subscriptions with addon products
 
-This API creates multiple subscriptions with addon products. The bundle for the base subscription must be specified.
-
+This API creates multiple subscriptions with base and addon product subscriptions. It can also be used to add an addon subscription to a base subscription in which case the bundle id of the base subscription must be specified.
 
 **HTTP Request** 
 
@@ -597,7 +610,6 @@ base2.setPlanName("product1-monthly");
 Subscription base2addOn1 = new Subscription();
 base2addOn1.setAccountId(accountId);
 base2addOn1.setPlanName("product1-ao-monthly");
-base2addOn1.setBillCycleDayLocal(18);
 		
 Subscriptions subscriptions2 = new Subscriptions();
 subscriptions2.add(base2);
@@ -630,39 +642,60 @@ Bundles bundles = subscriptionApi.createSubscriptionsWithAddOns(bulkSubscription
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 bulk_subscription_list = [
                             {
                                "baseEntitlementAndAddOns":[
                                   {
-                                     "accountId":"16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836",
-                                     "externalKey":"1-16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836-827963",
+                                     "accountId":"e3a23520-2ce2-493a-a3c0-7fc08e554353",
                                      "productCategory":"BASE",
-                                     "planName":"sports-monthly"
+                                     "productName":"Pistol",
+                                     "billingPeriod":"MONTHLY",
+                                     "priceList":"DEFAULT"
+                                  },
+                                  {
+                                     "accountId":"e3a23520-2ce2-493a-a3c0-7fc08e554353",
+                                     "productCategory":"ADD_ON",
+                                     "productName":"Cleaning",
+                                     "billingPeriod":"MONTHLY",
+                                     "priceList":"DEFAULT"
                                   }
                                ]
                             },
                             {
                                "baseEntitlementAndAddOns":[
                                   {
-                                     "accountId":"16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836",
-                                     "externalKey":"2-16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836-717751",
+                                     "accountId":"e3a23520-2ce2-493a-a3c0-7fc08e554353",
+                                     "productCategory":"BASE",
+                                     "productName":"Shotgun",
+                                     "billingPeriod":"MONTHLY",
+                                     "priceList":"DEFAULT"
+                                  },
+                                  {
+                                     "accountId":"e3a23520-2ce2-493a-a3c0-7fc08e554353",
                                      "productCategory":"ADD_ON",
-                                     "planName":"super-monthly"
+                                     "productName":"Telescopic-Scope",
+                                     "billingPeriod":"MONTHLY",
+                                     "priceList":"DEFAULT"
                                   }
                                ]
-                            }
+                            },
+
                          ]
 entitlement_date = nil
 billing_date = nil
 call_completion_sec = nil
 
-KillBillClient::Model::BulkSubscription.create_bulk_subscriptions(bulk_subscription_list, 
-                                                                  user, 
-                                                                  reason, 
-                                                                  comment, 
-                                                                  entitlement_date, 
-                                                                  billing_date, 
-                                                                  call_completion_sec, 
+KillBillClient::Model::BulkSubscription.create_bulk_subscriptions(bulk_subscription_list,
+                                                                  user,
+                                                                  reason,
+                                                                  comment,
+                                                                  entitlement_date,
+                                                                  billing_date,
+                                                                  call_completion_sec,
                                                                   options)
 ```
 
@@ -713,7 +746,7 @@ Creating a subscription often triggers the creation of an invoice, and associate
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body. In addition, a `Location` parameter is returned in the header which contains the new subscription id.
+If successful, returns a status code of 201 and an empty body. In addition, a `Location` header is returned which contains URL to fetch the newly created bundles.
 
 
 
@@ -742,7 +775,7 @@ protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
 
-Subscription objFromJson = subscriptionApi.getSubscription(subscriptionId, 
+Subscription subscription = subscriptionApi.getSubscription(subscriptionId, 
                                                            AuditLevel.NONE, 
                                                            requestOptions);
 ```
@@ -750,7 +783,7 @@ Subscription objFromJson = subscriptionApi.getSubscription(subscriptionId,
 ```ruby
 subscription_id = "161692a4-c293-410c-a92f-939c5e3dcba7"
 
-KillBillClient::Model::Subscription.find_by_id(subscription_id, options)
+subscription = KillBillClient::Model::Subscription.find_by_id(subscription_id, options)
 ```
 
 ```python
@@ -891,12 +924,12 @@ import org.killbill.billing.client.api.gen.SubscriptionApi;
 protected SubscriptionApi subscriptionApi;
 
 String externalKey = "somethingSpecial";
-Subscription objFromJson = subscriptionApi.getSubscriptionByKey(externalKey, requestOptions);
+Subscription subscription = subscriptionApi.getSubscriptionByKey(externalKey, requestOptions);
 ```
 
 ```ruby
 external_key = "somethingSpecial"
-KillBillClient::Model::Subscription.find_by_external_key(external_key, options)
+subscription = KillBillClient::Model::Subscription.find_by_external_key(external_key, options)
 ```
 
 ```python
@@ -1034,11 +1067,15 @@ subscriptionApi.updateSubscriptionBCD(subscriptionId,
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 subscription                      = KillBillClient::Model::Subscription.new
 subscription.subscription_id      = "161692a4-c293-410c-a92f-939c5e3dcba7"
 subscription.bill_cycle_day_local = 16
 
-effective_from_date  = '2018-08-16'
+effective_from_date  = nil
 force_past_effective_date = nil
 
 subscription.update_bcd(user, 
@@ -1159,6 +1196,7 @@ This API allows you to upgrade or downgrade a given subscription to a new `Plan`
 > Example Request:
 
 ```shell
+# With productName, billingPeriod, priceList
 curl -v \
     -X PUT \
     -u admin:password \
@@ -1172,6 +1210,19 @@ curl -v \
             "priceList": "DEFAULT"
         }' \
     'http://127.0.0.1:8080/1.0/kb/subscriptions/77e23878-8b9d-403b-bf31-93003e125712'
+    
+# with planName
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '{ 
+            "planName": "sports-monthly"
+        }' \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/e1868fa6-ea97-493e-870d-50787f4b5921'
 ```
 
 ```java
@@ -1183,12 +1234,6 @@ UUID subscriptionId = UUID.fromString("905a0636-ab63-40c0-acd4-b461b6808b5d");
 Subscription newInput = new Subscription();
 newInput.setSubscriptionId(subscriptionId);
 
-// Specify the product, billing period and price list
-newInput.setProductName("Shotgun");
-newInput.setBillingPeriod(BillingPeriod.MONTHLY);
-newInput.setPriceList("DEFAULT");
-
-// Alternatively, you can specify the plan name
 newInput.setPlanName("shotgun-monthly");
 
 LocalDate requestedDate = null;
@@ -1204,11 +1249,18 @@ subscriptionApi.changeSubscriptionPlan(subscriptionId,
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 input = {
            :productName => 'Super', 
            :billingPeriod => 'MONTHLY', 
            :priceList => 'DEFAULT'
          }
+         
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "21541d56-c34a-4012-990a-2250e2822019"         
          
 requested_date = nil
 billing_policy = nil
@@ -1297,6 +1349,13 @@ subscriptionApi.undoChangeSubscriptionPlan(subscriptionId,
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "fbe97f23-30da-4f7e-9987-3280034c5258"
+
 subscription.undo_change_plan(user, 
                               reason, 
                               comment, 
@@ -1362,10 +1421,17 @@ subscriptionApi.cancelSubscriptionPlan(subscriptionId,
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 requested_date = nil
 entitlement_policy = nil
 billing_policy = nil
 use_requested_date_for_billing = nil
+
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "21541d56-c34a-4012-990a-2250e2822019"
 
 subscription.cancel(user, 
                     reason, 
@@ -1464,6 +1530,13 @@ subscriptionApi.uncancelSubscriptionPlan(subscriptionId,
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "fbe97f23-30da-4f7e-9987-3280034c5258"
+
 subscription.uncancel(user, 
                       reason, 
                       comment, 
