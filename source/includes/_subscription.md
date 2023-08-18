@@ -239,13 +239,13 @@ subscription.create(user,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-account_id = 'e1826665-4524-4d57-81b5-a5eb11146f3f'
-body = Subscription(account_id=account_id, plan_name='standard-monthly')
+account_id = '32660591-b8a0-4a0e-b6a8-9b52611217c2'
+body = Subscription(account_id=account_id, plan_name='pistol-monthly')
 
-subscriptionApi.create_subscription(body,
-                                    created_by,
-                                    api_key,
-                                    api_secret)
+subscriptionApi.create_subscription(body, 
+                                    created_by='demo',
+                                    reason='reason', 
+                                    comment='comment')
 ```
 
 **Request Body**
@@ -442,21 +442,19 @@ subscription.create_entitlement_with_add_on(entitlement,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-account_id = '16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836'
+account_id = '32660591-b8a0-4a0e-b6a8-9b52611217c2'
 subscription_a = Subscription(account_id=account_id,
-                              product_category='BASE',
-                              plan_name='sports-monthly')
+                              plan_name='pistol-monthly')
 
 subscription_b = Subscription(account_id=account_id,
-                              product_category='ADD_ON',
-                              plan_name='super-monthly')
+                              plan_name='cleaning-monthly')
 
 body = [subscription_a, subscription_b]
 
-subscriptionApi.create_subscription_with_add_ons(body,
-                                                 created_by,
-                                                 api_key,
-                                                 api_secret)
+subscriptionApi.create_subscription_with_add_ons(body, 
+                                                 created_by='demo', 
+                                                 reason='reason', 
+                                                 comment='comment')
 ```
 
 **Request Body**
@@ -701,21 +699,27 @@ KillBillClient::Model::BulkSubscription.create_bulk_subscriptions(bulk_subscript
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-account_id = '16cd9eb8-bb5d-4183-b8e0-c1d6f78dc836'
+account_id = '32660591-b8a0-4a0e-b6a8-9b52611217c2'
 subscription_a = Subscription(account_id=account_id,
-                              product_category='BASE',
-                              plan_name='sports-monthly')
+                              plan_name='pistol-thirty-days')
 
 subscription_b = Subscription(account_id=account_id,
-                              product_category='ADD_ON',
-                              plan_name='super-monthly')
+                              plan_name='cleaning-monthly')
 
-body = BulkSubscriptionsBundle([subscription_a, subscription_b])
+bundle1 = BulkSubscriptionsBundle([subscription_a, subscription_b])
 
-subscriptionApi.create_subscriptions_with_add_ons([body],
-                                                  created_by,
-                                                  api_key,
-                                                  api_secret)
+subscription_c = Subscription(account_id=account_id,
+                              plan_name='shotgun-monthly')
+
+subscription_d = Subscription(account_id=account_id,
+                              plan_name='holster-monthly-regular')
+
+bundle2 = BulkSubscriptionsBundle([subscription_c, subscription_d])
+
+subscriptionApi.create_subscriptions_with_add_ons([bundle1, bundle2],
+                                                  created_by='demo',
+                                                  reason='reason',
+                                                  comment='comment')
 ```
 
 **Request Body**
@@ -790,7 +794,7 @@ subscription = KillBillClient::Model::Subscription.find_by_id(subscription_id, o
 subscriptionApi = killbill.api.SubscriptionApi()
 subscription_id = '4aab9b96-c2e7-4641-a6d9-db984969201e'
 
-subscriptionApi.get_subscription(subscription_id, api_key, api_secret)
+subscription = subscriptionApi.get_subscription(subscription_id)
 ```
 
 > Example Response:
@@ -935,7 +939,7 @@ subscription = KillBillClient::Model::Subscription.find_by_external_key(external
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
 external_key = 'somethingSpecial'
-subscriptionApi.get_subscription_by_key(external_key, api_key, api_secret)
+subscription = subscriptionApi.get_subscription_by_key(external_key)
 ```
 
 > Example Response:
@@ -1092,11 +1096,11 @@ subscription_id = '161692a4-c293-410c-a92f-939c5e3dcba7'
 body = Subscription(subscription_id=subscription_id,
                     bill_cycle_day_local=26)
 
-subscriptionApi.update_subscription_bcd(subscription_id,
-                                        body,
-                                        created_by,
-                                        api_key,
-                                        api_secret)
+subscriptionApi.update_subscription_bcd(subscription_id, 
+                                        body, 
+                                        created_by='demo',
+                                        reason='reason', 
+                                        comment='comment')
 ```
 
 **Request Body**
@@ -1162,7 +1166,16 @@ TODO
 ```
 
 ```python
-TODO
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = '7b3f0181-d9e8-4886-a90a-af35e671f5f0'
+body = Subscription(subscription_id=subscription_id,
+                    quantity=3)
+
+subscriptionApi.update_subscription_quantity(subscription_id,
+                                             body,
+                                             created_by='demo',
+                                             reason='reason',
+                                             comment='comment')
 ```
 
 **Request Body**
@@ -1281,15 +1294,13 @@ subscription.change_plan(input,
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
 subscription_id = '97278000-72fd-45d7-9b67-e44690bdb074'
-body = Subscription(product_name='Super',
-                    billing_period='MONTHLY',
-                    price_list='DEFAULT')
+body = Subscription(plan_name='pistol-monthly')
 
 subscriptionApi.change_subscription_plan(subscription_id,
                                          body,
-                                         created_by,
-                                         api_key,
-                                         api_secret)
+                                         created_by='demo',
+                                         reason='reason',
+                                         comment='comment')
 ```
 
 **Request Body**
@@ -1367,9 +1378,9 @@ subscriptionApi = killbill.api.SubscriptionApi()
 subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
 
 subscriptionApi.undo_change_subscription_plan(subscription_id,
-                                              created_by,
-                                              api_key,
-                                              api_secret)
+                                              created_by='demo',
+                                              reason='reason',
+                                              comment='comment')
 ```
 
 **Query Parameters**
@@ -1447,10 +1458,10 @@ subscription.cancel(user,
 subscriptionApi = killbill.api.SubscriptionApi()
 subscription_id = 'ee508b5b-46b8-42a7-8988-16c0470de4ae'
 
-subscriptionApi.cancel_subscription_plan(subscription_id, 
-                                         created_by,
-                                         api_key,
-                                         api_secret)
+subscriptionApi.cancel_subscription_plan(subscription_id,
+                                         created_by='demo',
+                                         reason='reason',
+                                         comment='comment')
 ```
 
 **Query Parameters**
@@ -1548,9 +1559,9 @@ subscriptionApi = killbill.api.SubscriptionApi()
 subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
 
 subscriptionApi.uncancel_subscription_plan(subscription_id,
-                                           created_by,
-                                           api_key,
-                                           api_secret)
+                                           created_by='demo',
+                                           reason='reason',
+                                           comment='comment')
 ```
 
 **Query Parameters**
