@@ -64,11 +64,7 @@ under the License.
     <body data-languages="<%=h language_tabs.map{ |lang| lang.is_a?(Hash) ? lang.keys.first : lang }.to_json %>">
       <header class="header sticky" id="header">
         <div class="header__logo-wrapper">
-          <div class="header__logo">
-            <a href="/">
-              <img src="/images/logo/light-logo.svg" style="height:38px" alt="Kill Bill Docs" id="logo">
-            </a>
-          </div>
+          <a href="/" class="header__logo"></a>
           <label class="header__theme-switch theme-switch"></label>
         </div>
         
@@ -117,17 +113,17 @@ under the License.
       
       <main class="page">
         <div class="page__sidebar">
-          <nav class="toc-wrapper site-navigator">
-            <ul id="toc" class="toc-list-h1 site-navigator__menu">
+          <nav class="site-navigator">
+            <ul class="site-navigator__menu">
               <% toc_data(current_page.data.menu_items, current_page.data.current_page, page_content).each do |menu_item| %>
                 <li>
-                  <a href="<%= menu_item[:href].nil? ? "##{menu_item[:id]}" : menu_item[:href] %>" class="toc-h1 toc-link site-navigator__item site-navigator__menu-item" data-title="<%= menu_item[:title] %>"><%= menu_item[:content] %></a>
+                  <a href="<%= menu_item[:href]%>" class="site-navigator__item site-navigator__menu-item" data-title="<%= menu_item[:title] %>"><%= menu_item[:content] %></a>
                   
                   <% if menu_item[:children].length > 0 %>
-                    <ul class="toc-list-h2 site-navigator__submenu">
+                    <ul class="site-navigator__submenu">
                       <% menu_item[:children].each do |submenu_item| %>
                         <li>
-                          <a href="#<%= submenu_item[:id] %>" class="toc-h2 toc-link site-navigator__item site-navigator__submenu-item" data-title="<%= submenu_item[:title] %>"><%= submenu_item[:content] %></a>
+                          <a href="#<%= submenu_item[:id] %>" class="site-navigator__item site-navigator__submenu-item" data-title="<%= submenu_item[:title] %>"><%= submenu_item[:content] %></a>
                         </li>
                       <% end %>
                     </ul>
@@ -136,7 +132,7 @@ under the License.
               <% end %>
             </ul>
             <% if current_page.data.toc_footers %>
-              <ul class="toc-footer site-navigator__footer">
+              <ul class="site-navigator__footer">
                 <% current_page.data.toc_footers.each do |footer| %>
                   <li><%= footer %></li>
                 <% end %>
@@ -151,8 +147,27 @@ under the License.
       </main>
     </body>
     <script>
+      function debounce(func, delay) {
+        let timeoutId;
+        return function() {
+          const context = this;
+          const args = arguments;
+          clearTimeout(timeoutId);
+          timeoutId = setTimeout(function() {
+            func.apply(context, args);
+          }, delay);
+        };
+      }
+          
       setTimeout(function(){
-        $('.content h2, .content h3, .content h4').append('<a href=""><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>');
+        // Init active menu item if it has 
+        $('.site-navigator .site-navigator__menu-item[href*="#"]').addClass('active')
+        // Init theme
+        if(JSON.parse(localStorage.getItem('is-dark-theme'))) {
+          $('body').addClass('dark')
+        }
+        
+        $('.content h2, .content h3, .content h4').append('<a href="" style="padding-left: 10px;"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>');
         $('.content h2, .content h3, .content h4').each(function(){
           let itemHref = '#' + $(this).attr('id');
           $(this).find('a').attr("href", itemHref);
@@ -162,7 +177,7 @@ under the License.
           function(i,e) {
             const sectionElements = $(this).nextUntil(this.tagName)
 
-            const codeSnippets = sectionElements.filter('.highlight, blockquote', )
+            const codeSnippets = sectionElements.filter('.highlight, blockquote')
             const textBlock = sectionElements.not('.highlight, blockquote')
 
             const section = $('<section class="content__section" />')
@@ -174,23 +189,66 @@ under the License.
 
         $('.theme-switch').on('click', function (e) {
           $('body').toggleClass('dark');
+
+          localStorage.setItem('is-dark-theme', $('body').hasClass('dark'))
         });
 
         $('.header__sidebar-toggler').on('click', function() {
+          $(this).toggleClass('active')
           $('.page').toggleClass('show-sidebar')
         })
 
         $('.site-navigator .site-navigator__menu-item').on('click', function () {
+          if($(this).hasClass('active')) {
+            $(this).removeClass('active')
+
+            return;
+          }
+
           $('.site-navigator .site-navigator__menu-item').removeClass('active')
           $(this).addClass('active')
         })
         
-        $('.site-navigator .site-navigator__sub-item').on('click', function () {
+        $('.site-navigator .site-navigator__submenu-item').on('click', function () {
+          if($(this).parent('.site-navigator__submenu').siblings('.site-navigator__menu-item.active')) {
+            $('.site-navigator .site-navigator__submenu-item').removeClass('active')
+            $(this).addClass('active')
+
+            return;
+          }
+
           $('.site-navigator .site-navigator__submenu-item').removeClass('active')
           $('.site-navigator .site-navigator__menu-item').removeClass('active')
           $(this).parent('.site-navigator__menu-item').addClass('active')
           $(this).addClass('active')
         })
+
+        const navLinks = $('.site-navigator .site-navigator__menu-item.active + .site-navigator__submenu').find('.site-navigator__submenu-item')
+        const HEAIGHT_OF_HEADER = 100
+
+        function handleScroll() {
+          const scrollPosition = $('.page .page__content').scrollTop();
+
+          navLinks.each(function(index) {
+            const targetSection = $(`${$(this).attr('href')} + section`)
+
+            if (!targetSection) {
+              return;
+            }
+            const targetTop = targetSection.offset()?.top - HEAIGHT_OF_HEADER;
+            // Calculate the end of an section
+            const targetBottom = targetTop + targetSection.outerHeight() + HEAIGHT_OF_HEADER;
+
+            if (0 >= targetTop && 0 < targetBottom) {
+              $('.site-navigator .site-navigator__submenu-item').removeClass('active');
+              $(this).addClass('active')
+            }
+          });
+        }
+
+        // Attach the custom debounced scroll event handler
+        const debouncedScroll = debounce(handleScroll, 50);
+        $('.page .page__content').on('scroll', debouncedScroll);
       })
     </script>
     <script src='https://cdn.jsdelivr.net/npm/@docsearch/js@3'></script>
