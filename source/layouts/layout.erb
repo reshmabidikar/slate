@@ -39,7 +39,7 @@ under the License.
       <% end %>
       <title><%= current_page.data.title || "API Documentation" %></title>
       <style media="screen">
-        <%= Rouge::Themes::MonokaiSublimeSlate.render(:scope => '.highlight') %>
+        <%= Rouge::Themes::CustomColorsScheme.render(:scope => '.highlight') %>
       </style>
       <style media="print">
         * {
@@ -158,16 +158,80 @@ under the License.
           }, delay);
         };
       }
-          
-      setTimeout(function(){
-        // Init active menu item if it has 
-        $('.site-navigator .site-navigator__menu-item[href*="#"]').addClass('active')
-        // Init theme
-        if(JSON.parse(localStorage.getItem('is-dark-theme'))) {
-          $('body').addClass('dark')
+
+      class ProgramingLanguages {
+        _defaultList = [];
+
+        constructor(langList) {
+          this.list = langList;
+          this.updateDOMWithNewActiveLanguage();
+
+          $(".lang-selector .lang-selector__link").on("click", (event) => {
+            event.preventDefault();
+            this.updateDOMWithNewActiveLanguage($(event.target).data("language-name"));
+          });
+
+          $(".lang-selector .lang-selector__select").on("change", (event) => {
+            event.preventDefault()
+            this.updateDOMWithNewActiveLanguage(event.target.value)
+          });
+        }
+
+        get list() {
+          const list = localStorage.getItem('listOfProgramingLanguages');
+          return list ? JSON.parse(list) : this._defaultList;
+        }
+
+        set list(list) {
+          localStorage.setItem('listOfProgramingLanguages', JSON.stringify(list));
+        }
+
+        get activeLanguage() {
+          const activeLang = localStorage.getItem('activeProgramingLanguage');
+          return activeLang || this._defaultList[0];
         }
         
-        $('.content h2, .content h3, .content h4').append('<a href="" style="padding-left: 10px;"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>');
+        set activeLanguage(activeLang) {
+          localStorage.setItem('activeProgramingLanguage', activeLang);
+        }
+
+        updateDOMWithNewActiveLanguage(lang) {
+          if(lang) {
+            this.activeLanguage = lang
+          }
+
+          $(".lang-selector .lang-selector__link").removeClass('active');
+          $(`.lang-selector .lang-selector__link[data-language-name='${lang || this.activeLanguage}']`).addClass('active');
+          this.showOnlyActiveLanguage();
+        }
+        
+        showOnlyActiveLanguage() {
+          console.log(this.activeLanguage)
+          const activeLang = this.activeLanguage;
+          
+          if (activeLang) {
+            $('.content__code-snippets').each((index, element) => {
+              const snippetHasActiveLang = $(element).find(`.${activeLang}`);
+
+              if (!snippetHasActiveLang.length > 0) {
+                $(element).hide();
+              } else {
+                $(element).show();
+              }
+
+              $(element).children('.highlight').each(function (index, ch) {
+                $(ch).hide()
+                $(ch).has(`.${activeLang}`).show()
+              })
+            });
+          }
+        }
+      }
+
+          
+      setTimeout(function() {
+        // DOM restructuring
+        $('.content h2, .content h3, .content h4').append('<a href="" style="padding-left: 10px;"><svg class="octicon octicon-link" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill="currentColor" fill-rule="evenodd" d="M7.775 3.275a.75.75 0 001.06 1.06l1.25-1.25a2 2 0 112.83 2.83l-2.5 2.5a2 2 0 01-2.83 0 .75.75 0 00-1.06 1.06 3.5 3.5 0 004.95 0l2.5-2.5a3.5 3.5 0 00-4.95-4.95l-1.25 1.25zm-4.69 9.64a2 2 0 010-2.83l2.5-2.5a2 2 0 012.83 0 .75.75 0 001.06-1.06 3.5 3.5 0 00-4.95 0l-2.5 2.5a3.5 3.5 0 004.95 4.95l1.25-1.25a.75.75 0 00-1.06-1.06l-1.25 1.25a2 2 0 01-2.83 0z"></path></svg></a>');
         $('.content h2, .content h3, .content h4').each(function(){
           let itemHref = '#' + $(this).attr('id');
           $(this).find('a').attr("href", itemHref);
@@ -187,6 +251,15 @@ under the License.
             section.insertAfter($(this))
         });
 
+        // Init active menu item if it has 
+        $('.site-navigator .site-navigator__menu-item[href*="#"]').addClass('active')
+        // Init theme
+        if(JSON.parse(localStorage.getItem('is-dark-theme'))) {
+          $('body').addClass('dark')
+        }
+        // Init programing language 
+        programingLanguages = new ProgramingLanguages($('body').data('languages'))
+        
         $('.theme-switch').on('click', function (e) {
           $('body').toggleClass('dark');
 
@@ -247,7 +320,7 @@ under the License.
         }
 
         // Attach the custom debounced scroll event handler
-        const debouncedScroll = debounce(handleScroll, 50);
+        const debouncedScroll = debounce(handleScroll, 20);
         $('.page .page__content').on('scroll', debouncedScroll);
       })
     </script>

@@ -19,132 +19,9 @@ License for the specific language governing permissions and limitations
 under the License.
 */
 
-////////////////////////////////////////////////////////////////////////////////
-// CONTENT STYLES
-////////////////////////////////////////////////////////////////////////////////
-// This is all the stuff with the light background in the left half of the page
-
-.content {
-  hr {
-    margin: 2em 0;
-    border-top: 2px solid $examples-bg;
-    border-bottom: 2px solid $main-bg;
-  }
-
-  dt {
-    font-weight: bold;
-  }
-
-  dd {
-    margin-left: 15px;
-  }
-
-  p, li, dt, dd {
-    line-height: 1.6;
-    margin-top: 0;
-  }
-
-  img {
-    max-width: 100%;
-  }
-
-  pre>code {
-    background-color: transparent;
-    padding: 0;
-  }
-
-  aside {
-    padding: 16px;
-    margin-top: 1.5em;
-    margin-bottom: 1.5em;
-    background: $aside-notice-bg;
-    line-height: 1.6;
-
-    &.warning {
-      background-color: $aside-warning-bg;
-    }
-
-    &.success {
-      background-color: $aside-success-bg;
-    }
-  }
-
-  aside .title:before {
-    vertical-align: middle;
-    padding-right: 0.5em;
-    font-size: 14px;
-  }
-
-  aside.notice .title {
-    display: block;
-    font-weight: 600;
-    font-size: 14px;
-    color: $heading-text;
-  }
-  
-  aside.notice .content {
-    margin-left: 26px;
-    display: block;
-    font-weight: 400;
-    line-height: 21px;
-    font-size: 14px;
-  }
-
-  aside.notice .title:before {
-    @extend %icon-info-sign;
-  }
-
-
-  .main .note .icon {
-    width: 20px;
-    height: 20px;
-    display: flex;
-  }
-
-  .main .note .icon.info-icon {
-    height: 100%;
-    width: 100%;
-  }
-
-  .main .note .icon .fa.icon-note {
-    display: none;
-  }
-
-  .main .note .content {
-    font-weight: 400;
-    font-size: 14px;
-    color: var(--color);
-    padding-left: 12px;
-  }
-
-  .main .note .content strong:is(:first-child) {
-    display: block;
-    height: 21px;
-    color: var(--heading-color);
-  }
-
-  aside.warning:before {
-    @extend %icon-exclamation-sign;
-  }
-
-  aside.success:before {
-    @extend %icon-ok-sign;
-  }
-
-  .search-highlight {
-    padding: 2px;
-    margin: -3px;
-    border-radius: 4px;
-    border: 1px solid #F7E633;
-    background: linear-gradient(to top left, #F7E633 0%, #F1D32F 100%);
-  }
-}
-
 ////////////////////////////////
 /// NEW STYLE
-/// 
-/// 
-/// 
+
 
 $header-height: 70px;
 $sidebar-width: 320px;
@@ -169,6 +46,12 @@ $code-snippet-header-bg: #475467;
 $code-snippet-header-color: #EFF4FF;
 $code-snippet-body-bg: #344054;
 
+$aside-notice-bg: #EFF4FF !default;
+$aside-note-border-color: #EFF4FF !default;
+$aside-warning-bg: #c97a7e !default;
+$aside-success-bg: #6ac174 !default;
+$search-notice-bg: #c97a7e !default;
+
 
 :root {
   --main-bg: #fff;
@@ -189,6 +72,13 @@ $code-snippet-body-bg: #344054;
   --code-snippet-header-bg: #475467;
   --code-snippet-header-color: #EFF4FF;
   --code-snippet-body-bg: #344054;
+
+  --note-bg: #EFF4FF;
+  --note-border-color: #D1E0FF;
+  --note-color: #5C6287;
+  --note-heading-color: #293056;
+
+  --search-notice-bg: #c97a7e
 }
 
 body.dark {
@@ -307,16 +197,6 @@ h1:has(.sidebar-item) {
 p {
   font-size: 16px;
   line-height: 24px;
-}
-
-code {
-  color: var(--code-color);
-  padding: 3px;
-  word-break: break-word;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 18px;
-  font-family: "SF Mono", monospace;
 }
 
 .header {
@@ -479,7 +359,7 @@ code {
 
 body.dark {
   .theme-switch {
-    background-color: #2970FF;
+    background-color: var(--nav-active-color);
 
     &:before {
       content: "";
@@ -739,6 +619,50 @@ body.dark {
     padding-right: 20px;
     overflow-x: hidden;
 
+    code {
+      color: var(--code-color);
+      padding: 3px;
+      word-break: break-word;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 18px;
+      font-family: "SF Mono", monospace;
+    }
+
+    .note {
+      padding: 16px 16px 16px 48px;
+      margin: 1.5em 0;
+      color: var(--note-color);
+      background: var(--note-bg);
+      border: 1px solid var(--note-border-color);
+      line-height: 1.6;
+      border-radius: 12px;
+
+      &__title {
+        display: flex;
+        align-items: center;
+        font-weight: 600;
+        font-size: 14px;
+        color: var(--note-heading-color);
+        margin-left: -32px;
+
+        &:before {
+          color: var(--nav-active-color);
+          vertical-align: middle;
+          padding-right: 0.5em;
+          font-size: 14px;
+          @extend %icon-info-sign;
+        }
+      }
+
+      &__content {
+        display: block;
+        font-weight: 400;
+        line-height: 21px;
+        font-size: 14px;
+      }
+    }
+
     table {
       border-radius: 12px;
       border: 1px solid var(--main-border-color);
@@ -747,39 +671,38 @@ body.dark {
       width: 100%;
       table-layout: fixed;
       overflow-x: scroll;
-    }
 
-    table,
-    table td,
-    table th {
-      padding: 12px;
-      font-weight: 500;
-      font-size: 14px;
-      overflow-x: hidden;
-    }
-    
-    tbody {
-      border-radius: 9px;
-      border: none;
-    }
-  
-    tbody:is(:nth-child(2)) tr:first-child td:first-child {
-      border-radius: 12px;
-    }
-  
-    table td:not(:first-child),
-    table th:not(:first-child) {
-      border-left: 1px solid var(--main-border-color);
-      font-size: 14px;
-      line-height: 21px;
-    }
-    
-    table td {
-      font-weight: 400 !important;
-    }
-    
-    table tr:not(:last-child), table thead tr:first-child {
-      border-bottom: 1px solid var(--main-border-color);
+      &, td, th {
+        padding: 12px;
+        font-weight: 500;
+        font-size: 14px;
+        overflow-x: hidden;
+      }
+
+      td {
+        font-weight: 400 !important;
+      }
+      
+      td:not(:first-child),
+      th:not(:first-child) {
+        border-left: 1px solid var(--main-border-color);
+        font-size: 14px;
+        line-height: 21px;
+      }
+
+      tr:not(:last-child),
+      table thead tr:first-child {
+        border-bottom: 1px solid var(--main-border-color);
+      }
+
+      tbody {
+        border-radius: 9px;
+        border: none;
+
+        &:is(:nth-child(2)) tr:first-child td:first-child {
+          border-radius: 12px;
+        }
+      }
     }
     
     ol {

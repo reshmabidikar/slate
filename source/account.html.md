@@ -38,6 +38,4 @@ search: true
 
 code_clipboard: true
 
-search: true
-
 ---

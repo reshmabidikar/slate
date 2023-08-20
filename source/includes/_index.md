@@ -59,9 +59,9 @@ Each API call requires the tenant being used to be identified, through the use o
 * **`X-Killbill-ApiKey`**: The API key associated with the tenant. This value is stored in clear in the database.
 * **`X-Killbill-ApiSecret`**: The API secret associated with the tenant. This value is hashed and stored along with the `salt` in the database
 
-<aside class="notice">
-  <span class="title">Note:</span> 
-  <span class="content">
+<aside class="note">
+  <span class="note__title">Note:</span> 
+  <span class="note__content">
     You can control the number of hash iterations through the system property `org.killbill.security.shiroNbHashIterations` whose default value is set to `200000`. If your security requirements are met through other means, you can set this value to `1` to avoid wasting CPU cycles and greatly improve latency. Changing the value on an existing system requires re-hashing the keys.
   </span>
 </aside>
