@@ -258,7 +258,7 @@ $xKillbillCreatedBy = "user";
 $xKillbillReason = "reason";
 $xKillbillComment = "comment";
 
-$body = new \Killbill\Client\Swagger\Model\Subscription();
+$body = new Subscription();
 $body -> setAccountId('13102713-9672-4e3b-8b4f-e10869fc5a59');
 $body -> setPlanName('pistol-monthly');
 
@@ -494,11 +494,11 @@ $xKillbillCreatedBy = "user";
 $xKillbillReason = "reason";
 $xKillbillComment = "comment";
 
-$base = new \Killbill\Client\Swagger\Model\Subscription();
+$base = new Subscription();
 $base -> setAccountId('13102713-9672-4e3b-8b4f-e10869fc5a59');
 $base -> setPlanName('pistol-monthly');
 
-$addon = new \Killbill\Client\Swagger\Model\Subscription();
+$addon = new Subscription();
 $addon -> setAccountId('13102713-9672-4e3b-8b4f-e10869fc5a59');
 $addon -> setPlanName('cleaning-monthly');
 
@@ -791,30 +791,30 @@ $xKillbillCreatedBy = "user";
 $xKillbillReason = "reason";
 $xKillbillComment = "comment";
 
-$base1 = new \Killbill\Client\Swagger\Model\Subscription();
+$base1 = new Subscription();
 $base1 -> setAccountId('13102713-9672-4e3b-8b4f-e10869fc5a59');
 $base1 -> setPlanName('pistol-monthly');
 
-$addon1 = new \Killbill\Client\Swagger\Model\Subscription();
+$addon1 = new Subscription();
 $addon1 -> setAccountId('13102713-9672-4e3b-8b4f-e10869fc5a59');
 $addon1 -> setPlanName('cleaning-monthly');
 
 $subs1 = array($base1, $addon1);
 
-$bulkSubscriptionsBundle1 = new \Killbill\Client\Swagger\Model\BulkSubscriptionsBundle();
+$bulkSubscriptionsBundle1 = new BulkSubscriptionsBundle();
 $bulkSubscriptionsBundle1 -> setBaseEntitlementAndAddOns($subs1);
 
-$base2 = new \Killbill\Client\Swagger\Model\Subscription();
+$base2 = new Subscription();
 $base2 -> setAccountId('13102713-9672-4e3b-8b4f-e10869fc5a59');
 $base2 -> setPlanName('shotgun-monthly');
 
-$addon2 = new \Killbill\Client\Swagger\Model\Subscription();
+$addon2 = new Subscription();
 $addon2 -> setAccountId('13102713-9672-4e3b-8b4f-e10869fc5a59');
 $addon2 -> setPlanName('laser-scope-monthly');
 
 $subs2 = array($base2, $addon2);
 
-$bulkSubscriptionsBundle2 = new \Killbill\Client\Swagger\Model\BulkSubscriptionsBundle();
+$bulkSubscriptionsBundle2 = new BulkSubscriptionsBundle();
 $bulkSubscriptionsBundle2 -> setBaseEntitlementAndAddOns($subs2);
 
 $body = array($bulkSubscriptionsBundle1, $bulkSubscriptionsBundle2);
@@ -1246,7 +1246,7 @@ $xKillbillCreatedBy = "user";
 $xKillbillReason = "reason";
 $xKillbillComment = "comment";
 
-$body = new \Killbill\Client\Swagger\Model\Subscription();
+$body = new Subscription();
 $body -> setBillCycleDayLocal(5);
 $subscriptionId = "52bee217-4ed9-40a3-8b89-baa1cb1e6f95";
 
@@ -1341,7 +1341,7 @@ $xKillbillCreatedBy = "user";
 $xKillbillReason = "reason";
 $xKillbillComment = "comment";
 
-$body = new \Killbill\Client\Swagger\Model\Subscription();
+$body = new Subscription();
 $body -> setQuantity(3);
 $subscriptionId = "88d1878e-fb60-4497-95c2-ec71b4aa2a21";
 
@@ -1486,7 +1486,7 @@ $xKillbillCreatedBy = "user";
 $xKillbillReason = "reason";
 $xKillbillComment = "comment";
 
-$body = new \Killbill\Client\Swagger\Model\Subscription();
+$body = new Subscription();
 $body -> setPlanName('pistol-monthly-notrial');
 
 $requestedDate = null;
