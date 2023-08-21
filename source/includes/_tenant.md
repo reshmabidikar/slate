@@ -109,7 +109,9 @@ $tenant = new Tenant();
 $tenant->setApiKey('demo_api_key');
 $tenant->setApiSecret('demo_api_secret');
 
-$tenant = $apiInstance->createTenant($tenant, $xKillbillCreatedBy, $keyName, $xKillbillReason, $xKillbillComment);
+$useGlobalDefault = false;
+
+$result = $apiInstance->createTenant($tenant, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment, $useGlobalDefault);
 ```
 
 **Request Body**
