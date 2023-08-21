@@ -248,6 +248,32 @@ subscriptionApi.create_subscription(body,
                                     comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$body = new \Killbill\Client\Swagger\Model\Subscription();
+$body -> setAccountId('13102713-9672-4e3b-8b4f-e10869fc5a59');
+$body -> setPlanName('pistol-monthly');
+
+$entitlementDate = null;
+$billingDate = null;
+$renameKeyIfExistsAndUnused = false;
+$migrated = false;
+$skipResponse = false;
+$callCompletion = false;
+$callTimeoutSec = 3;
+$pluginProperty = array("pluginProperty_example");
+
+$result = $apiInstance->createSubscription($body, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment, $entitlementDate, $billingDate, $renameKeyIfExistsAndUnused, $migrated, $skipResponse, $callCompletion, $callTimeoutSec, $pluginProperty);
+````
+
 **Request Body**
 
 A subscription resource object specifying `accountId` and either the `planName` or a combination of `productName`, `productCategory`,`billingPeriod` and `priceList`. 
@@ -262,14 +288,15 @@ It can also include the following optional fields:
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description |
-| ---- | ---- | -------- | ------- | ----------- |
-| **entitlementDate** | string | no | immediately | Date/DateTime at which the entitlement (service) starts in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format.|
-| **billingDate** | string | no | immediately | Date/DateTime at which the entitlement (service) starts in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format.|
-| **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused |
-| **migrated** | boolean | no | false | If true, subscription is migrated |
-| **callCompletion** | boolean | no | false | see below |
-| **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
+| Name                           | Type | Required | Default | Description                                                                                        |
+|--------------------------------| ---- | -------- | ------- |----------------------------------------------------------------------------------------------------|
+| **entitlementDate**            | string | no | immediately | Date/DateTime at which the entitlement (service) starts in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format. |
+| **billingDate**                | string | no | immediately | Date/DateTime at which the entitlement (service) starts in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format. |
+| **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused                                            |
+| **migrated**                   | boolean | no | false | If true, subscription is migrated                                                                  |
+| **skipResponse**               | boolean | no | false | TODO                                                                                               |
+| **callCompletion**             | boolean | no | false | see below                                                                                          |
+| **callTimeoutSec**             | long | no | unlimited? | Timeout in seconds (see below)                                                                     |
 
 Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
 
@@ -456,6 +483,38 @@ subscriptionApi.create_subscription_with_add_ons(body,
                                                  reason='reason', 
                                                  comment='comment')
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$base = new \Killbill\Client\Swagger\Model\Subscription();
+$base -> setAccountId('13102713-9672-4e3b-8b4f-e10869fc5a59');
+$base -> setPlanName('pistol-monthly');
+
+$addon = new \Killbill\Client\Swagger\Model\Subscription();
+$addon -> setAccountId('13102713-9672-4e3b-8b4f-e10869fc5a59');
+$addon -> setPlanName('cleaning-monthly');
+
+$body = array($base, $addon);
+
+$entitlementDate = null;
+$billingDate = null;
+$migrated = false;
+$skipResponse = false;
+$renameKeyIfExistsAndUnused = true;
+$callCompletion = false;
+$callTimeoutSec = 3;
+$pluginProperty = array("pluginProperty_example");
+
+$result = $apiInstance->createSubscriptionWithAddOns($body, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment, $entitlementDate, $billingDate, $migrated, $skipResponse, $renameKeyIfExistsAndUnused, $callCompletion, $callTimeoutSec, $pluginProperty);
+````
 
 **Request Body**
 
@@ -722,6 +781,56 @@ subscriptionApi.create_subscriptions_with_add_ons([bundle1, bundle2],
                                                   comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$base1 = new \Killbill\Client\Swagger\Model\Subscription();
+$base1 -> setAccountId('13102713-9672-4e3b-8b4f-e10869fc5a59');
+$base1 -> setPlanName('pistol-monthly');
+
+$addon1 = new \Killbill\Client\Swagger\Model\Subscription();
+$addon1 -> setAccountId('13102713-9672-4e3b-8b4f-e10869fc5a59');
+$addon1 -> setPlanName('cleaning-monthly');
+
+$subs1 = array($base1, $addon1);
+
+$bulkSubscriptionsBundle1 = new \Killbill\Client\Swagger\Model\BulkSubscriptionsBundle();
+$bulkSubscriptionsBundle1 -> setBaseEntitlementAndAddOns($subs1);
+
+$base2 = new \Killbill\Client\Swagger\Model\Subscription();
+$base2 -> setAccountId('13102713-9672-4e3b-8b4f-e10869fc5a59');
+$base2 -> setPlanName('shotgun-monthly');
+
+$addon2 = new \Killbill\Client\Swagger\Model\Subscription();
+$addon2 -> setAccountId('13102713-9672-4e3b-8b4f-e10869fc5a59');
+$addon2 -> setPlanName('laser-scope-monthly');
+
+$subs2 = array($base2, $addon2);
+
+$bulkSubscriptionsBundle2 = new \Killbill\Client\Swagger\Model\BulkSubscriptionsBundle();
+$bulkSubscriptionsBundle2 -> setBaseEntitlementAndAddOns($subs2);
+
+$body = array($bulkSubscriptionsBundle1, $bulkSubscriptionsBundle2);
+
+$entitlementDate = null;
+$billingDate = null;
+$renameKeyIfExistsAndUnused = true;
+$migrated = false;
+$skipResponse = false;
+$callCompletion = false;
+$callTimeoutSec = 3;
+$pluginProperty = array("pluginProperty_example");
+
+$result = $apiInstance->createSubscriptionsWithAddOns($body, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment, $entitlementDate, $billingDate, $renameKeyIfExistsAndUnused, $migrated, $skipResponse, $callCompletion, $callTimeoutSec, $pluginProperty);
+````
+
 **Request Body**
 
 One or more subscription resource object corresponding to the base subscriptions need to be specified. Additional, each base subscription resource object can include zero or more subscription resource objects corresponding to add-on subscriptions. Alternatively, only a list of add-on subscription resource objects may be specified along with the base subscription bundle id. Each subscription resource object needs to include `accountId` and either the `planName` or a combination of `productName`, `productCategory`,`billingPeriod` and `priceList`.
@@ -796,6 +905,18 @@ subscription_id = '4aab9b96-c2e7-4641-a6d9-db984969201e'
 
 subscription = subscriptionApi.get_subscription(subscription_id)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$subscriptionId = "88d1878e-fb60-4497-95c2-ec71b4aa2a21";
+$audit = "NONE";
+
+$result = $apiInstance -> getSubscription($subscriptionId, $audit);
+````
 
 > Example Response:
 
@@ -941,6 +1062,18 @@ subscriptionApi = killbill.api.SubscriptionApi()
 external_key = 'somethingSpecial'
 subscription = subscriptionApi.get_subscription_by_key(external_key)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$externalKey = "somethingSpecial";
+$audit = "NONE";
+
+$result = $apiInstance -> getSubscriptionByKey($externalKey, $audit);
+````
 
 > Example Response:
 
@@ -1103,6 +1236,26 @@ subscriptionApi.update_subscription_bcd(subscription_id,
                                         comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$body = new \Killbill\Client\Swagger\Model\Subscription();
+$body -> setBillCycleDayLocal(5);
+$subscriptionId = "52bee217-4ed9-40a3-8b89-baa1cb1e6f95";
+
+$effectiveFromDate = null;
+$forceNewBcdWithPastEffectiveDate = false;
+
+$apiInstance->updateSubscriptionBCD($body, $xKillbillCreatedBy, $subscriptionId, $xKillbillReason, $xKillbillComment,  $effectiveFromDate, $forceNewBcdWithPastEffectiveDate);
+````
+
 **Request Body**
 
 The new BCD needs to be specified in the request body via the `billCycleDayLocal` field.
@@ -1177,6 +1330,26 @@ subscriptionApi.update_subscription_quantity(subscription_id,
                                              reason='reason',
                                              comment='comment')
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$body = new \Killbill\Client\Swagger\Model\Subscription();
+$body -> setQuantity(3);
+$subscriptionId = "88d1878e-fb60-4497-95c2-ec71b4aa2a21";
+
+$effectiveFromDate = null;
+$forceNewBcdWithPastEffectiveDate = false;
+
+$apiInstance -> updateSubscriptionQuantity($body, $xKillbillCreatedBy, $subscriptionId, $xKillbillReason, $xKillbillComment, $effectiveFromDate, $forceNewBcdWithPastEffectiveDate);
+````
 
 **Request Body**
 
@@ -1303,6 +1476,30 @@ subscriptionApi.change_subscription_plan(subscription_id,
                                          comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$body = new \Killbill\Client\Swagger\Model\Subscription();
+$body -> setPlanName('pistol-monthly-notrial');
+
+$requestedDate = null;
+$callCompletion = false;
+$callTimeoutSec = 3;
+$billingPolicy = null;
+$pluginProperty = array("pluginProperty_example");
+
+$subscriptionId = "52bee217-4ed9-40a3-8b89-baa1cb1e6f95";
+
+$apiInstance->changeSubscriptionPlan($body, $xKillbillCreatedBy, $subscriptionId, $xKillbillReason, $xKillbillComment, $requestedDate, $callCompletion, $callTimeoutSec, $billingPolicy, $pluginProperty);
+````
+
 **Request Body**
 
 A subscription resource object specifying either the `planName` or a combination of `productName`, `billingPeriod` and `priceList`. 
@@ -1382,6 +1579,22 @@ subscriptionApi.undo_change_subscription_plan(subscription_id,
                                               reason='reason',
                                               comment='comment')
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$subscriptionId = "88d1878e-fb60-4497-95c2-ec71b4aa2a21";
+$pluginProperty = array("pluginProperty_example");
+
+$apiInstance->undoChangeSubscriptionPlan($subscriptionId, $xKillbillCreatedBy, $pluginProperty, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
@@ -1463,6 +1676,28 @@ subscriptionApi.cancel_subscription_plan(subscription_id,
                                          reason='reason',
                                          comment='comment')
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$subscriptionId = "71ccbec4-af0e-4011-8f65-9acb89204e45";
+$requestedDate = null;
+$callCompletion = false;
+$callTimeoutSec = 5;
+$entitlementPolicy = null;
+$billingPolicy = null;
+$useRequestedDateForBilling = false;
+$pluginProperty = array("pluginProperty_example");
+
+$apiInstance -> cancelSubscriptionPlan($subscriptionId, $xKillbillCreatedBy, $requestedDate, $callCompletion, $callTimeoutSec, $entitlementPolicy, $billingPolicy, $useRequestedDateForBilling, $pluginProperty, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
@@ -1563,6 +1798,22 @@ subscriptionApi.uncancel_subscription_plan(subscription_id,
                                            reason='reason',
                                            comment='comment')
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$subscriptionId = "5499095e-36c3-4eff-9feb-7bbbabdde9df";
+$pluginProperty = array("pluginProperty_example");
+
+$apiInstance -> uncancelSubscriptionPlan($subscriptionId, $xKillbillCreatedBy, $pluginProperty, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
