@@ -644,7 +644,7 @@ const response: AxiosResponse<killbill.Account[], any> = await api.getAccounts()
 ```php
 $apiInstance = $client->getAccountApi();
 
-$account = $apiInstance->getAccounts();
+$accounts = $apiInstance->getAccounts();
 ```
 > Example Response:
 
@@ -792,7 +792,7 @@ $apiInstance = $client->getAccountApi();
 
 $searchKey = 'search_key';
 
-$account = $apiInstance->searchAccounts($searchKey);
+$accounts = $apiInstance->searchAccounts($searchKey);
 ```
 > Example Response:
 
@@ -2864,7 +2864,7 @@ $apiInstance = $client->getAccountApi();
 
 $accountID = '88a5987a-1e1c-47c5-ba95-34ef14db3d46';
 
-$accountOverdue = $apiInstance-> getOverdueAccount($accountID);
+$accountOverdueState = $apiInstance-> getOverdueAccount($accountID);
 ```
 > Example Response:
 
