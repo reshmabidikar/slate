@@ -95,7 +95,7 @@ const api: killbill.TenantApi = new killbill.TenantApi(config);
 
 const tenant: killbill.Tenant = {apiKey: `api_key`, apiSecret: `api_secret`};
 
-const response: AxiosResponse<killbill.Tenant, any> = await api.createTenant(tenant, 'created-by', 'reason', 'comment');
+api.createTenant(tenant, 'created-by', 'reason', 'comment');
 ```
 
 ```php
