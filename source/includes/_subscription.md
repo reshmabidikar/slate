@@ -547,8 +547,10 @@ In addition, each subscription resource can also include the following optional 
 | **billingDate** | string | no | immediately | Date at which the billing starts in `yyyy-mm-dd` format. If specified, applies both to base and add-on products. |
 | **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused |
 | **migrated** | boolean | no | false | If true, subscription is migrated |
+| **skipResponse**               | boolean | no | false | TODO    
 | **callCompletion** | boolean | no | false | see below |
 | **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
+| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
 
 Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
 
@@ -879,8 +881,10 @@ In addition, each subscription resource can also include the following optional 
 | **billingDate** | string | no | immediately | Date at which the billing starts in `yyyy-mm-dd` format. If specified, applies both to base and add-on products. |
 | **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused |
 | **migrated** | boolean | no | false | If true, subscription is migrated |
+| **skipResponse**               | boolean | no | false | TODO    
 | **callCompletion** | boolean | no | false | see below |
 | **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
+| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
 
 Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
 
@@ -1567,6 +1571,7 @@ A subscription resource object specifying either the `planName` or a combination
 | **requestedDate** | string | no | immediate | Date/DateTime at which this change should become effective in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm`  format.|
 | **callCompletion** | boolean | no | false | see below |
 | **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
+| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
 
 **billingPolicy**: Possible values are START_OF_TERM, END_OF_TERM, IMMEDIATE, or ILLEGAL
 
@@ -1658,7 +1663,11 @@ $apiInstance->undoChangeSubscriptionPlan($subscriptionId, $xKillbillCreatedBy, $
 
 **Query Parameters**
 
-None. 
+**Query Parameters**
+
+| Name | Type | Required | Default | Description |
+| ---- | ---- | -------- | ------- | ----------- |
+| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
 
 **Response**
 
@@ -1774,7 +1783,7 @@ $apiInstance -> cancelSubscriptionPlan($subscriptionId, $xKillbillCreatedBy, $re
 | **useRequestedDateForBilling** | boolean | no | false | use **requestedDate** for billing |
 | **callCompletion** | boolean | no | false | see below |
 | **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
-
+| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
 
 **entitlementPolicy**: Possible values are IMMEDIATE, END_OF_TERM
 
@@ -1887,7 +1896,9 @@ $apiInstance -> uncancelSubscriptionPlan($subscriptionId, $xKillbillCreatedBy, $
 
 **Query Parameters**
 
-None. 
+| Name | Type | Required | Default | Description |
+| ---- | ---- | -------- | ------- | ----------- |
+| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
 
 **Returns**
 
