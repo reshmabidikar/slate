@@ -3417,7 +3417,23 @@ api.createAccountCustomFields(body,'8992e146-bfa1-4126-a045-98b844a4adcb','creat
 ```
 
 ```php
+$apiInstance = $client->getAccountApi();
 
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+
+$customField = new CustomField();
+
+$customField->setName("Test Custom Field");
+$customField->setValue("test_value");
+
+$customFields = array($customField);
+
+$accountID = "8992e146-bfa1-4126-a045-98b844a4adcb";
+
+$apiInstance->createAccountCustomFields($customFields,$xKillbillCreatedBy, $accountID, $xKillbillReason,$xKillbillComment);
 ```
 **Request Body**
 
@@ -3496,7 +3512,7 @@ $apiInstance = $client->getAccountApi();
 
 $accountID = "07c0cef4-41c5-4606-b2cd-661332cdd41c";
 
-$customFields = $apiInstance->getAllCustomFields($accountID);
+$allCustomFields = $apiInstance->getAllCustomFields($accountID);
 ```
 > Example Response:
 
@@ -3582,7 +3598,7 @@ $apiInstance = $client->getAccountApi();
 
 $accountID = "07c0cef4-41c5-4606-b2cd-661332cdd41c";
 
-$customFields = $apiInstance->getAccountCustomFields($accountID);
+$accountCustomFields = $apiInstance->getAccountCustomFields($accountID);
 ```
 > Example Response:
 
@@ -3681,13 +3697,29 @@ account.modify_account_custom_fields(account_id,
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
 
-const body: killbill.CustomField = { name: 'Test Custom Field', value: 'test_value' };
+const body: killbill.CustomField = { name: 'Test Custom Field', value: 'test_modify_value' };
 
 api.modifyAccountCustomFields(body,'59860a0d-c032-456d-a35e-3a48fe8579e5','created_by')
 ```
 
 ```php
+$apiInstance = $client->getAccountApi();
 
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+
+$customField = new CustomField();
+
+$customField->setCustomFieldId('92b90b52-d4ef-47e7-ba4e-614255353a9a');
+$customField->setValue("test_modify_value");
+
+$customFields = array($customField);
+
+$accountID = "59860a0d-c032-456d-a35e-3a48fe8579e5";
+
+$apiInstance->modifyAccountCustomFields($customFields,$xKillbillCreatedBy, $accountID, $xKillbillReason,$xKillbillComment);
 ```
 **Request Body**
 
@@ -3770,7 +3802,15 @@ api.deleteAccountCustomFields(accountID,'created_by')
 ```
 
 ```php
+$apiInstance = $client->getAccountApi();
 
+$xKillbillCreatedBy = "user";
+
+$customField = new CustomField();
+
+$accountID = "8992e146-bfa1-4126-a045-98b844a4adcb";
+
+$apiInstance->deleteAccountCustomFields($accountID,$xKillbillCreatedBy);
 ```
 **Query Parameters**
 
@@ -3864,7 +3904,16 @@ api.createAccountTags(tags,'b0da8392-49ba-43f2-8fac-3f9f85b8ff61','created_by')
 ```
 
 ```php
+$apiInstance = $client->getAccountApi();
 
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$tags = ['00000000-0000-0000-0000-000000000002'];
+$accountID = "b0da8392-49ba-43f2-8fac-3f9f85b8ff61";
+
+$apiInstance->createAccountTags($tags,$xKillbillCreatedBy,$accountID,$xKillbillReason,$xKillbillComment);
 ```
 **Request Body**
 
@@ -3937,7 +3986,11 @@ const response: AxiosResponse<any> = await api.getAllTags(accountID);
 ```
 
 ```php
+$apiInstance = $client->getAccountApi();
 
+$accountID = "07c0cef4-41c5-4606-b2cd-661332cdd41c";
+
+$allTags = $apiInstance->getAllTags($accountID);
 ```
 > Example Response:
 
@@ -4024,7 +4077,11 @@ const response: AxiosResponse<any> = await api.getAccountTags(accountID);
 ```
 
 ```php
+$apiInstance = $client->getAccountApi();
 
+$accountID = "07c0cef4-41c5-4606-b2cd-661332cdd41c";
+
+$accountTags = $apiInstance->getAccountTags($accountID);
 ```
 > Example Response:
 
@@ -4116,7 +4173,15 @@ api.deleteAccountTags(accountID,'created_by');
 ```
 
 ```php
+$apiInstance = $client->getAccountApi();
 
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$accountID = "b0da8392-49ba-43f2-8fac-3f9f85b8ff61";
+
+$apiInstance->deleteAccountTags($accountID,$xKillbillCreatedBy,$xKillbillCreatedBy,$xKillbillComment);
 ```
 **Query Parameters**
 
@@ -4180,7 +4245,11 @@ const response: AxiosResponse<killbill.AuditLog[], any> = await api.getAccountAu
 ```
 
 ```php
+$apiInstance = $client->getAccountApi();
 
+$accountID = "b0da8392-49ba-43f2-8fac-3f9f85b8ff61";
+
+$accountAuditLogs = $apiInstance->getAccountAuditLogs($accountID);
 ```
 > Example Response:
 
@@ -4312,7 +4381,11 @@ const response: AxiosResponse<killbill.AuditLog[], any> = await api.getAccountAu
 ```
 
 ```php
+$apiInstance = $client->getAccountApi();
 
+$accountID = "b0da8392-49ba-43f2-8fac-3f9f85b8ff61";
+
+$accountAuditLogs = $apiInstance->getAccountAuditLogsWithHistory($accountID);
 ```
 > Example Response:
 
@@ -4515,7 +4588,12 @@ const response: AxiosResponse<killbill.AuditLog[], any> = await api.getAccountEm
 ```
 
 ```php
+$apiInstance = $client->getAccountApi();
 
+$accountID = "c62d5f6d-0b57-444d-bf9b-dd23e781fbda";
+$accountEmailID = 'bb390282-6757-4f4f-8dd5-456abd9f30b2';
+
+$accountEmailAuditLogs = $apiInstance->getAccountEmailAuditLogsWithHistory($accountID,$accountEmailID);
 ```
 > Example Response:
 
@@ -4596,7 +4674,11 @@ const response: AxiosResponse<killbill.AuditLog[], any> = await api.getBlockingS
 ```
 
 ```php
+$apiInstance = $client->getAccountApi();
 
+$blockingId = '0997b953-2b3a-4dc5-ad01-c38911662923';
+
+$blockingStateAuditLogs = $apiInstance->getBlockingStateAuditLogsWithHistory($blockingId);
 ```
 > Example Response:
 
@@ -4701,7 +4783,11 @@ const response: AxiosResponse<killbill.AccountTimeline, any> = await api.getAcco
 ```
 
 ```php
+$apiInstance = $client->getAccountApi();
 
+$accountID = '43488882-1777-460c-bc32-e375e67d09cf';
+
+$accountTimeline = $apiInstance->getAccountTimeline($accountID);
 ```
 > Example Response:
 
