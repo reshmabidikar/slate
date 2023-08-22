@@ -72,6 +72,7 @@ $phone-width: $tablet-width - $nav-width !default; // min width before reverting
 @font-face {
   font-family: 'Inter';
   src: url(../fonts/inter.ttf);
+  font-display: swap;
 }
 // FONTS
 ////////////////////
