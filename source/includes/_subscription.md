@@ -249,6 +249,11 @@ subscriptionApi.create_subscription(body,
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscription: Subscription = {planName: "blowdart-monthly", accountId: "04779ade-11f9-48d1-88a1-a63be84d1cb7"};
+
+api.createSubscription(subscription, 'created_by');
 ````
 
 ````php
@@ -485,6 +490,13 @@ subscriptionApi.create_subscription_with_add_ons(body,
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const base: subscription = {planName: "pistol-monthly", accountId: "04779ade-11f9-48d1-88a1-a63be84d1cb7"};
+const addon: subscription = {planName: "cleaning-monthly", accountId: "04779ade-11f9-48d1-88a1-a63be84d1cb7"};
+const subscriptions =[base, addon];
+
+api.createSubscriptionWithAddOns(subscriptions, 'created_by');
 ````
 
 ````php
@@ -782,6 +794,21 @@ subscriptionApi.create_subscriptions_with_add_ons([bundle1, bundle2],
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const base1: Subscription = {planName: "pistol-monthly", accountId: "04779ade-11f9-48d1-88a1-a63be84d1cb7"};
+const addon1: Subscription = {planName: "cleaning-monthly", accountId: "04779ade-11f9-48d1-88a1-a63be84d1cb7"};
+const subscriptions1 = [base1, addon1];
+const bulkSubBundle1: BulkSubscriptionsBundle = {baseEntitlementAndAddOns: subscriptions1};
+
+const base2: Subscription = {planName: "shotgun-monthly", accountId: "04779ade-11f9-48d1-88a1-a63be84d1cb7"};
+const addon2: subscription = {planName: "telescopic-scope-monthly", accountId: "04779ade-11f9-48d1-88a1-a63be84d1cb7"};
+const subscriptions2 = [base2, addon2];
+const bulkSubBundle2: BulkSubscriptionsBundle = {baseEntitlementAndAddOns: subscriptions2};
+
+const bulkSubscriptionBundles = [bulkSubBundle1, bulkSubBundle2];
+
+api.createSubscriptionsWithAddOns(bulkSubscriptionBundles, 'created_by');
 ````
 
 ````php
@@ -907,6 +934,11 @@ subscription = subscriptionApi.get_subscription(subscription_id)
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId= 'a07be253-f7ce-4719-9959-037e05ff0777';
+
+const response: AxiosResponse<killbill.Subscription, any> = await api.getSubscription(subscriptionId,'NONE');
 ````
 
 ````php
@@ -1064,6 +1096,11 @@ subscription = subscriptionApi.get_subscription_by_key(external_key)
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const key= 'somethingSpecial';
+
+const response: AxiosResponse<killbill.Subscription, any> = await api.getSubscriptionByKey(key,'NONE');
 ````
 
 ````php
@@ -1237,6 +1274,12 @@ subscriptionApi.update_subscription_bcd(subscription_id,
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscription: subscription = {billCycleDayLocal: 10};
+const subscriptionId = 'e5254822-680f-4720-b5e1-a7146cefb904';
+
+api.updateSubscriptionBCD(subscription, subscriptionId, 'created_by');
 ````
 
 ````php
@@ -1332,6 +1375,12 @@ subscriptionApi.update_subscription_quantity(subscription_id,
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscription: subscription = {quantity: 3};
+    const subscriptionId = 'e5254822-680f-4720-b5e1-a7146cefb904';
+
+api.updateSubscriptionQuantity(subscription, subscriptionId, 'created_by');
 ````
 
 ````php
@@ -1477,6 +1526,12 @@ subscriptionApi.change_subscription_plan(subscription_id,
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscription: subscription = {planName: "pistol-monthly-notrial"};
+const subscriptionId = 'e5254822-680f-4720-b5e1-a7146cefb904';
+
+api.changeSubscriptionPlan(subscription, subscriptionId, 'created_by');
 ````
 
 ````php
@@ -1581,6 +1636,11 @@ subscriptionApi.undo_change_subscription_plan(subscription_id,
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId= '1664777f-f194-48fd-a274-e883063790b1';
+
+api.undoChangeSubscriptionPlan(subscriptionId, 'created-by');
 ````
 
 ````php
@@ -1678,6 +1738,11 @@ subscriptionApi.cancel_subscription_plan(subscription_id,
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId= '66d3d89f-e074-49cc-bf9a-96a2e57d15ab';
+
+api.cancelSubscriptionPlan(subscriptionId, 'created-by');
 ````
 
 ````php
@@ -1800,6 +1865,11 @@ subscriptionApi.uncancel_subscription_plan(subscription_id,
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId= '1664777f-f194-48fd-a274-e883063790b1';
+
+api.uncancelSubscriptionPlan(subscriptionId, 'created-by');
 ````
 
 ````php
