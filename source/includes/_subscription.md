@@ -1584,7 +1584,7 @@ subscriptionApi.add_subscription_blocking_state(subscription_id,
 
 **Request Body**
 
-A blocking state resource representing the intended new blocking state. For example,
+A [blocking state resource](account-blocking-state-resource) representing the intended new blocking state.
 
 ```
 {
@@ -1607,7 +1607,7 @@ A blocking state resource representing the intended new blocking state. For exam
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a status code of 201 and an empty body. In addition, a `Location` header is returned which contains the URL to retrieve the subscription blocking states for the account.
 
 
 ## Custom Fields
@@ -1633,8 +1633,6 @@ curl -v \
     -H "Content-Type: application/json" \
     -H "X-Killbill-CreatedBy: demo" \
     -d '[{ 
-            "objectId": "77e23878-8b9d-403b-bf31-93003e125712",
-            "objectType": "SUBSCRIPTION",
             "name": "Test Custom Field",
             "value": "test_value"
     }]' \
@@ -1809,10 +1807,10 @@ import org.killbill.billing.client.api.gen.SubscriptionApi;
 protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
-UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+UUID customFieldId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
 
 CustomField customFieldModified = new CustomField();
-customFieldModified.setCustomFieldId(customFieldsId);
+customFieldModified.setCustomFieldId(customFieldId);
 customFieldModified.setValue("NewValue");
 CustomFields customFields = new CustomFields();
 customFields.add(customFieldModified);
