@@ -32,6 +32,12 @@ $tablet: 1024px;
 $mobile: 375px;
 
 
+@font-face {
+  font-family: 'SF Mono';
+  src: url(../fonts/SFMonoRegular.otf);
+  font-display: swap;
+}
+
 :root {
   --main-bg: #fff;
   --main-color: #5C6287;
@@ -57,9 +63,16 @@ $mobile: 375px;
   --note-color: #5C6287;
   --note-heading-color: #293056;
 
+  --table-header-bg: #F9FAFB;
+  --table-header-color: #293056;
+  --table-border-color: #EAECF0;
+
   --search-notice-bg: #c97a7e;
 
   --scroll-color: #EAECF0;
+
+  --tooltip-bg: #344054;
+  --tooltip-border-color: #D5D9EB;
 }
 
 body.dark {
@@ -76,6 +89,15 @@ body.dark {
   --nav-active-color: #528BFF;
 
   --heading-color: #EAECF5;
+
+  --note-bg: #344054;
+  --note-border-color: #344054;
+  --note-color: #D0D5DD;
+  --note-heading-color: #D0D5DD;
+
+  --table-header-bg: #344054;
+  --table-header-color: #D0D5DD;
+  --table-border-color: #475467;
 
   --scroll-color: #1D2939;
 }
@@ -244,6 +266,9 @@ p {
   left: 0;
   right: 0;
   z-index: 100000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #loading {
@@ -255,9 +280,6 @@ p {
   border-top-color: #fff;
   animation: spin 1s ease-in-out infinite;
   -webkit-animation: spin 1s ease-in-out infinite;
-  position: fixed;
-  top: 50%;
-  left: 50%;
 }
 
 @keyframes spin {
@@ -371,7 +393,6 @@ p {
       outline: none;
 
       &:hover, &:active, &:focus {
-        opacity: 0.8;
         box-shadow: none;
       }
 
@@ -467,12 +488,12 @@ body.dark {
 .tooltip {
   position: absolute;
   display: inline-block;
-  left: 50%;
-  bottom: 110%;
+  right: 110%;
+  top: 50%;
   padding: 2px 4px !important; 
   border-radius: 5px;
-  transform: translateX(-50%);
-  background-color: var(--code-snippet-body-bg);
+  transform: translateY(-50%);
+  background-color: var(--tooltip-bg);
 }
 
 .lang-selector {
@@ -672,7 +693,6 @@ body.dark {
   }
 
   &__text {
-    padding-right: 20px;
     overflow-x: hidden;
 
     code {
@@ -682,12 +702,12 @@ body.dark {
       font-weight: 400;
       font-size: 16px;
       line-height: 24px;
-      font-family: "SF Mono", monospace;
+      font-family: "SF Mono", monospace !important;
     }
 
     .note {
       padding: 16px 16px 16px 48px;
-      margin: 1.5em 0;
+      margin: 16px 0;
       color: var(--note-color);
       background: var(--note-bg);
       border: 1px solid var(--note-border-color);
@@ -700,7 +720,7 @@ body.dark {
         font-weight: 600;
         font-size: 14px;
         color: var(--note-heading-color);
-        margin-left: -32px;
+        margin-left: -28px;
 
         &:before {
           color: var(--nav-active-color);
@@ -719,45 +739,46 @@ body.dark {
       }
     }
 
+    .table-wrapper {
+      border-radius: 12px;
+      border: 1px solid var(--table-border-color);
+      width: 100%;
+      max-width: 100%;
+      margin: 15px 0;
+      overflow-x: auto;
+    }
+
     table {
       border-radius: 12px;
-      border: 1px solid var(--main-border-color);
       background: linear-gradient(180deg, var(--main-bg), transparent);
-      margin: 15px 0;
       width: 100%;
-      table-layout: fixed;
-      overflow-x: scroll;
 
-      &, td, th {
+      &,td,th {
         padding: 12px;
-        font-weight: 500;
         font-size: 14px;
         overflow-x: hidden;
+        text-align: left;
+      }
+
+      th {
+        font-weight: 500;
+        font-size: 14px;
+        border-bottom: 1px solid var(--table-border-color);
+        background-color: var(--table-header-bg);
       }
 
       td {
-        font-weight: 400 !important;
+        font-weight: 400;
       }
-      
+
       td:not(:first-child),
       th:not(:first-child) {
-        border-left: 1px solid var(--main-border-color);
-        font-size: 14px;
-        line-height: 21px;
+        border-left: 1px solid var(--table-border-color);
       }
 
       tr:not(:last-child),
-      table thead tr:first-child {
-        border-bottom: 1px solid var(--main-border-color);
-      }
-
-      tbody {
-        border-radius: 9px;
-        border: none;
-
-        &:is(:nth-child(2)) tr:first-child td:first-child {
-          border-radius: 12px;
-        }
+      tr:first-child {
+        border-bottom: 1px solid var(--table-border-color);
       }
     }
     
@@ -824,11 +845,10 @@ body.dark {
       flex-direction: row-reverse;
       padding: 8px 24px;
       margin: 0;
-      
       font-size: 14px;
+      line-height: 21px;
       background-color: var(--code-snippet-header-bg);
       
-
       border-radius: 12px 12px 0 0;
 
       * {
@@ -839,6 +859,8 @@ body.dark {
       }
 
       p {
+        font-size: 14px;
+        line-height: 21px;
         border-radius: 0 0 12px 12px;
       }
     }
@@ -856,6 +878,13 @@ body.dark {
       &>pre.highlight {
         margin: 0;
         padding: 16px 24px 24px;
+        font-size: 12px;
+        line-height: 18px;
+        line-height: 18px;
+
+        * {
+          font-family: "SF Mono", monospace !important;
+        }
       }
     }
 
