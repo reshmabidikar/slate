@@ -1545,6 +1545,10 @@ BlockingStates result = subscriptionApi.addSubscriptionBlockingState(subscriptio
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 subscription = KillBillClient::Model::Subscription.new
 subscription.subscription_id = "161692a4-c293-410c-a92f-939c5e3dcba7"
 
@@ -1661,12 +1665,18 @@ subscriptionApi.createSubscriptionCustomFields(subscriptionId,
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "2207150d-0652-43eb-abbe-2cbd0092b744"
+
 custom_field = KillBillClient::Model::CustomFieldAttributes.new
-custom_field.object_type = 'SUBSCRIPTION'
 custom_field.name = 'Test Custom Field'
 custom_field.value = 'test_value'
 
-subscription.add_custom_field(custom_field, 
+subscription.add_custom_field(custom_field,
                               user,
                               reason,
                               comment,
@@ -1736,9 +1746,11 @@ List<CustomField> customFields = subscriptionApi.getSubscriptionCustomFields(sub
 ```
 
 ```ruby
-audit = 'NONE'
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "2207150d-0652-43eb-abbe-2cbd0092b744"
 
-subscription.custom_fields(audit, options)
+audit = 'NONE'
+fields = subscription.custom_fields(audit, options)
 ```
 
 ```python
@@ -1821,14 +1833,21 @@ subscriptionApi.modifySubscriptionCustomFields(subscriptionId,
 ```
 
 ```ruby
-custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-custom_field.name = 'Test Modify'
+user = "demo"
+reason = nil
+comment = nil
+
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "2207150d-0652-43eb-abbe-2cbd0092b744"
+
+custom_field = KillBillClient::Model::CustomFieldAttributes.new
+custom_field.custom_field_id = 'a04adaca-78a4-41fe-b512-a8d620aad456'
 custom_field.value = 'test_modify_value'
 
-subscription.modify_custom_field(custom_field,                                                                                            
-                                 user, 
+subscription.modify_custom_field(custom_field,
+                                 user,
                                  reason,
-                                 comment, 
+                                 comment,
                                  options)
 ```
 
@@ -1898,12 +1917,19 @@ subscriptionApi.deleteSubscriptionCustomFields(subscriptionId,
 ```
 
 ```ruby
-custom_field_id = custom_field.id
+user = "demo"
+reason = nil
+comment = nil
 
-subscription.remove_custom_field(custom_field_id,                                                                                            
-                                 user, 
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "2207150d-0652-43eb-abbe-2cbd0092b744"
+
+custom_field_id = 'a04adaca-78a4-41fe-b512-a8d620aad456'
+
+subscription.remove_custom_field(custom_field_id,
+                                 user,
                                  reason,
-                                 comment, 
+                                 comment,
                                  options)
 ```
 
