@@ -467,6 +467,7 @@ $xKillbillReason = "reason";
 $xKillbillComment = "comment";
 
 $account = new Account();
+
 $account->setName('Another Name');
 $accountID = '07c0cef4-41c5-4606-b2cd-661332cdd41c';
 
@@ -1187,6 +1188,7 @@ const response: AxiosResponse<killbill.Bundle[], any> = await api.getAccountBund
 
 ```php
 $apiInstance = $client->getAccountApi();
+
 $accountID = '8992e146-bfa1-4126-a045-98b844a4adcb';
 
 $bundles  = $apiInstance-> getAccountBundles($accountID);
@@ -1408,6 +1410,7 @@ const response: AxiosResponse<killbill.Bundle[], any> = await api.getAccountBund
 
 ```php
 $apiInstance = $client->getAccountApi();
+
 $accountID = '8992e146-bfa1-4126-a045-98b844a4adcb';
 
 $bundles  = $apiInstance-> getAccountBundlesPaginated($accountID);
@@ -1646,6 +1649,7 @@ const response: AxiosResponse<killbill.Invoice[], any> = await api.getInvoicesFo
 
 ```php
 $apiInstance = $client->getAccountApi();
+
 $accountID = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266';
 
 $invoices  = $apiInstance-> getInvoicesForAccount($accountID);
@@ -1754,6 +1758,7 @@ const response: AxiosResponse<killbill.Invoice[], any> = await api.getInvoicesFo
 
 ```php
 $apiInstance = $client->getAccountApi();
+
 $accountID = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266';
 
 $invoices  = $apiInstance-> getInvoicesForAccountPaginated($accountID);
@@ -1897,7 +1902,9 @@ api.payAllInvoices(accountID,'created_by');
 
 ```php
 $apiInstance = $client->getAccountApi();
+
 $accountID = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266';
+
 $xKillbillCreatedBy = "user";
 
 $apiInstance-> payAllInvoices($accountID,$xKillbillCreatedBy);
@@ -1973,6 +1980,7 @@ const response: AxiosResponse<killbill.InvoicePayment[], any> = await api.getInv
 
 ```php
 $apiInstance = $client->getAccountApi();
+
 $accountID = '110952d7-1b7e-482c-b6bb-103e46794927';
 
 $invoicePayments  = $apiInstance-> getInvoicePayments($accountID);
@@ -2085,6 +2093,7 @@ const response: AxiosResponse<killbill.InvoicePayment[], any> = await api.getPay
 
 ```php
 $apiInstance = $client->getAccountApi();
+
 $accountID = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61';
 
 $accountPayments  = $apiInstance-> getPaymentsForAccount($accountID);
@@ -3645,10 +3654,10 @@ curl -v \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Content-Type: application/json" \
     -H "Accept: application/json" \
-    -H "X-Killbill-CreatedBy: demo" \"name": "Test Custom Field"
+    -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d '[ { "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe", "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "objectType": "ACCOUNT", , "value": "test_modify_value", "auditLogs": [] }]' \
+    -d '[ { "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe", "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "objectType": "ACCOUNT", "name": "Test Custom Field" , "value": "test_modify_value", "auditLogs": [] }]' \
     "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
 ```
 
@@ -3911,6 +3920,7 @@ $xKillbillReason = "reason";
 $xKillbillComment = "comment";
 
 $tags = ['00000000-0000-0000-0000-000000000002'];
+
 $accountID = "b0da8392-49ba-43f2-8fac-3f9f85b8ff61";
 
 $apiInstance->createAccountTags($tags,$xKillbillCreatedBy,$accountID,$xKillbillReason,$xKillbillComment);
