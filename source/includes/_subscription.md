@@ -1578,12 +1578,13 @@ body = BlockingState(state_name='STATE1',
                      is_block_change=False,
                      is_block_entitlement=False,
                      is_block_billing=False)
+subscription_id = '33aa2952-cea2-4cad-900a-9731c1042e54'
 
 subscriptionApi.add_subscription_blocking_state(subscription_id,
                                                 body,
-                                                created_by,
-                                                api_key,
-                                                api_secret)
+                                                created_by='demo',
+                                                reason='reason',
+                                                comment='comment')
 ```
 
 **Request Body**
@@ -1685,14 +1686,14 @@ subscription.add_custom_field(custom_field,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+subscription_id = '33aa2952-cea2-4cad-900a-9731c1042e54'
 body = CustomField(name='Test Custom Field', value='test_value')
 
 subscriptionApi.create_subscription_custom_fields(subscription_id,
                                                   [body],
-                                                  created_by,
-                                                  api_key,
-                                                  api_secret)
+                                                  created_by='demo',
+                                                  reason='reason',
+                                                  comment='comment')
 ```
 
 **Request Body**
@@ -1755,11 +1756,9 @@ fields = subscription.custom_fields(audit, options)
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = '642ee0ac-972b-4cdf-b9ae-ab8f9bb9bc05'
+subscription_id = '33aa2952-cea2-4cad-900a-9731c1042e54'
 
-subscriptionApi.get_subscription_custom_fields(subscription_id,
-                                               api_key,
-                                               api_secret)
+fields = subscriptionApi.get_subscription_custom_fields(subscription_id)
 ```
 
 > Example Response:
@@ -1853,17 +1852,16 @@ subscription.modify_custom_field(custom_field,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
-custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-body = CustomField(custom_field_id=custom_field_id, 
-                   name='Test Custom Field', 
-                   value='test_value')
+subscription_id = '33aa2952-cea2-4cad-900a-9731c1042e54'
+custom_field_id = '3a26be42-a153-4894-ac3d-93ad2e38e05b'
+body = CustomField(custom_field_id=custom_field_id,
+                   value='modified_value')
 
 subscriptionApi.modify_subscription_custom_fields(subscription_id,
                                                   [body],
-                                                  created_by,
-                                                  api_key,
-                                                  api_secret)
+                                                  created_by='demo',
+                                                  reason='reason',
+                                                  comment='comment')
 ```
 
 **Request Body**
@@ -1935,12 +1933,15 @@ subscription.remove_custom_field(custom_field_id,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+subscription_id = 'e5254822-680f-4720-b5e1-a7146cefb904'
 
-subscriptionApi.delete_subscription_custom_fields(subscription_id,
-                                                  created_by,
-                                                  api_key,
-                                                  api_secret)
+custom_fields = ['194bcfc8-340f-4592-acd2-ffc1fc461e96']
+
+subscriptionApi.delete_subscription_custom_fields(subscription_id=subscription_id,
+                                                  created_by='demo',
+                                                  custom_field=custom_fields,
+                                                  reason='reason',
+                                                  comment='comment')
 ```
 
 **Query Parameters**
