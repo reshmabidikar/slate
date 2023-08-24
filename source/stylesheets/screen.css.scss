@@ -239,6 +239,7 @@ h3 {
   line-height: 35px;
 }
 
+
 h4 {
   font-size: 20px;
   line-height: 30px;
@@ -694,6 +695,8 @@ body.dark {
 
   &__text {
     overflow-x: hidden;
+    // Hack, cause  some section have scroll after JQuery wrap elements
+    height: 100.1%;
 
     code {
       color: var(--code-color);
@@ -894,6 +897,10 @@ body.dark {
   }
 
   @media (min-width: $lg) {
+    h1, h2, h3 {
+      max-width: 50%;
+    }
+
     &__section {
       grid-template-columns: minmax(400px, 60%) minmax(400px, 40%);
     }
