@@ -1587,6 +1587,30 @@ subscriptionApi.add_subscription_blocking_state(subscription_id,
                                                 comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$blockingState = new BlockingState();
+$blockingState -> setStateName('STATE1');
+$blockingState -> setService('ServiceStateService1');
+$blockingState -> setIsBlockChange(true);
+$blockingState -> setIsBlockBilling(true);
+$blockingState -> setIsBlockEntitlement(true);
+
+$subscriptionId = "3f4a2efd-a8c1-4f85-9266-32bd6f7113ba";
+$requestedDate = new DateTime("2023-10-20");
+$pluginProperty = array("pluginProperty_example");
+
+$result = $apiInstance->addSubscriptionBlockingState($blockingState, $xKillbillCreatedBy, $subscriptionId, $xKillbillReason, $xKillbillComment, $requestedDate, $pluginProperty);
+````
+
 **Request Body**
 
 A [blocking state resource](account-blocking-state-resource) representing the intended new blocking state.
@@ -1696,6 +1720,26 @@ subscriptionApi.create_subscription_custom_fields(subscription_id,
                                                   comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$subscriptionId = "3f4a2efd-a8c1-4f85-9266-32bd6f7113ba";
+
+$customField = new CustomField();
+$customField -> setName('Test Custom Field');
+$customField -> setValue('test_value');
+$body = array($customField);
+
+$apiInstance->createSubscriptionCustomFields($body, $xKillbillCreatedBy, $subscriptionId, $xKillbillReason, $xKillbillComment);
+````
+
 **Request Body**
 
 A list of objects giving the name and value of the custom field, or fields, to be added. For example:
@@ -1760,6 +1804,18 @@ subscription_id = '33aa2952-cea2-4cad-900a-9731c1042e54'
 
 fields = subscriptionApi.get_subscription_custom_fields(subscription_id)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$subscriptionId = "3f4a2efd-a8c1-4f85-9266-32bd6f7113ba";
+$audit = "NONE";
+
+$result = $apiInstance->getSubscriptionCustomFields($subscriptionId, $audit);
+````
 
 > Example Response:
 
@@ -1864,6 +1920,26 @@ subscriptionApi.modify_subscription_custom_fields(subscription_id,
                                                   comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$subscriptionId = "3f4a2efd-a8c1-4f85-9266-32bd6f7113ba";
+
+$customField = new CustomField();
+$customField -> setCustomFieldId('73e399fe-efaa-4f05-a5fe-08f10608c345');
+$customField -> setValue('new_value');
+$body = array($customField);
+
+$apiInstance->modifySubscriptionCustomFields($body, $xKillbillCreatedBy, $subscriptionId, $xKillbillReason, $xKillbillComment);
+````
+
 **Request Body**
 
 A list of objects specifying the id and the new value for the custom fields to be modified. For example:
@@ -1943,6 +2019,22 @@ subscriptionApi.delete_subscription_custom_fields(subscription_id=subscription_i
                                                   reason='reason',
                                                   comment='comment')
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$subscriptionId = "3f4a2efd-a8c1-4f85-9266-32bd6f7113ba";
+$customFields = array("73e399fe-efaa-4f05-a5fe-08f10608c345");
+
+$apiInstance->deleteSubscriptionCustomFields($subscriptionId, $xKillbillCreatedBy, $customFields, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
