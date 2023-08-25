@@ -756,6 +756,10 @@ body.dark {
       overflow-x: auto;
     }
 
+    p + p {
+      margin-top: 20px;
+    }
+
     table {
       border-radius: 12px;
       background: linear-gradient(180deg, var(--main-bg), transparent);
@@ -833,7 +837,7 @@ body.dark {
       margin: 24px 0;
       background-color: #ccc;
       height: 100%;
-  }
+    }
   }
 
   &__code-snippets {
@@ -903,7 +907,7 @@ body.dark {
 
   @media (min-width: $lg) {
     h1, h2, h3 {
-      max-width: 50%;
+      padding-right: 50%;
     }
 
     &__section {
