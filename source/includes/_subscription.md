@@ -1986,7 +1986,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Remove custom fields from subscription
 
-Delete one or more custom fields from a subscription
+Delete one or more custom fields from a subscription. It accepts query parameters corresponding to the custom field ids to be deleted. if no query parameters are specified, it deletes all the custom fields corresponding to the subscription.
 
 
 **HTTP Request** 
@@ -2075,8 +2075,8 @@ $apiInstance->deleteSubscriptionCustomFields($subscriptionId, $xKillbillCreatedB
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ------- | ----------- | 
-| **customField** | string | yes | none | Custom field object ID that should be deleted. Multiple custom fields can be deleted by specifying a separate **customField** parameter corresponding to each field |
+| ---- | -----|----------| ------- | ----------- | 
+| **customField** | string | no       | none | Custom field object ID that should be deleted. Multiple custom fields can be deleted by specifying a separate **customField** parameter corresponding to each field |
 
 **Response**
 
