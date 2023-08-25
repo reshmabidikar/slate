@@ -108,19 +108,25 @@ under the License.
           <ul class="site-navigator__menu">
             <% toc_data(current_page.data.menu_items, current_page.data.current_page, page_content).each do |menu_item| %>
               <li>
-                <a href="<%= menu_item[:href]%>" class="site-navigator__item site-navigator__menu-item" data-title="<%= menu_item[:title] %>"><%= menu_item[:content] %></a>
+                <a href="<%= menu_item[:href]%>" class="site-navigator__item site-navigator__menu-item" data-title="<%= menu_item[:title] %>">
+                  <span><%= menu_item[:content] %></span>
+                </a>
                 
                 <% if menu_item[:children].length > 0 %>
                   <ul class="site-navigator__submenu">
                     <% menu_item[:children].each do |submenu_item| %>
                       <li class="site-navigator__submenu-container">
-                        <a href="#<%= submenu_item[:id] %>" class="site-navigator__item site-navigator__submenu-item" data-title="<%= submenu_item[:title] %>"><%= submenu_item[:content] %></a>
+                        <a href="#<%= submenu_item[:id] %>" class="site-navigator__item site-navigator__submenu-item" data-title="<%= submenu_item[:title] %>">
+                          <span><%= submenu_item[:content] %></span>
+                        </a>
 
                         <% if submenu_item[:children].length > 0 %>
                           <ul class="site-navigator__submenu">
                             <% submenu_item[:children].each do |nested_submenu_item| %>
                               <li>
-                                <a href="#<%= nested_submenu_item[:id] %>" class="site-navigator__item site-navigator__submenu-item" data-title="<%= nested_submenu_item[:title] %>"><%= nested_submenu_item[:content] %></a>
+                                <a href="#<%= nested_submenu_item[:id] %>" class="site-navigator__item site-navigator__submenu-item" data-title="<%= nested_submenu_item[:title] %>">
+                                  <span><%= nested_submenu_item[:content] %></span>
+                                </a>
                               </li>
                             <% end %>
                           </ul>

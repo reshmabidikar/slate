@@ -579,21 +579,26 @@ body.dark {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    overflow-x: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    gap: 10px;
+    overflow: hidden;
     border-radius: 6px;
     font-weight: 400;
     font-size: 14px;
     line-height: 150%;
     text-decoration: none;
 
-
     &:hover,
     &.active {
       background-color: var(--nav-bg);
       color: var(--nav-active-color);
       text-decoration: none;
+    }
+
+    &>span {
+      flex-grow: 1;
+      overflow-x: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 
