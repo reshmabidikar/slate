@@ -1588,6 +1588,12 @@ subscriptionApi.add_subscription_blocking_state(subscription_id,
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const blockingState: BlockingState = {stateName: "STATE1", service: "ServiceStateService", isBlockChange: true, isBlockEntitlement: false, isBlockBilling: false};
+const subscriptionId = 'b6000207-42fd-40ea-9c8e-297d9adc1574';
+
+api.addSubscriptionBlockingState(blockingState, subscriptionId, 'created_by');
 ````
 
 ````php
@@ -1721,6 +1727,14 @@ subscriptionApi.create_subscription_custom_fields(subscription_id,
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = 'b6000207-42fd-40ea-9c8e-297d9adc1574';
+
+const customField: CustomField = {name: "Test Custom Field", value: "test_value"};
+const customFields = [customField];
+
+api.createSubscriptionCustomFields(customFields, subscriptionId, 'created_by');
 ````
 
 ````php
@@ -1806,6 +1820,12 @@ fields = subscriptionApi.get_subscription_custom_fields(subscription_id)
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = 'e5254822-680f-4720-b5e1-a7146cefb904';
+const audit = 'NONE';
+
+const response: AxiosResponse<killbill.CustomField[], any> = await api.getSubscriptionCustomFields(subscriptionId, audit, 'created_by');
 ````
 
 ````php
@@ -1921,6 +1941,14 @@ subscriptionApi.modify_subscription_custom_fields(subscription_id,
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = 'b6000207-42fd-40ea-9c8e-297d9adc1574';
+
+const customField: CustomField = {customFieldId: "d8f2e80d-9fd8-48e7-b564-a541a0a7621d", value: "new_value"};
+const customFields = [customField];
+
+api.modifySubscriptionCustomFields(customFields, subscriptionId, 'created_by');
 ````
 
 ````php
@@ -2021,6 +2049,14 @@ subscriptionApi.delete_subscription_custom_fields(subscription_id=subscription_i
 ```
 
 ````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = 'b6000207-42fd-40ea-9c8e-297d9adc1574';
+
+const customField = 'd8f2e80d-9fd8-48e7-b564-a541a0a7621d';
+const customFields = [customField];
+
+api.deleteSubscriptionCustomFields(subscriptionId, 'created_by', customFields);
 ````
 
 ````php
