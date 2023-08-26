@@ -82,6 +82,11 @@ Account result = accountApi.createAccount(body, requestOptions);
 ```
 ```ruby
 account = KillBillClient::Model::Account.new
+
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 account.name = "John Doe"
 account.email = "john@laposte.com"
 account.currency = "USD"
@@ -193,11 +198,13 @@ Account result = accountApi.getAccount(accountId,
 account_id = "36c05a84-563b-4794-8958-772d93e677e1"
 with_balance = false
 with_balance_and_cba = false
-account = KillBillClient::Model::Account.new
-account.find_by_id(account_id,
-                   with_balance, 
-                   with_balance_and_cba,
-                   options)
+
+account = KillBillClient::Model::Account
+
+accountResponse = account.find_by_id( account_id,
+                               with_balance, 
+                               with_balance_and_cba,
+                               options)
 ```
 ```python
 accountApi = killbill.api.AccountApi()
@@ -305,11 +312,12 @@ external_key = '36c05a84-563b-4794-8958-772d93e677e1'
 with_balance = false
 with_balance_and_cba = false
 
-account = KillBillClient::Model::Account.new
-account.find_by_external_key(external_key,
-                             with_balance,
-                             with_balance_and_cba, 
-                             options)
+account = KillBillClient::Model::Account
+
+accountResponse = account.find_by_external_key( external_key,
+                                         with_balance,
+                                         with_balance_and_cba, 
+                                         options)
 ```
 
 ```python
@@ -429,14 +437,18 @@ accountApi.updateAccount(accountId,
 ```
 
 ```ruby
-account.name = 'Another Name'
-treat_null_as_reset = true
+account = KillBillClient::Model::Account.new
 
-account.update(treat_null_as_reset,
-               user,
-               reason,
-               comment, 
-               options)
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account.account_id = "07c0cef4-41c5-4606-b2cd-661332cdd41c"
+account.name = 'Another Name'
+
+treat_null_as_reset = false
+
+account.update(treat_null_as_reset,user,reason,comment,options)
 ```
 
 ```python
@@ -527,6 +539,14 @@ accountApi.closeAccount(accountId,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = "864c1418-e768-4cd5-a0db-67537144b685"
+
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 cancel_subscriptions = false
 writeoff_unpaid_invoices = false
 item_adjust_unpaid_invoices = false
@@ -620,16 +640,18 @@ Accounts allAccounts = accountApi.getAccounts(offset,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account
+
 offset = 0
 limit = 100
 with_balance = false
 with_balance_and_cba = false
 
-account.find_in_batches(offset,
-                        limit,
-                        with_balance,
-                        with_balance_and_cba,
-                        options)
+allAccounts = account.find_in_batches( offset,
+                                    limit,
+                                    with_balance,
+                                    with_balance_and_cba,
+                                    options)
 ```
 ```python
 accountApi = killbill.api.AccountApi()
@@ -760,18 +782,20 @@ List<Account> accountsByKey = accountApi.searchAccounts(searchKey,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account
+
 search_key = 'John'
 offset = 0
 limit = 100
 with_balance = false
 with_balance_and_cba = false
 
-account.find_in_batches_by_search_key(search_key,
-                                      offset,
-                                      limit,
-                                      with_balance,
-                                      with_balance_and_cba,
-                                      options)
+accounts = account.find_in_batches_by_search_key( search_key,
+                                                  offset,
+                                                  limit,
+                                                  with_balance,
+                                                  with_balance_and_cba,
+                                                  options)
 ```
 
 ```python
@@ -917,9 +941,13 @@ accountApi.addEmail(accountId,
 ```
 
 ```ruby
-account.email = 'email@laposte.com'
+account = KillBillClient::Model::Account.new
 
-account.add_email(account.email,
+account.account_id = '873c26ef-a3fa-4942-b2f5-549b51f20b1a'
+
+email = 'email@laposte.com'
+
+account.add_email(email,
                   user,
                   reason,
                   comment,
@@ -1002,8 +1030,13 @@ List<AccountEmail> emails = accountApi.getEmails(accountId, requestOptions);
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'cd026587-c93b-471c-a98d-224c21636fbc'
+
 audit = 'NONE'
-account.emails(audit, options)
+
+accountEmails = account.emails(audit, options)
 ```
 
 ```python
@@ -1080,6 +1113,14 @@ accountApi.removeEmail(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'f755e6a9-cf56-4776-9455-3df350b72f6d'
+
 email = 'email@laposte.com'
 
 account.remove_email(email,
@@ -1169,7 +1210,11 @@ List<Bundle> accountBundles = accountApi.getAccountBundles(accountId,
 ```
 
 ```ruby
-account.bundles(options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = '15434b45-54c1-4a44-851c-b1f2f7a52f03'
+
+accountBundles = account.bundles(options)
 ```
 
 ```python
@@ -1391,7 +1436,11 @@ Bundles bundles = accountApi.getAccountBundlesPaginated(accountId, offset, limit
 ```
 
 ```ruby
-account.bundles(options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = '15434b45-54c1-4a44-851c-b1f2f7a52f03'
+
+accountBundles = account.bundles(options)
 ```
 
 ```python
@@ -1629,8 +1678,11 @@ Invoices invoices = accountApi.getInvoicesForAccount(accountId,
 ```
 
 ```ruby
-account.invoices(with_items,
-                 options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
+
+accountInvoices = account.invoices(options)
 ```
 
 ```python
@@ -1738,8 +1790,11 @@ Invoices invoices = accountApi.getInvoicesForAccountPaginated(accountId, offset,
 ```
 
 ```ruby
-account.invoices(with_items,
-                 options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = '325fbe1c-7c35-4d96-a4e5-2cbaabe218c6'
+
+accountInvoices = account.invoices(options)
 ```
 
 ```python
@@ -1863,9 +1918,12 @@ accountApi.payAllInvoices(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 invoice_payment                  = KillBillClient::Model::InvoicePayment.new
-invoice_payment.account_id       = account.account_id
-invoice_payment.purchased_amount = '50.0'
+invoice_payment.account_id       = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
 external_payment  = true
 payment_method_id = nil
@@ -1958,10 +2016,14 @@ audit ='NONE'
 with_plugin_info = false
 with_attempts = false
 
-account.invoice_payments(audit,
-                         with_plugin_info,
-                         with_attempts,
-                         options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'e011caa5-ba35-4ac6-81cb-63b4f08122dc'
+
+accountInvoicePayments = account.invoice_payments( audit,
+                                                   with_plugin_info,
+                                                   with_attempts,
+                                                   options)
 ```
 
 ```python
@@ -2074,7 +2136,11 @@ Payments payments = accountApi.getPaymentsForAccount(accountId,
 ```
 
 ```ruby
-account.payments(options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
+
+accoountPayments = account.payments(options)
 ```
 
 ```python
@@ -2203,14 +2269,19 @@ Payment payment = accountApi.processPayment(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 transaction = KillBillClient::Model::Transaction.new
 transaction.amount = '50.0'
 
-payment_method_id = payment_method.payment_method_id
+account_id = "f4087a76-9f8a-4893-abbf-c5bb69975d1b"
+payment_method_id = "1d55ed5f-deea-4109-98b0-beb13a242f7c"
 refresh_options = nil
 
 # Authorization
-transaction.auth(account.account_id,
+transaction.auth(account_id,
                  payment_method_id, 
                  user, 
                  reason, 
@@ -2219,7 +2290,7 @@ transaction.auth(account.account_id,
                  refresh_options)
 
 # Purchase
-transaction.purchase(account.account_id,
+transaction.purchase(account_id,
                      payment_method_id, 
                      user, 
                      reason, 
@@ -2228,7 +2299,7 @@ transaction.purchase(account.account_id,
                      refresh_options)
 
 # Credit
-transaction.credit(account.account_id,
+transaction.credit(account_id,
                    payment_method_id, 
                    user, 
                    reason, 
@@ -2342,14 +2413,19 @@ Payment payment = accountApi.processPaymentByExternalKey(authTransaction,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 transaction = KillBillClient::Model::Transaction.new
 transaction.amount = '50.0'
 
-payment_method_id = '132d59c0-8c28-4115-947d-f57d430bc458'
+externalKey = "ad70ffb1-3355-418a-a457-6d8d80696d02";
+payment_method_id = 'c6bd413e-268e-4cc8-afb0-16b2dec3ffa5'
 refresh_options = nil
 
 # Authorization
-transaction.auth_by_external_key(account.external_key,
+transaction.auth_by_external_key(external_key,
                                  payment_method_id, 
                                  user, 
                                  reason, 
@@ -2358,7 +2434,7 @@ transaction.auth_by_external_key(account.external_key,
                                  refresh_options)
 
 # Purchase
-transaction.purchase_by_external_key(account.external_key,
+transaction.purchase_by_external_key(external_key,
                                      payment_method_id, 
                                      user, 
                                      reason, 
@@ -2367,7 +2443,7 @@ transaction.purchase_by_external_key(account.external_key,
                                      refresh_options)
 
 # Credit
-transaction.credit_by_external_key(account.external_key,
+transaction.credit_by_external_key(external_key,
                                    payment_method_id, 
                                    user, 
                                    reason, 
@@ -2480,8 +2556,12 @@ PaymentMethod paymentMethodPP = accountApi.createPaymentMethod(accountId, paymen
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 pm             = KillBillClient::Model::PaymentMethod.new
-pm.account_id  = account.account_id
+pm.account_id  = "6e5d0912-2e56-4511-af77-af054b616696"
 pm.plugin_name = '__EXTERNAL_PAYMENT__'
 pm.plugin_info = nil
 
@@ -2578,12 +2658,14 @@ List<PaymentMethod> paymentMethods = accountApi.getPaymentMethodsForAccount(acco
 ```
 
 ```ruby
-account_id = account.account_id
+payment_method      = KillBillClient::Model::PaymentMethod
+
+account_id = "faf239a5-456a-4eb9-aef9-8d2254ef57dc"
 with_plugin_info = false
 
-payment_method.find_all_by_account_id(account_id, 
-                                      with_plugin_info,
-                                      options)
+accountPaymentMethods  = payment_method.find_all_by_account_id(account_id, 
+                                                                with_plugin_info,
+                                                                options)
 ```
 ```python
 accountApi = killbill.api.AccountApi()
@@ -2680,13 +2762,21 @@ accountApi.setDefaultPaymentMethod(accountId,
 ```
 
 ```ruby
-account_id = account.account_id
-KillBillClient::Model::PaymentMethod.set_default(payment_method_id,
-                                                 account_id,
-                                                 user,
-                                                 reason,
-                                                 comment,
-                                                 options)
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+payment_method = KillBillClient::Model::PaymentMethod
+
+account_id = 'faf239a5-456a-4eb9-aef9-8d2254ef57dc'
+payment_method_id = 'faf239a5-456a-4eb9-aef9-8d2254ef57dc'
+
+payment_method.set_default( payment_method_id,
+                           account_id,
+                           user,
+                           reason,
+                           comment,
+                           options)
 ```
 
 ```python
@@ -2771,13 +2861,19 @@ accountApi.refreshPaymentMethods(accountId,
 ```
 
 ```ruby
-account_id = account.account_id
+user = 'user'
+reason = 'reason'
+comment = 'comment'
 
-KillBillClient::Model::PaymentMethod.refresh(account_id, 
-                                             user, 
-                                             reason, 
-                                             comment, 
-                                             options)
+payment_method = KillBillClient::Model::PaymentMethod
+
+account_id = "faf239a5-456a-4eb9-aef9-8d2254ef57dc"
+
+payment_method.refresh( account_id, 
+                        user, 
+                        reason, 
+                        comment, 
+                        options)
 ```
 
 ```python
@@ -2851,7 +2947,11 @@ OverdueState result = accountApi.getOverdueAccount(accountId, requestOptions);
 ```
 
 ```ruby
-account.overdue(options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'd3a82897-ae72-4a2e-9bca-e3c1fe087f84'
+
+accountOverdueState = account.overdue(options)
 ```
 
 ```python
@@ -2986,6 +3086,14 @@ BlockingStates result = accountApi.addAccountBlockingState(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = '864c1418-e768-4cd5-a0db-67537144b685'
+
 state_name = "STATE1"
 service = "ServiceStateService"
 block_change = false
@@ -3101,14 +3209,18 @@ BlockingStates blockingStates = accountApi.getBlockingStates(accountId,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'ee6835f0-8347-42d3-958c-9a939383ba28'
+
 blocking_state_types = 'ACCOUNT'
 blocking_state_svcs = nil
 audit = 'NONE'
 
-account.blocking_states(blocking_state_types,
-                        blocking_state_svcs, 
-                        audit,
-                        options)
+accountBlockingStates = account.blocking_states(blocking_state_types,
+                                                blocking_state_svcs, 
+                                                audit,
+                                                options)
 ```
 
 ```python
@@ -3201,16 +3313,18 @@ Accounts childrenAccounts = accountApi.getChildrenAccounts(parentAccountId,
 ```
 
 ```ruby
-account_id = account.account_id
+account = KillBillClient::Model::Account.new
+
+account.account_id = "ee6835f0-8347-42d3-958c-9a939383ba28"
+
 with_balance = false
 with_balance_and_cba = false
 audit = 'NONE'
 
-childrens_account = KillBillClient::Model::Account.children(account_id,
-                                                            with_balance, 
-                                                            with_balance_and_cba, 
-                                                            audit, 
-                                                            options)
+childrenAccounts = account.children(with_balance, 
+                                     with_balance_and_cba, 
+                                     audit, 
+                                     options)
 ```
 
 ```python
@@ -3308,6 +3422,14 @@ accountApi.transferChildCreditToParent(childAccountId, requestOptions);
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'e659f0f3-745c-46d5-953c-28fe9282fc7d'
+
 account.transfer_child_credit(user,
                               reason,
                               comment,
@@ -3395,7 +3517,16 @@ accountApi.createAccountCustomFields(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = '15434b45-54c1-4a44-851c-b1f2f7a52f03'
+
 custom_field = KillBillClient::Model::CustomFieldAttributes.new
+
 custom_field.object_type = 'ACCOUNT'
 custom_field.name = 'Test Custom Field'
 custom_field.value = 'test_value'
@@ -3420,7 +3551,7 @@ accountApi.create_account_custom_fields(account_id,
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
 
-const body: killbill.CustomField = { name: 'Test Custom Field', value: 'test_value' };
+const body: killbill.CustomField[] = [{ name: 'Test Custom Field', value: 'test_value' }];
 
 api.createAccountCustomFields(body,'8992e146-bfa1-4126-a045-98b844a4adcb','created_by');
 ```
@@ -3501,12 +3632,16 @@ accountApi.get_all_custom_fields(account_id,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
 object_type = 'ACCOUNT'
 audit = 'NONE'
 
-account.all_custom_fields(object_type,
-                          audit, 
-                          options)
+allCustomFields = account.all_custom_fields(object_type,
+                                            audit, 
+                                            options)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -3583,9 +3718,13 @@ List<CustomField> accountCustomFields = accountApi.getAccountCustomFields(accoun
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '59860a0d-c032-456d-a35e-3a48fe8579e5'
+
 audit = 'NONE'
 
-account.custom_fields(audit, options)
+accountCustomFields = account.custom_fields(audit, options)
 ```
 ```python
 accountApi = killbill.api.AccountApi()
@@ -3680,11 +3819,17 @@ accountApi.modifyAccountCustomFields(accountId,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '59860a0d-c032-456d-a35e-3a48fe8579e5'
+
+custom_field = KillBillClient::Model::CustomFieldAttributes.new
+
 custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
 custom_field.name = 'Test Modify'
 custom_field.value = 'test_modify_value'
 
-account.modify_custom_field(custom_field,                                                                                            
+account.modify_custom_field(custom_field,                                       
                             user, 
                             reason,
                             comment, 
@@ -3884,6 +4029,14 @@ Tags result = accountApi.createAccountTags(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'f4087a76-9f8a-4893-abbf-c5bb69975d1b'
+
 tag_name = 'TEST'
 
 account.add_tag(tag_name,
@@ -3978,14 +4131,18 @@ accountApi.get_all_tags(account_id, api_key, api_secret)
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
 object_type = 'ACCOUNT'
 included_deleted = false
 audit = 'NONE'
 
-account.all_tags(object_type, 
-                 included_deleted, 
-                 audit, 
-                 options)
+allTags = account.all_tags(object_type, 
+                           included_deleted, 
+                           audit, 
+                           options)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -4064,12 +4221,16 @@ List<Tag> tags1 = accountApi.getAccountTags(accountId,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'e659f0f3-745c-46d5-953c-28fe9282fc7d'
+
 included_deleted = false
 audit = 'NONE'
 
-account.tags(included_deleted,
-             audit,
-             options)
+accountTags = account.tags(included_deleted,
+                           audit,
+                           options)
 ```
 
 ```python
@@ -4154,6 +4315,14 @@ accountApi.deleteAccountTags(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'e659f0f3-745c-46d5-953c-28fe9282fc7d'
+
 tag_name = 'TEST'
 
 account.remove_tag(tag_name,
@@ -4244,7 +4413,11 @@ accountApi.get_account_audit_logs(account_id, api_key, api_secret)
 ```
 
 ```ruby
-account.audit(options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = '4e4d8acd-c97d-447a-814b-28f995a9106c'
+
+auditLogs = account.audit(options)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -4380,7 +4553,11 @@ accountApi.get_account_audit_logs_with_history(account_id, api_key, api_secret)
 ```
 
 ```ruby
-account.audit_logs_with_history(options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+
+auditLogsWithHistory = account.audit_logs_with_history(options)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -4583,9 +4760,13 @@ accountApi.get_account_email_audit_logs_with_history(account_id,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+
 account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
 
-account.email_audit_logs_with_history(account_email_id, options)
+emailAuditLogsWithHistory = account.email_audit_logs_with_history(account_email_id, options)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
