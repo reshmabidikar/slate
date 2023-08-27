@@ -1961,6 +1961,10 @@ BlockingStates result = subscriptionApi.addSubscriptionBlockingState(subscriptio
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 subscription = KillBillClient::Model::Subscription.new
 subscription.subscription_id = "161692a4-c293-410c-a92f-939c5e3dcba7"
 
@@ -1990,17 +1994,48 @@ body = BlockingState(state_name='STATE1',
                      is_block_change=False,
                      is_block_entitlement=False,
                      is_block_billing=False)
+subscription_id = '33aa2952-cea2-4cad-900a-9731c1042e54'
 
 subscriptionApi.add_subscription_blocking_state(subscription_id,
                                                 body,
-                                                created_by,
-                                                api_key,
-                                                api_secret)
+                                                created_by='demo',
+                                                reason='reason',
+                                                comment='comment')
 ```
+
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const blockingState: BlockingState = {stateName: "STATE1", service: "ServiceStateService", isBlockChange: true, isBlockEntitlement: false, isBlockBilling: false};
+const subscriptionId = 'b6000207-42fd-40ea-9c8e-297d9adc1574';
+
+api.addSubscriptionBlockingState(blockingState, subscriptionId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$blockingState = new BlockingState();
+$blockingState -> setStateName('STATE1');
+$blockingState -> setService('ServiceStateService1');
+$blockingState -> setIsBlockChange(true);
+$blockingState -> setIsBlockBilling(true);
+$blockingState -> setIsBlockEntitlement(true);
+
+$subscriptionId = "3f4a2efd-a8c1-4f85-9266-32bd6f7113ba";
+$requestedDate = new DateTime("2023-10-20");
+$pluginProperty = array("pluginProperty_example");
+
+$result = $apiInstance->addSubscriptionBlockingState($blockingState, $xKillbillCreatedBy, $subscriptionId, $xKillbillReason, $xKillbillComment, $requestedDate, $pluginProperty);
+````
 
 **Request Body**
 
-A blocking state resource representing the intended new blocking state. For example,
+A [blocking state resource](account-blocking-state-resource) representing the intended new blocking state.
 
 ```
 {
@@ -2023,7 +2058,7 @@ A blocking state resource representing the intended new blocking state. For exam
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a status code of 201 and an empty body. In addition, a `Location` header is returned which contains the URL to retrieve the subscription blocking states for the account.
 
 
 ## Custom Fields
@@ -2049,8 +2084,6 @@ curl -v \
     -H "Content-Type: application/json" \
     -H "X-Killbill-CreatedBy: demo" \
     -d '[{ 
-            "objectId": "77e23878-8b9d-403b-bf31-93003e125712",
-            "objectType": "SUBSCRIPTION",
             "name": "Test Custom Field",
             "value": "test_value"
     }]' \
@@ -2079,12 +2112,18 @@ subscriptionApi.createSubscriptionCustomFields(subscriptionId,
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "2207150d-0652-43eb-abbe-2cbd0092b744"
+
 custom_field = KillBillClient::Model::CustomFieldAttributes.new
-custom_field.object_type = 'SUBSCRIPTION'
 custom_field.name = 'Test Custom Field'
 custom_field.value = 'test_value'
 
-subscription.add_custom_field(custom_field, 
+subscription.add_custom_field(custom_field,
                               user,
                               reason,
                               comment,
@@ -2093,15 +2132,43 @@ subscription.add_custom_field(custom_field,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+subscription_id = '33aa2952-cea2-4cad-900a-9731c1042e54'
 body = CustomField(name='Test Custom Field', value='test_value')
 
 subscriptionApi.create_subscription_custom_fields(subscription_id,
                                                   [body],
-                                                  created_by,
-                                                  api_key,
-                                                  api_secret)
+                                                  created_by='demo',
+                                                  reason='reason',
+                                                  comment='comment')
 ```
+
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = 'b6000207-42fd-40ea-9c8e-297d9adc1574';
+
+const customField: CustomField = {name: "Test Custom Field", value: "test_value"};
+const customFields = [customField];
+
+api.createSubscriptionCustomFields(customFields, subscriptionId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$subscriptionId = "3f4a2efd-a8c1-4f85-9266-32bd6f7113ba";
+
+$customField = new CustomField();
+$customField -> setName('Test Custom Field');
+$customField -> setValue('test_value');
+$body = array($customField);
+
+$apiInstance->createSubscriptionCustomFields($body, $xKillbillCreatedBy, $subscriptionId, $xKillbillReason, $xKillbillComment);
+````
 
 **Request Body**
 
@@ -2154,19 +2221,37 @@ List<CustomField> customFields = subscriptionApi.getSubscriptionCustomFields(sub
 ```
 
 ```ruby
-audit = 'NONE'
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "2207150d-0652-43eb-abbe-2cbd0092b744"
 
-subscription.custom_fields(audit, options)
+audit = 'NONE'
+fields = subscription.custom_fields(audit, options)
 ```
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = '642ee0ac-972b-4cdf-b9ae-ab8f9bb9bc05'
+subscription_id = '33aa2952-cea2-4cad-900a-9731c1042e54'
 
-subscriptionApi.get_subscription_custom_fields(subscription_id,
-                                               api_key,
-                                               api_secret)
+fields = subscriptionApi.get_subscription_custom_fields(subscription_id)
 ```
+
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = 'e5254822-680f-4720-b5e1-a7146cefb904';
+const audit = 'NONE';
+
+const response: AxiosResponse<killbill.CustomField[], any> = await api.getSubscriptionCustomFields(subscriptionId, audit, 'created_by');
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$subscriptionId = "3f4a2efd-a8c1-4f85-9266-32bd6f7113ba";
+$audit = "NONE";
+
+$result = $apiInstance->getSubscriptionCustomFields($subscriptionId, $audit);
+````
 
 > Example Response:
 
@@ -2225,10 +2310,10 @@ import org.killbill.billing.client.api.gen.SubscriptionApi;
 protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
-UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+UUID customFieldId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
 
 CustomField customFieldModified = new CustomField();
-customFieldModified.setCustomFieldId(customFieldsId);
+customFieldModified.setCustomFieldId(customFieldId);
 customFieldModified.setValue("NewValue");
 CustomFields customFields = new CustomFields();
 customFields.add(customFieldModified);
@@ -2239,31 +2324,65 @@ subscriptionApi.modifySubscriptionCustomFields(subscriptionId,
 ```
 
 ```ruby
-custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-custom_field.name = 'Test Modify'
+user = "demo"
+reason = nil
+comment = nil
+
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "2207150d-0652-43eb-abbe-2cbd0092b744"
+
+custom_field = KillBillClient::Model::CustomFieldAttributes.new
+custom_field.custom_field_id = 'a04adaca-78a4-41fe-b512-a8d620aad456'
 custom_field.value = 'test_modify_value'
 
-subscription.modify_custom_field(custom_field,                                                                                            
-                                 user, 
+subscription.modify_custom_field(custom_field,
+                                 user,
                                  reason,
-                                 comment, 
+                                 comment,
                                  options)
 ```
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
-custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-body = CustomField(custom_field_id=custom_field_id, 
-                   name='Test Custom Field', 
-                   value='test_value')
+subscription_id = '33aa2952-cea2-4cad-900a-9731c1042e54'
+custom_field_id = '3a26be42-a153-4894-ac3d-93ad2e38e05b'
+body = CustomField(custom_field_id=custom_field_id,
+                   value='modified_value')
 
 subscriptionApi.modify_subscription_custom_fields(subscription_id,
                                                   [body],
-                                                  created_by,
-                                                  api_key,
-                                                  api_secret)
+                                                  created_by='demo',
+                                                  reason='reason',
+                                                  comment='comment')
 ```
+
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = 'b6000207-42fd-40ea-9c8e-297d9adc1574';
+
+const customField: CustomField = {customFieldId: "d8f2e80d-9fd8-48e7-b564-a541a0a7621d", value: "new_value"};
+const customFields = [customField];
+
+api.modifySubscriptionCustomFields(customFields, subscriptionId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$subscriptionId = "3f4a2efd-a8c1-4f85-9266-32bd6f7113ba";
+
+$customField = new CustomField();
+$customField -> setCustomFieldId('73e399fe-efaa-4f05-a5fe-08f10608c345');
+$customField -> setValue('new_value');
+$body = array($customField);
+
+$apiInstance->modifySubscriptionCustomFields($body, $xKillbillCreatedBy, $subscriptionId, $xKillbillReason, $xKillbillComment);
+````
 
 **Request Body**
 
@@ -2283,7 +2402,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Remove custom fields from subscription
 
-Delete one or more custom fields from a subscription
+Delete one or more custom fields from a subscription. It accepts query parameters corresponding to the custom field ids to be deleted. if no query parameters are specified, it deletes all the custom fields corresponding to the subscription.
 
 
 **HTTP Request** 
@@ -2316,30 +2435,64 @@ subscriptionApi.deleteSubscriptionCustomFields(subscriptionId,
 ```
 
 ```ruby
-custom_field_id = custom_field.id
+user = "demo"
+reason = nil
+comment = nil
 
-subscription.remove_custom_field(custom_field_id,                                                                                            
-                                 user, 
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "2207150d-0652-43eb-abbe-2cbd0092b744"
+
+custom_field_id = 'a04adaca-78a4-41fe-b512-a8d620aad456'
+
+subscription.remove_custom_field(custom_field_id,
+                                 user,
                                  reason,
-                                 comment, 
+                                 comment,
                                  options)
 ```
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+subscription_id = 'e5254822-680f-4720-b5e1-a7146cefb904'
 
-subscriptionApi.delete_subscription_custom_fields(subscription_id,
-                                                  created_by,
-                                                  api_key,
-                                                  api_secret)
+custom_fields = ['194bcfc8-340f-4592-acd2-ffc1fc461e96']
+
+subscriptionApi.delete_subscription_custom_fields(subscription_id=subscription_id,
+                                                  created_by='demo',
+                                                  custom_field=custom_fields,
+                                                  reason='reason',
+                                                  comment='comment')
 ```
+
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = 'b6000207-42fd-40ea-9c8e-297d9adc1574';
+
+const customField = 'd8f2e80d-9fd8-48e7-b564-a541a0a7621d';
+const customFields = [customField];
+
+api.deleteSubscriptionCustomFields(subscriptionId, 'created_by', customFields);
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$subscriptionId = "3f4a2efd-a8c1-4f85-9266-32bd6f7113ba";
+$customFields = array("73e399fe-efaa-4f05-a5fe-08f10608c345");
+
+$apiInstance->deleteSubscriptionCustomFields($subscriptionId, $xKillbillCreatedBy, $customFields, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ------- | ----------- | 
-| **customField** | string | yes | none | Custom field object ID that should be deleted. Multiple custom fields can be deleted by specifying a separate **customField** parameter corresponding to each field |
+| ---- | -----|----------| ------- | ----------- | 
+| **customField** | string | no       | none | Custom field object ID that should be deleted. Multiple custom fields can be deleted by specifying a separate **customField** parameter corresponding to each field |
 
 **Response**
 
