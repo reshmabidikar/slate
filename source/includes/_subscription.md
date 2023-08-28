@@ -2001,6 +2001,29 @@ subscriptionApi.create_subscription_tags(subscription_id,
                                          comment='comment')
 ```
 
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = '92820d1c-1d4c-46eb-9010-26b0626a1927';
+
+const tagDefIds = ['06d991f7-f06a-4e45-80d2-c3b44a97f8bc'];
+
+api.createSubscriptionTags(tagDefIds, subscriptionId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$subscriptionId = "92820d1c-1d4c-46eb-9010-26b0626a1927";
+$tagDefIds = array("30363fe5-310d-4446-b000-d7bb6e6662e2");
+
+$apiInstance->createSubscriptionTags($tagDefIds, $xKillbillCreatedBy, $subscriptionId, $xKillbillReason, $xKillbillComment);
+````
+
 **Request Body**
 
 A JSON array containing one or more strings giving the UUID of tag definitions for the user tags to be added.
@@ -2065,6 +2088,26 @@ subscription_id = '92820d1c-1d4c-46eb-9010-26b0626a1927'
 
 tags = subscriptionApi.get_subscription_tags(subscription_id)
 ```
+
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = '92820d1c-1d4c-46eb-9010-26b0626a1927';
+const includeDeleted = false;
+const audit = 'NONE';
+
+const response: AxiosResponse<killbill.Tag[], any> = await api.getSubscriptionTags(subscriptionId, includeDeleted, audit);
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$subscriptionId = "92820d1c-1d4c-46eb-9010-26b0626a1927";
+$includedDeleted = false;
+$audit = "NONE";
+
+$result = $apiInstance->getSubscriptionTags($subscriptionId, $includedDeleted, $audit);
+````
 
 > Example Response:
 
@@ -2154,6 +2197,29 @@ subscriptionApi.delete_subscription_tags(subscription_id,
                                          tag_def=tagDefIds)
 ```
 
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = '92820d1c-1d4c-46eb-9010-26b0626a1927';
+
+const tagDefIds = ['06d991f7-f06a-4e45-80d2-c3b44a97f8bc'];
+
+api.deleteSubscriptionTags(subscriptionId, 'created_by', tagDefIds);
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$subscriptionId = "92820d1c-1d4c-46eb-9010-26b0626a1927";
+$tagDefIds = array("30363fe5-310d-4446-b000-d7bb6e6662e2");
+
+$apiInstance->deleteSubscriptionTags($subscriptionId, $xKillbillCreatedBy, $tagDefIds, $xKillbillReason, $xKillbillComment);
+````
+
 **Query Parameters**
 
 | Name | Type   | Required | Default | Description |
@@ -2216,6 +2282,22 @@ subscriptionApi = killbill.api.SubscriptionApi()
 subscription_id = '92820d1c-1d4c-46eb-9010-26b0626a1927'
 
 auditlogs = subscriptionApi.get_subscription_audit_logs_with_history(subscription_id)
+````
+
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = '92820d1c-1d4c-46eb-9010-26b0626a1927';
+
+const response: AxiosResponse<killbill.Tag[], any> = await api.getSubscriptionAuditLogsWithHistory(subscriptionId);
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$subscriptionId = "92820d1c-1d4c-46eb-9010-26b0626a1927";
+
+$result = $apiInstance->getSubscriptionAuditLogsWithHistory($subscriptionId);
 ````
 
 > Example Response:
@@ -2334,6 +2416,22 @@ subscriptionApi = killbill.api.SubscriptionApi()
 event_id = 'dc283026-5be0-4e47-8190-b62fb0c9e357'
 
 auditlogs = subscriptionApi.get_subscription_event_audit_logs_with_history(event_id)
+````
+
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const eventId = 'dc283026-5be0-4e47-8190-b62fb0c9e357';
+
+const response: AxiosResponse<killbill.Tag[], any> = await api.getSubscriptionEventAuditLogsWithHistory(eventId);
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$eventId = "dc283026-5be0-4e47-8190-b62fb0c9e357";
+
+$result = $apiInstance->getSubscriptionEventAuditLogsWithHistory($eventId);
 ````
 
 > Example Response:
