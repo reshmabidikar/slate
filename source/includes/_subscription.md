@@ -1973,7 +1973,14 @@ subscriptionApi.createSubscriptionTags(subscriptionId,
 ```
 
 ```ruby
-tag_name = 'foo'
+user = "demo"
+reason = nil
+comment = nil
+
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "92820d1c-1d4c-46eb-9010-26b0626a1927"
+
+tag_name = 'good_sub'
 
 subscription.add_tag(tag_name,
                      user,
@@ -1984,14 +1991,14 @@ subscription.add_tag(tag_name,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
-tag = ["353752dd-9041-4450-b782-a8bb03a923c8"]
+subscription_id = '92820d1c-1d4c-46eb-9010-26b0626a1927'
+tagDefIds = ['30363fe5-310d-4446-b000-d7bb6e6662e2']
 
 subscriptionApi.create_subscription_tags(subscription_id,
-                                         tag,
-                                         created_by,
-                                         api_key,
-                                         api_secret)
+                                         tagDefIds,
+                                         created_by='demo',
+                                         reason='reason',
+                                         comment='comment')
 ```
 
 **Request Body**
@@ -2041,21 +2048,22 @@ List<Tag> tags = subscriptionApi.getSubscriptionTags(subscriptionId,
 ```
 
 ```ruby
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "92820d1c-1d4c-46eb-9010-26b0626a1927"
+
 included_deleted = false
 audit = 'NONE'
 
-subscription.tags(included_deleted,
+tags = subscription.tags(included_deleted,
                   audit,
                   options)
 ```
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
+subscription_id = '92820d1c-1d4c-46eb-9010-26b0626a1927'
 
-subscriptionApi.get_subscription_tags(subscription_id,
-                                      api_key,
-                                      api_secret)
+tags = subscriptionApi.get_subscription_tags(subscription_id)
 ```
 
 > Example Response:
@@ -2118,7 +2126,14 @@ subscriptionApi.deleteSubscriptionTags(subscriptionId, List.of(tagDefinitionId),
 ```
 
 ```ruby
-tag_name = 'foo'
+user = "demo"
+reason = nil
+comment = nil
+
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "92820d1c-1d4c-46eb-9010-26b0626a1927"
+
+tag_name = 'good_sub'
 
 subscription.remove_tag(tag_name,
                         user,
@@ -2129,14 +2144,14 @@ subscription.remove_tag(tag_name,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
-tag = ["353752dd-9041-4450-b782-a8bb03a923c8"]
+subscription_id = '92820d1c-1d4c-46eb-9010-26b0626a1927'
+tagDefIds = ['30363fe5-310d-4446-b000-d7bb6e6662e2']
 
 subscriptionApi.delete_subscription_tags(subscription_id,
-                                         created_by,
-                                         api_key,
-                                         api_secret,
-                                         tag_def=tag)
+                                         created_by='demo',
+                                         reason='reason',
+                                         comment='comment',
+                                         tag_def=tagDefIds)
 ```
 
 **Query Parameters**
@@ -2191,6 +2206,17 @@ UUID subscriptionId = UUID.fromString("bc9b98e8-7497-4330-aa42-1fbc71a3d19c");
 		
 List<AuditLog> auditLog = subscriptionApi.getSubscriptionAuditLogsWithHistory(subscriptionId, requestOptions);
 ```
+
+````ruby
+TODO
+````
+
+````python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = '92820d1c-1d4c-46eb-9010-26b0626a1927'
+
+auditlogs = subscriptionApi.get_subscription_audit_logs_with_history(subscription_id)
+````
 
 > Example Response:
 
@@ -2298,6 +2324,17 @@ UUID subscriptionEventId = UUID.fromString("b4b6f990-4456-4009-9e6c-9825a99a1f25
 		
 List<AuditLog> eventAuditLog = subscriptionApi.getSubscriptionEventAuditLogsWithHistory(subscriptionEventId, requestOptions);
 ```
+
+````ruby
+TODO
+````
+
+````python
+subscriptionApi = killbill.api.SubscriptionApi()
+event_id = 'dc283026-5be0-4e47-8190-b62fb0c9e357'
+
+auditlogs = subscriptionApi.get_subscription_event_audit_logs_with_history(event_id)
+````
 
 > Example Response:
 
