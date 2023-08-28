@@ -3620,17 +3620,6 @@ CustomFields allAccountCustomFields = accountApi.getAllCustomFields(accountId,
                                                                     AuditLevel.FULL, 
                                                                     requestOptions);
 ```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
-
-accountApi.get_all_custom_fields(account_id, 
-                                 api_key, 
-                                 api_secret, 
-                                 object_type='ACCOUNT')
-```
-
 ```ruby
 account = KillBillClient::Model::Account.new
 
@@ -3643,6 +3632,16 @@ allCustomFields = account.all_custom_fields(object_type,
                                             audit, 
                                             options)
 ```
+```python
+accountApi = killbill.api.AccountApi()
+account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
+accountApi.get_all_custom_fields(account_id, 
+                                 api_key, 
+                                 api_secret, 
+                                 object_type='ACCOUNT')
+```
+
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
 
@@ -4404,6 +4403,13 @@ UUID accountId = UUID.fromString("e9432491-6558-4007-85ef-cdae171d240c");
 AuditLogs auditLogsJson = accountApi.getAccountAuditLogs(accountId, 
                                                          requestOptions);
 ```
+```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '4e4d8acd-c97d-447a-814b-28f995a9106c'
+
+auditLogs = account.audit(options)
+```
 
 ```python
 accountApi = killbill.api.AccountApi()
@@ -4412,13 +4418,6 @@ account_id = '4e4d8acd-c97d-447a-814b-28f995a9106c'
 accountApi.get_account_audit_logs(account_id, api_key, api_secret)
 ```
 
-```ruby
-account = KillBillClient::Model::Account.new
-
-account.account_id = '4e4d8acd-c97d-447a-814b-28f995a9106c'
-
-auditLogs = account.audit(options)
-```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
 
@@ -4545,13 +4544,6 @@ List<AuditLog> auditLogWithHistories = accountApi.getAccountAuditLogsWithHistory
                                                                                  requestOptions);
 ```
 
-```python
-accountApi = killbill.api.AccountApi()
-account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
-
-accountApi.get_account_audit_logs_with_history(account_id, api_key, api_secret)
-```
-
 ```ruby
 account = KillBillClient::Model::Account.new
 
@@ -4559,6 +4551,15 @@ account.account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
 
 auditLogsWithHistory = account.audit_logs_with_history(options)
 ```
+
+```python
+accountApi = killbill.api.AccountApi()
+
+account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+
+auditLogsWithHistory = accountApi.get_account_audit_logs_with_history(account_id, api_key, api_secret)
+```
+
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
 
@@ -4748,6 +4749,16 @@ List<AuditLog> result = accountApi.getAccountEmailAuditLogsWithHistory(accountId
                                                                        requestOptions);
 ```
 
+```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+
+account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
+
+emailAuditLogsWithHistory = account.email_audit_logs_with_history(account_email_id, options)
+```
+
 ```python
 accountApi = killbill.api.AccountApi()
 account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
@@ -4759,15 +4770,6 @@ accountApi.get_account_email_audit_logs_with_history(account_id,
                                                      api_secret)
 ```
 
-```ruby
-account = KillBillClient::Model::Account.new
-
-account.account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
-
-account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
-
-emailAuditLogsWithHistory = account.email_audit_logs_with_history(account_email_id, options)
-```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
 
