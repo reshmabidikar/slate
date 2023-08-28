@@ -202,9 +202,9 @@ with_balance_and_cba = false
 account = KillBillClient::Model::Account
 
 accountResponse = account.find_by_id( account_id,
-                               with_balance, 
-                               with_balance_and_cba,
-                               options)
+                                      with_balance, 
+                                      with_balance_and_cba,
+                                      options)
 ```
 ```python
 accountApi = killbill.api.AccountApi()
@@ -315,9 +315,9 @@ with_balance_and_cba = false
 account = KillBillClient::Model::Account
 
 accountResponse = account.find_by_external_key( external_key,
-                                         with_balance,
-                                         with_balance_and_cba, 
-                                         options)
+                                                with_balance,
+                                                with_balance_and_cba, 
+                                                options)
 ```
 
 ```python
@@ -648,10 +648,10 @@ with_balance = false
 with_balance_and_cba = false
 
 allAccounts = account.find_in_batches( offset,
-                                    limit,
-                                    with_balance,
-                                    with_balance_and_cba,
-                                    options)
+                                       limit,
+                                       with_balance,
+                                       with_balance_and_cba,
+                                       options)
 ```
 ```python
 accountApi = killbill.api.AccountApi()
@@ -2663,7 +2663,7 @@ payment_method      = KillBillClient::Model::PaymentMethod
 account_id = "faf239a5-456a-4eb9-aef9-8d2254ef57dc"
 with_plugin_info = false
 
-accountPaymentMethods  = payment_method.find_all_by_account_id(account_id, 
+accountPaymentMethods  = payment_method.find_all_by_account_id( account_id, 
                                                                 with_plugin_info,
                                                                 options)
 ```
@@ -2772,11 +2772,11 @@ account_id = 'faf239a5-456a-4eb9-aef9-8d2254ef57dc'
 payment_method_id = 'faf239a5-456a-4eb9-aef9-8d2254ef57dc'
 
 payment_method.set_default( payment_method_id,
-                           account_id,
-                           user,
-                           reason,
-                           comment,
-                           options)
+                            account_id,
+                            user,
+                            reason,
+                            comment,
+                            options)
 ```
 
 ```python
@@ -3321,7 +3321,7 @@ with_balance = false
 with_balance_and_cba = false
 audit = 'NONE'
 
-childrenAccounts = account.children(with_balance, 
+childrenAccounts = account.children( with_balance, 
                                      with_balance_and_cba, 
                                      audit, 
                                      options)
