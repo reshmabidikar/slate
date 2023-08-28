@@ -1938,7 +1938,7 @@ The are no `system` tags applicable for a `Subscription`.
 
 ### Add tags to subscription
 
-This API adds one or more tags to a subscription. The tag definitions must already exist.
+This API adds one or more tags to a subscription. Note that none of the [system tags](#tag) are applicable for subscriptions, thus only a [user tag](#tag) can be added to a subscription. The [tag definition](#tag-definition) for the user tag must exist.
 
 **HTTP Request** 
 
@@ -2032,7 +2032,6 @@ import org.killbill.billing.client.api.gen.SubscriptionApi;
 protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
-
 Boolean includedDeleted = false; // Will not include deleted tags
 
 List<Tag> tags = subscriptionApi.getSubscriptionTags(subscriptionId, 
@@ -2090,7 +2089,7 @@ If successful, returns a status code of 200 and a list of tag objects.
 
 ### Remove tags from subscription
 
-This API removes a list of tags attached to a subscription.
+This API deletes one or more tags attached to a subscription.
 
 **HTTP Request** 
 
@@ -2113,12 +2112,9 @@ import org.killbill.billing.client.api.gen.SubscriptionApi;
 protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
-
 UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
-subscriptionApi.deleteSubscriptionTags(subscriptionId, 
-                                       List.of(tagDefinitionId), 
-                                       requestOptions);
+subscriptionApi.deleteSubscriptionTags(subscriptionId, List.of(tagDefinitionId), requestOptions);
 ```
 
 ```ruby
@@ -2145,9 +2141,9 @@ subscriptionApi.delete_subscription_tags(subscription_id,
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ------- | ------------ |
-| **tagDef** | array of strings | true | none | A tag definition ID identifying the tag that should be removed. Multiple tags can be deleted by specifying a separate tagDef parameter corresponding to each tag. |
+| Name | Type   | Required | Default | Description |
+| ---- |--------| -------- | ------- | ------------ |
+| **tagDef** | string | true | none | A tag definition ID identifying the tag that should be removed. Multiple tags can be deleted by specifying a separate tagDef parameter corresponding to each tag. |
 
 **Response**
 
@@ -2161,7 +2157,16 @@ Audit logs provide a record of events that occur involving various specific reso
 
 ### Retrieve subscription audit logs with history by subscription id
 
-Retrieve a list of audit log records showing events that occurred involving changes to the subscription. History information is included with each record.
+Retrieve a list of audit log records showing changes to the subscription. History information (a copy of the full subscription object) is included with each record.
+
+Some examples:
+* Assuming the API is invoked after an `IN_ADVANCE` subscription is created, it would return two records:
+  * An `INSERT` record corresponding to the subscription creation
+  * An `UPDATE` record corresponding to the `chargedThroughDate` update
+* Assuming the API is invoked after a plan change, it would return three records:
+  * An `INSERT` record corresponding to the subscription creation
+  * An `UPDATE` record corresponding to the `chargedThroughDate` update
+  * An `UPDATE` record corresponding to plan change
 
 
 **HTTP Request** 
@@ -2184,7 +2189,7 @@ protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("bc9b98e8-7497-4330-aa42-1fbc71a3d19c");
 		
-List<AuditLog> auditLog = subscriptionApi.getSubscriptionAuditLogsWithHistory(subscriptionId, 																				  																							requestOptions);
+List<AuditLog> auditLog = subscriptionApi.getSubscriptionAuditLogsWithHistory(subscriptionId, requestOptions);
 ```
 
 > Example Response:
@@ -2260,7 +2265,14 @@ If successful, returns a status code of 200 and a list of audit logs.
 
 ### Retrieve subscription event audit logs with history by subscription event id
 
-Retrieve a list of audit log records showing events that occurred involving changes to the subscription, based on a subscription event id. History information (a copy of the full subscription object) is included with each record. The id of a subscription event comes from the [timeline api](#account-retrieve-account-timeline).
+Retrieve a list of audit log records showing changes to a subscription event. History information (a copy of the full subscription event object) is included with each record. The [subscription resource](##subscription-subscription-resource) contains the list of events associated with a subscription and the event id can be obtained from here.
+
+Some examples:
+* If a cancel request is issued for a subscription, this API can be invoked with the subscription event id of the `CANCEL` event. In this case, it will return:
+  * An `INSERT` record corresponding to the subscription cancel event creation
+* If a subscription is future cancelled and then uncancelled, and this API is invoked with the id of the `CANCEL`event, it will return two records:
+  * An `INSERT` record corresponding to the `CANCEL` event creation
+  * A `DELETE` record corresponding to the `CANCEL` event deletion.
 
 **HTTP Request** 
 
