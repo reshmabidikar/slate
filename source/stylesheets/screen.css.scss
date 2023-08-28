@@ -47,6 +47,9 @@ $mobile: 375px;
   --search-bg: #fff;
   --search-border-color: #D1D5DB;
 
+  --lang-link-bg: #2970FF;
+  --lang-link-color: #fff;
+
   --nav-bg: #F5F8FF;
   --nav-color: #344054;
   --nav-active-color: #2970FF;
@@ -83,6 +86,9 @@ body.dark {
   --search-color: #6B7280;
   --search-bg: #344054;
   --search-border-color: #6B7280;
+
+  --lang-link-bg: #fff;
+  --lang-link-color: #2970FF;
 
   --nav-bg: #1D2939;
   --nav-color: #D5D9EB;
@@ -162,7 +168,7 @@ body {
   scroll-behavior: smooth;
   text-rendering: optimizeSpeed;
   font-family: 'Inter', sans-serif;
-  font-size: 16px;
+  font-size: 15px;
   line-height: 150%;
   color: var(--main-color);
   background-color: var(--main-bg);
@@ -255,7 +261,7 @@ h1:has(.sidebar-item) {
 }
 
 p {
-  font-size: 16px;
+  font-size: 15px;
   line-height: 24px;
 }
 
@@ -506,8 +512,8 @@ body.dark {
   &__select {
     display: none;
     visibility: hidden;
-    color: var(--nav-color);
-    background-color: var(--nav-bg);
+    color: var(--lang-link-color);
+    background-color: var(--lang-link-bg);
     padding: 8px 8px 8px 18px;
     text-decoration: none;
     outline: 0;
@@ -531,16 +537,16 @@ body.dark {
 
   &__link {
     display: inline-flex;
-    color: nav(--nav-color);
+    color: var(--nav-color);
     padding: 8px 18px;
-    text-decoration: none;
+    text-decoration: none !important;
     outline: 0;
     border-radius: 8px;
     text-transform: capitalize;
 
     &:active, &:focus, &.active, &:hover {
-      background-color: var(--nav-bg);
-      color: var(--nav-active-color);
+      background-color: var(--lang-link-bg);
+      color: var(--lang-link-color);
     }
   }
 }
@@ -708,7 +714,7 @@ body.dark {
       padding: 3px;
       word-break: break-word;
       font-weight: 400;
-      font-size: 16px;
+      font-size: 15px;
       line-height: 24px;
       font-family: "SF Mono", monospace !important;
     }
