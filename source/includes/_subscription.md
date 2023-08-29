@@ -2507,7 +2507,7 @@ The are no `system` tags applicable for a `Subscription`.
 
 ### Add tags to subscription
 
-This API adds one or more tags to a subscription. The tag definitions must already exist.
+This API adds one or more tags to a subscription. Note that none of the [system tags](#tag) are applicable for subscriptions, thus only a [user tag](#tag) can be added to a subscription. The [tag definition](#tag-definition) for the user tag must exist.
 
 **HTTP Request** 
 
@@ -2542,7 +2542,14 @@ subscriptionApi.createSubscriptionTags(subscriptionId,
 ```
 
 ```ruby
-tag_name = 'foo'
+user = "demo"
+reason = nil
+comment = nil
+
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "92820d1c-1d4c-46eb-9010-26b0626a1927"
+
+tag_name = 'good_sub'
 
 subscription.add_tag(tag_name,
                      user,
@@ -2553,15 +2560,38 @@ subscription.add_tag(tag_name,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
-tag = ["353752dd-9041-4450-b782-a8bb03a923c8"]
+subscription_id = '92820d1c-1d4c-46eb-9010-26b0626a1927'
+tagDefIds = ['30363fe5-310d-4446-b000-d7bb6e6662e2']
 
 subscriptionApi.create_subscription_tags(subscription_id,
-                                         tag,
-                                         created_by,
-                                         api_key,
-                                         api_secret)
+                                         tagDefIds,
+                                         created_by='demo',
+                                         reason='reason',
+                                         comment='comment')
 ```
+
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = '92820d1c-1d4c-46eb-9010-26b0626a1927';
+
+const tagDefIds = ['06d991f7-f06a-4e45-80d2-c3b44a97f8bc'];
+
+api.createSubscriptionTags(tagDefIds, subscriptionId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$subscriptionId = "92820d1c-1d4c-46eb-9010-26b0626a1927";
+$tagDefIds = array("30363fe5-310d-4446-b000-d7bb6e6662e2");
+
+$apiInstance->createSubscriptionTags($tagDefIds, $xKillbillCreatedBy, $subscriptionId, $xKillbillReason, $xKillbillComment);
+````
 
 **Request Body**
 
@@ -2601,7 +2631,6 @@ import org.killbill.billing.client.api.gen.SubscriptionApi;
 protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
-
 Boolean includedDeleted = false; // Will not include deleted tags
 
 List<Tag> tags = subscriptionApi.getSubscriptionTags(subscriptionId, 
@@ -2611,22 +2640,43 @@ List<Tag> tags = subscriptionApi.getSubscriptionTags(subscriptionId,
 ```
 
 ```ruby
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "92820d1c-1d4c-46eb-9010-26b0626a1927"
+
 included_deleted = false
 audit = 'NONE'
 
-subscription.tags(included_deleted,
+tags = subscription.tags(included_deleted,
                   audit,
                   options)
 ```
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
+subscription_id = '92820d1c-1d4c-46eb-9010-26b0626a1927'
 
-subscriptionApi.get_subscription_tags(subscription_id,
-                                      api_key,
-                                      api_secret)
+tags = subscriptionApi.get_subscription_tags(subscription_id)
 ```
+
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = '92820d1c-1d4c-46eb-9010-26b0626a1927';
+const includeDeleted = false;
+const audit = 'NONE';
+
+const response: AxiosResponse<killbill.Tag[], any> = await api.getSubscriptionTags(subscriptionId, includeDeleted, audit);
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$subscriptionId = "92820d1c-1d4c-46eb-9010-26b0626a1927";
+$includedDeleted = false;
+$audit = "NONE";
+
+$result = $apiInstance->getSubscriptionTags($subscriptionId, $includedDeleted, $audit);
+````
 
 > Example Response:
 
@@ -2659,7 +2709,7 @@ If successful, returns a status code of 200 and a list of tag objects.
 
 ### Remove tags from subscription
 
-This API removes a list of tags attached to a subscription.
+This API deletes one or more tags attached to a subscription.
 
 **HTTP Request** 
 
@@ -2682,16 +2732,20 @@ import org.killbill.billing.client.api.gen.SubscriptionApi;
 protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("1bb4b638-3886-4f73-90a5-89eb6d1bcf7f");
-
 UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
-subscriptionApi.deleteSubscriptionTags(subscriptionId, 
-                                       List.of(tagDefinitionId), 
-                                       requestOptions);
+subscriptionApi.deleteSubscriptionTags(subscriptionId, List.of(tagDefinitionId), requestOptions);
 ```
 
 ```ruby
-tag_name = 'foo'
+user = "demo"
+reason = nil
+comment = nil
+
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "92820d1c-1d4c-46eb-9010-26b0626a1927"
+
+tag_name = 'good_sub'
 
 subscription.remove_tag(tag_name,
                         user,
@@ -2702,21 +2756,44 @@ subscription.remove_tag(tag_name,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
-tag = ["353752dd-9041-4450-b782-a8bb03a923c8"]
+subscription_id = '92820d1c-1d4c-46eb-9010-26b0626a1927'
+tagDefIds = ['30363fe5-310d-4446-b000-d7bb6e6662e2']
 
 subscriptionApi.delete_subscription_tags(subscription_id,
-                                         created_by,
-                                         api_key,
-                                         api_secret,
-                                         tag_def=tag)
+                                         tag_def=tagDefIds,
+                                         created_by='demo',
+                                         reason='reason',
+                                         comment='comment')
 ```
+
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = '92820d1c-1d4c-46eb-9010-26b0626a1927';
+
+const tagDefIds = ['06d991f7-f06a-4e45-80d2-c3b44a97f8bc'];
+
+api.deleteSubscriptionTags(subscriptionId, 'created_by', tagDefIds);
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$subscriptionId = "92820d1c-1d4c-46eb-9010-26b0626a1927";
+$tagDefIds = array("30363fe5-310d-4446-b000-d7bb6e6662e2");
+
+$apiInstance->deleteSubscriptionTags($subscriptionId, $xKillbillCreatedBy, $tagDefIds, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ------- | ------------ |
-| **tagDef** | array of strings | true | none | A tag definition ID identifying the tag that should be removed. Multiple tags can be deleted by specifying a separate tagDef parameter corresponding to each tag. |
+| Name | Type   | Required | Default | Description |
+| ---- |--------| -------- | ------- | ------------ |
+| **tagDef** | string | true | none | A tag definition ID identifying the tag that should be removed. Multiple tags can be deleted by specifying a separate tagDef parameter corresponding to each tag. |
 
 **Response**
 
@@ -2730,7 +2807,16 @@ Audit logs provide a record of events that occur involving various specific reso
 
 ### Retrieve subscription audit logs with history by subscription id
 
-Retrieve a list of audit log records showing events that occurred involving changes to the subscription. History information is included with each record.
+Retrieve a list of audit log records showing changes to the subscription. History information (a copy of the full subscription object) is included with each record.
+
+Some examples:
+* Assuming the API is invoked after an `IN_ADVANCE` subscription is created, it would return two records:
+  * An `INSERT` record corresponding to the subscription creation
+  * An `UPDATE` record corresponding to the `chargedThroughDate` update
+* Assuming the API is invoked after a plan change, it would return three records:
+  * An `INSERT` record corresponding to the subscription creation
+  * An `UPDATE` record corresponding to the `chargedThroughDate` update
+  * An `UPDATE` record corresponding to plan change
 
 
 **HTTP Request** 
@@ -2753,8 +2839,35 @@ protected SubscriptionApi subscriptionApi;
 
 UUID subscriptionId = UUID.fromString("bc9b98e8-7497-4330-aa42-1fbc71a3d19c");
 		
-List<AuditLog> auditLog = subscriptionApi.getSubscriptionAuditLogsWithHistory(subscriptionId, 																				  																							requestOptions);
+List<AuditLog> auditLog = subscriptionApi.getSubscriptionAuditLogsWithHistory(subscriptionId, requestOptions);
 ```
+
+````ruby
+TODO
+````
+
+````python
+subscriptionApi = killbill.api.SubscriptionApi()
+subscription_id = '92820d1c-1d4c-46eb-9010-26b0626a1927'
+
+auditlogs = subscriptionApi.get_subscription_audit_logs_with_history(subscription_id)
+````
+
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const subscriptionId = '92820d1c-1d4c-46eb-9010-26b0626a1927';
+
+const response: AxiosResponse<killbill.Tag[], any> = await api.getSubscriptionAuditLogsWithHistory(subscriptionId);
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$subscriptionId = "92820d1c-1d4c-46eb-9010-26b0626a1927";
+
+$result = $apiInstance->getSubscriptionAuditLogsWithHistory($subscriptionId);
+````
 
 > Example Response:
 
@@ -2829,7 +2942,14 @@ If successful, returns a status code of 200 and a list of audit logs.
 
 ### Retrieve subscription event audit logs with history by subscription event id
 
-Retrieve a list of audit log records showing events that occurred involving changes to the subscription, based on a subscription event id. History information (a copy of the full subscription object) is included with each record. The id of a subscription event comes from the [timeline api](#account-retrieve-account-timeline).
+Retrieve a list of audit log records showing changes to a subscription event. History information (a copy of the full subscription event object) is included with each record. The [subscription resource](##subscription-subscription-resource) contains the list of events associated with a subscription and the event id can be obtained from here.
+
+Some examples:
+* If a cancel request is issued for a subscription, this API can be invoked with the subscription event id of the `CANCEL` event. In this case, it will return:
+  * An `INSERT` record corresponding to the subscription cancel event creation
+* If a subscription is future cancelled and then uncancelled, and this API is invoked with the id of the `CANCEL`event, it will return two records:
+  * An `INSERT` record corresponding to the `CANCEL` event creation
+  * A `DELETE` record corresponding to the `CANCEL` event deletion.
 
 **HTTP Request** 
 
@@ -2855,6 +2975,33 @@ UUID subscriptionEventId = UUID.fromString("b4b6f990-4456-4009-9e6c-9825a99a1f25
 		
 List<AuditLog> eventAuditLog = subscriptionApi.getSubscriptionEventAuditLogsWithHistory(subscriptionEventId, requestOptions);
 ```
+
+````ruby
+TODO
+````
+
+````python
+subscriptionApi = killbill.api.SubscriptionApi()
+event_id = 'dc283026-5be0-4e47-8190-b62fb0c9e357'
+
+auditlogs = subscriptionApi.get_subscription_event_audit_logs_with_history(event_id)
+````
+
+````javascript
+const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
+
+const eventId = 'dc283026-5be0-4e47-8190-b62fb0c9e357';
+
+const response: AxiosResponse<killbill.Tag[], any> = await api.getSubscriptionEventAuditLogsWithHistory(eventId);
+````
+
+````php
+$apiInstance = $client->getSubscriptionApi();
+
+$eventId = "dc283026-5be0-4e47-8190-b62fb0c9e357";
+
+$result = $apiInstance->getSubscriptionEventAuditLogsWithHistory($eventId);
+````
 
 > Example Response:
 
