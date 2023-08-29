@@ -492,8 +492,8 @@ subscriptionApi.create_subscription_with_add_ons(body,
 ````javascript
 const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
 
-const base: subscription = {planName: "pistol-monthly", accountId: "04779ade-11f9-48d1-88a1-a63be84d1cb7"};
-const addon: subscription = {planName: "cleaning-monthly", accountId: "04779ade-11f9-48d1-88a1-a63be84d1cb7"};
+const base: Subscription = {planName: "pistol-monthly", accountId: "04779ade-11f9-48d1-88a1-a63be84d1cb7"};
+const addon: Subscription = {planName: "cleaning-monthly", accountId: "04779ade-11f9-48d1-88a1-a63be84d1cb7"};
 const subscriptions =[base, addon];
 
 api.createSubscriptionWithAddOns(subscriptions, 'created_by');
@@ -804,7 +804,7 @@ const subscriptions1 = [base1, addon1];
 const bulkSubBundle1: BulkSubscriptionsBundle = {baseEntitlementAndAddOns: subscriptions1};
 
 const base2: Subscription = {planName: "shotgun-monthly", accountId: "04779ade-11f9-48d1-88a1-a63be84d1cb7"};
-const addon2: subscription = {planName: "telescopic-scope-monthly", accountId: "04779ade-11f9-48d1-88a1-a63be84d1cb7"};
+const addon2: Subscription = {planName: "telescopic-scope-monthly", accountId: "04779ade-11f9-48d1-88a1-a63be84d1cb7"};
 const subscriptions2 = [base2, addon2];
 const bulkSubBundle2: BulkSubscriptionsBundle = {baseEntitlementAndAddOns: subscriptions2};
 
@@ -941,8 +941,9 @@ subscription = subscriptionApi.get_subscription(subscription_id)
 const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
 
 const subscriptionId= 'a07be253-f7ce-4719-9959-037e05ff0777';
+const audit = 'NONE';
 
-const response: AxiosResponse<killbill.Subscription, any> = await api.getSubscription(subscriptionId,'NONE');
+const response: AxiosResponse<killbill.Subscription, any> = await api.getSubscription(subscriptionId, audit);
 ````
 
 ````php
@@ -1103,8 +1104,9 @@ subscription = subscriptionApi.get_subscription_by_key(external_key)
 const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
 
 const key= 'somethingSpecial';
+const audit = 'NONE';
 
-const response: AxiosResponse<killbill.Subscription, any> = await api.getSubscriptionByKey(key,'NONE');
+const response: AxiosResponse<killbill.Subscription, any> = await api.getSubscriptionByKey(key, audit);
 ````
 
 ````php
@@ -1280,7 +1282,7 @@ subscriptionApi.update_subscription_bcd(subscription_id,
 ````javascript
 const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
 
-const subscription: subscription = {billCycleDayLocal: 10};
+const subscription: Subscription = {billCycleDayLocal: 10};
 const subscriptionId = 'e5254822-680f-4720-b5e1-a7146cefb904';
 
 api.updateSubscriptionBCD(subscription, subscriptionId, 'created_by');
@@ -1381,7 +1383,7 @@ subscriptionApi.update_subscription_quantity(subscription_id,
 ````javascript
 const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
 
-const subscription: subscription = {quantity: 3};
+const subscription: Subscription = {quantity: 3};
     const subscriptionId = 'e5254822-680f-4720-b5e1-a7146cefb904';
 
 api.updateSubscriptionQuantity(subscription, subscriptionId, 'created_by');
@@ -1532,7 +1534,7 @@ subscriptionApi.change_subscription_plan(subscription_id,
 ````javascript
 const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
 
-const subscription: subscription = {planName: "pistol-monthly-notrial"};
+const subscription: Subscription = {planName: "pistol-monthly-notrial"};
 const subscriptionId = 'e5254822-680f-4720-b5e1-a7146cefb904';
 
 api.changeSubscriptionPlan(subscription, subscriptionId, 'created_by');
@@ -2458,8 +2460,8 @@ subscription_id = 'e5254822-680f-4720-b5e1-a7146cefb904'
 custom_fields = ['194bcfc8-340f-4592-acd2-ffc1fc461e96']
 
 subscriptionApi.delete_subscription_custom_fields(subscription_id=subscription_id,
-                                                  created_by='demo',
                                                   custom_field=custom_fields,
+                                                  created_by='demo',
                                                   reason='reason',
                                                   comment='comment')
 ```
