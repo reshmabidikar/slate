@@ -94,13 +94,16 @@ account.currency = "USD"
 account.create(user, reason, comment, options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 body = Account(name='John Doe', 
                email='john@laposte.com', 
                currency='USD')
 
-accountApi.create_account(body,'created_by')
+accountApi.create_account(body,
+                          created_by='demo',
+                          reason='reason', 
+                          comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -204,7 +207,7 @@ accountResponse = account.find_by_id( account_id,
                                       options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '36c05a84-563b-4794-8958-772d93e677e1'
 
@@ -319,7 +322,7 @@ accountResponse = account.find_by_external_key( external_key,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 external_key = '36c05a84-563b-4794-8958-772d93e677e1'
 
@@ -451,13 +454,17 @@ account.update(treat_null_as_reset,user,reason,comment,options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
 body = Account(name='Another Name')
 
-accountApi.update_account(account_id,body,'created_by')
+accountApi.update_account(account_id,
+                          body,
+                          created_by='demo',
+                          reason='reason', 
+                          comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -557,11 +564,15 @@ account.close(cancel_subscriptions,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
-accountApi.close_account(account_id,'created_by')
+
+accountApi.close_account( account_id,
+                          created_by='demo',
+                          reason='reason', 
+                          comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -648,7 +659,7 @@ allAccounts = account.find_in_batches( offset,
                                        options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 allAccounts = accountApi.get_accounts()
 ```
@@ -793,7 +804,7 @@ accounts = account.find_in_batches_by_search_key( search_key,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 search_key = 'John'
 
@@ -950,12 +961,17 @@ account.add_email(email,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
 body = AccountEmail(account_id=account_id, email='email@laposte.com')
 
-accountApi.add_email(account_id,body,'created_by')
+
+accountApi.add_email( account_id,
+                      body,
+                      created_by='demo',
+                      reason='reason', 
+                      comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -1032,7 +1048,7 @@ accountEmails = account.emails(audit, options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = 'c8f51346-562d-429b-8c89-27a0f72009b3'
 
@@ -1124,12 +1140,16 @@ account.remove_email(email,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
 email = 'email@laposte.com'
 
-accountApi.remove_email(account_id,email,'created_by')
+accountApi.remove_email(account_id,
+                        email,
+                        created_by='demo',
+                        reason='reason', 
+                        comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -1208,7 +1228,7 @@ accountBundles = account.bundles(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
@@ -1435,7 +1455,7 @@ accountBundles = account.bundles(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
@@ -1678,7 +1698,7 @@ accountInvoices = account.invoices(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
@@ -1791,7 +1811,7 @@ accountInvoices = account.invoices(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
@@ -1933,15 +1953,17 @@ invoice_payment.bulk_create(external_payment,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
-accountApi.pay_all_invoices(account_id, 
-                            'created_by',                             
+accountApi.pay_all_invoices(account_id,                                                      
                             external_payment=True,
                             payment_method_id=None,
-                            target_date=None)
+                            target_date=None,
+                            created_by='demo',
+                            reason='reason', 
+                            comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -2020,7 +2042,7 @@ accountInvoicePayments = account.invoice_payments( audit,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '110952d7-1b7e-482c-b6bb-103e46794927'
 
@@ -2138,7 +2160,7 @@ accoountPayments = account.payments(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 
@@ -2305,18 +2327,21 @@ transaction.credit(account_id,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 payment_method_id = '80c7b386-97b2-424c-bb4e-0017f92bc6eb'
+
 
 # transaction_type could be 'AUTHORIZE', 'PURCHASE' or 'CREDIT'
 body = PaymentTransaction(amount=50, transaction_type='AUTHORIZE')
 
 accountApi.process_payment(account_id, 
                            body, 
-                           'created_by',                           
-                           payment_method_id=payment_method_id)
+                           created_by='demo',                           
+                           payment_method_id=payment_method_id,                           
+                           reason='reason', 
+                           comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -2448,18 +2473,21 @@ transaction.credit_by_external_key(external_key,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_external_key = 'sample_external_key'
 payment_method_id = '80c7b386-97b2-424c-bb4e-0017f92bc6eb'
+
 
 # transaction_type could be 'AUTHORIZE', 'PURCHASE' or 'CREDIT'
 body = PaymentTransaction(amount=50, transaction_type='AUTHORIZE')
 
 accountApi.process_payment_by_external_key(body,
                                            external_key,
-                                           'created_by',                                           
-                                           payment_method_id=payment_method_id)
+                                           created_by='demo',                                           
+                                           payment_method_id=payment_method_id,
+                                           reason='reason',
+                                           comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -2569,14 +2597,17 @@ pm.create(is_default,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '059ecfb8-6b4d-4a89-9537-63a687e6cf10'
 body = PaymentMethod(external_key='ExternalKey', plugin_name='__EXTERNAL_PAYMENT__', plugin_info=None)
 
+
 accountApi.create_payment_method(account_id, 
                                  body, 
-                                 'created_by')
+                                 created_by='demo',
+                                 reason='reason', 
+                                 comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -2661,7 +2692,7 @@ accountPaymentMethods  = payment_method.find_all_by_account_id( account_id,
                                                                 options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 
@@ -2774,14 +2805,16 @@ payment_method.set_default( payment_method_id,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 payment_method_id = '4f124c0d-cee7-49b1-a181-3b0738c685d7'
 
 accountApi.set_default_payment_method(account_id, 
                                       payment_method_id, 
-                                      'created_by')
+                                      created_by='demo',
+                                      reason='reason', 
+                                      comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -2870,11 +2903,14 @@ payment_method.refresh( account_id,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 
-accountApi.refresh_payment_methods(account_id,'created_by')
+accountApi.refresh_payment_methods(account_id,
+                                   created_by='demo',
+                                   reason='reason', 
+                                   comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -2946,7 +2982,7 @@ accountOverdueState = account.overdue(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
@@ -3106,7 +3142,7 @@ account.set_blocking_state(state_name,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 body = BlockingState(state_name='STATE1',
@@ -3117,7 +3153,9 @@ body = BlockingState(state_name='STATE1',
 
 accountApi.add_account_blocking_state(account_id, 
                                       body, 
-                                      'created_by')
+                                      created_by='demo',
+                                      reason='reason', 
+                                      comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -3215,7 +3253,7 @@ accountBlockingStates = account.blocking_states(blocking_state_types,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
@@ -3320,7 +3358,7 @@ childrenAccounts = account.children( with_balance,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
@@ -3429,11 +3467,14 @@ account.transfer_child_credit(user,
                               options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 child_account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 
-accountApi.transfer_child_credit_to_parent(child_account_id,'created_by')
+accountApi.transfer_child_credit_to_parent(child_account_id,
+                                           created_by='demo',
+                                           reason='reason', 
+                                           comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -3529,14 +3570,16 @@ account.add_custom_field(custom_field,
                          options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 body = CustomField(name='Test Custom Field', value='test_value')
 
 accountApi.create_account_custom_fields(account_id,
                                         [body],
-                                        'created_by')
+                                        created_by='demo',
+                                        reason='reason', 
+                                        comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -3623,7 +3666,7 @@ allCustomFields = account.all_custom_fields(object_type,
                                             options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
@@ -3714,7 +3757,7 @@ audit = 'NONE'
 accountCustomFields = account.custom_fields(audit, options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
@@ -3825,7 +3868,7 @@ account.modify_custom_field(custom_field,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+account = killbill.AccountApi()
 
 body = CustomField(custom_field_id=custom_field_id, 
                    name='Test Custom Field', 
@@ -3833,7 +3876,9 @@ body = CustomField(custom_field_id=custom_field_id,
 
 account.modify_account_custom_fields(account_id, 
                                      [body], 
-                                     'created_by')
+                                     created_by='demo',
+                                     reason='reason', 
+                                     comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -3923,11 +3968,14 @@ account.remove_custom_field(custom_field_id,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+account = killbill.AccountApi()
 
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
-account.delete_account_custom_fields(account_id,'created_by')
+account.delete_account_custom_fields(account_id,
+                                     created_by='demo',
+                                     reason='reason', 
+                                     comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -4029,14 +4077,16 @@ account.add_tag(tag_name,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 tag = ["00000000-0000-0000-0000-000000000002"]
 
 accountApi.create_account_tags(account_id, 
                                tag, 
-                               'created_by')
+                               created_by='demo',
+                               reason='reason', 
+                               comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -4105,7 +4155,7 @@ Tags allAccountTags = accountApi.getAllTags(accountId,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
@@ -4216,7 +4266,7 @@ accountTags = account.tags(included_deleted,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 
@@ -4316,14 +4366,16 @@ account.remove_tag(tag_name,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 tag = ["00000000-0000-0000-0000-000000000002"]
 
 accountApi.delete_account_tags(account_id, 
-                               'created_by', 
-                               tag_def=tag)
+                               created_by='demo', 
+                               tag_def=tag,
+                               reason='reason', 
+                               comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -4395,7 +4447,7 @@ auditLogs = account.audit(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '4e4d8acd-c97d-447a-814b-28f995a9106c'
 
@@ -4537,11 +4589,11 @@ auditLogsWithHistory = account.audit_logs_with_history(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
 
-accountApi.get_account_audit_logs_with_history(account_id)
+auditLogsWithHistory = accountApi.get_account_audit_logs_with_history(account_id)
 ```
 
 ```javascript
@@ -4744,7 +4796,7 @@ emailAuditLogsWithHistory = account.email_audit_logs_with_history(account_email_
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
 account_email_id = 'bb390282-6757-4f4f-8dd5-456abd9f30b2'
@@ -4945,7 +4997,7 @@ KillBillClient::Model::AccountTimeline.timeline(account_id,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
 account_id = '43488882-1777-460c-bc32-e375e67d09cf'
 
