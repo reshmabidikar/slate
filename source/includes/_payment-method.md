@@ -64,7 +64,7 @@ Boolean includedDeleted = false; // Will not include deleted
 Boolean withPluginInfo = true; // Will include plugin info
 Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
-PaymentMethod paymentMethodJson = paymentMethodApi.getPaymentMethod(paymentMethodId, 
+PaymentMethod paymentMethod = paymentMethodApi.getPaymentMethod(paymentMethodId, 
                                                                     includedDeleted, 
                                                                     withPluginInfo, 
                                                                     NULL_PLUGIN_PROPERTIES, 
@@ -76,16 +76,16 @@ PaymentMethod paymentMethodJson = paymentMethodApi.getPaymentMethod(paymentMetho
 payment_method_id = "6a0bf13e-d57f-4f79-84bd-3690135f1923"
 with_plugin_info = false
 
-KillBillClient::Model::PaymentMethod.find_by_id(payment_method_id, 
-                                                with_plugin_info, 
+payment_method = KillBillClient::Model::PaymentMethod.find_by_id(payment_method_id,
+                                                with_plugin_info,
                                                 options)
 ```
 
 ```python
 paymentMethodApi = killbill.api.PaymentMethodApi()
-payment_method_id = '0052cddd-0f61-4f68-b653-ca49b5d7f915'
+payment_method_id = '83fc2425-ede3-4fbd-b117-2eff4c660cfe'
 
-paymentMethodApi.get_payment_method(payment_method_id, api_key, api_secret)
+payment_method = paymentMethodApi.get_payment_method(payment_method_id)
 ```
 
 > Example Response:
@@ -282,7 +282,7 @@ curl \
 import org.killbill.billing.client.api.gen.PaymentMethodApi;
 protected PaymentMethodApi paymentMethodApi;
 
-String externalKey = "foo";
+String externalKey = "sample_external_key";
 Boolean includedDeleted = false; // Will not include deleted
 Boolean withPluginInfo = false; // Will not reflect plugin info
 Map<String, String> NULL_PLUGIN_PROPERTIES = null;
@@ -296,12 +296,12 @@ PaymentMethod paymentMethod = paymentMethodApi.getPaymentMethodByKey(externalKey
 ```
 
 ```ruby
-payment_method_ek = "sample_external_key"
+payment_method_key = "sample_external_key"
 included_deleted = false
 with_plugin_info = false
 audit = 'NONE'
 
-KillBillClient::Model::PaymentMethod.find_by_external_key(payment_method_ek,
+payment_method = KillBillClient::Model::PaymentMethod.find_by_external_key(payment_method_key,
                                                           included_deleted,
                                                           with_plugin_info,
                                                           audit,
@@ -312,7 +312,7 @@ KillBillClient::Model::PaymentMethod.find_by_external_key(payment_method_ek,
 paymentMethodApi = killbill.api.PaymentMethodApi()
 external_key = 'sample_external_key'
 
-paymentMethodApi.get_payment_method_by_key(external_key, api_key, api_secret)
+payment_method = paymentMethodApi.get_payment_method_by_key(external_key)
 ```
 
 > Example Response:
@@ -383,7 +383,11 @@ paymentMethodApi.deletePaymentMethod(paymentMethodId,
 ```
 
 ```ruby
-payment_method_id = "4307ac7c-04a7-41e1-9cb0-8a4d4420104c"
+user = "demo"
+reason = nil
+comment = nil
+
+payment_method_id = "71d9c12a-2ace-41e6-84bc-a8b11ff807b8"
 set_auto_pay_off = false
 force_default_deletion = false
 KillBillClient::Model::PaymentMethod.destroy(payment_method_id,
@@ -399,10 +403,10 @@ KillBillClient::Model::PaymentMethod.destroy(payment_method_id,
 paymentMethodApi = killbill.api.PaymentMethodApi()
 payment_method_id = '0052cddd-0f61-4f68-b653-ca49b5d7f915'
 
-paymentMethodApi.delete_payment_method(payment_method_id, 
-                                       created_by, 
-                                       api_key, 
-                                       api_secret)
+paymentMethodApi.delete_payment_method(payment_method_id,
+                                       created_by='demo',
+                                       reason='reason',
+                                       comment='comment')
 ```
 
 **Query Parameters**
@@ -466,7 +470,7 @@ PaymentMethods allPaymentMethods = paymentMethodApi.getPaymentMethods(offset,
 offset = 0
 limit = 100
 
-payment_method.find_in_batches(offset,
+payment_methods = KillBillClient::Model::PaymentMethod.find_in_batches(offset,
                                limit,
                                options)
 ```
@@ -474,7 +478,7 @@ payment_method.find_in_batches(offset,
 ```python
 paymentMethodApi = killbill.api.PaymentMethodApi()
 
-paymentMethodApi.get_payment_methods(api_key, api_secret)
+payment_methods = paymentMethodApi.get_payment_methods()
 ```
 > Example Response:
 
@@ -548,7 +552,7 @@ String searchKey = "4365";
 Long offset = 0L;
 Long limit = 100L;
 String pluginName = null;
-Boolean withPluginInfo = true;
+Boolean withPluginInfo = false;
 Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 List<PaymentMethod> results = paymentMethodApi.searchPaymentMethods(searchKey, 
@@ -566,7 +570,7 @@ search_key = 'example'
 offset = 0
 limit = 100
 
-payment_method.find_in_batches_by_search_key(search_key,
+payment_methods = KillBillClient::Model::PaymentMethod.find_in_batches_by_search_key(search_key,
                                              offset,
                                              limit,
                                              options)
@@ -576,7 +580,7 @@ payment_method.find_in_batches_by_search_key(search_key,
 paymentMethodApi = killbill.api.PaymentMethodApi()
 search_key = '__EXTERNAL_PAYMENT__'
 
-paymentMethodApi.search_payment_methods(search_key, api_key, api_secret)
+payment_methods = paymentMethodApi.search_payment_methods(search_key)
 ```
 
 > Example Response:
