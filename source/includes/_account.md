@@ -966,7 +966,6 @@ accountApi = killbill.AccountApi()
 account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
 body = AccountEmail(account_id=account_id, email='email@laposte.com')
 
-
 accountApi.add_email( account_id,
                       body,
                       created_by='demo',
@@ -4080,10 +4079,10 @@ account.add_tag(tag_name,
 accountApi = killbill.AccountApi()
 
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
-tag = ["00000000-0000-0000-0000-000000000002"]
+tagDefIds = ["00000000-0000-0000-0000-000000000002"]
 
 accountApi.create_account_tags(account_id, 
-                               tag, 
+                               tagDefIds, 
                                created_by='demo',
                                reason='reason', 
                                comment='comment')
@@ -4369,11 +4368,11 @@ account.remove_tag(tag_name,
 accountApi = killbill.AccountApi()
 
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
-tag = ["00000000-0000-0000-0000-000000000002"]
+tagDefIds = ["00000000-0000-0000-0000-000000000002"]
 
 accountApi.delete_account_tags(account_id, 
                                created_by='demo', 
-                               tag_def=tag,
+                               tag_def=tagDefIds,
                                reason='reason', 
                                comment='comment')
 ```
