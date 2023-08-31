@@ -88,6 +88,26 @@ payment_method_id = '83fc2425-ede3-4fbd-b117-2eff4c660cfe'
 payment_method = paymentMethodApi.get_payment_method(payment_method_id)
 ```
 
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const paymentMethodId = '83fc2425-ede3-4fbd-b117-2eff4c660cfe';
+
+const response: AxiosResponse<killbill.PaymentMethod, any> = await api.getPaymentMethod(paymentMethodId, 'NONE');
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$paymentMethodId = "283bae70-a711-47ed-b7d4-040e3ecf8862";
+$includedDeleted = false;
+$withPluginInfo = false;
+$pluginProperty = array("pluginProperty_example");
+$audit = "NONE";
+
+$result = $apiInstance->getPaymentMethod($paymentMethodId, $includedDeleted, $withPluginInfo, $pluginProperty, $audit);
+````
+
 > Example Response:
 
 ```json
@@ -315,6 +335,26 @@ external_key = 'sample_external_key'
 payment_method = paymentMethodApi.get_payment_method_by_key(external_key)
 ```
 
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const key= 'sample_external_key';
+
+const response: AxiosResponse<killbill.PaymentMethod, any> = await api.getPaymentMethodByKey(key,'NONE');
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$externalKey = "sample_external_key";
+$includedDeleted = false;
+$withPluginInfo = false;
+$pluginProperty = array("pluginProperty_example");
+$audit = "NONE";
+
+$result = $apiInstance->getPaymentMethodByKey($externalKey, $includedDeleted, $withPluginInfo, $pluginProperty, $audit);
+````
+
 > Example Response:
 
 ```json
@@ -409,6 +449,29 @@ paymentMethodApi.delete_payment_method(payment_method_id,
                                        comment='comment')
 ```
 
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const paymentMethodId = 'dab6464d-13eb-4702-864c-3d7297bbcf23';
+
+api.deletePaymentMethod(paymentMethodId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$paymentMethodId = "43baa5e3-d300-46ea-91ef-b242d14a4d13";
+$deleteDefaultPmWithAutoPayOff = false;
+$forceDefaultPmDeletion = false;
+$pluginProperty = array("pluginProperty_example");
+
+$apiInstance->deletePaymentMethod($paymentMethodId, $xKillbillCreatedBy, $deleteDefaultPmWithAutoPayOff, $forceDefaultPmDeletion, $pluginProperty, $xKillbillReason, $xKillbillComment);
+````
+
 **Query Parameters**
 
 | Name | Type | Required | Default | Description                                                                    |
@@ -480,6 +543,26 @@ paymentMethodApi = killbill.api.PaymentMethodApi()
 
 payment_methods = paymentMethodApi.get_payment_methods()
 ```
+
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const response: AxiosResponse<killbill.PaymentMethod[], any> = await api.getPaymentMethods();
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$offset = 0;
+$limit = 100;
+$pluginName = null;
+$withPluginInfo = false;
+$pluginProperty = array("pluginProperty_example");
+$audit = "NONE";
+
+$result = $apiInstance->getPaymentMethods($offset, $limit, $pluginName, $withPluginInfo, $pluginProperty, $audit);
+````
+
 > Example Response:
 
 ```json
@@ -582,6 +665,28 @@ search_key = '__EXTERNAL_PAYMENT__'
 
 payment_methods = paymentMethodApi.search_payment_methods(search_key)
 ```
+
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const key= 'braintree';
+
+const response: AxiosResponse<killbill.PaymentMethod[], any> = await api.searchPaymentMethods(key);
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$searchKey = "braintree";
+$offset = 0;
+$limit = 100;
+$pluginName = null;
+$withPluginInfo = false;
+$pluginProperty = array("pluginProperty_example");
+$audit = "NONE";
+
+$result = $apiInstance->searchPaymentMethods($searchKey, $offset, $limit, $pluginName, $withPluginInfo, $pluginProperty, $audit);
+````
 
 > Example Response:
 
