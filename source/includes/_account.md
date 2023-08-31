@@ -568,7 +568,6 @@ accountApi = killbill.AccountApi()
 
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
-
 accountApi.close_account( account_id,
                           created_by='demo',
                           reason='reason', 
@@ -3869,6 +3868,7 @@ account.modify_custom_field(custom_field,
 ```python
 account = killbill.AccountApi()
 
+account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 body = CustomField(custom_field_id=custom_field_id, 
                    name='Test Custom Field', 
                    value='test_value')
