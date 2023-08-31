@@ -520,12 +520,18 @@ paymentMethodApi.createPaymentMethodCustomFields(paymentMethodId,
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
+payment_method = KillBillClient::Model::PaymentMethod.new
+payment_method.payment_method_id = "06e5c871-3caf-41c2-9d7e-30c95f6e309c"
+
 custom_field = KillBillClient::Model::CustomFieldAttributes.new
-custom_field.object_type = 'PAYMENT_METHOD'
 custom_field.name = 'Test Custom Field'
 custom_field.value = 'test_value'
 
-payment_method.add_custom_field(custom_field, 
+payment_method.add_custom_field(custom_field,
                                 user,
                                 reason,
                                 comment,
@@ -534,14 +540,14 @@ payment_method.add_custom_field(custom_field,
 
 ```python
 paymentMethodApi = killbill.api.PaymentMethodApi()
-payment_method_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+payment_method_id = '34150e56-c1fe-4560-a177-2e1376662e20'
 body = CustomField(name='Test Custom Field', value='test_value')
 
 paymentMethodApi.create_payment_method_custom_fields(payment_method_id,
                                                      [body],
-                                                     created_by,
-                                                     api_key,
-                                                     api_secret)
+                                                     created_by='demo',
+                                                     reason='reason',
+                                                     comment='comment')
 ```
 
 **Request Body**
@@ -595,18 +601,19 @@ List<CustomField> customFields = paymentMethodApi.getPaymentMethodCustomFields(p
 ```
 
 ```ruby
+payment_method = KillBillClient::Model::PaymentMethod.new
+payment_method.payment_method_id = "06e5c871-3caf-41c2-9d7e-30c95f6e309c"
+
 audit = 'NONE'
 
-payment_method.custom_fields(audit, options)
+fields = payment_method.custom_fields(audit, options)
 ```
 
 ```python
 paymentMethodApi = killbill.api.PaymentMethodApi()
-payment_method_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+payment_method_id = '34150e56-c1fe-4560-a177-2e1376662e20'
 
-paymentMethodApi.get_payment_method_custom_fields(payment_method_id, 
-                                                  api_key, 
-                                                  api_secret)
+fields = paymentMethodApi.get_payment_method_custom_fields(payment_method_id)
 ```
 
 > Example Response:
@@ -681,30 +688,36 @@ paymentMethodApi.modifyPaymentMethodCustomFields(paymentMethodId,
 ```
 
 ```ruby
-custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-custom_field.name = 'Test Modify'
-custom_field.value = 'test_modify_value'
+user = "demo"
+reason = nil
+comment = nil
 
-payment_method.modify_custom_field(custom_field,                                                                                            
-                                   user, 
+payment_method = KillBillClient::Model::PaymentMethod.new
+payment_method.payment_method_id = "06e5c871-3caf-41c2-9d7e-30c95f6e309c"
+
+custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
+custom_field.value = 'new value'
+
+payment_method.modify_custom_field(custom_field,
+                                   user,
                                    reason,
-                                   comment, 
+                                   comment,
                                    options)
 ```
 
 ```python
 paymentMethodApi = killbill.api.PaymentMethodApi()
-payment_method_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
-custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-body = CustomField(custom_field_id=custom_field_id, 
-                   name='Test Custom Field', 
-                   value='test_value')
+payment_method_id = '34150e56-c1fe-4560-a177-2e1376662e20'
+custom_field_id = '75d6449f-d012-42d8-a9bc-56261a63281f'
+body = CustomField(custom_field_id=custom_field_id,
+                   name='Test Custom Field',
+                   value='new value')
 
-paymentMethodApi.modify_payment_method_custom_fields(payment_method_id, 
-                                                     [body], 
-                                                     created_by, 
-                                                     api_key, 
-                                                     api_secret)
+paymentMethodApi.modify_payment_method_custom_fields(payment_method_id,
+                                                     [body],
+                                                     created_by='demo',
+                                                     reason='reason',
+                                                     comment='comment')
 ```
 
 **Request Body**
@@ -756,23 +769,33 @@ paymentMethodApi.deletePaymentMethodCustomFields(paymentMethodId,
 ```
 
 ```ruby
-custom_field_id = custom_field.id
+user = "demo"
+reason = nil
+comment = nil
 
-payment_method.remove_custom_field(custom_field_id,                                                                                            
-                                   user, 
+payment_method = KillBillClient::Model::PaymentMethod.new
+payment_method.payment_method_id = "06e5c871-3caf-41c2-9d7e-30c95f6e309c"
+
+custom_field_id = 'cda969c3-1092-4702-b155-05d0ef899fa2'
+
+payment_method.remove_custom_field(custom_field_id,
+                                   user,
                                    reason,
-                                   comment, 
+                                   comment,
                                    options)
 ```
 
 ```python
 paymentMethodApi = killbill.api.PaymentMethodApi()
-payment_method_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+payment_method_id = '34150e56-c1fe-4560-a177-2e1376662e20'
+
+custom_fields = ['0ef3863d-1d3f-4b18-a795-9bb6b68cef83']
 
 paymentMethodApi.delete_payment_method_custom_fields(payment_method_id,
-                                                     created_by,
-                                                     api_key, 
-                                                     api_secret)
+                                                     custom_field=custom_fields,
+                                                     created_by='demo',
+                                                     reason='reason',
+                                                     comment='comment')
 ```
 
 **Query Parameters**
@@ -822,24 +845,18 @@ protected PaymentMethodApi paymentMethodApi;
 
 UUID paymentMethodId = UUID.fromString("e9d95f16-a426-46d0-b76b-90814792fb36");
 
-List<AuditLog> result = paymentMethodApi.getPaymentMethodAuditLogsWithHistory(paymentMethodId, requestOptions);
+List<AuditLog> auditLog = paymentMethodApi.getPaymentMethodAuditLogsWithHistory(paymentMethodId, requestOptions);
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
-account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
-account_email_id = 'bb390282-6757-4f4f-8dd5-456abd9f30b2'
+paymentMethodApi = killbill.api.PaymentMethodApi()
+payment_method_id = '34150e56-c1fe-4560-a177-2e1376662e20'
 
-accountApi.get_account_email_audit_logs_with_history(account_id,
-                                                     account_email_id,
-                                                     api_key,
-                                                     api_secret)
+audit_logs = paymentMethodApi.get_payment_method_audit_logs_with_history(payment_method_id)
 ```
 
 ```ruby
-account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
-
-account.email_audit_logs_with_history(account_email_id, options)
+TODO
 ```
 
 > Example Response:
