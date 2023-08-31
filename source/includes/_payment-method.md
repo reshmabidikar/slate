@@ -492,8 +492,6 @@ curl -v \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
     -d '[{ 
-            "objectId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
-            "objectType": "PAYMENT_METHOD",
             "name": "Test Custom Field",
             "value": "test_value"
     }]' \
@@ -640,7 +638,7 @@ If successful, returns a status code of 200 and a (possibly empty) list of custo
 
 ###  Modify custom fields for payment method
 
-Modifies the value of one or more existing custom fields associated with a payment object
+Modifies the value of one or more existing custom fields associated with a payment object. Note that it is not possible to modify the name of a custom field, it is only possible to modify its value.
 
 **HTTP Request** 
 
@@ -727,7 +725,7 @@ If successful, a status code of 204 and an empty body.
 
 ###  Remove custom fields from payment method
 
-Delete one or more custom fields from a payment method
+Delete one or more custom fields from a payment method. It accepts query parameters corresponding to the custom field ids to be deleted. if no query parameters are specified, it deletes all the custom fields corresponding to the payment method.
 
 **HTTP Request** 
 
@@ -790,9 +788,18 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Audit Logs
 
-This endpoint enables access to payment method audit logs. For more on audit logs see the Audit and History section under Using Kill Bill APIs.
+This endpoint enables access to payment method audit logs. For details on audit logs see [Audit and History](#using-kill-bill-apis-audit-and-history).
 
 ### Retrieve payment method audit logs with history by id
+
+Retrieve a list of audit log records showing changes to the payment method. History information (a copy of the full payment method object) is included with each record.
+
+Some examples:
+
+* If this API is invoked after a payment method is created, it would return a single `INSERT` record corresponding to the payment method creation.
+* * If this API is invoked after a payment method is deleted, it would return two records:
+  * An `INSERT` record corresponding to the payment method creation.
+  * A `DELETE` record corresponding to the payment method deletion.
 
 **HTTP Request** 
 
@@ -841,28 +848,52 @@ account.email_audit_logs_with_history(account_email_id, options)
 [
   {
     "changeType": "INSERT",
-    "changeDate": "2018-07-19T14:56:07.000Z",
+    "changeDate": "2023-09-30T09:22:48.000Z",
     "objectType": "PAYMENT_METHOD",
-    "objectId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
+    "objectId": "d15679bd-527d-46e1-8141-e20d74572cdf",
     "changedBy": "admin",
     "reasonCode": null,
     "comments": null,
-    "userToken": "f77892e9-32bd-4d59-8039-5e12798b53fe",
-    "history": 
-    {
+    "userToken": "fdb63796-38a6-4420-a94b-1dc479d75ad4",
+    "history": {
       "id": null,
-      "createdDate": "2018-07-19T14:56:07.000Z",
-      "updatedDate": "2018-07-19T14:56:07.000Z",
-      "recordId": 10,
-      "accountRecordId": 35,
+      "createdDate": "2023-09-30T09:22:48.000Z",
+      "updatedDate": "2023-09-30T09:22:48.000Z",
+      "recordId": 22,
+      "accountRecordId": 2,
       "tenantRecordId": 1,
-      "externalKey": "unknown",
-      "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
+      "externalKey": "d15679bd-527d-46e1-8141-e20d74572cdf",
+      "accountId": "544d269c-8a66-40c3-9abd-e3dddd4a016c",
       "pluginName": "__EXTERNAL_PAYMENT__",
       "isActive": true,
-      "active": true,
       "tableName": "PAYMENT_METHODS",
-      "historyTableName": "PAYMENT_METHOD_HISTORY"
+      "historyTableName": "PAYMENT_METHOD_HISTORY",
+      "active": true
+    }
+  },
+  {
+    "changeType": "DELETE",
+    "changeDate": "2023-09-30T09:25:49.000Z",
+    "objectType": "PAYMENT_METHOD",
+    "objectId": "d15679bd-527d-46e1-8141-e20d74572cdf",
+    "changedBy": "admin",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "e076ca73-1b25-4e9f-8a0b-2d58324cdd94",
+    "history": {
+      "id": null,
+      "createdDate": "2023-09-30T09:25:49.000Z",
+      "updatedDate": "2023-09-30T09:25:49.000Z",
+      "recordId": 22,
+      "accountRecordId": 2,
+      "tenantRecordId": 1,
+      "externalKey": "d15679bd-527d-46e1-8141-e20d74572cdf",
+      "accountId": "544d269c-8a66-40c3-9abd-e3dddd4a016c",
+      "pluginName": "__EXTERNAL_PAYMENT__",
+      "isActive": false,
+      "tableName": "PAYMENT_METHODS",
+      "historyTableName": "PAYMENT_METHOD_HISTORY",
+      "active": false
     }
   }
 ]
