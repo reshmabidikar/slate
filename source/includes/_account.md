@@ -2337,8 +2337,8 @@ body = PaymentTransaction(amount=50, transaction_type='AUTHORIZE')
 
 accountApi.process_payment(account_id, 
                            body, 
-                           created_by='demo',                           
                            payment_method_id=payment_method_id,                           
+                           created_by='demo',                           
                            reason='reason', 
                            comment='comment')
 ```
@@ -2482,9 +2482,9 @@ payment_method_id = '80c7b386-97b2-424c-bb4e-0017f92bc6eb'
 body = PaymentTransaction(amount=50, transaction_type='AUTHORIZE')
 
 accountApi.process_payment_by_external_key(body,
-                                           external_key,
-                                           created_by='demo',                                           
+                                           account_external_key,
                                            payment_method_id=payment_method_id,
+                                           created_by='demo',
                                            reason='reason',
                                            comment='comment')
 ```
@@ -4371,8 +4371,8 @@ account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 tagDefIds = ["00000000-0000-0000-0000-000000000002"]
 
 accountApi.delete_account_tags(account_id, 
-                               created_by='demo', 
                                tag_def=tagDefIds,
+                               created_by='demo',
                                reason='reason', 
                                comment='comment')
 ```
