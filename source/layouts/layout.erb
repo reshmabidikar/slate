@@ -102,8 +102,13 @@ under the License.
         <% end %>
       </div>
     </header>
-    <main class="page">
+    <main class="page sidebar-show">
       <div class="page__sidebar">
+        <div class="page__sidebar-toggle">
+          <svg width="8" height="12" viewBox="0 0 8 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M6.33316 10.6665L1.6665 5.99992L6.33316 1.33325" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
         <nav class="site-navigator">
           <ul class="site-navigator__menu">
             <% toc_data(current_page.data.menu_items, current_page.data.current_page, page_content).each do |menu_item| %>
@@ -240,10 +245,12 @@ under the License.
             } else {
               $(element).show();
             }
-
+            
+            $(element).has('.json, .textplain, .xml').show();
+            
             $(element).children('.highlight').each(function (index, ch) {
               $(ch).hide()
-              $(ch).has(`.${activeLang}`).show()
+              $(ch).has(`.${activeLang}, .json, .textplain, .xml`).show()
             })
           });
         }
@@ -290,7 +297,6 @@ under the License.
       $(this).wrapAll('<div class="table-wrapper" />')
     })
 
-
     // Init active menu item if it has 
     $('.site-navigator .site-navigator__menu-item[href*="#"]').addClass('active')
 
@@ -324,18 +330,18 @@ under the License.
 
     $('.header__sidebar-toggler').on('click', function() {
       $(this).toggleClass('active')
-      $('.page').toggleClass('show-sidebar')
+      $('.page').toggleClass('sidebar-full-width-show')
     })
+
+    $('.page__sidebar-toggle').on('click', function () {
+      $(this).toggleClass('active');
+      $('.page').toggleClass('sidebar-show');
+    });
 
     $('.site-navigator .site-navigator__menu-item').on('click', function () {
       if($(this).hasClass('active')) {
         $(this).removeClass('active')
-
-        return;
       }
-
-      $('.site-navigator .site-navigator__menu-item').removeClass('active')
-      $(this).addClass('active')
     })
     
     $('.site-navigator .site-navigator__submenu-item').on('click', function () {

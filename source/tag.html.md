@@ -30,6 +30,8 @@ language_tabs:
    - java
    - ruby
    - python
+   - javascript
+   - php
 
 toc_footers:
   - <a href="mailto:support@killbill.io">Report a doc problem </a>
