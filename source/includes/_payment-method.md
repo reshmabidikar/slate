@@ -747,8 +747,6 @@ curl -v \
     -H 'Content-Type: application/json' \
     -H 'X-Killbill-CreatedBy: demo' \
     -d '[{ 
-            "objectId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
-            "objectType": "PAYMENT_METHOD",
             "name": "Test Custom Field",
             "value": "test_value"
     }]' \
@@ -777,12 +775,18 @@ paymentMethodApi.createPaymentMethodCustomFields(paymentMethodId,
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
+payment_method = KillBillClient::Model::PaymentMethod.new
+payment_method.payment_method_id = "06e5c871-3caf-41c2-9d7e-30c95f6e309c"
+
 custom_field = KillBillClient::Model::CustomFieldAttributes.new
-custom_field.object_type = 'PAYMENT_METHOD'
 custom_field.name = 'Test Custom Field'
 custom_field.value = 'test_value'
 
-payment_method.add_custom_field(custom_field, 
+payment_method.add_custom_field(custom_field,
                                 user,
                                 reason,
                                 comment,
@@ -791,15 +795,44 @@ payment_method.add_custom_field(custom_field,
 
 ```python
 paymentMethodApi = killbill.api.PaymentMethodApi()
-payment_method_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+payment_method_id = '34150e56-c1fe-4560-a177-2e1376662e20'
 body = CustomField(name='Test Custom Field', value='test_value')
 
 paymentMethodApi.create_payment_method_custom_fields(payment_method_id,
                                                      [body],
-                                                     created_by,
-                                                     api_key,
-                                                     api_secret)
+                                                     created_by='demo',
+                                                     reason='reason',
+                                                     comment='comment')
 ```
+
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const customField: CustomField = {name: "Test Custom Field", value: "test_value"};
+const customFields = [customField];
+
+const paymentMethodId = '06e5c871-3caf-41c2-9d7e-30c95f6e309c';
+
+api.createPaymentMethodCustomFields(customFields, paymentMethodId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$customField = new CustomField();
+$customField -> setName('Test Custom Field');
+$customField -> setValue('test_value');
+
+$body = array($customField);
+
+$paymentMethodId = "06e5c871-3caf-41c2-9d7e-30c95f6e309c";
+
+$result = $apiInstance->createPaymentMethodCustomFields($body, $xKillbillCreatedBy, $paymentMethodId, $xKillbillReason, $xKillbillComment);
+````
 
 **Request Body**
 
@@ -852,19 +885,38 @@ List<CustomField> customFields = paymentMethodApi.getPaymentMethodCustomFields(p
 ```
 
 ```ruby
+payment_method = KillBillClient::Model::PaymentMethod.new
+payment_method.payment_method_id = "06e5c871-3caf-41c2-9d7e-30c95f6e309c"
+
 audit = 'NONE'
 
-payment_method.custom_fields(audit, options)
+fields = payment_method.custom_fields(audit, options)
 ```
 
 ```python
 paymentMethodApi = killbill.api.PaymentMethodApi()
-payment_method_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+payment_method_id = '34150e56-c1fe-4560-a177-2e1376662e20'
 
-paymentMethodApi.get_payment_method_custom_fields(payment_method_id, 
-                                                  api_key, 
-                                                  api_secret)
+fields = paymentMethodApi.get_payment_method_custom_fields(payment_method_id)
 ```
+
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const paymentMethodId = '06e5c871-3caf-41c2-9d7e-30c95f6e309c';
+const audit = 'NONE';
+
+const response: AxiosResponse<killbill.CustomField[], any> = await api.getPaymentMethodCustomFields(paymentMethodId, audit, 'created_by');
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$paymentMethodId = "06e5c871-3caf-41c2-9d7e-30c95f6e309c";
+$audit = "NONE";
+
+$result = $apiInstance->getPaymentMethodCustomFields($paymentMethodId, $audit);
+````
 
 > Example Response:
 
@@ -895,7 +947,7 @@ If successful, returns a status code of 200 and a (possibly empty) list of custo
 
 ###  Modify custom fields for payment method
 
-Modifies the value of one or more existing custom fields associated with a payment object
+Modifies the value of one or more existing custom fields associated with a payment object. Note that it is not possible to modify the name of a custom field, it is only possible to modify its value.
 
 **HTTP Request** 
 
@@ -938,31 +990,66 @@ paymentMethodApi.modifyPaymentMethodCustomFields(paymentMethodId,
 ```
 
 ```ruby
-custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-custom_field.name = 'Test Modify'
-custom_field.value = 'test_modify_value'
+user = "demo"
+reason = nil
+comment = nil
 
-payment_method.modify_custom_field(custom_field,                                                                                            
-                                   user, 
+payment_method = KillBillClient::Model::PaymentMethod.new
+payment_method.payment_method_id = "06e5c871-3caf-41c2-9d7e-30c95f6e309c"
+
+custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
+custom_field.value = 'new value'
+
+payment_method.modify_custom_field(custom_field,
+                                   user,
                                    reason,
-                                   comment, 
+                                   comment,
                                    options)
 ```
 
 ```python
 paymentMethodApi = killbill.api.PaymentMethodApi()
-payment_method_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
-custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-body = CustomField(custom_field_id=custom_field_id, 
-                   name='Test Custom Field', 
-                   value='test_value')
+payment_method_id = '34150e56-c1fe-4560-a177-2e1376662e20'
+custom_field_id = '75d6449f-d012-42d8-a9bc-56261a63281f'
+body = CustomField(custom_field_id=custom_field_id,
+                   name='Test Custom Field',
+                   value='new value')
 
-paymentMethodApi.modify_payment_method_custom_fields(payment_method_id, 
-                                                     [body], 
-                                                     created_by, 
-                                                     api_key, 
-                                                     api_secret)
+paymentMethodApi.modify_payment_method_custom_fields(payment_method_id,
+                                                     [body],
+                                                     created_by='demo',
+                                                     reason='reason',
+                                                     comment='comment')
 ```
+
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const paymentMethodId = '06e5c871-3caf-41c2-9d7e-30c95f6e309c';
+
+const customField: CustomField = {customFieldId: "8b8374b5-ef9b-4eb1-b820-1b9bde00d277", value: "new_value"};
+const customFields = [customField];
+
+api.modifyPaymentMethodCustomFields(customFields, paymentMethodId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$customField = new CustomField();
+$customField -> setCustomFieldId('bbfa081a-e7f9-4492-b30f-b77f9fa207da');
+$customField -> setValue('new_value');
+
+$body = array($customField);
+
+$paymentMethodId = "06e5c871-3caf-41c2-9d7e-30c95f6e309c";
+
+$apiInstance->modifyPaymentMethodCustomFields($body, $xKillbillCreatedBy, $paymentMethodId, $xKillbillReason, $xKillbillComment);
+````
 
 **Request Body**
 
@@ -982,7 +1069,7 @@ If successful, a status code of 204 and an empty body.
 
 ###  Remove custom fields from payment method
 
-Delete one or more custom fields from a payment method
+Delete one or more custom fields from a payment method. It accepts query parameters corresponding to the custom field ids to be deleted. if no query parameters are specified, it deletes all the custom fields corresponding to the payment method.
 
 **HTTP Request** 
 
@@ -1013,24 +1100,58 @@ paymentMethodApi.deletePaymentMethodCustomFields(paymentMethodId,
 ```
 
 ```ruby
-custom_field_id = custom_field.id
+user = "demo"
+reason = nil
+comment = nil
 
-payment_method.remove_custom_field(custom_field_id,                                                                                            
-                                   user, 
+payment_method = KillBillClient::Model::PaymentMethod.new
+payment_method.payment_method_id = "06e5c871-3caf-41c2-9d7e-30c95f6e309c"
+
+custom_field_id = 'cda969c3-1092-4702-b155-05d0ef899fa2'
+
+payment_method.remove_custom_field(custom_field_id,
+                                   user,
                                    reason,
-                                   comment, 
+                                   comment,
                                    options)
 ```
 
 ```python
 paymentMethodApi = killbill.api.PaymentMethodApi()
-payment_method_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+payment_method_id = '34150e56-c1fe-4560-a177-2e1376662e20'
+
+custom_fields = ['0ef3863d-1d3f-4b18-a795-9bb6b68cef83']
 
 paymentMethodApi.delete_payment_method_custom_fields(payment_method_id,
-                                                     created_by,
-                                                     api_key, 
-                                                     api_secret)
+                                                     custom_field=custom_fields,
+                                                     created_by='demo',
+                                                     reason='reason',
+                                                     comment='comment')
 ```
+
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const paymentMethodId = '06e5c871-3caf-41c2-9d7e-30c95f6e309c';
+
+const customField = '8b8374b5-ef9b-4eb1-b820-1b9bde00d277';
+const customFields = [customField];
+
+api.deletePaymentMethodCustomFields(paymentMethodId, 'created_by', customFields);
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$paymentMethodId = "06e5c871-3caf-41c2-9d7e-30c95f6e309c";
+$customFields = array("5319cbff-c348-44ae-af91-fb3a4f1ab117");
+
+$apiInstance->deletePaymentMethodCustomFields($paymentMethodId, $xKillbillCreatedBy, $customFields, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
@@ -1045,9 +1166,18 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Audit Logs
 
-This endpoint enables access to payment method audit logs. For more on audit logs see the Audit and History section under Using Kill Bill APIs.
+This endpoint enables access to payment method audit logs. For details on audit logs see [Audit and History](#using-kill-bill-apis-audit-and-history).
 
 ### Retrieve payment method audit logs with history by id
+
+Retrieve a list of audit log records showing changes to the payment method. History information (a copy of the full payment method object) is included with each record.
+
+Some examples:
+
+* If this API is invoked after a payment method is created, it would return a single `INSERT` record corresponding to the payment method creation.
+* * If this API is invoked after a payment method is deleted, it would return two records:
+  * An `INSERT` record corresponding to the payment method creation.
+  * A `DELETE` record corresponding to the payment method deletion.
 
 **HTTP Request** 
 
@@ -1070,25 +1200,35 @@ protected PaymentMethodApi paymentMethodApi;
 
 UUID paymentMethodId = UUID.fromString("e9d95f16-a426-46d0-b76b-90814792fb36");
 
-List<AuditLog> result = paymentMethodApi.getPaymentMethodAuditLogsWithHistory(paymentMethodId, requestOptions);
+List<AuditLog> auditLog = paymentMethodApi.getPaymentMethodAuditLogsWithHistory(paymentMethodId, requestOptions);
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
-account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
-account_email_id = 'bb390282-6757-4f4f-8dd5-456abd9f30b2'
+paymentMethodApi = killbill.api.PaymentMethodApi()
+payment_method_id = '34150e56-c1fe-4560-a177-2e1376662e20'
 
-accountApi.get_account_email_audit_logs_with_history(account_id,
-                                                     account_email_id,
-                                                     api_key,
-                                                     api_secret)
+audit_logs = paymentMethodApi.get_payment_method_audit_logs_with_history(payment_method_id)
 ```
 
 ```ruby
-account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
-
-account.email_audit_logs_with_history(account_email_id, options)
+TODO
 ```
+
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const paymentMethodId = '06e5c871-3caf-41c2-9d7e-30c95f6e309c';
+
+const response: AxiosResponse<killbill.AuditLog[], any> = await api.getPaymentMethodAuditLogsWithHistory(paymentMethodId);
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$paymentMethodId = "06e5c871-3caf-41c2-9d7e-30c95f6e309c";
+
+$result = $apiInstance->getPaymentMethodAuditLogsWithHistory($paymentMethodId);
+````
 
 > Example Response:
 
@@ -1096,28 +1236,52 @@ account.email_audit_logs_with_history(account_email_id, options)
 [
   {
     "changeType": "INSERT",
-    "changeDate": "2018-07-19T14:56:07.000Z",
+    "changeDate": "2023-09-30T09:22:48.000Z",
     "objectType": "PAYMENT_METHOD",
-    "objectId": "916619a4-02bb-4d3d-b3da-2584ac897b19",
+    "objectId": "d15679bd-527d-46e1-8141-e20d74572cdf",
     "changedBy": "admin",
     "reasonCode": null,
     "comments": null,
-    "userToken": "f77892e9-32bd-4d59-8039-5e12798b53fe",
-    "history": 
-    {
+    "userToken": "fdb63796-38a6-4420-a94b-1dc479d75ad4",
+    "history": {
       "id": null,
-      "createdDate": "2018-07-19T14:56:07.000Z",
-      "updatedDate": "2018-07-19T14:56:07.000Z",
-      "recordId": 10,
-      "accountRecordId": 35,
+      "createdDate": "2023-09-30T09:22:48.000Z",
+      "updatedDate": "2023-09-30T09:22:48.000Z",
+      "recordId": 22,
+      "accountRecordId": 2,
       "tenantRecordId": 1,
-      "externalKey": "unknown",
-      "accountId": "84c7e0d4-a5ed-405f-a655-3ed16ae19997",
+      "externalKey": "d15679bd-527d-46e1-8141-e20d74572cdf",
+      "accountId": "544d269c-8a66-40c3-9abd-e3dddd4a016c",
       "pluginName": "__EXTERNAL_PAYMENT__",
       "isActive": true,
-      "active": true,
       "tableName": "PAYMENT_METHODS",
-      "historyTableName": "PAYMENT_METHOD_HISTORY"
+      "historyTableName": "PAYMENT_METHOD_HISTORY",
+      "active": true
+    }
+  },
+  {
+    "changeType": "DELETE",
+    "changeDate": "2023-09-30T09:25:49.000Z",
+    "objectType": "PAYMENT_METHOD",
+    "objectId": "d15679bd-527d-46e1-8141-e20d74572cdf",
+    "changedBy": "admin",
+    "reasonCode": null,
+    "comments": null,
+    "userToken": "e076ca73-1b25-4e9f-8a0b-2d58324cdd94",
+    "history": {
+      "id": null,
+      "createdDate": "2023-09-30T09:25:49.000Z",
+      "updatedDate": "2023-09-30T09:25:49.000Z",
+      "recordId": 22,
+      "accountRecordId": 2,
+      "tenantRecordId": 1,
+      "externalKey": "d15679bd-527d-46e1-8141-e20d74572cdf",
+      "accountId": "544d269c-8a66-40c3-9abd-e3dddd4a016c",
+      "pluginName": "__EXTERNAL_PAYMENT__",
+      "isActive": false,
+      "tableName": "PAYMENT_METHODS",
+      "historyTableName": "PAYMENT_METHOD_HISTORY",
+      "active": false
     }
   }
 ]
