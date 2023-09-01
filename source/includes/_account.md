@@ -82,6 +82,11 @@ Account result = accountApi.createAccount(body, requestOptions);
 ```
 ```ruby
 account = KillBillClient::Model::Account.new
+
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 account.name = "John Doe"
 account.email = "john@laposte.com"
 account.currency = "USD"
@@ -89,16 +94,16 @@ account.currency = "USD"
 account.create(user, reason, comment, options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
-created_by = 'example'
+accountApi = killbill.AccountApi()
+
 body = Account(name='John Doe', 
                email='john@laposte.com', 
                currency='USD')
 
-accountApi.create_account(body, 
-                          created_by, 
-                          api_key, 
-                          api_secret)
+accountApi.create_account(body,
+                          created_by='demo',
+                          reason='reason', 
+                          comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -193,17 +198,20 @@ Account result = accountApi.getAccount(accountId,
 account_id = "36c05a84-563b-4794-8958-772d93e677e1"
 with_balance = false
 with_balance_and_cba = false
-account = KillBillClient::Model::Account.new
-account.find_by_id(account_id,
-                   with_balance, 
-                   with_balance_and_cba,
-                   options)
+
+account = KillBillClient::Model::Account
+
+accountResponse = account.find_by_id( account_id,
+                                      with_balance, 
+                                      with_balance_and_cba,
+                                      options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '36c05a84-563b-4794-8958-772d93e677e1'
 
-accountApi.get_account(account_id, api_key, api_secret)
+account = accountApi.get_account(account_id)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -305,18 +313,20 @@ external_key = '36c05a84-563b-4794-8958-772d93e677e1'
 with_balance = false
 with_balance_and_cba = false
 
-account = KillBillClient::Model::Account.new
-account.find_by_external_key(external_key,
-                             with_balance,
-                             with_balance_and_cba, 
-                             options)
+account = KillBillClient::Model::Account
+
+accountResponse = account.find_by_external_key( external_key,
+                                                with_balance,
+                                                with_balance_and_cba, 
+                                                options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 external_key = '36c05a84-563b-4794-8958-772d93e677e1'
 
-accountApi.get_account(external_key, api_key, api_secret)
+account = accountApi.get_account_by_key(external_key)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -429,27 +439,32 @@ accountApi.updateAccount(accountId,
 ```
 
 ```ruby
-account.name = 'Another Name'
-treat_null_as_reset = true
+account = KillBillClient::Model::Account.new
 
-account.update(treat_null_as_reset,
-               user,
-               reason,
-               comment, 
-               options)
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account.account_id = "07c0cef4-41c5-4606-b2cd-661332cdd41c"
+account.name = 'Another Name'
+
+treat_null_as_reset = false
+
+account.update(treat_null_as_reset,user,reason,comment,options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
-created_by = 'example'
+
 body = Account(name='Another Name')
 
-accountApi.update_account(account_id, 
-                          body, 
-                          created_by, 
-                          api_key, 
-                          api_secret)
+accountApi.update_account(account_id,
+                          body,
+                          created_by='demo',
+                          reason='reason', 
+                          comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -527,6 +542,14 @@ accountApi.closeAccount(accountId,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = "864c1418-e768-4cd5-a0db-67537144b685"
+
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 cancel_subscriptions = false
 writeoff_unpaid_invoices = false
 item_adjust_unpaid_invoices = false
@@ -541,13 +564,14 @@ account.close(cancel_subscriptions,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
-accountApi.close_account(account_id,
-                         created_by,
-                         api_key,
-                         api_secret)
+accountApi.close_account( account_id,
+                          created_by='demo',
+                          reason='reason', 
+                          comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -620,21 +644,23 @@ Accounts allAccounts = accountApi.getAccounts(offset,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account
+
 offset = 0
 limit = 100
 with_balance = false
 with_balance_and_cba = false
 
-account.find_in_batches(offset,
-                        limit,
-                        with_balance,
-                        with_balance_and_cba,
-                        options)
+allAccounts = account.find_in_batches( offset,
+                                       limit,
+                                       with_balance,
+                                       with_balance_and_cba,
+                                       options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
-accountApi.get_accounts(api_key, api_secret)
+allAccounts = accountApi.get_accounts()
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -760,25 +786,28 @@ List<Account> accountsByKey = accountApi.searchAccounts(searchKey,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account
+
 search_key = 'John'
 offset = 0
 limit = 100
 with_balance = false
 with_balance_and_cba = false
 
-account.find_in_batches_by_search_key(search_key,
-                                      offset,
-                                      limit,
-                                      with_balance,
-                                      with_balance_and_cba,
-                                      options)
+accounts = account.find_in_batches_by_search_key( search_key,
+                                                  offset,
+                                                  limit,
+                                                  with_balance,
+                                                  with_balance_and_cba,
+                                                  options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 search_key = 'John'
 
-accountApi.search_accounts(search_key, api_key, api_secret)
+accounts = accountApi.search_accounts(search_key)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -917,9 +946,13 @@ accountApi.addEmail(accountId,
 ```
 
 ```ruby
-account.email = 'email@laposte.com'
+account = KillBillClient::Model::Account.new
 
-account.add_email(account.email,
+account.account_id = '873c26ef-a3fa-4942-b2f5-549b51f20b1a'
+
+email = 'email@laposte.com'
+
+account.add_email(email,
                   user,
                   reason,
                   comment,
@@ -927,15 +960,16 @@ account.add_email(account.email,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
 body = AccountEmail(account_id=account_id, email='email@laposte.com')
 
-accountApi.add_email(account_id,
-                     body,
-                     created_by,
-                     api_key,
-                     api_secret)
+accountApi.add_email( account_id,
+                      body,
+                      created_by='demo',
+                      reason='reason', 
+                      comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -1002,15 +1036,21 @@ List<AccountEmail> emails = accountApi.getEmails(accountId, requestOptions);
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'cd026587-c93b-471c-a98d-224c21636fbc'
+
 audit = 'NONE'
-account.emails(audit, options)
+
+accountEmails = account.emails(audit, options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'c8f51346-562d-429b-8c89-27a0f72009b3'
 
-accountApi.get_emails(account_id, api_key, api_secret)
+accountEmails = accountApi.get_emails(account_id)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -1080,6 +1120,14 @@ accountApi.removeEmail(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'f755e6a9-cf56-4776-9455-3df350b72f6d'
+
 email = 'email@laposte.com'
 
 account.remove_email(email,
@@ -1090,15 +1138,16 @@ account.remove_email(email,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
 email = 'email@laposte.com'
 
 accountApi.remove_email(account_id,
                         email,
-                        created_by,
-                        api_key,
-                        api_secret)
+                        created_by='demo',
+                        reason='reason', 
+                        comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -1169,14 +1218,19 @@ List<Bundle> accountBundles = accountApi.getAccountBundles(accountId,
 ```
 
 ```ruby
-account.bundles(options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = '15434b45-54c1-4a44-851c-b1f2f7a52f03'
+
+accountBundles = account.bundles(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
-accountApi.get_account_bundles(account_id, api_key, api_secret)
+accountBundles = accountApi.get_account_bundles(account_id)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -1391,14 +1445,19 @@ Bundles bundles = accountApi.getAccountBundlesPaginated(accountId, offset, limit
 ```
 
 ```ruby
-account.bundles(options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = '15434b45-54c1-4a44-851c-b1f2f7a52f03'
+
+accountBundles = account.bundles(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
-accountApi.get_account_bundles_paginated(account_id, api_key, api_secret)
+accountBundles = accountApi.get_account_bundles_paginated(account_id)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -1629,15 +1688,19 @@ Invoices invoices = accountApi.getInvoicesForAccount(accountId,
 ```
 
 ```ruby
-account.invoices(with_items,
-                 options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
+
+accountInvoices = account.invoices(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
-accountApi.get_invoices_for_account(account_id, api_key, api_secret)
+accountInvoices = accountApi.get_invoices_for_account(account_id)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -1738,15 +1801,19 @@ Invoices invoices = accountApi.getInvoicesForAccountPaginated(accountId, offset,
 ```
 
 ```ruby
-account.invoices(with_items,
-                 options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = '325fbe1c-7c35-4d96-a4e5-2cbaabe218c6'
+
+accountInvoices = account.invoices(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
-accountApi.get_invoices_for_account_paginated(account_id, api_key, api_secret)
+accountInvoices = accountApi.get_invoices_for_account_paginated(account_id)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -1863,9 +1930,12 @@ accountApi.payAllInvoices(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 invoice_payment                  = KillBillClient::Model::InvoicePayment.new
-invoice_payment.account_id       = account.account_id
-invoice_payment.purchased_amount = '50.0'
+invoice_payment.account_id       = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
 external_payment  = true
 payment_method_id = nil
@@ -1881,16 +1951,17 @@ invoice_payment.bulk_create(external_payment,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
-accountApi.pay_all_invoices(account_id, 
-                            created_by,
-                            api_key, 
-                            api_secret, 
+accountApi.pay_all_invoices(account_id,                                                      
                             external_payment=True,
                             payment_method_id=None,
-                            target_date=None)
+                            target_date=None,
+                            created_by='demo',
+                            reason='reason', 
+                            comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -1958,17 +2029,22 @@ audit ='NONE'
 with_plugin_info = false
 with_attempts = false
 
-account.invoice_payments(audit,
-                         with_plugin_info,
-                         with_attempts,
-                         options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'e011caa5-ba35-4ac6-81cb-63b4f08122dc'
+
+accountInvoicePayments = account.invoice_payments( audit,
+                                                   with_plugin_info,
+                                                   with_attempts,
+                                                   options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '110952d7-1b7e-482c-b6bb-103e46794927'
 
-accountApi.get_invoice_payments(account_id, api_key, api_secret)
+accountInvoicePayments = accountApi.get_invoice_payments(account_id)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -2074,15 +2150,21 @@ Payments payments = accountApi.getPaymentsForAccount(accountId,
 ```
 
 ```ruby
-account.payments(options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
+
+accoountPayments = account.payments(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 
-accountApi.get_payments_for_account(account_id, api_key, api_secret)
+accountPayments = accountApi.get_payments_for_account(account_id)
 ```
+
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
 
@@ -2203,14 +2285,19 @@ Payment payment = accountApi.processPayment(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 transaction = KillBillClient::Model::Transaction.new
 transaction.amount = '50.0'
 
-payment_method_id = payment_method.payment_method_id
+account_id = "f4087a76-9f8a-4893-abbf-c5bb69975d1b"
+payment_method_id = "1d55ed5f-deea-4109-98b0-beb13a242f7c"
 refresh_options = nil
 
 # Authorization
-transaction.auth(account.account_id,
+transaction.auth(account_id,
                  payment_method_id, 
                  user, 
                  reason, 
@@ -2219,7 +2306,7 @@ transaction.auth(account.account_id,
                  refresh_options)
 
 # Purchase
-transaction.purchase(account.account_id,
+transaction.purchase(account_id,
                      payment_method_id, 
                      user, 
                      reason, 
@@ -2228,7 +2315,7 @@ transaction.purchase(account.account_id,
                      refresh_options)
 
 # Credit
-transaction.credit(account.account_id,
+transaction.credit(account_id,
                    payment_method_id, 
                    user, 
                    reason, 
@@ -2238,19 +2325,21 @@ transaction.credit(account.account_id,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 payment_method_id = '80c7b386-97b2-424c-bb4e-0017f92bc6eb'
+
 
 # transaction_type could be 'AUTHORIZE', 'PURCHASE' or 'CREDIT'
 body = PaymentTransaction(amount=50, transaction_type='AUTHORIZE')
 
 accountApi.process_payment(account_id, 
                            body, 
-                           created_by, 
-                           api_key, 
-                           api_secret, 
-                           payment_method_id=payment_method_id)
+                           payment_method_id=payment_method_id,                           
+                           created_by='demo',                           
+                           reason='reason', 
+                           comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -2342,14 +2431,19 @@ Payment payment = accountApi.processPaymentByExternalKey(authTransaction,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 transaction = KillBillClient::Model::Transaction.new
 transaction.amount = '50.0'
 
-payment_method_id = '132d59c0-8c28-4115-947d-f57d430bc458'
+externalKey = "ad70ffb1-3355-418a-a457-6d8d80696d02";
+payment_method_id = 'c6bd413e-268e-4cc8-afb0-16b2dec3ffa5'
 refresh_options = nil
 
 # Authorization
-transaction.auth_by_external_key(account.external_key,
+transaction.auth_by_external_key(external_key,
                                  payment_method_id, 
                                  user, 
                                  reason, 
@@ -2358,7 +2452,7 @@ transaction.auth_by_external_key(account.external_key,
                                  refresh_options)
 
 # Purchase
-transaction.purchase_by_external_key(account.external_key,
+transaction.purchase_by_external_key(external_key,
                                      payment_method_id, 
                                      user, 
                                      reason, 
@@ -2367,7 +2461,7 @@ transaction.purchase_by_external_key(account.external_key,
                                      refresh_options)
 
 # Credit
-transaction.credit_by_external_key(account.external_key,
+transaction.credit_by_external_key(external_key,
                                    payment_method_id, 
                                    user, 
                                    reason, 
@@ -2377,19 +2471,21 @@ transaction.credit_by_external_key(account.external_key,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_external_key = 'sample_external_key'
 payment_method_id = '80c7b386-97b2-424c-bb4e-0017f92bc6eb'
+
 
 # transaction_type could be 'AUTHORIZE', 'PURCHASE' or 'CREDIT'
 body = PaymentTransaction(amount=50, transaction_type='AUTHORIZE')
 
 accountApi.process_payment_by_external_key(body,
-                                           external_key,
-                                           created_by,
-                                           api_key,
-                                           api_secret,
-                                           payment_method_id=payment_method_id)
+                                           account_external_key,
+                                           payment_method_id=payment_method_id,
+                                           created_by='demo',
+                                           reason='reason',
+                                           comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -2480,8 +2576,12 @@ PaymentMethod paymentMethodPP = accountApi.createPaymentMethod(accountId, paymen
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 pm             = KillBillClient::Model::PaymentMethod.new
-pm.account_id  = account.account_id
+pm.account_id  = "6e5d0912-2e56-4511-af77-af054b616696"
 pm.plugin_name = '__EXTERNAL_PAYMENT__'
 pm.plugin_info = nil
 
@@ -2495,15 +2595,17 @@ pm.create(is_default,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '059ecfb8-6b4d-4a89-9537-63a687e6cf10'
 body = PaymentMethod(external_key='ExternalKey', plugin_name='__EXTERNAL_PAYMENT__', plugin_info=None)
 
+
 accountApi.create_payment_method(account_id, 
                                  body, 
-                                 created_by, 
-                                 api_key, 
-                                 api_secret)
+                                 created_by='demo',
+                                 reason='reason', 
+                                 comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -2578,18 +2680,21 @@ List<PaymentMethod> paymentMethods = accountApi.getPaymentMethodsForAccount(acco
 ```
 
 ```ruby
-account_id = account.account_id
+payment_method      = KillBillClient::Model::PaymentMethod
+
+account_id = "faf239a5-456a-4eb9-aef9-8d2254ef57dc"
 with_plugin_info = false
 
-payment_method.find_all_by_account_id(account_id, 
-                                      with_plugin_info,
-                                      options)
+accountPaymentMethods  = payment_method.find_all_by_account_id( account_id, 
+                                                                with_plugin_info,
+                                                                options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 
-accountApi.get_payment_methods_for_account(account_id, api_key, api_secret)
+accountPaymentMethods = accountApi.get_payment_methods_for_account(account_id)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -2680,25 +2785,34 @@ accountApi.setDefaultPaymentMethod(accountId,
 ```
 
 ```ruby
-account_id = account.account_id
-KillBillClient::Model::PaymentMethod.set_default(payment_method_id,
-                                                 account_id,
-                                                 user,
-                                                 reason,
-                                                 comment,
-                                                 options)
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+payment_method = KillBillClient::Model::PaymentMethod
+
+account_id = 'faf239a5-456a-4eb9-aef9-8d2254ef57dc'
+payment_method_id = 'faf239a5-456a-4eb9-aef9-8d2254ef57dc'
+
+payment_method.set_default( payment_method_id,
+                            account_id,
+                            user,
+                            reason,
+                            comment,
+                            options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 payment_method_id = '4f124c0d-cee7-49b1-a181-3b0738c685d7'
 
 accountApi.set_default_payment_method(account_id, 
                                       payment_method_id, 
-                                      created_by, 
-                                      api_key, 
-                                      api_secret)
+                                      created_by='demo',
+                                      reason='reason', 
+                                      comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -2771,23 +2885,30 @@ accountApi.refreshPaymentMethods(accountId,
 ```
 
 ```ruby
-account_id = account.account_id
+user = 'user'
+reason = 'reason'
+comment = 'comment'
 
-KillBillClient::Model::PaymentMethod.refresh(account_id, 
-                                             user, 
-                                             reason, 
-                                             comment, 
-                                             options)
+payment_method = KillBillClient::Model::PaymentMethod
+
+account_id = "faf239a5-456a-4eb9-aef9-8d2254ef57dc"
+
+payment_method.refresh( account_id, 
+                        user, 
+                        reason, 
+                        comment, 
+                        options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 
-accountApi.refresh_payment_methods(account_id, 
-                                   created_by,
-                                   api_key,
-                                   api_secret)
+accountApi.refresh_payment_methods(account_id,
+                                   created_by='demo',
+                                   reason='reason', 
+                                   comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -2851,14 +2972,19 @@ OverdueState result = accountApi.getOverdueAccount(accountId, requestOptions);
 ```
 
 ```ruby
-account.overdue(options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'd3a82897-ae72-4a2e-9bca-e3c1fe087f84'
+
+accountOverdueState = account.overdue(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
-accountApi.get_overdue_account(account_id, api_key, api_secret)
+accountOverdueState = accountApi.get_overdue_account(account_id)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -2986,6 +3112,14 @@ BlockingStates result = accountApi.addAccountBlockingState(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = '864c1418-e768-4cd5-a0db-67537144b685'
+
 state_name = "STATE1"
 service = "ServiceStateService"
 block_change = false
@@ -3006,7 +3140,8 @@ account.set_blocking_state(state_name,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 body = BlockingState(state_name='STATE1',
                      service='ServiceStateService',
@@ -3016,9 +3151,9 @@ body = BlockingState(state_name='STATE1',
 
 accountApi.add_account_blocking_state(account_id, 
                                       body, 
-                                      created_by, 
-                                      api_key, 
-                                      api_secret)
+                                      created_by='demo',
+                                      reason='reason', 
+                                      comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -3101,21 +3236,26 @@ BlockingStates blockingStates = accountApi.getBlockingStates(accountId,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'ee6835f0-8347-42d3-958c-9a939383ba28'
+
 blocking_state_types = 'ACCOUNT'
 blocking_state_svcs = nil
 audit = 'NONE'
 
-account.blocking_states(blocking_state_types,
-                        blocking_state_svcs, 
-                        audit,
-                        options)
+accountBlockingStates = account.blocking_states(blocking_state_types,
+                                                blocking_state_svcs, 
+                                                audit,
+                                                options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
-accountApi.get_blocking_states(account_id, api_key, api_secret)
+accountBlockingStates = accountApi.get_blocking_states(account_id)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -3201,23 +3341,26 @@ Accounts childrenAccounts = accountApi.getChildrenAccounts(parentAccountId,
 ```
 
 ```ruby
-account_id = account.account_id
+account = KillBillClient::Model::Account.new
+
+account.account_id = "ee6835f0-8347-42d3-958c-9a939383ba28"
+
 with_balance = false
 with_balance_and_cba = false
 audit = 'NONE'
 
-childrens_account = KillBillClient::Model::Account.children(account_id,
-                                                            with_balance, 
-                                                            with_balance_and_cba, 
-                                                            audit, 
-                                                            options)
+childrenAccounts = account.children( with_balance, 
+                                     with_balance_and_cba, 
+                                     audit, 
+                                     options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
-accountApi.get_children_accounts(account_id, api_key, api_secret)
+childrenAccounts = accountApi.get_children_accounts(account_id)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -3308,19 +3451,28 @@ accountApi.transferChildCreditToParent(childAccountId, requestOptions);
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'e659f0f3-745c-46d5-953c-28fe9282fc7d'
+
 account.transfer_child_credit(user,
                               reason,
                               comment,
                               options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 child_account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 
 accountApi.transfer_child_credit_to_parent(child_account_id,
-                                           created_by, 
-                                           api_key, 
-                                           api_secret)
+                                           created_by='demo',
+                                           reason='reason', 
+                                           comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -3395,7 +3547,16 @@ accountApi.createAccountCustomFields(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = '15434b45-54c1-4a44-851c-b1f2f7a52f03'
+
 custom_field = KillBillClient::Model::CustomFieldAttributes.new
+
 custom_field.object_type = 'ACCOUNT'
 custom_field.name = 'Test Custom Field'
 custom_field.value = 'test_value'
@@ -3407,20 +3568,21 @@ account.add_custom_field(custom_field,
                          options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 body = CustomField(name='Test Custom Field', value='test_value')
 
 accountApi.create_account_custom_fields(account_id,
                                         [body],
-                                        created_by,
-                                        api_key,
-                                        api_secret)
+                                        created_by='demo',
+                                        reason='reason', 
+                                        comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
 
-const body: killbill.CustomField = { name: 'Test Custom Field', value: 'test_value' };
+const body: killbill.CustomField[] = [{ name: 'Test Custom Field', value: 'test_value' }];
 
 api.createAccountCustomFields(body,'8992e146-bfa1-4126-a045-98b844a4adcb','created_by');
 ```
@@ -3489,25 +3651,26 @@ CustomFields allAccountCustomFields = accountApi.getAllCustomFields(accountId,
                                                                     AuditLevel.FULL, 
                                                                     requestOptions);
 ```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
-
-accountApi.get_all_custom_fields(account_id, 
-                                 api_key, 
-                                 api_secret, 
-                                 object_type='ACCOUNT')
-```
-
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
 object_type = 'ACCOUNT'
 audit = 'NONE'
 
-account.all_custom_fields(object_type,
-                          audit, 
-                          options)
+allCustomFields = account.all_custom_fields(object_type,
+                                            audit, 
+                                            options)
 ```
+```python
+accountApi = killbill.AccountApi()
+
+account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
+allCustomFields = accountApi.get_all_custom_fields(account_id,object_type='ACCOUNT')
+```
+
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
 
@@ -3583,15 +3746,20 @@ List<CustomField> accountCustomFields = accountApi.getAccountCustomFields(accoun
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '59860a0d-c032-456d-a35e-3a48fe8579e5'
+
 audit = 'NONE'
 
-account.custom_fields(audit, options)
+accountCustomFields = account.custom_fields(audit, options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
-accountApi.get_account_custom_fields(account_id, api_key, api_secret)
+accountCustomFields = accountApi.get_account_custom_fields(account_id)
 ```
 
 ```javascript
@@ -3680,11 +3848,17 @@ accountApi.modifyAccountCustomFields(accountId,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '59860a0d-c032-456d-a35e-3a48fe8579e5'
+
+custom_field = KillBillClient::Model::CustomFieldAttributes.new
+
 custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
 custom_field.name = 'Test Modify'
 custom_field.value = 'test_modify_value'
 
-account.modify_custom_field(custom_field,                                                                                            
+account.modify_custom_field(custom_field,                                       
                             user, 
                             reason,
                             comment, 
@@ -3692,16 +3866,18 @@ account.modify_custom_field(custom_field,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+account = killbill.AccountApi()
+
+account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 body = CustomField(custom_field_id=custom_field_id, 
                    name='Test Custom Field', 
                    value='test_value')
 
 account.modify_account_custom_fields(account_id, 
                                      [body], 
-                                     created_by, 
-                                     api_key, 
-                                     api_secret)
+                                     created_by='demo',
+                                     reason='reason', 
+                                     comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -3791,16 +3967,14 @@ account.remove_custom_field(custom_field_id,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+account = killbill.AccountApi()
+
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
-custom_field_id = '9913e0f6-b5ef-498b-ac47-60e1626eba8f'
-custom_field = [custom_field_id]
 
 account.delete_account_custom_fields(account_id,
-                                     created_by,
-                                     api_key,
-                                     api_secret,
-                                     custom_field=custom_field)
+                                     created_by='demo',
+                                     reason='reason', 
+                                     comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -3884,6 +4058,14 @@ Tags result = accountApi.createAccountTags(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'f4087a76-9f8a-4893-abbf-c5bb69975d1b'
+
 tag_name = 'TEST'
 
 account.add_tag(tag_name,
@@ -3894,15 +4076,16 @@ account.add_tag(tag_name,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
-tag = ["00000000-0000-0000-0000-000000000002"]
+tagDefIds = ["00000000-0000-0000-0000-000000000002"]
 
 accountApi.create_account_tags(account_id, 
-                               tag, 
-                               created_by, 
-                               api_key, 
-                               api_secret)
+                               tagDefIds, 
+                               created_by='demo',
+                               reason='reason', 
+                               comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -3971,21 +4154,26 @@ Tags allAccountTags = accountApi.getAllTags(accountId,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
-accountApi.get_all_tags(account_id, api_key, api_secret)
+allAccountTags = accountApi.get_all_tags(account_id)
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
 object_type = 'ACCOUNT'
 included_deleted = false
 audit = 'NONE'
 
-account.all_tags(object_type, 
-                 included_deleted, 
-                 audit, 
-                 options)
+allTags = account.all_tags(object_type, 
+                           included_deleted, 
+                           audit, 
+                           options)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -4064,19 +4252,24 @@ List<Tag> tags1 = accountApi.getAccountTags(accountId,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'e659f0f3-745c-46d5-953c-28fe9282fc7d'
+
 included_deleted = false
 audit = 'NONE'
 
-account.tags(included_deleted,
-             audit,
-             options)
+accountTags = account.tags(included_deleted,
+                           audit,
+                           options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 
-accountApi.get_account_tags(account_id, api_key, api_secret)
+accountTags = accountApi.get_account_tags(account_id)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -4154,6 +4347,14 @@ accountApi.deleteAccountTags(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'e659f0f3-745c-46d5-953c-28fe9282fc7d'
+
 tag_name = 'TEST'
 
 account.remove_tag(tag_name,
@@ -4164,15 +4365,16 @@ account.remove_tag(tag_name,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
-tag = ["00000000-0000-0000-0000-000000000002"]
+tagDefIds = ["00000000-0000-0000-0000-000000000002"]
 
 accountApi.delete_account_tags(account_id, 
-                               created_by, 
-                               api_key, 
-                               api_secret, 
-                               tag_def=tag)
+                               tag_def=tagDefIds,
+                               created_by='demo',
+                               reason='reason', 
+                               comment='comment')
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -4235,17 +4437,22 @@ UUID accountId = UUID.fromString("e9432491-6558-4007-85ef-cdae171d240c");
 AuditLogs auditLogsJson = accountApi.getAccountAuditLogs(accountId, 
                                                          requestOptions);
 ```
+```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '4e4d8acd-c97d-447a-814b-28f995a9106c'
+
+auditLogs = account.audit(options)
+```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '4e4d8acd-c97d-447a-814b-28f995a9106c'
 
-accountApi.get_account_audit_logs(account_id, api_key, api_secret)
+auditLogs = accountApi.get_account_audit_logs(account_id)
 ```
 
-```ruby
-account.audit(options)
-```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
 
@@ -4372,16 +4579,22 @@ List<AuditLog> auditLogWithHistories = accountApi.getAccountAuditLogsWithHistory
                                                                                  requestOptions);
 ```
 
+```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+
+auditLogsWithHistory = account.audit_logs_with_history(options)
+```
+
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
 
-accountApi.get_account_audit_logs_with_history(account_id, api_key, api_secret)
+auditLogsWithHistory = accountApi.get_account_audit_logs_with_history(account_id)
 ```
 
-```ruby
-account.audit_logs_with_history(options)
-```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
 
@@ -4571,22 +4784,26 @@ List<AuditLog> result = accountApi.getAccountEmailAuditLogsWithHistory(accountId
                                                                        requestOptions);
 ```
 
+```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+
+account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
+
+emailAuditLogsWithHistory = account.email_audit_logs_with_history(account_email_id, options)
+```
+
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
 account_email_id = 'bb390282-6757-4f4f-8dd5-456abd9f30b2'
 
-accountApi.get_account_email_audit_logs_with_history(account_id,
-                                                     account_email_id,
-                                                     api_key,
-                                                     api_secret)
+emailAuditLogsWithHistory = accountApi.get_account_email_audit_logs_with_history(account_id,
+                                                     account_email_id)
 ```
 
-```ruby
-account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
-
-account.email_audit_logs_with_history(account_email_id, options)
-```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
 
@@ -4779,10 +4996,11 @@ KillBillClient::Model::AccountTimeline.timeline(account_id,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '43488882-1777-460c-bc32-e375e67d09cf'
 
-accountApi.get_account_timeline(account_id, api_key, api_secret)
+accountTimeline = accountApi.get_account_timeline(account_id)
 ```
 ```javascript
 const api: killbill.AccountApi = new killbill.AccountApi(config);
@@ -4804,36 +5022,456 @@ $accountTimeline = $apiInstance->getAccountTimeline($accountID);
 ```json
 {
   "account": {
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "name": "John Doe",
+    "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+    "name": "25thAuGCus6",
     "firstNameLength": null,
-    "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "email": "john@laposte.com",
-    "billCycleDayLocal": 0,
+    "externalKey": "25thAuGCus6",
+    "email": null,
+    "billCycleDayLocal": 1,
     "currency": "USD",
     "parentAccountId": null,
     "isPaymentDelegatedToParent": false,
     "paymentMethodId": null,
-    "referenceTime": "2018-07-17T15:02:45.000Z",
-    "timeZone": "UTC",
+    "referenceTime": "2023-08-25T16:28:43.000Z",
+    "timeZone": "Etc/UTC",
     "address1": null,
     "address2": null,
     "postalCode": null,
     "company": null,
     "city": null,
     "state": null,
-    "country": null,
-    "locale": null,
+    "country": "US",
+    "locale": "en_US",
     "phone": null,
     "notes": null,
-    "isMigrated": null,
+    "isMigrated": false,
     "accountBalance": null,
     "accountCBA": null,
     "auditLogs": []
   },
-  "bundles": [],
-  "invoices": [],
-  "payments": []
+  "bundles": [
+    {
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "bundleId": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+      "externalKey": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+      "subscriptions": [
+        {
+          "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+          "bundleId": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+          "bundleExternalKey": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+          "subscriptionId": "cc608e24-509e-4b99-9519-2eeef67c20a2",
+          "externalKey": "cc608e24-509e-4b99-9519-2eeef67c20a2",
+          "startDate": "2023-01-01T16:28:43.000Z",
+          "productName": "prodA",
+          "productCategory": "BASE",
+          "billingPeriod": "MONTHLY",
+          "phaseType": "EVERGREEN",
+          "priceList": "DEFAULT",
+          "planName": "Standard-monthly",
+          "state": "ACTIVE",
+          "sourceType": "NATIVE",
+          "cancelledDate": null,
+          "chargedThroughDate": "2023-09-01",
+          "billingStartDate": "2023-01-01T16:28:43.000Z",
+          "billingEndDate": null,
+          "billCycleDayLocal": 1,
+          "quantity": 1,
+          "events": [
+            {
+              "eventId": "23088e1e-646c-4ce7-ad45-9c4369ef223a",
+              "billingPeriod": "MONTHLY",
+              "effectiveDate": "2023-01-01T16:28:43.000Z",
+              "catalogEffectiveDate": "2023-08-24T16:24:23.000Z",
+              "plan": "Standard-monthly",
+              "product": "prodA",
+              "priceList": "DEFAULT",
+              "eventType": "START_ENTITLEMENT",
+              "isBlockedBilling": false,
+              "isBlockedEntitlement": false,
+              "serviceName": "entitlement-service",
+              "serviceStateName": "ENT_STARTED",
+              "phase": "Standard-monthly-evergreen",
+              "auditLogs": []
+            },
+            {
+              "eventId": "1b122b2b-eea4-4a6b-80a2-f9ae2a336fad",
+              "billingPeriod": "MONTHLY",
+              "effectiveDate": "2023-01-01T16:28:43.000Z",
+              "catalogEffectiveDate": "2023-08-24T16:24:23.000Z",
+              "plan": "Standard-monthly",
+              "product": "prodA",
+              "priceList": "DEFAULT",
+              "eventType": "START_BILLING",
+              "isBlockedBilling": false,
+              "isBlockedEntitlement": false,
+              "serviceName": "billing-service",
+              "serviceStateName": "START_BILLING",
+              "phase": "Standard-monthly-evergreen",
+              "auditLogs": []
+            },
+            {
+              "eventId": "368581ee-cf14-4b81-9c34-c06adb5dbbcf",
+              "billingPeriod": "MONTHLY",
+              "effectiveDate": "2023-08-28T16:55:37.000Z",
+              "catalogEffectiveDate": "2023-08-24T16:24:23.000Z",
+              "plan": "Standard-monthly",
+              "product": "prodA",
+              "priceList": "DEFAULT",
+              "eventType": "SERVICE_STATE_CHANGE",
+              "isBlockedBilling": false,
+              "isBlockedEntitlement": false,
+              "serviceName": "ServiceStateService",
+              "serviceStateName": "STATE1",
+              "phase": "Standard-monthly-evergreen",
+              "auditLogs": []
+            }
+          ],
+          "priceOverrides": null,
+          "prices": [
+            {
+              "planName": "Standard-monthly",
+              "phaseName": "Standard-monthly-evergreen",
+              "phaseType": "EVERGREEN",
+              "fixedPrice": null,
+              "recurringPrice": 100,
+              "usagePrices": []
+            }
+          ],
+          "auditLogs": []
+        }
+      ],
+      "timeline": {
+        "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+        "bundleId": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+        "externalKey": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+        "events": [
+          {
+            "eventId": "23088e1e-646c-4ce7-ad45-9c4369ef223a",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2023-01-01T16:28:43.000Z",
+            "catalogEffectiveDate": "2023-08-24T16:24:23.000Z",
+            "plan": "Standard-monthly",
+            "product": "prodA",
+            "priceList": "DEFAULT",
+            "eventType": "START_ENTITLEMENT",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "entitlement-service",
+            "serviceStateName": "ENT_STARTED",
+            "phase": "Standard-monthly-evergreen",
+            "auditLogs": []
+          },
+          {
+            "eventId": "1b122b2b-eea4-4a6b-80a2-f9ae2a336fad",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2023-01-01T16:28:43.000Z",
+            "catalogEffectiveDate": "2023-08-24T16:24:23.000Z",
+            "plan": "Standard-monthly",
+            "product": "prodA",
+            "priceList": "DEFAULT",
+            "eventType": "START_BILLING",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "billing-service",
+            "serviceStateName": "START_BILLING",
+            "phase": "Standard-monthly-evergreen",
+            "auditLogs": []
+          },
+          {
+            "eventId": "368581ee-cf14-4b81-9c34-c06adb5dbbcf",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2023-08-28T16:55:37.000Z",
+            "catalogEffectiveDate": "2023-08-24T16:24:23.000Z",
+            "plan": "Standard-monthly",
+            "product": "prodA",
+            "priceList": "DEFAULT",
+            "eventType": "SERVICE_STATE_CHANGE",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "ServiceStateService",
+            "serviceStateName": "STATE1",
+            "phase": "Standard-monthly-evergreen",
+            "auditLogs": []
+          }
+        ],
+        "auditLogs": []
+      },
+      "auditLogs": []
+    }
+  ],
+  "invoices": [
+    {
+      "amount": 100,
+      "currency": "USD",
+      "status": "COMMITTED",
+      "creditAdj": 0,
+      "refundAdj": 0,
+      "invoiceId": "2645c1f3-1d72-41a7-8cdb-3dca43340af6",
+      "invoiceDate": "2023-08-25",
+      "targetDate": "2023-01-01",
+      "invoiceNumber": "17859",
+      "balance": 0,
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "bundleKeys": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+      "credits": [],
+      "items": null,
+      "trackingIds": null,
+      "isParentInvoice": false,
+      "parentInvoiceId": null,
+      "parentAccountId": null,
+      "auditLogs": []
+    },
+    {
+      "amount": 100,
+      "currency": "USD",
+      "status": "COMMITTED",
+      "creditAdj": 0,
+      "refundAdj": 0,
+      "invoiceId": "e8dbe200-0738-4317-9c74-581696a0b4e9",
+      "invoiceDate": "2023-08-25",
+      "targetDate": "2023-02-01",
+      "invoiceNumber": "17860",
+      "balance": 0,
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "bundleKeys": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+      "credits": [],
+      "items": null,
+      "trackingIds": null,
+      "isParentInvoice": false,
+      "parentInvoiceId": null,
+      "parentAccountId": null,
+      "auditLogs": []
+    },
+    {
+      "amount": 100,
+      "currency": "USD",
+      "status": "COMMITTED",
+      "creditAdj": 0,
+      "refundAdj": 0,
+      "invoiceId": "72662545-787c-4e9a-90af-4ac728392c35",
+      "invoiceDate": "2023-08-25",
+      "targetDate": "2023-03-01",
+      "invoiceNumber": "17861",
+      "balance": 0,
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "bundleKeys": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+      "credits": [],
+      "items": null,
+      "trackingIds": null,
+      "isParentInvoice": false,
+      "parentInvoiceId": null,
+      "parentAccountId": null,
+      "auditLogs": []
+    },
+    {
+      "amount": 500,
+      "currency": "USD",
+      "status": "COMMITTED",
+      "creditAdj": 0,
+      "refundAdj": 0,
+      "invoiceId": "3a5d2748-88df-4f3f-bb60-49e8fbce1c0a",
+      "invoiceDate": "2023-08-25",
+      "targetDate": "2023-08-25",
+      "invoiceNumber": "17862",
+      "balance": 0,
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "bundleKeys": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+      "credits": [],
+      "items": null,
+      "trackingIds": null,
+      "isParentInvoice": false,
+      "parentInvoiceId": null,
+      "parentAccountId": null,
+      "auditLogs": []
+    }
+  ],
+  "payments": [
+    {
+      "targetInvoiceId": "2645c1f3-1d72-41a7-8cdb-3dca43340af6",
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "paymentId": "555d80f8-abdf-4b25-9994-ac605b012ccb",
+      "paymentNumber": "41",
+      "paymentExternalKey": "555d80f8-abdf-4b25-9994-ac605b012ccb",
+      "authAmount": 0,
+      "capturedAmount": 0,
+      "purchasedAmount": 100,
+      "refundedAmount": 0,
+      "creditedAmount": 0,
+      "currency": "USD",
+      "paymentMethodId": "1f6c1080-74a6-4b52-bce1-2ca954086f72",
+      "transactions": [
+        {
+          "transactionId": "57857941-6956-413d-ac62-99af982d6f41",
+          "transactionExternalKey": "57857941-6956-413d-ac62-99af982d6f41",
+          "paymentId": "555d80f8-abdf-4b25-9994-ac605b012ccb",
+          "paymentExternalKey": "555d80f8-abdf-4b25-9994-ac605b012ccb",
+          "transactionType": "PURCHASE",
+          "amount": 100,
+          "currency": "USD",
+          "effectiveDate": "2023-08-28T16:27:44.000Z",
+          "processedAmount": 100,
+          "processedCurrency": "USD",
+          "status": "SUCCESS",
+          "gatewayErrorCode": null,
+          "gatewayErrorMsg": null,
+          "firstPaymentReferenceId": null,
+          "secondPaymentReferenceId": null,
+          "properties": null,
+          "auditLogs": []
+        }
+      ],
+      "paymentAttempts": null,
+      "auditLogs": []
+    },
+    {
+      "targetInvoiceId": "e8dbe200-0738-4317-9c74-581696a0b4e9",
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "paymentId": "2252f1cf-8cff-43b9-8d4b-472be14b79a2",
+      "paymentNumber": "42",
+      "paymentExternalKey": "2252f1cf-8cff-43b9-8d4b-472be14b79a2",
+      "authAmount": 0,
+      "capturedAmount": 0,
+      "purchasedAmount": 100,
+      "refundedAmount": 0,
+      "creditedAmount": 0,
+      "currency": "USD",
+      "paymentMethodId": "1f6c1080-74a6-4b52-bce1-2ca954086f72",
+      "transactions": [
+        {
+          "transactionId": "60c4ffe7-f67c-456d-955d-6d35d2cd3fd2",
+          "transactionExternalKey": "60c4ffe7-f67c-456d-955d-6d35d2cd3fd2",
+          "paymentId": "2252f1cf-8cff-43b9-8d4b-472be14b79a2",
+          "paymentExternalKey": "2252f1cf-8cff-43b9-8d4b-472be14b79a2",
+          "transactionType": "PURCHASE",
+          "amount": 100,
+          "currency": "USD",
+          "effectiveDate": "2023-08-28T16:27:44.000Z",
+          "processedAmount": 100,
+          "processedCurrency": "USD",
+          "status": "SUCCESS",
+          "gatewayErrorCode": null,
+          "gatewayErrorMsg": null,
+          "firstPaymentReferenceId": null,
+          "secondPaymentReferenceId": null,
+          "properties": null,
+          "auditLogs": []
+        }
+      ],
+      "paymentAttempts": null,
+      "auditLogs": []
+    },
+    {
+      "targetInvoiceId": "72662545-787c-4e9a-90af-4ac728392c35",
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "paymentId": "55ef60c6-d89e-4d0b-aefd-42c13ce410b6",
+      "paymentNumber": "43",
+      "paymentExternalKey": "55ef60c6-d89e-4d0b-aefd-42c13ce410b6",
+      "authAmount": 0,
+      "capturedAmount": 0,
+      "purchasedAmount": 100,
+      "refundedAmount": 0,
+      "creditedAmount": 0,
+      "currency": "USD",
+      "paymentMethodId": "1f6c1080-74a6-4b52-bce1-2ca954086f72",
+      "transactions": [
+        {
+          "transactionId": "aee6788b-526b-4c15-a943-b46bb9fe3ecf",
+          "transactionExternalKey": "aee6788b-526b-4c15-a943-b46bb9fe3ecf",
+          "paymentId": "55ef60c6-d89e-4d0b-aefd-42c13ce410b6",
+          "paymentExternalKey": "55ef60c6-d89e-4d0b-aefd-42c13ce410b6",
+          "transactionType": "PURCHASE",
+          "amount": 100,
+          "currency": "USD",
+          "effectiveDate": "2023-08-28T16:27:44.000Z",
+          "processedAmount": 100,
+          "processedCurrency": "USD",
+          "status": "SUCCESS",
+          "gatewayErrorCode": null,
+          "gatewayErrorMsg": null,
+          "firstPaymentReferenceId": null,
+          "secondPaymentReferenceId": null,
+          "properties": null,
+          "auditLogs": []
+        }
+      ],
+      "paymentAttempts": null,
+      "auditLogs": []
+    },
+    {
+      "targetInvoiceId": "3a5d2748-88df-4f3f-bb60-49e8fbce1c0a",
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "paymentId": "47d0a7c2-bffb-4c3a-b464-df17825260a0",
+      "paymentNumber": "44",
+      "paymentExternalKey": "47d0a7c2-bffb-4c3a-b464-df17825260a0",
+      "authAmount": 0,
+      "capturedAmount": 0,
+      "purchasedAmount": 500,
+      "refundedAmount": 0,
+      "creditedAmount": 0,
+      "currency": "USD",
+      "paymentMethodId": "1f6c1080-74a6-4b52-bce1-2ca954086f72",
+      "transactions": [
+        {
+          "transactionId": "3f424634-7207-48fc-8de5-8bf2de229984",
+          "transactionExternalKey": "3f424634-7207-48fc-8de5-8bf2de229984",
+          "paymentId": "47d0a7c2-bffb-4c3a-b464-df17825260a0",
+          "paymentExternalKey": "47d0a7c2-bffb-4c3a-b464-df17825260a0",
+          "transactionType": "PURCHASE",
+          "amount": 500,
+          "currency": "USD",
+          "effectiveDate": "2023-08-28T16:27:44.000Z",
+          "processedAmount": 500,
+          "processedCurrency": "USD",
+          "status": "SUCCESS",
+          "gatewayErrorCode": null,
+          "gatewayErrorMsg": null,
+          "firstPaymentReferenceId": null,
+          "secondPaymentReferenceId": null,
+          "properties": null,
+          "auditLogs": []
+        }
+      ],
+      "paymentAttempts": null,
+      "auditLogs": []
+    },
+    {
+      "targetInvoiceId": null,
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "paymentId": "a3dd2264-b00f-45e9-aa5a-7a1f357aa786",
+      "paymentNumber": "45",
+      "paymentExternalKey": "a3dd2264-b00f-45e9-aa5a-7a1f357aa786",
+      "authAmount": 50,
+      "capturedAmount": 0,
+      "purchasedAmount": 0,
+      "refundedAmount": 0,
+      "creditedAmount": 0,
+      "currency": "USD",
+      "paymentMethodId": "1f6c1080-74a6-4b52-bce1-2ca954086f72",
+      "transactions": [
+        {
+          "transactionId": "8c890167-62cc-4a13-b724-93b8274da3d5",
+          "transactionExternalKey": "8c890167-62cc-4a13-b724-93b8274da3d5",
+          "paymentId": "a3dd2264-b00f-45e9-aa5a-7a1f357aa786",
+          "paymentExternalKey": "a3dd2264-b00f-45e9-aa5a-7a1f357aa786",
+          "transactionType": "AUTHORIZE",
+          "amount": 50,
+          "currency": "USD",
+          "effectiveDate": "2023-08-28T16:34:34.000Z",
+          "processedAmount": 50,
+          "processedCurrency": "USD",
+          "status": "SUCCESS",
+          "gatewayErrorCode": null,
+          "gatewayErrorMsg": null,
+          "firstPaymentReferenceId": null,
+          "secondPaymentReferenceId": null,
+          "properties": null,
+          "auditLogs": []
+        }
+      ],
+      "paymentAttempts": null,
+      "auditLogs": []
+    }
+  ]
 }
 ```
 
