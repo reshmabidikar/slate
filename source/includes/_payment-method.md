@@ -550,6 +550,35 @@ paymentMethodApi.create_payment_method_custom_fields(payment_method_id,
                                                      comment='comment')
 ```
 
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const customField: CustomField = {name: "Test Custom Field", value: "test_value"};
+const customFields = [customField];
+
+const paymentMethodId = '06e5c871-3caf-41c2-9d7e-30c95f6e309c';
+
+api.createPaymentMethodCustomFields(customFields, paymentMethodId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$customField = new CustomField();
+$customField -> setName('Test Custom Field');
+$customField -> setValue('test_value');
+
+$body = array($customField);
+
+$paymentMethodId = "06e5c871-3caf-41c2-9d7e-30c95f6e309c";
+
+$result = $apiInstance->createPaymentMethodCustomFields($body, $xKillbillCreatedBy, $paymentMethodId, $xKillbillReason, $xKillbillComment);
+````
+
 **Request Body**
 
 A list of objects giving the name and value of the custom field, or fields, to be added. For example:
@@ -615,6 +644,24 @@ payment_method_id = '34150e56-c1fe-4560-a177-2e1376662e20'
 
 fields = paymentMethodApi.get_payment_method_custom_fields(payment_method_id)
 ```
+
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const paymentMethodId = '06e5c871-3caf-41c2-9d7e-30c95f6e309c';
+const audit = 'NONE';
+
+const response: AxiosResponse<killbill.CustomField[], any> = await api.getPaymentMethodCustomFields(paymentMethodId, audit, 'created_by');
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$paymentMethodId = "06e5c871-3caf-41c2-9d7e-30c95f6e309c";
+$audit = "NONE";
+
+$result = $apiInstance->getPaymentMethodCustomFields($paymentMethodId, $audit);
+````
 
 > Example Response:
 
@@ -720,6 +767,35 @@ paymentMethodApi.modify_payment_method_custom_fields(payment_method_id,
                                                      comment='comment')
 ```
 
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const paymentMethodId = '06e5c871-3caf-41c2-9d7e-30c95f6e309c';
+
+const customField: CustomField = {customFieldId: "8b8374b5-ef9b-4eb1-b820-1b9bde00d277", value: "new_value"};
+const customFields = [customField];
+
+api.modifyPaymentMethodCustomFields(customFields, paymentMethodId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$customField = new CustomField();
+$customField -> setCustomFieldId('bbfa081a-e7f9-4492-b30f-b77f9fa207da');
+$customField -> setValue('new_value');
+
+$body = array($customField);
+
+$paymentMethodId = "06e5c871-3caf-41c2-9d7e-30c95f6e309c";
+
+$apiInstance->modifyPaymentMethodCustomFields($body, $xKillbillCreatedBy, $paymentMethodId, $xKillbillReason, $xKillbillComment);
+````
+
 **Request Body**
 
 A list of objects specifying the id and the new value for the custom fields to be modified. For example:
@@ -798,6 +874,30 @@ paymentMethodApi.delete_payment_method_custom_fields(payment_method_id,
                                                      comment='comment')
 ```
 
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const paymentMethodId = '06e5c871-3caf-41c2-9d7e-30c95f6e309c';
+
+const customField = '8b8374b5-ef9b-4eb1-b820-1b9bde00d277';
+const customFields = [customField];
+
+api.deletePaymentMethodCustomFields(paymentMethodId, 'created_by', customFields);
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$paymentMethodId = "06e5c871-3caf-41c2-9d7e-30c95f6e309c";
+$customFields = array("5319cbff-c348-44ae-af91-fb3a4f1ab117");
+
+$apiInstance->deletePaymentMethodCustomFields($paymentMethodId, $xKillbillCreatedBy, $customFields, $xKillbillReason, $xKillbillComment);
+````
+
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -858,6 +958,22 @@ audit_logs = paymentMethodApi.get_payment_method_audit_logs_with_history(payment
 ```ruby
 TODO
 ```
+
+````javascript
+const api: killbill.PaymentMethodApi = new killbill.PaymentMethodApi(config);
+
+const paymentMethodId = '06e5c871-3caf-41c2-9d7e-30c95f6e309c';
+
+const response: AxiosResponse<killbill.AuditLog[], any> = await api.getPaymentMethodAuditLogsWithHistory(paymentMethodId);
+````
+
+````php
+$apiInstance = $client->getPaymentMethodApi();
+
+$paymentMethodId = "06e5c871-3caf-41c2-9d7e-30c95f6e309c";
+
+$result = $apiInstance->getPaymentMethodAuditLogsWithHistory($paymentMethodId);
+````
 
 > Example Response:
 
