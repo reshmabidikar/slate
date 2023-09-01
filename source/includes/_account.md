@@ -82,6 +82,11 @@ Account result = accountApi.createAccount(body, requestOptions);
 ```
 ```ruby
 account = KillBillClient::Model::Account.new
+
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 account.name = "John Doe"
 account.email = "john@laposte.com"
 account.currency = "USD"
@@ -89,18 +94,40 @@ account.currency = "USD"
 account.create(user, reason, comment, options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
-created_by = 'example'
+accountApi = killbill.AccountApi()
+
 body = Account(name='John Doe', 
                email='john@laposte.com', 
                currency='USD')
 
-accountApi.create_account(body, 
-                          created_by, 
-                          api_key, 
-                          api_secret)
+accountApi.create_account(body,
+                          created_by='demo',
+                          reason='reason', 
+                          comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const body: killbill.Account = {name: 'John Doe',email: 'john1@laposte.com',currency: 'USD'};
+
+api.createAccount(body,'created_by');
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$account = new Account();
+
+$account->setName('TestPHPAccount');
+$account->setEmail('TestPHPAccount@email.com');
+$account->setCurrency('USD');
+
+$apiInstance->createAccount($account,$xKillbillCreatedBy,$xKillbillReason,$xKillbillComment);
+```
 **Request Body**
 
 The body of the request is a JSON string specifying any attributes of the resource that need to be assigned an initial value. No attributes are required. For any attributes omitted, the following defaults are generated:
@@ -171,19 +198,36 @@ Account result = accountApi.getAccount(accountId,
 account_id = "36c05a84-563b-4794-8958-772d93e677e1"
 with_balance = false
 with_balance_and_cba = false
-account = KillBillClient::Model::Account.new
-account.find_by_id(account_id,
-                   with_balance, 
-                   with_balance_and_cba,
-                   options)
+
+account = KillBillClient::Model::Account
+
+accountResponse = account.find_by_id( account_id,
+                                      with_balance, 
+                                      with_balance_and_cba,
+                                      options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '36c05a84-563b-4794-8958-772d93e677e1'
 
-accountApi.get_account(account_id, api_key, api_secret)
+account = accountApi.get_account(account_id)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '36c05a84-563b-4794-8958-772d93e677e1';
+
+const response: AxiosResponse<killbill.Account> = await api.getAccount(accountID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = '36c05a84-563b-4794-8958-772d93e677e1';
+
+$account = $apiInstance->getAccount($accountID);
+```
 > Example Response:
 
 ```json
@@ -269,18 +313,35 @@ external_key = '36c05a84-563b-4794-8958-772d93e677e1'
 with_balance = false
 with_balance_and_cba = false
 
-account = KillBillClient::Model::Account.new
-account.find_by_external_key(external_key,
-                             with_balance,
-                             with_balance_and_cba, 
-                             options)
+account = KillBillClient::Model::Account
+
+accountResponse = account.find_by_external_key( external_key,
+                                                with_balance,
+                                                with_balance_and_cba, 
+                                                options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 external_key = '36c05a84-563b-4794-8958-772d93e677e1'
 
-accountApi.get_account(external_key, api_key, api_secret)
+account = accountApi.get_account_by_key(external_key)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const externalKey = 'external_key';
+
+const response: AxiosResponse<killbill.Account, any> = await api.getAccountByKey(externalKey);
+```
+
+```php
+$apiInstance = $client->getAccountApi();
+
+$externalKey = 'external_key';
+
+$account = $apiInstance->getAccountByKey($externalKey);
 ```
 > Example Response:
 
@@ -378,27 +439,54 @@ accountApi.updateAccount(accountId,
 ```
 
 ```ruby
-account.name = 'Another Name'
-treat_null_as_reset = true
+account = KillBillClient::Model::Account.new
 
-account.update(treat_null_as_reset,
-               user,
-               reason,
-               comment, 
-               options)
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account.account_id = "07c0cef4-41c5-4606-b2cd-661332cdd41c"
+account.name = 'Another Name'
+
+treat_null_as_reset = false
+
+account.update(treat_null_as_reset,user,reason,comment,options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
-created_by = 'example'
+
 body = Account(name='Another Name')
 
-accountApi.update_account(account_id, 
-                          body, 
-                          created_by, 
-                          api_key, 
-                          api_secret)
+accountApi.update_account(account_id,
+                          body,
+                          created_by='demo',
+                          reason='reason', 
+                          comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const body: killbill.Account = {name: 'Another Name'}; 
+
+api.updateAccount(body,'07c0cef4-41c5-4606-b2cd-661332cdd41c','created_by');
+```
+
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$account = new Account();
+
+$account->setName('Another Name');
+$accountID = '07c0cef4-41c5-4606-b2cd-661332cdd41c';
+
+$apiInstance->updateAccount($account,$xKillbillCreatedBy,$accountID,$xKillbillReason,$xKillbillComment);
 ```
 
 **Query Parameters**
@@ -454,6 +542,14 @@ accountApi.closeAccount(accountId,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = "864c1418-e768-4cd5-a0db-67537144b685"
+
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 cancel_subscriptions = false
 writeoff_unpaid_invoices = false
 item_adjust_unpaid_invoices = false
@@ -468,15 +564,31 @@ account.close(cancel_subscriptions,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
-accountApi.close_account(account_id,
-                         created_by,
-                         api_key,
-                         api_secret)
+accountApi.close_account( account_id,
+                          created_by='demo',
+                          reason='reason', 
+                          comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
+api.closeAccount(accountID,'created_by');
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+$accountID = '07c0cef4-41c5-4606-b2cd-661332cdd41c';
+
+$apiInstance->closeAccount($accountID,$xKillbillCreatedBy);
+```
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -532,23 +644,35 @@ Accounts allAccounts = accountApi.getAccounts(offset,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account
+
 offset = 0
 limit = 100
 with_balance = false
 with_balance_and_cba = false
 
-account.find_in_batches(offset,
-                        limit,
-                        with_balance,
-                        with_balance_and_cba,
-                        options)
+allAccounts = account.find_in_batches( offset,
+                                       limit,
+                                       with_balance,
+                                       with_balance_and_cba,
+                                       options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
 
-accountApi.get_accounts(api_key, api_secret)
+allAccounts = accountApi.get_accounts()
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const response: AxiosResponse<killbill.Account[], any> = await api.getAccounts();
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accounts = $apiInstance->getAccounts();
+```
 > Example Response:
 
 ```json
@@ -662,27 +786,44 @@ List<Account> accountsByKey = accountApi.searchAccounts(searchKey,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account
+
 search_key = 'John'
 offset = 0
 limit = 100
 with_balance = false
 with_balance_and_cba = false
 
-account.find_in_batches_by_search_key(search_key,
-                                      offset,
-                                      limit,
-                                      with_balance,
-                                      with_balance_and_cba,
-                                      options)
+accounts = account.find_in_batches_by_search_key( search_key,
+                                                  offset,
+                                                  limit,
+                                                  with_balance,
+                                                  with_balance_and_cba,
+                                                  options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 search_key = 'John'
 
-accountApi.search_accounts(search_key, api_key, api_secret)
+accounts = accountApi.search_accounts(search_key)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const searchKey = 'search_key';
+
+const response: AxiosResponse<killbill.Account[], any> = await api.searchAccounts(searchKey);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$searchKey = 'search_key';
+
+$accounts = $apiInstance->searchAccounts($searchKey);
+```
 > Example Response:
 
 ```json
@@ -805,9 +946,13 @@ accountApi.addEmail(accountId,
 ```
 
 ```ruby
-account.email = 'email@laposte.com'
+account = KillBillClient::Model::Account.new
 
-account.add_email(account.email,
+account.account_id = '873c26ef-a3fa-4942-b2f5-549b51f20b1a'
+
+email = 'email@laposte.com'
+
+account.add_email(email,
                   user,
                   reason,
                   comment,
@@ -815,17 +960,41 @@ account.add_email(account.email,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
 body = AccountEmail(account_id=account_id, email='email@laposte.com')
 
-accountApi.add_email(account_id,
-                     body,
-                     created_by,
-                     api_key,
-                     api_secret)
+accountApi.add_email( account_id,
+                      body,
+                      created_by='demo',
+                      reason='reason', 
+                      comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const body: killbill.AccountEmail = { email: 'email@laposte.com' };
+
+api.addEmail(body, '03fc2b57-06be-4691-a260-c897d5c1e13e', 'created_by');
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$accountEmail = new AccountEmail();
+
+$accountEmail->setEmail('email@laposte.com');
+$accountEmail->setAccountId('03fc2b57-06be-4691-a260-c897d5c1e13e');
+
+$accountID = '03fc2b57-06be-4691-a260-c897d5c1e13e';
+
+$apiInstance->addEmail($accountEmail,$xKillbillCreatedBy,$accountID,$xKillbillReason,$xKillbillComment);
+```
 **Request Body**
 
 The request body identifies a subset of the `account` attributes as a JSON string. The attributes required are `accountId` and `email` (the email to be added). `accountId` is required in the body even though it is given in the path. No other attributes should be included.
@@ -867,17 +1036,37 @@ List<AccountEmail> emails = accountApi.getEmails(accountId, requestOptions);
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'cd026587-c93b-471c-a98d-224c21636fbc'
+
 audit = 'NONE'
-account.emails(audit, options)
+
+accountEmails = account.emails(audit, options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'c8f51346-562d-429b-8c89-27a0f72009b3'
 
-accountApi.get_emails(account_id, api_key, api_secret)
+accountEmails = accountApi.get_emails(account_id)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = 'f7fde238-850a-4a7b-b075-48b582ee3495';
+
+const response: AxiosResponse<killbill.AccountEmail[], any> = await api.getEmails(accountID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = 'f7fde238-850a-4a7b-b075-48b582ee3495';
+
+$emails  = $apiInstance->getEmails($accountID);
+```
 > Example Response:
 
 ```json
@@ -931,6 +1120,14 @@ accountApi.removeEmail(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'f755e6a9-cf56-4776-9455-3df350b72f6d'
+
 email = 'email@laposte.com'
 
 account.remove_email(email,
@@ -941,17 +1138,39 @@ account.remove_email(email,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'c84de569-b654-4f7f-ab13-17616302d310'
 email = 'email@laposte.com'
 
 accountApi.remove_email(account_id,
                         email,
-                        created_by,
-                        api_key,
-                        api_secret)
+                        created_by='demo',
+                        reason='reason', 
+                        comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = 'be484bff-58dc-4ceb-906f-61dc9e317b0f';
+
+const email = 'email@laposte.com';
+
+api.removeEmail(accountID,email,'created_by');
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$accountID = 'be484bff-58dc-4ceb-906f-61dc9e317b0f';
+$accountEmail = 'email@laposte.com';
+
+$apiInstance->removeEmail($accountID,$accountEmail,$xKillbillCreatedBy,$xKillbillReason,$xKillbillComment);
+```
 **Query Parameters**
 
 None.
@@ -962,7 +1181,7 @@ If successful, returns a status code of 204 and without any data.
 
 ## Bundle
 
-This endpoint provides an API to list the Bundles associated with this account. A Bundle is a set of Subscriptions and related information. See [Bundle](#bundle) for details on Bundles.
+This endpoint provides an API to list the Bundles associated with this account. A Bundle is a set of Subscriptions and related information. See [Bundle](bundle.html) for details on Bundles.
 
 ### Retrieve bundles for account
 
@@ -999,16 +1218,35 @@ List<Bundle> accountBundles = accountApi.getAccountBundles(accountId,
 ```
 
 ```ruby
-account.bundles(options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = '15434b45-54c1-4a44-851c-b1f2f7a52f03'
+
+accountBundles = account.bundles(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
-accountApi.get_account_bundles(account_id, api_key, api_secret)
+accountBundles = accountApi.get_account_bundles(account_id)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '8992e146-bfa1-4126-a045-98b844a4adcb';
+
+const response: AxiosResponse<killbill.Bundle[], any> = await api.getAccountBundles(accountID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = '8992e146-bfa1-4126-a045-98b844a4adcb';
+
+$bundles  = $apiInstance-> getAccountBundles($accountID);
+```
 > Example Response:
 
 ```json
@@ -1207,16 +1445,35 @@ Bundles bundles = accountApi.getAccountBundlesPaginated(accountId, offset, limit
 ```
 
 ```ruby
-account.bundles(options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = '15434b45-54c1-4a44-851c-b1f2f7a52f03'
+
+accountBundles = account.bundles(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
-accountApi.get_account_bundles_paginated(account_id, api_key, api_secret)
+accountBundles = accountApi.get_account_bundles_paginated(account_id)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '8992e146-bfa1-4126-a045-98b844a4adcb';
+
+const response: AxiosResponse<killbill.Bundle[], any> = await api.getAccountBundlesPaginated(accountID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = '8992e146-bfa1-4126-a045-98b844a4adcb';
+
+$bundles  = $apiInstance-> getAccountBundlesPaginated($accountID);
+```
 > Example Response:
 
 ```json
@@ -1385,7 +1642,7 @@ If successful, returns a status code of 200 and a list of bundle objects.
 
 ## Invoice
 
-This endpoint provides an API to list the Invoices associated with this account. See section [Invoice](#invoice) for details on invoices.
+This endpoint provides an API to list the Invoices associated with this account. See section [Invoice](invoice.html) for details on invoices.
 
 ### Retrieve account invoices
 
@@ -1431,17 +1688,35 @@ Invoices invoices = accountApi.getInvoicesForAccount(accountId,
 ```
 
 ```ruby
-account.invoices(with_items,
-                 options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
+
+accountInvoices = account.invoices(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
-accountApi.get_invoices_for_account(account_id, api_key, api_secret)
+accountInvoices = accountApi.get_invoices_for_account(account_id)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266';
+
+const response: AxiosResponse<killbill.Invoice[], any> = await api.getInvoicesForAccount(accountID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266';
+
+$invoices  = $apiInstance-> getInvoicesForAccount($accountID);
+```
 > Example Response:
 
 ```json
@@ -1526,17 +1801,35 @@ Invoices invoices = accountApi.getInvoicesForAccountPaginated(accountId, offset,
 ```
 
 ```ruby
-account.invoices(with_items,
-                 options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = '325fbe1c-7c35-4d96-a4e5-2cbaabe218c6'
+
+accountInvoices = account.invoices(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
-accountApi.get_invoices_for_account_paginated(account_id, api_key, api_secret)
+accountInvoices = accountApi.get_invoices_for_account_paginated(account_id)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266';
+
+const response: AxiosResponse<killbill.Invoice[], any> = await api.getInvoicesForAccountPaginated(accountID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266';
+
+$invoices  = $apiInstance-> getInvoicesForAccountPaginated($accountID);
+```
 > Example Response:
 
 ```json
@@ -1588,7 +1881,7 @@ If successful, returns a status of 200 and a list of invoice objects for this ac
 
 ## Payment 
 
-These endpoints are used to make or manage payments associated with this account. See section [Payment](#payment) for details on payments.
+These endpoints are used to make or manage payments associated with this account. See section [Payment](payment.html) for details on payments.
 
 ### Trigger a payment for all unpaid invoices
 
@@ -1637,9 +1930,12 @@ accountApi.payAllInvoices(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 invoice_payment                  = KillBillClient::Model::InvoicePayment.new
-invoice_payment.account_id       = account.account_id
-invoice_payment.purchased_amount = '50.0'
+invoice_payment.account_id       = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
 external_payment  = true
 payment_method_id = nil
@@ -1655,18 +1951,35 @@ invoice_payment.bulk_create(external_payment,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
-accountApi.pay_all_invoices(account_id, 
-                            created_by,
-                            api_key, 
-                            api_secret, 
+accountApi.pay_all_invoices(account_id,                                                      
                             external_payment=True,
                             payment_method_id=None,
-                            target_date=None)
+                            target_date=None,
+                            created_by='demo',
+                            reason='reason', 
+                            comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266';
+
+api.payAllInvoices(accountID,'created_by');
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266';
+
+$xKillbillCreatedBy = "user";
+
+$apiInstance-> payAllInvoices($accountID,$xKillbillCreatedBy);
+```
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -1716,19 +2029,38 @@ audit ='NONE'
 with_plugin_info = false
 with_attempts = false
 
-account.invoice_payments(audit,
-                         with_plugin_info,
-                         with_attempts,
-                         options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'e011caa5-ba35-4ac6-81cb-63b4f08122dc'
+
+accountInvoicePayments = account.invoice_payments( audit,
+                                                   with_plugin_info,
+                                                   with_attempts,
+                                                   options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '110952d7-1b7e-482c-b6bb-103e46794927'
 
-accountApi.get_invoice_payments(account_id, api_key, api_secret)
+accountInvoicePayments = accountApi.get_invoice_payments(account_id)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '110952d7-1b7e-482c-b6bb-103e46794927';
+
+const response: AxiosResponse<killbill.InvoicePayment[], any> = await api.getInvoicePayments(accountID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = '110952d7-1b7e-482c-b6bb-103e46794927';
+
+$invoicePayments  = $apiInstance-> getInvoicePayments($accountID);
+```
 > Example Response:
 
 ```json
@@ -1818,14 +2150,35 @@ Payments payments = accountApi.getPaymentsForAccount(accountId,
 ```
 
 ```ruby
-account.payments(options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
+
+accoountPayments = account.payments(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 
-accountApi.get_payments_for_account(account_id, api_key, api_secret)
+accountPayments = accountApi.get_payments_for_account(account_id)
+```
+
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61';
+
+const response: AxiosResponse<killbill.InvoicePayment[], any> = await api.getPaymentsForAccount(accountID);
+```
+
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61';
+
+$accountPayments  = $apiInstance-> getPaymentsForAccount($accountID);
 ```
 > Example Response:
 
@@ -1932,14 +2285,19 @@ Payment payment = accountApi.processPayment(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 transaction = KillBillClient::Model::Transaction.new
 transaction.amount = '50.0'
 
-payment_method_id = payment_method.payment_method_id
+account_id = "f4087a76-9f8a-4893-abbf-c5bb69975d1b"
+payment_method_id = "1d55ed5f-deea-4109-98b0-beb13a242f7c"
 refresh_options = nil
 
 # Authorization
-transaction.auth(account.account_id,
+transaction.auth(account_id,
                  payment_method_id, 
                  user, 
                  reason, 
@@ -1948,7 +2306,7 @@ transaction.auth(account.account_id,
                  refresh_options)
 
 # Purchase
-transaction.purchase(account.account_id,
+transaction.purchase(account_id,
                      payment_method_id, 
                      user, 
                      reason, 
@@ -1957,7 +2315,7 @@ transaction.purchase(account.account_id,
                      refresh_options)
 
 # Credit
-transaction.credit(account.account_id,
+transaction.credit(account_id,
                    payment_method_id, 
                    user, 
                    reason, 
@@ -1967,24 +2325,49 @@ transaction.credit(account.account_id,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 payment_method_id = '80c7b386-97b2-424c-bb4e-0017f92bc6eb'
+
 
 # transaction_type could be 'AUTHORIZE', 'PURCHASE' or 'CREDIT'
 body = PaymentTransaction(amount=50, transaction_type='AUTHORIZE')
 
 accountApi.process_payment(account_id, 
                            body, 
-                           created_by, 
-                           api_key, 
-                           api_secret, 
-                           payment_method_id=payment_method_id)
+                           payment_method_id=payment_method_id,                           
+                           created_by='demo',                           
+                           reason='reason', 
+                           comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const body: killbill.PaymentTransaction = {amount: 50, transactionType: 'AUTHORIZE'};
+
+api.processPayment(body,'b0da8392-49ba-43f2-8fac-3f9f85b8ff61','created_by');
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$paymentTransaction = new PaymentTransaction();
+
+$paymentTransaction->setAmount('50');
+$paymentTransaction->setTransactionType('AUTHORIZE');
+
+$accountID = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61';
+
+$apiInstance-> processPayment($paymentTransaction,$xKillbillCreatedBy,$accountID,$xKillbillReason,$xKillbillComment);
+```
 **Request Body**
 
-The request body is a JSON string representing the payment transaction. See section [Payment Transaction](#payment-transaction) for details on payment transactions.
+The request body is a JSON string representing the payment transaction. See section [Payment Transaction](payment-transaction.html) for details on payment transactions.
 
 **Query Parameters**
 
@@ -2048,14 +2431,19 @@ Payment payment = accountApi.processPaymentByExternalKey(authTransaction,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 transaction = KillBillClient::Model::Transaction.new
 transaction.amount = '50.0'
 
-payment_method_id = '132d59c0-8c28-4115-947d-f57d430bc458'
+externalKey = "ad70ffb1-3355-418a-a457-6d8d80696d02";
+payment_method_id = 'c6bd413e-268e-4cc8-afb0-16b2dec3ffa5'
 refresh_options = nil
 
 # Authorization
-transaction.auth_by_external_key(account.external_key,
+transaction.auth_by_external_key(external_key,
                                  payment_method_id, 
                                  user, 
                                  reason, 
@@ -2064,7 +2452,7 @@ transaction.auth_by_external_key(account.external_key,
                                  refresh_options)
 
 # Purchase
-transaction.purchase_by_external_key(account.external_key,
+transaction.purchase_by_external_key(external_key,
                                      payment_method_id, 
                                      user, 
                                      reason, 
@@ -2073,7 +2461,7 @@ transaction.purchase_by_external_key(account.external_key,
                                      refresh_options)
 
 # Credit
-transaction.credit_by_external_key(account.external_key,
+transaction.credit_by_external_key(external_key,
                                    payment_method_id, 
                                    user, 
                                    reason, 
@@ -2083,24 +2471,49 @@ transaction.credit_by_external_key(account.external_key,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_external_key = 'sample_external_key'
 payment_method_id = '80c7b386-97b2-424c-bb4e-0017f92bc6eb'
+
 
 # transaction_type could be 'AUTHORIZE', 'PURCHASE' or 'CREDIT'
 body = PaymentTransaction(amount=50, transaction_type='AUTHORIZE')
 
 accountApi.process_payment_by_external_key(body,
-                                           external_key,
-                                           created_by,
-                                           api_key,
-                                           api_secret,
-                                           payment_method_id=payment_method_id)
+                                           account_external_key,
+                                           payment_method_id=payment_method_id,
+                                           created_by='demo',
+                                           reason='reason',
+                                           comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const body: killbill.PaymentTransaction = {amount: 50, transactionType: 'AUTHORIZE'};
+
+api.processPaymentByExternalKey(body,'sample_external_key','created_by');
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$paymentTransaction = new PaymentTransaction();
+
+$paymentTransaction->setAmount('50');
+$paymentTransaction->setTransactionType('AUTHORIZE');
+
+$externalKey = 'sample_external_key';
+
+$apiInstance-> processPaymentByExternalKey($paymentTransaction,$xKillbillCreatedBy,$externalKey,$xKillbillReason,$xKillbillComment);
+```
 **Request Body**
 
-The request body is a JSON string representing the payment transaction. See section [Payment Transaction](#payment-transaction) for details on payment transactions.
+The request body is a JSON string representing the payment transaction. See section [Payment Transaction](payment-transaction.html) for details on payment transactions.
 
 **Query Parameters**
 
@@ -2117,7 +2530,7 @@ If successful, returns a 201 status code. In addition, a `Location` header is re
 
 ## Payment Method
 
-These endpoints allow you to manage the payment methods for an account. See section [Payment Method](#payment-method) for details on payment methods.
+These endpoints allow you to manage the payment methods for an account. See section [Payment Method](payment-method.html) for details on payment methods.
 
 ### Add a payment method
 
@@ -2163,8 +2576,12 @@ PaymentMethod paymentMethodPP = accountApi.createPaymentMethod(accountId, paymen
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 pm             = KillBillClient::Model::PaymentMethod.new
-pm.account_id  = account.account_id
+pm.account_id  = "6e5d0912-2e56-4511-af77-af054b616696"
 pm.plugin_name = '__EXTERNAL_PAYMENT__'
 pm.plugin_info = nil
 
@@ -2178,20 +2595,45 @@ pm.create(is_default,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '059ecfb8-6b4d-4a89-9537-63a687e6cf10'
 body = PaymentMethod(external_key='ExternalKey', plugin_name='__EXTERNAL_PAYMENT__', plugin_info=None)
 
+
 accountApi.create_payment_method(account_id, 
                                  body, 
-                                 created_by, 
-                                 api_key, 
-                                 api_secret)
+                                 created_by='demo',
+                                 reason='reason', 
+                                 comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const body: killbill.PaymentMethod = {externalKey: 'ExternalKey', pluginName: '__EXTERNAL_PAYMENT__'}
+
+api.createPaymentMethod(body,'059ecfb8-6b4d-4a89-9537-63a687e6cf10','created_by');
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$paymentMethod = new PaymentMethod();
+
+$paymentMethod->setExternalKey("ExternalKey");
+$paymentMethod-> setPluginName('__EXTERNAL_PAYMENT__');
+
+$accountID = "059ecfb8-6b4d-4a89-9537-63a687e6cf10";
+
+$apiInstance-> createPaymentMethod($paymentMethod,$xKillbillCreatedBy,$accountID,$xKillbillReason,$xKillbillComment);
+```
 **Request Body**
 
-A payment method object specifying `accountId` and `pluginName` at the minimum. Please refer to the [payment method resource](https://killbill.github.io/slate/#payment-method-payment-method-resource) section for more details about the fields.
+A payment method object specifying `accountId` and `pluginName` at the minimum. Please refer to the [payment method resource](payment-method.html#payment-method-resource) section for more details about the fields.
 
 **Query Parameters**
 
@@ -2238,18 +2680,36 @@ List<PaymentMethod> paymentMethods = accountApi.getPaymentMethodsForAccount(acco
 ```
 
 ```ruby
-account_id = account.account_id
+payment_method      = KillBillClient::Model::PaymentMethod
+
+account_id = "faf239a5-456a-4eb9-aef9-8d2254ef57dc"
 with_plugin_info = false
 
-payment_method.find_all_by_account_id(account_id, 
-                                      with_plugin_info,
-                                      options)
+accountPaymentMethods  = payment_method.find_all_by_account_id( account_id, 
+                                                                with_plugin_info,
+                                                                options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 
-accountApi.get_payment_methods_for_account(account_id, api_key, api_secret)
+accountPaymentMethods = accountApi.get_payment_methods_for_account(account_id)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '88a5987a-1e1c-47c5-ba95-34ef14db3d46';
+
+const response: AxiosResponse<killbill.PaymentMethod[], any> = await api.getPaymentMethodsForAccount(accountID);
+```
+
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = '88a5987a-1e1c-47c5-ba95-34ef14db3d46';
+
+$accountPaymentMethods = $apiInstance-> getPaymentMethodsForAccount($accountID);
 ```
 > Example Response:
 
@@ -2325,27 +2785,55 @@ accountApi.setDefaultPaymentMethod(accountId,
 ```
 
 ```ruby
-account_id = account.account_id
-KillBillClient::Model::PaymentMethod.set_default(payment_method_id,
-                                                 account_id,
-                                                 user,
-                                                 reason,
-                                                 comment,
-                                                 options)
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+payment_method = KillBillClient::Model::PaymentMethod
+
+account_id = 'faf239a5-456a-4eb9-aef9-8d2254ef57dc'
+payment_method_id = 'faf239a5-456a-4eb9-aef9-8d2254ef57dc'
+
+payment_method.set_default( payment_method_id,
+                            account_id,
+                            user,
+                            reason,
+                            comment,
+                            options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 payment_method_id = '4f124c0d-cee7-49b1-a181-3b0738c685d7'
 
 accountApi.set_default_payment_method(account_id, 
                                       payment_method_id, 
-                                      created_by, 
-                                      api_key, 
-                                      api_secret)
+                                      created_by='demo',
+                                      reason='reason', 
+                                      comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '88a5987a-1e1c-47c5-ba95-34ef14db3d46';
+
+const paymentMethodId = '4f124c0d-cee7-49b1-a181-3b0738c685d7';
+
+api.setDefaultPaymentMethod(accountID,paymentMethodId,'created_by');
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+
+$paymentMethodID = "4f124c0d-cee7-49b1-a181-3b0738c685d7";
+$accountID = "88a5987a-1e1c-47c5-ba95-34ef14db3d46";
+
+$apiInstance-> setDefaultPaymentMethod($accountID,$paymentMethodID,$xKillbillCreatedBy);
+```
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -2397,25 +2885,48 @@ accountApi.refreshPaymentMethods(accountId,
 ```
 
 ```ruby
-account_id = account.account_id
+user = 'user'
+reason = 'reason'
+comment = 'comment'
 
-KillBillClient::Model::PaymentMethod.refresh(account_id, 
-                                             user, 
-                                             reason, 
-                                             comment, 
-                                             options)
+payment_method = KillBillClient::Model::PaymentMethod
+
+account_id = "faf239a5-456a-4eb9-aef9-8d2254ef57dc"
+
+payment_method.refresh( account_id, 
+                        user, 
+                        reason, 
+                        comment, 
+                        options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 
-accountApi.refresh_payment_methods(account_id, 
-                                   created_by,
-                                   api_key,
-                                   api_secret)
+accountApi.refresh_payment_methods(account_id,
+                                   created_by='demo',
+                                   reason='reason', 
+                                   comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '88a5987a-1e1c-47c5-ba95-34ef14db3d46';
+
+api.refreshPaymentMethods(accountID,'created_by');
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+
+$accountID = "88a5987a-1e1c-47c5-ba95-34ef14db3d46";
+
+$apiInstance-> refreshPaymentMethods($accountID,$xKillbillCreatedBy);
+```
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -2461,16 +2972,35 @@ OverdueState result = accountApi.getOverdueAccount(accountId, requestOptions);
 ```
 
 ```ruby
-account.overdue(options)
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'd3a82897-ae72-4a2e-9bca-e3c1fe087f84'
+
+accountOverdueState = account.overdue(options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '82ecbf80-ddd2-4208-92be-2d3b2b7fc266'
 
-accountApi.get_overdue_account(account_id, api_key, api_secret)
+accountOverdueState = accountApi.get_overdue_account(account_id)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '88a5987a-1e1c-47c5-ba95-34ef14db3d46';
+
+const response: AxiosResponse<killbill.OverdueState, any> = await api.getOverdueAccount(accountID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = '88a5987a-1e1c-47c5-ba95-34ef14db3d46';
+
+$accountOverdueState = $apiInstance-> getOverdueAccount($accountID);
+```
 > Example Response:
 
 ```json
@@ -2582,6 +3112,14 @@ BlockingStates result = accountApi.addAccountBlockingState(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = '864c1418-e768-4cd5-a0db-67537144b685'
+
 state_name = "STATE1"
 service = "ServiceStateService"
 block_change = false
@@ -2602,7 +3140,8 @@ account.set_blocking_state(state_name,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 body = BlockingState(state_name='STATE1',
                      service='ServiceStateService',
@@ -2612,11 +3151,39 @@ body = BlockingState(state_name='STATE1',
 
 accountApi.add_account_blocking_state(account_id, 
                                       body, 
-                                      created_by, 
-                                      api_key, 
-                                      api_secret)
+                                      created_by='demo',
+                                      reason='reason', 
+                                      comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const body: killbill.BlockingState = {  stateName: 'ACCT_PAUSED',
+                        service: 'billing',
+                        isBlockChange: false,
+                        isBlockEntitlement: false,
+                        isBlockBilling: false
+                      }
+
+api.addAccountBlockingState(body,'07c0cef4-41c5-4606-b2cd-661332cdd41c','created_by');
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+
+$blockingState = new  BlockingState();
+$blockingState->setStateName('ACCT_PAUSED');
+$blockingState->setService('billing');
+$blockingState->setIsBlockChange('false');
+$blockingState->setIsBlockBilling('false');
+$blockingState->setIsBlockEntitlement('false');
+
+$accountID = "07c0cef4-41c5-4606-b2cd-661332cdd41c";
+
+$apiInstance-> addAccountBlockingState($blockingState,$xKillbillCreatedBy,$accountID);
+```
 **Request Body**
 
 A JSON string representing the blocking state object to be added. For details on this resource see [blocking state](#account-blocking-state-resource).
@@ -2669,21 +3236,41 @@ BlockingStates blockingStates = accountApi.getBlockingStates(accountId,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'ee6835f0-8347-42d3-958c-9a939383ba28'
+
 blocking_state_types = 'ACCOUNT'
 blocking_state_svcs = nil
 audit = 'NONE'
 
-account.blocking_states(blocking_state_types,
-                        blocking_state_svcs, 
-                        audit,
-                        options)
+accountBlockingStates = account.blocking_states(blocking_state_types,
+                                                blocking_state_svcs, 
+                                                audit,
+                                                options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
-accountApi.get_blocking_states(account_id, api_key, api_secret)
+accountBlockingStates = accountApi.get_blocking_states(account_id)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '07c0cef4-41c5-4606-b2cd-661332cdd41c';
+
+const response: AxiosResponse<killbill.BlockingState[], any> = await api.getBlockingStates(accountID);
+```
+
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = '07c0cef4-41c5-4606-b2cd-661332cdd41c';
+
+$accountBlockingStates = $apiInstance-> getBlockingStates($accountID);
 ```
 > Example Response:
 
@@ -2754,25 +3341,42 @@ Accounts childrenAccounts = accountApi.getChildrenAccounts(parentAccountId,
 ```
 
 ```ruby
-account_id = account.account_id
+account = KillBillClient::Model::Account.new
+
+account.account_id = "ee6835f0-8347-42d3-958c-9a939383ba28"
+
 with_balance = false
 with_balance_and_cba = false
 audit = 'NONE'
 
-childrens_account = KillBillClient::Model::Account.children(account_id,
-                                                            with_balance, 
-                                                            with_balance_and_cba, 
-                                                            audit, 
-                                                            options)
+childrenAccounts = account.children( with_balance, 
+                                     with_balance_and_cba, 
+                                     audit, 
+                                     options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
-accountApi.get_children_accounts(account_id, api_key, api_secret)
+childrenAccounts = accountApi.get_children_accounts(account_id)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '8992e146-bfa1-4126-a045-98b844a4adcb';
+
+const response: AxiosResponse<killbill.Account[], any> = await api.getChildrenAccounts(accountID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = '8992e146-bfa1-4126-a045-98b844a4adcb';
+
+$childAccounts = $apiInstance-> getChildrenAccounts($accountID);
+```
 > Example Response:
 
 ```json
@@ -2847,21 +3451,44 @@ accountApi.transferChildCreditToParent(childAccountId, requestOptions);
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'e659f0f3-745c-46d5-953c-28fe9282fc7d'
+
 account.transfer_child_credit(user,
                               reason,
                               comment,
                               options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 child_account_id = '88a5987a-1e1c-47c5-ba95-34ef14db3d46'
 
 accountApi.transfer_child_credit_to_parent(child_account_id,
-                                           created_by, 
-                                           api_key, 
-                                           api_secret)
+                                           created_by='demo',
+                                           reason='reason', 
+                                           comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const childAccountID = '88a5987a-1e1c-47c5-ba95-34ef14db3d46';
+
+api.transferChildCreditToParent(childAccountID, 'created_by');
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$childAccountID = '88a5987a-1e1c-47c5-ba95-34ef14db3d46';
+
+$apiInstance-> transferChildCreditToParent($childAccountID,$xKillbillCreatedBy);
+```
 **Query Parameters**
 
 None.
@@ -2872,7 +3499,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Custom Fields
 
-Custom fields are `{key, value}` attributes that can be attached to any customer resource. In particular they can be added to the customer `Account`. For details on Custom Fields see [Custom Field](#custom-field).
+Custom fields are `{key, value}` attributes that can be attached to any customer resource. In particular they can be added to the customer `Account`. For details on Custom Fields see [Custom Field](custom-field.html).
 
 ### Add custom fields to account
 
@@ -2920,7 +3547,16 @@ accountApi.createAccountCustomFields(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = '15434b45-54c1-4a44-851c-b1f2f7a52f03'
+
 custom_field = KillBillClient::Model::CustomFieldAttributes.new
+
 custom_field.object_type = 'ACCOUNT'
 custom_field.name = 'Test Custom Field'
 custom_field.value = 'test_value'
@@ -2932,17 +3568,44 @@ account.add_custom_field(custom_field,
                          options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 body = CustomField(name='Test Custom Field', value='test_value')
 
 accountApi.create_account_custom_fields(account_id,
                                         [body],
-                                        created_by,
-                                        api_key,
-                                        api_secret)
+                                        created_by='demo',
+                                        reason='reason', 
+                                        comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const body: killbill.CustomField[] = [{ name: 'Test Custom Field', value: 'test_value' }];
+
+api.createAccountCustomFields(body,'8992e146-bfa1-4126-a045-98b844a4adcb','created_by');
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+
+$customField = new CustomField();
+
+$customField->setName("Test Custom Field");
+$customField->setValue("test_value");
+
+$customFields = array($customField);
+
+$accountID = "8992e146-bfa1-4126-a045-98b844a4adcb";
+
+$apiInstance->createAccountCustomFields($customFields,$xKillbillCreatedBy, $accountID, $xKillbillReason,$xKillbillComment);
+```
 **Request Body**
 
 A list of objects giving the name and value of the custom field, or fields, to be added. For example:
@@ -2988,26 +3651,41 @@ CustomFields allAccountCustomFields = accountApi.getAllCustomFields(accountId,
                                                                     AuditLevel.FULL, 
                                                                     requestOptions);
 ```
-
-```python
-accountApi = killbill.api.AccountApi()
-account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
-
-accountApi.get_all_custom_fields(account_id, 
-                                 api_key, 
-                                 api_secret, 
-                                 object_type='ACCOUNT')
-```
-
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
 object_type = 'ACCOUNT'
 audit = 'NONE'
 
-account.all_custom_fields(object_type,
-                          audit, 
-                          options)
+allCustomFields = account.all_custom_fields(object_type,
+                                            audit, 
+                                            options)
+```
+```python
+accountApi = killbill.AccountApi()
+
+account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
+allCustomFields = accountApi.get_all_custom_fields(account_id,object_type='ACCOUNT')
 ```
 
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '07c0cef4-41c5-4606-b2cd-661332cdd41c';
+
+const response: AxiosResponse<killbill.CustomField[], any> = await api.getAllCustomFields(accountID);
+```
+
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = "07c0cef4-41c5-4606-b2cd-661332cdd41c";
+
+$allCustomFields = $apiInstance->getAllCustomFields($accountID);
+```
 > Example Response:
 
 ```json
@@ -3068,17 +3746,37 @@ List<CustomField> accountCustomFields = accountApi.getAccountCustomFields(accoun
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '59860a0d-c032-456d-a35e-3a48fe8579e5'
+
 audit = 'NONE'
 
-account.custom_fields(audit, options)
+accountCustomFields = account.custom_fields(audit, options)
 ```
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 
-accountApi.get_account_custom_fields(account_id, api_key, api_secret)
+accountCustomFields = accountApi.get_account_custom_fields(account_id)
 ```
 
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '07c0cef4-41c5-4606-b2cd-661332cdd41c';
+
+const response: AxiosResponse<killbill.CustomField[], any> = await api.getCustomFields(accountID);
+```
+
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = "07c0cef4-41c5-4606-b2cd-661332cdd41c";
+
+$accountCustomFields = $apiInstance->getAccountCustomFields($accountID);
+```
 > Example Response:
 
 ```json
@@ -3127,7 +3825,7 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d '[ { "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe", "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "objectType": "ACCOUNT", "name": "Test Custom Field", "value": "test_modify_value", "auditLogs": [] }]' \
+    -d '[ { "customFieldId": "48e24ca0-1cfe-41c3-85e7-0ff0d51679fe", "objectId": "2ad52f53-85ae-408a-9879-32a7e59dd03d", "objectType": "ACCOUNT", "name": "Test Custom Field" , "value": "test_modify_value", "auditLogs": [] }]' \
     "http://localhost:8080/1.0/kb/accounts/2ad52f53-85ae-408a-9879-32a7e59dd03d/customFields"
 ```
 
@@ -3150,11 +3848,17 @@ accountApi.modifyAccountCustomFields(accountId,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '59860a0d-c032-456d-a35e-3a48fe8579e5'
+
+custom_field = KillBillClient::Model::CustomFieldAttributes.new
+
 custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
 custom_field.name = 'Test Modify'
 custom_field.value = 'test_modify_value'
 
-account.modify_custom_field(custom_field,                                                                                            
+account.modify_custom_field(custom_field,                                       
                             user, 
                             reason,
                             comment, 
@@ -3162,18 +3866,46 @@ account.modify_custom_field(custom_field,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+account = killbill.AccountApi()
+
+account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
 body = CustomField(custom_field_id=custom_field_id, 
                    name='Test Custom Field', 
                    value='test_value')
 
 account.modify_account_custom_fields(account_id, 
                                      [body], 
-                                     created_by, 
-                                     api_key, 
-                                     api_secret)
+                                     created_by='demo',
+                                     reason='reason', 
+                                     comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const body: killbill.CustomField = { name: 'Test Custom Field', value: 'test_modify_value' };
+
+api.modifyAccountCustomFields(body,'59860a0d-c032-456d-a35e-3a48fe8579e5','created_by')
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+
+$customField = new CustomField();
+
+$customField->setCustomFieldId('92b90b52-d4ef-47e7-ba4e-614255353a9a');
+$customField->setValue("test_modify_value");
+
+$customFields = array($customField);
+
+$accountID = "59860a0d-c032-456d-a35e-3a48fe8579e5";
+
+$apiInstance->modifyAccountCustomFields($customFields,$xKillbillCreatedBy, $accountID, $xKillbillReason,$xKillbillComment);
+```
 **Request Body**
 
 A list of objects specifying the id and the new value for the custom fields to be modified. For example:
@@ -3235,18 +3967,34 @@ account.remove_custom_field(custom_field_id,
 ```
 
 ```python
-account = killbill.api.AccountApi()
+account = killbill.AccountApi()
+
 account_id = '8992e146-bfa1-4126-a045-98b844a4adcb'
-custom_field_id = '9913e0f6-b5ef-498b-ac47-60e1626eba8f'
-custom_field = [custom_field_id]
 
 account.delete_account_custom_fields(account_id,
-                                     created_by,
-                                     api_key,
-                                     api_secret,
-                                     custom_field=custom_field)
+                                     created_by='demo',
+                                     reason='reason', 
+                                     comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '8992e146-bfa1-4126-a045-98b844a4adcb';
+
+api.deleteAccountCustomFields(accountID,'created_by')
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+
+$customField = new CustomField();
+
+$accountID = "8992e146-bfa1-4126-a045-98b844a4adcb";
+
+$apiInstance->deleteAccountCustomFields($accountID,$xKillbillCreatedBy);
+```
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -3268,7 +4016,7 @@ attached to various objects in the system by using tags. Tags come in 2 differen
 
 The APIs to manage tags rely on having an existing tag definition and supplying the `tagDefinitionId` in the calls. Therefore, for user tags, one should first create a `TagDefinition`.
 
-To create user tags, one must first create the tag definitions. For instructions see section [Tag definition](#tag-definition).
+To create user tags, one must first create the tag definitions. For instructions see section [Tag definition](tag-definition.html).
 
 
 ### Add tags to account
@@ -3310,6 +4058,14 @@ Tags result = accountApi.createAccountTags(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'f4087a76-9f8a-4893-abbf-c5bb69975d1b'
+
 tag_name = 'TEST'
 
 account.add_tag(tag_name,
@@ -3320,17 +4076,38 @@ account.add_tag(tag_name,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
-tag = ["00000000-0000-0000-0000-000000000002"]
+tagDefIds = ["00000000-0000-0000-0000-000000000002"]
 
 accountApi.create_account_tags(account_id, 
-                               tag, 
-                               created_by, 
-                               api_key, 
-                               api_secret)
+                               tagDefIds, 
+                               created_by='demo',
+                               reason='reason', 
+                               comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const tags = ['00000000-0000-0000-0000-000000000002'];
+
+api.createAccountTags(tags,'b0da8392-49ba-43f2-8fac-3f9f85b8ff61','created_by')
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$tags = ['00000000-0000-0000-0000-000000000002'];
+
+$accountID = "b0da8392-49ba-43f2-8fac-3f9f85b8ff61";
+
+$apiInstance->createAccountTags($tags,$xKillbillCreatedBy,$accountID,$xKillbillReason,$xKillbillComment);
+```
 **Request Body**
 
 A JSON array containing one or more tag definition ids to be added as user tags.
@@ -3377,23 +4154,42 @@ Tags allAccountTags = accountApi.getAllTags(accountId,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
 
-accountApi.get_account_tags(account_id, api_key, api_secret)
+allAccountTags = accountApi.get_all_tags(account_id)
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '07c0cef4-41c5-4606-b2cd-661332cdd41c'
+
 object_type = 'ACCOUNT'
 included_deleted = false
 audit = 'NONE'
 
-account.all_tags(object_type, 
-                 included_deleted, 
-                 audit, 
-                 options)
+allTags = account.all_tags(object_type, 
+                           included_deleted, 
+                           audit, 
+                           options)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '07c0cef4-41c5-4606-b2cd-661332cdd41c';
+
+const response: AxiosResponse<any> = await api.getAllTags(accountID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = "07c0cef4-41c5-4606-b2cd-661332cdd41c";
+
+$allTags = $apiInstance->getAllTags($accountID);
+```
 > Example Response:
 
 ```json
@@ -3456,21 +4252,40 @@ List<Tag> tags1 = accountApi.getAccountTags(accountId,
 ```
 
 ```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'e659f0f3-745c-46d5-953c-28fe9282fc7d'
+
 included_deleted = false
 audit = 'NONE'
 
-account.tags(included_deleted,
-             audit,
-             options)
+accountTags = account.tags(included_deleted,
+                           audit,
+                           options)
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
 
-accountApi.get_account_tags(account_id, api_key, api_secret)
+accountTags = accountApi.get_account_tags(account_id)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61';
+
+const response: AxiosResponse<any> = await api.getAccountTags(accountID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = "07c0cef4-41c5-4606-b2cd-661332cdd41c";
+
+$accountTags = $apiInstance->getAccountTags($accountID);
+```
 > Example Response:
 
 ```json
@@ -3532,6 +4347,14 @@ accountApi.deleteAccountTags(accountId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'e659f0f3-745c-46d5-953c-28fe9282fc7d'
+
 tag_name = 'TEST'
 
 account.remove_tag(tag_name,
@@ -3542,17 +4365,36 @@ account.remove_tag(tag_name,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61'
-tag = ["00000000-0000-0000-0000-000000000002"]
+tagDefIds = ["00000000-0000-0000-0000-000000000002"]
 
 accountApi.delete_account_tags(account_id, 
-                               created_by, 
-                               api_key, 
-                               api_secret, 
-                               tag_def=tag)
+                               tag_def=tagDefIds,
+                               created_by='demo',
+                               reason='reason', 
+                               comment='comment')
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61';
+
+api.deleteAccountTags(accountID,'created_by');
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$accountID = "b0da8392-49ba-43f2-8fac-3f9f85b8ff61";
+
+$apiInstance->deleteAccountTags($accountID,$xKillbillCreatedBy,$xKillbillCreatedBy,$xKillbillComment);
+```
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -3595,18 +4437,37 @@ UUID accountId = UUID.fromString("e9432491-6558-4007-85ef-cdae171d240c");
 AuditLogs auditLogsJson = accountApi.getAccountAuditLogs(accountId, 
                                                          requestOptions);
 ```
+```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = '4e4d8acd-c97d-447a-814b-28f995a9106c'
+
+auditLogs = account.audit(options)
+```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '4e4d8acd-c97d-447a-814b-28f995a9106c'
 
-accountApi.get_account_audit_logs(account_id, api_key, api_secret)
+auditLogs = accountApi.get_account_audit_logs(account_id)
 ```
 
-```ruby
-account.audit(options)
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61';
+
+const response: AxiosResponse<killbill.AuditLog[], any> = await api.getAccountAuditLogs(accountID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = "b0da8392-49ba-43f2-8fac-3f9f85b8ff61";
+
+$accountAuditLogs = $apiInstance->getAccountAuditLogs($accountID);
+```
 > Example Response:
 
 ```json
@@ -3718,17 +4579,37 @@ List<AuditLog> auditLogWithHistories = accountApi.getAccountAuditLogsWithHistory
                                                                                  requestOptions);
 ```
 
+```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+
+auditLogsWithHistory = account.audit_logs_with_history(options)
+```
+
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
 
-accountApi.get_account_audit_logs_with_history(account_id, api_key, api_secret)
+auditLogsWithHistory = accountApi.get_account_audit_logs_with_history(account_id)
 ```
 
-```ruby
-account.audit_logs_with_history(options)
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = 'b0da8392-49ba-43f2-8fac-3f9f85b8ff61';
+
+const response: AxiosResponse<killbill.AuditLog[], any> = await api.getAccountAuditLogsWithHistory(accountID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = "b0da8392-49ba-43f2-8fac-3f9f85b8ff61";
+
+$accountAuditLogs = $apiInstance->getAccountAuditLogsWithHistory($accountID);
+```
 > Example Response:
 
 ```json
@@ -3903,23 +4784,44 @@ List<AuditLog> result = accountApi.getAccountEmailAuditLogsWithHistory(accountId
                                                                        requestOptions);
 ```
 
+```ruby
+account = KillBillClient::Model::Account.new
+
+account.account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
+
+account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
+
+emailAuditLogsWithHistory = account.email_audit_logs_with_history(account_email_id, options)
+```
+
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda'
 account_email_id = 'bb390282-6757-4f4f-8dd5-456abd9f30b2'
 
-accountApi.get_account_email_audit_logs_with_history(account_id,
-                                                     account_email_id,
-                                                     api_key,
-                                                     api_secret)
+emailAuditLogsWithHistory = accountApi.get_account_email_audit_logs_with_history(account_id,
+                                                     account_email_id)
 ```
 
-```ruby
-account_email_id = 'a4627e89-a73b-4167-a7ba-92a2881eb3c4'
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
 
-account.email_audit_logs_with_history(account_email_id, options)
+const accountID = 'c62d5f6d-0b57-444d-bf9b-dd23e781fbda';
+
+const accountEmailID = 'bb390282-6757-4f4f-8dd5-456abd9f30b2';
+
+const response: AxiosResponse<killbill.AuditLog[], any> = await api.getAccountEmailAuditLogsWithHistory(accountID,accountEmailID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = "c62d5f6d-0b57-444d-bf9b-dd23e781fbda";
+$accountEmailID = 'bb390282-6757-4f4f-8dd5-456abd9f30b2';
+
+$accountEmailAuditLogs = $apiInstance->getAccountEmailAuditLogsWithHistory($accountID,$accountEmailID);
+```
 > Example Response:
 
 ```json
@@ -3990,7 +4892,21 @@ protected AccountApi accountApi;
 UUID blockingId = UUID.fromString("0997b953-2b3a-4dc5-ad01-c38911662923");
 AuditLogs result = accountApi.getBlockingStateAuditLogsWithHistory(blockingId, requestOptions);
 ```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
 
+const blockingId = '0997b953-2b3a-4dc5-ad01-c38911662923';
+
+const response: AxiosResponse<killbill.AuditLog[], any> = await api.getBlockingStateAuditLogsWithHistory(blockingId);
+```
+
+```php
+$apiInstance = $client->getAccountApi();
+
+$blockingId = '0997b953-2b3a-4dc5-ad01-c38911662923';
+
+$blockingStateAuditLogs = $apiInstance->getBlockingStateAuditLogsWithHistory($blockingId);
+```
 > Example Response:
 
 ```json
@@ -4080,47 +4996,482 @@ KillBillClient::Model::AccountTimeline.timeline(account_id,
 ```
 
 ```python
-accountApi = killbill.api.AccountApi()
+accountApi = killbill.AccountApi()
+
 account_id = '43488882-1777-460c-bc32-e375e67d09cf'
 
-accountApi.get_account_timeline(account_id, api_key, api_secret)
+accountTimeline = accountApi.get_account_timeline(account_id)
+```
+```javascript
+const api: killbill.AccountApi = new killbill.AccountApi(config);
+
+const accountID = '43488882-1777-460c-bc32-e375e67d09cf';
+
+const response: AxiosResponse<killbill.AccountTimeline, any> = await api.getAccountTimeline(accountID);
 ```
 
+```php
+$apiInstance = $client->getAccountApi();
+
+$accountID = '43488882-1777-460c-bc32-e375e67d09cf';
+
+$accountTimeline = $apiInstance->getAccountTimeline($accountID);
+```
 > Example Response:
 
 ```json
 {
   "account": {
-    "accountId": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "name": "John Doe",
+    "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+    "name": "25thAuGCus6",
     "firstNameLength": null,
-    "externalKey": "2ad52f53-85ae-408a-9879-32a7e59dd03d",
-    "email": "john@laposte.com",
-    "billCycleDayLocal": 0,
+    "externalKey": "25thAuGCus6",
+    "email": null,
+    "billCycleDayLocal": 1,
     "currency": "USD",
     "parentAccountId": null,
     "isPaymentDelegatedToParent": false,
     "paymentMethodId": null,
-    "referenceTime": "2018-07-17T15:02:45.000Z",
-    "timeZone": "UTC",
+    "referenceTime": "2023-08-25T16:28:43.000Z",
+    "timeZone": "Etc/UTC",
     "address1": null,
     "address2": null,
     "postalCode": null,
     "company": null,
     "city": null,
     "state": null,
-    "country": null,
-    "locale": null,
+    "country": "US",
+    "locale": "en_US",
     "phone": null,
     "notes": null,
-    "isMigrated": null,
+    "isMigrated": false,
     "accountBalance": null,
     "accountCBA": null,
     "auditLogs": []
   },
-  "bundles": [],
-  "invoices": [],
-  "payments": []
+  "bundles": [
+    {
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "bundleId": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+      "externalKey": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+      "subscriptions": [
+        {
+          "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+          "bundleId": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+          "bundleExternalKey": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+          "subscriptionId": "cc608e24-509e-4b99-9519-2eeef67c20a2",
+          "externalKey": "cc608e24-509e-4b99-9519-2eeef67c20a2",
+          "startDate": "2023-01-01T16:28:43.000Z",
+          "productName": "prodA",
+          "productCategory": "BASE",
+          "billingPeriod": "MONTHLY",
+          "phaseType": "EVERGREEN",
+          "priceList": "DEFAULT",
+          "planName": "Standard-monthly",
+          "state": "ACTIVE",
+          "sourceType": "NATIVE",
+          "cancelledDate": null,
+          "chargedThroughDate": "2023-09-01",
+          "billingStartDate": "2023-01-01T16:28:43.000Z",
+          "billingEndDate": null,
+          "billCycleDayLocal": 1,
+          "quantity": 1,
+          "events": [
+            {
+              "eventId": "23088e1e-646c-4ce7-ad45-9c4369ef223a",
+              "billingPeriod": "MONTHLY",
+              "effectiveDate": "2023-01-01T16:28:43.000Z",
+              "catalogEffectiveDate": "2023-08-24T16:24:23.000Z",
+              "plan": "Standard-monthly",
+              "product": "prodA",
+              "priceList": "DEFAULT",
+              "eventType": "START_ENTITLEMENT",
+              "isBlockedBilling": false,
+              "isBlockedEntitlement": false,
+              "serviceName": "entitlement-service",
+              "serviceStateName": "ENT_STARTED",
+              "phase": "Standard-monthly-evergreen",
+              "auditLogs": []
+            },
+            {
+              "eventId": "1b122b2b-eea4-4a6b-80a2-f9ae2a336fad",
+              "billingPeriod": "MONTHLY",
+              "effectiveDate": "2023-01-01T16:28:43.000Z",
+              "catalogEffectiveDate": "2023-08-24T16:24:23.000Z",
+              "plan": "Standard-monthly",
+              "product": "prodA",
+              "priceList": "DEFAULT",
+              "eventType": "START_BILLING",
+              "isBlockedBilling": false,
+              "isBlockedEntitlement": false,
+              "serviceName": "billing-service",
+              "serviceStateName": "START_BILLING",
+              "phase": "Standard-monthly-evergreen",
+              "auditLogs": []
+            },
+            {
+              "eventId": "368581ee-cf14-4b81-9c34-c06adb5dbbcf",
+              "billingPeriod": "MONTHLY",
+              "effectiveDate": "2023-08-28T16:55:37.000Z",
+              "catalogEffectiveDate": "2023-08-24T16:24:23.000Z",
+              "plan": "Standard-monthly",
+              "product": "prodA",
+              "priceList": "DEFAULT",
+              "eventType": "SERVICE_STATE_CHANGE",
+              "isBlockedBilling": false,
+              "isBlockedEntitlement": false,
+              "serviceName": "ServiceStateService",
+              "serviceStateName": "STATE1",
+              "phase": "Standard-monthly-evergreen",
+              "auditLogs": []
+            }
+          ],
+          "priceOverrides": null,
+          "prices": [
+            {
+              "planName": "Standard-monthly",
+              "phaseName": "Standard-monthly-evergreen",
+              "phaseType": "EVERGREEN",
+              "fixedPrice": null,
+              "recurringPrice": 100,
+              "usagePrices": []
+            }
+          ],
+          "auditLogs": []
+        }
+      ],
+      "timeline": {
+        "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+        "bundleId": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+        "externalKey": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+        "events": [
+          {
+            "eventId": "23088e1e-646c-4ce7-ad45-9c4369ef223a",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2023-01-01T16:28:43.000Z",
+            "catalogEffectiveDate": "2023-08-24T16:24:23.000Z",
+            "plan": "Standard-monthly",
+            "product": "prodA",
+            "priceList": "DEFAULT",
+            "eventType": "START_ENTITLEMENT",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "entitlement-service",
+            "serviceStateName": "ENT_STARTED",
+            "phase": "Standard-monthly-evergreen",
+            "auditLogs": []
+          },
+          {
+            "eventId": "1b122b2b-eea4-4a6b-80a2-f9ae2a336fad",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2023-01-01T16:28:43.000Z",
+            "catalogEffectiveDate": "2023-08-24T16:24:23.000Z",
+            "plan": "Standard-monthly",
+            "product": "prodA",
+            "priceList": "DEFAULT",
+            "eventType": "START_BILLING",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "billing-service",
+            "serviceStateName": "START_BILLING",
+            "phase": "Standard-monthly-evergreen",
+            "auditLogs": []
+          },
+          {
+            "eventId": "368581ee-cf14-4b81-9c34-c06adb5dbbcf",
+            "billingPeriod": "MONTHLY",
+            "effectiveDate": "2023-08-28T16:55:37.000Z",
+            "catalogEffectiveDate": "2023-08-24T16:24:23.000Z",
+            "plan": "Standard-monthly",
+            "product": "prodA",
+            "priceList": "DEFAULT",
+            "eventType": "SERVICE_STATE_CHANGE",
+            "isBlockedBilling": false,
+            "isBlockedEntitlement": false,
+            "serviceName": "ServiceStateService",
+            "serviceStateName": "STATE1",
+            "phase": "Standard-monthly-evergreen",
+            "auditLogs": []
+          }
+        ],
+        "auditLogs": []
+      },
+      "auditLogs": []
+    }
+  ],
+  "invoices": [
+    {
+      "amount": 100,
+      "currency": "USD",
+      "status": "COMMITTED",
+      "creditAdj": 0,
+      "refundAdj": 0,
+      "invoiceId": "2645c1f3-1d72-41a7-8cdb-3dca43340af6",
+      "invoiceDate": "2023-08-25",
+      "targetDate": "2023-01-01",
+      "invoiceNumber": "17859",
+      "balance": 0,
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "bundleKeys": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+      "credits": [],
+      "items": null,
+      "trackingIds": null,
+      "isParentInvoice": false,
+      "parentInvoiceId": null,
+      "parentAccountId": null,
+      "auditLogs": []
+    },
+    {
+      "amount": 100,
+      "currency": "USD",
+      "status": "COMMITTED",
+      "creditAdj": 0,
+      "refundAdj": 0,
+      "invoiceId": "e8dbe200-0738-4317-9c74-581696a0b4e9",
+      "invoiceDate": "2023-08-25",
+      "targetDate": "2023-02-01",
+      "invoiceNumber": "17860",
+      "balance": 0,
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "bundleKeys": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+      "credits": [],
+      "items": null,
+      "trackingIds": null,
+      "isParentInvoice": false,
+      "parentInvoiceId": null,
+      "parentAccountId": null,
+      "auditLogs": []
+    },
+    {
+      "amount": 100,
+      "currency": "USD",
+      "status": "COMMITTED",
+      "creditAdj": 0,
+      "refundAdj": 0,
+      "invoiceId": "72662545-787c-4e9a-90af-4ac728392c35",
+      "invoiceDate": "2023-08-25",
+      "targetDate": "2023-03-01",
+      "invoiceNumber": "17861",
+      "balance": 0,
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "bundleKeys": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+      "credits": [],
+      "items": null,
+      "trackingIds": null,
+      "isParentInvoice": false,
+      "parentInvoiceId": null,
+      "parentAccountId": null,
+      "auditLogs": []
+    },
+    {
+      "amount": 500,
+      "currency": "USD",
+      "status": "COMMITTED",
+      "creditAdj": 0,
+      "refundAdj": 0,
+      "invoiceId": "3a5d2748-88df-4f3f-bb60-49e8fbce1c0a",
+      "invoiceDate": "2023-08-25",
+      "targetDate": "2023-08-25",
+      "invoiceNumber": "17862",
+      "balance": 0,
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "bundleKeys": "736d6b5a-a6f8-4c60-a0ec-43782b4cd1b4",
+      "credits": [],
+      "items": null,
+      "trackingIds": null,
+      "isParentInvoice": false,
+      "parentInvoiceId": null,
+      "parentAccountId": null,
+      "auditLogs": []
+    }
+  ],
+  "payments": [
+    {
+      "targetInvoiceId": "2645c1f3-1d72-41a7-8cdb-3dca43340af6",
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "paymentId": "555d80f8-abdf-4b25-9994-ac605b012ccb",
+      "paymentNumber": "41",
+      "paymentExternalKey": "555d80f8-abdf-4b25-9994-ac605b012ccb",
+      "authAmount": 0,
+      "capturedAmount": 0,
+      "purchasedAmount": 100,
+      "refundedAmount": 0,
+      "creditedAmount": 0,
+      "currency": "USD",
+      "paymentMethodId": "1f6c1080-74a6-4b52-bce1-2ca954086f72",
+      "transactions": [
+        {
+          "transactionId": "57857941-6956-413d-ac62-99af982d6f41",
+          "transactionExternalKey": "57857941-6956-413d-ac62-99af982d6f41",
+          "paymentId": "555d80f8-abdf-4b25-9994-ac605b012ccb",
+          "paymentExternalKey": "555d80f8-abdf-4b25-9994-ac605b012ccb",
+          "transactionType": "PURCHASE",
+          "amount": 100,
+          "currency": "USD",
+          "effectiveDate": "2023-08-28T16:27:44.000Z",
+          "processedAmount": 100,
+          "processedCurrency": "USD",
+          "status": "SUCCESS",
+          "gatewayErrorCode": null,
+          "gatewayErrorMsg": null,
+          "firstPaymentReferenceId": null,
+          "secondPaymentReferenceId": null,
+          "properties": null,
+          "auditLogs": []
+        }
+      ],
+      "paymentAttempts": null,
+      "auditLogs": []
+    },
+    {
+      "targetInvoiceId": "e8dbe200-0738-4317-9c74-581696a0b4e9",
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "paymentId": "2252f1cf-8cff-43b9-8d4b-472be14b79a2",
+      "paymentNumber": "42",
+      "paymentExternalKey": "2252f1cf-8cff-43b9-8d4b-472be14b79a2",
+      "authAmount": 0,
+      "capturedAmount": 0,
+      "purchasedAmount": 100,
+      "refundedAmount": 0,
+      "creditedAmount": 0,
+      "currency": "USD",
+      "paymentMethodId": "1f6c1080-74a6-4b52-bce1-2ca954086f72",
+      "transactions": [
+        {
+          "transactionId": "60c4ffe7-f67c-456d-955d-6d35d2cd3fd2",
+          "transactionExternalKey": "60c4ffe7-f67c-456d-955d-6d35d2cd3fd2",
+          "paymentId": "2252f1cf-8cff-43b9-8d4b-472be14b79a2",
+          "paymentExternalKey": "2252f1cf-8cff-43b9-8d4b-472be14b79a2",
+          "transactionType": "PURCHASE",
+          "amount": 100,
+          "currency": "USD",
+          "effectiveDate": "2023-08-28T16:27:44.000Z",
+          "processedAmount": 100,
+          "processedCurrency": "USD",
+          "status": "SUCCESS",
+          "gatewayErrorCode": null,
+          "gatewayErrorMsg": null,
+          "firstPaymentReferenceId": null,
+          "secondPaymentReferenceId": null,
+          "properties": null,
+          "auditLogs": []
+        }
+      ],
+      "paymentAttempts": null,
+      "auditLogs": []
+    },
+    {
+      "targetInvoiceId": "72662545-787c-4e9a-90af-4ac728392c35",
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "paymentId": "55ef60c6-d89e-4d0b-aefd-42c13ce410b6",
+      "paymentNumber": "43",
+      "paymentExternalKey": "55ef60c6-d89e-4d0b-aefd-42c13ce410b6",
+      "authAmount": 0,
+      "capturedAmount": 0,
+      "purchasedAmount": 100,
+      "refundedAmount": 0,
+      "creditedAmount": 0,
+      "currency": "USD",
+      "paymentMethodId": "1f6c1080-74a6-4b52-bce1-2ca954086f72",
+      "transactions": [
+        {
+          "transactionId": "aee6788b-526b-4c15-a943-b46bb9fe3ecf",
+          "transactionExternalKey": "aee6788b-526b-4c15-a943-b46bb9fe3ecf",
+          "paymentId": "55ef60c6-d89e-4d0b-aefd-42c13ce410b6",
+          "paymentExternalKey": "55ef60c6-d89e-4d0b-aefd-42c13ce410b6",
+          "transactionType": "PURCHASE",
+          "amount": 100,
+          "currency": "USD",
+          "effectiveDate": "2023-08-28T16:27:44.000Z",
+          "processedAmount": 100,
+          "processedCurrency": "USD",
+          "status": "SUCCESS",
+          "gatewayErrorCode": null,
+          "gatewayErrorMsg": null,
+          "firstPaymentReferenceId": null,
+          "secondPaymentReferenceId": null,
+          "properties": null,
+          "auditLogs": []
+        }
+      ],
+      "paymentAttempts": null,
+      "auditLogs": []
+    },
+    {
+      "targetInvoiceId": "3a5d2748-88df-4f3f-bb60-49e8fbce1c0a",
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "paymentId": "47d0a7c2-bffb-4c3a-b464-df17825260a0",
+      "paymentNumber": "44",
+      "paymentExternalKey": "47d0a7c2-bffb-4c3a-b464-df17825260a0",
+      "authAmount": 0,
+      "capturedAmount": 0,
+      "purchasedAmount": 500,
+      "refundedAmount": 0,
+      "creditedAmount": 0,
+      "currency": "USD",
+      "paymentMethodId": "1f6c1080-74a6-4b52-bce1-2ca954086f72",
+      "transactions": [
+        {
+          "transactionId": "3f424634-7207-48fc-8de5-8bf2de229984",
+          "transactionExternalKey": "3f424634-7207-48fc-8de5-8bf2de229984",
+          "paymentId": "47d0a7c2-bffb-4c3a-b464-df17825260a0",
+          "paymentExternalKey": "47d0a7c2-bffb-4c3a-b464-df17825260a0",
+          "transactionType": "PURCHASE",
+          "amount": 500,
+          "currency": "USD",
+          "effectiveDate": "2023-08-28T16:27:44.000Z",
+          "processedAmount": 500,
+          "processedCurrency": "USD",
+          "status": "SUCCESS",
+          "gatewayErrorCode": null,
+          "gatewayErrorMsg": null,
+          "firstPaymentReferenceId": null,
+          "secondPaymentReferenceId": null,
+          "properties": null,
+          "auditLogs": []
+        }
+      ],
+      "paymentAttempts": null,
+      "auditLogs": []
+    },
+    {
+      "targetInvoiceId": null,
+      "accountId": "ccf4e359-6b2b-4e26-9c3c-89e391b8fe85",
+      "paymentId": "a3dd2264-b00f-45e9-aa5a-7a1f357aa786",
+      "paymentNumber": "45",
+      "paymentExternalKey": "a3dd2264-b00f-45e9-aa5a-7a1f357aa786",
+      "authAmount": 50,
+      "capturedAmount": 0,
+      "purchasedAmount": 0,
+      "refundedAmount": 0,
+      "creditedAmount": 0,
+      "currency": "USD",
+      "paymentMethodId": "1f6c1080-74a6-4b52-bce1-2ca954086f72",
+      "transactions": [
+        {
+          "transactionId": "8c890167-62cc-4a13-b724-93b8274da3d5",
+          "transactionExternalKey": "8c890167-62cc-4a13-b724-93b8274da3d5",
+          "paymentId": "a3dd2264-b00f-45e9-aa5a-7a1f357aa786",
+          "paymentExternalKey": "a3dd2264-b00f-45e9-aa5a-7a1f357aa786",
+          "transactionType": "AUTHORIZE",
+          "amount": 50,
+          "currency": "USD",
+          "effectiveDate": "2023-08-28T16:34:34.000Z",
+          "processedAmount": 50,
+          "processedCurrency": "USD",
+          "status": "SUCCESS",
+          "gatewayErrorCode": null,
+          "gatewayErrorMsg": null,
+          "firstPaymentReferenceId": null,
+          "secondPaymentReferenceId": null,
+          "properties": null,
+          "auditLogs": []
+        }
+      ],
+      "paymentAttempts": null,
+      "auditLogs": []
+    }
+  ]
 }
 ```
 
