@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
 
 # Check if Gemfile exists (do nothing on gh-pages)
-[ -f Gemfile ] && bundle exec middleman build || mkdir build
+if [ -f Gemfile ]
+then
+  bundle exec middleman build
+else
+  mkdir build
+  mv fonts images javascripts stylesheets *.html build/
+fi
