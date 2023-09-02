@@ -26,6 +26,8 @@ run_build() {
   else
     bundle exec middleman build --clean
   fi
+  # Add script for Cloudflare
+  cp -f cloudflare_deploy.sh build/
 }
 
 parse_args() {
