@@ -154,6 +154,7 @@ body.dark {
 *::after {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  scroll-behavior: smooth;
 }
 
 ul,ol {
