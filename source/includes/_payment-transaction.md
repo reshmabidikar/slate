@@ -260,10 +260,10 @@ PaymentTransaction paymentTransaction = new PaymentTransaction();
 paymentTransaction.setStatus(TransactionStatus.SUCCESS);
 paymentTransaction.setPaymentId(UUID.fromString("27d15e39-b25c-4dc1-92cf-5487397a48a6");
 				
-paymentTransactionApi.notifyStateChanged(paymentTransactionId, 
+Payment payment = paymentTransactionApi.notifyStateChanged(paymentTransactionId, 
                                          paymentTransaction, 
                                          null, 
-                                         requestOptions);
+                                         requestOptions));
 	
 ```
 
@@ -324,7 +324,7 @@ protected PaymentTransactionApi paymentTransactionApi;
 
 UUID paymentTransactionId = UUID.fromString("41f4d299-4371-4876-96b4-0b3cc81b246b");
 
-List<AuditLog> result = paymentTransactionApi.getTransactionAuditLogsWithHistory(paymentTransactionId, 
+List<AuditLog> auditLogs = paymentTransactionApi.getTransactionAuditLogsWithHistory(paymentTransactionId, 
                                                                                  requestOptions);
 ```
 
@@ -590,10 +590,10 @@ import org.killbill.billing.client.api.gen.PaymentTransactionApi;
 protected PaymentTransactionApi paymentTransactionApi;
 
 UUID paymentTransactionId = UUID.fromString("cca08349-8b26-41c7-bfcc-2e3cf70a0f28");
-UUID customFieldsId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
+UUID customFieldId = UUID.fromString("9913e0f6-b5ef-498b-ac47-60e1626eba8f");
 
 CustomField customFieldModified = new CustomField();
-customFieldModified.setCustomFieldId(customFieldsId);
+customFieldModified.setCustomFieldId(customFieldId);
 customFieldModified.setValue("NewValue");
 CustomFields customFields = new CustomFields();
 customFields.add(customFieldModified);
@@ -734,7 +734,7 @@ UUID paymentTransactionId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa
 
 UUID tagDefinitionId = UUID.fromString("353752dd-9041-4450-b782-a8bb03a923c8");
 
-Tags result = paymentTransactionApi.createTransactionTags(paymentTransactionId, 
+Tags tags = paymentTransactionApi.createTransactionTags(paymentTransactionId, 
                                                           List.of(tagDefinitionId), 
                                                           requestOptions);
 ```
