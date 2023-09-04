@@ -43,13 +43,13 @@ A `PaymentTransaction` is represented by a PaymentTransaction resource object. T
 
 ## Payment Transactions
 
-Endpoints to retrieve a `PaymentTransaction` object or to set the status of a pending transaction. Note that endpoints to generate payment transactions are provided with the `Payment` APIs. 
+Endpoints to retrieve a `PaymentTransaction` object or to set the status of a pending transaction. Note that endpoints to generate payment transactions are provided with the [Payment](payment.html#payments) APIs. 
 
 
 
 ### Retrieve a payment by transaction id
 
-Retrieves a Payment object based on a PaymentTransaction id, which is given as a path parameter
+Retrieves a Payment resource object based on a PaymentTransaction id.
 
 
 **HTTP Request** 
@@ -126,10 +126,10 @@ TODO
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ------- | ----------- |
-| **withPluginInfo** | boolean | no | false | If true, include plugin info |
-| **withAttempts** | boolean | no | false | if true, include payment attempts |
+| Name | Type | Required | Default | Description                                                                                                                                                                                                                                                                                                                        |
+| ---- | -----| -------- | ------- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **withPluginInfo** | boolean | no | false | If true, include plugin info. This results in the [PaymentPluginApi.getPaymentInfo](https://github.com/killbill/killbill-plugin-api/blob/cd3fb251c4b61931eb0f7954037145148d62f983/payment/src/main/java/org/killbill/billing/payment/plugin/api/PaymentPluginApi.java#L144) method being invoked for the underlying payment plugin |
+| **withAttempts** | boolean | no | false | if true, include payment attempts                                                                                                                                                                                                                                                                                                  |
 
 **Response**
 
@@ -138,7 +138,7 @@ If successful, returns a status code of 200 and a payment object including the s
 
 ### Retrieve a payment transaction by external key
 
-Retrieve a Payment object based on a PaymentTransaction external key, which is given as a query parameter
+Retrieves a Payment resource object based on a PaymentTransaction external key.
 
 
 **HTTP Request** 
@@ -216,11 +216,11 @@ TODO
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ------- | ----------- |
-| **transactionExternalKey** | string | yes | none | Transaction external key |
-| **withPluginInfo** | boolean | no | false | If true, include plugin info |
-| **withAttempts** | boolean | no | false | If true, include payment attempts |
+| Name | Type | Required | Default | Description                                                                                                                                                                                                                                                                                                                        |
+| ---- | -----| -------- | ------- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **transactionExternalKey** | string | yes | none | Transaction external key                                                                                                                                                                                                                                                                                                           |
+| **withPluginInfo** | boolean | no | false | If true, include plugin info. This results in the [PaymentPluginApi.getPaymentInfo](https://github.com/killbill/killbill-plugin-api/blob/cd3fb251c4b61931eb0f7954037145148d62f983/payment/src/main/java/org/killbill/billing/payment/plugin/api/PaymentPluginApi.java#L144) method being invoked for the underlying payment plugin |
+| **withAttempts** | boolean | no | false | If true, include payment attempts                                                                                                                                                                                                                                                                                                  |
 
 **Response**
 
@@ -285,16 +285,22 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 and the payment object.
+If successful, returns a status code of 201 and an empty body. In addition, a Location header is returned which contains the payment id.
 
 ## Audit Logs
 
-Audit logs provide a record of events that occur involving various specific resources. For details on audit logs see [Audit and History](https://killbill.github.io/slate/#using-kill-bill-apis-audit-and-history).
+Audit logs provide a record of events that occur involving various specific resources. For details on audit logs see [Audit and History](#using-kill-bill-apis-audit-and-history).
 
 
 ### Retrieve payment transaction audit logs with history by id
 
-Retrieves a list of audit log records showing events that occurred involving changes to a specified payment. History information is included with each record.
+Retrieves a list of audit log records showing changes to the specified payment transaction. History information (a copy of the full payment transaction object) is included with each record.
+
+Some examples:
+
+* Assuming the API is invoked for a payment transaction belonging to a successful payment, it would return two records:
+  * An `INSERT` record corresponding to the payment transaction record creation.
+  * An `UPDATE` record corresponding to the payment transaction status update.
 
 
 **HTTP Request** 
@@ -406,11 +412,11 @@ None.
 
 **Response**
     
-If successful, returns a status code of 200 and a list of account audit logs with history.
+If successful, returns a status code of 200 and a list of payment transaction audit logs with history.
 
 ## Custom Fields
 
-Custom fields are `{key, value}` attributes that can be attached to any customer resource. In particular they can be added to `PaymentTransaction` objects. For details on Custom Fields see [Custom Field](custom-field.html).
+Custom fields are `{key, value}` attributes that can be attached to any customer resource. For details on Custom Fields see [Custom Fields](custom-field.html). These endpoints manage custom fields associated with Payment Transaction objects.
 
 ### Add custom fields to payment transaction
 
@@ -476,7 +482,7 @@ paymentTransactionApi.create_transaction_custom_fields(payment_transaction_id,
 
 **Request Body**
 
-A JSON string representing the custom field object or objects to be added. For example:
+A list of objects giving the name and value of the custom field, or fields, to be added. For example:
 
 [ { "name": "CF1", "value": "123" } ]
 
@@ -490,7 +496,7 @@ If successful, returns a 201 status code. In addition, a `Location` header is re
 
 ### Retrieve payment transaction custom fields 
 
-Retrieves the custom fields associated with a payment transaction
+Retrieves the custom fields associated with the specified payment transaction.
 
 **HTTP Request** 
 
@@ -545,19 +551,17 @@ paymentTransactionApi.get_transaction_custom_fields(payment_transaction_id, api_
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ------- | ----------- | 
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| Name | Type | Required | Default | Description                                                                      |
+| ---- | -----| -------- | ------- |----------------------------------------------------------------------------------| 
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL" (only inserts), or "FULL" |
 
 **Response**
     
-If successful, returns a status code of 200 and a list of custom field objects
+If successful, returns a status code of 200 and a (possibly empty) list of custom field objects.
 
 ### Modify custom fields for a payment transaction
 
-Modifies the custom fields associated with a `PaymentTransaction` object
+Modifies the value of one or more existing custom fields associated with a payment transaction object. Note that it is not possible to modify the name of a custom field, it is only possible to modify its value.
 
 
 **HTTP Request** 
@@ -616,12 +620,11 @@ paymentTransactionApi.modify_transaction_custom_fields(payment_transaction_id,
 
 **Requst Body**
 
-A JSON string representing a list of custom fields to substitute for the existing ones.
-For example:
+A list of objects specifying the id and the new value for the custom fields to be modified. For example:
 
 [ { "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f", "value": "123" } ]
 
-Although the field name and object type can be specified in the request body, these cannot be modified, only the field value can be modified.
+Although the `fieldName` and `objectType` can be specified in the request body, these cannot be modified, only the field value can be modified.
 
 
 **Query Parameters**
@@ -635,7 +638,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Remove custom fields from a payment transaction
 
-Removes a specified set of custom fields from a payment transaction object
+Delete one or more custom fields from a payment transaction. It accepts query parameters corresponding to the custom field ids to be deleted. If no query parameters are specified, it deletes all the custom fields corresponding to the payment transaction.
 
 **HTTP Request** 
 
@@ -684,7 +687,7 @@ paymentTransactionApi.delete_transaction_custom_fields(payment_transaction_id,
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **customField** | string | yes | none | Comma separated list of custom field object IDs that should be deleted. |
+| **customField** | string | yes | none | Custom field ID that should be deleted. Multiple custom fields can be deleted by specifying a separate customField parameter corresponding to each field. |
 
 **Response**
 
@@ -693,13 +696,14 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Tags
 
-See [Account Tags](account.html#account-tags) for an introduction.
+See [Account Tags](account.html#account-tags) for an introduction. 
 
-The are no `system` tags applicable to a Payment Transaction.
+**Note:**
+None of the [`system` tags](tag.html#tag) are applicable for Payment Transactions, only a [user tag](tag.html#tag) can be associated with a payment transaction.
 
 ### Add tags to a payment transaction
 
-Adds one or more tags to a `PaymentTransaction` object. The tag definitions must already exist.
+This API adds one or more tags to a `PaymentTransaction`. The [tag definition](tag-definition.html#tag-definitions) corresponding to the tag to be added must already exist.
 
 
 **HTTP Request** 
@@ -753,7 +757,7 @@ paymentTransactionApi.create_transaction_tags(payment_transaction_id,
 
 **Request Body**
 
-Provides a list of tag definition Ids in JSON format
+A JSON array corresponding to the tag definition IDs to be added.
 
 **Query Parameters**
 
@@ -826,12 +830,11 @@ paymentTransactionApi.get_transaction_tags(payment_transaction_id, api_key, api_
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ------- | ------------ |
-| **includedDeleted** | boolean | no | false | If true, include deleted tags |
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| Name | Type | Required | Default | Description                            |
+| ---- | -----| -------- | ------- |----------------------------------------|
+| **includedDeleted** | boolean | no | false | If true, include deleted tags          |
+| **audit** | string | no | "NONE" | Level of audit information to return: "NONE", "MINIMAL" (only inserts), or "FULL"
+|
 
 **Response**
     
@@ -839,7 +842,7 @@ If successful, returns a status code of 200 and a list of tag objects.
 
 ### Remove tags from a payment transaction
 
-Removes a list of tags attached to a payment transaction.
+This API deletes one or more tags attached to a payment transaction.
 
 **HTTP Request** 
 
@@ -891,7 +894,7 @@ paymentTransactionApi.delete_transaction_tags(payment_transaction_id,
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ------------ |
-| **tagDef** | array of string | yes | none | List of tag definition IDs identifying the tags that should be removed. |
+| **tagDef** | array of string | yes | none | A tag definition ID identifying the tag that should be removed. Multiple tags can be deleted by specifying a separate tagDef parameter corresponding to each tag. |
 
 **Response**
 
