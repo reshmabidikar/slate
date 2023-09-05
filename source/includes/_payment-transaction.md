@@ -81,7 +81,10 @@ TODO
 ```
 
 ```python
-TODO
+paymentTransactionApi = killbill.PaymentTransactionApi()
+payment_transaction_id = 'edb52a56-f5d2-4285-9a23-ccafb6f1ae1f'
+
+payment = paymentTransactionApi.get_payment_by_transaction_id(payment_transaction_id)
 ```
 > Example Response:
 
@@ -171,7 +174,10 @@ TODO
 ```
 
 ```python
-TODO
+paymentTransactionApi = killbill.PaymentTransactionApi()
+payment_transaction_key = 'edb52a56-f5d2-4285-9a23-ccafb6f1ae1f'
+
+payment = paymentTransactionApi.get_payment_by_transaction_external_key(payment_transaction_key)
 ```
 > Example Response:
 
@@ -272,7 +278,14 @@ TODO
 ```
 
 ```python
-TODO
+paymentTransactionApi = killbill.PaymentTransactionApi()
+payment_transaction_id = '02acb6b2-8139-40d3-816c-8b7ec858d350'
+body = PaymentTransaction(payment_id='8cc963a6-786a-4dd1-bcfb-5edc266c01b9', status='SUCCESS')
+
+paymentTransactionApi.notify_state_changed(payment_transaction_id, body,
+                                           created_by='demo',
+                                           reason='reason',
+                                           comment='comment')
 ```
 
 **Request Body**
@@ -333,7 +346,9 @@ TODO
 ```
 
 ```python
-TODO
+paymentTransactionApi = killbill.PaymentTransactionApi()
+payment_transaction_id = '02acb6b2-8139-40d3-816c-8b7ec858d350'
+audit_logs = paymentTransactionApi.get_transaction_audit_logs_with_history(payment_transaction_id)
 ```
 > Example Response:
 
@@ -471,13 +486,14 @@ TODO
 
 ```python
 paymentTransactionApi = killbill.api.PaymentTransactionApi()
+payment_transaction_id = '02acb6b2-8139-40d3-816c-8b7ec858d350'
 body = CustomField(name='Test Custom Field', value='test_value')
 
 paymentTransactionApi.create_transaction_custom_fields(payment_transaction_id,
                                                        [body],
-                                                       created_by,
-                                                       api_key,
-                                                       api_secret)
+                                                       created_by='demo',
+                                                       reason='reason',
+                                                       comment='comment')
 ```
 
 **Request Body**
@@ -530,8 +546,9 @@ TODO
 
 ```python
 paymentTransactionApi = killbill.api.PaymentTransactionApi()
+payment_transaction_id = '02acb6b2-8139-40d3-816c-8b7ec858d350'
 
-paymentTransactionApi.get_transaction_custom_fields(payment_transaction_id, api_key, api_secret)
+fields = paymentTransactionApi.get_transaction_custom_fields(payment_transaction_id)
 ```
 
 > Example Response:
@@ -607,15 +624,15 @@ TODO
 ```
 ```python
 paymentTransactionApi = killbill.api.PaymentTransactionApi()
-
-custom_field_id = '9913e0f6-b5ef-498b-ac47-60e1626eba8f'
-body = CustomField(custom_field_id=custom_field_id, name='Test Modify', value='test_modify_value')
+payment_transaction_id = '02acb6b2-8139-40d3-816c-8b7ec858d350'
+custom_field_id = 'eddc016c-0336-44d3-9383-a29962e276b7'
+body = CustomField(custom_field_id=custom_field_id, value='new value')
 
 paymentTransactionApi.modify_transaction_custom_fields(payment_transaction_id,
                                                        [body],
-                                                       created_by,
-                                                       api_key,
-                                                       api_secret)
+                                                       created_by='demo',
+                                                       reason='reason',
+                                                       comment='comment')
 ```
 
 **Requst Body**
@@ -674,13 +691,14 @@ TODO
 
 ```python
 paymentTransactionApi = killbill.api.PaymentTransactionApi()
-
-payment_transaction_id = 'f33e0adc-78df-438a-b920-aaacd7f8597a'
+payment_transaction_id = '02acb6b2-8139-40d3-816c-8b7ec858d350'
+custom_fields = ['494c8e9b-0840-4955-9e23-e84d4c353c25']
 
 paymentTransactionApi.delete_transaction_custom_fields(payment_transaction_id,
-                                                       created_by,
-                                                       api_key,
-                                                       api_secret)
+                                                       custom_field=custom_fields,
+                                                       created_by='demo',
+                                                       reason='reason',
+                                                       comment='comment')
 ```
 
 **Query Parameters**
@@ -745,14 +763,14 @@ TODO
 
 ```python
 paymentTransactionApi = killbill.api.PaymentTransactionApi()
-
-tag = ["353752dd-9041-4450-b782-a8bb03a923c8"]
+payment_transaction_id = '02acb6b2-8139-40d3-816c-8b7ec858d350'
+tagDefIds  = ["3d70a355-8342-4042-8694-a2447f0f2b1e"]
 
 paymentTransactionApi.create_transaction_tags(payment_transaction_id,
-                                              tag,
-                                              created_by,
-                                              api_key,
-                                              api_secret)
+                                              tagDefIds,
+                                              created_by='demo',
+                                              reason='reason',
+                                              comment='comment')
 ```
 
 **Request Body**
@@ -807,10 +825,9 @@ TODO
 
 ```python
 paymentTransactionApi = killbill.api.PaymentTransactionApi()
+payment_transaction_id = '02acb6b2-8139-40d3-816c-8b7ec858d350'
 
-payment_transaction_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
-
-paymentTransactionApi.get_transaction_tags(payment_transaction_id, api_key, api_secret)
+tags = paymentTransactionApi.get_transaction_tags(payment_transaction_id)
 ```
 
 > Example Response:
@@ -879,15 +896,14 @@ TODO
 
 ```python
 paymentTransactionApi = killbill.api.PaymentTransactionApi()
-
-payment_transaction_id = 'dce5b2a0-0f0f-430b-9427-545ba4be5c7f'
-tag = ["353752dd-9041-4450-b782-a8bb03a923c8"] 
+payment_transaction_id = '02acb6b2-8139-40d3-816c-8b7ec858d350'
+tagDefIds = ["3d70a355-8342-4042-8694-a2447f0f2b1e"]
 
 paymentTransactionApi.delete_transaction_tags(payment_transaction_id,
-                                              created_by,
-                                              api_key,
-                                              api_secret,
-                                              tag_def=tag)
+                                              tag_def=tagDefIds,
+                                              created_by='demo',
+                                              reason='reason',
+                                              comment='comment')
 ```
 
 **Query Parameters**
