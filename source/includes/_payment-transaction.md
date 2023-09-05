@@ -86,6 +86,22 @@ payment_transaction_id = 'edb52a56-f5d2-4285-9a23-ccafb6f1ae1f'
 
 payment = paymentTransactionApi.get_payment_by_transaction_id(payment_transaction_id)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getPaymentTransactionApi();
+
+$transactionId = "37b95fef-f5be-4771-80e4-d41af8e528cb";
+$withPluginInfo = false;
+$withAttempts = false;
+$pluginProperty = array("pluginProperty_example");
+$audit = "NONE";
+
+$result = $apiInstance->getPaymentByTransactionId($transactionId, $withPluginInfo, $withAttempts, $pluginProperty, $audit);
+````
+
 > Example Response:
 
 ```json
@@ -179,6 +195,22 @@ payment_transaction_key = 'edb52a56-f5d2-4285-9a23-ccafb6f1ae1f'
 
 payment = paymentTransactionApi.get_payment_by_transaction_external_key(payment_transaction_key)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getPaymentTransactionApi();
+
+$transactionExternalKey = "37b95fef-f5be-4771-80e4-d41af8e528cb";
+$withPluginInfo = false;
+$withAttempts = false;
+$pluginProperty = array("pluginProperty_example");
+$audit = "NONE";
+
+$result = $apiInstance->getPaymentByTransactionExternalKey($transactionExternalKey, $withPluginInfo, $withAttempts, $pluginProperty, $audit);
+````
+
 > Example Response:
 
 ```json
@@ -288,6 +320,26 @@ paymentTransactionApi.notify_state_changed(payment_transaction_id, body,
                                            comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getPaymentTransactionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$transactionId = "1f7002b3-d1a5-458d-97d4-46b6b86499ac";
+$controlPluginName = array("controlPluginName_example");
+
+$body = new \Killbill\Client\Swagger\Model\PaymentTransaction();
+$body -> setPaymentId("2ad112db-cf4b-497d-9a0d-c0e41fa6070b");
+$body -> setStatus("SUCCESS");
+
+$result = $apiInstance->notifyStateChanged($body, $xKillbillCreatedBy, $transactionId, $xKillbillReason, $xKillbillComment, $controlPluginName);
+````
+
 **Request Body**
 
 A `PaymentTransaction` object including, at least, a `paymentId` and a `status` (SUCCESS or PAYMENT_FAILURE)
@@ -350,6 +402,18 @@ paymentTransactionApi = killbill.PaymentTransactionApi()
 payment_transaction_id = '02acb6b2-8139-40d3-816c-8b7ec858d350'
 audit_logs = paymentTransactionApi.get_transaction_audit_logs_with_history(payment_transaction_id)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getPaymentTransactionApi();
+
+$transactionId = "1f7002b3-d1a5-458d-97d4-46b6b86499ac";
+
+$result = $apiInstance->getTransactionAuditLogsWithHistory($transactionId);
+````
+
 > Example Response:
 
 ```json
@@ -496,6 +560,26 @@ paymentTransactionApi.create_transaction_custom_fields(payment_transaction_id,
                                                        comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getPaymentTransactionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$customField = new CustomField();
+$customField -> setName('Test Custom Field');
+$customField -> setValue('test_value');
+$body = array($customField);
+
+$transactionId = "1f7002b3-d1a5-458d-97d4-46b6b86499ac";
+
+$result = $apiInstance->createTransactionCustomFields($body, $xKillbillCreatedBy, $transactionId, $xKillbillReason, $xKillbillComment);
+````
+
 **Request Body**
 
 A list of objects giving the name and value of the custom field, or fields, to be added. For example:
@@ -550,6 +634,18 @@ payment_transaction_id = '02acb6b2-8139-40d3-816c-8b7ec858d350'
 
 fields = paymentTransactionApi.get_transaction_custom_fields(payment_transaction_id)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getPaymentTransactionApi();
+
+$transactionId = "1f7002b3-d1a5-458d-97d4-46b6b86499ac";
+$audit = "NONE";
+
+$result = $apiInstance->getTransactionCustomFields($transactionId, $audit);
+````
 
 > Example Response:
 
@@ -635,6 +731,26 @@ paymentTransactionApi.modify_transaction_custom_fields(payment_transaction_id,
                                                        comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getPaymentTransactionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$customField = new CustomField();
+$customField -> setCustomFieldId('cea1e5e0-87b9-40bf-8d46-b00e6f870c8f');
+$customField -> setValue('new_value');
+$body = array($customField);
+
+$transactionId = "1f7002b3-d1a5-458d-97d4-46b6b86499ac";
+
+$apiInstance->modifyTransactionCustomFields($body, $xKillbillCreatedBy, $transactionId, $xKillbillReason, $xKillbillComment);
+````
+
 **Requst Body**
 
 A list of objects specifying the id and the new value for the custom fields to be modified. For example:
@@ -700,6 +816,22 @@ paymentTransactionApi.delete_transaction_custom_fields(payment_transaction_id,
                                                        reason='reason',
                                                        comment='comment')
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getPaymentTransactionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$transactionId = "1f7002b3-d1a5-458d-97d4-46b6b86499ac";
+$customFields = array("cea1e5e0-87b9-40bf-8d46-b00e6f870c8f");
+
+$apiInstance->deleteTransactionCustomFields($transactionId, $xKillbillCreatedBy, $customFields, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
@@ -773,6 +905,22 @@ paymentTransactionApi.create_transaction_tags(payment_transaction_id,
                                               comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getPaymentTransactionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$transactionId = "1f7002b3-d1a5-458d-97d4-46b6b86499ac";
+$tagDefIds = array("3d70a355-8342-4042-8694-a2447f0f2b1e");
+
+$apiInstance->createTransactionTags($tagDefIds, $xKillbillCreatedBy, $transactionId, $xKillbillReason, $xKillbillComment);
+````
+
 **Request Body**
 
 A JSON array corresponding to the tag definition IDs to be added.
@@ -829,6 +977,19 @@ payment_transaction_id = '02acb6b2-8139-40d3-816c-8b7ec858d350'
 
 tags = paymentTransactionApi.get_transaction_tags(payment_transaction_id)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getPaymentTransactionApi();
+
+$transactionId = "1f7002b3-d1a5-458d-97d4-46b6b86499ac";
+$includedDeleted = false;
+$audit = "NONE";
+
+$result = $apiInstance->getTransactionTags($transactionId, $includedDeleted, $audit);
+````
 
 > Example Response:
 
@@ -905,6 +1066,22 @@ paymentTransactionApi.delete_transaction_tags(payment_transaction_id,
                                               reason='reason',
                                               comment='comment')
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getPaymentTransactionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$transactionId = "1f7002b3-d1a5-458d-97d4-46b6b86499ac";
+$tagDefIds = array("3d70a355-8342-4042-8694-a2447f0f2b1e");
+
+$apiInstance->deleteTransactionTags($transactionId, $xKillbillCreatedBy, $tagDefIds, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
