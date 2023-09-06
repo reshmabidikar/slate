@@ -88,6 +88,11 @@ payment = paymentTransactionApi.get_payment_by_transaction_id(payment_transactio
 ```
 
 ````javascript
+const api: killbill.PaymentTransactionApi = new killbill.PaymentTransactionApi(config);
+
+const paymentTransactionId = '37b95fef-f5be-4771-80e4-d41af8e528cb';
+
+const response: AxiosResponse<killbill.Payment, any> = await api.getPaymentByTransactionId(paymentTransactionId, 'NONE');
 ````
 
 ````php
@@ -197,6 +202,11 @@ payment = paymentTransactionApi.get_payment_by_transaction_external_key(payment_
 ```
 
 ````javascript
+const api: killbill.PaymentTransactionApi = new killbill.PaymentTransactionApi(config);
+
+const key = '37b95fef-f5be-4771-80e4-d41af8e528cb';
+
+const response: AxiosResponse<killbill.Payment, any> = await api.getPaymentByTransactionExternalKey(key,'NONE');
 ````
 
 ````php
@@ -321,6 +331,12 @@ paymentTransactionApi.notify_state_changed(payment_transaction_id, body,
 ```
 
 ````javascript
+const api: killbill.PaymentTransactionApi = new killbill.PaymentTransactionApi(config);
+
+const payment_transaction: PaymentTransaction = {paymentId: "e129a8fc-c244-425f-b1eb-68d3aac7054e", status: "SUCCESS"};
+const paymentTransactionId = '8dabaa02-c926-4ec3-b0bb-47fe2271b62f';
+
+api.notifyStateChanged(payment_transaction, paymentTransactionId, 'created_by');
 ````
 
 ````php
@@ -404,6 +420,11 @@ audit_logs = paymentTransactionApi.get_transaction_audit_logs_with_history(payme
 ```
 
 ````javascript
+const api: killbill.PaymentTransactionApi = new killbill.PaymentTransactionApi(config);
+
+const paymentTransactionId = '8dabaa02-c926-4ec3-b0bb-47fe2271b62f';
+
+const response: AxiosResponse<killbill.AuditLog[], any> = await api.getTransactionAuditLogsWithHistory(paymentTransactionId);
 ````
 
 ````php
@@ -561,6 +582,14 @@ paymentTransactionApi.create_transaction_custom_fields(payment_transaction_id,
 ```
 
 ````javascript
+const api: killbill.PaymentTransactionApi = new killbill.PaymentTransactionApi(config);
+
+const customField: CustomField = {name: "Test Custom Field", value: "test_value"};
+const customFields = [customField];
+
+const paymentTransactionId = '8dabaa02-c926-4ec3-b0bb-47fe2271b62f';
+
+api.createTransactionCustomFields(customFields, paymentTransactionId, 'created_by');
 ````
 
 ````php
@@ -636,6 +665,12 @@ fields = paymentTransactionApi.get_transaction_custom_fields(payment_transaction
 ```
 
 ````javascript
+const api: killbill.PaymentTransactionApi = new killbill.PaymentTransactionApi(config);
+
+const paymentTransactionId = '8dabaa02-c926-4ec3-b0bb-47fe2271b62f';
+const audit = 'NONE';
+
+const response: AxiosResponse<killbill.CustomField[], any> = await api.getTransactionCustomFields(paymentTransactionId, audit, 'created_by');
 ````
 
 ````php
@@ -732,6 +767,14 @@ paymentTransactionApi.modify_transaction_custom_fields(payment_transaction_id,
 ```
 
 ````javascript
+const api: killbill.PaymentTransactionApi = new killbill.PaymentTransactionApi(config);
+
+const paymentTransactionId = '8dabaa02-c926-4ec3-b0bb-47fe2271b62f';
+
+const customField: CustomField = {customFieldId: "690b4723-5d54-4b89-afe0-dae0d146183c", value: "new_value"};
+const customFields = [customField];
+
+api.modifyTransactionCustomFields(customFields, paymentTransactionId, 'created_by');
 ````
 
 ````php
@@ -818,6 +861,14 @@ paymentTransactionApi.delete_transaction_custom_fields(payment_transaction_id,
 ```
 
 ````javascript
+const api: killbill.PaymentTransactionApi = new killbill.PaymentTransactionApi(config);
+
+const paymentTransactionId = '8dabaa02-c926-4ec3-b0bb-47fe2271b62f';
+
+const customField = '690b4723-5d54-4b89-afe0-dae0d146183c';
+const customFields = [customField];
+
+api.deleteTransactionCustomFields(paymentTransactionId, 'created_by', customFields);
 ````
 
 ````php
@@ -906,6 +957,13 @@ paymentTransactionApi.create_transaction_tags(payment_transaction_id,
 ```
 
 ````javascript
+const api: killbill.PaymentTransactionApi = new killbill.PaymentTransactionApi(config);
+
+const paymentTransactionId = '8dabaa02-c926-4ec3-b0bb-47fe2271b62f';
+
+const tagDefIds = ['3d70a355-8342-4042-8694-a2447f0f2b1e'];
+
+api.createTransactionTags(tagDefIds, paymentTransactionId, 'created_by');
 ````
 
 ````php
@@ -979,6 +1037,13 @@ tags = paymentTransactionApi.get_transaction_tags(payment_transaction_id)
 ```
 
 ````javascript
+const api: killbill.PaymentTransactionApi = new killbill.PaymentTransactionApi(config);
+
+const paymentTransactionId = '8dabaa02-c926-4ec3-b0bb-47fe2271b62f';
+const includeDeleted = false;
+const audit = 'NONE';
+
+const response: AxiosResponse<killbill.Tag[], any> = await api.getTransactionTags(paymentTransactionId, includeDeleted, audit);
 ````
 
 ````php
@@ -1068,6 +1133,13 @@ paymentTransactionApi.delete_transaction_tags(payment_transaction_id,
 ```
 
 ````javascript
+const api: killbill.PaymentTransactionApi = new killbill.PaymentTransactionApi(config);
+
+const paymentTransactionId = '8dabaa02-c926-4ec3-b0bb-47fe2271b62f';
+
+const tagDefIds = ['3d70a355-8342-4042-8694-a2447f0f2b1e'];
+
+api.deleteTransactionTags(paymentTransactionId, 'created_by', tagDefIds);
 ````
 
 ````php
