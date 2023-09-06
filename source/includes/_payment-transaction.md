@@ -77,7 +77,11 @@ Payment payment = paymentTransactionApi.getPaymentByTransactionId(paymentTransac
 ```
 
 ```ruby
-TODO
+payment_transaction_id = "e5f000f7-0733-4828-a887-3a4a58d27596"
+with_plugin_info = false
+with_attempts = false
+
+payment = KillBillClient::Model::Payment.find_by_transaction_id(payment_transaction_id, with_plugin_info, with_attempts, options)
 ```
 
 ```python
@@ -150,10 +154,13 @@ $result = $apiInstance->getPaymentByTransactionId($transactionId, $withPluginInf
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description                                                                                                                                                                                                                                                                                                                        |
-| ---- | -----| -------- | ------- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Name | Type | Required | Default | Description                      |
+| ---- | -----| -------- | ------- |----------------------------------|
 | **withPluginInfo** | boolean | no | false | If true, include plugin info. This results in the [PaymentPluginApi.getPaymentInfo](https://github.com/killbill/killbill-plugin-api/blob/cd3fb251c4b61931eb0f7954037145148d62f983/payment/src/main/java/org/killbill/billing/payment/plugin/api/PaymentPluginApi.java#L144) method being invoked for the underlying payment plugin |
-| **withAttempts** | boolean | no | false | if true, include payment attempts                                                                                                                                                                                                                                                                                                  |
+| **withAttempts** | boolean | no | false | if true, include payment attempts|
+| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL" (only inserts), or "FULL"|
+
 
 **Response**
 
@@ -191,7 +198,12 @@ Payment payment = paymentTransactionApi.getPaymentByTransactionExternalKey(trans
 ```
 
 ```ruby
-TODO
+external_key = "e5f000f7-0733-4828-a887-3a4a58d27596"
+with_plugin_info = false
+with_attempts = false
+audit = 'NONE'
+
+payment = KillBillClient::Model::Payment.find_by_transaction_external_key(external_key, with_plugin_info, with_attempts, audit, options)
 ```
 
 ```python
@@ -264,12 +276,13 @@ $result = $apiInstance->getPaymentByTransactionExternalKey($transactionExternalK
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description                                                                                                                                                                                                                                                                                                                        |
-| ---- | -----| -------- | ------- |------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **transactionExternalKey** | string | yes | none | Transaction external key                                                                                                                                                                                                                                                                                                           |
+| Name | Type | Required | Default | Description                      |
+| ---- | -----| -------- | ------- |----------------------------------|
+| **transactionExternalKey** | string | yes | none | Transaction external key         |
 | **withPluginInfo** | boolean | no | false | If true, include plugin info. This results in the [PaymentPluginApi.getPaymentInfo](https://github.com/killbill/killbill-plugin-api/blob/cd3fb251c4b61931eb0f7954037145148d62f983/payment/src/main/java/org/killbill/billing/payment/plugin/api/PaymentPluginApi.java#L144) method being invoked for the underlying payment plugin |
-| **withAttempts** | boolean | no | false | If true, include payment attempts                                                                                                                                                                                                                                                                                                  |
-
+| **withAttempts** | boolean | no | false | If true, include payment attempts|
+| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL" (only inserts), or "FULL"|
 **Response**
 
 If successful, returns a status code of 200 and a payment object including the specified transaction.
@@ -410,7 +423,10 @@ List<AuditLog> auditLogs = paymentTransactionApi.getTransactionAuditLogsWithHist
 ```
 
 ```ruby
-TODO
+payment_transaction = KillBillClient::Model::Transaction.new
+payment_transaction.transaction_id = "e5f000f7-0733-4828-a887-3a4a58d27596"
+
+audit_logs = payment_transaction.audit_logs_with_history(options)
 ```
 
 ```python
@@ -566,7 +582,22 @@ paymentTransactionApi.createTransactionCustomFields(paymentTransactionId,
 ```
 
 ```ruby
-TODO
+user = "demo"
+reason = nil
+comment = nil
+
+payment_transaction = KillBillClient::Model::Transaction.new
+payment_transaction.transaction_id = "e5f000f7-0733-4828-a887-3a4a58d27596"
+
+custom_field = KillBillClient::Model::CustomFieldAttributes.new
+custom_field.name = 'Test Custom Field'
+custom_field.value = 'test_value'
+
+payment_transaction.add_custom_field(custom_field,
+                                user,
+                                reason,
+                                comment,
+                                options)
 ```
 
 ```python
@@ -654,7 +685,12 @@ List<CustomField> customFields = paymentTransactionApi.getTransactionCustomField
 ```
 
 ```ruby
-TODO
+payment_transaction = KillBillClient::Model::Transaction.new
+payment_transaction.transaction_id = "e5f000f7-0733-4828-a887-3a4a58d27596"
+
+audit = 'NONE'
+
+fields = payment_transaction.custom_fields(audit, options)
 ```
 
 ```python
@@ -751,7 +787,22 @@ paymentTransactionApi.modifyTransactionCustomFields(paymentTransactionId,
 ```
 
 ```ruby
-TODO
+user = "demo"
+reason = nil
+comment = nil
+
+payment_transaction = KillBillClient::Model::Transaction.new
+payment_transaction.transaction_id = "e5f000f7-0733-4828-a887-3a4a58d27596"
+
+custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
+custom_field.name = 'Test Modify'
+custom_field.value = 'test_modify_value'
+
+payment_transaction.modify_custom_field(custom_field,
+                                   user,
+                                   reason,
+                                   comment,
+                                   options)
 ```
 ```python
 paymentTransactionApi = killbill.api.PaymentTransactionApi()
@@ -845,7 +896,20 @@ paymentTransactionApi.deleteTransactionCustomFields(paymentTransactionId,
 ```
 
 ```ruby
-TODO
+user = "demo"
+reason = nil
+comment = nil
+
+payment_transaction = KillBillClient::Model::Transaction.new
+payment_transaction.transaction_id = "e5f000f7-0733-4828-a887-3a4a58d27596"
+
+custom_field_id = 'cda969c3-1092-4702-b155-05d0ef899fa2'
+
+payment_transaction.remove_custom_field(custom_field_id,
+                                   user,
+                                   reason,
+                                   comment,
+                                   options)
 ```
 
 ```python
@@ -941,7 +1005,20 @@ Tags tags = paymentTransactionApi.createTransactionTags(paymentTransactionId,
 ```
 
 ```ruby
-TODO
+user = "demo"
+reason = nil
+comment = nil
+
+payment_transaction = KillBillClient::Model::Transaction.new
+payment_transaction.transaction_id = "e5f000f7-0733-4828-a887-3a4a58d27596"
+
+tag_name = 'sample_tag'
+
+payment_transaction.add_tag(tag_name,
+                     user,
+                     reason,
+                     comment,
+                     options)
 ```
 
 ```python
@@ -1026,7 +1103,15 @@ List<Tag> tags = paymentTransactionApi.getTransactionTags(paymentTransactionId,
 ```
 
 ```ruby
-TODO
+payment_transaction = KillBillClient::Model::Transaction.new
+payment_transaction.transaction_id = "e5f000f7-0733-4828-a887-3a4a58d27596"
+
+included_deleted = false
+audit = 'NONE'
+
+tags = payment_transaction.tags(included_deleted,
+                  audit,
+                  options)
 ```
 
 ```python
@@ -1117,7 +1202,20 @@ paymentTransactionApi.deleteTransactionTags(paymentTransactionId,
 ```
 
 ```ruby
-TODO
+user = "demo"
+reason = nil
+comment = nil
+
+payment_transaction = KillBillClient::Model::Transaction.new
+payment_transaction.transaction_id = "e5f000f7-0733-4828-a887-3a4a58d27596"
+
+tag_name = 'sample_tag'
+
+payment_transaction.remove_tag(tag_name,
+                        user,
+                        reason,
+                        comment,
+                        options)
 ```
 
 ```python
