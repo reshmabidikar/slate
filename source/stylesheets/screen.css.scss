@@ -733,14 +733,17 @@ body.dark {
   h2, h3 {
     padding: 5vw 0 8px;
   }
-  
-  h2:not(:first-of-type) {
-    border-top: 1px solid var(--main-border-color);
-    margin-top: 5vw;
-  }
 
-  h3:not(:first-of-type) {
-    margin-top: 3vw;
+  &__section-container {
+    &:not(:first-of-type) {
+      border-top: 1px solid var(--main-border-color);
+      margin-top: 5vw;
+    }
+    
+    & > h3:not(:first-of-type) {
+      border-top: 1px solid var(--main-border-color);
+      margin-top: 3vw;
+    }
   }
   
   &__section {
@@ -748,7 +751,7 @@ body.dark {
     grid-template-columns: 100%;
     position: relative !important;
     margin-top: 10px;
-    padding-top: 10px;;
+    padding-top: 10px;
   }
 
   &__text {
@@ -960,8 +963,12 @@ body.dark {
   }
 
   @media (min-width: $lg) {
-    h1, h2, h3 {
+    h1, h2 {
       padding-right: 50%;
+    }
+
+    h3 {
+      margin-right: max(calc(400px + 80px), calc(40% + 80px));
     }
 
     &__section {
