@@ -58,7 +58,7 @@ The APIs in this group support recording and retrieving usage data points.
 
 ### Record usage for a subscription
 
-Records the daily mount of usage of a specified set of unit types for a given subscription
+Records the daily amount of usage of a specified set of unit types for a given subscription
 
 **HTTP Request**
 
@@ -181,12 +181,14 @@ UUID subscriptionId = UUID.fromString("365987b2-5443-47e4-a467-c8962fc6995c");
 String unitType = "chocolate-videos";
 LocalDate startDate = new LocalDate("2012-08-25");
 LocalDate endDate = new LocalDate("2013-08-26");
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
-RolledUpUsage retrievedUsage = usageApi.getUsage(subscriptionId,
-                                                 unitType,
-                                                 startDate,
-                                                 endDate,
-                                                 requestOptions);
+RolledUpUsage retrievedUsage = usageApi.getUsage(subscriptionId, 
+        unitType, 
+        startDate, 
+        endDate, 
+        NULL_PLUGIN_PROPERTIES,
+        requestOptions);
 ```
 
 ```ruby
@@ -229,6 +231,7 @@ TODO
 | ---- | -----| -------- | ------- | ----------- |
 | **startDate** | date | yes | none | Date/DateTime of oldest data point to retrieve (see below) in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format |
 | **endDate** | date | yes | none | Date/DateTime of newest data point to retrieve (see below) in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format |
+| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
 
 * **startDate**, **endDate**: Data is retrieved beginning on the specified start date up to but not including the specified end date.
 
@@ -265,11 +268,12 @@ UUID subscriptionId = UUID.fromString("365987b2-5443-47e4-a467-c8962fc6995c");
 
 LocalDate startDate = new LocalDate("2012-08-25");
 LocalDate endDate = new LocalDate("2013-08-26");
-
-RolledUpUsage retrievedUsage = usageApi.getAllUsage(subscriptionId,
-                                                    startDate,
-                                                    endDate,
-                                                    requestOptions);
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
+RolledUpUsage retrievedUsage = usageApi.getAllUsage(subscriptionId, 
+        startDate, 
+        endDate, 
+        NULL_PLUGIN_PROPERTIES,
+        requestOptions);
 ```
 
 ```ruby
@@ -310,6 +314,7 @@ TODO
 | ---- | -----| -------- | ------- | ----------- |
 | **startDate** | date | yes | none | Date/DateTime of oldest data point to retrieve (see below) in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format |
 | **endDate** | date | yes | none | Date/DateTime of newest data point to retrieve (see below) in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format |
+| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
 
 * **startDate**, **endDate**: Data is retrieved beginning on the specified start date/datetime up to but not including the specified end date/datetime.
 
