@@ -76,9 +76,16 @@ List<Tag> tags = tagApi.getTags(requestOptions);
 ````
 
 ````ruby
+offset = 0
+limit = 100
+
+tags = KillBillClient::Model::Tag.find_in_batches(offset, limit, options)
 ````
 
 ````python
+tagApi = killbill.api.TagApi()
+
+tags = tagApi.get_tags()
 ````
 
 ````javascript
@@ -145,9 +152,18 @@ List<Tag> tags = tagApi.searchTags(searchKey, requestOptions);
 ````
 
 ````ruby
+search_key="ACCOUNT"
+offset = 0
+limit = 100
+
+tags = KillBillClient::Model::Tag.find_in_batches_by_search_key(search_key, offset, limit, options)
 ````
 
 ````python
+tagApi = killbill.api.TagApi()
+
+search_key = "5ad7519f-3698-4c75-8d93-98c7a465010e"
+tags = tagApi.search_tags(search_key)
 ````
 
 ````javascript
@@ -211,9 +227,18 @@ AuditLogs logs = tagApi.getTagAuditLogsWithHistory(tagId,requestOptions);
 ````
 
 ````ruby
+tag = KillBillClient::Model::Tag.new
+tag.tag_id = "7e7f6af6-a844-4ce0-b7d1-f258290d8ad4"
+
+audit_logs = tag.audit_logs_with_history(options)
+puts "logs #{audit_logs}"
 ````
 
 ````python
+tagApi = killbill.api.TagApi()
+tag_id = "5ad7519f-3698-4c75-8d93-98c7a465010e"
+
+audit_logs = tagApi.get_tag_audit_logs_with_history(tag_id)
 ````
 
 ````javascript
