@@ -89,9 +89,19 @@ tags = tagApi.get_tags()
 ````
 
 ````javascript
+const api: killbill.TagApi = new killbill.TagApi(config);
+
+const response: AxiosResponse<killbill.Tag[], any> = await api.getTags();
 ````
 
 ````php
+$apiInstance = $client->getTagApi();
+
+$offset = 0;
+$limit = 100;
+$audit = "NONE";
+
+$result = $apiInstance->getTags($offset, $limit, $audit);
 ````
 
 > Example Response:
@@ -112,7 +122,7 @@ tags = tagApi.get_tags()
 
 ### Search tags
 
-Searches for a specific tag. The search string is compared to the following attributes: tagId, objectType, tagDefinitionId, tagDefinitionName. 
+Searches for a specific tag. The search string is compared to the following attributes: tagId, objectType, tagDefinitionName.
 
 **HTTP Request**
 
@@ -167,9 +177,22 @@ tags = tagApi.search_tags(search_key)
 ````
 
 ````javascript
+const api: killbill.TagApi = new killbill.TagApi(config);
+
+const searchKey = '__PARK__';
+
+const response: AxiosResponse<killbill.Tag[], any> = await api.searchTags(searchKey);
 ````
 
 ````php
+$apiInstance = $client->getTagApi();
+
+$searchKey = "ad9cf851-1076-49cc-9b98-4f1612f9dbe4";
+$offset = 0;
+$limit = 100;
+$audit = "NONE";
+
+$result = $apiInstance->searchTags($searchKey, $offset, $limit, $audit);
 ````
 
 > Example Response:
@@ -242,9 +265,19 @@ audit_logs = tagApi.get_tag_audit_logs_with_history(tag_id)
 ````
 
 ````javascript
+const api: killbill.TagApi = new killbill.TagApi(config);
+
+const tagId = '4c484114-07cd-4f81-9558-f57ada4858f6';
+
+const response: AxiosResponse<killbill.AuditLog[], any> = await api.getTagAuditLogsWithHistory(tagId);
 ````
 
 ````php
+$apiInstance = $client->getTagApi();
+
+$tagId = "ad9cf851-1076-49cc-9b98-4f1612f9dbe4";
+
+$result = $apiInstance->getTagAuditLogsWithHistory($tagId);
 ````
 
 
