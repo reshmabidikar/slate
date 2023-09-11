@@ -154,12 +154,12 @@ $result = $apiInstance->getPaymentByTransactionId($transactionId, $withPluginInf
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description                      |
-| ---- | -----| -------- | ------- |----------------------------------|
-| **withPluginInfo** | boolean | no | false | If true, include plugin info. This results in the [PaymentPluginApi.getPaymentInfo](https://github.com/killbill/killbill-plugin-api/blob/cd3fb251c4b61931eb0f7954037145148d62f983/payment/src/main/java/org/killbill/billing/payment/plugin/api/PaymentPluginApi.java#L144) method being invoked for the underlying payment plugin |
-| **withAttempts** | boolean | no | false | if true, include payment attempts|
-| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
-| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL" (only inserts), or "FULL"|
+| Name | Type | Required | Default | Description                                                                                                                                                                                                                                                                                                                                                                                                                                 |
+| ---- | -----| -------- | ------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **withPluginInfo** | boolean | no | false | If true, include plugin info. This results in the [PaymentPluginApi.getPaymentInfo](https://github.com/killbill/killbill-plugin-api/blob/cd3fb251c4b61931eb0f7954037145148d62f983/payment/src/main/java/org/killbill/billing/payment/plugin/api/PaymentPluginApi.java#L144) method being invoked for the underlying payment plugin. See [Payment Plugin Tutorial](https://docs.killbill.io/latest/payment_plugin#paymentpluginapi_methods). |
+| **withAttempts** | boolean | no | false | if true, include payment attempts                                                                                                                                                                                                                                                                                                                                                                                                           |
+| **pluginProperty** | array of strings | false | omit | list of plugin properties, if any                                                                                                                                                                                                                                                                                                                                                                                                           |
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL" (only inserts), or "FULL"                                                                                                                                                                                                                                                                                                                                                            |
 
 
 **Response**
@@ -276,13 +276,13 @@ $result = $apiInstance->getPaymentByTransactionExternalKey($transactionExternalK
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description                      |
-| ---- | -----| -------- | ------- |----------------------------------|
-| **transactionExternalKey** | string | yes | none | Transaction external key         |
-| **withPluginInfo** | boolean | no | false | If true, include plugin info. This results in the [PaymentPluginApi.getPaymentInfo](https://github.com/killbill/killbill-plugin-api/blob/cd3fb251c4b61931eb0f7954037145148d62f983/payment/src/main/java/org/killbill/billing/payment/plugin/api/PaymentPluginApi.java#L144) method being invoked for the underlying payment plugin |
-| **withAttempts** | boolean | no | false | If true, include payment attempts|
-| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
-| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL" (only inserts), or "FULL"|
+| Name | Type | Required | Default | Description                                                                                                                                                                                                                                                                                                                          |
+| ---- | -----| -------- | ------- |--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **transactionExternalKey** | string | yes | none | Transaction external key                                                                                                                                                                                                                                                                                                             |
+| **withPluginInfo** | boolean | no | false | If true, include plugin info. This results in the [PaymentPluginApi.getPaymentInfo](https://github.com/killbill/killbill-plugin-api/blob/cd3fb251c4b61931eb0f7954037145148d62f983/payment/src/main/java/org/killbill/billing/payment/plugin/api/PaymentPluginApi.java#L144) method being invoked for the underlying payment plugin. See [Payment Plugin Tutorial](https://docs.killbill.io/latest/payment_plugin#paymentpluginapi_methods). |
+| **withAttempts** | boolean | no | false | If true, include payment attempts                                                                                                                                                                                                                                                                                                    |
+| **pluginProperty** | array of strings | false | omit | list of plugin properties, if any                                                                                                                                                                                                                                                                                                    |
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL" (only inserts), or "FULL"                                                                                                                                                                                                                                                     |
 **Response**
 
 If successful, returns a status code of 200 and a payment object including the specified transaction.
