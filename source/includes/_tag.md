@@ -69,6 +69,10 @@ curl  \
 ```
 
 ````java
+import org.killbill.billing.client.api.gen.TagApi;
+protected TagApi tagApi;
+
+List<Tag> tags = tagApi.getTags(requestOptions);
 ````
 
 ````ruby
@@ -133,6 +137,11 @@ curl  \
 ```
 
 ````java
+import org.killbill.billing.client.api.gen.TagApi;
+protected TagApi tagApi;
+
+String searchKey = "WRITTEN_OFF";
+List<Tag> tags = tagApi.searchTags(searchKey, requestOptions);
 ````
 
 ````ruby
@@ -194,6 +203,11 @@ curl  \
 ```
 
 ````java
+import org.killbill.billing.client.api.gen.TagApi;
+protected TagApi tagApi;
+
+UUID tagId = UUID.fromString("720f92c3-a6aa-473b-bc3d-a885f21b5401");
+AuditLogs logs = tagApi.getTagAuditLogsWithHistory(tagId,requestOptions);
 ````
 
 ````ruby
