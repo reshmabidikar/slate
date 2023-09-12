@@ -4,7 +4,7 @@ These APIs manage a tag definition resource object, which provides the definitio
 
 ## Tag Definition Resource
 
-Each tag is associated with a specific tag definition. A tag definition is a schema or template, and a tag is an instance of it. Please refer to the section [AccountTags](account.html#account-tags) for an overview of tags. The system provides some `System tag definitions` that can be used to add tags to a particular object. Users may define their own tags; however, when using `User Tags`, one must first create the associated tag definition.
+Each tag is associated with a specific tag definition. A tag definition is a schema or template, and a tag is an instance of it. Please refer to the [Tags](tag.html) section for an overview of tags. Kill Bill provides a small set of predefined `System Tags`. Users may define their own tags; however, when using `User Tags`, one must first create the associated tag definition.
 
 The tag definition resource includes the following attributes:
 
@@ -16,12 +16,12 @@ The tag definition resource includes the following attributes:
 | **description** | string | user | Description of the tag definition |
 | **applicableObjectTypes** | list | user | see below |
 
-* **applicableObjectTypes**:  A list giving the name(s) of resource types that can be given this tag.
+* **applicableObjectTypes**:  A list of Strings giving the name(s) of resource types that can be given this tag. See [ObjectType](https://github.com/killbill/killbill-api/blob/7ea823b25e8fd6299350ec62d700e265022be34e/src/main/java/org/killbill/billing/ObjectType.java) for a list of the possible values.
 
 
 ## Tag Definition
 
-The APIs in this group provide the ability to create, retrieve, and delete tag definitions, and also to access their associated audit logs.
+The APIs in this group provide the ability to create, retrieve, and delete tag definitions.
 
 
 
@@ -54,6 +54,17 @@ curl -v \
 
 
 ```java
+import org.killbill.billing.client.api.gen.TagDefinitionApi;
+protected TagDefinitionApi tagDefinitionApi;
+
+final boolean isControlTag = false;
+final String tagName = "tag_name";
+final String tagDescription = "tag description";
+List<ObjectType> applicableObjectTypes = List.of(ObjectType.BUNDLE, ObjectType.SUBSCRIPTION);
+final List<AuditLog> EMPTY_AUDIT_LOGS = Collections.emptyList();
+
+TagDefinition tagDefinition = new TagDefinition(null, isControlTag, tagName, tagDescription, applicableObjectTypes, EMPTY_AUDIT_LOGS);
+TagDefinition createdTagDefinition = tagDefinitionApi.createTagDefinition(tagDefinition, requestOptions);
 ```
 
 ```ruby
@@ -79,11 +90,11 @@ none
 
 **Response**
 
-If successful, returns a status code of 201 and an empty body.
+If successful, returns a status code of 201 and an empty body.  In addition, a `Location` header is returned which contains the new tag definition id.
 
 ### List tag definitions
 
-Lists all tag definitions for this tenant
+Lists all tag definitions (corresponding to both system and user tags) for this tenant.
 
 **HTTP Request**
 
@@ -101,6 +112,10 @@ curl -v \
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.TagDefinitionApi;
+protected TagDefinitionApi tagDefinitionApi;
+
+List<TagDefinition> tagDefinitions = tagDefinitionApi.getTagDefinitions(AuditLevel.NONE, requestOptions);
 ```
 
 ```ruby
@@ -139,18 +154,16 @@ curl -v \
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL" (only inserts), or "FULL" |
 
 **Response**
 
-If successful, returns a status code of 200 and a list of tag definition objects.
+If successful, returns a status code of 200 and a list of tag definition resource objects.
 
 
 ### Retrieve a tag definition by its ID
 
-Retrieves an existing tag definition.
+This API retrieves a tag definitions resource object based on its tag definition ID.
 
 **HTTP Request** 
 
@@ -168,6 +181,11 @@ curl -v \
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.TagDefinitionApi;
+protected TagDefinitionApi tagDefinitionApi;
+
+UUID tagDefinitionId = UUID.fromString("ed9e5163-4674-4e24-9545-db7aa581f93c");
+TagDefinition tagDefinition = tagDefinitionApi.getTagDefinition(tagDefinitionId, AuditLevel.NONE, requestOptions);
 ```
 
 ```ruby
@@ -196,13 +214,11 @@ curl -v \
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL" (only inserts), or "FULL" |
 
 **Returns**
 
-If successful, returns a status code of 200 and a tag definition object.
+If successful, returns a status code of 200 and a tag definition resource object.
 
 
 ### Delete a tag definition
@@ -229,6 +245,11 @@ curl -v \
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.TagDefinitionApi;
+protected TagDefinitionApi tagDefinitionApi;
+
+UUID tagDefinitionId = UUID.fromString("ed9e5163-4674-4e24-9545-db7aa581f93c");
+tagDefinitionApi.deleteTagDefinition(tagDefinitionId, requestOptions);
 ```
 
 ```ruby
@@ -254,7 +275,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Audit Logs
 
-Audit logs provide a record of events that occur involving various specific resources. For details on audit logs see [Audit and History](https://killbill.github.io/slate/#using-kill-bill-apis-audit-and-history).
+Audit logs provide a record of events that occur involving various specific resources. For details on audit logs see [Audit and History](index.html#audit-and-history).
 
 ### Retrieve tag definition audit logs with history by id
 
@@ -274,6 +295,15 @@ curl \
     -H "Accept: application/json" \
     "http://127.0.0.1:8080/1.0/kb/tagDefinitions/92991586-df8a-4d8d-9d55-61172c52fa45/auditLogsWithHistory"
 ```
+
+````java
+import org.killbill.billing.client.api.gen.TagDefinitionApi;
+protected TagDefinitionApi tagDefinitionApi;
+
+UUID tagDefinitionId = UUID.fromString("06d991f7-f06a-4e45-80d2-c3b44a97f8bc");
+AuditLogs logs = tagDefinitionApi.getTagDefinitionAuditLogsWithHistory(tagDefinitionId, requestOptions);
+````
+
 > Example Response:
 
 ```json
