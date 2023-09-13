@@ -68,16 +68,31 @@ TagDefinition createdTagDefinition = tagDefinitionApi.createTagDefinition(tagDef
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
+tagDefinition = KillBillClient::Model::TagDefinition.new
+tagDefinition.name = "tag_name"
+tagDefinition.description = "tag description"
+tagDefinition.applicable_object_types = ['BUNDLE', 'SUBSCRIPTION']
+tagDefinition.is_control_tag = false
+
+tagDefinition.create(user,
+                    reason,
+                    comment,
+                    options)
 ```
 
 ```python
+tagDefinitionApi = killbill.api.TagDefinitionApi()
 
-```
+tagDefinition = TagDefinition(name='tag_name', description='tag description', applicable_object_types=['BUNDLE', 'SUBSCRIPTION','ACCOUNT'], is_control_tag=False)
 
-> Example Response:
-
-```json
-no content
+tagDefinitionApi.create_tag_definition(tagDefinition,
+                                       created_by='demo',
+                                       reason='reason',
+                                       comment='comment')
 ```
 
 **Request Body**
@@ -119,9 +134,15 @@ List<TagDefinition> tagDefinitions = tagDefinitionApi.getTagDefinitions(AuditLev
 ```
 
 ```ruby
+audit = 'NONE'
+
+tag_definitions = KillBillClient::Model::TagDefinition.all(audit, options)
 ```
 
 ```python
+tagDefinitionApi = killbill.api.TagDefinitionApi()
+
+tag_definitions = tagDefinitionApi.get_tag_definitions()
 ```
 
 > Example Response:
@@ -189,9 +210,19 @@ TagDefinition tagDefinition = tagDefinitionApi.getTagDefinition(tagDefinitionId,
 ```
 
 ```ruby
+tag_definition_id = "30363fe5-310d-4446-b000-d7bb6e6662e2"
+audit = 'NONE'
+
+tag_definition = KillBillClient::Model::TagDefinition.find_by_id(tag_definition_id, audit, options)
 ```
 
 ```python
+tagDefinitionApi = killbill.api.TagDefinitionApi()
+
+tag_definition_id = '3ba41ebd-71f0-4a27-981b-86c6054f58dd'
+
+tag_definition = tagDefinitionApi.get_tag_definition(tag_definition_id)
+
 ```
 
 > Example Response:
@@ -253,15 +284,25 @@ tagDefinitionApi.deleteTagDefinition(tagDefinitionId, requestOptions);
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
+tagDefinition = KillBillClient::Model::TagDefinition.new
+tagDefinition.id = "2b9d7197-f6a0-4d5f-a0ad-1e3c3e22a0ce"
+
+tagDefinition.delete(user, reason, comment, options);
 ```
 
 ```python
-```
+tagDefinitionApi = killbill.api.TagDefinitionApi()
 
-> Example Response:
+tag_definition_id = '2a4b9f36-6a53-4553-a2ef-d0bddf8e831a'
 
-```json
-no content
+tagDefinitionApi.delete_tag_definition(tag_definition_id,
+                                       created_by='demo',
+                                       reason='reason',
+                                       comment='comment')
 ```
 
 **Query Parameters**
@@ -302,6 +343,21 @@ protected TagDefinitionApi tagDefinitionApi;
 
 UUID tagDefinitionId = UUID.fromString("06d991f7-f06a-4e45-80d2-c3b44a97f8bc");
 AuditLogs logs = tagDefinitionApi.getTagDefinitionAuditLogsWithHistory(tagDefinitionId, requestOptions);
+````
+
+````ruby
+tag_definition = KillBillClient::Model::TagDefinition.new
+tag_definition.id = "2a4b9f36-6a53-4553-a2ef-d0bddf8e831a"
+
+audit_logs = tag_definition.audit_logs_with_history(options)
+````
+
+````python
+tagDefinitionApi = killbill.api.TagDefinitionApi()
+
+tag_definition_id = '3ba41ebd-71f0-4a27-981b-86c6054f58dd'
+
+audit_logs = tagDefinitionApi.get_tag_definition_audit_logs_with_history(tag_definition_id)
 ````
 
 > Example Response:
