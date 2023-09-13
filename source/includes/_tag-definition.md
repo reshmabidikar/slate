@@ -95,6 +95,32 @@ tagDefinitionApi.create_tag_definition(tagDefinition,
                                        comment='comment')
 ```
 
+````javascript
+const api: killbill.TagDefinitionApi = new killbill.TagDefinitionApi(config);
+
+const applicableObjectTypes = ['INVOICE', 'TENANT'];
+const tagDefinition: TagDefinition = {name: "tag_name", description: "tag description", "isControlTag": false, "applicableObjectTypes":applicableObjectTypes};
+
+api.createTagDefinition(tagDefinition, 'created_by');
+````
+
+````php
+$apiInstance = $client->getTagDefinitionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$tagDefinition = new TagDefinition();
+$tagDefinition -> setName("tag_name");
+$tagDefinition -> setDescription("tag description");
+$tagDefinition -> setIsControlTag(false);
+$applicableObjectTypes = array("ACCOUNT","INVOICE");
+$tagDefinition -> setApplicableObjectTypes($applicableObjectTypes);
+
+$result = $apiInstance->createTagDefinition($tagDefinition, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment);
+````
+
 **Request Body**
 
 A TagDefinition resource object with at least the following attributes: **name**, **description**, and **applicableObjectTypes**. The list of **applicableObjectTypes** may not be empty. 
@@ -144,6 +170,20 @@ tagDefinitionApi = killbill.api.TagDefinitionApi()
 
 tag_definitions = tagDefinitionApi.get_tag_definitions()
 ```
+
+````javascript
+const api: killbill.TagDefinitionApi = new killbill.TagDefinitionApi(config);
+
+const response: AxiosResponse<killbill.TagDefinition[], any> = await api.getTagDefinitions();
+````
+
+````php
+$apiInstance = $client->getTagDefinitionApi();
+
+$audit = "NONE";
+
+$result = $apiInstance->getTagDefinitions($audit);
+````
 
 > Example Response:
 
@@ -222,8 +262,24 @@ tagDefinitionApi = killbill.api.TagDefinitionApi()
 tag_definition_id = '3ba41ebd-71f0-4a27-981b-86c6054f58dd'
 
 tag_definition = tagDefinitionApi.get_tag_definition(tag_definition_id)
-
 ```
+
+````javascript
+const api: killbill.TagDefinitionApi = new killbill.TagDefinitionApi(config);
+
+const tagDefinitionId = 'f27312df-4e8f-43c8-97aa-47c2b65c4152';
+
+const response: AxiosResponse<killbill.TagDefinition, any> = await api.getTagDefinition(tagDefinitionId);
+````
+
+````php
+$apiInstance = $client->getTagDefinitionApi();
+
+$tagDefinitionId = "96f4933f-96b2-4268-a8ee-2d40734b6115";
+$audit = "NONE";
+
+$result = $apiInstance->getTagDefinition($tagDefinitionId, $audit);
+````
 
 > Example Response:
 
@@ -305,6 +361,26 @@ tagDefinitionApi.delete_tag_definition(tag_definition_id,
                                        comment='comment')
 ```
 
+````javascript
+const api: killbill.TagDefinitionApi = new killbill.TagDefinitionApi(config);
+
+const tagDefinitionId = '96f4933f-96b2-4268-a8ee-2d40734b6115';
+
+api.deleteTagDefinition(tagDefinitionId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getTagDefinitionApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$tagDefinitionId = "3ba41ebd-71f0-4a27-981b-86c6054f58dd";
+
+$apiInstance->deleteTagDefinition($tagDefinitionId, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment);
+````
+
 **Query Parameters**
 
 None.
@@ -358,6 +434,22 @@ tagDefinitionApi = killbill.api.TagDefinitionApi()
 tag_definition_id = '3ba41ebd-71f0-4a27-981b-86c6054f58dd'
 
 audit_logs = tagDefinitionApi.get_tag_definition_audit_logs_with_history(tag_definition_id)
+````
+
+````javascript
+const api: killbill.TagDefinitionApi = new killbill.TagDefinitionApi(config);
+
+const tagDefinitionId = 'f27312df-4e8f-43c8-97aa-47c2b65c4152';
+
+const response: AxiosResponse<killbill.AuditLog[], any> = await api.getTagDefinitionAuditLogsWithHistory(tagDefinitionId);
+````
+
+````php
+$apiInstance = $client->getTagDefinitionApi();
+
+$tagDefinitionId = "96f4933f-96b2-4268-a8ee-2d40734b6115";
+
+$result = $apiInstance->getTagDefinitionAuditLogsWithHistory($tagDefinitionId);
 ````
 
 > Example Response:
