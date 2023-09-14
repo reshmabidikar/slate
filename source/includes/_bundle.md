@@ -70,7 +70,17 @@ bundle_id = 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'
 
 bundleApi.get_bundle(bundle_id, api_key, api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleId = 'd1067966-c34f-4e93-abf7-7285582e0691';
+
+const bundle: AxiosResponse<killbill.Bundle> = await bundleApi.getBundle(bundleId);
+```
+
+```php
+
+```
 > Example Response:
 
 ```json
@@ -285,7 +295,17 @@ bundle_external_key = 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'
 
 bundleApi.get_bundle_by_key(bundle_external_key, api_key, api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleKey = 'd1067966-c34f-4e93-abf7-7285582e0691';
+
+const bundle: AxiosResponse<killbill.Bundle[]> = await bundleApi.getBundleByKey(bundleKey);
+```
+
+```php
+
+```
 > Example Response:
 
 ```json
@@ -505,7 +525,22 @@ bundleApi.rename_external_key(bundle_id,
                               api_key,
                               api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleBody: killbill.Bundle = {
+      accountId: 'd869f861-0c60-4086-a3fc-49ad855d48c0',
+      externalKey: 'newExternalKey2'
+    };
+
+const bundleID = 'd1067966-c34f-4e93-abf7-7285582e0691';
+
+bundleApi.renameExternalKey(bundleBody, bundleID, 'created_by');
+```
+
+```php
+
+```
 **Request Body**
 
 A bundle resource containing the new external key
@@ -606,7 +641,19 @@ bundleApi.transfer_bundle(bundle_id,
                           api_key, 
                           api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleBody: killbill.Bundle = {accountId: '3e5e2f75-728f-4fc4-a8fc-066e7420bd69'};
+
+const bundleID = 'd1067966-c34f-4e93-abf7-7285582e0691';
+
+bundleApi.transferBundle(bundleBody, bundleID, 'created_by');
+```
+
+```php
+
+```
 **Request Body**
 
 A bundle resource containing at least the new account id
@@ -683,7 +730,17 @@ bundleApi.pause_bundle(bundle_id,
                        api_key, 
                        api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+bundleApi.pauseBundle(bundleID, 'created_by');
+```
+
+```php
+
+```
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -744,7 +801,17 @@ bundleApi.resume_bundle(bundle_id,
                         api_key, 
                         api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleID = 'd1067966-c34f-4e93-abf7-7285582e0691'; 
+
+bundleApi.resumeBundle(bundleID, 'created_by');
+```
+
+```php
+
+```
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -849,7 +916,26 @@ bundleApi.add_bundle_blocking_state(bundle_id,
                                     api_key,
                                     api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const blockingState: killbill.BlockingState = {
+                                                blockedId: '5371f0c8-b39c-4e30-84ec-cc8029ba0670',
+                                                service: 'Billing',
+                                                stateName: 'Acct_resumed',
+                                                isBlockChange: false,
+                                                isBlockEntitlement: false,
+                                                isBlockBilling: false
+                                              };
+
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+bundleApi.addBundleBlockingState(blockingState, bundleID, 'created_by');
+```
+
+```php
+
+```
 **Request Body**
 
 A blocking state resource representing the intended new blocking state. For example,
@@ -948,7 +1034,20 @@ bundleApi.create_bundle_custom_fields(bundle_id,
                                       api_key,
                                       api_secret)
 ```
+```javascript
+const customFields: killbill.CustomField = {
+                                            name: 'Test Custom Field',
+                                            value: 'test_value'};
 
+const customFieldBody = [customFields];
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+bundleApi.createBundleCustomFields(customFieldBody, bundleID, 'created_by');
+```
+
+```php
+
+```
 **Request Body**
 
 A list of objects giving the name and value of the custom field, or fields, to be added. For example:
@@ -1012,7 +1111,18 @@ bundle_id = 'ce967207-851c-4040-bfbd-74a8924f9b8a'
 
 bundleApi.get_bundle_custom_fields(bundle_id, api_key, api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+const bundleCustomFields: AxiosResponse<killbill.CustomField[]> =
+      await bundleApi.getBundleCustomFields(bundleID);
+```
+
+```php
+
+```
 > Example Response:
 
 ```json
@@ -1105,6 +1215,23 @@ bundleApi.modify_bundle_custom_fields(bundle_id,
                                       api_key, 
                                       api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
+
+const customFields: killbill.CustomField = {
+                                            customFieldId: '859a4053-4946-4be0-b94b-fe7a9409d785',
+                                            value: 'custom-field-value-change'
+                                          };
+
+const customFieldBody = [customFields];
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+bundleApi.modifyBundleCustomFields(customFieldBody, bundleID, 'created_by');
+```
+
+```php
+
+```
 **Request Body**
 
 A list of objects specifying the id and the new value for the custom fields to be modified. For example:
@@ -1175,7 +1302,18 @@ bundleApi.delete_bundle_custom_fields(bundle_id,
                                       api_key, 
                                       api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const customFieldID = ['859a4053-4946-4be0-b94b-fe7a9409d785'];
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+bundleApi.deleteBundleCustomFields(bundleID, 'created_by', customFieldID);
+```
+
+```php
+
+```
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -1255,7 +1393,18 @@ bundleApi.create_bundle_tags(bundle_id,
                              api_key, 
                              api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleTag = ['acc26862-875e-4b24-990e-985d3f837862'];
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+bundleApi.createBundleTags(bundleTag, bundleID, 'created_by');
+```
+
+```php
+
+```
 **Request Body**
 
 A JSON array containing one or more strings giving the UUID of tag definitions for the user tags to be added.
@@ -1314,6 +1463,17 @@ bundleApi = killbill.api.BundleApi()
 bundle_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
 
 bundleApi.get_bundle_tags(bundle_id, api_key, api_secret)
+```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
+
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+const bundletags: AxiosResponse<any> = await bundleApi.getBundleTags(bundleID);
+```
+
+```php
+
 ```
 > Example Response:
 
@@ -1396,7 +1556,18 @@ bundleApi.delete_bundle_tags(bundle_id,
                              api_secret,
                              tag_def=tag)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleTag = ['acc26862-875e-4b24-990e-985d3f837862'];
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+bundleApi.deleteBundleTags(bundleID, 'created_by', bundleTag);
+```
+
+```php
+
+```
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -1432,6 +1603,31 @@ curl \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
     "http://127.0.0.1:8080/1.0/kb/bundles/d1b329c7-7dcf-466c-aaca-47bff304dab0/auditLogsWithHistory"
+```
+
+```java
+
+```
+
+```ruby
+
+```
+
+```python
+
+```
+
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
+
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+const bundletags: AxiosResponse<killbill.AuditLog[]> =
+      await bundleApi.getBundleAuditLogsWithHistory(bundleID);
+```
+
+```php
+
 ```
 > Example Response:
 
@@ -1542,6 +1738,13 @@ bundle.find_in_batches(offset,
 bundleApi = killbill.api.BundleApi()
 
 bundleApi.get_bundles(api_key, api_secret,)
+```
+```javascript
+
+```
+
+```php
+
 ```
 > Example Response:
 
@@ -1964,6 +2167,13 @@ bundleApi = killbill.api.BundleApi()
 search_key = '7b26b0ce-a495-4c0c-9dd5-11a556f03e8c'
 
 bundleApi.search_bundles(search_key, api_key, api_secret)
+```
+```javascript
+
+```
+
+```php
+
 ```
 > Example Response:
 
