@@ -1740,7 +1740,9 @@ bundleApi = killbill.api.BundleApi()
 bundleApi.get_bundles(api_key, api_secret,)
 ```
 ```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundles: AxiosResponse<killbill.Bundle[]> = await bundleApi.getBundles();
 ```
 
 ```php
@@ -2169,7 +2171,11 @@ search_key = '7b26b0ce-a495-4c0c-9dd5-11a556f03e8c'
 bundleApi.search_bundles(search_key, api_key, api_secret)
 ```
 ```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const searchKey = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+const bundles: AxiosResponse<killbill.Bundle[]> = await bundleApi.searchBundles(searchKey);
 ```
 
 ```php
