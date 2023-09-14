@@ -1,6 +1,10 @@
 # Tag
 
-A tag is a label that may be attached to almost any resource. There are two categories of tags: `System Tags` and `User Tags`.
+A tag is a label that may be attached to almost any resource. While custom fields allow you to attach `{key, value}` pairs to various objects in the system, single values can also be
+attached to various objects in the system by using tags. There are two categories of tags: `System Tags` and `User Tags`. 
+
+* `System Tags`: These are interpreted by the system to change its behavior. Certain tags can only be attached to specific resource types -- e.g `Account`. In order to distinguish them from the user tags, the system tags are uppercase symbols.
+* `User Tags`: These are defined by the user for any desired purpose and are **not** interpreted by the system and can be anything as long as it a lowercase symbol. For example, `good_customer` could be a tag that can be attached to a customer `Account`. `User Tags` must be defined using the [Tag Definition](tag-definition.html) APIs. These tags may be attached to almost any resource type.
 
 Kill Bill provides a small set of predefined `System Tags` that affect the behavior of the system. For example, `AUTO_PAY_OFF` prevents the system from initiating automatic payment of an invoice. `System Tags` may be attached only to specific resource types, and most (including `AUTO_PAY_OFF`) apply only to `Accounts`.
 
@@ -18,10 +22,7 @@ The following **system** tags have been defined:
 | `AUTO_INVOICING_DRAFT` | `00000000-0000-0000-0000-000000000008` | `ACCOUNT`               | Generate account invoices in DRAFT mode. |
 | `AUTO_INVOICING_REUSE_DRAFT` | `00000000-0000-0000-0000-000000000009` | `ACCOUNT`               | Use existing draft invoice if exists. |
 
-
-`User Tags` are defined by the user for any desired purpose and are not interpreted by the system. `User Tags` must be defined using the [Tag Definition](tag-definition.html) APIs below. These tags may be attached to almost any resource type.
-
-This section provides APIs to list all tags, search for a specific tag, and retrieve tag audit logs. In addition, each resource provides APIs for the applicable CRUD operations: creation, retrieval, and deletion. 
+This section provides APIs to list all tags, search for a specific tag, and retrieve tag audit logs. In addition, each resource provides APIs for the applicable CRUD operations: create, read, update and delete. 
 
 ## Tag  Resource
 
