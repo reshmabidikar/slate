@@ -52,9 +52,11 @@ curl -v \
 import org.killbill.billing.client.api.gen.AdminApi;
 protected AdminApi adminApi;
 
-adminApi.triggerInvoiceGenerationForParkedAccounts(offset,
-                                                   limit,
-                                                   requestOptions);
+Long offset = 0L;
+Long limit = 10L;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
+
+adminApi.triggerInvoiceGenerationForParkedAccounts(offset, limit, NULL_PLUGIN_PROPERTIES, requestOptions);
 ```
 
 ```ruby
@@ -71,8 +73,30 @@ KillBillClient::Model::Admin.trigger_invoice_generation_for_parked_accounts(ofse
 ```python
 adminApi = killbill.api.AdminApi()
 
-adminApi.trigger_invoice_generation_for_parked_accounts('test', api_key, api_secret)
+adminApi.trigger_invoice_generation_for_parked_accounts(created_by='demo',
+                                                        reason='reason',
+                                                        comment='comment')
 ```
+
+````javascript
+const api: killbill.AdminApi = new killbill.AdminApi(config);
+
+api.triggerInvoiceGenerationForParkedAccounts('created_by');
+````
+
+````php
+$apiInstance = $client->getAdminApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$offset = 0;
+$limit = 100;
+$pluginProperty = array("pluginProperty_example");
+
+$apiInstance->triggerInvoiceGenerationForParkedAccounts($xKillbillCreatedBy, $offset, $limit, $pluginProperty, $xKillbillReason, $xKillbillComment);
+````
 
 > Example Response:
 
@@ -106,6 +130,7 @@ adminApi.trigger_invoice_generation_for_parked_accounts('test', api_key, api_sec
 | ---- | -----| -------- | ------- | ----------- |
 | **offset** | long | no | 0 | starting offset for the page |
 | **limit** | long | no | 100 | max results on this page |
+| **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
 
 **Returns**
 
@@ -161,37 +186,61 @@ adminApi.updatePaymentTransactionState(paymentId,
 ```
 
 ```ruby
-payment_id = "6cb944a-b308-4488-b046-4b4d61d375a6"
-transaction_id = "8gb944a-b308-4488-b046-4b4d61d375r3"
-transaction_status = "AUTH_FAILED"
-user =  "demo"
+user = "demo"
 reason = nil
 comment = nil
 
-KillBillClient::Model::Admin.fix_transaction_state(payment_id,
-                                                   transaction_id,
-                                                   transaction_status,
-                                                   user,
-                                                   reason,
-                                                   comment,
-                                                   options)
+payment_id = "6cb944a-b308-4488-b046-4b4d61d375a6"
+transaction_id = "8gb944a-b308-4488-b046-4b4d61d375r3"
+body = AdminPayment(transaction_status='PAYMENT_FAILURE')
+
+adminApi.update_payment_transaction_state(payment_id,
+                                          payment_transaction_id,
+                                          body,
+                                          created_by='demo',
+                                          reason='reason',
+                                          comment='comment')
 ```
 
 ```python
 adminApi = killbill.api.AdminApi()
 
-payment_id = '8gb944a-b308-4488-b046-4b4d61d375r3'
-payment_transaction_id = '6cb944a-b308-4488-b046-4b4d61d375a6'
-body = AdminPayment(transaction_status='AUTH_FAILED')
-created_by = 'demo'
+payment_id = '770d7802-9e03-45dc-a16a-dc58ddcb44d1'
+payment_transaction_id = 'f20e1bca-8c3e-4a8f-b411-27f4362f858b'
+body = AdminPayment(transaction_status='PAYMENT_FAILURE')
 
 adminApi.update_payment_transaction_state(payment_id,
                                           payment_transaction_id,
                                           body,
-                                          created_by,
-                                          api_key,
-                                          api_secret)
+                                          created_by='demo',
+                                          reason='reason',
+                                          comment='comment')
 ```
+
+````javascript
+const api: killbill.AdminApi = new killbill.AdminApi(config);
+
+const paymentId = '770d7802-9e03-45dc-a16a-dc58ddcb44d1';
+const paymentTransactionId = 'f20e1bca-8c3e-4a8f-b411-27f4362f858b';
+const adminPayment: AdminPayment = {transactionStatus: "PAYMENT_FAILURE"};
+
+api.updatePaymentTransactionState(adminPayment, paymentId, paymentTransactionId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getAdminApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$body = new AdminPayment();
+$body -> setTransactionStatus('PAYMENT_FAILURE');
+$paymentId = "770d7802-9e03-45dc-a16a-dc58ddcb44d1";
+$paymentTransactionId = "f20e1bca-8c3e-4a8f-b411-27f4362f858b";
+
+$apiInstance->updatePaymentTransactionState($body, $xKillbillCreatedBy, $paymentId, $paymentTransactionId, $xKillbillReason, $xKillbillComment);
+````
 
 **Request Body**
 
@@ -246,14 +295,28 @@ KillBillClient::Model::Admin.invalidates_cache(cache_name, options)
 ```python
 adminApi = killbill.api.AdminApi()
 
-adminApi.invalidates_cache(api_key, api_secret)
+adminApi.invalidates_cache()
 ```
+
+````javascript
+const api: killbill.AdminApi = new killbill.AdminApi(config);
+
+api.invalidatesCache();
+````
+
+````php
+$apiInstance = $client->getAdminApi();
+
+$cacheName = "tenant";
+
+$apiInstance->invalidatesCache($cacheName);
+````
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ------- | ----------- |
-| **cacheName** | string | no | all caches | cache name |
+| Name | Type | Required | Default | Description                                                            |
+| ---- | -----| -------- | ------- |------------------------------------------------------------------------|
+| **cacheName** | string | no | all caches | Cache name. Possible values are defined in the [Cacheable](https://github.com/killbill/killbill/blob/master/util/src/main/java/org/killbill/billing/util/cache/Cachable.java) interface |
 
 **Returns**
 
@@ -296,8 +359,24 @@ KillBillClient::Model::Admin.invalidates_cache_by_account(account_id, options)
 adminApi = killbill.api.AdminApi()
 account_id = '2ad52f53-85ae-408a-9879-32a7e59dd03d'
 
-adminApi.invalidates_cache_by_account(account_id, api_key, api_secret)
+adminApi.invalidates_cache_by_account(account_id)
 ```
+
+````javascript
+const api: killbill.AdminApi = new killbill.AdminApi(config);
+
+const accountId = '7958908b-040a-4e2c-9606-4f1f62ac1c33';
+
+api.invalidatesCacheByAccount(accountId);
+````
+
+````php
+$apiInstance = $client->getAdminApi();
+
+$accountId = "7958908b-040a-4e2c-9606-4f1f62ac1c33";
+
+$apiInstance->invalidatesCacheByAccount($accountId);
+````
 
 **Query Parameters**
 
@@ -341,8 +420,20 @@ KillBillClient::Model::Admin.invalidates_cache_by_tenant(options)
 ```python
 adminApi = killbill.api.AdminApi()
 
-adminApi.invalidates_cache_by_tenant(api_key, api_secret)
+adminApi.invalidates_cache_by_tenant()
 ```
+
+````javascript
+const api: killbill.AdminApi = new killbill.AdminApi(config);
+
+api.invalidatesCacheByTenant();
+````
+
+````php
+$apiInstance = $client->getAdminApi();
+
+$apiInstance->invalidatesCacheByTenant();
+````
 
 **Query Parameters**
 
@@ -386,8 +477,20 @@ KillBillClient::Model::Admin.put_in_rotation(options)
 ```python
 adminApi = killbill.api.AdminApi()
 
-adminApi.put_in_rotation(api_key, api_secret)
+adminApi.put_in_rotation()
 ```
+
+````javascript
+const api: killbill.AdminApi = new killbill.AdminApi(config);
+
+api.putInRotation();
+````
+
+````php
+$apiInstance = $client->getAdminApi();
+
+$apiInstance->putInRotation();
+````
 
 **Query Parameters**
 
@@ -431,8 +534,20 @@ KillBillClient::Model::Admin.put_out_of_rotation(options)
 ```python
 adminApi = killbill.api.AdminApi()
 
-adminApi.put_out_of_rotation(api_key, api_secret)
+adminApi.put_out_of_rotation()
 ```
+
+````javascript
+const api: killbill.AdminApi = new killbill.AdminApi(config);
+
+api.putOutOfRotation();
+````
+
+````php
+$apiInstance = $client->getAdminApi();
+
+$apiInstance->putOutOfRotation();
+````
 
 **Query Parameters**
 
@@ -448,7 +563,7 @@ This API group currently includes a single API to view entries in the system que
 
 ### Get queue entries
 
-Returns low level details about queue entries. Results can be requested for a specific account or all accounts; for a specific queue or all queues, and for a specific service or all services. In addition optional types of events may be specified, including history, for a specified date range; in processing; bus events; and notifications.
+Returns low level details about queue entries. Results can be requested for a specific account or all accounts; for a specific queue or all queues, and for a specific service or all services. In addition, optional parameters may be specified, including history, for a specified date range; in processing; bus events; and notifications.
 
 **HTTP Request**
 
@@ -498,8 +613,30 @@ KillBillClient::Model::Admin.get_queues_entries(account_id, options)
 ```python
 adminApi = killbill.api.AdminApi()
 
-adminApi.get_queue_entries(api_key, api_secret)
+adminApi.get_queue_entries()
 ```
+
+````javascript
+const api: killbill.AdminApi = new killbill.AdminApi(config);
+
+api.getQueueEntries();
+````
+
+````php
+$apiInstance = $client->getAdminApi();
+
+$accountId = "38400000-8cf0-11bd-b23e-10b96e4ef00d";
+$queueName = "queueName_example";
+$serviceName = "serviceName_example";
+$withHistory = true;
+$minDate = "2023-01-01";
+$maxDate = "2023-12-31";
+$withInProcessing = true;
+$withBusEvents = true;
+$withNotifications = true;
+
+$apiInstance->getQueueEntries($accountId, $queueName, $serviceName, $withHistory, $minDate, $maxDate, $withInProcessing, $withBusEvents, $withNotifications);
+````
 
 > Example Response:
 
@@ -523,6 +660,11 @@ adminApi.get_queue_entries(api_key, api_secret)
 | **withInProcessing** | boolean | no | true | if true include in processing |
 | **withBusEvents** | boolean | no | true | if true include bus events |
 | **withNotifications** | boolean | no | true |if true include notifications |
+
+**Notes:**
+* If `accountId` is specified, `minDate` and `maxDate` have no effect and all the queue entries for the specified account are returned.
+* If `withHistory` is false, the `minDate` parameter has no effect and all queue entries up to the specified `maxDate` are returned.
+* If `withHistory` is true, the `maxDate` parameter has no effect and all queue entries starting from `minDate` are returned.
 
 **Returns**
 
