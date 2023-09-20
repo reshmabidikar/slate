@@ -181,8 +181,12 @@ Invoice invoice = invoiceApi.createFutureInvoice(accountId, targetDate, NULL_PLU
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 account_id = "3ee3aa82-1d45-4bbc-b36b-74d628e095d0"
-target_date = nil
+target_date = "2024-12-05"
 
 KillBillClient::Model::Invoice.trigger_invoice(account_id, 
                                                target_date, 
@@ -267,15 +271,24 @@ Invoice migrationInvoice = invoiceApi.createMigrationInvoice(accountId,
 ```
 
 ```ruby
-account_id = "be19b229-c076-47aa-aa4d-f53bec505dc7"
-invoices = "external_invoice_list"
+user = "demo"
+reason = nil
+comment = nil
+
+account_id = "3a949187-a2a0-46b5-8720-fff8b12eabff"
 target_date = "2018-03-15"
-KillBillClient::Model::Invoice.create_migration_invoice(account_id, 
-                                                        invoices, 
-                                                        target_date, 
-                                                        user, 
-                                                        reason, 
-                                                        comment, 
+
+invoice_item = KillBillClient::Model::InvoiceItem.new
+invoice_item.item_type = "EXTERNAL_CHARGE"
+invoice_item.amount = 50
+invoice_items = [invoice_item]
+
+KillBillClient::Model::Invoice.create_migration_invoice(account_id,
+                                                        invoice_items,
+                                                        target_date,
+                                                        user,
+                                                        reason,
+                                                        comment,
                                                         options)
 ```
 
@@ -359,6 +372,10 @@ List<InvoiceItem> createdExternalCharges = invoiceApi.createExternalCharges(acco
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 invoice_item             = KillBillClient::Model::InvoiceItem.new()
 invoice_item.account_id  = "83e5e82d-fe72-4873-9b8b-946f4d250b0d"
 invoice_item.amount      = '50.0'
@@ -496,18 +513,22 @@ List<InvoiceItem> createdTaxItems = invoiceApi.createTaxItems(accountId,
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 invoice_item             = KillBillClient::Model::InvoiceItem.new()
-invoice_item.account_id  = "29ef0d50-90d1-4163-bb46-ef1b82675ae6"
+invoice_item.account_id  = "3a949187-a2a0-46b5-8720-fff8b12eabff"
 invoice_item.amount      = '50.0'
 invoice_item.currency    = 'USD'
-invoice_item.description = 'My charge'
+invoice_item.description = 'Tax item'
 
 auto_commit = true
 
-invoice_item.create_tax_items(auto_commit, 
-                              user, 
-                              reason, 
-                              comment, 
+invoice_item.create_tax_item(auto_commit,
+                              user,
+                              reason,
+                              comment,
                               options)
 ```
 
@@ -612,13 +633,11 @@ Invoice invoiceWithItems = invoiceApi.getInvoice(invoiceId,
 ```
 
 ```ruby
-invoice_id = "31db9f9a-91ff-49f4-b5a1-5e4fce59a197"
-with_items = true
+invoice_id = "5c6083c1-a673-4b67-9b86-74139df50448"
 audit = 'NONE'
 
-KillBillClient::Model::Invoice.find_by_id(invoice_id, 
-                                          with_items, 
-                                          audit, 
+invoice = KillBillClient::Model::Invoice.find_by_id(invoice_id,
+                                          audit,
                                           options)
 ```
 
@@ -728,13 +747,11 @@ Invoice invoiceByNumber = invoiceApi.getInvoiceByNumber(invoiceNumber,
 ```
 
 ```ruby
-invoice_number = "1913"
-with_items = true
+invoice_number = "7318"
 audit = 'NONE'
 
-KillBillClient::Model::Invoice.find_by_number(invoice_number, 
-                                              with_items, 
-                                              audit, 
+invoice = KillBillClient::Model::Invoice.find_by_number(invoice_number,
+                                              audit,
                                               options)
 ```
 
@@ -844,15 +861,13 @@ Invoice invoiceByItemId = invoiceApi.getInvoiceByItemId(invoiceItemId,
 ```
 
 ```ruby
-invoice_item_id = "f641ce8a-a874-4e98-ada5-2bd8fdb74945"
-with_items = true
+invoice_item_id = "14b0de07-6634-4e56-9062-156ba8e6c06d"
 with_children_items = false
 audit = 'NONE'
 
-KillBillClient::Model::Invoice.find_by_invoice_item_id(invoice_item_id, 
-                                                       with_items,
-                                                       with_children_items, 
-                                                       audit, 
+invoice = KillBillClient::Model::Invoice.find_by_invoice_item_id(invoice_item_id,
+                                                       with_children_items,
+                                                       audit,
                                                        options)
 ```
 
@@ -961,8 +976,8 @@ String htmlInvoice = invoiceApi.getInvoiceAsHTML(invoiceId, requestOptions);
 ```
 
 ```ruby
-invoice_id = invoice.invoice_id
-KillBillClient::Model::Invoice.as_html(invoice_id, @options)
+invoice_id = "5c6083c1-a673-4b67-9b86-74139df50448"
+invoiceHTML = KillBillClient::Model::Invoice.as_html(invoice_id, options)
 ```
 
 ```python
@@ -1122,6 +1137,10 @@ invoiceApi.commitInvoice(invoiceId, requestOptions);
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 invoice = KillBillClient::Model::Invoice.new
 invoice.invoice_id = "2c98cfa2-7929-4cc2-9397-1624fb72c6d5"
 
@@ -1187,7 +1206,17 @@ invoiceApi.voidInvoice(invoiceId, requestOptions);
 ```
 
 ```ruby
-TODO
+user = "demo"
+reason = nil
+comment = nil
+
+invoice = KillBillClient::Model::Invoice.new
+invoice.invoice_id = "6b877adc-0916-4409-ba95-f4e955772ea6"
+
+invoice.void(user,
+               reason,
+               comment,
+               options)
 ```
 
 ```python
@@ -1262,6 +1291,10 @@ Invoice result = invoiceApi.adjustInvoiceItem(invoiceId,
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 invoice_item                 = KillBillClient::Model::InvoiceItem.new
 invoice_item.account_id      = "3ee3aa82-1d45-4bbc-b36b-74d628e095d0"
 invoice_item.invoice_id      = "2c98cfa2-7929-4cc2-9397-1624fb72c6d5"
@@ -1351,6 +1384,10 @@ invoiceApi.deleteCBA(invoiceId, invoiceItemId, accountId, requestOptions);
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 invoice_item                 = KillBillClient::Model::InvoiceItem.new
 invoice_item.account_id      = "3ee3aa82-1d45-4bbc-b36b-74d628e095d0"
 invoice_item.invoice_id      = "2c98cfa2-7929-4cc2-9397-1624fb72c6d5"
