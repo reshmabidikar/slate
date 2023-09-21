@@ -209,6 +209,23 @@ invoiceApi.create_future_invoice(account_id,
                                  comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$accountId = "d7ec4174-ab07-4e25-a917-ad020b755917";
+$targetDate = new \DateTime("2023-10-21");
+$pluginProperty = array("pluginProperty_example");
+
+$result = $apiInstance->createFutureInvoice($accountId, $xKillbillCreatedBy, $targetDate, $pluginProperty, $xKillbillReason, $xKillbillComment);
+````
+
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -310,6 +327,28 @@ invoiceApi.create_migration_invoice(account_id,
                                     reason='reason',
                                     comment='comment')
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$item = new InvoiceItem();
+$item -> setAmount(100);
+$item -> setItemType("EXTERNAL_CHARGE");
+$item -> setDescription("migration item");
+$body = array($item);
+
+$accountId = "f547bda2-ad09-4e79-84c3-9759939496dd";
+$targetDate = NULL;
+
+$result = $apiInstance->createMigrationInvoice($body, $xKillbillCreatedBy, $accountId, $xKillbillReason, $xKillbillComment, $targetDate);
+````
 
 **Request Body**
 
@@ -413,6 +452,30 @@ invoiceApi.create_external_charges(account_id,
                                    reason='reason',
                                    comment='comment')
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$item = new InvoiceItem();
+$item -> setAmount(100);
+$item -> setItemType("EXTERNAL_CHARGE");
+$item -> setDescription("external charge item");
+$body = array($item);
+
+$accountId = "f547bda2-ad09-4e79-84c3-9759939496dd";
+$requestedDate = new \DateTime("2023-09-21");
+$autoCommit = false;
+$pluginProperty = array("pluginProperty_example");
+
+$result = $apiInstance->createExternalCharges($body, $xKillbillCreatedBy, $accountId, $xKillbillReason, $xKillbillComment, $requestedDate, $autoCommit, $pluginProperty);
+````
 
 > Example Response:
 
@@ -557,6 +620,30 @@ invoiceApi.create_tax_items(account_id,
                             comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$item = new InvoiceItem();
+$item -> setAmount(100);
+$item -> setItemType("TAX");
+$item -> setDescription("tax item");
+$body = array($item);
+
+$accountId = "f547bda2-ad09-4e79-84c3-9759939496dd";
+$requestedDate = new \DateTime("2023-09-21");
+$autoCommit = false;
+$pluginProperty = array("pluginProperty_example");
+
+$result = $apiInstance->createTaxItems($body, $xKillbillCreatedBy, $accountId, $xKillbillReason, $xKillbillComment, $autoCommit, $requestedDate, $pluginProperty);
+````
+
 > Example Response:
 
 ```json
@@ -657,6 +744,20 @@ invoice_id = '4b16ad29-2f32-4e7e-85f9-99beda4ae7dd'
 
 invoice = invoiceApi.get_invoice(invoice_id)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$invoiceId = "0fd7d64a-90d2-4d4d-9123-e9c5c7f36a47";
+$withChildrenItems = false;
+$audit = "NONE";
+
+$result = $apiInstance->getInvoice($invoiceId, $withChildrenItems, $audit);
+````
+
 > Example Response:
 
 ```json
@@ -771,6 +872,20 @@ invoice_number = '7452'
 
 invoice = invoiceApi.get_invoice_by_number(invoice_number)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$invoiceNumber = 7457;
+$withChildrenItems = false;
+$audit = "NONE";
+
+$result = $apiInstance->getInvoiceByNumber($invoiceNumber, $withChildrenItems, $audit);
+````
+
 > Example Response:
 
 ```json
@@ -888,6 +1003,20 @@ invoice_item_id = '5cc1dce5-7f95-4d8e-987b-27ddd9e5b171'
 invoice = invoiceApi.get_invoice_by_item_id(invoice_item_id,
                                             with_children_items=True)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$itemId = "b912e57d-897c-4018-9802-66a030fad55f";
+$withChildrenItems = false;
+$audit = "NONE";
+
+$result = $apiInstance->getInvoiceByItemId($itemId, $withChildrenItems, $audit);
+````
+
 > Example Response:
 
 ```json
@@ -994,6 +1123,17 @@ invoice_id = '4b16ad29-2f32-4e7e-85f9-99beda4ae7dd'
 
 invoiceHTML = invoiceApi.get_invoice_as_html(invoice_id)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$invoiceId = "0fd7d64a-90d2-4d4d-9123-e9c5c7f36a47";
+
+$result = $apiInstance->getInvoiceAsHTML($invoiceId);
+````
 
 > Example Response:
 
@@ -1168,6 +1308,21 @@ invoiceApi.commit_invoice(invoice_id,
                           comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "80bd3bf3-307f-438b-bf7a-7dc5e8addf19";
+
+$apiInstance->commitInvoice($invoiceId, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment);
+````
+
 **Query Parameters**
 
 None. 
@@ -1237,6 +1392,21 @@ invoiceApi.void_invoice(invoice_id,
                         reason='reason',
                         comment='comment')
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "80bd3bf3-307f-438b-bf7a-7dc5e8addf19";
+
+$apiInstance->voidInvoice($invoiceId, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
@@ -1335,9 +1505,33 @@ invoiceApi.adjust_invoice_item(invoice_id,
                                comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "b7c4ce68-e885-4f8b-8ee3-2eee7b3d8fb7";
+$requestedDate = NULL;
+$pluginProperty = array("pluginProperty_example");
+
+$body = new InvoiceItem();
+$body -> setAmount(20);
+$body -> setAccountId("f547bda2-ad09-4e79-84c3-9759939496dd");
+$body -> setInvoiceId($invoiceId);
+$body -> setInvoiceItemId("00450fb0-25c2-4ad4-ac81-8d3258ec6b25");
+$body -> setDescription("good customer - free adjustment");
+
+$result = $apiInstance->adjustInvoiceItem($body, $xKillbillCreatedBy, $invoiceId, $xKillbillReason, $xKillbillComment, $requestedDate, $pluginProperty);
+````
+
 **Request Body**
 
-An invoice item resource object with at least `invoiceItemId`, `invoiceId`, and `amount` attributes. 
+An invoice item resource object with at least `accountId`, `invoiceItemId`, `invoiceId`, and `amount` attributes. 
 
 **Query Parameters**
 
@@ -1422,6 +1616,23 @@ invoiceApi.delete_cba(invoice_id,
                       reason='reason',
                       comment='comment')
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "dff3b38a-4fcd-43f7-8fe9-7dcae2bc8269";
+$invoiceItemId = "177cba3a-6775-4357-94cc-0f1e51136649";
+$accountId = "f547bda2-ad09-4e79-84c3-9759939496dd";
+
+$apiInstance->deleteCBA($invoiceId, $invoiceItemId, $accountId, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
