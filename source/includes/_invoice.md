@@ -210,6 +210,12 @@ invoiceApi.create_future_invoice(account_id,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const accountId = 'b462d167-d9bc-459a-bdb7-23ebf99f5b76';
+const targetDate = '2023-10-21';
+
+api.createFutureInvoice(accountId, 'created_by', targetDate);
 ````
 
 ````php
@@ -329,6 +335,13 @@ invoiceApi.create_migration_invoice(account_id,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const accountId = 'b462d167-d9bc-459a-bdb7-23ebf99f5b76';
+const item: InvoiceItem = {amount: 10, itemType: "EXTERNAL_CHARGE","description":"a migration item"};
+const items = [item];
+
+api.createMigrationInvoice(items, accountId, 'created_by');
 ````
 
 ````php
@@ -454,6 +467,13 @@ invoiceApi.create_external_charges(account_id,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const accountId = 'b462d167-d9bc-459a-bdb7-23ebf99f5b76';
+const item: InvoiceItem = {amount: 10, itemType: "EXTERNAL_CHARGE","description":"external charge"};
+const items = [item];
+
+api.createExternalCharges(items, accountId, 'created_by');
 ````
 
 ````php
@@ -621,6 +641,13 @@ invoiceApi.create_tax_items(account_id,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const accountId = 'b462d167-d9bc-459a-bdb7-23ebf99f5b76';
+const item: InvoiceItem = {amount: 10, itemType: "TAX","description":"a tax item"};
+const items = [item];
+
+api.createTaxItems(items, accountId, 'created_by');
 ````
 
 ````php
@@ -746,6 +773,11 @@ invoice = invoiceApi.get_invoice(invoice_id)
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceId = 'fd9df8b8-f845-43a1-8fe8-73a8269c5bcc';
+
+const response: AxiosResponse<killbill.Invoice, any> = await api.getInvoice(invoiceId);
 ````
 
 ````php
@@ -874,6 +906,11 @@ invoice = invoiceApi.get_invoice_by_number(invoice_number)
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceNumber = 7463;
+
+const response: AxiosResponse<killbill.Invoice, any> = await api.getInvoiceByNumber(invoiceNumber);
 ````
 
 ````php
@@ -1005,6 +1042,11 @@ invoice = invoiceApi.get_invoice_by_item_id(invoice_item_id,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceItemId = 'ed7e1b5d-ed43-41bf-99ca-85ff2c88462d';
+
+const response: AxiosResponse<killbill.Invoice, any> = await api.getInvoiceByItemId(invoiceItemId);
 ````
 
 ````php
@@ -1125,6 +1167,11 @@ invoiceHTML = invoiceApi.get_invoice_as_html(invoice_id)
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceId = 'fd9df8b8-f845-43a1-8fe8-73a8269c5bcc';
+
+const response: AxiosResponse = await api.getInvoiceAsHTML(invoiceId);
 ````
 
 ````php
@@ -1309,6 +1356,11 @@ invoiceApi.commit_invoice(invoice_id,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceId = '926ff247-e220-4cf9-8829-c13e943e3809';
+
+api.commitInvoice(invoiceId, 'created_by');
 ````
 
 ````php
@@ -1394,6 +1446,11 @@ invoiceApi.void_invoice(invoice_id,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceId = '926ff247-e220-4cf9-8829-c13e943e3809';
+
+api.voidInvoice(invoiceId, 'created_by');
 ````
 
 ````php
@@ -1506,6 +1563,12 @@ invoiceApi.adjust_invoice_item(invoice_id,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const item: InvoiceItem = {accountId: "b462d167-d9bc-459a-bdb7-23ebf99f5b76", invoiceId: "4f948961-90a9-427b-bfbf-7583bee86711",invoiceItemId:"3fd23760-11be-447d-8c91-9a22037ca239", amount:10, description: "free adjustment, good customer"};
+const invoiceId = '4f948961-90a9-427b-bfbf-7583bee86711';
+
+api.adjustInvoiceItem(item, invoiceId, 'created_by');
 ````
 
 ````php
@@ -1618,6 +1681,13 @@ invoiceApi.delete_cba(invoice_id,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const accountId = 'b462d167-d9bc-459a-bdb7-23ebf99f5b76';
+const invoiceId = 'd723f109-7c4d-470e-9267-995610b02b28';
+const invoiceItemId = '7b8d4e3e-0fa0-43fc-bac2-4a0147e9a185';
+
+api.deleteCBA(invoiceId, invoiceItemId, accountId, 'created_by');
 ````
 
 ````php
