@@ -877,7 +877,7 @@ invoiceApi.get_invoice_as_html(invoice_id, api_key, api_secret)
 
 > Example Response:
 
-```
+```text/plain
 <html>
     <head>
         <style type="text/css">
