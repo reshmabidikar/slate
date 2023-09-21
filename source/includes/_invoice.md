@@ -198,13 +198,15 @@ KillBillClient::Model::Invoice.trigger_invoice(account_id,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-target_date = datetime.date(2018, 6, 11)
 
-invoiceApi.create_future_invoice(account_id, 
-                                 created_by, 
-                                 api_key, 
-                                 api_secret, 
-                                 target_date=target_date)
+account_id = 'bdbed417-a84b-4303-958c-b88a36807416'
+target_date = datetime.date(2023, 10, 20)
+
+invoiceApi.create_future_invoice(account_id,
+                                 target_date=target_date,
+                                 created_by='demo',
+                                 reason='reason',
+                                 comment='comment')
 ```
 
 **Query Parameters**
@@ -294,15 +296,19 @@ KillBillClient::Model::Invoice.create_migration_invoice(account_id,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-body = 'external_invoice_list'
-target_date = datetime.date(2018, 6, 11)
+
+account_id = 'bdbed417-a84b-4303-958c-b88a36807416'
+body = InvoiceItem(account_id=account_id,
+                   amount=50.0,
+                   currency='USD',
+                   item_type='EXTERNAL_CHARGE',
+                   description='Migration item')
 
 invoiceApi.create_migration_invoice(account_id,
                                     [body],
-                                    created_by,
-                                    api_key,
-                                    api_secret,
-                                    target_date)
+                                    created_by='demo',
+                                    reason='reason',
+                                    comment='comment')
 ```
 
 **Request Body**
@@ -393,17 +399,19 @@ invoice_item.create(auto_commit,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
+
+account_id = 'bdbed417-a84b-4303-958c-b88a36807416'
 body = InvoiceItem(account_id=account_id,
                    amount=50.0,
                    currency='USD',
-                   description='My charge')
+                   description='External charge')
 
 invoiceApi.create_external_charges(account_id,
                                    [body],
-                                   created_by,
-                                   api_key,
-                                   api_secret,
-                                   auto_commit=True)
+                                   auto_commit=True,
+                                   created_by='demo',
+                                   reason='reason',
+                                   comment='comment')
 ```
 
 > Example Response:
@@ -534,17 +542,19 @@ invoice_item.create_tax_item(auto_commit,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
+
+account_id = 'bdbed417-a84b-4303-958c-b88a36807416'
 body = InvoiceItem(account_id=account_id,
                    amount=50.0,
                    currency='USD',
-                   description='My charge')
+                   description='Tax item')
 
 invoiceApi.create_tax_items(account_id,
                             [body],
-                            created_by,
-                            api_key,
-                            api_secret,
-                            auto_commit=True)
+                            auto_commit=True,
+                            created_by='demo',
+                            reason='reason',
+                            comment='comment')
 ```
 
 > Example Response:
@@ -643,9 +653,9 @@ invoice = KillBillClient::Model::Invoice.find_by_id(invoice_id,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '43da4e9c-03c6-4f15-8943-b9a3af3ecacb'
-        
-invoiceApi.get_invoice(invoice_id, api_key, api_secret)
+invoice_id = '4b16ad29-2f32-4e7e-85f9-99beda4ae7dd'
+
+invoice = invoiceApi.get_invoice(invoice_id)
 ```
 > Example Response:
 
@@ -757,9 +767,9 @@ invoice = KillBillClient::Model::Invoice.find_by_number(invoice_number,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_number = '972'
+invoice_number = '7452'
 
-invoiceApi.get_invoice_by_number(invoice_number, api_key, api_secret)
+invoice = invoiceApi.get_invoice_by_number(invoice_number)
 ```
 > Example Response:
 
@@ -873,12 +883,10 @@ invoice = KillBillClient::Model::Invoice.find_by_invoice_item_id(invoice_item_id
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_item_id = '8fae6721-3ebc-4103-85f5-aa13dde0e4f5'
+invoice_item_id = '5cc1dce5-7f95-4d8e-987b-27ddd9e5b171'
 
-invoiceApi.get_invoice_by_item_id(invoice_item_id, 
-                                  api_key, 
-                                  api_secret, 
-                                  with_items=True)
+invoice = invoiceApi.get_invoice_by_item_id(invoice_item_id,
+                                            with_children_items=True)
 ```
 > Example Response:
 
@@ -982,9 +990,9 @@ invoiceHTML = KillBillClient::Model::Invoice.as_html(invoice_id, options)
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '2c98cfa2-7929-4cc2-9397-1624fb72c6d5'
+invoice_id = '4b16ad29-2f32-4e7e-85f9-99beda4ae7dd'
 
-invoiceApi.get_invoice_as_html(invoice_id, api_key, api_secret)
+invoiceHTML = invoiceApi.get_invoice_as_html(invoice_id)
 ```
 
 > Example Response:
@@ -1152,11 +1160,12 @@ invoice.commit(user,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
+invoice_id = '18d23ef1-ea82-442d-8602-43305232f3e5'
 
-invoiceApi.commit_invoice(invoice_id, 
-                          created_by, 
-                          api_key, 
-                          api_secret)
+invoiceApi.commit_invoice(invoice_id,
+                          created_by='demo',
+                          reason='reason',
+                          comment='comment')
 ```
 
 **Query Parameters**
@@ -1221,12 +1230,12 @@ invoice.void(user,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
+invoice_id = '18d23ef1-ea82-442d-8602-43305232f3e5'
 
-invoiceApi.void_invoice(invoice_id, 
-                        created_by, 
-                        api_key, 
-                        api_secret)
+invoiceApi.void_invoice(invoice_id,
+                        created_by='demo',
+                        reason='reason',
+                        comment='comment')
 ```
 
 **Query Parameters**
@@ -1311,18 +1320,19 @@ invoice_item.update(user,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-body = InvoiceItem(account_id='3ee3aa82-1d45-4bbc-b36b-74d628e095d0',
-                   invoice_id='2c98cfa2-7929-4cc2-9397-1624fb72c6d5',
-                   invoice_item_id='b311f709-ad51-4f67-8722-18ce04334c31',
-                   amount=100,
+invoice_id = '4b16ad29-2f32-4e7e-85f9-99beda4ae7dd'
+body = InvoiceItem(account_id='bdbed417-a84b-4303-958c-b88a36807416',
+                   invoice_id='4b16ad29-2f32-4e7e-85f9-99beda4ae7dd',
+                   invoice_item_id='5cc1dce5-7f95-4d8e-987b-27ddd9e5b171',
+                   amount=10,
                    currency='USD',
                    description='Free adjustment: good customer')
 
 invoiceApi.adjust_invoice_item(invoice_id,
                                body,
-                               created_by,
-                               api_key,
-                               api_secret)
+                               created_by='demo',
+                               reason='reason',
+                               comment='comment')
 ```
 
 **Request Body**
@@ -1401,16 +1411,16 @@ invoice_item.delete(user,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id='2c98cfa2-7929-4cc2-9397-1624fb72c6d5',
-invoice_item_id='b311f709-ad51-4f67-8722-18ce04334c31'
-account_id = '3ee3aa82-1d45-4bbc-b36b-74d628e095d0',
+invoice_id='a493320b-29ab-4228-ad84-58d53e88b73b'
+invoice_item_id='b3aeb9d7-4501-4285-8071-f5c02f45a659'
+account_id = 'bdbed417-a84b-4303-958c-b88a36807416'
 
 invoiceApi.delete_cba(invoice_id,
                       invoice_item_id,
                       account_id,
-                      created_by,
-                      api_key,
-                      api_secret)
+                      created_by='demo',
+                      reason='reason',
+                      comment='comment')
 ```
 
 **Query Parameters**
