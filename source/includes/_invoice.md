@@ -1407,28 +1407,33 @@ UUID bundleId = null;
 LocalDate effectiveDate = null;
 BillingActionPolicy billingPolicy = null;
 List<PhasePrice> priceOverrides = null;
+String planName = null;
+
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 
 InvoiceDryRun dryRunArg = new InvoiceDryRun(dryRunType, 
-                                            dryRunAction,
-                                            phaseType, 
-                                            productName, 
-                                            productCategory, 
-                                            billingPeriod, 
-                                            priceListName, 
-                                            subscriptionId, 
-                                            bundleId, 
-                                            effectiveDate, 
-                                            billingPolicy,
-                                            priceOverrides);
+        dryRunAction,
+        phaseType,
+        productName,
+        productCategory,
+        billingPeriod,
+        priceListName,
+        subscriptionId,
+        bundleId,
+        effectiveDate,
+        billingPolicy,
+        priceOverrides,
+        planName);
 
 
-UUID accountId = UUID.fromString("fe1a6f86-9ec5-4ac3-8d39-15f024cc8339");
-LocalDate targetDate = new LocalDate().plusDays(1);
+UUID accountId = UUID.fromString("8452df66-ded8-4fba-b7dc-50302d19bc5b");
+LocalDate targetDate = new LocalDate("2023-10-22");
 
-Invoice dryRunInvoice = invoiceApi.generateDryRunInvoice(dryRunArg, 
-                                                         accountId, 
-                                                         targetDate, 
-                                                         requestOptions);
+Invoice dryRunInvoice = invoiceApi.generateDryRunInvoice(dryRunArg,
+        accountId,
+        targetDate,
+        NULL_PLUGIN_PROPERTIES,
+        requestOptions);
 ```
 
 ```ruby
@@ -1843,12 +1848,12 @@ invoicePayment.setTargetInvoiceId(invoiceId);
 
 Boolean externalPayment = true; // Will use a external payment method
 List<String> controlPluginNames = null;
-Map<String, String> pluginProperty = null;
+Map<String, String> NULL_PLUGIN_PROPERTIES = null;
 InvoicePayment result = invoiceApi.createInstantPayment(invoiceId, 
                                                         invoicePayment, 
                                                         externalPayment, 
-                                                        controlPluginNames, 
-                                                        pluginProperty, 
+                                                        controlPluginNames,
+                                                        NULL_PLUGIN_PROPERTIES, 
                                                         requestOptions);
 ```
 
@@ -1925,10 +1930,10 @@ Boolean withPluginInfo = false; // Will not reflect plugin info
 Boolean withAttempts = false; // Will not reflect payment attempts
 
 InvoicePayments invoicePayments = invoiceApi.getPaymentsForInvoice(invoiceId,
-                                                                   withPluginInfo,
-                                                                   withAttempts,
-                                                                   AuditLevel.NONE,
-                                                                   inputOptions);
+        withPluginInfo,
+        withAttempts,
+        AuditLevel.NONE,
+        requestOptions);
 ```
 
 ```ruby
