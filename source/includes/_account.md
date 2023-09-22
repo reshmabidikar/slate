@@ -4006,18 +4006,9 @@ $apiInstance->deleteAccountCustomFields($accountID,$xKillbillCreatedBy);
 If successful, returns a status code of 204 and an empty body.
 
 
-## Tags
+## Tags 
 
-While custom fields allow you to attach `{key, value}` pairs to various objects in the system, single values can also be
-attached to various objects in the system by using tags. Tags come in 2 different categories:
-
-* `System Tags`: These are interpreted by the system to change its behavior. Certain tags can only be attached to specific resource types -- e.g `Account`. In order to distinguish them from the user tags, the system tags are uppercase symbols.
-* `User Tags`: These are **not** interpreted by the system and can be anything as long as it a lowercase symbol. Foe example, `good_customer` could be a tag that can be attached to a customer `Account`. 
-
-The APIs to manage tags rely on having an existing tag definition and supplying the `tagDefinitionId` in the calls. Therefore, for user tags, one should first create a `TagDefinition`.
-
-To create user tags, one must first create the tag definitions. For instructions see section [Tag definition](tag-definition.html).
-
+This section provides APIs to add tags, to retrieve all tags, to retrieve account tags and to remove tags associated with the account. For more details on tags, see section [Tag](tag.html).
 
 ### Add tags to account
 

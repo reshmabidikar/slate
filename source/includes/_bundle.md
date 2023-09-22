@@ -60,7 +60,8 @@ Bundle result = bundleApi.getBundle(bundleId,
 ```ruby
 bundle_id = "5b7a5f2d-4054-412f-b354-b722c2cff4ec"
 
-bundle = KillBillClient::Model::Bundle.new
+bundle = KillBillClient::Model::Bundle
+
 bundle.find_by_id(bundle_id, options)
 ```
 
@@ -70,7 +71,21 @@ bundle_id = 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'
 
 bundleApi.get_bundle(bundle_id, api_key, api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleId = 'd1067966-c34f-4e93-abf7-7285582e0691';
+
+const bundle: AxiosResponse<killbill.Bundle> = await bundleApi.getBundle(bundleId);
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$bundleId = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+$bundleResult = $apiInstance->getBundle($bundleId);
+```
 > Example Response:
 
 ```json
@@ -273,7 +288,8 @@ Bundles bundles = bundleApi.getBundleByKey(externalKey,
 external_key = '4b67f7d8-d7db-4e4f-b282-eb1cdf43a995-43135'
 included_deleted = false
 
-bundle = KillBillClient::Model::Bundle.new
+bundle = KillBillClient::Model::Bundle
+
 bundle.find_by_external_key(external_key, 
                             included_deleted, 
                             options)
@@ -285,7 +301,21 @@ bundle_external_key = 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'
 
 bundleApi.get_bundle_by_key(bundle_external_key, api_key, api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleKey = 'd1067966-c34f-4e93-abf7-7285582e0691';
+
+const bundle: AxiosResponse<killbill.Bundle[]> = await bundleApi.getBundleByKey(bundleKey);
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$bundleKey = 'bundleKey';
+
+$bundleResult = $apiInstance->getBundleByKey($bundleKey);
+```
 > Example Response:
 
 ```json
@@ -484,8 +514,13 @@ bundle.setExternalKey(externalKey);
 bundleApi.renameExternalKey(bundleId, bundle, requestOptions);
 ```
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 bundle = KillBillClient::Model::Bundle.new
-bundle.bundle_id = bundle_id
+
+bundle.bundle_id = 'ffde26ed-cd17-478e-95f8-ddfb908941ee'
 bundle.external_key = "new_external_key"
 
 bundle.rename_external_key(user, 
@@ -505,7 +540,39 @@ bundleApi.rename_external_key(bundle_id,
                               api_key,
                               api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleBody: killbill.Bundle = {
+      accountId: 'd869f861-0c60-4086-a3fc-49ad855d48c0',
+      externalKey: 'newExternalKey2'
+    };
+
+const bundleID = 'd1067966-c34f-4e93-abf7-7285582e0691';
+
+bundleApi.renameExternalKey(bundleBody, bundleID, 'created_by');
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$bundleBody = new Bundle();
+
+$bundleBody->setAccountId('5371f0c8-b39c-4e30-84ec-cc8029ba0670');
+$bundleBody->setExternalKey('externalKeyModified');
+
+$bundleId = 'c3a1547d-afe4-4bbf-9fe2-8943eaa176d9';
+
+$apiInstance->renameExternalKey($bundleBody,
+                                $xKillbillCreatedBy,
+                                $bundleId,
+                                $xKillbillReason,
+                                $xKillbillComment);
+```
 **Request Body**
 
 A bundle resource containing the new external key
@@ -579,12 +646,17 @@ Bundle result = bundleApi.transferBundle(bundleId,
 ```
 
 ```ruby
-requested_date = "2013-08-01"
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+requested_date = "2023-08-01"
 billing_policy = "END_OF_TERM"
 
 bundle = KillBillClient::Model::Bundle.new
-bundle.account_id = new_account_id
-bundle.bundle_id = bundle_id
+
+bundle.account_id = 'e2d81f64-2268-4e71-843b-1d14f0fc5259'
+bundle.bundle_id = 'ffde26ed-cd17-478e-95f8-ddfb908941ee'
 
 bundle.transfer(requested_date, 
                 billing_policy, 
@@ -606,7 +678,35 @@ bundleApi.transfer_bundle(bundle_id,
                           api_key, 
                           api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleBody: killbill.Bundle = {accountId: '3e5e2f75-728f-4fc4-a8fc-066e7420bd69'};
+
+const bundleID = 'd1067966-c34f-4e93-abf7-7285582e0691';
+
+bundleApi.transferBundle(bundleBody, bundleID, 'created_by');
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$bundleBody = new Bundle();
+
+$bundleBody->setAccountId('3d7449fa-0ac8-4081-84a1-87d4371802e1');
+
+$bundleId = 'f339d676-9afa-42f3-acc6-c155677d80a6';
+
+$apiInstance->transferBundle($bundleBody,
+                             $xKillbillCreatedBy,
+                             $bundleId,
+                             $xKillbillReason,
+                             $xKillbillComment);
+```
 **Request Body**
 
 A bundle resource containing at least the new account id
@@ -663,9 +763,14 @@ Map<String, String> pluginProperty = null;
 bundleApi.pauseBundle(bundleId, requestedDate, pluginProperty, requestOptions);
 ```
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 bundle = KillBillClient::Model::Bundle.new
-bundle.bundle_id = bundle_id
-requested_date = "2013-08-01"
+
+bundle.bundle_id = 'ea82c581-4bbc-4f2b-8d5a-31a91e9df78b'
+requested_date = "2023-08-01"
 
 bundle.pause(requested_date, 
              user, 
@@ -683,7 +788,23 @@ bundleApi.pause_bundle(bundle_id,
                        api_key, 
                        api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+bundleApi.pauseBundle(bundleID, 'created_by');
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$xKillbillCreatedBy = "user";
+
+$bundleId = 'fb1ac07b-c132-4eeb-84d8-95228e3fbd9e';
+
+$apiInstance->pauseBundle($bundleId,$xKillbillCreatedBy);
+```
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -724,9 +845,14 @@ Map<String, String> pluginProperty = null;
 bundleApi.resumeBundle(bundleId, requestedDate, pluginProperty, requestOptions);	
 ```
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 bundle = KillBillClient::Model::Bundle.new
-bundle.bundle_id = bundle_id
-requested_date = "2013-08-01"
+
+bundle.bundle_id = 'ea82c581-4bbc-4f2b-8d5a-31a91e9df78b'
+requested_date = "2023-08-01"
 
 bundle.resume(requested_date, 
               user, 
@@ -744,7 +870,23 @@ bundleApi.resume_bundle(bundle_id,
                         api_key, 
                         api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleID = 'd1067966-c34f-4e93-abf7-7285582e0691'; 
+
+bundleApi.resumeBundle(bundleID, 'created_by');
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$xKillbillCreatedBy = "user";
+
+$bundleId = 'fb1ac07b-c132-4eeb-84d8-95228e3fbd9e';
+
+$apiInstance->resumeBundle($bundleId,$xKillbillCreatedBy);
+```
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -815,12 +957,21 @@ bundleApi.addBundleBlockingState(bundleId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 state_name = "STATE1"
 service = "ServiceStateService"
 block_change = false
 block_entitlement = false
 block_billing = false
 requested_date = "2013-08-01"
+
+bundle = KillBillClient::Model::Bundle.new
+
+bundle.account_id = '68b0fe70-8b14-42e0-b204-a56e9945d8e5'
+bundle.bundle_id = 'efaebe7a-8eaa-4550-96ea-a9235d3df46c'
 
 bundle.set_blocking_state(state_name,
                           service,
@@ -849,7 +1000,41 @@ bundleApi.add_bundle_blocking_state(bundle_id,
                                     api_key,
                                     api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const blockingState: killbill.BlockingState = {
+                                                blockedId: '5371f0c8-b39c-4e30-84ec-cc8029ba0670',
+                                                service: 'Billing',
+                                                stateName: 'Acct_resumed',
+                                                isBlockChange: false,
+                                                isBlockEntitlement: false,
+                                                isBlockBilling: false
+                                              };
+
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+bundleApi.addBundleBlockingState(blockingState, bundleID, 'created_by');
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$xKillbillCreatedBy = "user";
+
+$blockingState = new BlockingState();
+
+$blockingState->setBlockedId('3d7449fa-0ac8-4081-84a1-87d4371802e1');
+$blockingState->setService('Billing');
+$blockingState->setStateName('Acct_Paused');
+$blockingState->setIsBlockBilling(true);
+$blockingState->setIsBlockEntitlement(true);
+$blockingState->setIsBlockChange(true);
+
+$bundleId = 'fb1ac07b-c132-4eeb-84d8-95228e3fbd9e';
+
+$apiInstance->addBundleBlockingState($blockingState,$xKillbillCreatedBy,$bundleId);
+```
 **Request Body**
 
 A blocking state resource representing the intended new blocking state. For example,
@@ -926,6 +1111,13 @@ bundleApi.createBundleCustomFields(bundleId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+bundle = KillBillClient::Model::Bundle.new
+bundle.bundle_id = 'efaebe7a-8eaa-4550-96ea-a9235d3df46c'
+
 custom_field = KillBillClient::Model::CustomFieldAttributes.new
 custom_field.object_type = 'BUNDLE'
 custom_field.name = 'Test Custom Field'
@@ -948,7 +1140,38 @@ bundleApi.create_bundle_custom_fields(bundle_id,
                                       api_key,
                                       api_secret)
 ```
+```javascript
+const customFields: killbill.CustomField = {name: 'Test Custom Field',value: 'test_value'};
 
+const customFieldsBody = [customFields];
+
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+bundleApi.createBundleCustomFields(customFieldsBody, bundleID, 'created_by');
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$customField = new CustomField();
+
+$customField->setName('CustomFieldName');
+$customField->setValue('CustomFieldValue');
+
+$customFieldBody = [$customField];
+
+$bundleId = 'fb1ac07b-c132-4eeb-84d8-95228e3fbd9e';
+
+$apiInstance->createBundleCustomFields($customFieldBody,
+                                       $xKillbillCreatedBy,
+                                       $bundleId,
+                                       $xKillbillReason,
+                                       $xKillbillComment);
+```
 **Request Body**
 
 A list of objects giving the name and value of the custom field, or fields, to be added. For example:
@@ -1003,7 +1226,11 @@ List<CustomField> bundleCustomFields = bundleApi.getBundleCustomFields(bundleId,
 ```ruby
 audit = 'NONE'
 
-bundle.custom_fields(audit, options)
+bundle = KillBillClient::Model::Bundle.new
+
+bundle.bundle_id = 'efaebe7a-8eaa-4550-96ea-a9235d3df46c'
+
+bundleCustomFields = bundle.custom_fields(audit, options)
 ```
 
 ```python
@@ -1012,7 +1239,22 @@ bundle_id = 'ce967207-851c-4040-bfbd-74a8924f9b8a'
 
 bundleApi.get_bundle_custom_fields(bundle_id, api_key, api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+const bundleCustomFields: AxiosResponse<killbill.CustomField[]> =
+      await bundleApi.getBundleCustomFields(bundleID);
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$bundleId = 'fb1ac07b-c132-4eeb-84d8-95228e3fbd9e';
+
+$bundleCustomFields = $apiInstance->getBundleCustomFields($bundleId);
+```
 > Example Response:
 
 ```json
@@ -1082,11 +1324,17 @@ bundleApi.modifyBundleCustomFields(bundleId,
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-custom_field.name = 'Test Modify'
 custom_field.value = 'test_modify_value'
 
-bundle.modify_custom_field(custom_field,                                                                                            
+bundle = KillBillClient::Model::Bundle.new
+bundle.bundle_id = 'efaebe7a-8eaa-4550-96ea-a9235d3df46c'
+
+bundle.modify_custom_field(custom_field,
                            user, 
                            reason,
                            comment, 
@@ -1104,6 +1352,41 @@ bundleApi.modify_bundle_custom_fields(bundle_id,
                                       created_by, 
                                       api_key, 
                                       api_secret)
+```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
+
+const customField: killbill.CustomField = { customFieldId: '859a4053-4946-4be0-b94b-fe7a9409d785',
+                                            value: 'custom-field-value-change'
+                                          };
+
+const customFieldBody = [customField];
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+bundleApi.modifyBundleCustomFields(customFieldBody, bundleID, 'created_by');
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$customField = new CustomField();
+
+$customField->setCustomFieldId('ea5cf813-b420-4409-acd5-0b4ae83ea907');
+$customField->setValue('CustomFieldValueChange');
+
+$customFieldBody = [$customField];
+
+$bundleId = 'fb1ac07b-c132-4eeb-84d8-95228e3fbd9e';
+
+$apiInstance->modifyBundleCustomFields($customFieldBody,
+                                       $xKillbillCreatedBy,
+                                       $bundleId,
+                                       $xKillbillReason,
+                                       $xKillbillComment);
 ```
 **Request Body**
 
@@ -1157,7 +1440,11 @@ bundleApi.deleteBundleCustomFields(bundleId,
 ```
 
 ```ruby
-custom_field_id = custom_field.id
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+custom_field_id = 'a0535196-6f4f-46ca-8d63-e393460b1b42'
 
 bundle.remove_custom_field(custom_field_id, 
                            user, 
@@ -1175,7 +1462,24 @@ bundleApi.delete_bundle_custom_fields(bundle_id,
                                       api_key, 
                                       api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const customFieldIDs = ['859a4053-4946-4be0-b94b-fe7a9409d785'];
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+bundleApi.deleteBundleCustomFields(bundleID, 'created_by', customFieldIDs);
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$xKillbillCreatedBy = "user";
+
+$bundleId = 'fb1ac07b-c132-4eeb-84d8-95228e3fbd9e';
+
+$apiInstance->deleteBundleCustomFields($bundleId,$xKillbillCreatedBy);
+```
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -1235,7 +1539,11 @@ Tags result = bundleApi.createBundleTags(bundleId,
 ```
 
 ```ruby
-tag_name = 'foo'
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+tag_name = 'bundletesttag'
 
 bundle.add_tag(tag_name,
                user,
@@ -1255,7 +1563,32 @@ bundleApi.create_bundle_tags(bundle_id,
                              api_key, 
                              api_secret)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleTags = ['acc26862-875e-4b24-990e-985d3f837862'];
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+bundleApi.createBundleTags(bundleTags, bundleID, 'created_by');
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$bundleTags = ['acc26862-875e-4b24-990e-985d3f837862'];
+
+$bundleId = 'fb1ac07b-c132-4eeb-84d8-95228e3fbd9e';
+
+$apiInstance->createBundleTags($bundleTags,
+                               $xKillbillCreatedBy,
+                               $bundleId,
+                               $xKillbillReason,
+                               $xKillbillComment);
+```
 **Request Body**
 
 A JSON array containing one or more strings giving the UUID of tag definitions for the user tags to be added.
@@ -1304,9 +1637,13 @@ List<Tag> tags1 = bundleApi.getBundleTags(bundleId,
 included_deleted = false
 audit = 'NONE'
 
-bundle.tags(included_deleted,
-            audit,
-            options)
+bundle = KillBillClient::Model::Bundle.new
+
+bundle.bundle_id = 'efaebe7a-8eaa-4550-96ea-a9235d3df46c'
+
+bundleTags = bundle.tags(included_deleted,
+                         audit,
+                         options)
 ```
 
 ```python
@@ -1314,6 +1651,21 @@ bundleApi = killbill.api.BundleApi()
 bundle_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
 
 bundleApi.get_bundle_tags(bundle_id, api_key, api_secret)
+```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
+
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+const bundletags: AxiosResponse<any> = await bundleApi.getBundleTags(bundleID);
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$bundleId = 'fb1ac07b-c132-4eeb-84d8-95228e3fbd9e';
+
+$bundleTags = $apiInstance->getBundleTags($bundleId);
 ```
 > Example Response:
 
@@ -1376,7 +1728,15 @@ bundleApi.deleteBundleTags(bundleId,
 ```
 
 ```ruby
-tag_name = 'foo'
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+tag_name = 'bundletesttag'
+
+bundle = KillBillClient::Model::Bundle.new
+
+bundle.bundle_id = 'efaebe7a-8eaa-4550-96ea-a9235d3df46c'
 
 bundle.remove_tag(tag_name,
                   user,
@@ -1396,7 +1756,33 @@ bundleApi.delete_bundle_tags(bundle_id,
                              api_secret,
                              tag_def=tag)
 ```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
 
+const bundleTag = ['acc26862-875e-4b24-990e-985d3f837862'];
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+bundleApi.deleteBundleTags(bundleID, 'created_by', bundleTag);
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$bundleId = 'fb1ac07b-c132-4eeb-84d8-95228e3fbd9e';
+$tagDefId = 'acc26862-875e-4b24-990e-985d3f837862';
+
+$tag = [$tagid];
+
+$apiInstance->deleteBundleTags($bundleId,
+                               $xKillbillCreatedBy,
+                               $tag,
+                               $xKillbillReason,
+                               $xKillbillComment);
+```
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -1432,6 +1818,39 @@ curl \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
     "http://127.0.0.1:8080/1.0/kb/bundles/d1b329c7-7dcf-466c-aaca-47bff304dab0/auditLogsWithHistory"
+```
+
+```java
+
+```
+
+```ruby
+bundle = KillBillClient::Model::Bundle.new
+
+bundle.bundle_id = 'efaebe7a-8eaa-4550-96ea-a9235d3df46c'
+
+bundleAuditLogs = bundle.audit_logs_with_history(options)
+```
+
+```python
+
+```
+
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
+
+const bundleID = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+const bundletags: AxiosResponse<killbill.AuditLog[]> =
+      await bundleApi.getBundleAuditLogsWithHistory(bundleID);
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$bundleId = 'fb1ac07b-c132-4eeb-84d8-95228e3fbd9e';
+
+$bundleAuditLogs = $apiInstance->getBundleAuditLogsWithHistory($bundleId);
 ```
 > Example Response:
 
@@ -1533,15 +1952,28 @@ Bundles allBundles = bundleApi.getBundles(offset,
 offset = 0
 limit = 100
 
-bundle.find_in_batches(offset,
-                       limit,
-                       options)
+bundle = KillBillClient::Model::Bundle
+
+paginatedBundles = bundle.find_in_batches(offset,
+                                          limit,
+                                          options)
 ```
 
 ```python
 bundleApi = killbill.api.BundleApi()
 
 bundleApi.get_bundles(api_key, api_secret,)
+```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
+
+const bundles: AxiosResponse<killbill.Bundle[]> = await bundleApi.getBundles();
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+$bundles = $apiInstance->getBundles();
 ```
 > Example Response:
 
@@ -1953,10 +2385,12 @@ search_key = 'example'
 offset = 0
 limit = 100
 
-bundle.find_in_batches_by_search_key(search_key,
-                                     offset,
-                                     limit,
-                                     options)
+bundle = KillBillClient::Model::Bundle
+
+bundles = bundle.find_in_batches_by_search_key(search_key,
+                                               offset,
+                                               limit,
+                                               options)
 ```
 
 ```python
@@ -1964,6 +2398,21 @@ bundleApi = killbill.api.BundleApi()
 search_key = '7b26b0ce-a495-4c0c-9dd5-11a556f03e8c'
 
 bundleApi.search_bundles(search_key, api_key, api_secret)
+```
+```javascript
+const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
+
+const searchKey = '7f5b6b8e-0936-4d6b-ab05-820632f385b0';
+
+const bundles: AxiosResponse<killbill.Bundle[]> = await bundleApi.searchBundles(searchKey);
+```
+
+```php
+$apiInstance = $client->getBundleApi();
+
+const searchKey = 'BundleSearchKey';
+
+$bundles = $apiInstance->searchBundles(searchKey);
 ```
 > Example Response:
 
