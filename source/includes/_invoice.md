@@ -1460,11 +1460,11 @@ invoiceApi = killbill.api.InvoiceApi()
 body = InvoiceDryRun(dry_run_type='UPCOMING_INVOICE')
 account_id = '00e87495-92dc-4640-8490-e2c794748151'
 
-invoiceApi.generate_dry_run_invoice(body,
-                                    account_id,
-                                    created_by,
-                                    api_key,
-                                    api_secret)
+invoice = invoiceApi.generate_dry_run_invoice(body,
+                                              account_id,
+                                              created_by='demo',
+                                              reason='reason',
+                                              comment='comment')
 ```
 
 > Example Response:
@@ -1631,7 +1631,16 @@ TODO
 ```
 
 ```python
-TODO
+invoiceApi = killbill.api.InvoiceApi()
+
+account_id = '8452df66-ded8-4fba-b7dc-50302d19bc5b'
+target_date = datetime.date(2023, 11, 22)
+
+invoiceApi.create_future_invoice_group(account_id,
+                                       target_date=target_date,
+                                       created_by='demo',
+                                       reason='reason',
+                                       comment='comment')
 ```
 
 **Query Parameters**
@@ -1681,7 +1690,12 @@ TODO
 ```
 
 ```python
-TODO
+invoiceApi = killbill.api.InvoiceApi()
+
+account_id = '8452df66-ded8-4fba-b7dc-50302d19bc5b'
+group_id = '51eae3dc-eec8-4ffa-b7d1-65b7b797538e'
+
+invoice_group = invoiceApi.get_invoices_group(group_id, account_id)
 ```
 > Example Response:
 
@@ -1873,16 +1887,20 @@ payment.create(external_payment,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
+
+account_id = '04779ade-11f9-48d1-88a1-a63be84d1cb7'
+invoice_id = '46ab72dc-8abf-4984-818b-cf1558c7ef4b'
+
 body = InvoicePayment(account_id=account_id,
                       purchased_amount=50.0,
                       target_invoice_id=invoice_id)
 
 invoiceApi.create_instant_payment(invoice_id,
                                   body,
-                                  created_by,
-                                  api_key,
-                                  api_secret,
-                                  external_payment=True)
+                                  external_payment=True,
+                                  created_by='demo',
+                                  reason='reason',
+                                  comment='comment')
 ```
 
 **Request Body**
@@ -1942,9 +1960,10 @@ TODO
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '8291871e-b16e-45e6-a971-577d44727327'
 
-invoiceApi.get_payments_for_invoice(invoice_id, api_key, api_secret)
+invoice_id = '46ab72dc-8abf-4984-818b-cf1558c7ef4b'
+
+invoice_payments = invoiceApi.get_payments_for_invoice(invoice_id)
 ```
 > Example Response:
 
