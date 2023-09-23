@@ -476,6 +476,7 @@ $bundleResult = $apiInstance->getBundleByKey($bundleKey);
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **externalKey** | String | yes | none | The subscription external key |
+| **includedDeleted** | boolean | no | false | If true, include deleted bundles |
 | **audit** | string | no | "NONE" | Level of audit information to return: "NONE", "MINIMAL" (only inserts), or "FULL" |
 
 **Response**
@@ -818,6 +819,7 @@ $apiInstance->pauseBundle($bundleId,$xKillbillCreatedBy);
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **requestedDate** | string | no | current date | requested date for pausing |
+| **pluginProperty** | array of strings | false | empty list | List of plugin properties, if any |
 
 **Response**
 
@@ -901,6 +903,7 @@ $apiInstance->resumeBundle($bundleId,$xKillbillCreatedBy);
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **requestedDate** | string | no | current date | requested date to resume |
+| **pluginProperty** | array of strings | false | empty list | List of plugin properties, if any |
 
 **Response**
 
@@ -1066,6 +1069,7 @@ A blocking state resource representing the intended new blocking state. For exam
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **requestedDate** | string | no | immediate | requested date for blocking |
+| **pluginProperty** | array of strings | false | empty list | List of plugin properties, if any |
 
 **Response**
 
@@ -1841,7 +1845,13 @@ curl \
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.BundleApi;
+protected BundleApi bundleApi;
 
+UUID bundleId = UUID.fromString("917992d3-5f1f-4828-9fff-799cc4211aa9");
+
+AuditLogs bundleAuditLogs = bundleApi.getBundleAuditLogsWithHistory(bundleId,                            
+                                                                    requestOptions);
 ```
 
 ```ruby
