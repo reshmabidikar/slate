@@ -70,7 +70,7 @@ bundleApi = killbill.BundleApi()
 
 bundle_id = 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'
 
-bundleDetails = bundleApi.get_bundle(bundle_id)
+bundle = bundleApi.get_bundle(bundle_id)
 ```
 ```javascript
 const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
@@ -301,7 +301,7 @@ bundleApi = killbill.BundleApi()
 
 bundle_external_key = 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'
 
-bundleDetails = bundleApi.get_bundle_by_key(bundle_external_key)
+bundle = bundleApi.get_bundle_by_key(bundle_external_key)
 ```
 ```javascript
 const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
@@ -533,8 +533,6 @@ bundle.rename_external_key(user,
 ```
 
 ```python
-created_by = 'user'
-
 bundleApi = killbill.BundleApi()
 
 bundleID = 'd65d22aa-483e-45fb-9335-cb6636514479'
@@ -544,7 +542,9 @@ body = Bundle(bundle_id=bundleID,
 
 bundleApi.rename_external_key(bundleID,
                               body,
-                              created_by)
+                              created_by='demo',
+                              reason='reason', 
+                              comment='comment')
 ```
 ```javascript
 const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
@@ -673,8 +673,6 @@ bundle.transfer(requested_date,
 ```
 
 ```python
-created_by = 'user'
-
 bundleApi = killbill.BundleApi()
 
 bundle_id = 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'
@@ -684,7 +682,9 @@ body = Bundle(bundle_id=bundle_id, account_id=new_account_id)
 
 bundleApi.transfer_bundle(bundle_id, 
                           body, 
-                          created_by)
+                          created_by='demo',
+                          reason='reason', 
+                          comment='comment')
 ```
 ```javascript
 const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
@@ -788,14 +788,14 @@ bundle.pause(requested_date,
 ```
 
 ```python
-created_by = 'user'
-
 bundleApi = killbill.BundleApi()
 
 bundle_id = 'ce967207-851c-4040-bfbd-74a8924f9b8a'
 
 bundleApi.pause_bundle(bundle_id, 
-                       created_by)
+                       created_by='demo',
+                       reason='reason', 
+                       comment='comment')
 ```
 ```javascript
 const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
@@ -872,14 +872,14 @@ bundle.resume(requested_date,
 ```
 
 ```python
-created_by = 'user'
-
 bundleApi = killbill.BundleApi()
 
 bundle_id = 'ce967207-851c-4040-bfbd-74a8924f9b8a'
 
 bundleApi.resume_bundle(bundle_id, 
-                        created_by)
+                        created_by='demo',
+                        reason='reason', 
+                        comment='comment')
 ```
 ```javascript
 const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
@@ -998,8 +998,6 @@ bundle.set_blocking_state(state_name,
 ```
 
 ```python
-created_by = 'user'
-
 bundleApi = killbill.BundleApi()
 
 bundle_id = 'a760fdc8-1e2d-4020-918a-6e4f7a9cd691'
@@ -1012,7 +1010,9 @@ body = BlockingState(state_name='STATE1',
 
 bundleApi.add_bundle_blocking_state(bundle_id,
                                     body,
-                                    created_by)
+                                    created_by='demo',
+                                    reason='reason', 
+                                    comment='comment')
 ```
 ```javascript
 const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
@@ -1146,15 +1146,15 @@ bundle.add_custom_field(custom_field,
 ```
 
 ```python
-created_by = 'user'
-
 bundleApi = killbill.BundleApi()
 
 body = CustomField(name='Test Custom Field', value='test_value')
 
 bundleApi.create_bundle_custom_fields(bundle_id,
                                       [body],
-                                      created_by)
+                                      created_by='demo',
+                                      reason='reason', 
+                                      comment='comment')
 ```
 ```javascript
 const customFields: killbill.CustomField = {name: 'Test Custom Field',value: 'test_value'};
@@ -1359,8 +1359,6 @@ bundle.modify_custom_field(custom_field,
 ```
 
 ```python
-created_by = 'user'
-
 bundleApi = killbill.BundleApi()
 
 custom_field_id = 'f3e2dc9d-1222-48ae-8658-35dd0acb53cd'
@@ -1371,7 +1369,9 @@ body = Killbill.CustomField(custom_field_id=custom_field_id,
 
 bundleApi.modify_bundle_custom_fields(bundle_id, 
                                       [body], 
-                                      created_by)
+                                      created_by='demo',
+                                      reason='reason', 
+                                      comment='comment')
 ```
 ```javascript
 const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
@@ -1474,14 +1474,14 @@ bundle.remove_custom_field(custom_field_id,
 ```
 
 ```python
-created_by = 'user'
-
 bundleApi = killbill.BundleApi()
 
 bundle_id = 'ce967207-851c-4040-bfbd-74a8924f9b8a' 
 
 bundleApi.delete_bundle_custom_fields(bundle_id, 
-                                      created_by)
+                                      created_by='demo',
+                                      reason='reason', 
+                                      comment='comment')
 ```
 ```javascript
 const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
@@ -1574,8 +1574,6 @@ bundle.add_tag(tag_name,
 ```
 
 ```python
-created_by = 'user'
-
 bundleApi = killbill.BundleApi()
 
 bundle_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
@@ -1583,7 +1581,9 @@ tags = ["353752dd-9041-4450-b782-a8bb03a923c8"]
 
 bundleApi.create_bundle_tags(bundle_id, 
                              tags, 
-                             created_by)
+                             created_by='demo',
+                             reason='reason', 
+                             comment='comment')
 ```
 ```javascript
 const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
@@ -1769,16 +1769,16 @@ bundle.remove_tag(tag_name,
 ```
 
 ```python
-created_by = 'user'
-
 bundleApi = killbill.BundleApi()
 
 bundle_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
-tagDefId = ["353752dd-9041-4450-b782-a8bb03a923c8"]
+tagDefIds = ["353752dd-9041-4450-b782-a8bb03a923c8"]
 
 bundleApi.delete_bundle_tags(bundle_id, 
-                             created_by,
-                             tag_def=tagDefId)
+                             tag_def=tagDefIds,
+                             created_by='demo',
+                             reason='reason', 
+                             comment='comment')
 ```
 ```javascript
 const bundleApi: killbill.BundleApi = new killbill.BundleApi(config);
