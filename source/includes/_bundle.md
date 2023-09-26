@@ -1476,9 +1476,11 @@ bundle.remove_custom_field(custom_field_id,
 ```python
 bundleApi = killbill.BundleApi()
 
-bundle_id = 'ce967207-851c-4040-bfbd-74a8924f9b8a' 
+bundleId = 'ce967207-851c-4040-bfbd-74a8924f9b8a' 
+customFieldIds = ['859a4053-4946-4be0-b94b-fe7a9409d785']
 
-bundleApi.delete_bundle_custom_fields(bundle_id, 
+bundleApi.delete_bundle_custom_fields(bundleId, 
+                                      custom_field = customFieldIds,
                                       created_by='demo',
                                       reason='reason', 
                                       comment='comment')
