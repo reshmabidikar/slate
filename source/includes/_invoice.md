@@ -1872,16 +1872,21 @@ InvoicePayment result = invoiceApi.createInstantPayment(invoiceId,
 ```
 
 ```ruby
-payment                  = KillBillClient::Model::InvoicePayment.new
-payment.account_id       = "3ee3aa82-1d45-4bbc-b36b-74d628e095d0"
+user = "demo"
+reason = nil
+comment = nil
+
+payment = KillBillClient::Model::InvoicePayment.new
+payment.account_id = "a24a1b9f-9d0f-4311-ad05-feac80f7b177"
+payment.target_invoice_id = "bb9cf385-cc78-46a6-b069-924bdfdeb4f7"
 payment.purchased_amount = '50.0'
 
 external_payment = true
 
-payment.create(external_payment, 
-               user, 
-               reason, 
-               comment, 
+payment.create(external_payment,
+               user,
+               reason,
+               comment,
                options)
 ```
 
