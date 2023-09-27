@@ -1478,6 +1478,19 @@ const response: AxiosResponse = await api.generateDryRunInvoice(invoiceDryRun, a
 ````
 
 ````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$body = new InvoiceDryRun();
+$body -> setDryRunType("UPCOMING_INVOICE");
+$accountId = "a24a1b9f-9d0f-4311-ad05-feac80f7b177";
+$targetDate = null;
+$pluginProperty = array("pluginProperty_example");
+
+$result = $apiInstance->generateDryRunInvoice($body, $xKillbillCreatedBy, $accountId, $xKillbillReason, $xKillbillComment, $targetDate, $pluginProperty);
 ````
 
 > Example Response:
@@ -1666,6 +1679,17 @@ api.createFutureInvoiceGroup(accountId, 'created_by', targetDate);
 ````
 
 ````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$accountId = "8452df66-ded8-4fba-b7dc-50302d19bc5b";
+$targetDate = new DateTime("2024-04-22");
+$pluginProperty = array("pluginProperty_example");
+
+$result = $apiInstance->createFutureInvoiceGroup($accountId, $xKillbillCreatedBy, $targetDate, $pluginProperty, $xKillbillReason, $xKillbillComment);
 ````
 
 **Query Parameters**
@@ -1733,6 +1757,14 @@ const response: AxiosResponse<killbill.Invoice[], any> = await api.getInvoicesGr
 ````
 
 ````php
+$apiInstance = $client->getInvoiceApi();
+
+$groupId = "ad2921d2-a343-4115-9a51-32288f49e6f0";
+$accountId = "8452df66-ded8-4fba-b7dc-50302d19bc5b";
+$withChildrenItems = false;
+$audit = "NONE";
+
+$result = $apiInstance->getInvoicesGroup($groupId, $accountId, $withChildrenItems, $audit);
 ````
 
 > Example Response:
@@ -1957,6 +1989,24 @@ api.createInstantPayment(invoicePayment, invoiceId, 'created_by');
 ````
 
 ````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "bb9cf385-cc78-46a6-b069-924bdfdeb4f7";
+$accountId = "a24a1b9f-9d0f-4311-ad05-feac80f7b177";
+$externalPayment = true;
+$controlPluginName = array("controlPluginName_example");
+$pluginProperty = array("pluginProperty_example");
+
+$body = new InvoicePayment();
+$body -> setAccountId($accountId);
+$body -> setTargetInvoiceId($invoiceId);
+$body -> setPurchasedAmount(100);
+
+$result = $apiInstance->createInstantPayment($body, $xKillbillCreatedBy, $invoiceId, $xKillbillReason, $xKillbillComment, $externalPayment, $controlPluginName, $pluginProperty);
 ````
 
 **Request Body**
@@ -2031,6 +2081,14 @@ const response: AxiosResponse<killbill.InvoicePayment[], any> = await api.getPay
 ````
 
 ````php
+$apiInstance = $client->getInvoiceApi();
+
+$invoiceId = "bb9cf385-cc78-46a6-b069-924bdfdeb4f7";
+$withPluginInfo = false;
+$withAttempts = false;
+$audit = "NONE";
+
+$result = $apiInstance->getPaymentsForInvoice($invoiceId, $withPluginInfo, $withAttempts, $audit);
 ````
 
 > Example Response:
