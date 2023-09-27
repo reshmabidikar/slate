@@ -1467,6 +1467,19 @@ invoice = invoiceApi.generate_dry_run_invoice(body,
                                               comment='comment')
 ```
 
+````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const accountId = 'a24a1b9f-9d0f-4311-ad05-feac80f7b177';
+const targetDate = '2023-10-26';
+const invoiceDryRun: InvoiceDryRun = {dryRunType: "UPCOMING_INVOICE"};
+
+const response: AxiosResponse = await api.generateDryRunInvoice(invoiceDryRun, accountId, 'created_by', targetDate);
+````
+
+````php
+````
+
 > Example Response:
 
 ```json
@@ -1643,6 +1656,18 @@ invoiceApi.create_future_invoice_group(account_id,
                                        comment='comment')
 ```
 
+````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const accountId = '8452df66-ded8-4fba-b7dc-50302d19bc5b';
+const targetDate = '2024-02-22';
+
+api.createFutureInvoiceGroup(accountId, 'created_by', targetDate);
+````
+
+````php
+````
+
 **Query Parameters**
 
 | Name | Type | Required | Default | Description |
@@ -1697,6 +1722,19 @@ group_id = '51eae3dc-eec8-4ffa-b7d1-65b7b797538e'
 
 invoice_group = invoiceApi.get_invoices_group(group_id, account_id)
 ```
+
+````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const accountId = '8452df66-ded8-4fba-b7dc-50302d19bc5b';
+const groupId = 'ad2921d2-a343-4115-9a51-32288f49e6f0';
+
+const response: AxiosResponse<killbill.Invoice[], any> = await api.getInvoicesGroup(groupId, accountId);
+````
+
+````php
+````
+
 > Example Response:
 
 ```json
@@ -1908,6 +1946,19 @@ invoiceApi.create_instant_payment(invoice_id,
                                   comment='comment')
 ```
 
+````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const accountId = 'ceaa4c46-723e-4229-ba77-c8656572e8ea';
+const invoiceId = '80825f6b-dc95-46f9-8e7e-ac16bf658f81';
+const invoicePayment: InvoicePayment = {accountId: accountId, targetInvoiceId: invoiceId, purchasedAmount:100};
+
+api.createInstantPayment(invoicePayment, invoiceId, 'created_by');
+````
+
+````php
+````
+
 **Request Body**
 
 An [InvoicePayment](invoice-payment.html#invoice-payment-resource) resource object, with at least the following attributes: accountId, and purchasedAmount.
@@ -1970,6 +2021,18 @@ invoice_id = '46ab72dc-8abf-4984-818b-cf1558c7ef4b'
 
 invoice_payments = invoiceApi.get_payments_for_invoice(invoice_id)
 ```
+
+````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceId = '80825f6b-dc95-46f9-8e7e-ac16bf658f81';
+
+const response: AxiosResponse<killbill.InvoicePayment[], any> = await api.getPaymentsForInvoice(invoiceId);
+````
+
+````php
+````
+
 > Example Response:
 
 ```json
