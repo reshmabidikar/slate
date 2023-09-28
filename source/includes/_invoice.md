@@ -2584,6 +2584,8 @@ Custom fields are `{key, value}` attributes that can be attached to any customer
 
 ### Add custom fields to an invoice
 
+Adds one or more custom fields to an invoice object. Existing custom fields are not disturbed.
+
 **HTTP Request** 
 
 `POST http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/customFields`
@@ -2756,8 +2758,8 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d '[ { "customFieldId": "349de10f-4bb1-4e1a-93f6-11b745200bf5", "objectId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d", "objectType": "INVOICE", "name": "Test Custom Field", "value": "test_modify_value", "auditLogs": [] }]' \
-    "http://127.0.0.1:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"	
+    -d '[ { "customFieldId": "9e0c4b85-c257-437c-ae9c-d32eac6f010c", "objectId": "7bf0f3d6-4ffb-4d5a-98c7-1158083432d0", "value": "new value" }]' \
+    "http://127.0.0.1:8080/1.0/kb/invoices/7bf0f3d6-4ffb-4d5a-98c7-1158083432d0/customFields"   
 ```
 
 ```java
@@ -2810,11 +2812,11 @@ invoiceApi.modify_invoice_custom_fields(invoice_id,
 **Requst Body**
 
 
-A list of [Custom Field](custom-field.html#custom-field-custom-field-resource) objects representing the fields to substitute for existing ones. Each object should specify at least the the `customFieldId` and `value` attribute. For example:
+A list of [Custom Field](custom-field.html#custom-field-custom-field-resource) objects specifying the id and the new value for the custom fields to be modified. Each object should specify at least the `customFieldId` and `value` attribute. For example:
 
 [ { "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f", "value": "123" } ]
 
-
+Although the `fieldName` and `objectType` can be specified in the request body, these attributes cannot be modified, only the `value` can be modified.
 
 **Query Parameters**
 
@@ -2827,7 +2829,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Remove custom fields from invoice
 
-Remove a specified set of custom fields from the invoice
+Delete one or more custom fields from an invoice. It accepts query parameters corresponding to the custom field ids to be deleted. if no query parameters are specified, it deletes all the custom fields corresponding to the invoice.
 
 
 **HTTP Request** 
@@ -2896,13 +2898,13 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Tags
 
-See [Account Tags](account.html#account-tags) for an introduction.
+See [Tags](tag.html) for an introduction to tags.
 
 The only `system` tag applicable for an `Invoice` is `WRITTEN_OFF` (`00000000-0000-0000-0000-000000000004`), which as it's name indicates, is used to write off an unpaid invoice, bringing its balance to $0.
 
 ### Add tags to invoice
 
-This API adds one or more tags to an invoice. The tag definitions must already exist.
+This API adds one or more tags to an invoice. The The [tag definition](#tag-definition) corresponding to the tag being added must already exist.
 
 
 **HTTP Request** 
@@ -3051,7 +3053,7 @@ If successful, returns a status code of 200 and a list of tag objects.
 
 ### Remove tags from invoice
 
-Removes a list of tags attached to an invoice.
+This API deletes one or more tags attached to an invoice.
 
 
 **HTTP Request** 
