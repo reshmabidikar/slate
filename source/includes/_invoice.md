@@ -2646,14 +2646,15 @@ invoice.add_custom_field(custom_field,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+
+invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
 body = CustomField(name='Test Custom Field', value='test_value')
 
 invoiceApi.create_invoice_custom_fields(invoice_id,
                                         [body],
-                                        created_by,
-                                        api_key,
-                                        api_secret)
+                                        created_by='demo',
+                                        reason='reason',
+                                        comment='comment')
 ```
 
 **Request Body**
@@ -2712,9 +2713,10 @@ custom_fields = invoice.custom_fields(audit, options)
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
 
-invoiceApi.get_invoice_custom_fields(invoice_id, api_key, api_secret)
+invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
+
+custom_fields = invoiceApi.get_invoice_custom_fields(invoice_id)
 ```
 
 > Example Response:
@@ -2809,17 +2811,16 @@ invoice.modify_custom_field(custom_field,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
-custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-body = CustomField(custom_field_id=custom_field_id, 
-                   name='Test Custom Field', 
-                   value='test_value')
 
-invoiceApi.modify_invoice_custom_fields(invoice_id, 
-                                        [body], 
-                                        created_by, 
-                                        api_key, 
-                                        api_secret)
+invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
+custom_field_id = 'da4c9071-e3da-418c-aa28-2b7cbf9ec3c8'
+body = CustomField(custom_field_id=custom_field_id, value='New Value')
+
+invoiceApi.modify_invoice_custom_fields(invoice_id,
+                                        [body],
+                                        created_by='demo',
+                                        reason='reason',
+                                        comment='comment')
 ```
 
 **Requst Body**
@@ -2896,12 +2897,15 @@ invoice.remove_custom_field(custom_field_id,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac' 
 
-invoiceApi.delete_invoice_custom_fields(invoice_id, 
-                                        created_by, 
-                                        api_key, 
-                                        api_secret)
+invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
+custom_fields = ['da4c9071-e3da-418c-aa28-2b7cbf9ec3c8']
+
+invoiceApi.delete_invoice_custom_fields(invoice_id=invoice_id,
+                                        custom_field=custom_fields,
+                                        created_by='demo',
+                                        reason='reason',
+                                        comment='comment')
 ```
 
 **Query Parameters**
@@ -2980,14 +2984,15 @@ invoice.add_tag(tag_name,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
-tag = ["00000000-0000-0000-0000-000000000004"]
 
-invoiceApi.create_invoice_tags(invoice_id, 
-                               tag, 
-                               created_by, 
-                               api_key, 
-                               api_secret)
+invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
+tagDefIds = ["00000000-0000-0000-0000-000000000004"]
+
+invoiceApi.create_invoice_tags(invoice_id,
+                               tagDefIds,
+                               created_by='demo',
+                               reason='reason',
+                               comment='comment')
 ```
 
 **Request Body**
@@ -3050,9 +3055,10 @@ tags = invoice.tags(included_deleted,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '3e94fccf-0f37-40aa-90a4-122a4f381ebc'
 
-invoiceApi.get_invoice_tags(invoice_id, api_key, api_secret)
+invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
+
+tags = invoiceApi.get_invoice_tags(invoice_id)
 ```
 
 > Example Response:
@@ -3135,13 +3141,15 @@ invoice.remove_tag(tag_name,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
 
-invoiceApi.delete_invoice_tags(invoice_id, 
-                               created_by, 
-                               api_key, 
-                               api_secret,
-                               tag_def=tag)
+invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
+tagDefIds = ['00000000-0000-0000-0000-000000000004']
+
+invoiceApi.delete_invoice_tags(invoice_id,
+                               tag_def=tagDefIds,
+                               created_by='demo',
+                               reason='reason',
+                               comment='comment')
 ```
 
 **Query Parameters**
