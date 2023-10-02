@@ -2658,6 +2658,14 @@ invoiceApi.create_invoice_custom_fields(invoice_id,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const customField: CustomField = {name: "Test Custom Field", value: "test_value"};
+const customFields = [customField];
+
+const invoiceIdId = '800ca6d0-8c33-458c-bf1a-4de22e960441';
+
+api.createInvoiceCustomFields(customFields, invoiceIdId, 'created_by');
 ````
 
 ````php
@@ -2740,6 +2748,12 @@ custom_fields = invoiceApi.get_invoice_custom_fields(invoice_id)
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceIdId = '800ca6d0-8c33-458c-bf1a-4de22e960441';
+const audit = 'NONE';
+
+const response: AxiosResponse<killbill.CustomField[], any> = await api.getInvoiceCustomFields(invoiceIdId, audit, 'created_by');
 ````
 
 ````php
@@ -2856,6 +2870,14 @@ invoiceApi.modify_invoice_custom_fields(invoice_id,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceIdId = '800ca6d0-8c33-458c-bf1a-4de22e960441';
+
+const customField: CustomField = {customFieldId: "45ee24dd-cb1c-48a9-91a8-ecf5b76fd76b", value: "new_value"};
+    const customFields = [customField];
+
+api.modifyInvoiceCustomFields(customFields, invoiceIdId, 'created_by');
 ````
 
 ````php
@@ -2961,6 +2983,14 @@ invoiceApi.delete_invoice_custom_fields(invoice_id=invoice_id,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceIdId = '800ca6d0-8c33-458c-bf1a-4de22e960441';
+
+const customField = '45ee24dd-cb1c-48a9-91a8-ecf5b76fd76b';
+const customFields = [customField];
+
+api.deleteInvoiceCustomFields(invoiceIdId, 'created_by', customFields);
 ````
 
 ````php
@@ -3065,6 +3095,12 @@ invoiceApi.create_invoice_tags(invoice_id,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceIdId = '800ca6d0-8c33-458c-bf1a-4de22e960441';
+const tagDefIds = ['00000000-0000-0000-0000-000000000004'];
+
+api.createInvoiceTags(tagDefIds, invoiceIdId, 'created_by');
 ````
 
 ````php
@@ -3147,6 +3183,13 @@ tags = invoiceApi.get_invoice_tags(invoice_id)
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceIdId = '800ca6d0-8c33-458c-bf1a-4de22e960441';
+const includeDeleted = false;
+const audit = 'NONE';
+
+const response: AxiosResponse<killbill.Tag[], any> = await api.getInvoiceTags(invoiceIdId, includeDeleted, audit);
 ````
 
 ````php
@@ -3251,6 +3294,12 @@ invoiceApi.delete_invoice_tags(invoice_id,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceIdId = '800ca6d0-8c33-458c-bf1a-4de22e960441';
+const tagDefIds = ['00000000-0000-0000-0000-000000000004'];
+
+api.deleteInvoiceTags(invoiceIdId, 'created_by', tagDefIds);
 ````
 
 ````php
