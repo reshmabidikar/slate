@@ -2657,6 +2657,26 @@ invoiceApi.create_invoice_custom_fields(invoice_id,
                                         comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "800ca6d0-8c33-458c-bf1a-4de22e960441";
+
+$customField = new CustomField();
+$customField -> setName('Test Custom Field');
+$customField -> setValue('test_value');
+$body = array($customField);
+
+$result = $apiInstance->createInvoiceCustomFields($body, $xKillbillCreatedBy, $invoiceId, $xKillbillReason, $xKillbillComment);
+````
+
 **Request Body**
 
 A list of [Custom Field](custom-field.html#custom-field-custom-field-resource) objects. Each object should specify at least the the `name` and `value` attribute. For example:
@@ -2718,6 +2738,18 @@ invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
 
 custom_fields = invoiceApi.get_invoice_custom_fields(invoice_id)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$invoiceId = "800ca6d0-8c33-458c-bf1a-4de22e960441";
+$audit = "NONE";
+
+$result = $apiInstance->getInvoiceCustomFields($invoiceId, $audit);
+````
 
 > Example Response:
 
@@ -2823,6 +2855,26 @@ invoiceApi.modify_invoice_custom_fields(invoice_id,
                                         comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "800ca6d0-8c33-458c-bf1a-4de22e960441";
+
+$customField = new CustomField();
+$customField -> setCustomFieldId('70749248-8bc5-4a98-9238-9eda7ed34d56');
+$customField -> setValue('new_value');
+$body = array($customField);
+
+$apiInstance->modifyInvoiceCustomFields($body, $xKillbillCreatedBy, $invoiceId, $xKillbillReason, $xKillbillComment);
+````
+
 **Requst Body**
 
 
@@ -2907,6 +2959,23 @@ invoiceApi.delete_invoice_custom_fields(invoice_id=invoice_id,
                                         reason='reason',
                                         comment='comment')
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "800ca6d0-8c33-458c-bf1a-4de22e960441";
+
+$customFields = array("70749248-8bc5-4a98-9238-9eda7ed34d56");
+
+$apiInstance->deleteInvoiceCustomFields($invoiceId, $xKillbillCreatedBy, $customFields, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
@@ -2995,6 +3064,22 @@ invoiceApi.create_invoice_tags(invoice_id,
                                comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "800ca6d0-8c33-458c-bf1a-4de22e960441";
+$tagDefIds = array("00000000-0000-0000-0000-000000000004");
+
+$result = $apiInstance->createInvoiceTags($tagDefIds, $xKillbillCreatedBy, $invoiceId, $xKillbillReason, $xKillbillComment);
+````
+
 **Request Body**
 
 A JSON array containing one or more tag definition ids to be added as tags.
@@ -3060,6 +3145,19 @@ invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
 
 tags = invoiceApi.get_invoice_tags(invoice_id)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$invoiceId = "800ca6d0-8c33-458c-bf1a-4de22e960441";
+$includedDeleted = false;
+$audit = "NONE";
+
+$result = $apiInstance->getInvoiceTags($invoiceId, $includedDeleted, $audit);
+````
 
 > Example Response:
 
@@ -3151,6 +3249,22 @@ invoiceApi.delete_invoice_tags(invoice_id,
                                reason='reason',
                                comment='comment')
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "800ca6d0-8c33-458c-bf1a-4de22e960441";
+$tagDef = array("00000000-0000-0000-0000-000000000004");
+
+$apiInstance->deleteInvoiceTags($invoiceId, $xKillbillCreatedBy, $tagDef, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
