@@ -3117,13 +3117,14 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Translation
 
-These endpoints support translation of invoices to a different language when required by the customer. Refer to our [Internationalization manual](https://docs.killbill.io/latest/internationalization.html#_language_translations) for an introduction.
+These endpoints support translation of invoices to a different language when required by the customer. Translation replaces words and phrases in an invoice or catalog with the equivalent words or phrases in a different language. A tenant may upload translation tables for specific locales (e.g., locale `fr_FR` for French). When a customer accesses an invoice, that invoice is generated from the system data, formatted using the appropriate [template](invoice.html#template), and translated according to the locale of the customer's account, if a translation table exists for that locale.
 
-Translation replaces words and phrases in an invoice or catalog with the equivalent words or phrases in a different language. A tenant may upload translation tables for specific locales (e.g., locale `fr_FR` for French). When a customer accesses an invoice, that invoice will be generated from the system data, formatted using the appropriate template (see below), and translated according to the locale of the customer's account, if a translation table exists for that locale.
+Refer to the [Invoice templates document](https://docs.killbill.io/latest/invoice_templates) and
+[Internationalization manual](https://docs.killbill.io/latest/internationalization.html#_language_translations) for an introduction to the translation process/Kill Bill's internationalization support.
 
 ### Upload the catalog translation for the tenant
 
-Uploads a catalog translation table that will be saved under a specified locale. The translation table gives a translation for specific names in the current catalog.
+Uploads a catalog translation table that will be saved under a specified locale. The translation table provides a translation for specific names in the current catalog that may appear on an invoice (for example, plan names, product names, etc.).
 
 **HTTP Request** 
 
@@ -3132,6 +3133,7 @@ Uploads a catalog translation table that will be saved under a specified locale.
 > Example Request:
 
 ```shell
+# specify the translations in the request body
 curl -v \
     -X POST \
     -u admin:password \
@@ -3145,6 +3147,18 @@ curl -v \
     -d '"sports-monthly = Voiture Sport
 silver-monthly = plan d'argent mensuel"' \
     "http://localhost:8080/1.0/kb/invoices/catalogTranslation/fr_FR"
+    
+OR 
+# specify a properties file containing the translations
+curl -v \
+     -u admin:password \
+     -H "X-Killbill-ApiKey: bob" \
+     -H "X-Killbill-ApiSecret: lazar" \
+     -H 'X-Killbill-CreatedBy: admin' \
+     -H "Content-Type: text/plain" \
+     -X POST \
+     -d @CatalogTranslation_de_DE.properties \
+     http://127.0.0.1:8080/1.0/kb/invoices/catalogTranslation/de_DE
 ```
 
 ```java
@@ -3185,12 +3199,11 @@ invoiceApi.upload_catalog_translation(locale,
 A table of translation items. For example:
 
 gold-monthly = plan Or mensuel
-
 silver-monthly = plan d'argent mensuel
 
 Note that this table does not use a special syntax such as JSON. The equals sign is the only punctuation. There are no brackets or quotation marks.
 
-The names translated would be primarily plan names, product names, and other items that may appear on an invoice.
+Alternatively, the path of a properties file containing the translations can also be specified as the request body. 
 
 **Query Parameters**
 
@@ -3200,7 +3213,7 @@ The names translated would be primarily plan names, product names, and other ite
 
 **Response**
 
-If successful, returns a status code of 201 and a Location header which can be used to retrieve the catalog translation.
+If successful, returns a status code of 201 and a Location header that can be used to retrieve the catalog translation for the locale.
 
 ### Retrieve the catalog translation for the tenant
 
@@ -3259,7 +3272,7 @@ If successful, returns a status code of 200 and the translation table. A status 
 
 ### Upload the invoice translation for the tenant
 
-Uploads an invoice translation table that will be saved under a specified locale. The translation table gives a translation for specific names in the corresponding invoice template.
+Uploads an invoice translation table that will be saved under a specified locale. The translation table provides a translation for specific names in the corresponding invoice template (for example invoice title, invoice date, etc.).
 
 **HTTP Request** 
 
@@ -3268,6 +3281,7 @@ Uploads an invoice translation table that will be saved under a specified locale
 > Example Request:
 
 ```shell
+# specify the translations in the request body
 curl -v \
     -X POST \
     -u admin:password \
@@ -3282,6 +3296,22 @@ curl -v \
 invoiceDate=Date:
 invoiceNumber=Facture #" \
     "http://localhost:8080/1.0/kb/invoices/translation/fr_FR"
+    
+OR 
+
+# specify a properties file containing the translations
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: text/plain" \
+    -H "Accept: text/plain" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+     --data-binary @InvoiceTranslation_de_DE.properties \
+    "http://localhost:8080/1.0/kb/invoices/translation/de_DE?deleteIfExists=true"
 ```
 
 ```java
@@ -3318,16 +3348,14 @@ invoiceApi.upload_invoice_translation(locale,
 A table of translation items. For example:
 
 invoiceTitle=FACTURE
-
 invoiceDate=Date:
-
 invoiceNumber=Facture #
-
 invoiceAmount=Montant à payer
 
 
 Note that this table does not use a special syntax such as JSON. The equals sign is the only punctuation. There are no brackets or quotation marks.
 
+Alternatively, the path of a properties file containing the translations can also be specified as the request body.
 
 **Query Parameters**
 
@@ -3337,7 +3365,7 @@ Note that this table does not use a special syntax such as JSON. The equals sign
 
 **Response**
 
-If successful, returns a status code of 201 and a Location header which can be used to retrieve the invoice translation.
+If successful, returns a status code of 201 and a Location header that can be used to retrieve the invoice translations for the locale.
 
 ### Retrieve the invoice translation for the tenant
 
@@ -3397,11 +3425,14 @@ If successful, returns a status code of 200 and the translation table. A status 
 
 ## Template
 
-A template is a document based on [**mustache**](https://mustache.github.io/) that provides the layout information for invoices. The template will be translated according to the translation table, if any, and the invoice data will be filled in by the Kill Bill system. Refer to our [Internationalization manual](https://docs.killbill.io/latest/internationalization.html#_language_translations) for an introduction.
+A template is a document based on [**mustache**](https://mustache.github.io/) that provides the layout information for invoices. When a customer accesses an invoice, the invoice is generated from the system data, formatted using the appropriate template, and translated according to the [invoice translations](invoice.html#translation) corresponding to the locale of the customer's account if any.
+
+Refer to the [Invoice templates document](https://docs.killbill.io/latest/invoice_templates) and
+[Internationalization manual](https://docs.killbill.io/latest/internationalization.html#_language_translations) for an introduction to the translation process/Kill Bill's internationalization support.
 
 ### Upload the manualPay invoice template for the tenant
 
-Uploads an invoice template based on the manual pay option, for accounts that have the MANUAL_PAY tag. These accounts manually pay their invoices (e.g. ACH). Typically, this template will contain extra information like the company bank account details, PO number, etc.
+Uploads an invoice template for accounts that have the MANUAL_PAY tag. These accounts manually pay their invoices (e.g. ACH). Typically, this template will contain extra information like the company bank account details, PO number, etc.
 
 **HTTP Request** 
 
@@ -3410,6 +3441,7 @@ Uploads an invoice template based on the manual pay option, for accounts that ha
 > Example Request:
 
 ```shell
+# specify the template in the request body
 curl -v \
     -X POST \
     -u admin:password \
@@ -3421,7 +3453,20 @@ curl -v \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
     -d '"Some_HTML_String"' \
-    "http://localhost:8080/1.0/kb/invoices/manualPayTemplate?deleteIfExists=false"	
+    "http://localhost:8080/1.0/kb/invoices/manualPayTemplate"	
+    
+OR 
+
+# specify the template in a separate mustache file
+curl -v \
+     -u admin:password \
+     -H "X-Killbill-ApiKey: bob" \
+     -H "X-Killbill-ApiSecret: lazar" \
+     -H 'X-Killbill-CreatedBy: admin' \
+     -H "Content-Type: text/html" \
+     -X POST \
+     -d @HTMLTemplate-manual-pay.mustache \
+     "http://localhost:8080/1.0/kb/invoices/manualPayTemplate"
 ```
 
 ```java
@@ -3456,7 +3501,7 @@ invoiceApi.upload_invoice_mp_template(body,
 
 **Request Body**
 
-Contains a mustache manual pay template in HTML format.
+Contains a mustache manual pay template in HTML format. Alternatively, the path of template file can also be specified as the request body.
 
 **Query Parameters**
 
@@ -3467,7 +3512,7 @@ Contains a mustache manual pay template in HTML format.
 
 **Response**
 
-If successful, returns a status code of 200 and an empty body.
+If successful, returns a status code of 201 and a Location header that can be used to retrieve the manual payment invoice template.
 
 ### Retrieve the manualPay invoice template for the tenant
 
@@ -3506,6 +3551,106 @@ invoiceApi = killbill.api.InvoiceApi()
 invoiceApi.get_invoice_mp_template(api_key, api_secret)
 ```
 
+> Example Response:
+
+```text/plain
+<html>
+    <head>
+        <style type="text/css">
+            th {align=left; width=225px; border-bottom: solid 2px black;}
+        </style>
+    </head>
+    <body>
+        <h1>{{text.invoiceTitle}}</h1>
+        <table>
+            <tr>
+                <td rowspan=3 width=350px>Insert image here</td>
+                <td width=100px/>
+                <td width=225px/>
+                <td width=225px/>
+            </tr>
+            <tr>
+                <td />
+                <td align=right>{{text.invoiceDate}}</td>
+                <td>{{invoice.formattedInvoiceDate}}</td>
+            </tr>
+            <tr>
+                <td />
+                <td align=right>{{text.invoiceNumber}}</td>
+                <td>{{invoice.invoiceNumber}}</td>
+            </tr>
+            <tr>
+                <td>{{text.companyName}}</td>
+                <td></td>
+                <td align=right>{{text.accountOwnerName}}</td>
+                <td>{{account.name}}</td>
+            </tr>
+            <tr>
+                <td>{{text.companyAddress}}</td>
+                <td />
+                <td />
+                <td>{{account.email}}</td>
+            </tr>
+            <tr>
+                <td>{{text.companyCityProvincePostalCode}}</td>
+                <td />
+                <td />
+                <td>{{account.phone}}</td>
+            </tr>
+            <tr>
+                <td>{{text.companyCountry}}</td>
+                <td />
+                <td />
+                <td />
+            </tr>
+            <tr>
+                <td><{{text.companyUrl}}</td>
+                <td />
+                <td />
+                <td />
+            </tr>
+        </table>
+        <br />
+        <br />
+        <br />
+        <table>
+            <tr>
+                <th>{{text.invoiceItemBundleName}}</td>
+                <th>{{text.invoiceItemDescription}}</td>
+                <th>{{text.invoiceItemServicePeriod}}</td>
+                <th>{{text.invoiceItemAmount}}</td>
+            </tr>
+            {{#invoice.invoiceItems}}
+            <tr>
+                <td>{{description}}</td>
+                <td>{{planName}}</td>
+                <td>{{formattedStartDate}}{{#formattedEndDate}} - {{formattedEndDate}}{{/formattedEndDate}}</td>
+                <td>{{invoice.currency}} {{amount}}</td>
+            </tr>
+            {{/invoice.invoiceItems}}
+            <tr>
+                <td colspan=4 />
+            </tr>
+            <tr>
+                <td colspan=2 />
+                <td align=right><strong>{{text.invoiceAmount}}</strong></td>
+                <td align=right><strong>{{invoice.chargedAmount}}</strong></td>
+            </tr>
+            <tr>
+                <td colspan=2 />
+                <td align=right><strong>{{text.invoiceAmountPaid}}</strong></td>
+                <td align=right><strong>{{invoice.paidAmount}}</strong></td>
+            </tr>
+            <tr>
+                <td colspan=2 />
+                <td align=right><strong>{{text.invoiceBalance}}</strong></td>
+                <td align=right><strong>{{invoice.balance}}</strong></td>
+            </tr>
+        </table>
+    </body>
+</html>
+```
+
 **Query Parameters**
 
 None.
@@ -3517,7 +3662,7 @@ If successful, returns a status code of 201 and the manual pay template.
 
 ### Upload the invoice template for the tenant
 
-Uploads an invoice template based on an automatic payment method. This is appropriate for accounts without the MANUAL_PAY tag.
+Uploads an invoice template for accounts with an automatic payment method (accounts without the `MANUAL_PAY` tag).
 
 
 **HTTP Request** 
@@ -3527,6 +3672,7 @@ Uploads an invoice template based on an automatic payment method. This is approp
 > Example Request:
 
 ```shell
+# specify the template in the request body
 curl -v \
     -X POST \
     -u admin:password \
@@ -3539,6 +3685,22 @@ curl -v \
     -H "X-Killbill-Comment: demo" \
     -d "Some_HTML_String" \
     "http://localhost:8080/1.0/kb/invoices/template"	
+    
+OR
+
+# specify the template in a separate mustache file
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: text/html" \
+    -H "Accept: text/html" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -H "X-Killbill-Reason: demo" \
+    -H "X-Killbill-Comment: demo" \
+    -d @HTMLTemplate.mustache \
+    "http://localhost:8080/1.0/kb/invoices/template?deleteIfExists=true"    
 ```
 
 ```java
@@ -3573,7 +3735,7 @@ invoiceApi.upload_invoice_template(body,
 
 **Request Body**
 
-Contains a mustache automatic pay template in HTML format.
+Contains a mustache automatic pay template in HTML format. Alternatively, the path of template file can also be specified as the request body.
 
 **Query Parameters**
 
@@ -3584,7 +3746,7 @@ Contains a mustache automatic pay template in HTML format.
 
 **Response**
 
-If successful, returns a status code of 200 and an empty body.
+If successful, returns a status code of 201 and a Location header that can be used to retrieve the automatic payment invoice template.
 
 ### Retrieve the invoice template for the tenant
 
@@ -3623,6 +3785,106 @@ invoiceApi = killbill.api.InvoiceApi()
 invoiceApi.get_invoice_template(api_key, api_secret)
 ```
 
+> Example Response:
+
+```text/plain
+<html>
+    <head>
+        <style type="text/css">
+            th {align=left; width=225px; border-bottom: solid 2px black;}
+        </style>
+    </head>
+    <body>
+        <h1>{{text.invoiceTitle}}</h1>
+        <table>
+            <tr>
+                <td rowspan=3 width=350px>Insert image here</td>
+                <td width=100px/>
+                <td width=225px/>
+                <td width=225px/>
+            </tr>
+            <tr>
+                <td />
+                <td align=right>{{text.invoiceDate}}</td>
+                <td>{{invoice.formattedInvoiceDate}}</td>
+            </tr>
+            <tr>
+                <td />
+                <td align=right>{{text.invoiceNumber}}</td>
+                <td>{{invoice.invoiceNumber}}</td>
+            </tr>
+            <tr>
+                <td>{{text.companyName}}</td>
+                <td></td>
+                <td align=right>{{text.accountOwnerName}}</td>
+                <td>{{account.name}}</td>
+            </tr>
+            <tr>
+                <td>{{text.companyAddress}}</td>
+                <td />
+                <td />
+                <td>{{account.email}}</td>
+            </tr>
+            <tr>
+                <td>{{text.companyCityProvincePostalCode}}</td>
+                <td />
+                <td />
+                <td>{{account.phone}}</td>
+            </tr>
+            <tr>
+                <td>{{text.companyCountry}}</td>
+                <td />
+                <td />
+                <td />
+            </tr>
+            <tr>
+                <td><{{text.companyUrl}}</td>
+                <td />
+                <td />
+                <td />
+            </tr>
+        </table>
+        <br />
+        <br />
+        <br />
+        <table>
+            <tr>
+                <th>{{text.invoiceItemBundleName}}</td>
+                <th>{{text.invoiceItemDescription}}</td>
+                <th>{{text.invoiceItemServicePeriod}}</td>
+                <th>{{text.invoiceItemAmount}}</td>
+            </tr>
+            {{#invoice.invoiceItems}}
+            <tr>
+                <td>{{description}}</td>
+                <td>{{planName}}</td>
+                <td>{{formattedStartDate}}{{#formattedEndDate}} - {{formattedEndDate}}{{/formattedEndDate}}</td>
+                <td>{{invoice.currency}} {{amount}}</td>
+            </tr>
+            {{/invoice.invoiceItems}}
+            <tr>
+                <td colspan=4 />
+            </tr>
+            <tr>
+                <td colspan=2 />
+                <td align=right><strong>{{text.invoiceAmount}}</strong></td>
+                <td align=right><strong>{{invoice.chargedAmount}}</strong></td>
+            </tr>
+            <tr>
+                <td colspan=2 />
+                <td align=right><strong>{{text.invoiceAmountPaid}}</strong></td>
+                <td align=right><strong>{{invoice.paidAmount}}</strong></td>
+            </tr>
+            <tr>
+                <td colspan=2 />
+                <td align=right><strong>{{text.invoiceBalance}}</strong></td>
+                <td align=right><strong>{{invoice.balance}}</strong></td>
+            </tr>
+        </table>
+    </body>
+</html>
+```
+
 
 **Query Parameters**
 
@@ -3640,20 +3902,20 @@ The translation and templating process may seem a little complex. Here is a simp
 
 2. Suppose the tenant does business with German customers. She then should upload translation tables, perhaps provided by customers, designated for the German locale (de_DE). Tables are needed for both invoice items and catalog items. The invoice items to be translated are the names of the fields on the template, such as invoiceTitle, invoiceAmount, etc. The catalog items to be translated are the names for actual items such as product name and plan name. There can be translation tables for any number of distinct locales.
 
-Catalog translation example (German):
+ Catalog translation example (German):
 
         gold plan = Goldplan
         sports car = Sportwagen
         
-Invoice transaltion example (German):
+  Invoice translation example (German):
 
     invoiceTitle = Rechnung
     invoiceNumber = Rechnungsnumber
     invoiceBalance = Rechnungssaldo
     
-3. Each account has a designated locale. When an invoice is retrieved for an account, the appropriate translation tables, if any, are used to translate the invoice.
+3. Each account has a designated locale. When an invoice is retrieved for an account, the invoice is generated using the invoice template and the appropriate translation tables, if any.
 
-You can refer to the (Invoice Templates Tutorial)[https://docs.killbill.io/latest/invoice_templates.html] to know more about the how this works.
+Refer to the [Invoice Templates Tutorial](https://docs.killbill.io/latest/invoice_templates.html) for a step-by-step tutorial.
 
 
 ## Audit Logs
