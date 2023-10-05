@@ -3185,13 +3185,13 @@ KillBillClient::Model::Invoice.upload_catalog_translation(catalog_translation,
 ```python
 invoiceApi = killbill.api.InvoiceApi()
 locale = 'fr_FR'
-body = "sports-monthly = Voiture Sport"
+body = 'sports-monthly = Voiture Sport'
 
 invoiceApi.upload_catalog_translation(locale,
                                       body,
-                                      created_by,
-                                      api_key,
-                                      api_secret)
+                                      created_by='demo',
+                                      reason='reason',
+                                      comment='comment')
 ```
 
 **Request Body**
@@ -3249,7 +3249,7 @@ KillBillClient::Model::Invoice.get_catalog_translation(locale,
 invoiceApi = killbill.api.InvoiceApi()
 locale = 'fr_FR'
 
-invoiceApi.get_catalog_translation(locale, api_key, api_secret)
+translations = invoiceApi.get_catalog_translation(locale)
 ```
 
 > Example Response:
@@ -3334,13 +3334,15 @@ KillBillClient::Model::Invoice.upload_invoice_translation(invoice_translation,
 ```python
 invoiceApi = killbill.api.InvoiceApi()
 locale = 'fr_FR'
-body = "sports-monthly = Voiture Sport"
+body = "invoiceDate = date de facture"
+delete_if_exists = True
 
 invoiceApi.upload_invoice_translation(locale,
                                       body,
-                                      created_by,
-                                      api_key,
-                                      api_secret)
+                                      delete_if_exists=delete_if_exists,
+                                      created_by='demo',
+                                      reason='reason',
+                                      comment='comment')
 ```
 
 **Request Body**
@@ -3403,7 +3405,7 @@ KillBillClient::Model::Invoice.get_invoice_translation(locale,
 invoiceApi = killbill.api.InvoiceApi()
 locale = 'fr_FR'
 
-invoiceApi.get_invoice_translation(locale, api_key, api_secret)
+translations = invoiceApi.get_invoice_translation(locale)
 ```
 
 > Example Response:
@@ -3494,9 +3496,9 @@ invoiceApi = killbill.api.InvoiceApi()
 body = 'Some_HTML_String'
 
 invoiceApi.upload_invoice_mp_template(body,
-                                      created_by,
-                                      api_key,
-                                      api_secret)
+                                      created_by='demo',
+                                      reason='reason',
+                                      comment='comment')
 ```
 
 **Request Body**
@@ -3547,8 +3549,9 @@ KillBillClient::Model::Invoice.get_invoice_template(is_manual_pay,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
+locale = 'fr_FR'
 
-invoiceApi.get_invoice_mp_template(api_key, api_secret)
+template = invoiceApi.get_invoice_mp_template(locale)
 ```
 
 > Example Response:
@@ -3725,11 +3728,13 @@ KillBillClient::Model::Invoice.upload_invoice_template(invoice_template,
 ```python
 invoiceApi = killbill.api.InvoiceApi()
 body = 'Some_HTML_String'
+delete_if_exists = True
 
 invoiceApi.upload_invoice_template(body,
-                                   created_by,
-                                   api_key,
-                                   api_secret)
+                                   delete_if_exists=delete_if_exists,
+                                   created_by='demo',
+                                   reason='reason',
+                                   comment='comment')
 ```
 
 
@@ -3782,7 +3787,7 @@ KillBillClient::Model::Invoice.get_invoice_template(is_manual_pay,
 ```python
 invoiceApi = killbill.api.InvoiceApi()
 
-invoiceApi.get_invoice_template(api_key, api_secret)
+template = invoiceApi.get_invoice_template()
 ```
 
 > Example Response:
