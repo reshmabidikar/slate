@@ -3169,16 +3169,20 @@ invoiceApi.uploadCatalogTranslation(locale, body, deleteIfExists,requestOptions)
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 catalog_translation = 'sports-monthly = Voiture Sport'
 locale = "fr_FR"
-delete_if_exists = false
+delete_if_exists = true
 
-KillBillClient::Model::Invoice.upload_catalog_translation(catalog_translation, 
-                                                          locale, 
-                                                          delete_if_exists, 
-                                                          user, 
-                                                          reason, 
-                                                          comment, 
+KillBillClient::Model::Invoice.upload_catalog_translation(catalog_translation,
+                                                          locale,
+                                                          delete_if_exists,
+                                                          user,
+                                                          reason,
+                                                          comment,
                                                           options)
 ```
 
@@ -3241,8 +3245,7 @@ String translation = invoiceApi.getCatalogTranslation(locale, requestOptions);
 
 ```ruby
 locale = "fr_FR"
-KillBillClient::Model::Invoice.get_catalog_translation(locale, 
-                                                       options)
+translations = KillBillClient::Model::Invoice.get_catalog_translation(locale, options)
 ```
 
 ```python
@@ -3322,12 +3325,19 @@ String translation = invoiceApi.uploadInvoiceTranslation(locale, body, deleteIfE
 ```
 
 ```ruby
-invoice_translation = get_resource_as_string("InvoiceTranslation_fr_FR.properties")
+user = "demo"
+reason = nil
+comment = nil
+
+invoice_translation = 'invoiceDate = date de facture'
 locale = "fr_FR"
-delete_if_exists = false
+delete_if_exists = true
 KillBillClient::Model::Invoice.upload_invoice_translation(invoice_translation,
                                                           locale,
-                                                          delete_if_exists, 
+                                                          delete_if_exists,
+                                                          user,
+                                                          reason,
+                                                          comment,
                                                           options)
 ```
 
@@ -3397,8 +3407,7 @@ String translation = invoiceApi.getInvoiceTranslation(locale, requestOptions);
 
 ```ruby
 locale = "fr_FR"
-KillBillClient::Model::Invoice.get_invoice_translation(locale,
-                                                       options)
+translations = KillBillClient::Model::Invoice.get_invoice_translation(locale,options)
 ```
 
 ```python
@@ -3479,15 +3488,19 @@ String template = invoiceApi.uploadInvoiceMPTemplate(body, deleteIfExists,reques
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 invoice_template = "Some_HTML_String"
 is_manual_pay = true
-delete_if_exists = false
-KillBillClient::Model::Invoice.upload_invoice_template(invoice_template, 
-                                                       is_manual_pay, 
-                                                       delete_if_exists, 
-                                                       user, 
-                                                       reason, 
-                                                       comment, 
+delete_if_exists = true
+KillBillClient::Model::Invoice.upload_invoice_template(invoice_template,
+                                                       is_manual_pay,
+                                                       delete_if_exists,
+                                                       user,
+                                                       reason,
+                                                       comment,
                                                        options)
 ```
 
@@ -3541,10 +3554,10 @@ String template = invoiceApi.getInvoiceMPTemplate(locale, requestOptions);
 ```
 
 ```ruby
+locale = "fr_FR"
 is_manual_pay = true
 
-KillBillClient::Model::Invoice.get_invoice_template(is_manual_pay,
-                                                    options)
+template = KillBillClient::Model::Invoice.get_invoice_template(is_manual_pay, locale, options)
 ```
 
 ```python
@@ -3713,15 +3726,19 @@ String template = invoiceApi.uploadInvoiceTemplate(body, deleteIfExists,requestO
 ```
 
 ```ruby
+user = "demo"
+reason = nil
+comment = nil
+
 invoice_template = "Some_HTML_String"
 is_manual_pay = false
-delete_if_exists = false
-KillBillClient::Model::Invoice.upload_invoice_template(invoice_template, 
-                                                       is_manual_pay, 
-                                                       delete_if_exists, 
-                                                       user, 
-                                                       reason, 
-                                                       comment, 
+delete_if_exists = true
+KillBillClient::Model::Invoice.upload_invoice_template(invoice_template,
+                                                       is_manual_pay,
+                                                       delete_if_exists,
+                                                       user,
+                                                       reason,
+                                                       comment,
                                                        options)
 ```
 
@@ -3778,10 +3795,10 @@ String template = invoiceApi.getInvoiceTemplate(requestOptions);
 ```
 
 ```ruby
+locale = "fr_FR"
 is_manual_pay = false
 
-KillBillClient::Model::Invoice.get_invoice_template(is_manual_pay,
-                                                    options)
+template = KillBillClient::Model::Invoice.get_invoice_template(is_manual_pay, locale, options)
 ```
 
 ```python
