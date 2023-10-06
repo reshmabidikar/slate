@@ -3198,6 +3198,23 @@ invoiceApi.upload_catalog_translation(locale,
                                       comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$body = "sports-monthly = Voiture Sport";
+$locale = "fr_FR";
+$deleteIfExists = true;
+
+$result = $apiInstance->uploadCatalogTranslation($body, $xKillbillCreatedBy, $locale, $xKillbillReason, $xKillbillComment, $deleteIfExists);
+````
+
 **Request Body**
 
 A table of translation items. For example:
@@ -3254,6 +3271,17 @@ locale = 'fr_FR'
 
 translations = invoiceApi.get_catalog_translation(locale)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$locale = "fr_FR";
+
+$result = $apiInstance->getCatalogTranslation($locale);
+````
 
 > Example Response:
 
@@ -3355,6 +3383,23 @@ invoiceApi.upload_invoice_translation(locale,
                                       comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$body = "invoiceDate = date de facture";
+$locale = "fr_FR";
+$deleteIfExists = true;
+
+$result = $apiInstance->uploadInvoiceTranslation($body, $xKillbillCreatedBy, $locale, $xKillbillReason, $xKillbillComment, $deleteIfExists);
+````
+
 **Request Body**
 
 A table of translation items. For example:
@@ -3416,6 +3461,17 @@ locale = 'fr_FR'
 
 translations = invoiceApi.get_invoice_translation(locale)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$locale = "fr_FR";
+
+$result = $apiInstance->getInvoiceTranslation($locale);
+````
 
 > Example Response:
 
@@ -3514,6 +3570,22 @@ invoiceApi.upload_invoice_mp_template(body,
                                       comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$body = "Some HTML String";
+$deleteIfExists = true;
+
+$result = $apiInstance->uploadInvoiceMPTemplate($body, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment, $deleteIfExists);
+````
+
 **Request Body**
 
 Contains a mustache manual pay template in HTML format. Alternatively, the path of template file can also be specified as the request body.
@@ -3566,6 +3638,17 @@ locale = 'fr_FR'
 
 template = invoiceApi.get_invoice_mp_template(locale)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$locale = "fr_FR";
+
+$result = $apiInstance->getInvoiceMPTemplate($locale);
+````
 
 > Example Response:
 
@@ -3754,6 +3837,22 @@ invoiceApi.upload_invoice_template(body,
                                    comment='comment')
 ```
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$body = "Some HTML String";
+$deleteIfExists = true;
+
+$result = $apiInstance->uploadInvoiceTemplate($body, $xKillbillCreatedBy, $xKillbillReason, $xKillbillComment, $deleteIfExists);
+````
+
 
 **Request Body**
 
@@ -3806,6 +3905,15 @@ invoiceApi = killbill.api.InvoiceApi()
 
 template = invoiceApi.get_invoice_template()
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$result = $apiInstance->getInvoiceTemplate();
+````
 
 > Example Response:
 
