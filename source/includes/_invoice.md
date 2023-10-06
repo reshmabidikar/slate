@@ -3199,6 +3199,13 @@ invoiceApi.upload_catalog_translation(locale,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const locale = 'fr_FR';
+const deleteIfExists = true;
+const body = 'sports-monthly = Voiture Sport';
+
+api.uploadCatalogTranslation(body, locale, 'created_by', deleteIfExists);
 ````
 
 ````php
@@ -3273,6 +3280,11 @@ translations = invoiceApi.get_catalog_translation(locale)
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const locale = 'fr_FR';
+
+const response: AxiosResponse = await api.getCatalogTranslation(locale);
 ````
 
 ````php
@@ -3384,6 +3396,13 @@ invoiceApi.upload_invoice_translation(locale,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const locale = 'fr_FR';
+const deleteIfExists = true;
+const body = 'invoiceDate = date de facture';
+
+api.uploadInvoiceTranslation(body, locale, 'created_by', deleteIfExists);
 ````
 
 ````php
@@ -3463,6 +3482,11 @@ translations = invoiceApi.get_invoice_translation(locale)
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const locale = 'fr_FR';
+
+const response: AxiosResponse = await api.getInvoiceTranslation(locale);
 ````
 
 ````php
@@ -3571,6 +3595,12 @@ invoiceApi.upload_invoice_mp_template(body,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const deleteIfExists = true;
+const body = 'Some HTML String';
+
+api.uploadInvoiceMPTemplate(body, 'created_by', deleteIfExists);
 ````
 
 ````php
@@ -3640,6 +3670,11 @@ template = invoiceApi.get_invoice_mp_template(locale)
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const locale = 'fr_FR';
+
+const response: AxiosResponse = await api.getInvoiceMPTemplate(locale);
 ````
 
 ````php
@@ -3838,6 +3873,12 @@ invoiceApi.upload_invoice_template(body,
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const deleteIfExists = true;
+const body = 'Some HTML String';
+
+api.uploadInvoiceTemplate(body, 'created_by', deleteIfExists);
 ````
 
 ````php
@@ -3907,6 +3948,9 @@ template = invoiceApi.get_invoice_template()
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const response: AxiosResponse = await api.getInvoiceTemplate();
 ````
 
 ````php
