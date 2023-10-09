@@ -2687,7 +2687,7 @@ $result = $apiInstance->createInvoiceCustomFields($body, $xKillbillCreatedBy, $i
 
 **Request Body**
 
-A list of [Custom Field](custom-field.html#custom-field-custom-field-resource) objects. Each object should specify at least the the `name` and `value` attribute. For example:
+A list of [Custom Field](custom-field.html#custom-field-custom-field-resource) objects. Each object should specify at least the `name` and `value` attribute. For example:
 
 [ { "name": "CF1", "value": "123" } ]
 
@@ -3027,7 +3027,7 @@ The only `system` tag applicable for an `Invoice` is `WRITTEN_OFF` (`00000000-00
 
 ### Add tags to invoice
 
-This API adds one or more tags to an invoice. The The [tag definition](#tag-definition) corresponding to the tag being added must already exist.
+This API adds one or more tags to an invoice. The [tag definition](#tag-definition) corresponding to the tag being added must already exist.
 
 
 **HTTP Request** 
