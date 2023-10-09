@@ -2584,6 +2584,8 @@ Custom fields are `{key, value}` attributes that can be attached to any customer
 
 ### Add custom fields to an invoice
 
+Adds one or more custom fields to an invoice object. Existing custom fields are not disturbed.
+
 **HTTP Request** 
 
 `POST http://127.0.0.1:8080/1.0/kb/invoices/{invoiceId}/customFields`
@@ -2627,12 +2629,15 @@ invoiceApi.createInvoiceCustomFields(invoiceId,
 ```
 
 ```ruby
+invoice = KillBillClient::Model::Invoice.new
+invoice.invoice_id = '7bf0f3d6-4ffb-4d5a-98c7-1158083432d0'
+
 custom_field = KillBillClient::Model::CustomFieldAttributes.new
 custom_field.object_type = 'INVOICE'
 custom_field.name = 'Test Custom Field'
 custom_field.value = 'test_value'
 
-invoice.add_custom_field(custom_field, 
+invoice.add_custom_field(custom_field,
                          user,
                          reason,
                          comment,
@@ -2641,19 +2646,48 @@ invoice.add_custom_field(custom_field,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
+
+invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
 body = CustomField(name='Test Custom Field', value='test_value')
 
 invoiceApi.create_invoice_custom_fields(invoice_id,
                                         [body],
-                                        created_by,
-                                        api_key,
-                                        api_secret)
+                                        created_by='demo',
+                                        reason='reason',
+                                        comment='comment')
 ```
+
+````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const customField: CustomField = {name: "Test Custom Field", value: "test_value"};
+const customFields = [customField];
+
+const invoiceIdId = '800ca6d0-8c33-458c-bf1a-4de22e960441';
+
+api.createInvoiceCustomFields(customFields, invoiceIdId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "800ca6d0-8c33-458c-bf1a-4de22e960441";
+
+$customField = new CustomField();
+$customField -> setName('Test Custom Field');
+$customField -> setValue('test_value');
+$body = array($customField);
+
+$result = $apiInstance->createInvoiceCustomFields($body, $xKillbillCreatedBy, $invoiceId, $xKillbillReason, $xKillbillComment);
+````
 
 **Request Body**
 
-A list of [Custom Field](custom-field.html#custom-field-custom-field-resource) objects. Each object should specify at least the the `name` and `value` attribute. For example:
+A list of [Custom Field](custom-field.html#custom-field-custom-field-resource) objects. Each object should specify at least the `name` and `value` attribute. For example:
 
 [ { "name": "CF1", "value": "123" } ]
 
@@ -2697,17 +2731,39 @@ List<CustomField> customFields = invoiceApi.getInvoiceCustomFields(invoiceId,
 ```
 
 ```ruby
+invoice = KillBillClient::Model::Invoice.new
+invoice.invoice_id = '7bf0f3d6-4ffb-4d5a-98c7-1158083432d0'
+
 audit = 'NONE'
 
-invoice.custom_fields(audit, options)
+custom_fields = invoice.custom_fields(audit, options)
 ```
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
 
-invoiceApi.get_invoice_custom_fields(invoice_id, api_key, api_secret)
+invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
+
+custom_fields = invoiceApi.get_invoice_custom_fields(invoice_id)
 ```
+
+````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceIdId = '800ca6d0-8c33-458c-bf1a-4de22e960441';
+const audit = 'NONE';
+
+const response: AxiosResponse<killbill.CustomField[], any> = await api.getInvoiceCustomFields(invoiceIdId, audit, 'created_by');
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$invoiceId = "800ca6d0-8c33-458c-bf1a-4de22e960441";
+$audit = "NONE";
+
+$result = $apiInstance->getInvoiceCustomFields($invoiceId, $audit);
+````
 
 > Example Response:
 
@@ -2756,8 +2812,8 @@ curl -v \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
     -H "X-Killbill-Comment: demo" \
-    -d '[ { "customFieldId": "349de10f-4bb1-4e1a-93f6-11b745200bf5", "objectId": "2cd2f4b5-a1c0-42a7-924f-64c7b791332d", "objectType": "INVOICE", "name": "Test Custom Field", "value": "test_modify_value", "auditLogs": [] }]' \
-    "http://127.0.0.1:8080/1.0/kb/invoices/2cd2f4b5-a1c0-42a7-924f-64c7b791332d/customFields"	
+    -d '[ { "customFieldId": "9e0c4b85-c257-437c-ae9c-d32eac6f010c", "objectId": "7bf0f3d6-4ffb-4d5a-98c7-1158083432d0", "value": "new value" }]' \
+    "http://127.0.0.1:8080/1.0/kb/invoices/7bf0f3d6-4ffb-4d5a-98c7-1158083432d0/customFields"   
 ```
 
 ```java
@@ -2781,40 +2837,74 @@ invoiceApi.modifyInvoiceCustomFields(invoiceId,
 ```
 
 ```ruby
-custom_field.custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-custom_field.name = 'Test Modify'
-custom_field.value = 'test_modify_value'
+user = "demo"
+reason = nil
+comment = nil
 
-invoice.modify_custom_field(custom_field,                                                                                            
-                            user, 
+invoice = KillBillClient::Model::Invoice.new
+invoice.invoice_id = '7bf0f3d6-4ffb-4d5a-98c7-1158083432d0'
+
+custom_field = KillBillClient::Model::CustomFieldAttributes.new
+custom_field.custom_field_id = 'ec53d741-e52a-4860-a6d3-03bb22b24a90'
+custom_field.value = 'new value'
+
+invoice.modify_custom_field(custom_field,
+                            user,
                             reason,
-                            comment, 
+                            comment,
                             options)
 ```
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac'
-custom_field_id = '7fb3dde7-0911-4477-99e3-69d142509bb9'
-body = CustomField(custom_field_id=custom_field_id, 
-                   name='Test Custom Field', 
-                   value='test_value')
 
-invoiceApi.modify_invoice_custom_fields(invoice_id, 
-                                        [body], 
-                                        created_by, 
-                                        api_key, 
-                                        api_secret)
+invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
+custom_field_id = 'da4c9071-e3da-418c-aa28-2b7cbf9ec3c8'
+body = CustomField(custom_field_id=custom_field_id, value='New Value')
+
+invoiceApi.modify_invoice_custom_fields(invoice_id,
+                                        [body],
+                                        created_by='demo',
+                                        reason='reason',
+                                        comment='comment')
 ```
+
+````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceIdId = '800ca6d0-8c33-458c-bf1a-4de22e960441';
+
+const customField: CustomField = {customFieldId: "45ee24dd-cb1c-48a9-91a8-ecf5b76fd76b", value: "new_value"};
+    const customFields = [customField];
+
+api.modifyInvoiceCustomFields(customFields, invoiceIdId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "800ca6d0-8c33-458c-bf1a-4de22e960441";
+
+$customField = new CustomField();
+$customField -> setCustomFieldId('70749248-8bc5-4a98-9238-9eda7ed34d56');
+$customField -> setValue('new_value');
+$body = array($customField);
+
+$apiInstance->modifyInvoiceCustomFields($body, $xKillbillCreatedBy, $invoiceId, $xKillbillReason, $xKillbillComment);
+````
 
 **Requst Body**
 
 
-A list of [Custom Field](custom-field.html#custom-field-custom-field-resource) objects representing the fields to substitute for existing ones. Each object should specify at least the the `customFieldId` and `value` attribute. For example:
+A list of [Custom Field](custom-field.html#custom-field-custom-field-resource) objects specifying the id and the new value for the custom fields to be modified. Each object should specify at least the `customFieldId` and `value` attribute. For example:
 
 [ { "customFieldId": "6d4c073b-fd89-4e39-9802-eba65f42492f", "value": "123" } ]
 
-
+Although the `fieldName` and `objectType` can be specified in the request body, these attributes cannot be modified, only the `value` can be modified.
 
 **Query Parameters**
 
@@ -2827,7 +2917,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Remove custom fields from invoice
 
-Remove a specified set of custom fields from the invoice
+Delete one or more custom fields from an invoice. It accepts query parameters corresponding to the custom field ids to be deleted. if no query parameters are specified, it deletes all the custom fields corresponding to the invoice.
 
 
 **HTTP Request** 
@@ -2863,24 +2953,59 @@ invoiceApi.deleteInvoiceCustomFields(invoiceId,
 ```
 
 ```ruby
-custom_field_id = custom_field.id
+user = "demo"
+reason = nil
+comment = nil
 
-invoice.remove_custom_field(custom_field_id,                                                                                            
-                            user, 
+invoice = KillBillClient::Model::Invoice.new
+invoice.invoice_id = '7bf0f3d6-4ffb-4d5a-98c7-1158083432d0'
+
+custom_field_id = 'ec53d741-e52a-4860-a6d3-03bb22b24a90'
+
+invoice.remove_custom_field(custom_field_id,
+                            user,
                             reason,
-                            comment, 
+                            comment,
                             options)
 ```
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '4927c1a2-3959-4f71-98e7-ce3ba19c92ac' 
 
-invoiceApi.delete_invoice_custom_fields(invoice_id, 
-                                        created_by, 
-                                        api_key, 
-                                        api_secret)
+invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
+custom_fields = ['da4c9071-e3da-418c-aa28-2b7cbf9ec3c8']
+
+invoiceApi.delete_invoice_custom_fields(invoice_id=invoice_id,
+                                        custom_field=custom_fields,
+                                        created_by='demo',
+                                        reason='reason',
+                                        comment='comment')
 ```
+
+````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceIdId = '800ca6d0-8c33-458c-bf1a-4de22e960441';
+
+const customField = '45ee24dd-cb1c-48a9-91a8-ecf5b76fd76b';
+const customFields = [customField];
+
+api.deleteInvoiceCustomFields(invoiceIdId, 'created_by', customFields);
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "800ca6d0-8c33-458c-bf1a-4de22e960441";
+
+$customFields = array("70749248-8bc5-4a98-9238-9eda7ed34d56");
+
+$apiInstance->deleteInvoiceCustomFields($invoiceId, $xKillbillCreatedBy, $customFields, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
@@ -2896,13 +3021,13 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Tags
 
-See [Account Tags](account.html#account-tags) for an introduction.
+See [Tags](tag.html) for an introduction to tags.
 
 The only `system` tag applicable for an `Invoice` is `WRITTEN_OFF` (`00000000-0000-0000-0000-000000000004`), which as it's name indicates, is used to write off an unpaid invoice, bringing its balance to $0.
 
 ### Add tags to invoice
 
-This API adds one or more tags to an invoice. The tag definitions must already exist.
+This API adds one or more tags to an invoice. The [tag definition](#tag-definition) corresponding to the tag being added must already exist.
 
 
 **HTTP Request** 
@@ -2940,7 +3065,14 @@ Tags result = invoiceApi.createInvoiceTags(invoiceId,
 ```
 
 ```ruby
-tag_name = 'TEST'
+user = "demo"
+reason = nil
+comment = nil
+
+invoice = KillBillClient::Model::Invoice.new
+invoice.invoice_id = '7bf0f3d6-4ffb-4d5a-98c7-1158083432d0'
+
+tag_name = 'WRITTEN_OFF'
 
 invoice.add_tag(tag_name,
                user,
@@ -2951,15 +3083,38 @@ invoice.add_tag(tag_name,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
-tag = ["00000000-0000-0000-0000-000000000004"]
 
-invoiceApi.create_invoice_tags(invoice_id, 
-                               tag, 
-                               created_by, 
-                               api_key, 
-                               api_secret)
+invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
+tagDefIds = ["00000000-0000-0000-0000-000000000004"]
+
+invoiceApi.create_invoice_tags(invoice_id,
+                               tagDefIds,
+                               created_by='demo',
+                               reason='reason',
+                               comment='comment')
 ```
+
+````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceIdId = '800ca6d0-8c33-458c-bf1a-4de22e960441';
+const tagDefIds = ['00000000-0000-0000-0000-000000000004'];
+
+api.createInvoiceTags(tagDefIds, invoiceIdId, 'created_by');
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "800ca6d0-8c33-458c-bf1a-4de22e960441";
+$tagDefIds = array("00000000-0000-0000-0000-000000000004");
+
+$result = $apiInstance->createInvoiceTags($tagDefIds, $xKillbillCreatedBy, $invoiceId, $xKillbillReason, $xKillbillComment);
+````
 
 **Request Body**
 
@@ -3008,20 +3163,44 @@ List<Tag> tags = invoiceApi.getInvoiceTags(invoiceId,
 ```
 
 ```ruby
+invoice = KillBillClient::Model::Invoice.new
+invoice.invoice_id = '7bf0f3d6-4ffb-4d5a-98c7-1158083432d0'
+
 included_deleted = false
 audit = 'NONE'
 
-invoice.tags(included_deleted,
+tags = invoice.tags(included_deleted,
              audit,
              options)
 ```
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '3e94fccf-0f37-40aa-90a4-122a4f381ebc'
 
-invoiceApi.get_invoice_tags(invoice_id, api_key, api_secret)
+invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
+
+tags = invoiceApi.get_invoice_tags(invoice_id)
 ```
+
+````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceIdId = '800ca6d0-8c33-458c-bf1a-4de22e960441';
+const includeDeleted = false;
+const audit = 'NONE';
+
+const response: AxiosResponse<killbill.Tag[], any> = await api.getInvoiceTags(invoiceIdId, includeDeleted, audit);
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$invoiceId = "800ca6d0-8c33-458c-bf1a-4de22e960441";
+$includedDeleted = false;
+$audit = "NONE";
+
+$result = $apiInstance->getInvoiceTags($invoiceId, $includedDeleted, $audit);
+````
 
 > Example Response:
 
@@ -3051,7 +3230,7 @@ If successful, returns a status code of 200 and a list of tag objects.
 
 ### Remove tags from invoice
 
-Removes a list of tags attached to an invoice.
+This API deletes one or more tags attached to an invoice.
 
 
 **HTTP Request** 
@@ -3085,7 +3264,14 @@ invoiceApi.deleteInvoiceTags(invoiceId,
 ```
 
 ```ruby
-tag_name = 'TEST'
+user = "demo"
+reason = nil
+comment = nil
+
+invoice = KillBillClient::Model::Invoice.new
+invoice.invoice_id = '7bf0f3d6-4ffb-4d5a-98c7-1158083432d0'
+
+tag_name = 'WRITTEN_OFF'
 
 invoice.remove_tag(tag_name,
                   user,
@@ -3096,14 +3282,38 @@ invoice.remove_tag(tag_name,
 
 ```python
 invoiceApi = killbill.api.InvoiceApi()
-invoice_id = '28af3cb9-275b-4ac4-a55d-a0536e479069'
 
-invoiceApi.delete_invoice_tags(invoice_id, 
-                               created_by, 
-                               api_key, 
-                               api_secret,
-                               tag_def=tag)
+invoice_id = 'b64bd7d2-167b-4e89-bb76-15ee955801f1'
+tagDefIds = ['00000000-0000-0000-0000-000000000004']
+
+invoiceApi.delete_invoice_tags(invoice_id,
+                               tag_def=tagDefIds,
+                               created_by='demo',
+                               reason='reason',
+                               comment='comment')
 ```
+
+````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceIdId = '800ca6d0-8c33-458c-bf1a-4de22e960441';
+const tagDefIds = ['00000000-0000-0000-0000-000000000004'];
+
+api.deleteInvoiceTags(invoiceIdId, 'created_by', tagDefIds);
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceId = "800ca6d0-8c33-458c-bf1a-4de22e960441";
+$tagDef = array("00000000-0000-0000-0000-000000000004");
+
+$apiInstance->deleteInvoiceTags($invoiceId, $xKillbillCreatedBy, $tagDef, $xKillbillReason, $xKillbillComment);
+````
 
 **Query Parameters**
 
