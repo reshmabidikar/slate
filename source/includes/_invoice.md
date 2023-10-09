@@ -4359,6 +4359,11 @@ audit_logs = invoiceApi.get_invoice_audit_logs_with_history(invoice_id)
 ````
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const invoiceId = 'bb9cf385-cc78-46a6-b069-924bdfdeb4f7';
+
+const response: AxiosResponse<killbill.AuditLog[], any> = await api.getInvoiceAuditLogsWithHistory(invoiceId);
 ````
 
 ````php
@@ -4468,6 +4473,11 @@ audit_logs = invoiceItemApi.get_invoice_item_audit_logs_with_history(invoice_ite
 ````
 
 ````javascript
+const api: killbill.InvoiceItemApi = new killbill.InvoiceItemApi(config);
+
+const invoiceItemId = '6f3d5bd3-f8b3-4615-9940-5a15a5060fb5';
+
+const response: AxiosResponse<killbill.AuditLog[], any> = await api.getInvoiceItemAuditLogsWithHistory(invoiceItemId);
 ````
 
 ````php
@@ -4584,6 +4594,9 @@ invoices = invoiceApi.get_invoices()
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const response: AxiosResponse<killbill.Invoice[], any> = await api.getInvoices();
 ````
 
 ````php
@@ -4810,6 +4823,11 @@ invoices = invoiceApi.search_invoices(search_key)
 ```
 
 ````javascript
+const api: killbill.InvoiceApi = new killbill.InvoiceApi(config);
+
+const searchKey = '8600';
+
+const response: AxiosResponse<killbill.Invoice[], any> = await api.searchInvoices(searchKey);
 ````
 
 ````php
