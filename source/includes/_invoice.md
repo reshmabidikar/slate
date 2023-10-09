@@ -4341,8 +4341,14 @@ protected InvoiceApi invoiceApi;
 
 UUID invoiceId = UUID.fromString("8f6f3405-249f-4b66-a0c2-ee84e884e81d");
 AuditLogs logs = invoiceApi.getInvoiceAuditLogsWithHistory(invoiceId, requestOptions);
-
 ```
+
+````ruby
+invoice = KillBillClient::Model::Invoice.new
+invoice.invoice_id = "bb9cf385-cc78-46a6-b069-924bdfdeb4f7"
+
+audit_logs = invoice.audit_logs_with_history(options)
+````
 
 > Example Response:
 
@@ -4425,6 +4431,13 @@ protected InvoiceItemApi invoiceItemApi;
 
 UUID invoiceItemId = UUID.fromString("57f4f41d-81a2-4521-8420-c241ecc90a80");
 AuditLogs logs = invoiceItemApi.getInvoiceItemAuditLogsWithHistory(invoiceItemId, requestOptions);
+````
+
+````ruby
+invoice_item = KillBillClient::Model::InvoiceItem.new
+invoice_item.invoice_item_id = "6f3d5bd3-f8b3-4615-9940-5a15a5060fb5"
+
+audit_logs = invoice_item.audit_logs_with_history(options)
 ````
 
 > Example Response:
@@ -4521,7 +4534,7 @@ Invoices result = invoiceApi.getInvoices(offset,
 offset = 0
 limit = 100
 
-invoice.find_in_batches(offset,
+invoices = KillBillClient::Model::Invoice.find_in_batches(offset,
                         limit,
                         options)
 ```
@@ -4728,11 +4741,11 @@ Invoices result = invoiceApi.searchInvoices(searchKey,
 ```
 
 ```ruby
-search_key = 'COMMITTED'
+search_key = '3135'
 offset = 0
 limit = 100
 
-invoice.find_in_batches_by_search_key(search_key,
+invoices = KillBillClient::Model::Invoice.find_in_batches_by_search_key(search_key,
                                       offset,
                                       limit,
                                       options)
