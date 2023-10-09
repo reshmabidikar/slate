@@ -4309,7 +4309,15 @@ Audit logs provide a record of events that occur involving various specific reso
 
 ### Retrieve invoice audit logs with history by invoice id
 
-Retrieve a list of audit log records showing events that occurred involving changes to a specified invoice. History information is included with each record.
+Retrieve a list of audit log records showing events that occurred involving changes to a specified invoice. History information  (a copy of the full invoice object) is included with each record.
+
+Some examples:
+* Assuming the API is invoked after an invoice is generated, it would return one record:
+    * An `INSERT` record corresponding to the invoice creation
+* Assuming the API is invoked after an invoice is voided, it would return two records:
+    * An `INSERT` record corresponding to the invoice creation
+    * An `UPDATE` record corresponding to the invoice status update
+
 
 
 **HTTP Request** 
@@ -4328,6 +4336,9 @@ curl \
 ```
 
 ```java
+import org.killbill.billing.client.api.gen.InvoiceApi;
+protected InvoiceApi invoiceApi;
+
 UUID invoiceId = UUID.fromString("8f6f3405-249f-4b66-a0c2-ee84e884e81d");
 AuditLogs logs = invoiceApi.getInvoiceAuditLogsWithHistory(invoiceId, requestOptions);
 
@@ -4384,7 +4395,14 @@ If successful, returns a status code of 200 and a list of audit logs with histor
 
 ### Retrieve invoice item audit logs with history by invoice item id
 
-Retrieve a list of audit log records showing events that occurred involving changes to a specified invoice item. History information is included with each record.
+Retrieve a list of audit log records showing events that occurred involving changes to a specified invoice item. History information (a copy of the full invoice item object) is included with each record.
+
+Some examples:
+Assuming this API is invoked with an invoice item id as soon as the invoice is generated, it would return:
+    * An `INSERT` record corresponding to the invoice item creation
+* Assuming a CBA_ADJ invoice item is deleted, and this API is invoked with the CBA_ADJ invoice item id, this API would return two records:
+    * An `INSERT` record corresponding to the invoice item creation
+    * An `UPDATE` record corresponding to the invoice item deletion
 
 **HTTP Request** 
 
@@ -4400,6 +4418,15 @@ curl \
     -H "Accept: application/json" \
     "http://127.0.0.1:8080/1.0/kb/invoiceItems/b45ef2ac-e4b7-4e79-89d8-1c2e95838300/auditLogsWithHistory"
 ```
+
+````java
+import org.killbill.billing.client.api.gen.InvoiceItemApi;
+protected InvoiceItemApi invoiceItemApi;
+
+UUID invoiceItemId = UUID.fromString("57f4f41d-81a2-4521-8420-c241ecc90a80");
+AuditLogs logs = invoiceItemApi.getInvoiceItemAuditLogsWithHistory(invoiceItemId, requestOptions);
+````
+
 > Example Response:
 
 ```json
@@ -4453,106 +4480,6 @@ None.
 **Response**
     
 If successful, returns a status code of 200 and a list of audit logs with history.
-
-
-
-### Retrieve invoice payment audit logs with history by invoice payment id
-
-Retrieve a list of audit log records showing events that occurred involving changes to a specified invoice payment. History information is included with each record.
-
-
-
-**HTTP Request** 
-
-`GET http://127.0.0.1:8080/1.0/kb/invoicePayments/{invoicePaymentId}/auditLogsWithHistory`
-
-> Example Request:
-
-```shell
-curl \
-    -u admin:password \
-    -H "X-Killbill-ApiKey: bob" \
-    -H "X-Killbill-ApiSecret: lazar" \
-    -H "Accept: application/json" \
-    "http://127.0.0.1:8080/1.0/kb/invoicePayments/5eedf918-b418-4d14-8dba-51c977a3f700/auditLogsWithHistory"
-```
-> Example Response:
-
-```json
-[
-  {
-    "changeType": "INSERT",
-    "changeDate": "2019-02-22T23:23:21.000Z",
-    "objectType": "INVOICE_PAYMENT",
-    "objectId": "5eedf918-b418-4d14-8dba-51c977a3f700",
-    "changedBy": "admin",
-    "reasonCode": null,
-    "comments": null,
-    "userToken": "39b3f8a2-d782-41cd-adcd-460b5f560192",
-    "history": {
-      "id": null,
-      "createdDate": "2019-02-22T23:23:21.000Z",
-      "updatedDate": null,
-      "recordId": 219,
-      "accountRecordId": 10,
-      "tenantRecordId": 1,
-      "type": "ATTEMPT",
-      "invoiceId": "d456a9b3-7e48-4f56-b387-1d65a492e75e",
-      "paymentId": null,
-      "paymentDate": "2019-02-22T23:23:21.000Z",
-      "amount": 10,
-      "currency": "USD",
-      "processedCurrency": "USD",
-      "paymentCookieId": "4d83dd1b-b053-4a4d-99de-9a9e6e0405af",
-      "linkedInvoicePaymentId": null,
-      "success": false,
-      "tableName": "INVOICE_PAYMENTS",
-      "historyTableName": "INVOICE_PAYMENT_HISTORY"
-    }
-  },
-  {
-    "changeType": "UPDATE",
-    "changeDate": "2019-02-22T23:23:21.000Z",
-    "objectType": "INVOICE_PAYMENT",
-    "objectId": "5eedf918-b418-4d14-8dba-51c977a3f700",
-    "changedBy": "admin",
-    "reasonCode": null,
-    "comments": null,
-    "userToken": "39b3f8a2-d782-41cd-adcd-460b5f560192",
-    "history": {
-      "id": null,
-      "createdDate": "2019-02-22T23:23:21.000Z",
-      "updatedDate": null,
-      "recordId": 219,
-      "accountRecordId": 10,
-      "tenantRecordId": 1,
-      "type": "ATTEMPT",
-      "invoiceId": "d456a9b3-7e48-4f56-b387-1d65a492e75e",
-      "paymentId": "3ac3de91-0d94-463d-8286-8060846f229d",
-      "paymentDate": "2019-02-22T23:23:21.000Z",
-      "amount": 10,
-      "currency": "USD",
-      "processedCurrency": "USD",
-      "paymentCookieId": "4d83dd1b-b053-4a4d-99de-9a9e6e0405af",
-      "linkedInvoicePaymentId": null,
-      "success": true,
-      "tableName": "INVOICE_PAYMENTS",
-      "historyTableName": "INVOICE_PAYMENT_HISTORY"
-    }
-  }
-]
-```
-
-**Query Parameters**
-
-None.
-
-**Response**
-
-If successful, returns a status code of 200 and a list of audit logs with history.
-
-
-
 
 ## List and Search
 
@@ -4769,7 +4696,7 @@ If successful, returns a status code of 200 and a list of all invoices for this 
 Search for an invoice by a specified search string. If the search string is a number, it is compared to the `invoiceNumber` attribute. An exact match is required. Otherwise, it is compared to the following attributes: `invoiceId`, `accountId`, or `currency`. The operation returns all invoice records in which the search string matches all or part of any one of these attributes.
 
 
-**HTTP Request** 
+**HTTP Request**
 
 `GET http://127.0.0.1:8080/1.0/kb/invoices/search/{searchKey}`
 
@@ -4793,7 +4720,7 @@ String searchKey = "1a49101b-305e-4b4d-8403-7377596407b6";
 Long offset = 0L;
 Long limit = 1L;
 
-invoiceApi.searchInvoices(searchKey, 
+Invoices result = invoiceApi.searchInvoices(searchKey, 
                           offset,
                           limit, 
                           AuditLevel.NONE, 
@@ -4852,12 +4779,10 @@ invoiceApi.search_invoices(search_key, api_key, api_secret)
 | **searchKey** | string | yes | none | What you want to find |
 | **offset** | long | none | 0 | Starting index for items listed |
 | **limit** | long | none | 100 | Maximum number of items to return on this page |
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| **audit** | string | no | "NONE" | Level of audit information to return: "NONE", "MINIMAL" (only inserts), or "FULL" |
 
 **Response**
 
-If successful, returns a list of all invoices matched with the search key entered.
+If successful, returns a list of invoices matched with the specified search key.
 
 
