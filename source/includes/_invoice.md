@@ -4358,6 +4358,17 @@ invoice_id = "bb9cf385-cc78-46a6-b069-924bdfdeb4f7"
 audit_logs = invoiceApi.get_invoice_audit_logs_with_history(invoice_id)
 ````
 
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$invoiceId = "bb9cf385-cc78-46a6-b069-924bdfdeb4f7";
+
+$result = $apiInstance->getInvoiceAuditLogsWithHistory($invoiceId);
+````
+
 > Example Response:
 
 ```json
@@ -4454,6 +4465,17 @@ invoiceItemApi = killbill.api.InvoiceItemApi()
 invoice_item_id = "6f3d5bd3-f8b3-4615-9940-5a15a5060fb5"
 
 audit_logs = invoiceItemApi.get_invoice_item_audit_logs_with_history(invoice_item_id)
+````
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceItemApi();
+
+$invoiceItemId = "6f3d5bd3-f8b3-4615-9940-5a15a5060fb5";
+
+$result = $apiInstance->getInvoiceItemAuditLogsWithHistory($invoiceItemId);
 ````
 
 > Example Response:
@@ -4560,6 +4582,19 @@ invoiceApi = killbill.api.InvoiceApi()
 
 invoices = invoiceApi.get_invoices()
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$offset = 0;
+$limit = 10;
+$audit = "NONE";
+
+$result = $apiInstance->getInvoices($offset, $limit, $audit);
+````
 
 > Example Response:
 
@@ -4773,6 +4808,20 @@ search_key = 'USD'
 
 invoices = invoiceApi.search_invoices(search_key)
 ```
+
+````javascript
+````
+
+````php
+$apiInstance = $client->getInvoiceApi();
+
+$searchKey = "8600"; //invoice number
+$offset = 0;
+$limit = 1;
+$audit = "NONE";
+
+$result = $apiInstance->searchInvoices($searchKey, $offset, $limit, $audit);
+````
 
 > Example Response:
 
