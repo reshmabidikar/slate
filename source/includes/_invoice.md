@@ -4350,6 +4350,14 @@ invoice.invoice_id = "bb9cf385-cc78-46a6-b069-924bdfdeb4f7"
 audit_logs = invoice.audit_logs_with_history(options)
 ````
 
+````python
+invoiceApi = killbill.api.InvoiceApi()
+
+invoice_id = "bb9cf385-cc78-46a6-b069-924bdfdeb4f7"
+
+audit_logs = invoiceApi.get_invoice_audit_logs_with_history(invoice_id)
+````
+
 > Example Response:
 
 ```json
@@ -4438,6 +4446,14 @@ invoice_item = KillBillClient::Model::InvoiceItem.new
 invoice_item.invoice_item_id = "6f3d5bd3-f8b3-4615-9940-5a15a5060fb5"
 
 audit_logs = invoice_item.audit_logs_with_history(options)
+````
+
+````python
+invoiceItemApi = killbill.api.InvoiceItemApi()
+
+invoice_item_id = "6f3d5bd3-f8b3-4615-9940-5a15a5060fb5"
+
+audit_logs = invoiceItemApi.get_invoice_item_audit_logs_with_history(invoice_item_id)
 ````
 
 > Example Response:
@@ -4542,7 +4558,7 @@ invoices = KillBillClient::Model::Invoice.find_in_batches(offset,
 ```python
 invoiceApi = killbill.api.InvoiceApi()
 
-invoiceApi.get_invoices(api_key, api_secret)
+invoices = invoiceApi.get_invoices()
 ```
 
 > Example Response:
@@ -4755,7 +4771,7 @@ invoices = KillBillClient::Model::Invoice.find_in_batches_by_search_key(search_k
 invoiceApi = killbill.api.InvoiceApi()
 search_key = 'USD'
 
-invoiceApi.search_invoices(search_key, api_key, api_secret)
+invoices = invoiceApi.search_invoices(search_key)
 ```
 
 > Example Response:
