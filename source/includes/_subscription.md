@@ -74,7 +74,7 @@ These use cases assume that invoicing is up to date. If AUTO_INVOICING_OFF is se
 **`priceOverrides`**:  List of overridden prices for specific plan phases. Can be specified to override the fixed/recurring price in the catalog for a particular phase. For example, suppose you are creating a subscription corresponding to a plan that has an `EVERGREEN` phase with a recurring price of `$100`. You can specify an overridden price of `200` while creating the subscription by specifying a `priceOverrides` object as follows:
 
 
-```shell
+`
 "priceOverrides": [
         {
             "planName": "shotgun-monthly",
@@ -83,7 +83,7 @@ These use cases assume that invoicing is up to date. If AUTO_INVOICING_OFF is se
             "recurringPrice": 150.00,
             "usagePrices": []
         }
-```
+`
 
 **quantity**: An integer value that specifies the quantity of subscription. The default value is 1. The corresponding invoice is generated as per the quantity. So if `price=$20/mo`, `quantity=$2` => `invoiceItem recurring amount=$40`.
 
@@ -139,7 +139,7 @@ curl -v \
     
 # With priceOverrides
     
-    curl -v \
+curl -v \
     -X POST \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
@@ -147,26 +147,20 @@ curl -v \
     -H "Content-Type: application/json" \
     -H "X-Killbill-CreatedBy: demo" \
     -d '{ 
-            "accountId": "187f9270-7aa0-4db5-81f7-857e8e59fd9a",
-            "planName": "shotgun-monthly",
-			 "prices": [
+            "accountId": "944bf633-88a8-4575-96b5-80bf0a0fdfec",
+            "planName": "pistol-monthly-notrial",
+             "priceOverrides": [
+       
         {
-            "planName": "shotgun-monthly",
-            "phaseType": "DISCOUNT",
-            "fixedPrice": 150.00,
-            "recurringPrice": null,
-            "usagePrices": []
-        },
-        {
-            "planName": "shotgun-monthly",
+            "planName": "pistol-monthly-notrial",
             "phaseType": "EVERGREEN",
             "fixedPrice": null,
             "recurringPrice": 400.00,
             "usagePrices": []
-        }		
+        }       
     ]
         }' \
-    "http://127.0.0.1:8080/1.0/kb/subscriptions" 
+    "http://127.0.0.1:8080/1.0/kb/subscriptions"
     
 # With Datetime
 
@@ -239,6 +233,7 @@ subscription.create(user,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 account_id = '32660591-b8a0-4a0e-b6a8-9b52611217c2'
 body = Subscription(account_id=account_id, plan_name='pistol-monthly')
 
@@ -474,6 +469,7 @@ subscription.create_entitlement_with_add_on(entitlement,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 account_id = '32660591-b8a0-4a0e-b6a8-9b52611217c2'
 subscription_a = Subscription(account_id=account_id,
                               plan_name='pistol-monthly')
@@ -772,6 +768,7 @@ KillBillClient::Model::BulkSubscription.create_bulk_subscriptions(bulk_subscript
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 account_id = '32660591-b8a0-4a0e-b6a8-9b52611217c2'
 subscription_a = Subscription(account_id=account_id,
                               plan_name='pistol-thirty-days')
@@ -932,6 +929,7 @@ subscription = KillBillClient::Model::Subscription.find_by_id(subscription_id, o
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 subscription_id = '4aab9b96-c2e7-4641-a6d9-db984969201e'
 
 subscription = subscriptionApi.get_subscription(subscription_id)
@@ -1053,9 +1051,7 @@ $result = $apiInstance -> getSubscription($subscriptionId, $audit);
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| **audit** | string | no | "NONE" | "NONE", "MINIMAL" (only inserts), or "FULL"  |
 
 **Response**
 
@@ -1096,7 +1092,9 @@ subscription = KillBillClient::Model::Subscription.find_by_external_key(external
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 external_key = 'somethingSpecial'
+
 subscription = subscriptionApi.get_subscription_by_key(external_key)
 ```
 
@@ -1193,9 +1191,7 @@ $result = $apiInstance -> getSubscriptionByKey($externalKey, $audit);
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **externalKey** | String | yes | none | The subscription external key |
-| **audit** | string | no | "NONE" | Level of audit information to return |
-
-Audit information options are "NONE", "MINIMAL" (only inserts), or "FULL".
+| **audit** | string | no | "NONE" | "NONE", "MINIMAL" (only inserts), or "FULL"  |
 
 **Response**
 
@@ -1268,6 +1264,7 @@ subscription.update_bcd(user,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 subscription_id = '161692a4-c293-410c-a92f-939c5e3dcba7'
 body = Subscription(subscription_id=subscription_id,
                     bill_cycle_day_local=26)
@@ -1369,6 +1366,7 @@ TODO
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 subscription_id = '7b3f0181-d9e8-4886-a90a-af35e671f5f0'
 body = Subscription(subscription_id=subscription_id,
                     quantity=3)
@@ -1521,6 +1519,7 @@ subscription.change_plan(input,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 subscription_id = '97278000-72fd-45d7-9b67-e44690bdb074'
 body = Subscription(plan_name='pistol-monthly')
 
@@ -1634,6 +1633,7 @@ subscription.undo_change_plan(user,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
 
 subscriptionApi.undo_change_subscription_plan(subscription_id,
@@ -1740,6 +1740,7 @@ subscription.cancel(user,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 subscription_id = 'ee508b5b-46b8-42a7-8988-16c0470de4ae'
 
 subscriptionApi.cancel_subscription_plan(subscription_id,
@@ -1867,6 +1868,7 @@ subscription.uncancel(user,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 subscription_id = 'f5bb14ed-c6e8-4895-8d4e-34422e12cdfa'
 
 subscriptionApi.uncancel_subscription_plan(subscription_id,
@@ -1991,6 +1993,7 @@ subscription.set_blocking_state(state_name,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 body = BlockingState(state_name='STATE1',
                      service='ServiceStateService',
                      is_block_change=False,
@@ -2134,6 +2137,7 @@ subscription.add_custom_field(custom_field,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 subscription_id = '33aa2952-cea2-4cad-900a-9731c1042e54'
 body = CustomField(name='Test Custom Field', value='test_value')
 
@@ -2232,6 +2236,7 @@ fields = subscription.custom_fields(audit, options)
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 subscription_id = '33aa2952-cea2-4cad-900a-9731c1042e54'
 
 fields = subscriptionApi.get_subscription_custom_fields(subscription_id)
@@ -2276,7 +2281,7 @@ $result = $apiInstance->getSubscriptionCustomFields($subscriptionId, $audit);
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL", or "FULL" |
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL" (only inserts), or "FULL" |
 
 **Response**
 
@@ -2346,6 +2351,7 @@ subscription.modify_custom_field(custom_field,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 subscription_id = '33aa2952-cea2-4cad-900a-9731c1042e54'
 custom_field_id = '3a26be42-a153-4894-ac3d-93ad2e38e05b'
 body = CustomField(custom_field_id=custom_field_id,
@@ -2404,7 +2410,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Remove custom fields from subscription
 
-Delete one or more custom fields from a subscription. It accepts query parameters corresponding to the custom field ids to be deleted. if no query parameters are specified, it deletes all the custom fields corresponding to the subscription.
+Delete one or more custom fields from a subscription. It accepts query parameters corresponding to the custom field ids to be deleted. If no query parameters are specified, it deletes all the custom fields corresponding to the subscription.
 
 
 **HTTP Request** 
@@ -2455,8 +2461,8 @@ subscription.remove_custom_field(custom_field_id,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
-subscription_id = 'e5254822-680f-4720-b5e1-a7146cefb904'
 
+subscription_id = 'e5254822-680f-4720-b5e1-a7146cefb904'
 custom_fields = ['194bcfc8-340f-4592-acd2-ffc1fc461e96']
 
 subscriptionApi.delete_subscription_custom_fields(subscription_id=subscription_id,
@@ -2494,7 +2500,7 @@ $apiInstance->deleteSubscriptionCustomFields($subscriptionId, $xKillbillCreatedB
 
 | Name | Type | Required | Default | Description |
 | ---- | -----|----------| ------- | ----------- | 
-| **customField** | string | no       | none | Custom field object ID that should be deleted. Multiple custom fields can be deleted by specifying a separate **customField** parameter corresponding to each field |
+| **customField** | string | no       | none | Custom field ID that should be deleted. Multiple custom fields can be deleted by specifying a separate **customField** parameter corresponding to each field |
 
 **Response**
 
@@ -2503,13 +2509,14 @@ If successful, returns a status code of 204 and an empty body.
 ## Tags
 
 
-See section [Account Tags](account.html#account-tags) for an introduction.
+See section [Tags](tag.html) for an introduction.
 
-The are no `system` tags applicable for a `Subscription`.
+**Note:**
+None of the [`system` tags](tag.html#tag) are applicable for subscriptions, only a [user tag](tag.html#tag) can be associated with a subscription.
 
 ### Add tags to subscription
 
-This API adds one or more tags to a subscription. Note that none of the [system tags](#tag) are applicable for subscriptions, thus only a [user tag](#tag) can be added to a subscription. The [tag definition](#tag-definition) for the user tag must exist.
+This API adds one or more tags to a subscription. The [tag definition](#tag-definition.html) corresponding to the tag to be added must already exist.
 
 **HTTP Request** 
 
@@ -2562,6 +2569,7 @@ subscription.add_tag(tag_name,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 subscription_id = '92820d1c-1d4c-46eb-9010-26b0626a1927'
 tagDefIds = ['30363fe5-310d-4446-b000-d7bb6e6662e2']
 
@@ -2597,7 +2605,7 @@ $apiInstance->createSubscriptionTags($tagDefIds, $xKillbillCreatedBy, $subscript
 
 **Request Body**
 
-A JSON array containing one or more strings giving the UUID of tag definitions for the user tags to be added.
+A JSON array corresponding to the tag definition IDs to be added.
 
 **Query Parameters**
 
@@ -2655,6 +2663,7 @@ tags = subscription.tags(included_deleted,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 subscription_id = '92820d1c-1d4c-46eb-9010-26b0626a1927'
 
 tags = subscriptionApi.get_subscription_tags(subscription_id)
@@ -2758,6 +2767,7 @@ subscription.remove_tag(tag_name,
 
 ```python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 subscription_id = '92820d1c-1d4c-46eb-9010-26b0626a1927'
 tagDefIds = ['30363fe5-310d-4446-b000-d7bb6e6662e2']
 
@@ -2804,7 +2814,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ## Audit Logs
 
-Audit logs provide a record of events that occur involving various specific resources. For details on audit logs see [Audit and History](https://killbill.github.io/slate/#using-kill-bill-apis-audit-and-history).
+Audit logs provide a record of events that occur involving various specific resources. For details on audit logs see [Audit and History](index.html#audit-and-history).
 
 
 ### Retrieve subscription audit logs with history by subscription id
@@ -2812,6 +2822,7 @@ Audit logs provide a record of events that occur involving various specific reso
 Retrieve a list of audit log records showing changes to the subscription. History information (a copy of the full subscription object) is included with each record.
 
 Some examples:
+
 * Assuming the API is invoked after an `IN_ADVANCE` subscription is created, it would return two records:
   * An `INSERT` record corresponding to the subscription creation
   * An `UPDATE` record corresponding to the `chargedThroughDate` update
@@ -2845,11 +2856,15 @@ List<AuditLog> auditLog = subscriptionApi.getSubscriptionAuditLogsWithHistory(su
 ```
 
 ````ruby
-TODO
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "88f0cd47-ed92-4143-89e1-31b79c533208"
+
+audit_logs = subscription.audit_logs_with_history(options)
 ````
 
 ````python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 subscription_id = '92820d1c-1d4c-46eb-9010-26b0626a1927'
 
 auditlogs = subscriptionApi.get_subscription_audit_logs_with_history(subscription_id)
@@ -2860,7 +2875,7 @@ const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
 
 const subscriptionId = '92820d1c-1d4c-46eb-9010-26b0626a1927';
 
-const response: AxiosResponse<killbill.Tag[], any> = await api.getSubscriptionAuditLogsWithHistory(subscriptionId);
+const response: AxiosResponse<killbill.AuditLog[], any> = await api.getSubscriptionAuditLogsWithHistory(subscriptionId);
 ````
 
 ````php
@@ -2947,6 +2962,7 @@ If successful, returns a status code of 200 and a list of audit logs.
 Retrieve a list of audit log records showing changes to a subscription event. History information (a copy of the full subscription event object) is included with each record. The [subscription resource](##subscription-subscription-resource) contains the list of events associated with a subscription and the event id can be obtained from here.
 
 Some examples:
+
 * If a cancel request is issued for a subscription, this API can be invoked with the subscription event id of the `CANCEL` event. In this case, it will return:
   * An `INSERT` record corresponding to the subscription cancel event creation
 * If a subscription is future cancelled and then uncancelled, and this API is invoked with the id of the `CANCEL`event, it will return two records:
@@ -2984,6 +3000,7 @@ TODO
 
 ````python
 subscriptionApi = killbill.api.SubscriptionApi()
+
 event_id = 'dc283026-5be0-4e47-8190-b62fb0c9e357'
 
 auditlogs = subscriptionApi.get_subscription_event_audit_logs_with_history(event_id)
@@ -2994,7 +3011,7 @@ const api: killbill.SubscriptionApi = new killbill.SubscriptionApi(config);
 
 const eventId = 'dc283026-5be0-4e47-8190-b62fb0c9e357';
 
-const response: AxiosResponse<killbill.Tag[], any> = await api.getSubscriptionEventAuditLogsWithHistory(eventId);
+const response: AxiosResponse<killbill.AuditLog[], any> = await api.getSubscriptionEventAuditLogsWithHistory(eventId);
 ````
 
 ````php
