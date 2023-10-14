@@ -44,7 +44,7 @@ protected CreditApi creditApi;
 
 UUID accountId = UUID.fromString("864c1418-e768-4cd5-a0db-67537144b685");
 
-Credit credit = new InvoiceItem();
+InvoiceItem credit = new InvoiceItem();
 credit.setAccountId(accountId);
 credit.setAmount(BigDecimal.ONE);
 credit.setDescription("description");
@@ -54,10 +54,14 @@ Map<String, String> pluginProperty = null;
 
 final InvoiceItems credits = new InvoiceItems();
 credits.add(credit);
-InvoiceItems createdCredits = creditApi.createCredits(credits, false, NULL_PLUGIN_PROPERTIES, requestOptions);
+InvoiceItems createdCredits = creditApi.createCredits(credits, autoCommit, NULL_PLUGIN_PROPERTIES, requestOptions);
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
 credit_item                 = KillBillClient::Model::Credit.new()
 credit_item.account_id      = 'da3769a8-58c4-4dc0-b4e8-7b534e349624'
 credit_item.amount          = 50.0
@@ -74,15 +78,43 @@ credit_item.create(auto_commit,
 ```
 
 ```python
-creditApi = killbill.api.CreditApi()
-body = Credit(account_id=account_id, 
-              amount=50.0, 
-              currency='USD', 
-              description='example')
+creditApi = killbill.CreditApi()
 
-creditApi.create_credits([body], created_by, api_key, api_secret)
+creditBody = InvoiceItem(account_id='f2edeb2a-ac18-40e7-9a24-334439433cbd', 
+                         amount=5.0, 
+                         currency='USD', 
+                         description='example')
+
+creditApi.create_credits([creditBody],
+                         created_by='demo',
+                         reason='reason', 
+                         comment='comment')
+```
+```javascript
+const creditApi: killbill.CreditApi = new killbill.CreditApi(config);
+
+const creditBody: killbill.InvoiceItem = {accountId: 'f2edeb2a-ac18-40e7-9a24-334439433cbd',
+                                          amount: 10,
+                                          invoiceItemId: ''
+                                         };
+
+creditApi.createCredits([creditBody], 'created_by');
 ```
 
+```php
+$apiInstance = $client->getCreditApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$creditBody = new InvoiceItem();
+
+$creditBody->setAccountId('f2edeb2a-ac18-40e7-9a24-334439433cbd');
+$creditBody->setAmount(15);
+
+$apiInstance->createCredits([$creditBody],$xKillbillCreatedBy,$xKillbillReason, $xKillbillComment);
+```
 > Example Response:
 
 ```json
@@ -129,6 +161,7 @@ A list of one or more invoiceItem objects. Each object requires at least the fol
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **autoCommit** | boolean | no | false | if true, the resulting invoice will be `COMMITTED`.|
+| **pluginProperty** | array of strings | false | empty list | List of plugin properties, if any |
 
 **Returns**
 
@@ -159,19 +192,34 @@ protected CreditApi creditApi;
 
 UUID creditId = UUID.fromString("d2edf4c0-9929-4e2f-b3a9-feb9bd9d60ba");
 
-Credit result = creditApi.getCredit(creditId, requestOptions)
+InvoiceItem result = creditApi.getCredit(creditId, requestOptions)
 ```
 
 ```ruby
 credit_id = 'fd5669a8-68c1-8dl0-m4e8-8y535e349324'
 
-KillBillClient::Model::Credit.find_by_id(credit_id , options)
+credit = KillBillClient::Model::Credit.find_by_id(credit_id , options)
 ```
 
 ```python
-creditApi = killbill.api.CreditApi()
+creditApi = killbill.CreditApi()
         
-creditApi.get_credit(credit_id, api_key, api_secret)
+credit = creditApi.get_credit(credit_id, api_key, api_secret)
+```
+```javascript
+const creditApi: killbill.CreditApi = new killbill.CreditApi(config);
+
+const creditId = '3d4601cd-b3d9-46ec-95da-1040e3423deb';
+
+const credit: AxiosResponse<killbill.InvoiceItem> = await creditApi.getCredit(creditId);
+```
+
+```php
+$apiInstance = $client->getCreditApi();
+
+$creditId = '3d4601cd-b3d9-46ec-95da-1040e3423deb';
+
+$credit = $apiInstance->getCredit($creditId);
 ```
 > Example Response:
 
