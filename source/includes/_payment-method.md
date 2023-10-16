@@ -943,9 +943,9 @@ $result = $apiInstance->getPaymentMethodCustomFields($paymentMethodId, $audit);
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ------- | ----------- | 
-| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL", or "FULL" |
+| Name | Type | Required | Default | Description                                                        |
+| ---- | -----| -------- | ------- |--------------------------------------------------------------------| 
+| **audit** | string | no | "NONE" | Level of audit information to return:"NONE", "MINIMAL" (only inserts), or "FULL" |
 
 
 **Response**
@@ -954,7 +954,7 @@ If successful, returns a status code of 200 and a (possibly empty) list of custo
 
 ###  Modify custom fields for payment method
 
-Modifies the value of one or more existing custom fields associated with a payment object. Note that it is not possible to modify the name of a custom field, it is only possible to modify its value.
+Modifies the value of one or more existing custom fields associated with a payment method object. Note that it is not possible to modify the name of a custom field, it is only possible to modify its value.
 
 **HTTP Request** 
 
@@ -1077,7 +1077,7 @@ If successful, a status code of 204 and an empty body.
 
 ###  Remove custom fields from payment method
 
-Delete one or more custom fields from a payment method. It accepts query parameters corresponding to the custom field ids to be deleted. if no query parameters are specified, it deletes all the custom fields corresponding to the payment method.
+Delete one or more custom fields from a payment method. It accepts query parameters corresponding to the custom field ids to be deleted. If no query parameters are specified, it deletes all the custom fields corresponding to the payment method.
 
 **HTTP Request** 
 
@@ -1166,7 +1166,7 @@ $apiInstance->deletePaymentMethodCustomFields($paymentMethodId, $xKillbillCreate
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **customField** | string | yes | none | Custom field object ID that should be deleted. Multiple custom fields can be deleted by specifying a separate **customField** parameter corresponding to each field. |
+| **customField** | string | yes | none | Custom field ID that should be deleted. Multiple custom fields can be deleted by specifying a separate **customField** parameter corresponding to each field. |
 
 **Response**
 
@@ -1221,7 +1221,10 @@ audit_logs = paymentMethodApi.get_payment_method_audit_logs_with_history(payment
 ```
 
 ```ruby
-TODO
+payment_method = KillBillClient::Model::PaymentMethod.new
+payment_method.payment_method_id = "06e5c871-3caf-41c2-9d7e-30c95f6e309c"
+
+audit_logs = payment_method.audit_logs_with_history(options)
 ```
 
 ````javascript
