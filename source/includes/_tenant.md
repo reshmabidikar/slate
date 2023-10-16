@@ -165,6 +165,7 @@ tenant = KillBillClient::Model::Tenant.find_by_id(tenant_id, options)
 
 ```python
 tenantApi = killbill.api.TenantApi()
+
 tenant = tenantApi.get_tenant(tenant_id='1a723c1a-9287-459f-9e40-eca9f0fd213e')
 ```
 
@@ -239,6 +240,7 @@ tenant = KillBillClient::Model::Tenant.find_by_api_key(api_key, options)
 
 ```python
 tenantApi = killbill.api.TenantApi()
+
 tenant = tenantApi.get_tenant_by_api_key(api_key='bob')
 ```
 
@@ -892,6 +894,7 @@ TODO
 
 ```python
 tenantApi = killbill.api.TenantApi()
+
 body = '{"org.killbill.invoice.sanitySafetyBoundEnabled":"false"}'
 
 tenantApi.upload_per_tenant_configuration(body, created_by='demo')

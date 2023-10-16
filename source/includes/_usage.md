@@ -6,7 +6,7 @@ For more information, see our [catalog usage documentation](http://docs.killbill
 
 ## Usage Resource
 
-There are several resource objects associated with usage in Kill-Bill. These are shown below.
+There are several resource objects associated with usage in Kill Bill. These are shown below.
 
 **SubscriptionUsageRecord**, along with its components **UnitUsageRecord** and **UsageRecord**, is used to enter the daily usage summary into the system.
 

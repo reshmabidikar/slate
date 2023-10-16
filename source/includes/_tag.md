@@ -260,6 +260,7 @@ puts "logs #{audit_logs}"
 
 ````python
 tagApi = killbill.api.TagApi()
+
 tag_id = "5ad7519f-3698-4c75-8d93-98c7a465010e"
 
 audit_logs = tagApi.get_tag_audit_logs_with_history(tag_id)
