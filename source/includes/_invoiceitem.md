@@ -82,12 +82,40 @@ curl -v \
 ``` 
 
 ````java
+import org.killbill.billing.client.api.gen.InvoiceItemApi;
+protected InvoiceItemApi invoiceItemApi;
+
+UUID invoiceItemId = UUID.fromString("480963fe-510f-45ef-afcd-0334806510b8");
+
+final List<AuditLog> EMPTY_AUDIT_LOGS = Collections.emptyList();
+
+CustomFields customFields = new CustomFields();
+        customFields.add(new CustomField(null,
+        invoiceItemId,
+        ObjectType.INVOICE_ITEM,
+        "Test Custom Field",
+        "test_value",
+        EMPTY_AUDIT_LOGS));
+        
+invoiceItemApi.createInvoiceItemCustomFields(invoiceItemId,
+        customFields,
+        requestOptions);
 ````
 
 ````ruby
 ````
 
 ````python
+invoiceItemApi = killbill.api.InvoiceItemApi()
+
+invoice_item_id = 'e212f5bf-6960-4b95-ac4e-c60439447ee5'
+body = CustomField(name='Test Custom Field', value='test_value')
+
+invoiceItemApi.create_invoice_item_custom_fields(invoice_item_id,
+                                        [body],
+                                        created_by='demo',
+                                        reason='reason',
+                                        comment='comment')
 ````
 
 ````javascript
@@ -131,12 +159,23 @@ curl -v \
 ```
 
 ````java
+import org.killbill.billing.client.api.gen.InvoiceItemApi;
+protected InvoiceItemApi invoiceItemApi;
+
+UUID invoiceItemId = UUID.fromString("480963fe-510f-45ef-afcd-0334806510b8");
+
+List<CustomField> customFields = invoiceItemApi.getInvoiceItemCustomFields(invoiceItemId, AuditLevel.NONE, requestOptions);
 ````
 
 ````ruby
 ````
 
 ````python
+invoiceItemApi = killbill.api.InvoiceItemApi()
+
+invoice_item_id = 'e212f5bf-6960-4b95-ac4e-c60439447ee5'
+
+custom_fields = invoiceItemApi.get_invoice_item_custom_fields(invoice_item_id)
 ````
 
 ````javascript
@@ -197,12 +236,38 @@ curl -v \
 ```
 
 ````java
+import org.killbill.billing.client.api.gen.InvoiceItemApi;
+protected InvoiceItemApi invoiceItemApi;
+
+UUID invoiceItemId = UUID.fromString("480963fe-510f-45ef-afcd-0334806510b8");
+
+UUID customFieldsId = UUID.fromString("178a9b7c-25d0-42e0-be79-c7d772762c2a");
+
+CustomField customFieldModified = new CustomField();
+customFieldModified.setCustomFieldId(customFieldsId);
+customFieldModified.setValue("New Value");
+
+CustomFields customFields = new CustomFields();
+customFields.add(customFieldModified);
+
+invoiceItemApi.modifyInvoiceItemCustomFields(invoiceItemId, customFields, requestOptions);
 ````
 
 ````ruby
 ````
 
 ````python
+invoiceItemApi = killbill.api.InvoiceItemApi()
+
+invoice_item_id = 'e212f5bf-6960-4b95-ac4e-c60439447ee5'
+custom_field_id = '4ea000fc-a25f-47cd-8ddf-a25a0006ec05'
+body = CustomField(custom_field_id=custom_field_id, value='New Value')
+
+invoiceItemApi.modify_invoice_item_custom_fields(invoice_item_id,
+                                        [body],
+                                        created_by='demo',
+                                        reason='reason',
+                                        comment='comment')
 ````
 
 ````javascript
@@ -252,12 +317,31 @@ curl -v \
 ```
 
 ````java
+import org.killbill.billing.client.api.gen.InvoiceItemApi;
+protected InvoiceItemApi invoiceItemApi;
+
+UUID invoiceItemId = UUID.fromString("480963fe-510f-45ef-afcd-0334806510b8");
+
+UUID customFieldsId = UUID.fromString("178a9b7c-25d0-42e0-be79-c7d772762c2a");
+List<UUID> customFieldsList = List.of(customFieldsId);
+
+invoiceItemApi.deleteInvoiceItemCustomFields(invoiceItemId, customFieldsList, requestOptions);
 ````
 
 ````ruby
 ````
 
 ````python
+invoiceItemApi = killbill.api.InvoiceItemApi()
+
+invoice_item_id = 'e212f5bf-6960-4b95-ac4e-c60439447ee5'
+custom_fields = ['4ea000fc-a25f-47cd-8ddf-a25a0006ec05']
+
+invoiceItemApi.delete_invoice_item_custom_fields(invoice_item_id=invoice_item_id,
+                                        custom_field=custom_fields,
+                                        created_by='demo',
+                                        reason='reason',
+                                        comment='comment')
 ````
 
 ````javascript
@@ -311,12 +395,30 @@ curl -v \
 ```
 
 ````java
+import org.killbill.billing.client.api.gen.InvoiceItemApi;
+protected InvoiceItemApi invoiceItemApi;
+
+UUID invoiceItemId = UUID.fromString("480963fe-510f-45ef-afcd-0334806510b8");
+
+UUID tagDefId = UUID.fromString("2c1f8309-24d7-437c-971b-7e68ff2d393a");
+
+Tags result = invoiceItemApi.createInvoiceItemTags(invoiceItemId, List.of(tagDefId), requestOptions);
 ````
 
 ````ruby
 ````
 
 ````python
+invoiceItemApi = killbill.api.InvoiceItemApi()
+
+invoice_item_id = 'e212f5bf-6960-4b95-ac4e-c60439447ee5'
+tagDefIds = ["2c1f8309-24d7-437c-971b-7e68ff2d393a"]
+
+invoiceItemApi.create_invoice_item_tags(invoice_item_id,
+                               tagDefIds,
+                               created_by='demo',
+                               reason='reason',
+                               comment='comment')
 ````
 
 ````javascript
@@ -358,12 +460,30 @@ curl -v \
 ```
 
 ````java
+import org.killbill.billing.client.api.gen.InvoiceItemApi;
+protected InvoiceItemApi invoiceItemApi;
+
+UUID invoiceItemId = UUID.fromString("480963fe-510f-45ef-afcd-0334806510b8");
+UUID accountId = UUID.fromString("b34b25b0-1be9-48f1-94a7-3f73f2b33070");
+
+Boolean includedDeleted = false; // Will not include deleted tags
+
+List<Tag> tags = invoiceItemApi.getInvoiceItemTags(invoiceItemId, accountId,
+        includedDeleted,
+        AuditLevel.NONE,
+        requestOptions);
 ````
 
 ````ruby
 ````
 
 ````python
+invoiceItemApi = killbill.api.InvoiceItemApi()
+
+invoice_item_id = 'e212f5bf-6960-4b95-ac4e-c60439447ee5'
+account_id='0f84a73c-9f1d-44e0-962e-e7d554e9cff6'
+
+tags = invoiceItemApi.get_invoice_item_tags(invoice_item_id, account_id)
 ````
 
 ````javascript
@@ -423,12 +543,29 @@ curl -v \
 ```
 
 ````java
+import org.killbill.billing.client.api.gen.InvoiceItemApi;
+protected InvoiceItemApi invoiceItemApi;
+
+UUID invoiceItemId = UUID.fromString("480963fe-510f-45ef-afcd-0334806510b8");
+UUID tagDefId = UUID.fromString("2c1f8309-24d7-437c-971b-7e68ff2d393a");
+
+invoiceItemApi.deleteInvoiceItemTags(invoiceItemId, List.of(tagDefId), requestOptions);
 ````
 
 ````ruby
 ````
 
 ````python
+invoiceItemApi = killbill.api.InvoiceItemApi()
+
+invoice_item_id = 'e212f5bf-6960-4b95-ac4e-c60439447ee5'
+tagDefIds = ["2c1f8309-24d7-437c-971b-7e68ff2d393a"]
+
+invoiceItemApi.delete_invoice_item_tags(invoice_item_id,
+                               tag_def=tagDefIds,
+                               created_by='demo',
+                               reason='reason',
+                               comment='comment')
 ````
 
 ````javascript
