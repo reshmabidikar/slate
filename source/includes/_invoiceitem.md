@@ -119,9 +119,31 @@ invoiceItemApi.create_invoice_item_custom_fields(invoice_item_id,
 ````
 
 ````javascript
+const api: killbill.InvoiceItemApi = new killbill.InvoiceItemApi(config);
+
+const customField: CustomField = {name: "Test Custom Field", value: "test_value"};
+const customFields = [customField];
+
+const invoiceItemId = 'df124876-fbe4-4d61-897d-6eb0d3f3862c';
+
+api.createInvoiceItemCustomFields(customFields, invoiceItemId, 'created_by');
 ````
 
 ````php
+$apiInstance = $client->getInvoiceItemApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$customField = new CustomField();
+$customField -> setName('Test Custom Field');
+$customField -> setValue('test_value');
+$body = array($customField);
+
+$invoiceItemId = "df124876-fbe4-4d61-897d-6eb0d3f3862c";
+
+$result = $apiInstance->createInvoiceItemCustomFields($body, $xKillbillCreatedBy, $invoiceItemId, $xKillbillReason, $xKillbillComment);
 ````
 
 **Request Body**
@@ -179,9 +201,21 @@ custom_fields = invoiceItemApi.get_invoice_item_custom_fields(invoice_item_id)
 ````
 
 ````javascript
+const api: killbill.InvoiceItemApi = new killbill.InvoiceItemApi(config);
+
+const invoiceItemId = 'df124876-fbe4-4d61-897d-6eb0d3f3862c';
+const audit = 'NONE';
+
+const response: AxiosResponse<killbill.CustomField[], any> = await api.getInvoiceItemCustomFields(invoiceItemId, audit, 'created_by');
 ````
 
 ````php
+$apiInstance = $client->getInvoiceItemApi();
+
+$invoiceItemId = "df124876-fbe4-4d61-897d-6eb0d3f3862c";
+$audit = "NONE";
+
+$result = $apiInstance->getInvoiceItemCustomFields($invoiceItemId, $audit);
 ````
 
 > Example Response:
@@ -271,9 +305,31 @@ invoiceItemApi.modify_invoice_item_custom_fields(invoice_item_id,
 ````
 
 ````javascript
+const api: killbill.InvoiceItemApi = new killbill.InvoiceItemApi(config);
+
+const invoiceItemId = 'df124876-fbe4-4d61-897d-6eb0d3f3862c';
+
+const customField: CustomField = {customFieldId: "41adbc99-bd7d-479e-b6e0-7cacf166ebeb", value: "new_value"};
+const customFields = [customField];
+
+api.modifyInvoiceItemCustomFields(customFields, invoiceItemId, 'created_by');
 ````
 
 ````php
+$apiInstance = $client->getInvoiceItemApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceItemId = "df124876-fbe4-4d61-897d-6eb0d3f3862c";
+
+$customField = new CustomField();
+$customField -> setCustomFieldId('16f5b3dc-fafb-418a-ade7-f24ef2d60edc');
+$customField -> setValue('new_value');
+$body = array($customField);
+
+$apiInstance->modifyInvoiceItemCustomFields($body, $xKillbillCreatedBy, $invoiceItemId, $xKillbillReason, $xKillbillComment);
 ````
 
 **Requst Body**
@@ -345,9 +401,28 @@ invoiceItemApi.delete_invoice_item_custom_fields(invoice_item_id=invoice_item_id
 ````
 
 ````javascript
+const api: killbill.InvoiceItemApi = new killbill.InvoiceItemApi(config);
+
+const invoiceItemId = 'df124876-fbe4-4d61-897d-6eb0d3f3862c';
+
+const customField = '41adbc99-bd7d-479e-b6e0-7cacf166ebeb';
+const customFields = [customField];
+
+api.deleteInvoiceItemCustomFields(invoiceItemId, 'created_by', customFields);
 ````
 
 ````php
+$apiInstance = $client->getInvoiceItemApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceItemId = "df124876-fbe4-4d61-897d-6eb0d3f3862c";
+
+$customFields = array("16f5b3dc-fafb-418a-ade7-f24ef2d60edc");
+
+$apiInstance->deleteInvoiceItemCustomFields($invoiceItemId, $xKillbillCreatedBy, $customFields, $xKillbillReason, $xKillbillComment);
 ````
 
 **Query Parameters**
@@ -422,9 +497,25 @@ invoiceItemApi.create_invoice_item_tags(invoice_item_id,
 ````
 
 ````javascript
+const api: killbill.InvoiceItemApi = new killbill.InvoiceItemApi(config);
+
+const invoiceItemId = 'df124876-fbe4-4d61-897d-6eb0d3f3862c';
+const tagDefIds = ['2c1f8309-24d7-437c-971b-7e68ff2d393a'];
+
+api.createInvoiceItemTags(tagDefIds, invoiceItemId, 'created_by');
 ````
 
 ````php
+$apiInstance = $client->getInvoiceItemApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceItemId = "df124876-fbe4-4d61-897d-6eb0d3f3862c";
+$tagDefIds = array("2c1f8309-24d7-437c-971b-7e68ff2d393a");
+
+$result = $apiInstance->createInvoiceItemTags($tagDefIds, $xKillbillCreatedBy, $invoiceItemId, $xKillbillReason, $xKillbillComment);
 ````
 
 **Request Body**
@@ -487,9 +578,25 @@ tags = invoiceItemApi.get_invoice_item_tags(invoice_item_id, account_id)
 ````
 
 ````javascript
+const api: killbill.InvoiceItemApi = new killbill.InvoiceItemApi(config);
+
+const invoiceItemId = 'df124876-fbe4-4d61-897d-6eb0d3f3862c';
+const accountId = '0f84a73c-9f1d-44e0-962e-e7d554e9cff6';
+const includeDeleted = false;
+const audit = 'NONE';
+
+const response: AxiosResponse<killbill.Tag[], any> = await api.getInvoiceItemTags(invoiceItemId, accountId, includeDeleted, audit);
 ````
 
 ````php
+$apiInstance = $client->getInvoiceItemApi();
+
+$invoiceItemId = "df124876-fbe4-4d61-897d-6eb0d3f3862c";
+$accountId = "0f84a73c-9f1d-44e0-962e-e7d554e9cff6";
+$includedDeleted = false;
+$audit = "NONE";
+
+$result = $apiInstance->getInvoiceItemTags($invoiceItemId, $accountId, $includedDeleted, $audit);
 ````
 
 > Example Response:
@@ -569,9 +676,25 @@ invoiceItemApi.delete_invoice_item_tags(invoice_item_id,
 ````
 
 ````javascript
+const api: killbill.InvoiceItemApi = new killbill.InvoiceItemApi(config);
+
+const invoiceItemId = 'df124876-fbe4-4d61-897d-6eb0d3f3862c';
+const tagDefIds = ['2c1f8309-24d7-437c-971b-7e68ff2d393a'];
+
+api.deleteInvoiceItemTags(invoiceItemId, 'created_by', tagDefIds);
 ````
 
 ````php
+$apiInstance = $client->getInvoiceItemApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$invoiceItemId = "df124876-fbe4-4d61-897d-6eb0d3f3862c";
+$tagDef = array("2c1f8309-24d7-437c-971b-7e68ff2d393a");
+
+$apiInstance->deleteInvoiceItemTags($invoiceItemId, $xKillbillCreatedBy, $tagDef, $xKillbillReason, $xKillbillComment);
 ````
 
 **Query Parameters**
