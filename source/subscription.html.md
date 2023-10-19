@@ -13,6 +13,7 @@ menu_items:
   - subscription
   - bundle
   - invoice
+  - invoice-item
   - credit
   - payment
   - payment-transaction

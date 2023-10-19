@@ -1,8 +1,8 @@
 ---
 includes:
-  - credit
-  
-current_page: credit
+  - invoiceitem
+
+current_page: invoiceitem
 
 menu_items:
   - index
@@ -23,7 +23,7 @@ menu_items:
   - tag
   - tag-definition
   - admin
-
+  
 title: Kill Bill
 
 language_tabs:

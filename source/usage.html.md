@@ -18,6 +18,7 @@ menu_items:
   - payment-transaction
   - invoice-payment
   - usage
+  - invoice-item
   - custom-field
   - tag
   - tag-definition
