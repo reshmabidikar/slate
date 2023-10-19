@@ -1,8 +1,8 @@
 ---
 includes:
-  - invoiceitem
+  - invoice-item
 
-current_page: invoiceitem
+current_page: invoice-item
 
 menu_items:
   - index
