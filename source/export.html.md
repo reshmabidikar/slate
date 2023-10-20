@@ -1,8 +1,8 @@
 ---
-includes: 
-  - bundle
-  
-current_page: bundle
+includes:
+  - export
+   
+current_page: export
 
 menu_items:
   - index
@@ -24,7 +24,6 @@ menu_items:
   - tag-definition
   - export
   - admin
-
 
 title: Kill Bill
 

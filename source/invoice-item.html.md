@@ -1,8 +1,8 @@
 ---
 includes:
-  - invoiceitem
+  - invoice-item
 
-current_page: invoiceitem
+current_page: invoice-item
 
 menu_items:
   - index
@@ -22,6 +22,7 @@ menu_items:
   - custom-field
   - tag
   - tag-definition
+  - export
   - admin
   
 title: Kill Bill
