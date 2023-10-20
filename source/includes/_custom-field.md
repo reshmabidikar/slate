@@ -47,7 +47,7 @@ curl  \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://127.0.0.1:8080/1.0/kb/customFields/pagination?offset=0&limit=100&audit=NONE"
+    "http://127.0.0.1:8080/1.0/kb/customFields/pagination"
 ```
 ```java
 import org.killbill.billing.client.model.CustomFields;
@@ -118,11 +118,10 @@ Searches for custom fields by specified search string. The search string is comp
 | **offset** | integer | false | 0 | starting item in the list |
 | **limit** | integer | false | 100 | number of items to return |
 | **audit** | string | false | "NONE" | "NONE", "MINIMAL", or "FULL" |
-| **searchKey** | string | true | none | What you want to find |
 
 **Returns**
     
-Returns the records for matching custom fields, if exists.
+Returns the records for matching custom fields, if any.
 
 
 
@@ -134,7 +133,7 @@ curl  \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://127.0.0.1:8080/1.0/kb/customFields/search/ACCOUNT?offset=0&limit=100&audit=NONE"
+    "http://127.0.0.1:8080/1.0/kb/customFields/search/ACCOUNT"
 ```
 ```java
 import org.killbill.billing.client.model.CustomFields;
@@ -234,7 +233,7 @@ curl  \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://127.0.0.1:8080/1.0/kb/customFields/search?objectType=ACCOUNT&fieldName=importance&offset=0&limit=100&audit=NONE"
+    "http://127.0.0.1:8080/1.0/kb/customFields/search?objectType=ACCOUNT&fieldName=importance"
 ```
 ```java
 import org.killbill.billing.client.model.CustomFields;
