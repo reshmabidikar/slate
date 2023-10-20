@@ -22,6 +22,7 @@ menu_items:
   - custom-field
   - tag
   - tag-definition
+  - export
   - admin
   
 title: Kill Bill
