@@ -3957,7 +3957,7 @@ accountApi.deleteAccountCustomFields(accountId,
 ```
 
 ```ruby
-custom_field_id = custom_field.id
+custom_field_id = custom_field.custom_field_id
 
 account.remove_custom_field(custom_field_id, 
                             user, 

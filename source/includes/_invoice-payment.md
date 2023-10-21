@@ -770,7 +770,7 @@ invoicePaymentApi.deleteInvoicePaymentCustomFields(paymentId,
 ```
 
 ```ruby
-custom_field_id = custom_field.id
+custom_field_id = custom_field.custom_field_id
 
 invoice_payment.remove_custom_field(custom_field_id,                                                                                            
                                     user, 
