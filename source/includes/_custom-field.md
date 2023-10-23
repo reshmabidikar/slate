@@ -48,8 +48,46 @@ curl  \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
     "http://127.0.0.1:8080/1.0/kb/customFields/pagination"
-
 ```
+```java
+import org.killbill.billing.client.model.CustomFields;
+
+protected CustomFieldApi customFieldApi;
+
+Long offset = 0L;
+Long limit = 100L;
+
+CustomFields customFields = customFieldApi.getCustomFields(offset, 
+                                                           limit, 
+                                                           AuditLevel.FULL, 
+                                                           requestOptions);
+```
+```ruby
+offset = 0
+limit = 100
+
+customField = KillBillClient::Model::CustomField
+
+customFields = customField.find_in_batches(offset,
+                                           limit,
+                                           options)
+```
+```python
+customFieldApi = killbill.CustomFieldApi()
+
+customFields = customFieldApi.get_custom_fields()
+```
+```javascript
+const customFieldApi: killbill.CustomFieldApi = new killbill.CustomFieldApi(config);
+
+const customFields: AxiosResponse<killbill.CustomField[], any> = await customFieldApi.getCustomFields();
+```
+```php
+$apiInstance = $client->getCustomFieldApi();
+
+$customFields = $apiInstance->getCustomFields();
+```
+
 > Example Response:
 
 ```json
@@ -65,13 +103,13 @@ curl  \
 ]
 ```
 
-### Search custom fields by ID
+### Search custom fields
 
-Searches for a specific custom field by its ID
+Searches for custom fields by specified search string. The search string is compared to the following attributes: `customFieldId`, `objectId`, `objectType`, `name`, and `value`. The operation returns the custom field records in which the search string matches all or part of any one of the attributes `objectId`, `objectType`, `name`, `value`. However, the string must match the entire attribute in case of `customFieldId`. 
 
 **HTTP Request**
 
-`GET http://127.0.0.1:8080/1.0/kb/customField/search/{customFieldId}`
+`GET http://127.0.0.1:8080/1.0/kb/customField/search/{searchKey}`
 
 **Query Parameters**
 
@@ -83,7 +121,7 @@ Searches for a specific custom field by its ID
 
 **Returns**
     
-Returns the record for the specified custom field, if it exists
+Returns the records for matching custom fields, if any.
 
 
 
@@ -95,8 +133,56 @@ curl  \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://127.0.0.1:8080/1.0/kb/customFields/search/13fe6f2c-91af-4635-aa9c-52e04d99b5ec"
+    "http://127.0.0.1:8080/1.0/kb/customFields/search/ACCOUNT"
+```
+```java
+import org.killbill.billing.client.model.CustomFields;
 
+protected CustomFieldApi customFieldApi;
+
+Long offset = 0L;
+Long limit = 100L;
+String searchKey = "ACCOUNT";
+
+CustomFields customFields = customFieldApi.searchCustomFields(searchKey, 
+                                                              offset, 
+                                                              limit, 
+                                                              AuditLevel.FULL,
+                                                              requestOptions);
+```
+```ruby
+offset = 0
+limit = 100
+
+customFieldsApi = KillBillClient::Model::CustomField
+
+searchKey = 'ACCOUNT'
+
+customFields = customFieldsApi.find_in_batches_by_search_key(searchKey,
+                                                             offset,
+                                                             limit,
+                                                             options);
+```
+```python
+customFieldApi = killbill.CustomFieldApi()
+
+searchKey = 'ACCOUNT'
+
+customFields = customFieldApi.search_custom_fields(searchKey);
+```
+```javascript
+const customFieldApi: killbill.CustomFieldApi = new killbill.CustomFieldApi(config);
+
+const searchKey = 'ACCOUNT';
+
+const customFields: AxiosResponse<killbill.CustomField[], any> = await customFieldApi.searchCustomFields(searchKey);
+```
+```php
+$apiInstance = $client->getCustomFieldApi();
+
+$searchKey = 'ACCOUNT';
+
+$customFields = $apiInstance->searchCustomFields($searchKey);
 ```
 > Example Response:
 
@@ -148,7 +234,65 @@ curl  \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
     "http://127.0.0.1:8080/1.0/kb/customFields/search?objectType=ACCOUNT&fieldName=importance"
+```
+```java
+import org.killbill.billing.client.model.CustomFields;
 
+protected CustomFieldApi customFieldApi;
+
+String objectType = "ACCOUNT";
+String fieldName = "customFieldName";
+String fieldValue = "customFieldValue";
+
+CustomFields customFields = customFieldApi.searchCustomFieldsByTypeName(objectType, 
+                                                                        fieldName, 
+                                                                        fieldValue,
+                                                                        requestOptions);
+```
+```ruby
+offset = 0
+limit = 100
+
+customFields = KillBillClient::Model::CustomField
+
+objectType = 'ACCOUNT';
+fieldName = 'customFieldName';
+fieldValue = 'customFieldValue';
+
+customField = customFields.find_in_batches_by_search_type_name(objectType,
+                                                               fieldName,
+                                                               fieldValue,
+                                                               offset,
+                                                               limit,
+                                                               options)
+```
+```python
+customFieldApi = killbill.CustomFieldApi()
+
+objectType = 'ACCOUNT';
+fieldName = 'customFieldName';
+
+customFields = customFieldApi.search_custom_fields_by_type_name(object_type=objectType,
+                                                                field_name=fieldName);
+```
+```javascript
+const customFieldApi: killbill.CustomFieldApi = new killbill.CustomFieldApi(config);
+
+const objectType = 'ACCOUNT';
+const fieldName = 'customFieldName';
+
+const customField: AxiosResponse<killbill.CustomField[], any> = await customFieldApi.searchCustomFieldsByTypeName(objectType, fieldName);
+```
+```php
+$apiInstance = $client->getCustomFieldApi();
+
+$objectType = 'ACCOUNT';
+$fieldName = 'customFieldName';
+$fieldValue = 'customFieldValue';
+
+$customFields = $apiInstance->searchCustomFieldsByTypeName($objectType,
+                                                           $fieldName,
+                                                           $fieldValue);
 ```
 > Example Response:
 
@@ -182,6 +326,44 @@ curl  \
     -H "Accept: application/json" \
     "http://localhost:8080/1.0/kb/customFields/4b498210-b177-4aae-a539-cf594adaa221/auditLogsWithHistory"
 
+```
+```java
+import org.killbill.billing.client.api.gen.CustomFieldApi;
+
+protected CustomFieldApi customFieldApi;
+
+UUID customFieldId = UUID.fromString("d7c2ed2e-9fcf-491c-9844-2d9e5efbfc4b");
+
+AuditLogs auditLogsWithHistory = customFieldApi.getCustomFieldAuditLogsWithHistory(customFieldId,
+                                                                                   requestOptions);
+```
+```ruby
+customFields = KillBillClient::Model::CustomField.new
+
+customFields.custom_field_id = 'd7c2ed2e-9fcf-491c-9844-2d9e5efbfc4b'
+
+auditLogsWithHistory = customFields.audit_logs_with_history(options)
+```
+```python
+customFieldApi = killbill.CustomFieldApi()
+
+customFieldId = 'd7c2ed2e-9fcf-491c-9844-2d9e5efbfc4b'
+
+customFieldAuditLogs = customFieldApi.get_custom_field_audit_logs_with_history(customFieldId)
+```
+```javascript
+const customFieldApi: killbill.CustomFieldApi = new killbill.CustomFieldApi(config);
+
+const customFieldId = 'd7c2ed2e-9fcf-491c-9844-2d9e5efbfc4b';
+
+const customFieldAuditLogs: AxiosResponse<killbill.AuditLog[], any> = await customFieldApi.getCustomFieldAuditLogsWithHistory(customFieldId);
+```
+```php
+$apiInstance = $client->getCustomFieldApi();
+
+$customFieldId = 'd7c2ed2e-9fcf-491c-9844-2d9e5efbfc4b';
+
+$customFieldAuditLogsWithHistory = $apiInstance->getCustomFieldAuditLogsWithHistory($customFieldId);
 ```
 > Example Response:
 
