@@ -100,13 +100,14 @@ KillBillClient::Model::Catalog.upload_tenant_catalog(catalog_file_xml,
 ```
 
 ```python
-catalogApi = killbill.api.CatalogApi()
+catalogApi = killbill.CatalogApi()
+
 xml_catalog = open("../resources/SpyCarBasic.xml", "r+").read()
 
 catalogApi.upload_catalog_xml(xml_catalog, 
-                              created_by, 
-                              api_key, 
-                              api_secret)
+                              created_by='demo',
+                              reason='reason', 
+                              comment='comment')
 ```
 
 **Request Body**
@@ -169,9 +170,9 @@ KillBillClient::Model::Catalog.get_tenant_catalog_xml(requested_date,
 ```
 
 ```python
-catalogApi = killbill.api.CatalogApi()
+catalogApi = killbill.CatalogApi()
 
-catalogApi.get_catalog_xml(api_key, api_secret)
+catalogXml = catalogApi.get_catalog_xml()
 ```
 > Example Response:
 
@@ -446,9 +447,9 @@ KillBillClient::Model::Catalog.get_tenant_catalog_json.(requested_date,
 ```
 
 ```python
-catalogApi = killbill.api.CatalogApi()
+catalogApi = killbill.CatalogApi()
 
-catalogApi.get_catalog_json(api_key, api_secret)
+catalogJson = catalogApi.get_catalog_json()
 ```
 > Example Response:
 
@@ -657,9 +658,9 @@ KillBillClient::Model::Catalog.get_tenant_catalog_versions(options)
 ```
 
 ```python
-catalogApi = killbill.api.CatalogApi()
+catalogApi = killbill.CatalogApi()
 
-catalogApi.get_catalog_versions(api_key, api_secret)
+catalogVersions = catalogApi.get_catalog_versions()
 ```
 
 > Example Response:
@@ -714,9 +715,9 @@ KillBillClient::Model::Catalog.available_base_plans(options)
 ```
 
 ```python
-catalogApi = killbill.api.CatalogApi()
+catalogApi = killbill.CatalogApi()
 
-catalogApi.get_available_base_plans(api_key, api_secret)
+availableBasePlans = catalogApi.get_available_base_plans()
 ```
 
 > Example Response:
@@ -808,11 +809,9 @@ KillBillClient::Model::Catalog.available_addons(base_product_name,
 ```
 
 ```python
-catalogApi = killbill.api.CatalogApi()
+catalogApi = killbill.CatalogApi()
         
-catalogApi.get_available_addons(api_key, 
-                                api_secret, 
-                                base_product_name='Basic')
+availableAddOnPlans = catalogApi.get_available_addons(base_product_name='Basic')
 ```
 > Example Response:
 
@@ -882,9 +881,11 @@ KillBillClient::Model::Catalog.delete_catalog(user,
 ```
 
 ```python
-catalogApi = killbill.api.CatalogApi()
+catalogApi = killbill.CatalogApi()
         
-catalogApi.delete_catalog(created_by, api_key, api_secret)
+catalogApi.delete_catalog(created_by='demo',
+                          reason='reason', 
+                          comment='comment')
 ```
 
 **Query Parameters**
@@ -941,7 +942,14 @@ TODO
 ```
 
 ```python
-TODO
+catalogApi = killbill.CatalogApi()
+
+xml_catalog = open("H:/killbill/catalog.xml", "r+").read()
+
+catalogValidationErrors = catalogApi.validate_catalog_xml(xml_catalog,
+                                                          created_by='demo',
+                                                          reason='reason', 
+                                                          comment='comment')
 ```
 > Example Response:
 
@@ -1004,11 +1012,11 @@ KillBillClient::Model::Catalog.get_catalog_phase(subscription_id,
 ```
 
 ```python
-catalogApi = killbill.api.CatalogApi()
+catalogApi = killbill.CatalogApi()
 
-catalogApi.get_phase_for_subscription_and_date(api_key, 
-                                               api_secret, 
-                                               subscription_id=subscription_id)
+subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
+
+phaseAndDuration = catalogApi.get_phase_for_subscription_and_date(subscription_id=subscriptionId)
 ```
 
 > Example Response:
@@ -1070,11 +1078,11 @@ KillBillClient::Model::Catalog.get_catalog_plan(subscription_id,
 ```
 
 ```python
-catalogApi = killbill.api.CatalogApi()
+catalogApi = killbill.CatalogApi()
 
-catalogApi.get_plan_for_subscription_and_date(api_key, 
-                                              api_secret, 
-                                              subscription_id=subscription_id)
+subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
+
+plan = catalogApi.get_plan_for_subscription_and_date(subscription_id=subscriptionId)
 ```
 
 > Example Response:
@@ -1162,11 +1170,11 @@ KillBillClient::Model::Catalog.get_catalog_price_list(subscription_id,
 ```
 
 ```python
-catalogApi = killbill.api.CatalogApi()
+catalogApi = killbill.CatalogApi()
 
-catalogApi.get_price_list_for_subscription_and_date(api_key, 
-                                                    api_secret, 
-                                                    subscription_id=subscription_id)
+subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
+
+priceList = catalogApi.get_price_list_for_subscription_and_date(subscription_id=subscriptionId)
 ```
 
 > Example Response:
@@ -1224,11 +1232,11 @@ KillBillClient::Model::Catalog.get_catalog_product(subscription_id,
 ```
 
 ```python
-catalogApi = killbill.api.CatalogApi()
+catalogApi = killbill.CatalogApi()
 
-catalogApi.get_product_for_subscription_and_date(api_key, 
-                                                 api_secret, 
-                                                 subscription_id=subscription_id)
+subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
+
+product = catalogApi.get_product_for_subscription_and_date(subscription_id=subscriptionId)
 ```
 
 > Example Response:
@@ -1341,17 +1349,21 @@ KillBillClient::Model::Catalog.add_tenant_catalog_simple_plan(simple_plan,
                                                               options)
 ```
 ```python
-catalogApi = killbill.api.CatalogApi()
-body = SimplePlan(plan_id='basic-annual',
-                  product_name='Basic',
-                  product_category='BASE',
-                  currency='USD',
-                  amount=10000.00,
-                  billing_period='ANNUAL',
-                  trial_length=0,
-                  trial_time_unit='UNLIMITED')
+catalogApi = killbill.CatalogApi()
+
+body = killbill.SimplePlan(plan_id='basic-annual',
+                           product_name='Basic',
+                           product_category='BASE',
+                           currency='USD',
+                           amount=10000.00,
+                           billing_period='ANNUAL',
+                           trial_length=0,
+                           trial_time_unit='UNLIMITED')
                   
-catalogApi.add_simple_plan(body, created_by, api_key, api_secret)
+catalogApi.add_simple_plan(body,
+                           created_by='demo',
+                           reason='reason', 
+                           comment='comment')
 ```
 
 **Request Body**
