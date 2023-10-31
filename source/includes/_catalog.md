@@ -172,7 +172,7 @@ KillBillClient::Model::Catalog.get_tenant_catalog_xml(requested_date,
 ```python
 catalogApi = killbill.CatalogApi()
 
-catalogXml = catalogApi.get_catalog_xml()
+catalog_xml = catalogApi.get_catalog_xml()
 ```
 > Example Response:
 
@@ -449,7 +449,7 @@ KillBillClient::Model::Catalog.get_tenant_catalog_json.(requested_date,
 ```python
 catalogApi = killbill.CatalogApi()
 
-catalogJson = catalogApi.get_catalog_json()
+catalog_json = catalogApi.get_catalog_json()
 ```
 > Example Response:
 
@@ -660,7 +660,7 @@ KillBillClient::Model::Catalog.get_tenant_catalog_versions(options)
 ```python
 catalogApi = killbill.CatalogApi()
 
-catalogVersions = catalogApi.get_catalog_versions()
+catalog_versions = catalogApi.get_catalog_versions()
 ```
 
 > Example Response:
@@ -717,7 +717,7 @@ KillBillClient::Model::Catalog.available_base_plans(options)
 ```python
 catalogApi = killbill.CatalogApi()
 
-availableBasePlans = catalogApi.get_available_base_plans()
+available_base_plans = catalogApi.get_available_base_plans()
 ```
 
 > Example Response:
@@ -811,7 +811,7 @@ KillBillClient::Model::Catalog.available_addons(base_product_name,
 ```python
 catalogApi = killbill.CatalogApi()
         
-availableAddOnPlans = catalogApi.get_available_addons(base_product_name='Basic')
+available_add_on_plans = catalogApi.get_available_addons(base_product_name='Basic')
 ```
 > Example Response:
 
@@ -946,10 +946,10 @@ catalogApi = killbill.CatalogApi()
 
 xml_catalog = open("H:/killbill/catalog.xml", "r+").read()
 
-catalogValidationErrors = catalogApi.validate_catalog_xml(xml_catalog,
-                                                          created_by='demo',
-                                                          reason='reason', 
-                                                          comment='comment')
+catalog_validation_errors = catalogApi.validate_catalog_xml(xml_catalog,
+                                                            created_by='demo',
+                                                            reason='reason', 
+                                                            comment='comment')
 ```
 > Example Response:
 
@@ -1014,9 +1014,9 @@ KillBillClient::Model::Catalog.get_catalog_phase(subscription_id,
 ```python
 catalogApi = killbill.CatalogApi()
 
-subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
+subscription_id = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
 
-phaseAndDuration = catalogApi.get_phase_for_subscription_and_date(subscription_id=subscriptionId)
+phase = catalogApi.get_phase_for_subscription_and_date(subscription_id=subscription_id)
 ```
 
 > Example Response:
@@ -1080,9 +1080,9 @@ KillBillClient::Model::Catalog.get_catalog_plan(subscription_id,
 ```python
 catalogApi = killbill.CatalogApi()
 
-subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
+subscription_id = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
 
-plan = catalogApi.get_plan_for_subscription_and_date(subscription_id=subscriptionId)
+plan = catalogApi.get_plan_for_subscription_and_date(subscription_id=subscription_id)
 ```
 
 > Example Response:
@@ -1172,9 +1172,9 @@ KillBillClient::Model::Catalog.get_catalog_price_list(subscription_id,
 ```python
 catalogApi = killbill.CatalogApi()
 
-subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
+subscription_id = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
 
-priceList = catalogApi.get_price_list_for_subscription_and_date(subscription_id=subscriptionId)
+price_list = catalogApi.get_price_list_for_subscription_and_date(subscription_id=subscription_id)
 ```
 
 > Example Response:
@@ -1234,9 +1234,9 @@ KillBillClient::Model::Catalog.get_catalog_product(subscription_id,
 ```python
 catalogApi = killbill.CatalogApi()
 
-subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
+subscription_id = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
 
-product = catalogApi.get_product_for_subscription_and_date(subscription_id=subscriptionId)
+product = catalogApi.get_product_for_subscription_and_date(subscription_id=subscription_id)
 ```
 
 > Example Response:
