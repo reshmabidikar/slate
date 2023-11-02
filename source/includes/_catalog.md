@@ -871,7 +871,7 @@ available_add_on_plans = catalogApi.get_available_addons(base_product_name='Basi
 ```javascript
 const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
 
-const availableAddOns: AxiosResponse<any> = await catalogApi.getAvailableAddons();
+const availableAddOns: AxiosResponse<killbill.PlanDetail[], any> = await catalogApi.getAvailableAddons();
 ```
 ```php
 ```
@@ -1006,19 +1006,7 @@ List<CatalogValidationError> errors = validation.getCatalogValidationErrors();
 ```
 
 ```ruby
-user = 'user'
-reason = 'reason'
-comment = 'comment'
-
-catalog = KillBillClient::Model::Catalog
-
-catalog_file_xml = File.read("H:/killbill/catalog.xml")
-
-catalog_validation_errors = catalog.validate_catalog_xml(catalog_file_xml,
-                                                         user,
-                                                         reason,
-                                                         comment,
-                                                         options)
+TODO
 ```
 
 ```python
@@ -1038,7 +1026,7 @@ const fs = require('fs');
 
 const body = fs.readFileSync('H:/killbill/catalog.xml').toString();
 
-const catalogValidationErrors: AxiosResponse<any> = await catalogApi.validateCatalogXml(body,'created_by');
+const catalogValidationErrors: AxiosResponse<killbill.CatalogValidation, any> = await catalogApi.validateCatalogXml(body,'created_by');
 ```
 ```php
 ```
