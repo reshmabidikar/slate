@@ -126,6 +126,17 @@ const content = fs.readFileSync('H:/killbill/catalog.xml').toString();
 const response: AxiosResponse<string, any> = await catalogApi.uploadCatalogXml(content, 'created_by');
 ```
 ```php
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$apiInstance = $client->getCatalogApi();
+
+$filename = "H:/killbill/catalog.xml";
+
+$fileContents = file_get_contents($filename);
+
+$apiInstance->uploadCatalogXml($fileContents,$xKillbillCreatedBy,$xKillbillReason,$xKillbillComment);
 ```
 
 **Request Body**
@@ -199,6 +210,9 @@ const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
 const catalogXml: AxiosResponse<string, any> = await catalogApi.getCatalogXml();
 ```
 ```php
+$apiInstance = $client->getCatalogApi();
+
+$catalogXml = $apiInstance->getCatalogXml();
 ```
 > Example Response:
 
@@ -484,6 +498,9 @@ const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
 const catalogJson: AxiosResponse<killbill.Catalog[], any> = await catalogApi.getCatalogJson();
 ```
 ```php
+$apiInstance = $client->getCatalogApi();
+
+$catalogJson = $apiInstance->getCatalogJson();
 ```
 > Example Response:
 
@@ -704,6 +721,9 @@ const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
 const catalogVersions: AxiosResponse<string[], any> = await catalogApi.getCatalogVersions();
 ```
 ```php
+$apiInstance = $client->getCatalogApi();
+
+$catalogVersions = $apiInstance->getCatalogVersions();
 ```
 
 > Example Response:
@@ -770,6 +790,9 @@ const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
 const availableBasePlans: AxiosResponse<killbill.PlanDetail[], any> = await catalogApi.getAvailableBasePlans();
 ```
 ```php
+$apiInstance = $client->getCatalogApi();
+
+$availableBasePlans = $apiInstance->getAvailableBasePlans();
 ```
 
 > Example Response:
@@ -874,6 +897,11 @@ const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
 const availableAddOns: AxiosResponse<killbill.PlanDetail[], any> = await catalogApi.getAvailableAddons();
 ```
 ```php
+$apiInstance = $client->getCatalogApi();
+
+$baseProductName = 'Standard';
+
+$availableAddOns = $apiInstance->getAvailableAddons($baseProductName);
 ```
 > Example Response:
 
@@ -954,6 +982,13 @@ const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
 const response: AxiosResponse<any> = await catalogApi.deleteCatalog('created_by');
 ```
 ```php
+$apiInstance = $client->getCatalogApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$apiInstance->deleteCatalog($xKillbillCreatedBy,$xKillbillReason,$xKillbillComment);
 ```
 
 **Query Parameters**
@@ -1029,6 +1064,17 @@ const body = fs.readFileSync('H:/killbill/catalog.xml').toString();
 const catalogValidationErrors: AxiosResponse<killbill.CatalogValidation, any> = await catalogApi.validateCatalogXml(body,'created_by');
 ```
 ```php
+$apiInstance = $client->getCatalogApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$filename = "H:/killbill/catalog.xml";
+
+$fileContents = file_get_contents($filename);
+
+$catalogValidationErrors = $apiInstance->validateCatalogXml($fileContents,$xKillbillCreatedBy,$xKillbillReason,$xKillbillComment);
 ```
 > Example Response:
 
@@ -1109,6 +1155,11 @@ const subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371';
 const phase: AxiosResponse<killbill.Phase, any> = await catalogApi.getPhaseForSubscriptionAndDate(subscriptionId);
 ```
 ```php
+$apiInstance = $client->getCatalogApi();
+
+$subscriptionId = 'd28b70f8-6bc7-4cde-b21f-eaf723e146fc';
+
+$phase = $apiInstance->getPhaseForSubscriptionAndDate($subscriptionId);
 ```
 > Example Response:
 
@@ -1187,6 +1238,11 @@ const subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371';
 const plan: AxiosResponse<killbill.Plan, any> = await catalogApi.getPlanForSubscriptionAndDate(subscriptionId);
 ```
 ```php
+$apiInstance = $client->getCatalogApi();
+
+$subscriptionId = 'd28b70f8-6bc7-4cde-b21f-eaf723e146fc';
+
+$plan = $apiInstance->getPlanForSubscriptionAndDate($subscriptionId);
 ```
 
 > Example Response:
@@ -1292,6 +1348,11 @@ const subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371';
 const priceList: AxiosResponse<killbill.PriceList, any> = await catalogApi.getPriceListForSubscriptionAndDate(subscriptionId);
 ```
 ```php
+$apiInstance = $client->getCatalogApi();
+
+$subscriptionId = 'd28b70f8-6bc7-4cde-b21f-eaf723e146fc';
+
+$priceList = $apiInstance->getPriceListForSubscriptionAndDate($subscriptionId);
 ```
 
 > Example Response:
@@ -1367,6 +1428,11 @@ const subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371';
 const product: AxiosResponse<killbill.Product, any> = await catalogApi.getProductForSubscriptionAndDate(subscriptionId);
 ```
 ```php
+$apiInstance = $client->getCatalogApi();
+
+$subscriptionId = 'd28b70f8-6bc7-4cde-b21f-eaf723e146fc';
+
+$product = $apiInstance->getProductForSubscriptionAndDate($subscriptionId);
 ```
 
 > Example Response:
@@ -1519,6 +1585,24 @@ const response: AxiosResponse<string, any> = await catalogApi.addSimplePlan(simp
                                                                             'created_by');
 ```
 ```php
+$apiInstance = $client->getCatalogApi();
+
+$xKillbillCreatedBy = "user";
+$xKillbillReason = "reason";
+$xKillbillComment = "comment";
+
+$simplePlan = new SimplePlan();
+
+$simplePlan->setPlanId('basic-annual');
+$simplePlan->setProductName('Basic');
+$simplePlan->setProductCategory('BASE');
+$simplePlan->setCurrency('USD');
+$simplePlan->setAmount(10000);
+$simplePlan->setBillingPeriod('ANNUAL');
+$simplePlan->setTrialLength(0);
+$simplePlan->setTrialTimeUnit('UNLIMITED');
+
+$apiInstance->addSimplePlan($simplePlan,$xKillbillCreatedBy,$xKillbillReason,$xKillbillComment);
 ```
 
 **Request Body**
