@@ -91,12 +91,19 @@ catalogApi.uploadCatalogXml(body, requestOptions);
 ```
 
 ```ruby
-catalog_file_xml = resource_file.read
-KillBillClient::Model::Catalog.upload_tenant_catalog(catalog_file_xml, 
-                                                     user,
-                                                     reason,
-                                                     comment,
-                                                     options)
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+catalog = KillBillClient::Model::Catalog
+
+catalog_file_xml = File.read("H:/killbill/catalog.xml")
+
+catalog.upload_tenant_catalog(catalog_file_xml,
+                              user,
+                              reason,
+                              comment,
+                              options)
 ```
 
 ```python
@@ -108,6 +115,17 @@ catalogApi.upload_catalog_xml(xml_catalog,
                               created_by='demo',
                               reason='reason', 
                               comment='comment')
+```
+```javascript
+const fs = require('fs');
+
+const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
+
+const content = fs.readFileSync('H:/killbill/catalog.xml').toString();    
+
+const response: AxiosResponse<string, any> = await catalogApi.uploadCatalogXml(content, 'created_by');
+```
+```php
 ```
 
 **Request Body**
@@ -163,16 +181,24 @@ String catalog = catalogApi.getCatalogXml(requestedDate,
 ```
 
 ```ruby
+catalog = KillBillClient::Model::Catalog
+
 requested_date = nil
 
-KillBillClient::Model::Catalog.get_tenant_catalog_xml(requested_date,
-                                                      options)
+catalog_xml = catalog.get_tenant_catalog_xml(requested_date,options)
 ```
 
 ```python
 catalogApi = killbill.CatalogApi()
 
 catalog_xml = catalogApi.get_catalog_xml()
+```
+```javascript
+const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
+
+const catalogXml: AxiosResponse<string, any> = await catalogApi.getCatalogXml();
+```
+```php
 ```
 > Example Response:
 
@@ -440,16 +466,24 @@ Catalogs catalogsJson = catalogApi.getCatalogJson(requestedDate,
 ```
 
 ```ruby
+catalog = KillBillClient::Model::Catalog
+
 requested_date = nil
 
-KillBillClient::Model::Catalog.get_tenant_catalog_json.(requested_date, 
-                                                        options)
+catalog_json = catalog.get_tenant_catalog_json(requested_date,options)
 ```
 
 ```python
 catalogApi = killbill.CatalogApi()
 
 catalog_json = catalogApi.get_catalog_json()
+```
+```javascript
+const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
+
+const catalogJson: AxiosResponse<killbill.Catalog[], any> = await catalogApi.getCatalogJson();
+```
+```php
 ```
 > Example Response:
 
@@ -654,13 +688,22 @@ List<DateTime> versions = catalogApi.getCatalogVersions(accountId, requestOption
 ```
 
 ```ruby
-KillBillClient::Model::Catalog.get_tenant_catalog_versions(options)
+catalog = KillBillClient::Model::Catalog
+
+catalog_versions = catalog.get_tenant_catalog_versions(options)
 ```
 
 ```python
 catalogApi = killbill.CatalogApi()
 
 catalog_versions = catalogApi.get_catalog_versions()
+```
+```javascript
+const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
+
+const catalogVersions: AxiosResponse<string[], any> = await catalogApi.getCatalogVersions();
+```
+```php
 ```
 
 > Example Response:
@@ -711,13 +754,22 @@ List<PlanDetail> basePlans = catalogApi.getAvailableBasePlans(accountId, request
 ```
 
 ```ruby
-KillBillClient::Model::Catalog.available_base_plans(options)
+catalog = KillBillClient::Model::Catalog
+
+available_base_plans = catalog.available_base_plans(options)
 ```
 
 ```python
 catalogApi = killbill.CatalogApi()
 
 available_base_plans = catalogApi.get_available_base_plans()
+```
+```javascript
+const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
+
+const availableBasePlans: AxiosResponse<killbill.PlanDetail[], any> = await catalogApi.getAvailableBasePlans();
+```
+```php
 ```
 
 > Example Response:
@@ -803,15 +855,25 @@ List<PlanDetail> availableAddons = catalogApi.getAvailableAddons(baseProductName
 ```
 
 ```ruby
-base_product_name = 'Basic'
-KillBillClient::Model::Catalog.available_addons(base_product_name, 
-                                                options)
+catalog = KillBillClient::Model::Catalog
+
+base_product_name = 'Standard'
+
+available_addons = catalog.available_addons(base_product_name,
+                                            options)
 ```
 
 ```python
 catalogApi = killbill.CatalogApi()
         
 available_add_on_plans = catalogApi.get_available_addons(base_product_name='Basic')
+```
+```javascript
+const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
+
+const availableAddOns: AxiosResponse<killbill.PlanDetail[], any> = await catalogApi.getAvailableAddons();
+```
+```php
 ```
 > Example Response:
 
@@ -874,10 +936,9 @@ catalogApi.deleteCatalog(requestOptions);
 ```
 
 ```ruby
-KillBillClient::Model::Catalog.delete_catalog(user,
-                                              reason,
-                                              comment,
-                                              options)
+catalog = KillBillClient::Model::Catalog
+
+catalog.delete_catalog(user,reason,comment,options)
 ```
 
 ```python
@@ -886,6 +947,13 @@ catalogApi = killbill.CatalogApi()
 catalogApi.delete_catalog(created_by='demo',
                           reason='reason', 
                           comment='comment')
+```
+```javascript
+const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
+
+const response: AxiosResponse<any> = await catalogApi.deleteCatalog('created_by');
+```
+```php
 ```
 
 **Query Parameters**
@@ -951,6 +1019,17 @@ catalog_validation_errors = catalogApi.validate_catalog_xml(xml_catalog,
                                                             reason='reason', 
                                                             comment='comment')
 ```
+```javascript
+const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
+
+const fs = require('fs');
+
+const body = fs.readFileSync('H:/killbill/catalog.xml').toString();
+
+const catalogValidationErrors: AxiosResponse<killbill.CatalogValidation, any> = await catalogApi.validateCatalogXml(body,'created_by');
+```
+```php
+```
 > Example Response:
 
 ```json
@@ -1005,10 +1084,14 @@ TODO
 ```
 
 ```ruby
+catalog = KillBillClient::Model::Catalog
+
 requested_date = nil
-KillBillClient::Model::Catalog.get_catalog_phase(subscription_id, 
-                                                 requested_date, 
-                                                 options)
+subscription_id = 'dc99644c-04a3-49b3-9abc-6e94cffc7e60'
+
+phase = catalog.get_catalog_phase(subscription_id,
+                                  requested_date,
+                                  options)
 ```
 
 ```python
@@ -1018,7 +1101,15 @@ subscription_id = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
 
 phase = catalogApi.get_phase_for_subscription_and_date(subscription_id=subscription_id)
 ```
+```javascript
+const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
 
+const subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371';
+
+const phase: AxiosResponse<killbill.Phase, any> = await catalogApi.getPhaseForSubscriptionAndDate(subscriptionId);
+```
+```php
+```
 > Example Response:
 
 ```json
@@ -1071,10 +1162,14 @@ TODO
 ```
 
 ```ruby
+catalog = KillBillClient::Model::Catalog
+
 requested_date = nil
-KillBillClient::Model::Catalog.get_catalog_plan(subscription_id, 
-                                                requested_date, 
-                                                options)
+subscription_id = 'dc99644c-04a3-49b3-9abc-6e94cffc7e60'
+
+plan = catalog.get_catalog_plan(subscription_id, 
+                                requested_date, 
+                                options)
 ```
 
 ```python
@@ -1083,6 +1178,15 @@ catalogApi = killbill.CatalogApi()
 subscription_id = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
 
 plan = catalogApi.get_plan_for_subscription_and_date(subscription_id=subscription_id)
+```
+```javascript
+const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
+
+const subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371';
+
+const plan: AxiosResponse<killbill.Plan, any> = await catalogApi.getPlanForSubscriptionAndDate(subscriptionId);
+```
+```php
 ```
 
 > Example Response:
@@ -1163,10 +1267,14 @@ TODO
 ```
 
 ```ruby
+catalog = KillBillClient::Model::Catalog
+
 requested_date = nil
-KillBillClient::Model::Catalog.get_catalog_price_list(subscription_id, 
-                                                      requested_date, 
-                                                      options)
+subscription_id = 'dc99644c-04a3-49b3-9abc-6e94cffc7e60'
+
+price_list = catalog.get_catalog_price_list(subscription_id, 
+                                            requested_date, 
+                                            options)
 ```
 
 ```python
@@ -1175,6 +1283,15 @@ catalogApi = killbill.CatalogApi()
 subscription_id = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
 
 price_list = catalogApi.get_price_list_for_subscription_and_date(subscription_id=subscription_id)
+```
+```javascript
+const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
+
+const subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371';
+
+const priceList: AxiosResponse<killbill.PriceList, any> = await catalogApi.getPriceListForSubscriptionAndDate(subscriptionId);
+```
+```php
 ```
 
 > Example Response:
@@ -1225,10 +1342,14 @@ TODO
 ```
 
 ```ruby
+catalog = KillBillClient::Model::Catalog
+
 requested_date = nil
-KillBillClient::Model::Catalog.get_catalog_product(subscription_id, 
-                                                   requested_date, 
-                                                   options)
+subscription_id = 'dc99644c-04a3-49b3-9abc-6e94cffc7e60'
+
+product = catalog.get_catalog_product(subscription_id, 
+                                      requested_date, 
+                                      options)
 ```
 
 ```python
@@ -1237,6 +1358,15 @@ catalogApi = killbill.CatalogApi()
 subscription_id = 'ad924bca-00f4-4287-82c2-e2932a5f7371'
 
 product = catalogApi.get_product_for_subscription_and_date(subscription_id=subscription_id)
+```
+```javascript
+const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
+
+const subscriptionId = 'ad924bca-00f4-4287-82c2-e2932a5f7371';
+
+const product: AxiosResponse<killbill.Product, any> = await catalogApi.getProductForSubscriptionAndDate(subscriptionId);
+```
+```php
 ```
 
 > Example Response:
@@ -1332,7 +1462,13 @@ catalogApi.addSimplePlan(body, requestOptions);
 ```
 
 ```ruby
-simple_plan                  = KillBillClient::Model::SimplePlanAttributes.new
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+catalog = KillBillClient::Model::Catalog
+simple_plan = KillBillClient::Model::SimplePlanAttributes.new
+
 simple_plan.plan_id          = 'basic-annual'
 simple_plan.product_name     = 'Basic'
 simple_plan.product_category = 'BASE'
@@ -1342,11 +1478,11 @@ simple_plan.billing_period   = 'ANNUAL'
 simple_plan.trial_length     = 0
 simple_plan.trial_time_unit  = 'UNLIMITED'
 
-KillBillClient::Model::Catalog.add_tenant_catalog_simple_plan(simple_plan,
-                                                              user,
-                                                              reason,
-                                                              comment,
-                                                              options)
+catalog.add_tenant_catalog_simple_plan(simple_plan,
+                                       user,
+                                       reason,
+                                       comment,
+                                       options)
 ```
 ```python
 catalogApi = killbill.CatalogApi()
@@ -1364,6 +1500,25 @@ catalogApi.add_simple_plan(body,
                            created_by='demo',
                            reason='reason', 
                            comment='comment')
+```
+```javascript
+const catalogApi: killbill.CatalogApi = new killbill.CatalogApi(config);
+
+const simplePlan: killbill.SimplePlan = {
+                                          planId: 'basic-annual',
+                                          productName: 'Basic',
+                                          productCategory: 'BASE',
+                                          currency: 'USD',
+                                          amount: 10000,
+                                          billingPeriod: 'ANNUAL',
+                                          trialLength: 0,
+                                          trialTimeUnit: 'UNLIMITED'
+                                        };
+
+const response: AxiosResponse<string, any> = await catalogApi.addSimplePlan(simplePlan,
+                                                                            'created_by');
+```
+```php
 ```
 
 **Request Body**
