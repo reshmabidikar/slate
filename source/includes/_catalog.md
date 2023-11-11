@@ -83,9 +83,14 @@ curl -v \
 
 ```java
 import org.killbill.billing.client.api.gen.CatalogApi;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 protected CatalogApi catalogApi;
 
-String body = getResourceBodyString(catalog);
+Path filePath = Path.of("H:/killbill/spycarcatalog.xml");
+
+String body = Files.readString(filePath);
 
 catalogApi.uploadCatalogXml(body, requestOptions);
 ```
@@ -181,9 +186,11 @@ curl -v \
 
 ```java
 import org.killbill.billing.client.api.gen.CatalogApi;
+import org.joda.time.DateTime;
+
 protected CatalogApi catalogApi;
 
-LocalDate requestedDate = null;
+DateTime requestedDate = null;
 UUID accountId = null;
 
 String catalog = catalogApi.getCatalogXml(requestedDate, 
@@ -468,7 +475,10 @@ curl -v \
 ```
 
 ```java
+import org.joda.time.DateTime;
 import org.killbill.billing.client.api.gen.CatalogApi;
+import org.killbill.billing.client.model.Catalogs;
+
 protected CatalogApi catalogApi;
 
 DateTime requestedDate = null;
@@ -766,6 +776,8 @@ curl -v \
 
 ```java
 import org.killbill.billing.client.api.gen.CatalogApi;
+import org.killbill.billing.client.model.gen.PlanDetail;
+
 protected CatalogApi catalogApi;
 
 UUID accountId = null;
@@ -865,6 +877,8 @@ curl -v \
 
 ```java
 import org.killbill.billing.client.api.gen.CatalogApi;
+import org.killbill.billing.client.model.gen.PlanDetail;
+
 protected CatalogApi catalogApi;
 
 String baseProductName = "Bullets";
@@ -958,6 +972,7 @@ curl -v \
 
 ```java
 import org.killbill.billing.client.api.gen.CatalogApi;
+
 protected CatalogApi catalogApi;
 
 catalogApi.deleteCatalog(requestOptions);
@@ -1031,12 +1046,16 @@ curl -v \
 ```
 
 ```java
+import java.nio.file.Files;
+import java.nio.file.Path;
 import org.killbill.billing.client.api.gen.CatalogApi;
+import org.killbill.billing.client.model.gen.CatalogValidation;
+import org.killbill.billing.client.model.gen.CatalogValidationError;
+
 protected CatalogApi catalogApi;
 
-String catalogPath = "in-advance-arrear.xml";
-String body = getResourceBodyString(catalogPath);
 CatalogValidation validation = catalogApi.validateCatalogXml(body, requestOptions);
+
 List<CatalogValidationError> errors = validation.getCatalogValidationErrors();
 ```
 
@@ -1126,7 +1145,16 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.joda.time.LocalDate;
+import org.killbill.billing.client.api.gen.CatalogApi;
+import org.killbill.billing.client.model.gen.Phase;
+
+protected CatalogApi catalogApi;
+
+UUID subscriptionId = UUID.fromString("4c3fd23c-7b15-4acc-811e-fe92ee7fdffd");
+LocalDate requestedDate = null;
+
+Phase phase = catalogApi.getPhaseForSubscriptionAndDate(subscriptionId, requestedDate, requestOptions);
 ```
 
 ```ruby
@@ -1209,7 +1237,16 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.joda.time.LocalDate;
+import org.killbill.billing.client.api.gen.CatalogApi;
+import org.killbill.billing.client.model.gen.Plan;
+
+protected CatalogApi catalogApi;
+
+UUID subscriptionId = UUID.fromString("4c3fd23c-7b15-4acc-811e-fe92ee7fdffd");
+LocalDate requestedDate = null;
+
+Plan plan = catalogApi.getPlanForSubscriptionAndDate(subscriptionId, requestedDate, requestOptions);
 ```
 
 ```ruby
@@ -1319,7 +1356,16 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.joda.time.LocalDate;
+import org.killbill.billing.client.api.gen.CatalogApi;
+import org.killbill.billing.client.model.gen.PriceList;
+
+protected CatalogApi catalogApi;
+
+UUID subscriptionId = UUID.fromString("4c3fd23c-7b15-4acc-811e-fe92ee7fdffd");
+LocalDate requestedDate = null;
+
+PriceList priceList = catalogApi.getPriceListForSubscriptionAndDate(subscriptionId, requestedDate,requestOptions);
 ```
 
 ```ruby
@@ -1399,7 +1445,16 @@ curl -v \
 ```
 
 ```java
-TODO
+import org.joda.time.LocalDate;
+import org.killbill.billing.client.api.gen.CatalogApi;
+import org.killbill.billing.client.model.gen.Product;
+
+protected CatalogApi catalogApi;
+
+UUID subscriptionId = UUID.fromString("4c3fd23c-7b15-4acc-811e-fe92ee7fdffd");
+LocalDate requestedDate = null;
+
+Product product = catalogApi.getProductForSubscriptionAndDate(subscriptionId, requestedDate,requestOptions);
 ```
 
 ```ruby
@@ -1507,7 +1562,17 @@ curl -v \
 ```
 
 ```java
+import java.math.BigDecimal;
+import java.util.Collections;
+
 import org.killbill.billing.client.api.gen.CatalogApi;
+
+import org.killbill.billing.catalog.api.BillingPeriod;
+import org.killbill.billing.catalog.api.Currency;
+import org.killbill.billing.catalog.api.ProductCategory;
+import org.killbill.billing.catalog.api.TimeUnit;
+import org.killbill.billing.client.model.gen.SimplePlan;
+
 protected CatalogApi catalogApi;
 
 String planId = "foo-monthly";
@@ -1522,7 +1587,7 @@ SimplePlan body = new SimplePlan(planId,
                                  BillingPeriod.MONTHLY, 
                                  trialLength, 
                                  TimeUnit.UNLIMITED, 
-                                 Collections.emptyList())
+                                 Collections.emptyList());
                                  
 catalogApi.addSimplePlan(body, requestOptions);
 ```
