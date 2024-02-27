@@ -2146,11 +2146,12 @@ comment = nil
 subscription = KillBillClient::Model::Subscription.new
 subscription.subscription_id = "2207150d-0652-43eb-abbe-2cbd0092b744"
 
+custom_fields = []
 custom_field = KillBillClient::Model::CustomFieldAttributes.new
 custom_field.name = 'Test Custom Field'
 custom_field.value = 'test_value'
-
-subscription.add_custom_field(custom_field,
+custom_fields.push custom_field
+subscription.add_custom_field(custom_fields,
                               user,
                               reason,
                               comment,
@@ -2360,11 +2361,13 @@ comment = nil
 subscription = KillBillClient::Model::Subscription.new
 subscription.subscription_id = "2207150d-0652-43eb-abbe-2cbd0092b744"
 
+custom_fields = []
 custom_field = KillBillClient::Model::CustomFieldAttributes.new
 custom_field.custom_field_id = 'a04adaca-78a4-41fe-b512-a8d620aad456'
 custom_field.value = 'test_modify_value'
+custom_fields.push custom_field
 
-subscription.modify_custom_field(custom_field,
+subscription.modify_custom_field(custom_fields,
                                  user,
                                  reason,
                                  comment,
@@ -2472,9 +2475,11 @@ comment = nil
 subscription = KillBillClient::Model::Subscription.new
 subscription.subscription_id = "2207150d-0652-43eb-abbe-2cbd0092b744"
 
+custom_field_ids = []
 custom_field_id = 'a04adaca-78a4-41fe-b512-a8d620aad456'
+custom_field_ids.push custom_field_id
 
-subscription.remove_custom_field(custom_field_id,
+subscription.remove_custom_field(custom_field_ids,
                                  user,
                                  reason,
                                  comment,
