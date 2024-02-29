@@ -81,10 +81,10 @@ Payment payment = paymentTransactionApi.getPaymentByTransactionId(paymentTransac
 payment_transaction_id = "e5f000f7-0733-4828-a887-3a4a58d27596"
 with_attempts = false
 with_plugin_info = false
-plugin_property = ['property']
+plugin_properties = ["key%3Dvalue"]
 audit = "NONE"
 
-payment = KillBillClient::Model::Payment.find_by_transaction_id(payment_transaction_id, with_attempts, with_plugin_info, plugin_property, audit, options)
+payment = KillBillClient::Model::Payment.find_by_transaction_id(payment_transaction_id, with_attempts, with_plugin_info, plugin_properties, audit, options)
 ```
 
 ```python
@@ -205,10 +205,10 @@ Payment payment = paymentTransactionApi.getPaymentByTransactionExternalKey(trans
 external_key = "e5f000f7-0733-4828-a887-3a4a58d27596"
 with_plugin_info = false
 with_attempts = false
-plugin_property = ["property"]
+plugin_properties = ["key%3Dvalue"]
 audit = 'NONE'
 
-payment = KillBillClient::Model::Payment.find_by_transaction_external_key(external_key, with_plugin_info, with_attempts, plugin_property, audit, options)
+payment = KillBillClient::Model::Payment.find_by_transaction_external_key(external_key, with_plugin_info, with_attempts, plugin_properties, audit, options)
 ```
 
 ```python
