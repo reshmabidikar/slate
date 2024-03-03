@@ -1031,9 +1031,9 @@ comment = nil
 payment_transaction = KillBillClient::Model::Transaction.new
 payment_transaction.transaction_id = "e5f000f7-0733-4828-a887-3a4a58d27596"
 
-tag_name = 'sample_tag'
+tag_definition_ids = ['2c1f8309-24d7-437c-971b-7e68ff2d393a']
 
-payment_transaction.add_tag(tag_name,
+payment_transaction.add_tags_from_definition_ids(tag_definition_ids,
                      user,
                      reason,
                      comment,
@@ -1230,9 +1230,9 @@ comment = nil
 payment_transaction = KillBillClient::Model::Transaction.new
 payment_transaction.transaction_id = "e5f000f7-0733-4828-a887-3a4a58d27596"
 
-tag_name = 'sample_tag'
+tag_definition_ids = ['2c1f8309-24d7-437c-971b-7e68ff2d393a']
 
-payment_transaction.remove_tag(tag_name,
+payment_transaction.remove_tags_from_definition_ids(tag_definition_ids,
                         user,
                         reason,
                         comment,
