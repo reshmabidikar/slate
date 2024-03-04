@@ -75,11 +75,17 @@ PaymentMethod paymentMethod = paymentMethodApi.getPaymentMethod(paymentMethodId,
 
 ```ruby
 payment_method_id = "6a0bf13e-d57f-4f79-84bd-3690135f1923"
+included_deleted = false
 with_plugin_info = false
+audit = "NONE"
+plugin_properties = ["key%3Dvalue"]
 
 payment_method = KillBillClient::Model::PaymentMethod.find_by_id(payment_method_id,
-                                                with_plugin_info,
-                                                options)
+                                                                 included_deleted,
+                                                                 with_plugin_info,
+                                                                 plugin_properties,
+                                                                 audit,
+                                                                 options)
 ```
 
 ```python
@@ -322,11 +328,13 @@ PaymentMethod paymentMethod = paymentMethodApi.getPaymentMethodByKey(externalKey
 payment_method_key = "sample_external_key"
 included_deleted = false
 with_plugin_info = false
+plugin_properties = ["key%3Dvalue"]
 audit = 'NONE'
 
 payment_method = KillBillClient::Model::PaymentMethod.find_by_external_key(payment_method_key,
                                                           included_deleted,
                                                           with_plugin_info,
+                                                          plugin_properties,
                                                           audit,
                                                           options)
 ```

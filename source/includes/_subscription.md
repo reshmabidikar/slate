@@ -945,8 +945,9 @@ Subscription subscription = subscriptionApi.getSubscription(subscriptionId,
 
 ```ruby
 subscription_id = "161692a4-c293-410c-a92f-939c5e3dcba7"
+audit = "NONE"
 
-subscription = KillBillClient::Model::Subscription.find_by_id(subscription_id, options)
+subscription = KillBillClient::Model::Subscription.find_by_id(subscription_id, audit, options)
 ```
 
 ```python
@@ -1109,7 +1110,8 @@ Subscription subscription = subscriptionApi.getSubscriptionByKey(externalKey, re
 
 ```ruby
 external_key = "somethingSpecial"
-subscription = KillBillClient::Model::Subscription.find_by_external_key(external_key, options)
+audit = "NONE"
+subscription = KillBillClient::Model::Subscription.find_by_external_key(external_key, audit, options)
 ```
 
 ```python

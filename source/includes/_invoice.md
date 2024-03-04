@@ -704,9 +704,11 @@ Invoice invoiceWithItems = invoiceApi.getInvoice(invoiceId,
 
 ```ruby
 invoice_id = "5c6083c1-a673-4b67-9b86-74139df50448"
+with_children_items = false
 audit = 'NONE'
 
 invoice = KillBillClient::Model::Invoice.find_by_id(invoice_id,
+                                          with_children_items,
                                           audit,
                                           options)
 ```
@@ -838,9 +840,11 @@ Invoice invoiceByNumber = invoiceApi.getInvoiceByNumber(invoiceNumber,
 
 ```ruby
 invoice_number = "7318"
+with_children_items = false
 audit = 'NONE'
 
 invoice = KillBillClient::Model::Invoice.find_by_number(invoice_number,
+                                              with_children_items,
                                               audit,
                                               options)
 ```
