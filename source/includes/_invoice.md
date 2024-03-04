@@ -3040,9 +3040,9 @@ comment = nil
 invoice = KillBillClient::Model::Invoice.new
 invoice.invoice_id = '7bf0f3d6-4ffb-4d5a-98c7-1158083432d0'
 
-tag_name = 'WRITTEN_OFF'
+tag_definition_ids = ['2c1f8309-24d7-437c-971b-7e68ff2d393a']
 
-invoice.add_tag(tag_name,
+invoice.add_tags_from_definition_ids(tag_definition_ids,
                user,
                reason,
                comment,
@@ -3239,9 +3239,9 @@ comment = nil
 invoice = KillBillClient::Model::Invoice.new
 invoice.invoice_id = '7bf0f3d6-4ffb-4d5a-98c7-1158083432d0'
 
-tag_name = 'WRITTEN_OFF'
+tag_definition_ids = ['2c1f8309-24d7-437c-971b-7e68ff2d393a']
 
-invoice.remove_tag(tag_name,
+invoice.remove_tags_from_definition_ids(tag_definition_ids,
                   user,
                   reason,
                   comment,
