@@ -548,9 +548,9 @@ invoice_item = KillBillClient::Model::InvoiceItem.new
 invoice_item.invoice_item_id = 'df124876-fbe4-4d61-897d-6eb0d3f3862c'
 invoice_item.account_id='0f84a73c-9f1d-44e0-962e-e7d554e9cff6'
 
-tag_def_id = ['2c1f8309-24d7-437c-971b-7e68ff2d393a']
+tag_definition_ids = ['2c1f8309-24d7-437c-971b-7e68ff2d393a']
 
-invoice_item.add_tags_from_definition_ids(tag_def_id,
+invoice_item.add_tags_from_definition_ids(tag_definition_ids,
                user,
                reason,
                comment,
@@ -751,9 +751,9 @@ comment = nil
 invoice_item = KillBillClient::Model::InvoiceItem.new
 invoice_item.invoice_item_id = 'df124876-fbe4-4d61-897d-6eb0d3f3862c'
 
-tag_name='subscription_item'
+tag_definition_ids = ['2c1f8309-24d7-437c-971b-7e68ff2d393a']
 
-invoice_item.remove_tag(tag_name,
+invoice_item.remove_tags_from_definition_ids(tag_definition_ids,
                   user,
                   reason,
                   comment,
