@@ -1832,12 +1832,20 @@ Invoice dryRunInvoice = invoiceApi.generateDryRunInvoice(dryRunArg,
 # to see what is the next invoice that the system will generate for this account 
 # 
 account_id = "5527abbc-d83d-447f-bf3d-ab9542ea631e"
+user = nil
+reason = nil
+comment = nil
 target_date = nil
 upcoming_invoice_target_date = true
+plugin_properties = ["key%3Dvalue"]
 
 KillBillClient::Model::Invoice.trigger_invoice_dry_run(account_id, 
                                                        target_date, 
-                                                       upcoming_invoice_target_date, 
+                                                       upcoming_invoice_target_date,
+                                                       plugin_properties,
+                                                       user,
+                                                       reason,
+                                                       comment,
                                                        options)
 ```
 
