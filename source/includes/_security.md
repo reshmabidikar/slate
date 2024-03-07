@@ -304,7 +304,7 @@ $apiInstance->addUserRoles($body,$xKillbillCreatedBy,$xKillbillReason,$xKillbill
 ```
 **Request Body**
 
-A `userRoles` object consisting of the username, password and the roles to be associated with the user. The required attributes are `username`,`password`,`roles`.
+A `UserRoles` object consisting of the username, password and the roles to be associated with the user. The required attributes are `username`,`password`,`roles`.
 
 **Query Parameters**
 
@@ -312,7 +312,7 @@ None.
 
 **Response**
 
-If successful, returns a status code of 201 without any data.
+If successful, returns a status code of 201 and the `UserRoles` object for the newly created user.
 
 ### Update a user password
 
