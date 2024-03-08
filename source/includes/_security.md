@@ -596,7 +596,7 @@ If successful, returns a status code of 204 and an empty body.
 
 ### Invalidate an existing user
 
-Invalidates a aser.
+Invalidates a user.
 
 **HTTP Request** 
 
