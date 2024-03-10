@@ -63,10 +63,16 @@ adminApi.triggerInvoiceGenerationForParkedAccounts(offset, limit, NULL_PLUGIN_PR
 ofset = 0
 limit = 100
 user = "demo"
+reason = nil
+comment = nil
+plugin_properties = ["key%3Dvalue"]
 
 KillBillClient::Model::Admin.trigger_invoice_generation_for_parked_accounts(ofset,
                                                                             limit,
+                                                                            plugin_properties,
                                                                             user,
+                                                                            reason,
+                                                                            comment,
                                                                             options)
 ```
 
@@ -186,20 +192,24 @@ adminApi.updatePaymentTransactionState(paymentId,
 ```
 
 ```ruby
-user = "demo"
+created_by = "demo"
 reason = nil
 comment = nil
-
 payment_id = "6cb944a-b308-4488-b046-4b4d61d375a6"
 transaction_id = "8gb944a-b308-4488-b046-4b4d61d375r3"
-body = AdminPayment(transaction_status='PAYMENT_FAILURE')
-
-adminApi.update_payment_transaction_state(payment_id,
-                                          payment_transaction_id,
-                                          body,
-                                          created_by='demo',
-                                          reason='reason',
-                                          comment='comment')
+transaction_status = "PAYMENT_FAILURE"
+payment_state_param = {
+  "lastSuccessPaymentState" => "AUTH_FAILED",
+  "currentPaymentStateName" => "AUTH_FAILED"
+}
+KillBillClient::Model::Admin.fix_transaction_state(payment_id,
+                                                  transaction_id,
+                                                  transaction_status,
+                                                  payment_state_param,
+                                                  created_by,
+                                                  reason,
+                                                  comment,
+                                                  options_for_klient)
 ```
 
 ```python
@@ -608,7 +618,24 @@ adminApi.getQueueEntries(accountId,
 
 ```ruby
 account_id = "864c1418-e768-4cd5-a0db-67537144b685"
-KillBillClient::Model::Admin.get_queues_entries(account_id, options)
+queue_name = ''
+service_name = ''
+with_history = true
+min_date = ''
+max_date = ''
+with_in_processing = true
+with_notifications = true
+outputStream = ''
+KillBillClient::Model::Admin.get_queues_entries(account_id,
+                                                queue_name,
+                                                service_name,
+                                                with_history,
+                                                min_date,
+                                                max_date,
+                                                with_in_processing,
+                                                with_notifications,
+                                                outputStream,
+                                                options)
 ```
 
 ```python
