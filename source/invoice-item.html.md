@@ -24,6 +24,7 @@ menu_items:
   - tag-definition
   - export
   - admin
+  - security
   
 title: Kill Bill
 
