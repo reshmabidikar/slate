@@ -65,11 +65,13 @@ CustomFields customFields = customFieldApi.getCustomFields(offset,
 ```ruby
 offset = 0
 limit = 100
+audit = 'NONE'
 
 customField = KillBillClient::Model::CustomField
 
 customFields = customField.find_in_batches(offset,
                                            limit,
+                                           audit,
                                            options)
 ```
 ```python
