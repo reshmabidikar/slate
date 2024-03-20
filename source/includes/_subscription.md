@@ -184,7 +184,7 @@ curl -v \
         }' \
     "http://127.0.0.1:8080/1.0/kb/subscriptions"
     
-# With Datetime
+# With Datetime (No Timezone, so taken to be UTC)
 
 curl -v \
     -X POST \
@@ -198,6 +198,21 @@ curl -v \
             "planName": "pistol-monthly-notrial"
         }' \
     "http://127.0.0.1:8080/1.0/kb/subscriptions?billingDate=2023-02-07T11:15&entitlementDate=2023-02-07T11:15" 
+    
+# Datetime with timezone
+
+curl -v \
+    -X POST \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '{ 
+            "accountId": "325fbe1c-7c35-4d96-a4e5-2cbaabe218c6",
+            "planName": "pistol-monthly-notrial"
+        }' \
+    "http://127.0.0.1:8080/1.0/kb/subscriptions?billingDate=2024-03-10T11:00:00-08:00&entitlementDate=2024-03-10T11:00:00-08:00"    
    
 ```
 
@@ -310,15 +325,15 @@ It can also include the following optional fields:
 
 **Query Parameters**
 
-| Name                           | Type | Required | Default | Description                                                                                        |
-|--------------------------------| ---- | -------- | ------- |----------------------------------------------------------------------------------------------------|
-| **entitlementDate**            | string | no | immediately | Date/DateTime at which the entitlement (service) starts in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format. |
-| **billingDate**                | string | no | immediately | Date/DateTime at which the entitlement (service) starts in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format. |
-| **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused                                            |
-| **migrated**                   | boolean | no | false | If true, subscription is migrated                                                                  |
-| **skipResponse**               | boolean | no | false | TODO                                                                                               |
-| **callCompletion**             | boolean | no | false | see below                                                                                          |
-| **callTimeoutSec**             | long | no | unlimited? | Timeout in seconds (see below)                                                                     |
+| Name                           | Type | Required | Default | Description                                                                                            |
+|--------------------------------| ---- | -------- | ------- |--------------------------------------------------------------------------------------------------------|
+| **entitlementDate**            | string | no | immediately | Date/DateTime at which the entitlement (service) starts in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm:ssZ` format.     |
+| **billingDate**                | string | no | immediately | Date/DateTime at which the entitlement (service) starts in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm:ssZ` format. |
+| **renameKeyIfExistsAndUnused** | boolean | no | true | If true, rename external key if it exists and is unused                                                |
+| **migrated**                   | boolean | no | false | If true, subscription is migrated                                                                      |
+| **skipResponse**               | boolean | no | false | TODO                                                                                                   |
+| **callCompletion**             | boolean | no | false | see below                                                                                              |
+| **callTimeoutSec**             | long | no | unlimited? | Timeout in seconds (see below)                                                                         |
 
 Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
 
@@ -326,6 +341,8 @@ Creating a subscription often triggers the creation of an invoice, and associate
 
 * Specifying the `startDate`/`billingStartDate` as part of the request body has no effect, these dates need to be passed as query parameters (`entitlementDate`/`billingDate`). 
 * The `entitlementDate` drives the subscription state. So, if a subscription is created with a future `entitlementDate`, its state remains `PENDING` until the date is reached after which it becomes `ACTIVE`.
+* When a `DateTime` is specified corresponding to the `entitlementDate`/`billingDate` parameters, it may or may not include a timezone component. If a timezone is included (like `entitlementDate=2024-03-10T11:00:00-08:00`), the specified timezone (`PST` in this case) is used. If timezone is not included (like `entitlementDate=2024-03-07T11:15`), it defaults to UTC.
+
 
 
 **Response**
@@ -1593,7 +1610,7 @@ A subscription resource object specifying either the `planName` or a combination
 | Name | Type | Required | Default | Description |
 | ---- | ---- | -------- | ------- | ----------- |
 | **billingPolicy** | string | no | default | Billing policy that will be used to make this change effective (see below) |
-| **requestedDate** | string | no | immediate | Date/DateTime at which this change should become effective in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm`  format.|
+| **requestedDate** | string | no | immediate | Date/DateTime at which this change should become effective in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm:ssZ`  format.|
 | **callCompletion** | boolean | no | false | see below |
 | **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
 | **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
@@ -1603,6 +1620,10 @@ A subscription resource object specifying either the `planName` or a combination
 **requestedDate**: This date is only used if no billingPolicy was specified.
 
 Changing the plan associated to a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
+
+**Other Notes:**
+
+* When a `DateTime` is specified corresponding to the `requestedDate` parameter, it may or may not include a timezone component. If a timezone is included (like `entitlementDate=2024-03-10T11:00:00-08:00`), the specified timezone (`PST` in this case) is used. If timezone is not included (like `entitlementDate=2024-03-07T11:15`), it defaults to UTC.
 
 **Response**
 
@@ -1804,7 +1825,7 @@ $apiInstance -> cancelSubscriptionPlan($subscriptionId, $xKillbillCreatedBy, $re
 
 | Name | Type | Required | Default | Description |
 | ---- | ---- | -------- | ------- | ----------- |
-| **requestedDate** | string | no | immediate | Date/DateTime at which this change should become effective in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm`  format.|
+| **requestedDate** | string | no | immediate | Date/DateTime at which this change should become effective in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm:ssZ`  format.|
 | **entitlementPolicy** | string | no | IMMEDIATE | entitlement policy (see below) |
 | **billingPolicy** | string | no | default policy from catalog if present, otherwise `END_OF_TERM` | billing policy (see below) |
 | **useRequestedDateForBilling** | boolean | no | false | use **requestedDate** for billing |
@@ -1817,9 +1838,6 @@ $apiInstance -> cancelSubscriptionPlan($subscriptionId, $xKillbillCreatedBy, $re
 **billingPolicy**: Possible values are START_OF_TERM, END_OF_TERM, or IMMEDIATE
 
 Creating a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If **callCompletion** is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by **callTimeoutSec**.
-
-
-
 
 Since we offer the ability to control the cancelation date for both entitlement (service) and billing either through policies, dates or null values (now), it is important to understand how those parameters work:
 
@@ -1836,7 +1854,9 @@ So, the common use case would require the following:
 The reason for all this complexity is to allow to control entitlement and billing date separately, and also avoid users to have to compute dates to achieve certain behavior by relying on well defined policies.
 
 **Other Notes:**
+
 * If a subscription is created with a future date and if the cancel method is invoked for immediate cancellation, the cancellation takes effect only after the subscription creation date is reached. Thus, the subscription remains in `PENDING` state until the subscription creation date is reached after which it is moved to the `CANCELLED` state.
+* When a `DateTime` is specified corresponding to the `requestedDate` parameter, it may or may not include a timezone component. If a timezone is included (like `entitlementDate=2024-03-10T11:00:00-08:00`), the specified timezone (`PST` in this case) is used. If timezone is not included (like `entitlementDate=2024-03-07T11:15`), it defaults to UTC.
 
 **Returns**
 
@@ -2083,7 +2103,11 @@ A [blocking state resource](account-blocking-state-resource) representing the in
 
 | Name | Type | Required | Default | Description |
 | ---- | ---- | -------- | ------- | ----------- |
-| **requestedDate** | string | no | immediate | Date/DateTime to begin blocking in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm` format. | 
+| **requestedDate** | string | no | immediate | Date/DateTime to begin blocking in `yyyy-mm-dd`/`yyyy-mm-ddThh:mm:ssZ` format. | 
+
+**Other Notes:**
+
+* When a `DateTime` is specified corresponding to the `requestedDate` parameter, it may or may not include a timezone component. If a timezone is included (like `entitlementDate=2024-03-10T11:00:00-08:00`), the specified timezone (`PST` in this case) is used. If timezone is not included (like `entitlementDate=2024-03-07T11:15`), it defaults to UTC.
 
 **Response**
 
