@@ -2516,6 +2516,104 @@
                       </li>
                   </ul>
               </li>
+              <li>
+                <a href="security.html" class="site-navigator__item site-navigator__menu-item" data-title="Security">
+                  <span>Security</span>
+                </a>
+                
+                  <ul class="site-navigator__submenu">
+                      <li class="site-navigator__submenu-container">
+                        <a href="#users" class="site-navigator__item site-navigator__submenu-item" data-title="Users">
+                          <span>Users</span>
+                        </a>
+
+                      </li>
+                      <li class="site-navigator__submenu-container">
+                        <a href="#user-roles-resource" class="site-navigator__item site-navigator__submenu-item" data-title="User Roles Resource">
+                          <span>User Roles Resource</span>
+                        </a>
+
+                      </li>
+                      <li class="site-navigator__submenu-container">
+                        <a href="#subject-resource" class="site-navigator__item site-navigator__submenu-item" data-title="Subject Resource">
+                          <span>Subject Resource</span>
+                        </a>
+
+                      </li>
+                      <li class="site-navigator__submenu-container">
+                        <a href="#role-definition-resource" class="site-navigator__item site-navigator__submenu-item" data-title="Role Definition Resource">
+                          <span>Role Definition Resource</span>
+                        </a>
+
+                      </li>
+                      <li class="site-navigator__submenu-container">
+                        <a href="#session-resource" class="site-navigator__item site-navigator__submenu-item" data-title="Session Resource">
+                          <span>Session Resource</span>
+                        </a>
+
+                          <ul class="site-navigator__submenu">
+                              <li>
+                                <a href="#list-user-permissions" class="site-navigator__item site-navigator__submenu-item" data-title="List user permissions">
+                                  <span>List user permissions</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#get-user-information" class="site-navigator__item site-navigator__submenu-item" data-title="Get user information">
+                                  <span>Get user information</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#add-a-new-user-with-roles" class="site-navigator__item site-navigator__submenu-item" data-title="Add a new user with roles">
+                                  <span>Add a new user with roles</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#update-a-user-password" class="site-navigator__item site-navigator__submenu-item" data-title="Update a user password">
+                                  <span>Update a user password</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#get-roles-associated-with-a-user" class="site-navigator__item site-navigator__submenu-item" data-title="Get roles associated with a user">
+                                  <span>Get roles associated with a user</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#update-roles-associated-with-a-user" class="site-navigator__item site-navigator__submenu-item" data-title="Update roles associated with a user">
+                                  <span>Update roles associated with a user</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#invalidate-an-existing-user" class="site-navigator__item site-navigator__submenu-item" data-title="Invalidate an existing user">
+                                  <span>Invalidate an existing user</span>
+                                </a>
+                              </li>
+                          </ul>
+                      </li>
+                      <li class="site-navigator__submenu-container">
+                        <a href="#roles" class="site-navigator__item site-navigator__submenu-item" data-title="Roles">
+                          <span>Roles</span>
+                        </a>
+
+                          <ul class="site-navigator__submenu">
+                              <li>
+                                <a href="#retrieve-a-role-definition" class="site-navigator__item site-navigator__submenu-item" data-title="Retrieve a role definition">
+                                  <span>Retrieve a role definition</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#add-a-role-definition" class="site-navigator__item site-navigator__submenu-item" data-title="Add a role definition">
+                                  <span>Add a role definition</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#update-a-role-definition" class="site-navigator__item site-navigator__submenu-item" data-title="Update a role definition">
+                                  <span>Update a role definition</span>
+                                </a>
+                              </li>
+                          </ul>
+                      </li>
+                  </ul>
+              </li>
           </ul>
             <ul class="site-navigator__footer">
                 <li><a href="mailto:support@killbill.io">Report a doc problem </a></li>
@@ -3394,9 +3492,11 @@
                                                  <span class="nc">AuditLevel</span><span class="o">.</span><span class="na">NONE</span><span class="o">,</span> 
                                                  <span class="n">requestOptions</span><span class="o">);</span>
 </code></pre></div><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="n">invoice_id</span> <span class="o">=</span> <span class="s2">"5c6083c1-a673-4b67-9b86-74139df50448"</span>
+<span class="n">with_children_items</span> <span class="o">=</span> <span class="kp">false</span>
 <span class="n">audit</span> <span class="o">=</span> <span class="s1">'NONE'</span>
 
 <span class="n">invoice</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">Invoice</span><span class="p">.</span><span class="nf">find_by_id</span><span class="p">(</span><span class="n">invoice_id</span><span class="p">,</span>
+                                          <span class="n">with_children_items</span><span class="p">,</span>
                                           <span class="n">audit</span><span class="p">,</span>
                                           <span class="n">options</span><span class="p">)</span>
 </code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="n">invoiceApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="p">.</span><span class="n">api</span><span class="p">.</span><span class="n">InvoiceApi</span><span class="p">()</span>
@@ -3529,9 +3629,11 @@
                                                         <span class="nc">AuditLevel</span><span class="o">.</span><span class="na">FULL</span><span class="o">,</span> 
                                                         <span class="n">requestOptions</span><span class="o">);</span>
 </code></pre></div><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="n">invoice_number</span> <span class="o">=</span> <span class="s2">"7318"</span>
+<span class="n">with_children_items</span> <span class="o">=</span> <span class="kp">false</span>
 <span class="n">audit</span> <span class="o">=</span> <span class="s1">'NONE'</span>
 
 <span class="n">invoice</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">Invoice</span><span class="p">.</span><span class="nf">find_by_number</span><span class="p">(</span><span class="n">invoice_number</span><span class="p">,</span>
+                                              <span class="n">with_children_items</span><span class="p">,</span>
                                               <span class="n">audit</span><span class="p">,</span>
                                               <span class="n">options</span><span class="p">)</span>
 </code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="n">invoiceApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="p">.</span><span class="n">api</span><span class="p">.</span><span class="n">InvoiceApi</span><span class="p">()</span>
@@ -4457,12 +4559,20 @@ curl <span class="nt">-v</span> <span class="se">\</span>
 <span class="c1"># to see what is the next invoice that the system will generate for this account </span>
 <span class="c1"># </span>
 <span class="n">account_id</span> <span class="o">=</span> <span class="s2">"5527abbc-d83d-447f-bf3d-ab9542ea631e"</span>
+<span class="n">user</span> <span class="o">=</span> <span class="kp">nil</span>
+<span class="n">reason</span> <span class="o">=</span> <span class="kp">nil</span>
+<span class="n">comment</span> <span class="o">=</span> <span class="kp">nil</span>
 <span class="n">target_date</span> <span class="o">=</span> <span class="kp">nil</span>
 <span class="n">upcoming_invoice_target_date</span> <span class="o">=</span> <span class="kp">true</span>
+<span class="n">plugin_properties</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"key%3Dvalue"</span><span class="p">]</span>
 
 <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">Invoice</span><span class="p">.</span><span class="nf">trigger_invoice_dry_run</span><span class="p">(</span><span class="n">account_id</span><span class="p">,</span> 
                                                        <span class="n">target_date</span><span class="p">,</span> 
-                                                       <span class="n">upcoming_invoice_target_date</span><span class="p">,</span> 
+                                                       <span class="n">upcoming_invoice_target_date</span><span class="p">,</span>
+                                                       <span class="n">plugin_properties</span><span class="p">,</span>
+                                                       <span class="n">user</span><span class="p">,</span>
+                                                       <span class="n">reason</span><span class="p">,</span>
+                                                       <span class="n">comment</span><span class="p">,</span>
                                                        <span class="n">options</span><span class="p">)</span>
 </code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="c1">#
 # This case is when you create a dry-run invoice with UPCOMING_INVOICE, 
@@ -5282,12 +5392,14 @@ If successful, returns a status code of 200 and a list of invoice objects for th
 <span class="n">invoice</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">Invoice</span><span class="p">.</span><span class="nf">new</span>
 <span class="n">invoice</span><span class="p">.</span><span class="nf">invoice_id</span> <span class="o">=</span> <span class="s1">'7bf0f3d6-4ffb-4d5a-98c7-1158083432d0'</span>
 
+<span class="n">custom_fields</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">custom_field</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">CustomFieldAttributes</span><span class="p">.</span><span class="nf">new</span>
 <span class="n">custom_field</span><span class="p">.</span><span class="nf">object_type</span> <span class="o">=</span> <span class="s1">'INVOICE'</span>
 <span class="n">custom_field</span><span class="p">.</span><span class="nf">name</span> <span class="o">=</span> <span class="s1">'Test Custom Field'</span>
 <span class="n">custom_field</span><span class="p">.</span><span class="nf">value</span> <span class="o">=</span> <span class="s1">'test_value'</span>
+<span class="n">custom_fields</span><span class="p">.</span><span class="nf">push</span> <span class="n">custom_field</span>
 
-<span class="n">invoice</span><span class="p">.</span><span class="nf">add_custom_field</span><span class="p">(</span><span class="n">custom_field</span><span class="p">,</span>
+<span class="n">invoice</span><span class="p">.</span><span class="nf">add_custom_field</span><span class="p">(</span><span class="n">custom_fields</span><span class="p">,</span>
                          <span class="n">user</span><span class="p">,</span>
                          <span class="n">reason</span><span class="p">,</span>
                          <span class="n">comment</span><span class="p">,</span>
@@ -5469,11 +5581,13 @@ If successful, returns a status code of 200 and a list of invoice objects for th
 <span class="n">invoice</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">Invoice</span><span class="p">.</span><span class="nf">new</span>
 <span class="n">invoice</span><span class="p">.</span><span class="nf">invoice_id</span> <span class="o">=</span> <span class="s1">'7bf0f3d6-4ffb-4d5a-98c7-1158083432d0'</span>
 
+<span class="n">custom_fields</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">custom_field</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">CustomFieldAttributes</span><span class="p">.</span><span class="nf">new</span>
 <span class="n">custom_field</span><span class="p">.</span><span class="nf">custom_field_id</span> <span class="o">=</span> <span class="s1">'ec53d741-e52a-4860-a6d3-03bb22b24a90'</span>
 <span class="n">custom_field</span><span class="p">.</span><span class="nf">value</span> <span class="o">=</span> <span class="s1">'new value'</span>
+<span class="n">custom_fields</span><span class="p">.</span><span class="nf">push</span> <span class="n">custom_field</span>
 
-<span class="n">invoice</span><span class="p">.</span><span class="nf">modify_custom_field</span><span class="p">(</span><span class="n">custom_field</span><span class="p">,</span>
+<span class="n">invoice</span><span class="p">.</span><span class="nf">modify_custom_field</span><span class="p">(</span><span class="n">custom_fields</span><span class="p">,</span>
                             <span class="n">user</span><span class="p">,</span>
                             <span class="n">reason</span><span class="p">,</span>
                             <span class="n">comment</span><span class="p">,</span>
@@ -5564,9 +5678,11 @@ If successful, returns a status code of 200 and a list of invoice objects for th
 <span class="n">invoice</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">Invoice</span><span class="p">.</span><span class="nf">new</span>
 <span class="n">invoice</span><span class="p">.</span><span class="nf">invoice_id</span> <span class="o">=</span> <span class="s1">'7bf0f3d6-4ffb-4d5a-98c7-1158083432d0'</span>
 
+<span class="n">custom_field_ids</span> <span class="o">=</span> <span class="p">[]</span>
 <span class="n">custom_field_id</span> <span class="o">=</span> <span class="s1">'ec53d741-e52a-4860-a6d3-03bb22b24a90'</span>
+<span class="n">custom_field_ids</span><span class="p">.</span><span class="nf">push</span> <span class="n">custom_field_id</span>
 
-<span class="n">invoice</span><span class="p">.</span><span class="nf">remove_custom_field</span><span class="p">(</span><span class="n">custom_field_id</span><span class="p">,</span>
+<span class="n">invoice</span><span class="p">.</span><span class="nf">remove_custom_field</span><span class="p">(</span><span class="n">custom_field_ids</span><span class="p">,</span>
                             <span class="n">user</span><span class="p">,</span>
                             <span class="n">reason</span><span class="p">,</span>
                             <span class="n">comment</span><span class="p">,</span>
@@ -5667,9 +5783,9 @@ If successful, returns a status code of 200 and a list of invoice objects for th
 <span class="n">invoice</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">Invoice</span><span class="p">.</span><span class="nf">new</span>
 <span class="n">invoice</span><span class="p">.</span><span class="nf">invoice_id</span> <span class="o">=</span> <span class="s1">'7bf0f3d6-4ffb-4d5a-98c7-1158083432d0'</span>
 
-<span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'WRITTEN_OFF'</span>
+<span class="n">tag_definition_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'2c1f8309-24d7-437c-971b-7e68ff2d393a'</span><span class="p">]</span>
 
-<span class="n">invoice</span><span class="p">.</span><span class="nf">add_tag</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span>
+<span class="n">invoice</span><span class="p">.</span><span class="nf">add_tags_from_definition_ids</span><span class="p">(</span><span class="n">tag_definition_ids</span><span class="p">,</span>
                <span class="n">user</span><span class="p">,</span>
                <span class="n">reason</span><span class="p">,</span>
                <span class="n">comment</span><span class="p">,</span>
@@ -5847,9 +5963,9 @@ If successful, returns a status code of 200 and a list of invoice objects for th
 <span class="n">invoice</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">Invoice</span><span class="p">.</span><span class="nf">new</span>
 <span class="n">invoice</span><span class="p">.</span><span class="nf">invoice_id</span> <span class="o">=</span> <span class="s1">'7bf0f3d6-4ffb-4d5a-98c7-1158083432d0'</span>
 
-<span class="n">tag_name</span> <span class="o">=</span> <span class="s1">'WRITTEN_OFF'</span>
+<span class="n">tag_definition_ids</span> <span class="o">=</span> <span class="p">[</span><span class="s1">'2c1f8309-24d7-437c-971b-7e68ff2d393a'</span><span class="p">]</span>
 
-<span class="n">invoice</span><span class="p">.</span><span class="nf">remove_tag</span><span class="p">(</span><span class="n">tag_name</span><span class="p">,</span>
+<span class="n">invoice</span><span class="p">.</span><span class="nf">remove_tags_from_definition_ids</span><span class="p">(</span><span class="n">tag_definition_ids</span><span class="p">,</span>
                   <span class="n">user</span><span class="p">,</span>
                   <span class="n">reason</span><span class="p">,</span>
                   <span class="n">comment</span><span class="p">,</span>
