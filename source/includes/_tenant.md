@@ -675,7 +675,12 @@ TenantKeyValue result = tenantApi.registerPushNotificationCallback(cb, requestOp
 ```
 
 ```ruby
-TODO
+cb = "http://demo/callmeback"
+user = 'demo'
+reason = ''
+comment = ''
+
+KillBillClient::Model::Tenant.register_push_notification(cb, user, reason, comment, options)
 ```
 
 ```python
@@ -737,7 +742,7 @@ TenantKeyValue result = tenantApi.getPushNotificationCallbacks(requestOptions);
 ```
 
 ```ruby
-TODO
+result = KillBillClient::Model::Tenant.retrieve_push_notification(cb, options)
 ```
 
 ```python
@@ -808,7 +813,10 @@ tenantApi.deletePushNotificationCallbacks(requestOptions);
 ```
 
 ```ruby
-TODO
+user = 'demo'
+reason = ''
+comment = ''
+KillBillClient::Model::Tenant.delete_push_notification(user, reason, comment, options)
 ```
 
 ```python
@@ -889,7 +897,11 @@ TenantKeyValue result = tenantApi.uploadPerTenantConfiguration(body, requestOpti
 ```
 
 ```ruby
-TODO
+configuration = {"org.killbill.invoice.sanitySafetyBoundEnabled": false}
+user = 'demo'
+reason = ''
+comment = ''
+result = KillBillClient::Model::Tenant.add_system_configuration(configuration, user, reason, comment, options)
 ```
 
 ```python
@@ -959,7 +971,7 @@ TenantKeyValue result = tenantApi.getPerTenantConfiguration(requestOptions);
 ```
 
 ```ruby
-TODO
+result = KillBillClient::Model::Tenant.retrieve_system_configurations(options)
 ```
 
 ```python
@@ -1030,7 +1042,10 @@ tenantApi.deletePerTenantConfiguration(requestOptions);
 ```
 
 ```ruby
-TODO
+user = 'demo'
+reason = ''
+comment = ''
+KillBillClient::Model::Tenant.delete_system_configurations(user, reason, comment, options)
 ```
 
 ```python
@@ -1398,7 +1413,13 @@ TenantKeyValue result = tenantApi.uploadPluginPaymentStateMachineConfig(pluginNa
 ```
 
 ```ruby
-TODO
+plugin_name = "demo_plugin";
+state_machine_config = "<xml>..</xml>";
+user = 'demo'
+reason = ''
+comment = ''
+
+KillBillClient::Model::Tenant.add_payment_state_machine(plugin_name, state_machine_config, user, reason, comment, options)
 ```
 
 ```python
@@ -1469,7 +1490,9 @@ TenantKeyValue result = tenantApi.getPluginPaymentStateMachineConfig(pluginName,
 ```
 
 ```ruby
-TODO
+plugin_name = "demo_plugin";
+
+result = KillBillClient::Model::Tenant.retrieve_payment_state_machine(plugin_name, options)
 ```
 
 ```python
@@ -1610,7 +1633,12 @@ tenantApi.deletePluginPaymentStateMachineConfig(pluginName, requestOptions);
 ```
 
 ```ruby
-TODO
+plugin_name = "demo_plugin"
+user = 'demo'
+reason = ''
+comment = ''
+
+KillBillClient::Model::Tenant.delete_payment_state_machine(plugin_name, user, reason, comment, options)
 ```
 
 ```python
