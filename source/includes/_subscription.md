@@ -1402,7 +1402,24 @@ subscriptionApi.updateSubscriptionQuantity(subscriptionId, body, effectiveFromDa
 ```
 
 ```ruby
-TODO
+user = "demo"
+reason = nil
+comment = nil
+
+subscription                      = KillBillClient::Model::Subscription.new
+subscription.subscription_id      = "161692a4-c293-410c-a92f-939c5e3dcba7"
+subscription.quantity = "16"
+
+effective_from_date  = nil
+force_new_quantity_with_past_effective_date = nil
+
+subscription.update_quantity(
+                        user,
+                        reason,
+                        comment,
+                        effective_from_date,
+                        force_new_quantity_with_past_effective_date,
+                        options)
 ```
 
 ```python
@@ -3048,7 +3065,12 @@ List<AuditLog> eventAuditLog = subscriptionApi.getSubscriptionEventAuditLogsWith
 ```
 
 ````ruby
-TODO
+subscription = KillBillClient::Model::Subscription.new
+subscription.subscription_id = "88f0cd47-ed92-4143-89e1-31b79c533208"
+
+event_id = 'dc283026-5be0-4e47-8190-b62fb0c9e357'
+
+audit_logs = subscription.event_audit_logs_with_history(event_id, options)
 ````
 
 ````python
