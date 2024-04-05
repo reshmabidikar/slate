@@ -2052,7 +2052,22 @@ Invoices invoices = invoiceApi.createFutureInvoiceGroup(accountId, targetDate, N
 ```
 
 ```ruby
-TODO
+user = "demo"
+reason = nil
+comment = nil
+
+account_id = "3ee3aa82-1d45-4bbc-b36b-74d628e095d0"
+target_date = "2024-12-05"
+plugin_property = nil
+
+KillBillClient::Model::Invoice.trigger_invoice_group_run(account_id,
+                                                         target_date,
+                                                         plugin_property
+                                                         user,
+                                                         reason,
+                                                         comment,
+                                                         options)
+
 ```
 
 ```python
@@ -2134,7 +2149,16 @@ Invoices invoices = invoiceApi.getInvoicesGroup(groupId, accountId, requestOptio
 ```
 
 ```ruby
-TODO
+account_id = "3ee3aa82-1d45-4bbc-b36b-74d628e095d0"
+group_id = "f5ecf703-10b9-4019-8044-8db1163bef56"
+with_children_items = false
+audit = "NONE"
+
+KillBillClient::Model::Invoice.retrieve_invoice_group(account_id,
+                                                      group_id,
+                                                      with_children_items,
+                                                      audit,
+                                                      options)
 ```
 
 ```python
@@ -2460,7 +2484,16 @@ InvoicePayments invoicePayments = invoiceApi.getPaymentsForInvoice(invoiceId,
 ```
 
 ```ruby
-TODO
+invoice_id = "3ee3aa82-1d45-4bbc-b36b-74d628e095d0"
+with_plugin_info = false
+with_attempts = false
+audit = "NONE"
+
+KillBillClient::Model::Invoice.retrieve_payments_for_invoice(invoice_id,
+                                                      with_plugin_info,
+                                                      with_attempts,
+                                                      audit,
+                                                      options)
 ```
 
 ```python
