@@ -1445,11 +1445,13 @@ Bundles bundles = accountApi.getAccountBundlesPaginated(accountId, offset, limit
 ```
 
 ```ruby
-account = KillBillClient::Model::Account.new
 
-account.account_id = '15434b45-54c1-4a44-851c-b1f2f7a52f03'
+account_id = '325fbe1c-7c35-4d96-a4e5-2cbaabe218c6'
+offset = 0
+limit = 100
+audit = 'NONE'
 
-accountBundles = account.bundles(options)
+bundles = KillBillClient::Model::Account.paginated_bundles(account_id, offset, limit, audit, options)
 ```
 
 ```python
@@ -1801,11 +1803,13 @@ Invoices invoices = accountApi.getInvoicesForAccountPaginated(accountId, offset,
 ```
 
 ```ruby
-account = KillBillClient::Model::Account.new
 
-account.account_id = '325fbe1c-7c35-4d96-a4e5-2cbaabe218c6'
+account_id = '325fbe1c-7c35-4d96-a4e5-2cbaabe218c6'
+offset = 0
+limit = 100
+audit = 'NONE'
 
-accountInvoices = account.invoices(options)
+invoices = KillBillClient::Model::Account.paginated_invoices(account_id, offset, limit, audit, options)
 ```
 
 ```python
