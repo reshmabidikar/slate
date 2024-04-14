@@ -335,7 +335,23 @@ Payment payment = paymentTransactionApi.notifyStateChanged(paymentTransactionId,
 ```
 
 ```ruby
-TODO
+user = "demo"
+reason = nil
+comment = nil
+
+payment_transaction = KillBillClient::Model::Transaction.new
+payment_transaction.payment_id = "caced2e2-717e-4cf7-a8fd-f760b5d2deb8"
+payment_transaction.transaction_id = "029d7d7b-d5fa-4a29-93f5-7f927d79f3f3"
+
+status = 'PAYMENT_FAILURE'
+control_plugin_name = []
+
+payment_transaction.update_transaction_state(status,
+                                control_plugin_name,
+                                user,
+                                reason,
+                                comment,
+                                options)
 ```
 
 ```python
