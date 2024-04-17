@@ -1060,7 +1060,19 @@ List<CatalogValidationError> errors = validation.getCatalogValidationErrors();
 ```
 
 ```ruby
-TODO
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+catalog = KillBillClient::Model::Catalog
+
+catalog_file_xml = File.read("H:/killbill/catalog.xml")
+
+errors = catalog.validate_catalog(catalog_file_xml,
+                                  user,
+                                  reason,
+                                  comment,
+                                  options)
 ```
 
 ```python
