@@ -708,6 +708,11 @@ RoleDefinition roleDefinition = securityApi.getRoleDefinition(role, requestOptio
 
 
 ```ruby
+
+role = 'TestRole'
+
+roleDef = KillBillClient::Model::RoleDefinition.find_by_name(role, options)
+
 ```
 
 ```python
@@ -893,6 +898,16 @@ securityApi.updateRoleDefinition(roleDefinition, requestOptions);
 ```
 
 ```ruby
+user = 'user'
+reason = 'reason'
+comment = 'comment'
+
+roleDef = KillBillClient::Model::RoleDefinition.new
+
+roleDef.role = 'TestRole'
+roleDef.permissions = ["account:*", "invoice:trigger"]
+
+roleDef.update(user,reason,comment,options)
 ```
 
 ```python
