@@ -3005,7 +3005,7 @@ curl <span class="nt">-v</span> <span class="se">\</span>
         }'</span> <span class="se">\</span>
     <span class="s2">"http://127.0.0.1:8080/1.0/kb/subscriptions"</span>
 
-<span class="c"># With Datetime</span>
+<span class="c"># With Datetime (No Timezone, so taken to be UTC)</span>
 
 curl <span class="nt">-v</span> <span class="se">\</span>
     <span class="nt">-X</span> POST <span class="se">\</span>
@@ -3019,6 +3019,21 @@ curl <span class="nt">-v</span> <span class="se">\</span>
             "planName": "pistol-monthly-notrial"
         }'</span> <span class="se">\</span>
     <span class="s2">"http://127.0.0.1:8080/1.0/kb/subscriptions?billingDate=2023-02-07T11:15&amp;entitlementDate=2023-02-07T11:15"</span> 
+
+<span class="c"># Datetime with timezone</span>
+
+curl <span class="nt">-v</span> <span class="se">\</span>
+    <span class="nt">-X</span> POST <span class="se">\</span>
+    <span class="nt">-u</span> admin:password <span class="se">\</span>
+    <span class="nt">-H</span> <span class="s2">"X-Killbill-ApiKey: bob"</span> <span class="se">\</span>
+    <span class="nt">-H</span> <span class="s2">"X-Killbill-ApiSecret: lazar"</span> <span class="se">\</span>
+    <span class="nt">-H</span> <span class="s2">"Content-Type: application/json"</span> <span class="se">\</span>
+    <span class="nt">-H</span> <span class="s2">"X-Killbill-CreatedBy: demo"</span> <span class="se">\</span>
+    <span class="nt">-d</span> <span class="s1">'{ 
+            "accountId": "325fbe1c-7c35-4d96-a4e5-2cbaabe218c6",
+            "planName": "pistol-monthly-notrial"
+        }'</span> <span class="se">\</span>
+    <span class="s2">"http://127.0.0.1:8080/1.0/kb/subscriptions?billingDate=2024-03-10T11:00:00-08:00&amp;entitlementDate=2024-03-10T11:00:00-08:00"</span>    
 
 </code></pre></div><div class="highlight"><pre class="highlight java tab-java"><code><span class="kn">import</span> <span class="nn">org.killbill.billing.client.api.gen.SubscriptionApi</span><span class="o">;</span>
 <span class="kd">protected</span> <span class="nc">SubscriptionApi</span> <span class="n">subscriptionApi</span><span class="o">;</span>
@@ -3130,14 +3145,14 @@ curl <span class="nt">-v</span> <span class="se">\</span>
 <td>string</td>
 <td>no</td>
 <td>immediately</td>
-<td>Date/DateTime at which the entitlement (service) starts in <code>yyyy-mm-dd</code>/<code>yyyy-mm-ddThh:mm</code> format.</td>
+<td>Date/DateTime at which the entitlement (service) starts in <code>yyyy-mm-dd</code>/<code>yyyy-mm-ddThh:mm:ssZ</code> format.</td>
 </tr>
 <tr>
 <td><strong>billingDate</strong></td>
 <td>string</td>
 <td>no</td>
 <td>immediately</td>
-<td>Date/DateTime at which the entitlement (service) starts in <code>yyyy-mm-dd</code>/<code>yyyy-mm-ddThh:mm</code> format.</td>
+<td>Date/DateTime at which the entitlement (service) starts in <code>yyyy-mm-dd</code>/<code>yyyy-mm-ddThh:mm:ssZ</code> format.</td>
 </tr>
 <tr>
 <td><strong>renameKeyIfExistsAndUnused</strong></td>
@@ -3183,6 +3198,7 @@ curl <span class="nt">-v</span> <span class="se">\</span>
 <ul>
 <li>Specifying the <code>startDate</code>/<code>billingStartDate</code> as part of the request body has no effect, these dates need to be passed as query parameters (<code>entitlementDate</code>/<code>billingDate</code>). </li>
 <li>The <code>entitlementDate</code> drives the subscription state. So, if a subscription is created with a future <code>entitlementDate</code>, its state remains <code>PENDING</code> until the date is reached after which it becomes <code>ACTIVE</code>.</li>
+<li>When a <code>DateTime</code> is specified corresponding to the <code>entitlementDate</code>/<code>billingDate</code> parameters, it may or may not include a timezone component. If a timezone is included (like <code>entitlementDate=2024-03-10T11:00:00-08:00</code>), the specified timezone (<code>PST</code> in this case) is used. If timezone is not included (like <code>entitlementDate=2024-03-07T11:15</code>), it defaults to UTC.</li>
 </ul>
 
 <p><strong>Response</strong></p>
@@ -4302,7 +4318,24 @@ to realign invoicing, let&#39;s say on the 16th. </p>
 <span class="nc">LocalDate</span> <span class="n">effectiveFromDate</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
 
 <span class="n">subscriptionApi</span><span class="o">.</span><span class="na">updateSubscriptionQuantity</span><span class="o">(</span><span class="n">subscriptionId</span><span class="o">,</span> <span class="n">body</span><span class="o">,</span> <span class="n">effectiveFromDate</span><span class="o">,</span> <span class="n">requestOptions</span><span class="o">);</span>
-</code></pre></div><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="no">TODO</span>
+</code></pre></div><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="n">user</span> <span class="o">=</span> <span class="s2">"demo"</span>
+<span class="n">reason</span> <span class="o">=</span> <span class="kp">nil</span>
+<span class="n">comment</span> <span class="o">=</span> <span class="kp">nil</span>
+
+<span class="n">subscription</span>                      <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">Subscription</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">subscription</span><span class="p">.</span><span class="nf">subscription_id</span>      <span class="o">=</span> <span class="s2">"161692a4-c293-410c-a92f-939c5e3dcba7"</span>
+<span class="n">subscription</span><span class="p">.</span><span class="nf">quantity</span> <span class="o">=</span> <span class="s2">"16"</span>
+
+<span class="n">effective_from_date</span>  <span class="o">=</span> <span class="kp">nil</span>
+<span class="n">force_new_quantity_with_past_effective_date</span> <span class="o">=</span> <span class="kp">nil</span>
+
+<span class="n">subscription</span><span class="p">.</span><span class="nf">update_quantity</span><span class="p">(</span>
+                        <span class="n">user</span><span class="p">,</span>
+                        <span class="n">reason</span><span class="p">,</span>
+                        <span class="n">comment</span><span class="p">,</span>
+                        <span class="n">effective_from_date</span><span class="p">,</span>
+                        <span class="n">force_new_quantity_with_past_effective_date</span><span class="p">,</span>
+                        <span class="n">options</span><span class="p">)</span>
 </code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="n">subscriptionApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="p">.</span><span class="n">api</span><span class="p">.</span><span class="n">SubscriptionApi</span><span class="p">()</span>
 
 <span class="n">subscription_id</span> <span class="o">=</span> <span class="s">'7b3f0181-d9e8-4886-a90a-af35e671f5f0'</span>
@@ -4517,7 +4550,7 @@ curl <span class="nt">-v</span> <span class="se">\</span>
 <td>string</td>
 <td>no</td>
 <td>immediate</td>
-<td>Date/DateTime at which this change should become effective in <code>yyyy-mm-dd</code>/<code>yyyy-mm-ddThh:mm</code>  format.</td>
+<td>Date/DateTime at which this change should become effective in <code>yyyy-mm-dd</code>/<code>yyyy-mm-ddThh:mm:ssZ</code>  format.</td>
 </tr>
 <tr>
 <td><strong>callCompletion</strong></td>
@@ -4547,6 +4580,12 @@ curl <span class="nt">-v</span> <span class="se">\</span>
 <p><strong>requestedDate</strong>: This date is only used if no billingPolicy was specified.</p>
 
 <p>Changing the plan associated to a subscription often triggers the creation of an invoice, and associated with this there is often a payment (against the invoice). If <strong>callCompletion</strong> is true, the call to this API will be delayed until the invoice is created and/or the payment is processed. However, the maximum delay in seconds will be given by <strong>callTimeoutSec</strong>.</p>
+
+<p><strong>Other Notes:</strong></p>
+
+<ul>
+<li>When a <code>DateTime</code> is specified corresponding to the <code>requestedDate</code> parameter, it may or may not include a timezone component. If a timezone is included (like <code>entitlementDate=2024-03-10T11:00:00-08:00</code>), the specified timezone (<code>PST</code> in this case) is used. If timezone is not included (like <code>entitlementDate=2024-03-07T11:15</code>), it defaults to UTC.</li>
+</ul>
 
 <p><strong>Response</strong></p>
 
@@ -4735,7 +4774,7 @@ curl <span class="nt">-v</span> <span class="se">\</span>
 <td>string</td>
 <td>no</td>
 <td>immediate</td>
-<td>Date/DateTime at which this change should become effective in <code>yyyy-mm-dd</code>/<code>yyyy-mm-ddThh:mm</code>  format.</td>
+<td>Date/DateTime at which this change should become effective in <code>yyyy-mm-dd</code>/<code>yyyy-mm-ddThh:mm:ssZ</code>  format.</td>
 </tr>
 <tr>
 <td><strong>entitlementPolicy</strong></td>
@@ -4808,8 +4847,12 @@ curl <span class="nt">-v</span> <span class="se">\</span>
 
 <p>The reason for all this complexity is to allow to control entitlement and billing date separately, and also avoid users to have to compute dates to achieve certain behavior by relying on well defined policies.</p>
 
-<p><strong>Other Notes:</strong>
-* If a subscription is created with a future date and if the cancel method is invoked for immediate cancellation, the cancellation takes effect only after the subscription creation date is reached. Thus, the subscription remains in <code>PENDING</code> state until the subscription creation date is reached after which it is moved to the <code>CANCELLED</code> state.</p>
+<p><strong>Other Notes:</strong></p>
+
+<ul>
+<li>If a subscription is created with a future date and if the cancel method is invoked for immediate cancellation, the cancellation takes effect only after the subscription creation date is reached. Thus, the subscription remains in <code>PENDING</code> state until the subscription creation date is reached after which it is moved to the <code>CANCELLED</code> state.</li>
+<li>When a <code>DateTime</code> is specified corresponding to the <code>requestedDate</code> parameter, it may or may not include a timezone component. If a timezone is included (like <code>entitlementDate=2024-03-10T11:00:00-08:00</code>), the specified timezone (<code>PST</code> in this case) is used. If timezone is not included (like <code>entitlementDate=2024-03-07T11:15</code>), it defaults to UTC.</li>
+</ul>
 
 <p><strong>Returns</strong></p>
 
@@ -5038,9 +5081,15 @@ curl <span class="nt">-v</span> <span class="se">\</span>
 <td>string</td>
 <td>no</td>
 <td>immediate</td>
-<td>Date/DateTime to begin blocking in <code>yyyy-mm-dd</code>/<code>yyyy-mm-ddThh:mm</code> format.</td>
+<td>Date/DateTime to begin blocking in <code>yyyy-mm-dd</code>/<code>yyyy-mm-ddThh:mm:ssZ</code> format.</td>
 </tr>
 </tbody></table>
+
+<p><strong>Other Notes:</strong></p>
+
+<ul>
+<li>When a <code>DateTime</code> is specified corresponding to the <code>requestedDate</code> parameter, it may or may not include a timezone component. If a timezone is included (like <code>entitlementDate=2024-03-10T11:00:00-08:00</code>), the specified timezone (<code>PST</code> in this case) is used. If timezone is not included (like <code>entitlementDate=2024-03-07T11:15</code>), it defaults to UTC.</li>
+</ul>
 
 <p><strong>Response</strong></p>
 
@@ -5881,7 +5930,12 @@ None of the <a href="tag.html#tag"><code>system</code> tags</a> are applicable f
 <span class="no">UUID</span> <span class="n">subscriptionEventId</span> <span class="o">=</span> <span class="no">UUID</span><span class="o">.</span><span class="na">fromString</span><span class="o">(</span><span class="s">"b4b6f990-4456-4009-9e6c-9825a99a1f25"</span><span class="o">);</span>
 
 <span class="nc">List</span><span class="o">&lt;</span><span class="nc">AuditLog</span><span class="o">&gt;</span> <span class="n">eventAuditLog</span> <span class="o">=</span> <span class="n">subscriptionApi</span><span class="o">.</span><span class="na">getSubscriptionEventAuditLogsWithHistory</span><span class="o">(</span><span class="n">subscriptionEventId</span><span class="o">,</span> <span class="n">requestOptions</span><span class="o">);</span>
-</code></pre></div><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="no">TODO</span>
+</code></pre></div><div class="highlight"><pre class="highlight ruby tab-ruby"><code><span class="n">subscription</span> <span class="o">=</span> <span class="no">KillBillClient</span><span class="o">::</span><span class="no">Model</span><span class="o">::</span><span class="no">Subscription</span><span class="p">.</span><span class="nf">new</span>
+<span class="n">subscription</span><span class="p">.</span><span class="nf">subscription_id</span> <span class="o">=</span> <span class="s2">"88f0cd47-ed92-4143-89e1-31b79c533208"</span>
+
+<span class="n">event_id</span> <span class="o">=</span> <span class="s1">'dc283026-5be0-4e47-8190-b62fb0c9e357'</span>
+
+<span class="n">audit_logs</span> <span class="o">=</span> <span class="n">subscription</span><span class="p">.</span><span class="nf">event_audit_logs_with_history</span><span class="p">(</span><span class="n">event_id</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
 </code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="n">subscriptionApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="p">.</span><span class="n">api</span><span class="p">.</span><span class="n">SubscriptionApi</span><span class="p">()</span>
 
 <span class="n">event_id</span> <span class="o">=</span> <span class="s">'dc283026-5be0-4e47-8190-b62fb0c9e357'</span>
