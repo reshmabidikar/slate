@@ -277,7 +277,6 @@ $result = $apiInstance->getPaymentMethod($paymentMethodId, $includedDeleted, $wi
 |-----------------------------|-------------------|----------|---------|----------------------------------------------------------------------------------|
 | **includedDeleted**         | boolean           | no       | false   | If true, include deleted payment methods                                         |
 | **withPluginInfo**          | boolean           | no       | false   | If true, include plugin details (see below)                                      |
-| account should be invoiced) |                   |          |         |                                                                                  |
 | **pluginProperty**          | array of strings	 | no       | omit    | list of plugin properties, if any. Should be in the format `key%3Dvalue`         |
 | **audit**                   | string            | no       | "NONE"  | Level of audit information to return:"NONE", "MINIMAL" (only inserts), or "FULL" |
 
