@@ -446,9 +446,10 @@ $catalogXml = $apiInstance->getCatalogXml();
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ------- | ----------- |
-| **requestedDate** | string | false | current date | requested date |
+| Name              | Type   | Required | Default      | Description                                                                                                                   |
+|-------------------|--------| -------- |--------------|-------------------------------------------------------------------------------------------------------------------------------|
+| **requestedDate** | string | false | current date | requested date                                                                                                                |
+| **accountId**     | UUID   | false | none         | Account Id for which to fetch the catalog (applicable only in case of catalog plugins)|
 
 **Response**
 
@@ -681,6 +682,7 @@ $catalogJson = $apiInstance->getCatalogJson();
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- |
 | **requestedDate** | string | false | current date | requested date |
+| **accountId**     | UUID   | false | none         | Account Id for which to fetch the catalog (applicable only in case of catalog plugins). |
 
 **Response**
 
@@ -747,7 +749,9 @@ $catalogVersions = $apiInstance->getCatalogVersions();
 
 **Query Parameters**
 
-None.
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **accountId**     | UUID   | false | none         | Account Id for which to fetch the catalog (applicable only in case of catalog plugins).|
 
 **Response**
 
@@ -849,8 +853,9 @@ $availableBasePlans = $apiInstance->getAvailableBasePlans();
 
 **Query Parameters**
 
-None.
-
+| Name | Type | Required | Default | Description |
+| ---- | -----| -------- | ------- | ----------- |
+| **accountId**     | UUID   | false | none         | Account Id for which to fetch the catalog (applicable only in case of catalog plugins). |
 **Response**
 
 If successful, returns a status code of 200 and a list of objects representing the available base products and plans.
@@ -943,6 +948,7 @@ $availableAddOns = $apiInstance->getAvailableAddons($baseProductName);
 | ---- | -----| -------- | ------- | ----------- |
 | **baseProductName** | string | true | none | base product name |
 | **priceListName** | string | false | all price lists | price list name |
+| **accountId**     | UUID   | false | none         | Account Id for which to fetch the catalog (applicable only in case of catalog plugins). |
 
 **Response**
 
