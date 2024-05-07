@@ -164,7 +164,7 @@ This endpoint retrieves the Catalog for a specified date in XML format. If there
 
 For example, suppose there are two versions of the catalog, the current version dated 2020-01-01 (Jan. 1, 2020) and a previous version dated 2019-01-01. Then
 
-* A request with no effective date would retrieve the current version
+* A request with no effective date would return all the available catalog versions
 * A request with an effective date of 2020-01-01 or later would retrieve the current version
 * A request with an effective date of 2019-01-01 or later, but before 2020-01-01, would retrieve the previous version
 * A request with an effective date earlier than 2019-01-01 would retrieve the previous version, as it is the earliest version available.
