@@ -4692,8 +4692,46 @@ If successful, returns a status code of 200 and a list of all invoices for this 
 
 ### Search invoices
 
-Search for an invoice by a specified search string. If the search string is a number, it is compared to the `invoiceNumber` attribute. An exact match is required. Otherwise, it is compared to the following attributes: `invoiceId`, `accountId`, or `currency`. The operation returns all invoice records in which the search string matches all or part of any one of these attributes.
+Search for an invoice by a specified search string. Search operation can be of two types as follows:
 
+**Basic:**
+
+If the search string is a number, it is compared to the `invoiceNumber` attribute. An exact match is required. Otherwise, it is compared to the following attributes: `invoiceId`, `accountId`, or `currency`. The operation returns all invoice records in which the search string matches all or part of any one of these attributes.
+
+**Advanced**:
+
+Advanced search allows filtering on the specified fields. The prefix marker `_q=1` needs to be specified at the beginning of the search key to indicate this is an advanced query.
+
+Some advanced search key examples:
+* _q=1&status=DRAFT - Returns invoices in `DRAFT` status.
+* _q=1&balance[eq]=200 - Returns invoices with balance=200.
+* _q=1&currency[eq]=USD&balance[gt]100 - Returns invoices where currency is USD and balance is greater than 100.
+
+The following fields can be specified as part of the search key:
+* id
+* account_id
+* invoice_date
+* target_date
+* currency
+* status
+* migrated
+* parent_invoice
+* grp_id
+* created_by
+* created_date
+* updated_by
+* updated_date
+* balance
+
+The operators from [SQLOperator](https://github.com/killbill/killbill/blob/fe8dd52e1e1eaafa81dc0d742f89918deba72f06/util/src/main/java/org/killbill/billing/util/entity/dao/SqlOperator.java#L20) can be specified as part of the search query.
+
+Note: The symbols `[`,`]`,`%` need to be URL encoded while using `cURL`/`Postman` as follows:
+
+| Symbol | Encoding | 
+|--------|----------| 
+| [      | %5B      | 
+| ]      | %5D      | 
+| %      | %25      |     
 
 **HTTP Request**
 
@@ -4702,12 +4740,21 @@ Search for an invoice by a specified search string. If the search string is a nu
 > Example Request:
 
 ```shell
+## Basic Search
 curl -v \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
     "http://127.0.0.1:8080/1.0/kb/invoices/search/404a98a8-4dd8-4737-a39f-be871e916a8c"	
+    
+## Advanced Search (search by balance and currency)  
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://127.0.0.1:8080/1.0/kb/invoices/search/_q=1&currency%5Beq%5D=USD&balance%5Bgt%5D100"
 ```
 
 ```java
@@ -4795,7 +4842,6 @@ $result = $apiInstance->searchInvoices($searchKey, $offset, $limit, $audit);
 
 | Name          | Type   | Required | Default | Description                                                                       |
 |---------------|--------|----------|---------|-----------------------------------------------------------------------------------|
-| **searchKey** | string | yes      | none    | What you want to find                                                             |
 | **offset**    | long   | none     | 0       | Starting index for items listed                                                   |
 | **limit**     | long   | none     | 100     | Maximum number of items to return on this page                                    |
 | **audit**     | string | no       | "NONE"  | Level of audit information to return: "NONE", "MINIMAL" (only inserts), or "FULL" |

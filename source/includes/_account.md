@@ -747,9 +747,64 @@ If successful, returns a status code of 200 and a list of all accounts.
 
 ### Search accounts
 
-Search for an account by a specified search string. The search string is compared to the following attributes: `accountId`, `name`, `email`, `companyName`, and `externalKey`. The operation returns the account record in which the search string matches all or part of any one of the attributes `name`, `email`, `companyName`, `externalKey`. However, the string must match the entire attribute in case of `accountId`. 
+Search for an account by a specified search string. Search operation can be of two types as follows:
+
+**Basic:** 
+
+The search string is compared to the following attributes: `accountId`, `name`, `email`, `companyName`, and `externalKey`. The operation returns the account record in which the search string matches all or part of any one of the attributes `name`, `email`, `companyName`, `externalKey`. However, the string must match the entire attribute in case of `accountId`. 
 
 For example : An account with `name` *exampleaccount* can be searched using *example* as the search string. However, an account with `accountId` *9254283b-be25-45f1-97c3-b902f4d18bab* cannot be searched using only *9254283b* as the search string.
+
+**Advanced**:
+
+Advanced search allows filtering on the specified fields. The prefix marker `_q=1` needs to be specified at the beginning of the search key to indicate this is an advanced query. 
+
+Some advanced search key examples:
+
+* _q=1&email=john@acme.com&currency=USD - Return accounts where `email` is `john@acme.com` and `currency` is `USD`
+* _q=1&address2[like]=Poit%  - Returns accounts where `address2` starts with `Poit`
+* _q=1&address2=Poitier&currency[neq]=MXN - Returns accounts where `currency` is not `MXN`
+* _q=1&billing_cycle_day_local[gte]=31&currency=USD - Returns accounts where `BCD` is greater than `31` and `currency` is `USD`.
+
+The following fields can be specified as part of the search key: 
+* id
+* external_key
+* email
+* name
+* first_name_length
+* currency
+* billing_cycle_day_local,
+* parent_account_id
+* is_payment_delegated_to_parent,
+* payment_method_id
+* reference_time
+* time_zone
+* locale
+* address1
+* address2
+* company_name
+* city
+* state_or_province
+* country
+* postal_code
+* phone
+* notes
+* migrated
+* created_by
+* created_date
+* updated_by
+* updated_date
+
+The operators from [SQLOperator](https://github.com/killbill/killbill/blob/fe8dd52e1e1eaafa81dc0d742f89918deba72f06/util/src/main/java/org/killbill/billing/util/entity/dao/SqlOperator.java#L20) can be specified as part of the search query. 
+
+Note: The symbols `[`,`]`,`%` need to be URL encoded while using `cURL`/`Postman` as follows:
+
+| Symbol | Encoding | 
+|--------|----------| 
+| [      | %5B      | 
+| ]      | %5D      | 
+| %      | %25      |     
+
 
 **HTTP Request** 
 
@@ -758,12 +813,30 @@ For example : An account with `name` *exampleaccount* can be searched using *exa
 > Example Request:
 
 ```shell
+## Basic Search
 curl -v \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
     "http://127.0.0.1:8080/1.0/kb/accounts/search/John%20Doe"
+    
+    
+## Advanced Search (search by email and currency)
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://127.0.0.1:8080/1.0/kb/accounts/search/_q=1&email=john@acme.com&currency=USD"
+    
+## Advanced Search (search with operator)
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://127.0.0.1:8080/1.0/kb/accounts/search/_q=1&email%5Blike%5D=john%25"    
 ```
 
 ```java
@@ -887,7 +960,6 @@ $accounts = $apiInstance->searchAccounts($searchKey);
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ---- | ------------
-| **searchKey** | string | true | none | What you want to find |
 | **offset** | long | false | 0 | Starting index for items listed |
 | **limit** | long | false | 100 | Maximum number of items to return on this page |
 | **accountWithBalance** | boolean | false | false | If true, returns `accountBalance` info |
