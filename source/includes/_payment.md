@@ -2348,7 +2348,17 @@ The following fields can be specified as part of the search key:
 * updated_by
 * updated_date
 
-The operators from [SQLOperator](https://github.com/killbill/killbill/blob/fe8dd52e1e1eaafa81dc0d742f89918deba72f06/util/src/main/java/org/killbill/billing/util/entity/dao/SqlOperator.java#L20) can be specified as part of the search query.
+The following operators can be specified:
+
+* AND
+* EQ
+* GTE
+* GT
+* LIKE
+* LTE
+* LT
+* NEQ
+* OR
 
 Note: The symbols `[`,`]`,`%` need to be URL encoded while using `cURL`/`Postman` as follows:
 

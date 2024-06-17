@@ -4700,12 +4700,22 @@ If the search string is a number, it is compared to the `invoiceNumber` attribut
 
 **Advanced**:
 
-Advanced search allows filtering on the specified fields. The prefix marker `_q=1` needs to be specified at the beginning of the search key to indicate this is an advanced query.
+Advanced search is of two types: Search by fields or Search by balance. 
 
-Some advanced search key examples:
+Search by field allows filtering on the specified fields. The prefix marker `_q=1` needs to be specified at the beginning of the search key to indicate this is an advanced query.
+
+Search by balance allows filtering based on balance. In addition to the prefix marker `_q=1`, a balance query pattern (`balance=`) needs to be specified.
+
+Note that you can either filter by fields or filter by balance, it is not currently possible to do both.
+
+Some search key examples for search by field:
 * _q=1&status=DRAFT - Returns invoices in `DRAFT` status.
+* _q=1&status=DRAFT&currency[eq]=USD - Returns invoices in `DRAFT` status where currency is `USD`.
+
+Some search key examples for search by balance:
+
 * _q=1&balance[eq]=200 - Returns invoices with balance=200.
-* _q=1&currency[eq]=USD&balance[gt]100 - Returns invoices where currency is USD and balance is greater than 100.
+* _q=1&balance[gt]100 - Returns invoices with balance greater than 100.
 
 The following fields can be specified as part of the search key:
 * id
@@ -4721,9 +4731,19 @@ The following fields can be specified as part of the search key:
 * created_date
 * updated_by
 * updated_date
-* balance
+* balance (applicable only for search by balance)
 
-The operators from [SQLOperator](https://github.com/killbill/killbill/blob/fe8dd52e1e1eaafa81dc0d742f89918deba72f06/util/src/main/java/org/killbill/billing/util/entity/dao/SqlOperator.java#L20) can be specified as part of the search query.
+The following operators can be specified:
+
+* AND
+* EQ
+* GTE
+* GT
+* LIKE
+* LTE
+* LT
+* NEQ
+* OR
 
 Note: The symbols `[`,`]`,`%` need to be URL encoded while using `cURL`/`Postman` as follows:
 
@@ -4748,13 +4768,21 @@ curl -v \
     -H "Accept: application/json" \
     "http://127.0.0.1:8080/1.0/kb/invoices/search/404a98a8-4dd8-4737-a39f-be871e916a8c"	
     
-## Advanced Search (search by balance and currency)  
+## Advanced Search (search by currency & status)  
 curl -v \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
-    "http://127.0.0.1:8080/1.0/kb/invoices/search/_q=1&currency%5Beq%5D=USD&balance%5Bgt%5D100"
+    "http://127.0.0.1:8080/1.0/kb/invoices/search/_q=1&currency%5Beq%5D=USD&status%5Beq%5DDRAFT"
+    
+## Advanced Search (Search by balance):
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://127.0.0.1:8080/1.0/kb/invoices/search/_q=1&balance%5Beq%5D=200" 
 ```
 
 ```java
