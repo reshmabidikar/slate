@@ -4700,50 +4700,51 @@ If the search string is a number, it is compared to the `invoiceNumber` attribut
 
 **Advanced**:
 
-Advanced search is of two types: Search by fields or Search by balance. 
+Advanced search is of two types: Search by fields and Search by balance. 
 
-Search by field allows filtering on the specified fields. The prefix marker `_q=1` needs to be specified at the beginning of the search key to indicate this is an advanced query.
+**Search by field** allows filtering on the specified fields. The prefix marker `_q=1` needs to be specified at the beginning of the search key to indicate this is an advanced query.
 
-Search by balance allows filtering based on balance. In addition to the prefix marker `_q=1`, a balance query pattern (`balance=`) needs to be specified.
+**Search by balance** allows filtering based on balance. In addition to the prefix marker `_q=1`, a balance query pattern (`balance=`) needs to be specified.
 
 Note that you can either filter by fields or filter by balance, it is not currently possible to do both.
 
-Some search key examples for search by field:
+The search key should be in the following format: `<field>[<operator>]=value`. Here:
+
+* `field`: The name of the field you want to filter by. Possible values are:
+  * id
+  * account_id
+  * invoice_date
+  * target_date
+  * currency
+  * status
+  * migrated
+  * parent_invoice
+  * grp_id
+  * created_by
+  * created_date
+  * updated_by
+  * updated_date
+  * balance (applicable only for search by balance)
+* `<operator>`: The comparison operator. This is optional and defaults to the equal to (=) operator if not specified. Possible values are:
+    * and
+    * eq
+    * gte
+    * gt
+    * like
+    * lte
+    * lt
+    * neq
+    * or
+* `value`: The value to be used for filtering.
+
+Some search by field search key examples:
 * _q=1&status=DRAFT - Returns invoices in `DRAFT` status.
 * _q=1&status=DRAFT&currency[eq]=USD - Returns invoices in `DRAFT` status where currency is `USD`.
 
-Some search key examples for search by balance:
+Some search by balance search key examples:
 
 * _q=1&balance[eq]=200 - Returns invoices with balance=200.
 * _q=1&balance[gt]100 - Returns invoices with balance greater than 100.
-
-The following fields can be specified as part of the search key:
-* id
-* account_id
-* invoice_date
-* target_date
-* currency
-* status
-* migrated
-* parent_invoice
-* grp_id
-* created_by
-* created_date
-* updated_by
-* updated_date
-* balance (applicable only for search by balance)
-
-The following operators can be specified:
-
-* AND
-* EQ
-* GTE
-* GT
-* LIKE
-* LTE
-* LT
-* NEQ
-* OR
 
 Note: The symbols `[`,`]`,`%` need to be URL encoded while using `cURL`/`Postman` as follows:
 

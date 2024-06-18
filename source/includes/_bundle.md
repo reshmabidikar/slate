@@ -2394,33 +2394,34 @@ The search string is compared to the `accountId`, the `bundleId`, and the bundle
 
 Advanced search allows filtering on the specified fields. The prefix marker `_q=1` needs to be specified at the beginning of the search key to indicate this is an advanced query.
 
+The search key should be in the following format: `<field>[<operator>]=value`. Here:
+
+* `field`: The name of the field you want to filter by. Possible values are:
+  * id
+  * external_key
+  * account_id
+  * last_sys_update_date
+  * original_created_date
+  * created_by
+  * created_date
+  * updated_by
+  * updated_date
+* `<operator>`: The comparison operator. This is optional and defaults to the equal to (=) operator if not specified. Possible values are:
+  * and
+  * eq
+  * gte
+  * gt
+  * like
+  * lte
+  * lt
+  * neq
+  * or
+* `value`: The value to be used for filtering.
+
 Some advanced search key examples:
 
 * _q=1&account_id=beaefb2e-1747-4472-8a7f-ccd31ef94098 - Return bundles belonging to `accountId` `beaefb2e-1747-4472-8a7f-ccd31ef94098` 
 * _q=1&created_by[like]=admin&created_date[gt]=2024-06-12 - Returns bundles created by `admin` and created after `2024-06-12`
-
-The following fields can be specified as part of the search key:
-* id
-* external_key
-* account_id
-* last_sys_update_date
-* original_created_date
-* created_by
-* created_date
-* updated_by
-* updated_date
-
-The following operators can be specified:
-
-* AND
-* EQ
-* GTE
-* GT
-* LIKE
-* LTE
-* LT
-* NEQ
-* OR
 
 Note: The symbols `[`,`]`,`%` need to be URL encoded while using `cURL`/`Postman` as follows:
 

@@ -2331,34 +2331,35 @@ The search string is compared against the `paymentNumber`, `paymentId`, `account
 
 Advanced search allows filtering on the specified fields. The prefix marker `_q=1` needs to be specified at the beginning of the search key to indicate this is an advanced query.
 
+The search key should be in the following format: `<field>[<operator>]=value`. Here:
+
+* `field`: The name of the field you want to filter by. Possible values are:
+  * id
+  * account_id
+  * payment_method_id
+  * external_key
+  * state_name
+  * last_success_state_name
+  * created_by
+  * created_date
+  * updated_by
+  * updated_date
+* `<operator>`: The comparison operator. This is optional and defaults to the equal to (=) operator if not specified. Possible values are:
+  * and
+  * eq
+  * gte
+  * gt
+  * like
+  * lte
+  * lt
+  * neq
+  * or
+* `value`: The value to be used for filtering.
+
 Some advanced search key examples:
 
 * _q=1&payment_method_id=876aa7a2-e94a-4787-b193-71b6c882ae2d - Returns payments where `payment_method_id`  is `876aa7a2-e94a-4787-b193-71b6c882ae2d`
 * _q=1&state_name%5Blike%5D=%25SUCCESS - Returns payments where `state_name` ends with `SUCCESS`
-
-The following fields can be specified as part of the search key:
-* id
-* account_id
-* payment_method_id
-* external_key
-* state_name
-* last_success_state_name
-* created_by
-* created_date
-* updated_by
-* updated_date
-
-The following operators can be specified:
-
-* AND
-* EQ
-* GTE
-* GT
-* LIKE
-* LTE
-* LT
-* NEQ
-* OR
 
 Note: The symbols `[`,`]`,`%` need to be URL encoded while using `cURL`/`Postman` as follows:
 

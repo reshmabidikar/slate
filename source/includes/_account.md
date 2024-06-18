@@ -759,6 +759,48 @@ For example : An account with `name` *exampleaccount* can be searched using *exa
 
 Advanced search allows filtering on the specified fields. The prefix marker `_q=1` needs to be specified at the beginning of the search key to indicate this is an advanced query. 
 
+The search key should be in the following format: `<field>[<operator>]=value`. Here:
+
+* `field`: The name of the field you want to filter by. Possible values are:
+  * id
+  * external_key
+  * email
+  * name
+  * first_name_length
+  * currency
+  * billing_cycle_day_local,
+  * parent_account_id
+  * is_payment_delegated_to_parent,
+  * payment_method_id
+  * reference_time
+  * time_zone
+  * locale
+  * address1
+  * address2
+  * company_name
+  * city
+  * state_or_province
+  * country
+  * postal_code
+  * phone
+  * notes
+  * migrated
+  * created_by
+  * created_date
+  * updated_by
+  * updated_date
+* `<operator>`: The comparison operator. This is optional and defaults to the equal to (=) operator if not specified. Possible values are:
+  * and
+  * eq
+  * gte
+  * gt
+  * like
+  * lte
+  * lt
+  * neq
+  * or
+* `value`: The value to be used for filtering.
+
 Some advanced search key examples:
 
 * _q=1&email=john@acme.com&currency=USD - Return accounts where `email` is `john@acme.com` and `currency` is `USD`
@@ -766,55 +808,13 @@ Some advanced search key examples:
 * _q=1&address2=Poitier&currency[neq]=MXN - Returns accounts where `currency` is not `MXN`
 * _q=1&billing_cycle_day_local[gte]=31&currency=USD - Returns accounts where `BCD` is greater than `31` and `currency` is `USD`.
 
-The following fields can be specified as part of the search key: 
-* id
-* external_key
-* email
-* name
-* first_name_length
-* currency
-* billing_cycle_day_local,
-* parent_account_id
-* is_payment_delegated_to_parent,
-* payment_method_id
-* reference_time
-* time_zone
-* locale
-* address1
-* address2
-* company_name
-* city
-* state_or_province
-* country
-* postal_code
-* phone
-* notes
-* migrated
-* created_by
-* created_date
-* updated_by
-* updated_date
-
-The following operators can be specified:
-
-* AND
-* EQ
-* GTE 
-* GT
-* LIKE
-* LTE
-* LT
-* NEQ
-* OR
-
 Note: The symbols `[`,`]`,`%` need to be URL encoded while using `cURL`/`Postman` as follows:
 
 | Symbol | Encoding | 
 |--------|----------| 
 | [      | %5B      | 
 | ]      | %5D      | 
-| %      | %25      |     
-
+| %      | %25      |    
 
 **HTTP Request** 
 
