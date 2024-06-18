@@ -2321,7 +2321,53 @@ If successful, returns a status code of 200 and a list of all payments for this 
 
 ### Search payments
 
-Search for a payment by a specified search string. The search string is compared against the `paymentNumber`, `paymentId`, `accountId`, or `transactionType` attributes. An exact match is required. 
+Search for a payment by a specified search string. Search operation can be of two types as follows:
+
+**Basic:**
+
+The search string is compared against the `paymentNumber`, `paymentId`, `accountId`, or `transactionType` attributes. An exact match is required. 
+
+**Advanced**:
+
+Advanced search allows filtering on the specified fields. The prefix marker `_q=1` needs to be specified at the beginning of the search key to indicate this is an advanced query.
+
+The search key should be in the following format: `<field>[<operator>]=value`. Here:
+
+* `field`: The name of the field you want to filter by. Possible values are:
+  * id
+  * account_id
+  * payment_method_id
+  * external_key
+  * state_name
+  * last_success_state_name
+  * created_by
+  * created_date
+  * updated_by
+  * updated_date
+* `<operator>`: The comparison operator. This is optional and defaults to the equal to (=) operator if not specified. Possible values are:
+  * and
+  * eq
+  * gte
+  * gt
+  * like
+  * lte
+  * lt
+  * neq
+  * or
+* `value`: The value to be used for filtering.
+
+Some advanced search key examples:
+
+* _q=1&payment_method_id=876aa7a2-e94a-4787-b193-71b6c882ae2d - Returns payments where `payment_method_id`  is `876aa7a2-e94a-4787-b193-71b6c882ae2d`
+* _q=1&state_name%5Blike%5D=%25SUCCESS - Returns payments where `state_name` ends with `SUCCESS`
+
+Note: The symbols `[`,`]`,`%` need to be URL encoded while using `cURL`/`Postman` as follows:
+
+| Symbol | Encoding | 
+|--------|----------| 
+| [      | %5B      | 
+| ]      | %5D      | 
+| %      | %25      |     
 
 **HTTP Request** 
 
@@ -2330,12 +2376,21 @@ Search for a payment by a specified search string. The search string is compared
 > Example Request:
 
 ```shell
+## Basic Search
 curl \
     -u admin:password \
     -H 'X-Killbill-ApiKey: bob' \
     -H 'X-Killbill-ApiSecret: lazar' \
     -H 'Accept: application/json' \
     'http://127.0.0.1:8080/1.0/kb/payments/search/8fe697d4-2c25-482c-aa45-f6cd5a48186d' 
+    
+## Advanced Search (search by state_name) 
+curl \
+    -u admin:password \
+    -H 'X-Killbill-ApiKey: bob' \
+    -H 'X-Killbill-ApiSecret: lazar' \
+    -H 'Accept: application/json' \
+    'http://127.0.0.1:8080/1.0/kb/payments/search/_q=1&state_name%5Blike%5D=%25SUCCESS' | jq 
 ```
 
 
@@ -2427,7 +2482,6 @@ paymentApi.search_payments(search_key, api_key, api_secret)
 
 | Name | Type | Required | Default | Description |
 | ---- | -----| -------- | ------- | ----------- | 
-| **searchKey** | string | yes | none | What you want to find |
 | **offset** | long | no | 0 | Starting index for items listed |
 | **limit** | long | no | 100 | Maximum number of items to be listed |
 | **withPluginInfo** | boolean | no | false | if true, include plugin info |

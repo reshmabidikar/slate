@@ -4692,8 +4692,67 @@ If successful, returns a status code of 200 and a list of all invoices for this 
 
 ### Search invoices
 
-Search for an invoice by a specified search string. If the search string is a number, it is compared to the `invoiceNumber` attribute. An exact match is required. Otherwise, it is compared to the following attributes: `invoiceId`, `accountId`, or `currency`. The operation returns all invoice records in which the search string matches all or part of any one of these attributes.
+Search for an invoice by a specified search string. Search operation can be of two types as follows:
 
+**Basic:**
+
+If the search string is a number, it is compared to the `invoiceNumber` attribute. An exact match is required. Otherwise, it is compared to the following attributes: `invoiceId`, `accountId`, or `currency`. The operation returns all invoice records in which the search string matches all or part of any one of these attributes.
+
+**Advanced**:
+
+Advanced search is of two types: Search by fields and Search by balance. 
+
+**Search by field** allows filtering on the specified fields. The prefix marker `_q=1` needs to be specified at the beginning of the search key to indicate this is an advanced query.
+
+**Search by balance** allows filtering based on balance. In addition to the prefix marker `_q=1`, a balance query pattern (`balance=`) needs to be specified.
+
+Note that you can either filter by fields or filter by balance, it is not currently possible to do both.
+
+The search key should be in the following format: `<field>[<operator>]=value`. Here:
+
+* `field`: The name of the field you want to filter by. Possible values are:
+  * id
+  * account_id
+  * invoice_date
+  * target_date
+  * currency
+  * status
+  * migrated
+  * parent_invoice
+  * grp_id
+  * created_by
+  * created_date
+  * updated_by
+  * updated_date
+  * balance (applicable only for search by balance)
+* `<operator>`: The comparison operator. This is optional and defaults to the equal to (=) operator if not specified. Possible values are:
+    * and
+    * eq
+    * gte
+    * gt
+    * like
+    * lte
+    * lt
+    * neq
+    * or
+* `value`: The value to be used for filtering.
+
+Some search by field search key examples:
+* _q=1&status=DRAFT - Returns invoices in `DRAFT` status.
+* _q=1&status=DRAFT&currency[eq]=USD - Returns invoices in `DRAFT` status where currency is `USD`.
+
+Some search by balance search key examples:
+
+* _q=1&balance[eq]=200 - Returns invoices with balance=200.
+* _q=1&balance[gt]100 - Returns invoices with balance greater than 100.
+
+Note: The symbols `[`,`]`,`%` need to be URL encoded while using `cURL`/`Postman` as follows:
+
+| Symbol | Encoding | 
+|--------|----------| 
+| [      | %5B      | 
+| ]      | %5D      | 
+| %      | %25      |     
 
 **HTTP Request**
 
@@ -4702,12 +4761,29 @@ Search for an invoice by a specified search string. If the search string is a nu
 > Example Request:
 
 ```shell
+## Basic Search
 curl -v \
     -u admin:password \
     -H "X-Killbill-ApiKey: bob" \
     -H "X-Killbill-ApiSecret: lazar" \
     -H "Accept: application/json" \
     "http://127.0.0.1:8080/1.0/kb/invoices/search/404a98a8-4dd8-4737-a39f-be871e916a8c"	
+    
+## Advanced Search (search by currency & status)  
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://127.0.0.1:8080/1.0/kb/invoices/search/_q=1&currency%5Beq%5D=USD&status%5Beq%5DDRAFT"
+    
+## Advanced Search (Search by balance):
+curl -v \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Accept: application/json" \
+    "http://127.0.0.1:8080/1.0/kb/invoices/search/_q=1&balance%5Beq%5D=200" 
 ```
 
 ```java
@@ -4795,7 +4871,6 @@ $result = $apiInstance->searchInvoices($searchKey, $offset, $limit, $audit);
 
 | Name          | Type   | Required | Default | Description                                                                       |
 |---------------|--------|----------|---------|-----------------------------------------------------------------------------------|
-| **searchKey** | string | yes      | none    | What you want to find                                                             |
 | **offset**    | long   | none     | 0       | Starting index for items listed                                                   |
 | **limit**     | long   | none     | 100     | Maximum number of items to return on this page                                    |
 | **audit**     | string | no       | "NONE"  | Level of audit information to return: "NONE", "MINIMAL" (only inserts), or "FULL" |
