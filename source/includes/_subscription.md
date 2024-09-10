@@ -1520,6 +1520,28 @@ curl -v \
             "planName": "sports-monthly"
         }' \
     'http://127.0.0.1:8080/1.0/kb/subscriptions/e1868fa6-ea97-493e-870d-50787f4b5921'
+    
+# with price overrides
+curl -v \
+    -X PUT \
+    -u admin:password \
+    -H "X-Killbill-ApiKey: bob" \
+    -H "X-Killbill-ApiSecret: lazar" \
+    -H "Content-Type: application/json" \
+    -H "X-Killbill-CreatedBy: demo" \
+    -d '{
+			"planName": "shotgun-monthly",
+			"priceOverrides": [
+			{
+				"planName": "shotgun-monthly",
+				"phaseType": "EVERGREEN",
+				"fixedPrice": null,
+				"recurringPrice": 400,
+				"usagePrices": []
+			}
+		]
+}' \
+    'http://127.0.0.1:8080/1.0/kb/subscriptions/5aa1c9e6-bc90-46ca-a925-8f9a48b9dc7f'	    
 ```
 
 ```java
