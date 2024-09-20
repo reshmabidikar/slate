@@ -1730,7 +1730,7 @@ This endpoint provides an API to list the Invoices associated with this account.
 
 ### Retrieve account invoices
 
-List the Invoices associated with this account.
+List the Invoices associated with this account. Note that this endpoint returns shallow invoices (the value 0 is returned for the `amount`, `creditAdj`, `refundAdj` and `balance` fields) unless `includeInvoiceComponents=true` is specified.
 
 **HTTP Request** 
 
@@ -1857,7 +1857,7 @@ If successful, returns a status of 200 and a list of invoice objects for this ac
 
 ### Retrieve paginated account invoices
 
-List the Invoices associated with this account in a paginated format.
+List the Invoices associated with this account in a paginated format. Note that this endpoint return shallow objects (the value 0 is returned for the `amount`, `creditAdj`, `refundAdj` and `balance` fields). In order to retrieve the account invoices with the actual data for these fields, you could use the [non-paginated retrieve account invoices](account.html#retrieve-account-invoices) endpoint with `includeInvoiceComponents=true`. Alternatively, you could also use the [retrieve invoice by id](invoice.htmll#retrieve-an-invoice-by-id) to obtain the complete invoice data for an individual invoice.
 
 **HTTP Request** 
 
@@ -1920,34 +1920,27 @@ $invoices  = $apiInstance-> getInvoicesForAccountPaginated($accountID);
 
 ```json
 [
-   {
-      "amount":50.0,
-      "currency":"USD",
-      "status":"COMMITTED",
-      "creditAdj":0.0,
-      "refundAdj":0.0,
-      "invoiceId":"d981abbb-3622-487a-9564-d594c9d04f83",
-      "invoiceDate":"2013-08-01",
-      "targetDate":"2013-08-01",
-      "invoiceNumber":"1563",
-      "balance":0.0,
-      "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
-      "items":[
-         {
-            "invoiceItemId":"5f3b4e9c-66bd-4c5c-b84a-4ae951cc2f1d",
-            "invoiceId":"d981abbb-3622-487a-9564-d594c9d04f83",
-            "accountId":"2ad52f53-85ae-408a-9879-32a7e59dd03d",
-            "itemType":"EXTERNAL_CHARGE",
-            "description":"Some description",
-            "startDate":"2013-08-01",
-            "amount":50.0,
-            "currency":"USD",
-            "auditLogs":[]
-         }
-      ],
-      "isParentInvoice":false,
-      "auditLogs":[]
-   }
+  {
+    "amount": 0,
+    "currency": "USD",
+    "status": "COMMITTED",
+    "creditAdj": 0,
+    "refundAdj": 0,
+    "invoiceId": "92d62ac0-606a-4f31-bb83-e03883cff710",
+    "invoiceDate": "2024-09-19",
+    "targetDate": "2024-09-19",
+    "invoiceNumber": "46166",
+    "balance": 0,
+    "accountId": "73c90e84-42dc-406a-be87-b75c45e581a2",
+    "bundleKeys": null,
+    "credits": null,
+    "items": [],
+    "trackingIds": [],
+    "isParentInvoice": false,
+    "parentInvoiceId": null,
+    "parentAccountId": null,
+    "auditLogs": []
+  }
 ]
 ```
 
