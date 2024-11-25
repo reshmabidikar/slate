@@ -1,6 +1,6 @@
 # Aviate Catalog APIs
 
-The Aviate catalog plugin exposes catalog APIs to create individual catalog entries such as plans, products, and pricelists without the need to manage entire catalog versions. The section documents the catalog APIs exported by the Aviate catalog plugin.
+The Aviate catalog plugin exposes catalog APIs to create individual catalog entries such as plans, products, and pricelists without the need to manage entire catalog versions. This section documents the catalog APIs exported by the Aviate catalog plugin.
 
 ## Before You Begin
 
@@ -94,7 +94,7 @@ Represents the plans, products and pricelists to be created. It has the followin
 
 ### Create Plan, Product, Pricelist
 
-Creates one or multiple plans, products, and pricelists. 
+Creates one or multiple plans, products, and pricelists. This is a combo API that can be used to create a plan, its product, and pricelist in one go. If the plan identified by `plan#name` already exists, returns the existing plan.  If the plan pricelist (identified by `plan#pricelistName`) is missing, creates it. If the plan product (identified by `plan#productName`) is missing and not specified as part of `products`, returns an error.
 
 **HTTP Request**
 
@@ -215,6 +215,18 @@ http://127.0.0.1:8080/plugins/aviate-plugin/v1/catalog/inputData
 
 A `CatalogInputData` list. At the minimum, one `PlanData` object need to be included. 
 
+For each `PlanData`, the following fields must be specified: `name`, `recurringBillingMode`, `pricelistName`, `productName`, `effectiveDate`, one or more `phases`.  For each phase, the following fields must be specified: `phaseType`, `durationUnit`, `durationLength`. In addition, the following rules are applicable:
+
+* A `TRIAL` phase cannot have recurring prices
+* A `NON-TRIAL` phase must have at least one fixed or recurring price
+* An `EVERGREEN` phase must have at least one recurring price
+
+If a `ProductData` object is specified, at the minimum, the following fields need to be specified: `name`, `category`. In addition, the following rules are applicable:
+
+* If `product#category` is `ADD_ON`, at least one value needs to be specified for `product#availableForBps`.
+* If `product#category` is `ADD_ON`, no values should be specified for `product#availableAddons`
+* If `product#category` is `BASE`, no values should be specified for `product#availableForBps`.
+
 **Query Parameters**
 
 | Name                                      | Type   | Required | Default | Description                                               |
@@ -330,7 +342,9 @@ curl -X POST \
 
 **Request Body**
 
-A `PlanData` object. As a minimum, the following fields must be specified: `name`, `recurringBillingMode`, `pricelistName`, `productName`, `effectiveDate`, one or more `phases`.  For each phase, the following fields must be specified: `phaseType`, `durationUnit`, `durationLength`. In addition, the following rules are applicable:
+A `PlanData` object. As a minimum, the following fields must be specified: `name`, `recurringBillingMode`, `pricelistName`, `productName`, `effectiveDate`, one or more `PhaseData`.  For each `PhaseData`, the following fields must be specified: `phaseType`, `durationUnit`, `durationLength`. 
+
+In addition, the following rules are applicable:
 
 * A `TRIAL` phase cannot have recurring prices
 * A `NON-TRIAL` phase must have at least one fixed or recurring price
@@ -447,6 +461,11 @@ A `PhaseData` List. As mentioned earlier, one must specify all the prices - whet
 | **effectiveDateForExistingSubscriptions** | String | false    | none             | Datetime when the price change is applicable for existing subscriptions |
 | **effectiveDate**                         | UUID   | false    | Current DateTime | Datetime when the plan change is effective                  |
 | **accountId**                             | UUID   | false    | none             | Account Id to which the plan belongs                        |
+
+**Notes:**
+
+* If `effectiveDateForExistingSubscriptions` is specified, it is necessary to specify `effectiveDate`
+* If both `effectiveDateForExistingSubscriptions` and `effectiveDate` are specified, `effectiveDateForExistingSubscriptions` cannot be prior to `effectiveDate`
 
 
 **Response**
