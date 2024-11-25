@@ -25,6 +25,7 @@ menu_items:
   - export
   - admin
   - security
+  - aviate-catalog-apis
   
 
 title: Kill Bill
