@@ -10,11 +10,13 @@ Each of the aviate plugin endpoints below require specifying the standard Kill B
 
 The Kill Bill system will retrieve such entries from the plugin each time there is a need to access the catalog for a particular tenant. If there are per-account entries, only these entries will be returned for the matching account.
 
-//TODO - mention ID_TOKEN here?
-
 ### Idempotency
 
 Product, plan, and pricelist resources are uniquely identified by the tuple {tenantId, name}. If such a resource was created with or without an accountId, retrying the create call will be idempotent. If the call is however retried with a different accountId (or lackthereof) it will fail with a validation error.
+
+### Catalog Retrieval/KB Catalog APIs
+
+At the time of writing, the aviate catalog plugin does not expose any endpoints for catalog retrieval. Instead, the catalog can be retrieved via the [KB Catalog APIs](https://killbill.github.io/slate/catalog.html#catalog-2).
 
 ## Models
 
