@@ -1,8 +1,8 @@
 ---
-includes:
-  - payment
-
-current_page: payment
+includes: 
+  - aviate-catalog-apis
+  
+current_page: aviate-catalog-apis
 
 menu_items:
   - index
