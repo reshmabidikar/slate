@@ -26,7 +26,7 @@ menu_items:
   - admin
   - security
   - aviate-catalog-apis
-  
+  - aviate-health-apis
 
 title: Kill Bill
 
