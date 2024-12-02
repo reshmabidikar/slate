@@ -8,7 +8,17 @@
 
 ### Retrieve Health Data
 
-Retrieves system health data. Basically returns information about all the nodes, parked accounts (if any), recent bus events/notifications, recent access logs, late bus events/notifications if any. 
+Return the current HealthData report. It is meant to show the current health of the cluster, show debugging information, and draw attention to potential problems.
+
+It contains:
+
+* `nodeInfos`: details on all nodes in the Kill Bill cluster. 
+* `parkedAccounts`: parked accounts (limit 50), if any. 
+* `lateBusEvents`: bus events that need processing (limit 100), if any. 
+* `lateNotifications`: notifications that need processing (limit 100), if any. 
+* `recentBusEvents`: recent bus events that were processed (limit 100). 
+* `recentNotifications`: recent notifications that were processed (limit 100). 
+* `recentAccessLogs`: recent HTTP requests from all nodes (at most 2 days).
 
 //TODO - mention about com.killbill.billing.plugin.aviate.lockSleepMilliSeconds??
 
@@ -209,15 +219,66 @@ None
 
 **Response**
 
-If successful, returns a HealthData object.
+If successful, returns a `HealthData` object.
 
 ### Retrieve Host Samples
 
-// TODO
+Returns metrics data for dashboards.
 
-// ### Fix Parked Accounts
+//TODO add more information here
 
-//TODO - This method is not implemented in the code, so not documenting it
+
+**HTTP Request**
+
+`GET /plugins/aviate-plugin/v1/health/host_samples`
+
+> Example Request:
+
+```shell
+curl -X GET \
+     -H 'Content-Type: application/json' \
+     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H 'X-killbill-apiKey: bob' \
+     -H 'X-killbill-apisecret: lazar' \
+     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/host_samples?group=shiro.pool.Wait&from=2024-01-01T00:00:00&to=2025-03-14T00:00:00
+```
+
+```java
+```
+
+```ruby
+```
+
+```python
+```
+
+````php
+````
+
+````javacript
+````
+
+**Request Body**
+
+None
+
+**Query Parameters**
+
+| Name                   | Type           | Required | Default      | Description                                                                                                                                                                                         |
+|------------------------|----------------|----------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| **startTimeParameter**          | string         | false    | none         | Start time for the samples                                                                                                                                                                          |
+| **endTimeParameter**   | string         | false    | Current time | End time for the samples                                                                                                                                                                            |
+| **hostNames**   | List of String | false    | None         | List of host names. Multiple host names can be specified by specifying a separate `hostNames` parameter corresponding to each host                                                                  |
+| **group** | string         | false    | None         | Event group for the requested sample kinds                                                                                                                                                          |
+| **category_and_sample_kind**     | List of String | false    | None         | List of samples kinds (format: category,sample_kind). Multiple category and sample kinds can be specified by specifying a separate `category_and_sample_kind` parameter corresponding to each value |
+| **granularity**     | SampleGranularity           | false    | None         | Granularity (One of `SECOND`, `MINUTE`, `HOUR`, `DAY`                                                                                                                                               |
+
+**Response**
+
+If successful, returns a status code of 200 and the requested host data.
+
+
+// ### Fix Parked Accounts - This method is not implemented in the code, so not documenting it
 
 ### Fix Stuck Bus Entries
 
@@ -304,7 +365,7 @@ curl -X PUT \
 
 **Request Body**
 
-A List of `recordId` values from the `notifications` table that need to be fixed
+A List of `recordId` values from the `notifications` table that need to be fixed.
 
 **Query Parameters**
 
@@ -316,13 +377,13 @@ If successful, returns a status code of 200 and an empty body.
 
 ### Retrieve Diagnostic Report
 
-This endpoint generates a diagnostic report. This is a replacement for the [kpm diagnostic tool](https://docs.killbill.io/latest/how-to-use-kpm-diagnostic). 
+This endpoint generates a diagnostic report. The report includes logs, tenant config, Kill Bill & system config, and account data, similar to the [kpm diagnostic tool](https://docs.killbill.io/latest/how-to-use-kpm-diagnostic), either as JSON or as a ZIP file.
 
 A few pointers:
 
 * if the `-H "Accept: application/zip" header is specified`, creates a zip file 
 * At least one query parameter needs to be specified, otherwise an empty response is returned.
-* Log information is returned only when the `-H "Accept: application/zip"` header is specified
+* HealthData and logs are returned only when the `-H "Accept: application/zip"` header is specified
 * Logs from only a single node will be included
 
 **HTTP Request**
@@ -352,14 +413,14 @@ curl -X GET \
      -H 'X-killbill-apiKey: test7' \
      -H 'X-killbill-apisecret: test7' \
      -H "Accept: application/zip"  \
-     "http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/diagnostic?accountId=68704a87-23d8-46db-a1ba-310daa8e1f4f&withLogs=true&logFileNames=catalina.2024-11-27.log&logsFilenames=localhost_access_log.2024-11-27.txt" -JO
+     "http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/diagnostic?accountId=68704a87-23d8-46db-a1ba-310daa8e1f4f&withLogs=true&logsFilenames=catalina.2024-11-27.log&logsFilenames=localhost_access_log.2024-11-27.txt" -JO
 	 
 ## Example 4- Creates a zip file. Includes account information and the killbill.out/kaui.out log files from the /var/lib/killbill/logs directory.
 curl -X GET \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      -H "Accept: application/zip"  \
-     "http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/diagnostic?accountId=68704a87-23d8-46db-a1ba-310daa8e1f4f&withLogs=true&logsDir=/var/lib/killbill/logs&logFileNames=killbill.out&logsFilenames=kaui.out" -JO
+     "http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/diagnostic?accountId=68704a87-23d8-46db-a1ba-310daa8e1f4f&withLogs=true&logsDir=/var/lib/killbill/logs&logsFilenames=killbill.out&logsFilenames=kaui.out" -JO
 ```
 
 ```java
