@@ -136,8 +136,6 @@ Represents information about services offered by a plugin. It has the following 
 
 Return the current HealthData report. It is meant to show the current health of the cluster, show debugging information, and draw attention to potential problems.
 
-//TODO - mention about com.killbill.billing.plugin.aviate.lockSleepMilliSeconds??
-
 **HTTP Request**
 
 `GET /plugins/aviate-plugin/v1/health/data`
@@ -340,8 +338,6 @@ If successful, returns a `HealthData` object.
 ### Retrieve Host Samples
 
 Returns metrics data for dashboards.
-
-//TODO add more information here
 
 
 **HTTP Request**
