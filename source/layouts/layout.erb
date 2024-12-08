@@ -115,6 +115,9 @@ under the License.
               <li>
                 <a href="<%= menu_item[:href]%>" class="site-navigator__item site-navigator__menu-item" data-title="<%= menu_item[:title] %>">
                   <span><%= menu_item[:content] %></span>
+                  <% if menu_item[:title].downcase.match("aviate") %>
+                    <span class="dot" style="background-color: #7C3AE3;"></span>
+                  <% end %>
                 </a>
                 
                 <% if menu_item[:children].length > 0 %>
