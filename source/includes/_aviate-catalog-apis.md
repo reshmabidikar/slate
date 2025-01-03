@@ -1,6 +1,6 @@
 # Aviate Catalog APIs
 
-The Aviate catalog plugin exposes catalog APIs to create individual catalog entries such as plans, products, and pricelists without the need to manage entire catalog versions. This section documents the catalog APIs exported by the Aviate catalog plugin.
+The [Aviate catalog plugin](https://docs.killbill.io/latest/aviate-catalog-plugin) exposes catalog APIs to create individual catalog entries such as plans, products, and pricelists without the need to manage entire catalog versions. This section documents the catalog APIs exported by the Aviate catalog plugin.
 
 ## Before You Begin
 

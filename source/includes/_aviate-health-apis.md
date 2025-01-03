@@ -1,6 +1,6 @@
 # Aviate Health APIs
 
-The Aviate Health feature provides several endpoints that allow you to view the health of your KillBill system and fix problems if any. This section documents the APIs exposed by the Aviate Health feature.
+The [Aviate Health feature](https://docs.killbill.io/latest/aviate-health) provides several endpoints that allow you to view the health of your KillBill system and fix problems if any. This section documents the APIs exposed by the Aviate Health feature.
 
 ## Models
 
