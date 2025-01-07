@@ -2671,6 +2671,21 @@
                                 </a>
                               </li>
                               <li>
+                                <a href="#usagedata" class="site-navigator__item site-navigator__submenu-item" data-title="UsageData">
+                                  <span>UsageData</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#tierdata" class="site-navigator__item site-navigator__submenu-item" data-title="TierData">
+                                  <span>TierData</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#blockdata" class="site-navigator__item site-navigator__submenu-item" data-title="BlockData">
+                                  <span>BlockData</span>
+                                </a>
+                              </li>
+                              <li>
                                 <a href="#productdata" class="site-navigator__item site-navigator__submenu-item" data-title="ProductData">
                                   <span>ProductData</span>
                                 </a>
@@ -2796,6 +2811,56 @@
                               <li>
                                 <a href="#retrieve-diagnostic-report" class="site-navigator__item site-navigator__submenu-item" data-title="Retrieve Diagnostic Report">
                                   <span>Retrieve Diagnostic Report</span>
+                                </a>
+                              </li>
+                          </ul>
+                      </li>
+                  </ul>
+              </li>
+              <li>
+                <a href="aviate-metering-apis.html" class="site-navigator__item site-navigator__menu-item" data-title="Aviate Metering APIs">
+                  <span>Aviate Metering APIs</span>
+                    <span class="dot" style="background-color: #7C3AE3;"></span>
+                </a>
+                
+                  <ul class="site-navigator__submenu">
+                      <li class="site-navigator__submenu-container">
+                        <a href="#models" class="site-navigator__item site-navigator__submenu-item" data-title="Models">
+                          <span>Models</span>
+                        </a>
+
+                          <ul class="site-navigator__submenu">
+                              <li>
+                                <a href="#billingmeter" class="site-navigator__item site-navigator__submenu-item" data-title="BillingMeter">
+                                  <span>BillingMeter</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#usageevent" class="site-navigator__item site-navigator__submenu-item" data-title="UsageEvent">
+                                  <span>UsageEvent</span>
+                                </a>
+                              </li>
+                          </ul>
+                      </li>
+                      <li class="site-navigator__submenu-container">
+                        <a href="#endpoints" class="site-navigator__item site-navigator__submenu-item" data-title="Endpoints">
+                          <span>Endpoints</span>
+                        </a>
+
+                          <ul class="site-navigator__submenu">
+                              <li>
+                                <a href="#create-billing-meter" class="site-navigator__item site-navigator__submenu-item" data-title="Create Billing Meter">
+                                  <span>Create Billing Meter</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#retrieve-billing-meter" class="site-navigator__item site-navigator__submenu-item" data-title="Retrieve Billing Meter">
+                                  <span>Retrieve Billing Meter</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#submit-usage-events" class="site-navigator__item site-navigator__submenu-item" data-title="Submit Usage Events">
+                                  <span>Submit Usage Events</span>
                                 </a>
                               </li>
                           </ul>
@@ -3358,11 +3423,11 @@
 <span class="n">transaction</span><span class="p">.</span><span class="nf">payment_id</span> <span class="o">=</span> <span class="s2">"7dcda896-808b-414c-aad4-74ddc98e3dcb"</span>
 <span class="n">refresh_options</span>        <span class="o">=</span> <span class="kp">nil</span>
 
-<span class="n">transaction</span><span class="p">.</span><span class="nf">complete_initial_transaction</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> 
-                                         <span class="n">reason</span><span class="p">,</span> 
-                                         <span class="n">comment</span><span class="p">,</span> 
-                                         <span class="n">options</span><span class="p">,</span> 
-                                         <span class="n">refresh_options</span><span class="p">)</span>
+<span class="n">transaction</span><span class="p">.</span><span class="nf">complete</span><span class="p">(</span><span class="n">user</span><span class="p">,</span>
+                     <span class="n">reason</span><span class="p">,</span>
+                     <span class="n">comment</span><span class="p">,</span>
+                     <span class="n">options</span><span class="p">,</span>
+                     <span class="n">refresh_options</span><span class="p">)</span>
 </code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="n">paymentApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="p">.</span><span class="n">api</span><span class="p">.</span><span class="n">PaymentApi</span><span class="p">()</span>
 <span class="n">payment_id</span> <span class="o">=</span> <span class="s">'7dcda896-808b-414c-aad4-74ddc98e3dcb'</span>
 <span class="n">body</span> <span class="o">=</span> <span class="n">PaymentTransaction</span><span class="p">(</span><span class="n">payment_id</span><span class="o">=</span><span class="n">payment_id</span><span class="p">)</span>
@@ -3423,11 +3488,11 @@
 <span class="n">transaction</span><span class="p">.</span><span class="nf">payment_external_key</span> <span class="o">=</span> <span class="s2">"example_payment_external_key"</span>
 <span class="n">refresh_options</span>                  <span class="o">=</span> <span class="kp">nil</span>
 
-<span class="n">transaction</span><span class="p">.</span><span class="nf">complete_initial_transaction</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> 
-                                         <span class="n">reason</span><span class="p">,</span> 
-                                         <span class="n">comment</span><span class="p">,</span> 
-                                         <span class="n">options</span><span class="p">,</span> 
-                                         <span class="n">refresh_options</span><span class="p">)</span>
+<span class="n">transaction</span><span class="p">.</span><span class="nf">complete</span><span class="p">(</span><span class="n">user</span><span class="p">,</span>
+                     <span class="n">reason</span><span class="p">,</span>
+                     <span class="n">comment</span><span class="p">,</span>
+                     <span class="n">options</span><span class="p">,</span>
+                     <span class="n">refresh_options</span><span class="p">)</span>
 </code></pre></div><div class="highlight"><pre class="highlight python tab-python"><code><span class="n">paymentApi</span> <span class="o">=</span> <span class="n">killbill</span><span class="p">.</span><span class="n">api</span><span class="p">.</span><span class="n">PaymentApi</span><span class="p">()</span>
 <span class="n">payment_external_key</span> <span class="o">=</span> <span class="s">'sample_external_key'</span>
 <span class="n">body</span> <span class="o">=</span> <span class="n">PaymentTransaction</span><span class="p">(</span><span class="n">payment_external_key</span><span class="o">=</span><span class="n">payment_external_key</span><span class="p">)</span>
