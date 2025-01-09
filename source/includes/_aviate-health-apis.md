@@ -335,14 +335,13 @@ None
 
 If successful, returns a `HealthData` object.
 
-### Retrieve Host Samples
+### Retrieve Metrics
 
 Returns metrics data for dashboards.
 
-
 **HTTP Request**
 
-`GET /plugins/aviate-plugin/v1/health/host_samples`
+`GET /plugins/aviate-plugin/v1/health/metrics`
 
 > Example Request:
 
@@ -352,7 +351,7 @@ curl -X GET \
      -H 'Authorization: Bearer ${ID_TOKEN}' \     
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
-     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/host_samples?group=shiro.pool.Wait&from=2024-01-01T00:00:00&to=2025-03-14T00:00:00
+     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?from=2024-12-19T00%3A00%3A00&to=2025-01-04T11%3A59%3A00&name=queue.bus.incoming&name=queue.bus.processing&name=queue.bus.late&granularity=HOUR'
 ```
 
 ```java
@@ -381,21 +380,51 @@ None
 
 **Query Parameters**
 
-| Name                   | Type           | Required | Default      | Description                                                                                                                                                                                         |
-|------------------------|----------------|----------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| **startTimeParameter**          | string         | false    | none         | Start time for the samples                                                                                                                                                                          |
-| **endTimeParameter**   | string         | false    | Current time | End time for the samples                                                                                                                                                                            |
-| **hostNames**   | List of String | false    | None         | List of host names. Multiple host names can be specified by specifying a separate `hostNames` parameter corresponding to each host                                                                  |
-| **group** | string         | false    | None         | Event group for the requested sample kinds                                                                                                                                                          |
-| **category_and_sample_kind**     | List of String | false    | None         | List of samples kinds (format: category,sample_kind). Multiple category and sample kinds can be specified by specifying a separate `category_and_sample_kind` parameter corresponding to each value |
-| **granularity**     | SampleGranularity           | false    | None         | Granularity (One of `SECOND`, `MINUTE`, `HOUR`, `DAY`)                                                                                                                                              |
+| Name                         | Type           | Required | Default      | Description                                                                                                                                                                                         |
+|------------------------------|----------------|----------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| **from**                     | string         | false    | none         | Start time for the samples                                                                                                                                                                          |
+| **to**                       | string         | false    | Current time | End time for the samples                                                                                                                                                                            |
+| **host**                     | List of String | false    | None         | List of host names. Multiple host names can be specified by specifying a separate `host` parameter corresponding to each host                                                                       |
+| **name**                     | List of String         | false    | None         | Metric name. Multiple metrics can be specified by specifying a separate `name` parameter corresponding to each metric                                                                               |
+| **granularity**              | SampleGranularity           | false    | None         | Granularity (One of `SECOND`, `MINUTE`, `HOUR`, `DAY`)                                                                                                                                              |
+
+Below is the list of published metric names. Any of these can be specified as the value for the name parameter.
+
+* queue.bus.late
+* queue.bus.incoming
+* queue.bus.processing
+* queue.notifications.late
+* queue.notifications.incoming
+* queue.notifications.processing
+* logs.rates.warn
+* logs.rates.error
+* servlets.responses.ok
+* servlets.responses.created
+* servlets.responses.badRequest
+* servlets.responses.noContent
+* servlets.responses.notFound
+* servlets.responses.serverError
+* servlets.responses.other
+* main.pool.TotalConnections
+* main.pool.ActiveConnections
+* main.pool.IdleConnections
+* main.pool.Wait
+* osgi.pool.TotalConnections
+* osgi.pool.ActiveConnections
+* osgi.pool.IdleConnections
+* osgi.pool.Wait
+* shiro.pool.TotalConnections
+* shiro.pool.ActiveConnections
+* shiro.pool.IdleConnections
+* shiro.pool.Wait
 
 **Response**
 
-If successful, returns a status code of 200 and the requested host data.
+If successful, returns a status code of 200 and the requested metric data.
 
 
-// ### Fix Parked Accounts - This method is not implemented in the code, so not documenting it
+<!-- ### Fix Parked Accounts - This method is not implemented in the code, so not documenting it
+--> 
 
 ### Fix Stuck Bus Entries
 
