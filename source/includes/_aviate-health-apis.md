@@ -337,7 +337,9 @@ If successful, returns a `HealthData` object.
 
 ### Retrieve Metrics
 
-Returns metrics data for dashboards.
+This endpoint returns metric data. This data can be used to assess the health of the system and gain visibility into it. The metrics are computed by the aviate plugin when the `com.killbill.billing.plugin.aviate.enableHealthReporter` property is set to true. Each metric is a timeseries that can be analyzed and/or displayed.
+
+Some metrics are global to the deployment (i.e. independent of the number of Kill Bill nodes/containers deployed) and some others are per-node - in which case the `nodeName` parameter can be used to return metrics for a specific node.
 
 **HTTP Request**
 
@@ -346,12 +348,37 @@ Returns metrics data for dashboards.
 > Example Request:
 
 ```shell
+# Returns metric data for the queue.bus.incoming,queue.bus.processing, queue.bus.late for the duration 2024-12-19T00:00:00 to 2025-01-04T11:59:00 with HOURLY granularity 
 curl -X GET \
      -H 'Content-Type: application/json' \
      -H 'Authorization: Bearer ${ID_TOKEN}' \     
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
-     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?from=2024-12-19T00%3A00%3A00&to=2025-01-04T11%3A59%3A00&name=queue.bus.incoming&name=queue.bus.processing&name=queue.bus.late&granularity=HOUR'
+     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?from=2024-12-19T00:00:00&to=2025-01-04T11:59:00&metricName=queue.bus.incoming&metricName=queue.bus.processing&metricName=queue.bus.late&granularity=HOUR'
+
+# Returns the metric data for the logs.rates.error metric on the ip-172-31-6-87 node
+curl -X GET \
+     -H 'Content-Type: application/json' \
+     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H 'X-killbill-apiKey: bob' \
+     -H 'X-killbill-apisecret: lazar' \
+     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?nodeName=ip-172-31-6-87&name=logs.rates.error'  
+     
+# Returns metric data for the logs.rates.error metric for all the nodes:
+curl -X GET \
+     -H 'Content-Type: application/json' \
+     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H 'X-killbill-apiKey: bob' \
+     -H 'X-killbill-apisecret: lazar' \
+     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?name=logs.rates.error'   
+     
+# Returns metric data for the queue.bus.incoming metric for all the nodes (nodeName is ignored since queue.bus.incoming is a global metric):
+curl -X GET \
+     -H 'Content-Type: application/json' \
+     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H 'X-killbill-apiKey: bob' \
+     -H 'X-killbill-apisecret: lazar' \
+     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?nodeName=ip-172-31-6-87&name=queue.bus.incoming' 
 ```
 
 ```java
@@ -391,15 +418,15 @@ None
 
 **Query Parameters**
 
-| Name                         | Type           | Required | Default      | Description                                                                                                                                                                                         |
-|------------------------------|----------------|----------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| **from**                     | string         | false    | none         | Start time for the samples                                                                                                                                                                          |
-| **to**                       | string         | false    | Current time | End time for the samples                                                                                                                                                                            |
-| **host**                     | List of String | false    | None         | List of host names. Multiple host names can be specified by specifying a separate `host` parameter corresponding to each host                                                                       |
-| **name**                     | List of String         | false    | None         | Metric name. Multiple metrics can be specified by specifying a separate `name` parameter corresponding to each metric                                                                               |
-| **granularity**              | SampleGranularity           | false    | None         | Granularity (One of `SECOND`, `MINUTE`, `HOUR`, `DAY`)                                                                                                                                              |
+| Name            | Type           | Required | Default      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
+|-----------------|----------------|----------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| **from**        | string         | false    | none         | DateTime from which to start including metric data in `yyyy-dd-MMThh:mm:ss` format. If omitted, all the data since the aviate plugin started computing metrics is returned.                                                                                                                                                                                                                                                                                           |
+| **to**          | string         | false    | Current time | DateTime up to which metric data should be included in `yyyy-dd-MMThh:mm:ss` format. If omitted, all the data up to the current DateTime is returned.                                                                                                                                                                                                                                                                                                                 |
+| **nodeName**    | List of String | false    | None         | Specifies the name of the node for which metric data should be returned. This parameter applies only to node-specific metrics. When provided, it retrieves metric data for the specified node. For global metrics, this parameter is ignored, global data is returned regardless of the node. If omitted for a node-specific metric, metric data for all nodes will be returned. To specify multiple nodes, include a separate `nodeName` parameter for each node. |
+| **metricName**  | List of String         | false    | None         | Name of the metric for which to return data.(See list below). To obtain data for multiple metrics, include a separate `metricName` parameter for each metric.                                                                                                                                  |
+| **granularity** | SampleGranularity           | false    | `MINUTE`      | Specifies the time unit for the intervals between consecutive data points. One of `MINUTE`, `HOUR`, `DAY`)                                                                                                                                                                                                                                                                                                                                                            |
 
-Below is the list of published metric names. Any of these can be specified as the value for the name parameter.
+Below is the list of metric names. Any of these can be specified as the value for the `metricName` parameter.
 
 * queue.bus.late
 * queue.bus.incoming
@@ -538,7 +565,7 @@ This endpoint generates a diagnostic report. The report includes logs, tenant co
 
 A few pointers:
 
-* if the `-H "Accept: application/zip" header is specified`, creates a zip file 
+* If the `-H "Accept: application/zip" header is specified`, creates a zip file 
 * At least one query parameter needs to be specified, otherwise an empty response is returned.
 * HealthData and logs are returned only when the `-H "Accept: application/zip"` header is specified
 * Logs from only a single node will be included
