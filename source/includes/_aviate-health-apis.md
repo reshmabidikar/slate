@@ -341,6 +341,8 @@ This endpoint returns metric data. This data can be used to assess the health of
 
 Some metrics are global to the deployment (i.e. independent of the number of Kill Bill nodes/containers deployed) and some others are per-node - in which case the `nodeName` parameter can be used to return metrics for a specific node.
 
+All the metrics exposed by the Aviate Plugin are documented [here](https://docs.killbill.io/latest/aviate-health#_aviate_metrics).
+
 **HTTP Request**
 
 `GET /plugins/aviate-plugin/v1/health/metrics`
@@ -425,36 +427,6 @@ None
 | **nodeName**    | List of String | false    | None         | Specifies the name of the node for which metric data should be returned. This parameter applies only to node-specific metrics. When provided, it retrieves metric data for the specified node. For global metrics, this parameter is ignored, global data is returned regardless of the node. If omitted for a node-specific metric, metric data for all nodes will be returned. To specify multiple nodes, include a separate `nodeName` parameter for each node. |
 | **metricName**  | List of String         | false    | None         | Name of the metric for which to return data.(See list below). To obtain data for multiple metrics, include a separate `metricName` parameter for each metric.                                                                                                                                  |
 | **granularity** | SampleGranularity           | false    | `MINUTE`      | Specifies the time unit for the intervals between consecutive data points. One of `MINUTE`, `HOUR`, `DAY`)                                                                                                                                                                                                                                                                                                                                                            |
-
-Below is the list of metric names. Any of these can be specified as the value for the `metricName` parameter.
-
-* queue.bus.late
-* queue.bus.incoming
-* queue.bus.processing
-* queue.notifications.late
-* queue.notifications.incoming
-* queue.notifications.processing
-* logs.rates.warn
-* logs.rates.error
-* servlets.responses.ok
-* servlets.responses.created
-* servlets.responses.badRequest
-* servlets.responses.noContent
-* servlets.responses.notFound
-* servlets.responses.serverError
-* servlets.responses.other
-* main.pool.TotalConnections
-* main.pool.ActiveConnections
-* main.pool.IdleConnections
-* main.pool.Wait
-* osgi.pool.TotalConnections
-* osgi.pool.ActiveConnections
-* osgi.pool.IdleConnections
-* osgi.pool.Wait
-* shiro.pool.TotalConnections
-* shiro.pool.ActiveConnections
-* shiro.pool.IdleConnections
-* shiro.pool.Wait
 
 **Response**
 
