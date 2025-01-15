@@ -4,7 +4,7 @@ The [Aviate Health feature](https://docs.killbill.io/latest/aviate-health) provi
 
 ## Models
 
-### SamplesForSampleKindAndHost
+### MetricsResult
 
 Represents metric result. It has the following fields:
 
