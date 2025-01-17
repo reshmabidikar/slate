@@ -434,7 +434,7 @@ If successful, returns a status code of 200 and the requested metric data.
 
 
 <!-- ### Fix Parked Accounts - This method is not implemented in the code, so not documenting it
---> 
+
 
 ### Fix Stuck Bus Entries
 
@@ -530,6 +530,8 @@ None
 **Response**
 
 If successful, returns a status code of 200 and an empty body.
+
+--> 
 
 ### Retrieve Diagnostic Report
 
