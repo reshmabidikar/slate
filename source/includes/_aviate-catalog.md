@@ -1,4 +1,4 @@
-# Aviate Catalog APIs
+# Aviate Catalog
 
 The [Aviate catalog plugin](https://docs.killbill.io/latest/aviate-catalog-plugin) exposes catalog APIs to create individual catalog entries such as plans, products, and pricelists without the need to manage entire catalog versions. This section documents the catalog APIs exported by the Aviate catalog plugin.
 
@@ -18,7 +18,7 @@ Product, plan, and pricelist resources are uniquely identified by the tuple {ten
 
 At the time of writing, the aviate catalog plugin does not expose any endpoints for catalog retrieval. Instead, the catalog can be retrieved via the [KB Catalog APIs](https://apidocs.killbill.io/catalog).
 
-## Models
+## Resources
 
 This section lists the models used by the Catalog APIs
 
@@ -127,7 +127,7 @@ Represents the plans, products and pricelists to be created. It has the followin
 | **products**   | List of ProductData | user         | List of products included in this input |
 
 
-## Endpoints
+## Catalog APIs
 
 ### Create Plan, Product, Pricelist
 

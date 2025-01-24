@@ -1,8 +1,8 @@
-# Aviate Metering APIs
+# Aviate Metering
 
 The Aviate plugin offers a metering feature that allows performing usage aggregation. As part of this functionality, the plugin exposes some metering APIs. These APIs provide the ability to create billing meters and record usage data against these meters. This section documents the metering APIs exported by the Aviate plugin.
 
-## Models
+## Resources
 
 ### BillingMeter
 
@@ -40,7 +40,7 @@ A UsageEvent represents a single usage to be recorded. It has the following fiel
 | **timeStamp**        | string | user         | DateTime corresponding to the usage                            |
 | **value**            | number | user         | Amount of usage                                                |
 
-## Endpoints
+## Metering APIs
 
 ### Create Billing Meter
 
