@@ -1,8 +1,8 @@
-# Aviate Health APIs
+# Aviate Health
 
 The [Aviate Health feature](https://docs.killbill.io/latest/aviate-health) provides several endpoints that allow you to view the health of your KillBill system and fix problems if any. This section documents the APIs exposed by the Aviate Health feature.
 
-## Models
+## Resources
 
 ### MetricsResult
 
@@ -130,7 +130,7 @@ Represents information about services offered by a plugin. It has the following 
 | **registrationName**   | string   | system                           | Bundle Registration Name |
 
 
-## Endpoints
+## Health APIs
 
 ### Retrieve Health Data
 
