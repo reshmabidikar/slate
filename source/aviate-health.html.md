@@ -1,8 +1,8 @@
 ---
 includes: 
-  - aviate-health-apis
+  - aviate-health
   
-current_page: aviate-health-apis
+current_page: aviate-health
 
 menu_items:
   - index
