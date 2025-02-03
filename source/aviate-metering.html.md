@@ -1,8 +1,8 @@
 ---
 includes: 
-  - aviate-metering-apis
+  - aviate-metering
   
-current_page: aviate-metering-apis
+current_page: aviate-metering
 
 menu_items:
   - index

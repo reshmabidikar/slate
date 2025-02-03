@@ -1,8 +1,8 @@
 ---
 includes: 
-  - aviate-catalog-apis
+  - aviate-catalog
   
-current_page: aviate-catalog-apis
+current_page: aviate-catalog
 
 menu_items:
   - index
