@@ -1,8 +1,8 @@
 ---
-includes:
-  - invoice-item
-
-current_page: invoice-item
+includes: 
+  - aviate-catalog
+  
+current_page: aviate-catalog
 
 menu_items:
   - index
