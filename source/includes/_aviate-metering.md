@@ -6,7 +6,7 @@ The Aviate plugin offers a metering feature that allows performing usage aggrega
 
 ### Authentication
 
-The Aviate Plugin uses a JWT based authentication mechanism. Thus, all the APIs listed in this document require a valid token. This can be obtained via the [Auth API](aviate_auth.html).
+The Aviate Plugin uses a JWT based authentication mechanism. Thus, all the APIs listed in this document require a valid token. This can be obtained via the [Auth API](aviate-auth.html).
 
 ## Resources
 
