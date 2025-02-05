@@ -2,6 +2,12 @@
 
 The [Aviate Health feature](https://docs.killbill.io/latest/aviate-health) provides several endpoints that allow you to view the health of your KillBill system and fix problems if any. This section documents the APIs exposed by the Aviate Health feature.
 
+## Before You Begin
+
+### Authentication
+
+The Aviate Plugin uses a JWT based authentication mechanism. Thus, all the APIs listed in this document require a valid token. This can be obtained via the [Auth API](aviate_auth.html#auth_api).
+
 ## Resources
 
 ### MetricsResult

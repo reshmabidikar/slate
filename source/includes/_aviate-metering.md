@@ -2,6 +2,12 @@
 
 The Aviate plugin offers a metering feature that allows performing usage aggregation. As part of this functionality, the plugin exposes some metering APIs. These APIs provide the ability to create billing meters and record usage data against these meters. This section documents the metering APIs exported by the Aviate plugin.
 
+## Before You Begin
+
+### Authentication
+
+The Aviate Plugin uses a JWT based authentication mechanism. Thus, all the APIs listed in this document require a valid token. This can be obtained via the [Auth API](aviate_auth.html#auth_api).
+
 ## Resources
 
 ### BillingMeter

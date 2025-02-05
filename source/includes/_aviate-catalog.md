@@ -18,6 +18,10 @@ Product, plan, and pricelist resources are uniquely identified by the tuple {ten
 
 At the time of writing, the aviate catalog plugin does not expose any endpoints for catalog retrieval. Instead, the catalog can be retrieved via the [KB Catalog APIs](https://apidocs.killbill.io/catalog).
 
+### Authentication
+
+The Aviate Plugin uses a JWT based authentication mechanism. Thus, all the APIs listed in this document require a valid token. This can be obtained via the [Auth API](aviate_auth.html#auth_api). 
+
 ## Resources
 
 This section lists the models used by the Catalog APIs

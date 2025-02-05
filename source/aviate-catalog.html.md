@@ -25,6 +25,7 @@ menu_items:
   - export
   - admin
   - security
+  - aviate-auth
   - aviate-catalog
   - aviate-health
   - aviate-metering
