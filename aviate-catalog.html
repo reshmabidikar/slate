@@ -2615,6 +2615,21 @@
                   </ul>
               </li>
               <li>
+                <a href="aviate-auth.html" class="site-navigator__item site-navigator__menu-item" data-title="Aviate Auth">
+                  <span>Aviate Auth</span>
+                    <span class="dot" style="background-color: #7C3AE3;"></span>
+                </a>
+                
+                  <ul class="site-navigator__submenu">
+                      <li class="site-navigator__submenu-container">
+                        <a href="#auth-api" class="site-navigator__item site-navigator__submenu-item" data-title="Auth API">
+                          <span>Auth API</span>
+                        </a>
+
+                      </li>
+                  </ul>
+              </li>
+              <li>
                 <a href="#aviate-catalog" class="site-navigator__item site-navigator__menu-item" data-title="Aviate Catalog">
                   <span>Aviate Catalog</span>
                     <span class="dot" style="background-color: #7C3AE3;"></span>
@@ -2640,6 +2655,11 @@
                               <li>
                                 <a href="#catalog-retrieval-kb-catalog-apis" class="site-navigator__item site-navigator__submenu-item" data-title="Catalog Retrieval/KB Catalog APIs">
                                   <span>Catalog Retrieval/KB Catalog APIs</span>
+                                </a>
+                              </li>
+                              <li>
+                                <a href="#authentication" class="site-navigator__item site-navigator__submenu-item" data-title="Authentication">
+                                  <span>Authentication</span>
                                 </a>
                               </li>
                           </ul>
@@ -2735,6 +2755,19 @@
                 
                   <ul class="site-navigator__submenu">
                       <li class="site-navigator__submenu-container">
+                        <a href="#before-you-begin" class="site-navigator__item site-navigator__submenu-item" data-title="Before You Begin">
+                          <span>Before You Begin</span>
+                        </a>
+
+                          <ul class="site-navigator__submenu">
+                              <li>
+                                <a href="#authentication" class="site-navigator__item site-navigator__submenu-item" data-title="Authentication">
+                                  <span>Authentication</span>
+                                </a>
+                              </li>
+                          </ul>
+                      </li>
+                      <li class="site-navigator__submenu-container">
                         <a href="#resources" class="site-navigator__item site-navigator__submenu-item" data-title="Resources">
                           <span>Resources</span>
                         </a>
@@ -2815,6 +2848,19 @@
                 
                   <ul class="site-navigator__submenu">
                       <li class="site-navigator__submenu-container">
+                        <a href="#before-you-begin" class="site-navigator__item site-navigator__submenu-item" data-title="Before You Begin">
+                          <span>Before You Begin</span>
+                        </a>
+
+                          <ul class="site-navigator__submenu">
+                              <li>
+                                <a href="#authentication" class="site-navigator__item site-navigator__submenu-item" data-title="Authentication">
+                                  <span>Authentication</span>
+                                </a>
+                              </li>
+                          </ul>
+                      </li>
+                      <li class="site-navigator__submenu-container">
                         <a href="#resources" class="site-navigator__item site-navigator__submenu-item" data-title="Resources">
                           <span>Resources</span>
                         </a>
@@ -2875,6 +2921,8 @@
 <p>Product, plan, and pricelist resources are uniquely identified by the tuple {tenantId, name}. If such a resource was created with or without an accountId, retrying the create call will be idempotent. If the call is however retried with a different accountId (or lackthereof) it will fail with a validation error.</p>
 <h3 id='catalog-retrieval-kb-catalog-apis'>Catalog Retrieval/KB Catalog APIs</h3>
 <p>At the time of writing, the aviate catalog plugin does not expose any endpoints for catalog retrieval. Instead, the catalog can be retrieved via the <a href="https://apidocs.killbill.io/catalog">KB Catalog APIs</a>.</p>
+<h3 id='authentication'>Authentication</h3>
+<p>The Aviate Plugin uses a JWT based authentication mechanism. Thus, all the APIs listed in this document require a valid token. This can be obtained via the <a href="aviate-auth.html">Auth API</a>. </p>
 <h2 id='resources'>Resources</h2>
 <p>This section lists the models used by the Catalog APIs</p>
 <h3 id='plandata'>PlanData</h3>
