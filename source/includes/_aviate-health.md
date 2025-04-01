@@ -153,7 +153,7 @@ curl -X GET \
      -H 'Authorization: Bearer ${ID_TOKEN}' \     
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
-     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/data
+     'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/data'
 ```
 
 ```java
@@ -362,7 +362,7 @@ curl -X GET \
      -H 'Authorization: Bearer ${ID_TOKEN}' \     
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
-     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?from=2024-12-19T00:00:00&to=2025-01-04T11:59:00&metricName=queue.bus.incoming&metricName=queue.bus.processing&metricName=queue.bus.late&granularity=HOUR'
+     'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?from=2024-12-19T00:00:00&to=2025-01-04T11:59:00&metricName=queue.bus.incoming&metricName=queue.bus.processing&metricName=queue.bus.late&granularity=HOUR'
 
 # Returns the metric data for the logs.rates.error metric on the ip-172-31-6-87 node
 curl -X GET \
@@ -370,7 +370,7 @@ curl -X GET \
      -H 'Authorization: Bearer ${ID_TOKEN}' \     
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
-     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?nodeName=ip-172-31-6-87&name=logs.rates.error'  
+     'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?nodeName=ip-172-31-6-87&name=logs.rates.error'  
      
 # Returns metric data for the logs.rates.error metric for all the nodes:
 curl -X GET \
@@ -378,7 +378,7 @@ curl -X GET \
      -H 'Authorization: Bearer ${ID_TOKEN}' \     
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
-     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?name=logs.rates.error'   
+     'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?metricName=logs.rates.error'   
      
 # Returns metric data for the queue.bus.incoming metric for all the nodes (nodeName is ignored since queue.bus.incoming is a global metric):
 curl -X GET \
@@ -386,7 +386,7 @@ curl -X GET \
      -H 'Authorization: Bearer ${ID_TOKEN}' \     
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
-     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?nodeName=ip-172-31-6-87&name=queue.bus.incoming' 
+     'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?nodeName=ip-172-31-6-87&name=queue.bus.incoming' 
 ```
 
 ```java
@@ -426,13 +426,13 @@ None
 
 **Query Parameters**
 
-| Name            | Type           | Required | Default      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                           |
-|-----------------|----------------|----------|--------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-| **from**        | string         | false    | none         | DateTime from which to start including metric data in `yyyy-dd-MMThh:mm:ss` format. If omitted, all the data since the aviate plugin started computing metrics is returned.                                                                                                                                                                                                                                                                                           |
-| **to**          | string         | false    | Current time | DateTime up to which metric data should be included in `yyyy-dd-MMThh:mm:ss` format. If omitted, all the data up to the current DateTime is returned.                                                                                                                                                                                                                                                                                                                 |
+| Name            | Type           | Required | Default      | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
+|-----------------|----------------|----------|--------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+| **from**        | string         | false    | none         | DateTime from which to start including metric data in `yyyy-dd-MMThh:mm:ss` format. If omitted, all the data since the aviate plugin started computing metrics is returned.                                                                                                                                                                                                                                                                                        |
+| **to**          | string         | false    | Current time | DateTime up to which metric data should be included in `yyyy-dd-MMThh:mm:ss` format. If omitted, all the data up to the current DateTime is returned.                                                                                                                                                                                                                                                                                                              |
 | **nodeName**    | List of String | false    | None         | Specifies the name of the node for which metric data should be returned. This parameter applies only to node-specific metrics. When provided, it retrieves metric data for the specified node. For global metrics, this parameter is ignored, global data is returned regardless of the node. If omitted for a node-specific metric, metric data for all nodes will be returned. To specify multiple nodes, include a separate `nodeName` parameter for each node. |
-| **metricName**  | List of String         | false    | None         | Name of the metric for which to return data.(See list below). To obtain data for multiple metrics, include a separate `metricName` parameter for each metric.                                                                                                                                  |
-| **granularity** | SampleGranularity           | false    | `MINUTE`      | Specifies the time unit for the intervals between consecutive data points. One of `MINUTE`, `HOUR`, `DAY`)                                                                                                                                                                                                                                                                                                                                                            |
+| **metricName**  | List of String         | false    | None         | Name of the metric for which to return data.(Refer to [this doc](https://docs.killbill.io/latest/aviate-health#_aviate_metrics)). To obtain data for multiple metrics, include a separate `metricName` parameter for each metric.                                                                                                                                                                                                                                  |
+| **granularity** | SampleGranularity           | false    | `MINUTE`      | Specifies the time unit for the intervals between consecutive data points. One of `MINUTE`, `HOUR`, `DAY`)                                                                                                                                                                                                                                                                                                                                                         |
 
 **Response**
 
@@ -459,7 +459,7 @@ curl -X PUT \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      -d '[1,2]' \
-     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/bus/fixup
+     'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/bus/fixup'
 ```
 
 ```java
@@ -507,7 +507,7 @@ curl -X PUT \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      -d '[1,2]' \
-     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/notifications/fixup
+     'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/notifications/fixup'
 ```
 
 ```java
@@ -562,7 +562,7 @@ curl -X GET \
      -H 'Authorization: Bearer ${ID_TOKEN}' \     
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
-     http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/diagnostic?accountId=af65531a-fc2e-43cd-8af1-6ec0709d9700
+     'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/diagnostic?accountId=af65531a-fc2e-43cd-8af1-6ec0709d9700'
      
 ## Example 2 - Creates a zip file. Includes account information, Kill Bill configuration data and tenant configuration data
 curl -X GET \
