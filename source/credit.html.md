@@ -25,9 +25,10 @@ menu_items:
   - export
   - admin
   - security
-  - aviate-catalog-apis
-  - aviate-health-apis
-  - aviate-metering-apis
+  - aviate-auth
+  - aviate-catalog
+  - aviate-health
+  - aviate-metering
 
 title: Kill Bill
 

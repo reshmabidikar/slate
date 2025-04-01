@@ -1,8 +1,8 @@
 ---
-includes:
-  - invoice-item
-
-current_page: invoice-item
+includes: 
+  - aviate-auth
+  
+current_page: aviate-auth
 
 menu_items:
   - index

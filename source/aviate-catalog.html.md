@@ -1,8 +1,8 @@
 ---
 includes: 
-  - aviate-health-apis
+  - aviate-catalog
   
-current_page: aviate-health-apis
+current_page: aviate-catalog
 
 menu_items:
   - index
@@ -25,9 +25,10 @@ menu_items:
   - export
   - admin
   - security
-  - aviate-catalog-apis
-  - aviate-health-apis
-  - aviate-metering-apis
+  - aviate-auth
+  - aviate-catalog
+  - aviate-health
+  - aviate-metering
   
 title: Kill Bill
 
