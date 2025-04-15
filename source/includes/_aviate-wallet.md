@@ -135,7 +135,7 @@ curl -X POST \
 ````php
 ````
 
-````javacript
+````javascript
 ````
 
 > Example Response:
