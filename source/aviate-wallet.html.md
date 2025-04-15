@@ -1,8 +1,8 @@
 ---
 includes: 
-  - index
+  - aviate-wallet
   
-current_page: index
+current_page: aviate-wallet
 
 menu_items:
   - index
@@ -30,7 +30,7 @@ menu_items:
   - aviate-health
   - aviate-metering
   - aviate-wallet
-
+  
 title: Kill Bill
 
 language_tabs:
