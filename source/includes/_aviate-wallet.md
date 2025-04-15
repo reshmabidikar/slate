@@ -55,8 +55,8 @@ Represents a credit transaction in the wallet ledger, including original and rem
 | `description`    | `string`       | user         | Optional description or memo                                             |
 | `expDate`        | `string` (ISO datetime) | user  | Optional expiration timestamp                                          |
 | `parentRecordId` | `integer`      | system       | Reference to the original credit record (for partial consumption)        |
-| `kbInvoiceId`    | `string` (UUID)| system       | Associated Kill Bill invoice ID (if credit was paid)                     |
-| `kbPaymentId`    | `string` (UUID)| system       | Associated Kill Bill payment ID                                          |
+| `kbInvoiceId`    | `string` (UUID)| system       | Associated Kill Bill invoice ID                                          |
+| `kbPaymentId`    | `string` (UUID)| system       | Associated Kill Bill payment ID (if invoice was paid)                    |
 
 ---
 
