@@ -440,11 +440,11 @@ If successful, returns a status code of 200 and the requested metric data.
 
 
 <!-- ### Fix Parked Accounts - This method is not implemented in the code, so not documenting it
-
+--> 
 
 ### Fix Stuck Bus Entries
 
-Fixes stuck bus entries. Basically sets the `creating_owner`, `processing_owner`, `processing_avialable_date`, `processing_state`, `error_count` fields to `null` in the `bus_events` table for the specified recordIds.
+Fixes stuck bus entries. Basically resets the `creating_owner`, `processing_owner`, `processing_avialable_date`, `processing_state`, `error_count` fields in the `bus_events` table for the specified recordIds.
 
 **HTTP Request**
 
@@ -492,7 +492,7 @@ If successful, returns a status code of 200 and an empty body.
 
 ### Fix Stuck Notification Entries
 
-Fixes stuck notification entries. Basically sets the `creating_owner`, `processing_owner`, `processing_avialable_date`, `processing_state`, `error_count`, `effective_date` fields to `null` in the `notifications` table for the specified recordIds.
+Fixes stuck notification entries. Basically resets the `creating_owner`, `processing_owner`, `processing_avialable_date`, `processing_state`, `error_count`  fields to `null` in the `notifications` table for the specified recordIds.
 
 **HTTP Request**
 
@@ -537,7 +537,7 @@ None
 
 If successful, returns a status code of 200 and an empty body.
 
---> 
+
 
 ### Retrieve Diagnostic Report
 
