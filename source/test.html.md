@@ -1,8 +1,8 @@
 ---
 includes: 
-  - account
+  - test
   
-current_page: account
+current_page: test
 
 menu_items:
   - index
