@@ -189,6 +189,73 @@ None
 
 If successful, returns a status code of 200 and a `BillingMeter` object.
 
+### Retrieve All Billing Meters
+
+Returns all the billing meters corresponding to a tenant/account.
+
+**HTTP Request**
+
+`GET /plugins/aviate-plugin/v1/metering//billingMeters/all`
+
+> Example Request:
+
+```shell
+curl -X GET \
+-H'Content-Type: application/json' \
+-H"Authorization: Bearer ${ID_TOKEN}" \
+-H'X-killbill-apiKey: alphaF' \
+-H'X-killbill-apisecret: alphaF' \
+'http://127.0.0.1:8080/plugins/aviate-plugin/v1/metering//billingMeters/all'
+```
+
+```java
+```
+
+```ruby
+```
+
+```python
+```
+
+````php
+````
+
+````javacript
+````
+
+> Example Response:
+
+````json
+[
+  {
+    "name": "meter1",
+    "code": "meter1",
+    "eventKey": "eventKey",
+    "eventFilters": [
+      "filter1",
+      "filter2"
+    ],
+    "aggregationType": "SUM"
+  }
+]
+````
+
+**Request Body**
+
+None
+
+
+**Query Parameters**
+
+| Name                                      | Type   | Required | Default | Description                                                                                   |
+|-------------------------------------------|--------|----------| ---- |-----------------------------------------------------------------------------------------------
+| **accountId**                             | UUID   | false    | none | Account Id. If specified, returns billing meters for the specified `tenantId` and `accountId` |
+
+
+**Response**
+
+If successful, returns a status code of 200 and a List of `BillingMeter` objects.
+
 ### Submit Usage Events
 
 Submits usage events.

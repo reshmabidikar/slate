@@ -25,10 +25,12 @@ menu_items:
   - export
   - admin
   - security
+  - overdue
   - aviate-auth
   - aviate-catalog
   - aviate-health
   - aviate-metering
+  - aviate-wallet
 
 title: Kill Bill
 
