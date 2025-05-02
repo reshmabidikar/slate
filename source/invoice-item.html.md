@@ -26,6 +26,7 @@ menu_items:
   - admin
   - security
   - overdue
+  - test
   - aviate-auth
   - aviate-catalog
   - aviate-health
