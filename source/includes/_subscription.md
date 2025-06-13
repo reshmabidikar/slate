@@ -171,16 +171,33 @@ curl -v \
     -d '{ 
             "accountId": "944bf633-88a8-4575-96b5-80bf0a0fdfec",
             "planName": "pistol-monthly-notrial",
-             "priceOverrides": [
-       
+              "priceOverrides": [
+    {
+      "planName": "training-usage-in-arrear",
+      "phaseType": "EVERGREEN",
+      "fixedPrice": null,
+	  "recurringPrice":15,
+      "usagePrices": [
         {
-            "planName": "pistol-monthly-notrial",
-            "phaseType": "EVERGREEN",
-            "fixedPrice": null,
-            "recurringPrice": 400.00,
-            "usagePrices": []
-        }       
-    ]
+          "usageName": "training-in-arrear-usage",
+          "usageType": "CONSUMABLE",
+          "billingMode": "IN_ARREAR",
+          "tierPrices": [
+            {
+              "blockPrices": [
+                {
+                  "unitName": "hours",
+                  "size": 1,
+                  "price": 120,
+                  "max": -1
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
         }' \
     "http://127.0.0.1:8080/1.0/kb/subscriptions"
     
@@ -1654,7 +1671,7 @@ A subscription resource object specifying either the `planName` or a combination
 | **callTimeoutSec** | long | no | unlimited? | Timeout in seconds (see below) |
 | **pluginProperty** | array of strings | false | omit |list of plugin properties, if any |
 
-**billingPolicy**: Possible values are START_OF_TERM, END_OF_TERM, IMMEDIATE, or ILLEGAL
+**billingPolicy**: Possible values are `END_OF_TERM` and `IMMEDIATE`. Note that plan change with `START_OF_TERM` policy is not supported.
 
 **requestedDate**: This date is only used if no billingPolicy was specified.
 
