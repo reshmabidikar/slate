@@ -300,9 +300,11 @@ If successful, returns a status code of 200 and a `PlanData` list.
 
 ### Delete Product
 
-Deletes the specified product. If `deleteAllPlans` is specified, deletes all the plans corresponding to the product.
+Deletes the specified product. If `deleteAllPlans` is specified, hard deletes all the plans corresponding to the product.
 
 **Note:** Since this is an irreversible operation, the query parameter `force=true` must be specified to proceed with the deletion.
+
+**Note:** Deleting a plan hard deletes it from the database and hence should be done with caution.
 
 **HTTP Request**
 
@@ -1067,6 +1069,8 @@ If successful, returns a status code of 200 and an empty body.
 Deletes the latest version of the plan. If `allVersions=true` is specified, deletes all the versions of the plan. 
 
 **Note:** Since this is an irreversible operation, the query parameter `force=true` must be specified to proceed with the deletion.
+
+**Note:** Retiring a plan simply marks it as "retired" in the database and prevents creating new subscriptions corresponding to the plan. On the other hand, deleting a plan hard deletes it from the database and hence should be done with caution.
 
 **HTTP Request**
 
