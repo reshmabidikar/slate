@@ -256,6 +256,58 @@ None
 
 If successful, returns a status code of 200 and a List of `BillingMeter` objects.
 
+### Delete Billing Meter
+
+Deletes the latest version of the billing meter. 
+
+**Note:** Since this is an irreversible operation, the query parameter `force=true` must be specified to proceed with the deletion.
+
+**HTTP Request**
+
+`DELETE /plugins/aviate-plugin/v1/catalog/{meterCode}/billingMeter`
+
+> Example Request:
+
+```shell
+curl -X DELETE \
+-H'Content-Type: application/json' \
+-H"Authorization: Bearer ${ID_TOKEN}" \
+-H'X-killbill-apiKey: alphaF' \
+-H'X-killbill-apisecret: alphaF' \
+'http://127.0.0.1:8080/plugins/aviate-plugin/v1/catalog/code1/billingMeter?force=true'
+```
+
+```java
+```
+
+```ruby
+```
+
+```python
+```
+
+````php
+````
+
+````javacript
+````
+
+> Example Response:
+
+**Query Parameters**
+
+| Name            | Type    | Required | Default | Description                                   |
+|-----------------|---------|----------|---------|-----------------------------------------------
+| **force**       | boolean | true     | none    | Whether to force plan deletion                |
+| **accountId**   | UUID    | false    | none    | Account Id for which to create the plan       |
+
+
+**Response**
+
+If successful, returns a status code of 200 and an empty body.
+
+
+
 ### Submit Usage Events
 
 Submits usage events.
