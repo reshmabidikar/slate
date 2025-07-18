@@ -61,7 +61,7 @@ Creates billing meters. If the meter identified by `billingMeter#name`, `billing
 ```shell
 curl -X POST \
      -H'Content-Type: application/json' \
-     -H"Authorization: Bearer ${ID_TOKEN}" \     
+     -H"Authorization: Bearer ${ID_TOKEN}" \
      -H'X-killbill-apiKey: alphaF' \
      -H'X-killbill-apisecret: alphaF' \
 	 -d '[
