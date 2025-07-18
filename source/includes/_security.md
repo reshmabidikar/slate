@@ -614,7 +614,7 @@ curl -v \
     -H "Accept: application/json" \
     -H "X-Killbill-CreatedBy: demo" \
     -H "X-Killbill-Reason: demo" \
-    -H "X-Killbill-Comment: demo" \    
+    -H "X-Killbill-Comment: demo" \
     "http://localhost:8080/1.0/kb/security/users/{username}"
 ```
 
