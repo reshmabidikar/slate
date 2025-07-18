@@ -613,7 +613,7 @@ curl -v \
     -H 'X-Killbill-CreatedBy: demo' \
     -d '{ 
     		"paymentId": "8fe697d4-2c25-482c-aa45-f6cd5a48186d"
-      }' \    
+      }' \
     'http://127.0.0.1:8080/1.0/kb/payments/8fe697d4-2c25-482c-aa45-f6cd5a48186d' 	
 ```
 

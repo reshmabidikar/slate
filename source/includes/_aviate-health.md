@@ -152,7 +152,7 @@ Return the current HealthData report. It is meant to show the current health of 
 
 ```shell
 curl -X GET \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/data'
@@ -361,7 +361,7 @@ All the metrics exposed by the Aviate Plugin are documented [here](https://docs.
 # Returns metric data for the queue.bus.incoming,queue.bus.processing, queue.bus.late for the duration 2024-12-19T00:00:00 to 2025-01-04T11:59:00 with HOURLY granularity 
 curl -X GET \
      -H 'Content-Type: application/json' \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?from=2024-12-19T00:00:00&to=2025-01-04T11:59:00&metricName=queue.bus.incoming&metricName=queue.bus.processing&metricName=queue.bus.late&granularity=HOUR'
@@ -369,7 +369,7 @@ curl -X GET \
 # Returns the metric data for the logs.rates.error metric on the ip-172-31-6-87 node
 curl -X GET \
      -H 'Content-Type: application/json' \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?nodeName=ip-172-31-6-87&name=logs.rates.error'  
@@ -377,7 +377,7 @@ curl -X GET \
 # Returns metric data for the logs.rates.error metric for all the nodes:
 curl -X GET \
      -H 'Content-Type: application/json' \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?metricName=logs.rates.error'   
@@ -385,7 +385,7 @@ curl -X GET \
 # Returns metric data for the queue.bus.incoming metric for all the nodes (nodeName is ignored since queue.bus.incoming is a global metric):
 curl -X GET \
      -H 'Content-Type: application/json' \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?nodeName=ip-172-31-6-87&name=queue.bus.incoming' 
@@ -459,7 +459,7 @@ Returns a list of failed bus events. Basically returns the records from the `bus
 ```shell
 curl -X GET \
      -H 'Content-Type: application/json' \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/bus/failed?from=2025-01-01T00:00:00&to=2025-02-01T00:00:00'
@@ -561,7 +561,7 @@ Returns failed notifications. Basically returns the records from the `notificati
 ```shell
 curl -X GET \
      -H 'Content-Type: application/json' \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/notifications/failed?from=2025-01-01T00:00:00&to=2025-02-01T00:00:00'
@@ -653,7 +653,7 @@ Reinserts the specified bus events from the `bus_events_history` table into the 
 ```shell
 curl -X PUT \
      -H 'Content-Type: application/json' \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      -d '[1,2]' \
@@ -700,7 +700,7 @@ Reinserts the specified bus events from the `notifications_history` table into t
 ```shell
 curl -X PUT \
      -H 'Content-Type: application/json' \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      -d '[1,2]' \
@@ -747,7 +747,7 @@ Fixes stuck bus entries. Basically resets the `creating_owner`, `processing_owne
 ```shell
 curl -X PUT \
      -H 'Content-Type: application/json' \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      -d '[1,2]' \
@@ -795,7 +795,7 @@ Fixes stuck notification entries. Basically resets the `creating_owner`, `proces
 ```shell
 curl -X PUT \
      -H 'Content-Type: application/json' \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      -d '[1,2]' \
@@ -851,14 +851,14 @@ A few pointers:
 ```shell
 ## Example 1 - Returns data for the specified account in JSON format
 curl -X GET \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/diagnostic?accountId=af65531a-fc2e-43cd-8af1-6ec0709d9700'
      
 ## Example 2 - Creates a zip file. Includes account information, Kill Bill configuration data and tenant configuration data
 curl -X GET \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      -H "Accept: application/zip" \
@@ -866,7 +866,7 @@ curl -X GET \
      
 ## Example 3 - Creates a zip file. Includes account information and the catalina.2024-11-27.log and localhost_access_log.2024-11-27.txt logs from the Tomcat directory.
 curl -X GET \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      -H "Accept: application/zip"  \
@@ -874,7 +874,7 @@ curl -X GET \
 	 
 ## Example 4- Creates a zip file. Includes account information and the killbill.out/kaui.out log files from the /var/lib/killbill/logs directory.
 curl -X GET \
-     -H 'Authorization: Bearer ${ID_TOKEN}' \     
+     -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
      -H "Accept: application/zip"  \
