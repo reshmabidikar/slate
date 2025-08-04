@@ -372,7 +372,7 @@ curl -X GET \
      -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
-     'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?nodeName=ip-172-31-6-87&name=logs.rates.error'  
+     'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?nodeName=ip-172-31-6-87&name=logs.rates.error'
      
 # Returns metric data for the logs.rates.error metric for all the nodes:
 curl -X GET \
@@ -380,7 +380,7 @@ curl -X GET \
      -H "Authorization: Bearer ${ID_TOKEN}" \
      -H 'X-killbill-apiKey: bob' \
      -H 'X-killbill-apisecret: lazar' \
-     'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?metricName=logs.rates.error'   
+     'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/metrics?metricName=logs.rates.error'
      
 # Returns metric data for the queue.bus.incoming metric for all the nodes (nodeName is ignored since queue.bus.incoming is a global metric):
 curl -X GET \
