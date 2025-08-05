@@ -22,6 +22,7 @@ Represents the input payload for creating a new coupon.
 |----------------------|-----------|----------|-----------------------------------------------------------------------------------|
 | `redemptionCode`     | `string`  | yes      | Unique redemption code for the coupon                                            |
 | `reusable`           | `boolean` | yes      | Whether the coupon can be reused multiple times by the same customer             |
+| `maxUse`             | `integer` | yes      | Max number of times a coupon can be redeemed by customers                       |
 | `discountType`       | `string`  | yes      | Discount type: `DISCOUNT_TYPE_FIXED` or `DISCOUNT_TYPE_PERCENTAGE`              |
 | `discountPrice`      | `string`  | no       | Fixed discount amount (required if `discountType` = FIXED)                      |
 | `discountCurrency`   | `string`  | no       | Currency for fixed discount (required if `discountType` = FIXED)                |
@@ -40,6 +41,7 @@ Represents a coupon that can be redeemed.
 |----------------------|-----------|-----------------------------------------------------------------------|
 | `redemptionCode`     | `string`  | Unique redemption code                                               |
 | `reusable`           | `boolean` | Whether the coupon can be reused multiple times by the same customer|
+| `maxUse`             | `integer` | Max number of times a coupon can be redeemed by customers           |
 | `discountType`       | `string`  | Discount type                                                        |
 | `discountPrice`      | `string`  | Fixed discount amount                                                |
 | `discountCurrency`   | `string`  | Currency for fixed discount                                          |
@@ -84,6 +86,7 @@ curl -X POST \
      -d '{
            "redemptionCode": "UPGRADE2025",
            "reusable": true,
+           "maxUse": 100,
            "discountType": "DISCOUNT_TYPE_FIXED",
            "discountPrice": "10.00",
            "discountCurrency": "USD",
@@ -118,6 +121,7 @@ Returns `201` with a `CouponResponse` object.
   "coupon": {
     "redemptionCode": "UPGRADE2025",
     "reusable": true,
+    "maxUse": 100,
     "discountType": "DISCOUNT_TYPE_FIXED",
     "discountPrice": "10.00",
     "discountCurrency": "USD",
@@ -180,6 +184,7 @@ curl -X GET \
   {
     "redemptionCode": "UPGRADE2025",
     "reusable": true,
+    "maxUse": 100,
     "discountType": "DISCOUNT_TYPE_FIXED",
     "discountPrice": "10.00",
     "discountCurrency": "USD",
@@ -191,6 +196,7 @@ curl -X GET \
   {
     "redemptionCode": "BLACKFRIDAY",
     "reusable": false,
+    "maxUse": 100,
     "discountType": "DISCOUNT_TYPE_PERCENTAGE",
     "discountPercentage": 20,
     "expirationDate": "2025-11-30T23:59:59Z",
@@ -243,6 +249,7 @@ curl -X GET \
 {
   "redemptionCode": "UPGRADE2025",
   "reusable": true,
+  "maxUse": 100,
   "discountType": "DISCOUNT_TYPE_FIXED",
   "discountPrice": "10.00",
   "discountCurrency": "USD",
