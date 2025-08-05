@@ -284,7 +284,7 @@ curl -X PUT \
 ```php
 ```
 
-```javacript
+```javascript
 ```
 
 > Example Response:
