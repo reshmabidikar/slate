@@ -234,7 +234,7 @@ curl -X GET \
 ```php
 ```
 
-```javacript
+```javascript
 ```
 
 > Example Response:
