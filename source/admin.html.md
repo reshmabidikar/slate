@@ -31,7 +31,9 @@ menu_items:
   - aviate-catalog
   - aviate-health
   - aviate-metering
-  - aviate-wallet  
+  - aviate-wallet
+  - aviate-coupons
+   
 
 title: Kill Bill
 

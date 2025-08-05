@@ -1,8 +1,8 @@
 ---
 includes: 
-  - aviate-auth
+  - aviate-coupons
   
-current_page: aviate-auth
+current_page: aviate-coupons
 
 menu_items:
   - index
@@ -33,7 +33,7 @@ menu_items:
   - aviate-metering
   - aviate-wallet
   - aviate-coupons
-
+  
 title: Kill Bill
 
 language_tabs:
