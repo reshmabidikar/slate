@@ -240,7 +240,7 @@ curl -X GET \
 ```php
 ```
 
-```javacript
+```javascript
 ```
 
 > Example Response:
@@ -291,7 +291,7 @@ curl -X PUT \
 ```php
 ```
 
-```javacript
+```javascript
 ```
 
 > Example Response:
