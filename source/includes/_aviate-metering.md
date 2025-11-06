@@ -42,7 +42,7 @@ A UsageEvent represents a single usage to be recorded. It has the following fiel
 |----------------------|--------|--------------|---------------------------------------------------------------------------------------------------|
 | **billingMeterCode** | string | user         | Billing meter code                                                                                |
 | **subscriptionId**   | string | user         | ID of the subscription against which usages should be recorded                                    |
-| **trackingId**       | string | user         | User's tracking Id for this usage                                                                 |
+| **trackingId**       | UUID | user         | User's tracking Id for this usage                                                                 |
 | **timeStamp**        | string | user         | DateTime corresponding to the usage (Uses second precision,Sub-second precision isn't supported). |
 | **value**            | number | user         | Amount of usage                                                                                   |
 
