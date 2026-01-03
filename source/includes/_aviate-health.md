@@ -355,7 +355,7 @@ This endpoint retrieves the runtime configuration of a running Kill Bill instanc
 
 ```shell
 curl -X GET \
--H"Authorization: Bearer ${ID_TOKEN}" \
+-H "Authorization: Bearer ${ID_TOKEN}" \
 -H 'Content-Type: application/json' \
 -H 'X-killbill-apiKey: bob' \
 -H 'X-killbill-apisecret: lazar' \
@@ -374,7 +374,7 @@ curl -X GET \
 ````php
 ````
 
-````javacript
+````javascript
 ````
 
 > Example Response:
