@@ -343,6 +343,105 @@ None
 
 If successful, returns a `HealthData` object.
 
+### Retrieve Runtime Configuration
+
+This endpoint retrieves the runtime configuration of a running Kill Bill instance and it provides the detail of the configuration source for each property along with its final value; the sources can be - by order of precedence: Immutable system property, Tenant configuration, Environment variable, Runtime configuration or the Default property value from the system.
+
+**HTTP Request**
+
+`GET /plugins/aviate-plugin/v1/health/config`
+
+> Example Request:
+
+```shell
+curl -X GET \
+-H "Authorization: Bearer ${ID_TOKEN}" \
+-H 'Content-Type: application/json' \
+-H 'X-killbill-apiKey: bob' \
+-H 'X-killbill-apisecret: lazar' \
+'http://127.0.0.1:8080/plugins/aviate-plugin/v1/health/config'
+```
+
+```java
+```
+
+```ruby
+```
+
+```python
+```
+
+````php
+````
+
+````javascript
+````
+
+> Example Response:
+
+```json
+{
+  "config": {
+    "ImmutableSystemProperties": {
+      "values": [
+        {
+          "key": "user.timezone",
+          "value": "GMT"
+        }
+      ]
+    },
+    "RuntimeConfiguration": {
+      "values": [
+        {
+          "key": "org.killbill.dao.user",
+          "value": "admin"
+        },
+        {
+          "key": "org.killbill.persistent.bus.external.sleep",
+          "value": "300"
+        },
+        {
+          "key": "org.killbill.billing.plugin.kpm.bundlesPath",
+          "value": "/var/lib/killbill/bundles"
+        },
+        ...
+      ]
+    },
+    "KillBillDefaults": {
+      "values": [
+        {
+          "key": "org.killbill.dao.maxConnectionAge",
+          "value": "0m"
+        },
+        {
+          "key": "org.killbill.dao.useServerPrepStmts",
+          "value": "true"
+        },
+        {
+          "key": "org.killbill.billing.server.notifications.retries",
+          "value": "15m,30m,2h,12h,1d"
+        },
+        ...
+      ]
+    }
+  }
+}
+```
+
+**Request Body**
+
+None
+
+**Query Parameters**
+
+None
+
+
+**Response**
+
+If successful, returns a status code of 200 and the requested runtime configuration data.
+
+
 ### Retrieve Metrics
 
 This endpoint returns metric data. This data can be used to assess the health of the system and gain visibility into it. The metrics are computed by the aviate plugin when the `com.killbill.billing.plugin.aviate.enableHealthReporter` property is set to true. Each metric is a timeseries that can be analyzed and/or displayed.
