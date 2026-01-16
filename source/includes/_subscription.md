@@ -1680,6 +1680,7 @@ Changing the plan associated to a subscription often triggers the creation of an
 **Other Notes:**
 
 * When a `DateTime` is specified corresponding to the `requestedDate` parameter, it may or may not include a timezone component. If a timezone is included (like `entitlementDate=2024-03-10T11:00:00-08:00`), the specified timezone (`PST` in this case) is used. If timezone is not included (like `entitlementDate=2024-03-07T11:15`), it defaults to UTC.
+* Plan change is only possible within the same product category. So when changing plans, both the current plan and the target plan must belong to products in the same category.
 
 **Response**
 
