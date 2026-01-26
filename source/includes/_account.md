@@ -1838,16 +1838,16 @@ $invoices  = $apiInstance-> getInvoicesForAccount($accountID);
 
 **Query Parameters**
 
-| Name | Type | Required | Default | Description |
-| ---- | -----| -------- | ------- | ----------- |
-| **startDate** | date | false | no starting date | Return only invoices issued since this date. |
-| **endDate** | date | false | no ending date | Return only invoices issued up to this date. |
-| **withMigrationInvoices** | boolean | false | false | Choose true to include migration invoices |
-| **unpaidInvoicesOnly** | boolean | false | false | Choose true to include unpaid invoices only |
-| **includeVoidedInvoices** | boolean | false | false | Choose true to include voided invoices |
-| **includeInvoiceComponents** | boolean | false | false | Choose true to include invoice components (like invoice items/payments, etc.) |
-| **invoicesFilter** | string | false | empty | A comma separated list of invoiceIds to filter |
-| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL" |
+| Name | Type | Required | Default | Description                                                                                                                                                                               |
+| ---- | -----| -------- | ------- |-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **startDate** | date | false | no starting date | Return only invoices issued since this date.                                                                                                                                              |
+| **endDate** | date | false | no ending date | Return only invoices issued up to this date.                                                                                                                                              |
+| **withMigrationInvoices** | boolean | false | false | Choose true to include migration invoices                                                                                                                                                 |
+| **unpaidInvoicesOnly** | boolean | false | false | Choose true to include unpaid invoices only. If this parameter is specified, the invoice components are automatically included, so there is no need to specify `includeInvoiceComponents` |
+| **includeVoidedInvoices** | boolean | false | false | Choose true to include voided invoices                                                                                                                                                    |
+| **includeInvoiceComponents** | boolean | false | false | Choose true to include invoice components (like invoice items/payments, etc.)                                                                                                             |
+| **invoicesFilter** | string | false | empty | A comma separated list of invoiceIds to filter                                                                                                                                            |
+| **audit** | string | false | "NONE" | Level of audit information to return: "NONE", "MINIMAL", or "FULL"                                                                                                                        |
 
 For information about migration and migration invoices, see the [Migration Guide](http://docs.killbill.io/latest/migration_guide.html).
 
